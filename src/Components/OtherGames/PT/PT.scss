@@ -1,0 +1,230 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+$color_FFDC52: #FFDC52;
+.pt{
+    background:#000 url(./Img/pt_bg.jpg) no-repeat center top;
+    min-height: 700px;
+    .pt_content{
+        width: $nav_width_1200;
+        margin: 0 auto;
+        padding-top: 415px;
+        font-size: 14px;
+        .pt_content_games{
+            background-color: #F8F8F8;
+            padding: 30px 0;
+        }
+        .games_list{
+            @include wh(935px, 690px);
+            padding-left: 7px;
+            li{
+                float: left;
+                @include wh(210px, 200px);
+                position: relative;
+                overflow: hidden;
+                margin: 0 0 30px 22px;
+                &:hover .games_hover{
+                    top: 0;
+                }
+            }
+            .games_hover{
+                position: absolute;
+                left: 0;
+                top: -200px;
+                padding-top: 60px;
+                background: rgba(0,0,0, .5);
+                @include wh(210px, 200px);
+                @include transform(top, 0.3s);
+                text-align: center;
+                .ant-btn{
+                    margin-bottom: 8px;
+                    width: 130px;
+                    height: 36px;
+                    font-size: 14px;
+                    border-radius: 18px;
+                }
+                .demo_btn{
+                    .ant-btn{
+                        color: #1C1C1C !important;
+                    }
+                    .ant-btn-primary{
+                        background-color: $color_FFDC52;
+                        border-color: $color_FFDC52;
+                    }
+                    .ant-btn-primary:hover,
+                    .ant-btn-primary:focus {
+                        color: #fff;
+                        background-color: #ffec62;
+                        border-color: #ffec62;
+                    }
+                    .ant-btn-clicked:after {
+                        border: 0 solid $color_FFDC52;
+                    }
+                    .ant-btn-danger.ant-btn-clicked:after {
+                        border-color: $color_FFDC52;
+                    }
+                }
+            }
+            .games_name{
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                background: rgba(0,0,0, .6);
+                @include wh(210px, 36px);
+                font-size: 14px;
+                line-height: 36px;
+                color:#fff;
+                padding-left: 15px;
+            }
+
+        }
+        .pt_right_content{
+            margin-right: 8px;
+            .ant-input{
+                height: 32px;
+            }
+            .pt_balance_content{
+                width: 220px;
+                margin-top: 29px;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                p{
+                   @include lh(36px);
+                    width: 220px;
+                    background-color: #4A4A60;
+                    color: #fff;
+                    padding-left: 20px;
+                    b{
+                        font-weight: normal;
+                        padding-left: 20px;
+                        background: url(./Img/ranking.png) no-repeat left center;
+                    }
+                }
+                .pt_top_content{
+                    height: 382px;
+                    overflow: hidden;
+                }
+                .balance_text{
+                    padding: 15px 20px 10px;
+                    .ant-btn{
+                        margin: 15px 10px 0 0;
+                        font-size: 14px;
+                    }
+                    .pt_transfer{
+                        .ant-btn{
+                            color: #1C1C1C !important;
+                        }
+                        .ant-btn-primary{
+                            background-color: $color_FFDC52;
+                            border-color: $color_FFDC52;
+                        }
+                        .ant-btn-primary:hover,
+                        .ant-btn-primary:focus {
+                            color: #fff;
+                            background-color: #ffec62;
+                            border-color: #ffec62;
+                        }
+                        .ant-btn-clicked:after {
+                            border: 0 solid $color_FFDC52;
+                        }
+                        .ant-btn-danger.ant-btn-clicked:after {
+                            border-color: $color_FFDC52;
+                        }
+                    }
+                }
+                h3{
+                    font-size: 14px;
+                }
+            }
+            .ranking_list{
+                padding: 10px 0 10px 20px;
+                //height: 382px;
+                overflow: hidden;
+                li{
+                    margin-bottom: 10px;
+                }
+                img{
+                    @include wh(80px, 80px);
+                    vertical-align: bottom;
+                }
+                .ranking_info{
+                    display: inline-block;
+                    padding-left: 10px;
+                    img{
+                        @include wh(35px, 39px);
+                    }
+                }
+                h4{
+                    color: $color_363636;
+                    width: 100px;
+                }
+                h5{
+                    color: #A9A9A9;
+                    width: 100px;
+                }
+            }
+        }
+    }
+}
+.pt_resetModal{
+    .ant-modal-content{
+        @include borderRadius(8px);
+        position: relative;
+    }
+    .ant-modal-body{
+        padding: 10px;
+        height: 321px;
+        background: url(./Img/resetPw_bg.png) no-repeat center center;
+    }
+    .pt_reset_close{
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    .pt_title{
+        color: #fff;
+        text-align: center;
+        margin: 18px 0 15px;
+        h1{
+            font-size: 20px;
+            padding-left: 44px;
+        }
+        h2{
+            font-size: 16px;
+        }
+        h3{
+            margin-top: 20px;
+        }
+    }
+    .pt_reset_money{
+        width: 290px;
+        margin: 0 auto;
+        li{
+            height: 36px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .pt_prompt{
+            color: #FF9999;
+        }
+        span{
+            color: #fff;
+            font-size: 14px;
+
+        }
+        .ant-input{
+            width: 190px;
+            background-color: #990000;
+            border: 0;
+            color: #fff;
+        }
+    }
+    .resetPw_btn{
+        text-align: center;
+        img{
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}

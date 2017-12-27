@@ -1,0 +1,63 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.home_m_bottom{
+    background: url('../Img/home_bottom.png') no-repeat center center;
+    height: 296px;
+    padding-top: 70px;
+    .home_m_bottom_list{
+        width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        color: #fff;
+        li{
+            float: left;
+            width: 240px;
+            margin-right: 65px;
+            p{
+                text-align: center;
+                font-size: 13px;
+            }
+            &:last-child{
+                margin-right: 0;
+            }
+            &:nth-child(1) .home_m_recharge_top{
+                background: url(../Img/cz_icon.png) no-repeat center left;
+            }
+            &:nth-child(2) .home_m_recharge_top{
+                background: url(../Img/tk_icon.png) no-repeat center left;
+            }
+            &:nth-child(3) .home_m_recharge_top{
+                background: url(../Img/pt_icon.png) no-repeat center left;
+            }
+            &:nth-child(4) .home_m_recharge_top{
+                background: url(../Img/hz_icon.png) no-repeat center left;
+            }
+        }
+
+        .home_m_recharge_top{
+            padding-left: 50px;
+            margin-bottom: 18px;
+            .home_m_top_left{
+                margin-left: 10px;
+                h3{
+                    font-size: 18px;
+                }
+                h4{
+                    font-size: 14px;
+                }
+            }
+            .home_m_top_right{
+                height: 48px;
+                margin-left: 15px;
+                padding-top: 10px;
+                span{
+                    font-size: 18px;
+                }
+                .home_m_time{
+                    font-size: 28px;
+                }
+            }
+        }
+    }
+}

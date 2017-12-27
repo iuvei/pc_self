@@ -1,0 +1,163 @@
+$blue: #3190e8;
+$bc: #e4e4e4;
+$fc:#fff;
+
+// 背景图片地址和大小
+@mixin bis($url) {
+	background-image: url($url);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+//  行高
+@mixin lh ($lh) {
+    height:$lh;
+    line-height: $lh;
+}
+
+@mixin els{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+// 阴影
+@mixin boxS($h, $v, $blur, $spread, $color, $inset) {
+    box-shadow: $h $v $blur $spread $color $inset;
+    -o-box-shadow: $h $v $blur $spread $color $inset;
+    -webkit-box-shadow: $h $v $blur $spread $color $inset;
+    -moz-box-shadow: $h $v $blur $spread $color $inset;
+}
+
+// 渐变
+@mixin gradientsss($start, $end, $sColor, $endR, $endG, $endB, $endA){
+    background: #ccc;
+    background: -moz-linear-gradient(top,  #000000 0%, #ffffff 100%);
+    background: -webkit-gradient(linear, 0 18.5, 0 bottom, from(#ffffff), to(rgba(225, 225, 225, 0.8)));
+    background: -webkit-linear-gradient(top,  #000000 0%,#ffffff 100%);
+    background: -o-linear-gradient(top,  #000000 0%,#ffffff 100%);
+    background: -ms-linear-gradient(top,  #000000 0%,#ffffff 100%);
+    background: linear-gradient(to bottom,  #000000 0%,#ffffff 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#ffffff',GradientType=0 );
+}
+
+@mixin gradient($startX, $startY, $endX, $endY, $startColor, $endColor){
+    background: -webkit-gradient(linear, $startX $startY, $endX $endY, from($startColor), to($endColor));
+}
+
+//倒三角形
+@mixin sj($t,$r,$b,$bc){
+    position: absolute;
+    top:$t;
+    right:$r;
+    content:'';
+    width: 0;
+    height: 0;
+    border-left: $b solid transparent;
+    border-right: $b solid transparent;
+    border-top: $b solid $bc;
+}
+@mixin transform($type, $time){
+    transition: $type $time;
+    -moz-transition: $type $time; /* Firefox 4 */
+    -webkit-transition: $type $time; /* Safari 和 Chrome */
+    -o-transition: $type $time; /* Opera */
+}
+
+/*箭头-有背景色*/
+@mixin icon_arrows_bg($top,$right,$b_color,$wh,$bg,$deg){
+    display:inline-block;
+    position: absolute;
+    top: $top;
+    right: $right;
+    content: '';
+    border: 1px solid $b_color;
+    border-bottom: 0;
+    border-left: 0;
+    width: $wh;
+    height: $wh;
+    background-color: $bg;
+    transform: rotate($deg);
+    -webkit-transform: rotate($deg);
+}
+/*箭头*/
+@mixin icon_arrows($top,$right,$b_color,$wh,$deg){
+    display:inline-block;
+    position: absolute;
+    top: $top;
+    right: $right;
+    content: '';
+    border: 1px solid $b_color;
+    border-bottom: 0;
+    border-left: 0;
+    width: $wh;
+    height: $wh;
+    transform: rotate($deg);
+    -webkit-transform: rotate($deg);
+}
+// 文本显示规定行数，超过显示省略
+@mixin ellipsis($l){
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $l;
+    overflow: hidden;
+}
+
+@mixin borderRadius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+//定位全屏
+@mixin allcover{
+	position:absolute;
+	top:0;
+	right:0;
+}
+
+//定位上下左右居中
+@mixin center {
+	position: absolute;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+//定位上下居中
+@mixin ct {
+	position: absolute;
+	top: 50%;
+    transform: translateY(-50%);
+}
+
+//定位左右居中
+@mixin cl {
+	position: absolute;
+	left: 50%;
+    transform: translateX(-50%);
+}
+
+//宽高
+@mixin wh($width, $height){
+	width: $width;
+	height: $height;
+}
+
+//字体大小、行高、字体
+@mixin font($size, $line-height, $family: 'Microsoft YaHei') {
+	font: #{$size}/#{$line-height} $family;
+}
+
+//字体大小，颜色
+@mixin sc($size, $color){
+	font-size: $size;
+	color: $color;
+}
+
+//flex 布局和 子元素 对其方式
+@mixin fj($type: space-between){
+	display: flex;
+	justify-content: $type;
+}

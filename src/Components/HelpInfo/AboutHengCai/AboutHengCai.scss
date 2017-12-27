@@ -1,0 +1,21 @@
+.aboutHengCai_main{
+    padding: 0 25px 0 207px;
+    .a_title{
+        padding: 25px 0px 14px 6px;
+        font-size: 16px;
+        font-weight: 700;
+        border-bottom: 1px dotted #C8C8C8;
+    }
+    .a_content{
+        font-size: 14px;
+        padding: 15px 10px 0;
+        p{
+            margin-top: 20px;
+            text-indent: 29px;
+            line-height: 23px;
+        }
+        p:nth-child(1){
+            margin-top: 0;
+        }
+    }
+}

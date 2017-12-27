@@ -1,0 +1,93 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+$border_color: #C8C8C8;
+$width_110px: 110px;
+.withdraw_main{
+    font-size: 14px;
+    .tr_m_text{
+        width: 1096px;
+        height:57px;
+        border: 1px dotted #C7C6C4;
+        background-color: #FEFCF2;
+        margin: 24px auto 0;
+        padding: 17px 20px;
+        color:#474646;
+        h4{
+            padding-left: 28px;
+            background: url(./Img/plaint_sj.png) no-repeat center left;
+            font-size: 14px;
+            color: #474646;
+        }
+        i{
+            font-style: normal;
+            color: #00C192;
+        }
+        em{
+            font-style: normal;
+            color: #CE2424;
+        }
+    }
+
+    .r_m_list{
+        margin:64px 0 0 50px;
+        color: #1B1B21;
+        .back_list{
+            display: inline-block;
+            width: 945px;
+            li{
+                float: left;
+                border: 1px solid $border-color;
+                margin: 0 8px 8px 0;
+            }
+        }
+        .bank_v_top{
+            vertical-align: top;
+        }
+        .r_m_qq_controler{
+            padding-right: 10px;
+            background-color: #fff;
+            img{
+                vertical-align: middle;
+            }
+            .r_m_qq{
+                color: #606060;
+            }
+            &:hover{
+                cursor: pointer;
+            }
+        }
+        .r_m_active{
+            border: 1px solid $rodio-check-color !important;
+            background: #fff url(./Img/time_active.png) no-repeat bottom right !important;
+        }
+        .span_margin{
+            margin: 0 15px 0 3px;
+        }
+        .r_m_recharge_text{
+            padding-left: 20px;
+            background: url(./Img/plaint_icon.png) no-repeat center left;
+            color: #8C8C8C;
+            strong{
+                color: #CB1313;
+                font-weight: normal;
+            }
+        }
+        .r_m_li_w{
+            display: inline-block;
+            width: $width_110px;
+            text-align: right;
+            margin-right: 15px;
+        }
+        .ant-input-number{
+            width: 200px;
+        }
+        &>li{
+            margin-bottom: 20px;
+        }
+        .r_m_primary_btn{
+            padding-top: 50px;
+        }
+    }
+}
+

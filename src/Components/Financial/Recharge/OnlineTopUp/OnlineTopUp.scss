@@ -1,0 +1,67 @@
+@import '../../../../Style/variables';
+@import '../../../../Style/mixin';
+
+$width_110px: 110px;
+.online_top_up{
+    .r_m_hint{
+        @include lh(35px);
+        width: 550px;
+        border: 1px dotted #C5C5C3;
+        background: #FEFCF2;
+        margin:0 0 20px 30px;
+        padding-left: 15px;
+        p{
+            padding-left: 30px;
+            background: url(./Img/plaint_sj.png) no-repeat center left;
+        }
+    }
+    .r_m_list{
+        margin-left: 50px;
+        color: #1B1B21;
+        .r_m_recharge_text{
+            padding-left: 20px;
+            background: url(./Img/plaint_icon.png) no-repeat center left;
+            color: #8C8C8C;
+        }
+        .r_m_dx{
+            margin: 10px 0 0 $width_110px+15px;
+        }
+        .ant-input-number{
+            width: 296px;
+        }
+        .ant-input-number-lg{
+            @include lh(35px);
+        }
+        .r_m_li_w{
+            display: inline-block;
+            width: $width_110px;
+            text-align: right;
+            margin-right: 15px;
+        }
+        .r_m_select_yhk{
+            width: 960px;
+            li{
+                float: left;
+                @include wh(170px, 44px);
+                //line-height: 44px;
+                border: 1px solid $border_color;
+                margin: 0 8px 9px 0;
+                background: #fff;
+                text-align: center;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+        &>li{
+            margin-bottom: 10px;
+        }
+    }
+    .r_m_active{
+        border: 1px solid $rodio-check-color !important;
+        background: #fff url(./Img/time_active.png) no-repeat bottom right !important;
+    }
+    .r_m_primary_btn{
+        padding-top: 50px;
+    }
+}

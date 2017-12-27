@@ -1,0 +1,117 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.transfer_main{
+    padding: 25px 20px 20px;
+    background: $background-color-F4F4F4;
+    .tf_m_balance_list{
+        border: 1px solid #ddd;
+        border-top: 2px solid $rodio-check-color;
+        margin-bottom: 8px;
+        li{
+            float: left;
+            text-align: center;
+            height: 115px;
+            width: 170px;
+        }
+        li:nth-child(1){
+            width: 300px;
+            border-right: 1px solid #ddd;
+        }
+        li:nth-child(2){
+            margin-left: 60px;
+        }
+        .tf_m_acount{
+            margin-top: 20px;
+            padding-top: 35px;
+            color: #292929;
+        }
+        .icon_top_02{
+            background: url(./Img/balance_icon02.png) no-repeat top center;
+        }
+        .icon_top_03{
+            background: url(./Img/balance_icon03.png) no-repeat top center;
+        }
+        .icon_top_04{
+            background: url(./Img/balance_icon04.png) no-repeat top center;
+        }
+        .icon_top_05{
+            background: url(./Img/balance_icon05.png) no-repeat top center;
+        }
+        .tf_m_account_b{
+            padding-left: 40px;
+            width: 130px;
+            //height: 115px;
+            margin: 35px auto 0;
+            background: url(./Img/balance_icon01.png) no-repeat center left;
+            p{
+                color: #179500;
+            }
+        }
+    }
+    .tr_m_account_info{
+        border: 1px solid #ddd;
+        padding: 50px 15px 100px 45px;
+        background-color: #fff;
+        .tr_m_form{
+            position: relative;
+            color: #1B1B21;
+            .tr_m_trade{
+                position: absolute;
+                top: 27px;
+                right: -52px;
+                &:before{
+                    content: '';
+                    @include wh(50px, 54px);
+                    display: inline-block;
+                    border: 1px solid #C8C8C8;
+                    border-left: 0;
+                    position: absolute;
+                    top: -11px;
+                    right: 16px;
+                }
+                .ant-btn{
+                    padding: 7px 7px 4px;
+                }
+            }
+            li{
+                margin-bottom: 15px;
+            }
+            li:last-child{
+                margin-top: 25px;
+            }
+            .tr_m_f_type{
+                margin-right: 10px;
+                display: inline-block;
+                width: 75px;
+            }
+            .ant-select-lg .ant-select-selection--single{
+                height: 35px;
+            }
+            .ant-select-lg .ant-select-selection__rendered{
+                line-height: 33px;
+            }
+            .ant-input-number{
+                width: 297px;
+                @include lh(35px);
+            }
+            .tr_m_f_text{
+                color:$rodio-check-color;
+                font-size: 12px;
+                margin: 8px 0 12px 87px;
+            }
+        }
+        .tr_m_text{
+            width: 475px;
+            border: 1px dotted #C5C4C2;
+            background-color: #FFF9EE;
+            padding: 17px 20px;
+            color:#656565;
+            h4{
+                margin-bottom: 10px;
+                padding-left: 28px;
+                background: url(./Img/plaint_sj.png) no-repeat center left;
+            }
+        }
+    }
+}

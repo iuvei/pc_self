@@ -1,0 +1,87 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.dayRate_main{
+    color: $color_363636;
+    .team_list_top{
+        padding: 30px 30px 13px;
+        border-bottom: 1px solid #ccc;
+        background-color: #fff;
+        font-size: 14px;
+        .t_l_time{
+            padding-bottom: 10px;
+            .t_m_date_classify{
+                display: inline-block;
+                width: 70px;
+                text-align: right;
+            }
+            .t_l_time_row{
+                @include lh(30px);
+                margin-bottom: 12px;
+                .ant-input{
+                    width: 150px;
+                }
+                li{
+                    float: left;
+                }
+                li:last-child{
+                    margin-left: 30px;
+                }
+            }
+        }
+    }
+    .t_l_table{
+        background-color: #F4F4F4;
+        padding: 0 12px 50px;
+        border-bottom: 1px dotted $dotted-color;
+        &:last-child{
+            border: 0;
+            background-color: #ECECEC;
+        }
+        .t_l_location_name{
+            @include lh(50px);
+            .t_l_goBack{
+                margin-right: 5px;
+            }
+        }
+        .t_l_table_list{
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding:8px 5px;
+        }
+        .t_l_page{
+            margin-top: 8px;
+        }
+    }
+    .tfoot_list{
+        li{
+            float: left;
+            width: 130px;
+            text-align: center;
+            &:first-child{
+                width: 250px;
+            }
+            &:last-child{
+                width: 190px;
+            }
+        }
+
+    }
+    .ant-table-thead > tr > th, .ant-table-footer{
+        background-color: #F8F7F4;
+    }
+}
+.table_modal{
+    .historyTfoot_list{
+        position: absolute;
+        bottom: 0;
+        background-color: #f7f7f7;
+        color: $color_363636;
+        li{
+            float: left;
+            @include lh(45px);
+            width: 378px;
+            text-align: center;
+        }
+    }
+}

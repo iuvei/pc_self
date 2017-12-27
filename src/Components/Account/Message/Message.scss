@@ -1,0 +1,43 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.message_main{
+    margin: 50px 15px;
+    padding-bottom: 20px;
+    .message_m_page{
+        margin-top: 15px;
+    }
+    .ant-table-tbody{
+        background-color: #fff;
+    }
+    th>span{
+        border-right: 0 !important;
+    }
+    .message_unread{
+        background-color: #FAE6E6;
+    }
+    .message_p{
+        padding: 0;
+        a{
+            display: inline-block;
+            @include lh(35px);
+            width: 419px;
+        }
+    }
+}
+.message_modal{
+    font-size: 14px !important;
+    p{
+        text-align: center;
+        font-size: 14px;
+    }
+    .modal_detailes{
+        height: 240px;
+        overflow-y: scroll;
+        word-wrap: break-word;
+        margin: 15px 10px;
+    }
+    .ant-btn{
+        padding: 8px 35px;
+    }
+}

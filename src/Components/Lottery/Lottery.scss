@@ -1,0 +1,13 @@
+@import '../../Style/variables';
+@import '../../Style/mixin';
+
+.main{
+    position: relative;
+    .b_c_left_sider{
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 9;
+    }
+}
+

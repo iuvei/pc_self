@@ -1,0 +1,313 @@
+@import '../../Style/variables';
+@import '../../Style/mixin';
+$border_color: #C8C8C8;
+$width_100: 100%;
+
+.login_main{
+    canvas{
+        background-image: radial-gradient(ellipse farthest-corner at center top, #000d4d 0%, #000105 100%);
+        position: absolute;
+    }
+    .l_nav_top{
+        @include wh($width_100, 64px);
+        line-height: 64px;
+        background: black;
+        font-size: 14px;
+        position: absolute;
+        top:0;
+        background-color: rgba(0,0,0,0.3);
+        border-bottom: 1px solid #343434;
+        .l_nav_top_content{
+            width: $nav_width_1200;
+            color: #fff;
+            a{
+                color: #fff;
+            }
+        }
+        .l_n_t_lt{
+            padding-left: 25px;
+        }
+        .l_n_t_list>li{
+            padding: 0 15px;
+            float: left;
+            cursor: pointer;
+            &:hover{
+                background-color: #CB1313;
+            }
+
+        }
+        .l_n_t_list{
+            position: absolute;
+            right:2%;
+            img{
+                margin-bottom: -4px;
+                margin-right: 5px;
+            }
+
+        }
+
+
+    }
+    .l_password{
+        position: relative;
+        display: inline-block;
+        .l_forget{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: red;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+    .l_vali{
+        position: relative;
+        display: inline-block;
+        .l_valicode{
+            position: absolute;
+            top: 2px;
+            right: 10px;
+            color: red;
+            border-radius: 3px;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+    .l-warn{
+        display: inline-block;
+        left: 260px;
+        border-radius: 4px;
+        width: 300px;
+        height: 50px;
+        background: #ca5e58;
+        position: relative;
+        margin-top: 75px;
+
+        img{
+            margin-left: 5px;
+            margin-top: 5px;
+            margin-bottom: -8px;
+        }
+
+    }
+}
+.login{
+    width: 820px;
+    position: absolute;
+    left: 50%;
+    margin-left: -410px;
+    top: 40%;
+
+    .login_wrap{
+        .l_input{
+            width: 670px;
+            background-color: #fff;
+            display: inline-block;
+            border: 8px solid #fff;
+            border-top-left-radius:5px;
+            border-bottom-left-radius:5px;
+
+        }
+        .l_input_try{
+            width: 245px;
+            background-color: #fff;
+            display: inline-block;
+            border: 10px solid #fff;
+            border-top-left-radius:5px;
+            border-bottom-left-radius:5px;
+
+        }
+
+
+        .forget_pwd{
+            display: block;
+            margin-top: -17px;
+            margin-left: 229px;
+            text-decoration:underline;
+            color:#393947;
+        }
+
+    }
+    .l_m_select_list{
+       li{
+            width: 131px;
+            height: 34px;
+            margin-left: 10px;
+           margin-right: -20px;
+           text-align: center;
+           line-height: 34px;
+            position: relative;
+            display: inline-block;
+            background: url(./Img/bg1.png) no-repeat bottom right;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        li.l_m_select_list_active {
+            width: 131px;
+            height: 34px;
+            margin-right: -20px;
+            background: url(./Img/bg2.png) no-repeat bottom right;
+            z-index: 2;
+            color:#333333;
+        }
+
+    }
+    .ant-input{
+        @include wh(210px,40px);
+        margin-right: 8px;
+    }
+    .ant-btn-primary.login_btn{
+        width: 140px;
+        height: 56px;
+        font-size: 14px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius:0;
+    }
+
+
+}
+.center-modal-l {
+    text-align: center;
+    white-space: nowrap;
+    .ant-modal{
+        width: 300px !important;
+    }
+    .ant-modal-content{
+        background: transparent;
+        box-shadow:none;
+    }
+    .ant-modal-body{
+        text-align: center;
+        white-space: pre-wrap;
+        background: #fff;
+    }
+    .ant-modal-header{
+        padding: 10px 16px;
+        text-align: center;
+        background: #48485f;
+    }
+    .ant-modal-title{
+        color: #fff;
+    }
+    .ant-modal-close{
+        color:white;
+    }
+    .ant-modal-close-x{
+        font-size: 18px;
+    }
+    .ant-input {
+        display: block;
+        width: 240px;
+        margin: 0 auto 20px;
+
+    }
+    .l_m_vali{
+        position: relative;
+        display: inline-block;
+        .l_m_valicode{
+            position: absolute;
+            top: 3px;
+            right: 2px;
+            color: red;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+    .m_name{
+        background-color: #f1eeee;
+        width: 240px;
+        height: 32px;
+        border: 1px solid $border_color;
+        margin-left: 15px;
+        margin-bottom: 19px;
+        text-align: center;
+        line-height: 32px;
+        color: #333333;
+        border-radius: 4px;
+    }
+    .m_p_input{
+        color: #73b573;
+        margin-bottom: 25px;
+    }
+    .m_contract{
+       // word-wrap: break-word;
+    }
+    .l-modal-warn{
+        display: inline-block;
+        width: 300px;
+        height: 50px;
+        margin-left: -10px;
+        border-radius: 4px;
+        text-align: left;
+        background: #ca5e58;
+
+        img{
+            margin-left: 5px;
+            margin-top: 5px;
+            margin-bottom: -8px;
+        }
+
+    }
+
+
+}
+
+.center-modal-l:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+}
+
+.center-modal-l .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: left;
+}
+.m_accept_contract{
+    text-align: center;
+    .ant-modal-body{
+        text-align: center;
+        white-space: pre-wrap;
+        height: 400px;
+        overflow-y: scroll;
+        background: #fff;
+    }
+    .ant-modal-header{
+        border: none;
+    }
+    .ant-modal-title{
+        font-size: 20px;
+        text-align: center;
+        font-weight: 800;
+    }
+
+
+}
+.m_accept_contract:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+}
+
+.m_accept_contract .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: left;
+}
+.l_accept{
+    display: block;
+    margin-top: -18px;
+    margin-left: 670px;
+    color: #fff;
+}
+

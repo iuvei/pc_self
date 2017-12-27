@@ -1,0 +1,70 @@
+
+$border_color: #C8C8C8;
+.tendency-main{
+    .t-top{
+        height: 84px;
+        color: #333333;
+        background: #fff;
+        border-bottom: 1px solid $border_color;
+        text-align: center;
+        line-height: 84px;
+        li{
+            display: inline-block;
+            margin-left: 20px;
+        }
+        li:first-child{
+            margin-left: 0;
+        }
+        li:nth-child(5){
+            width: 1px;
+            background: $border_color;
+            height: 33px;
+            margin-bottom: -14px;
+        }
+        .t-r-table{
+            color: #0099FF;
+            border-bottom: 1px solid #0099FF;
+        }
+        .t-period{
+            box-sizing: border-box;
+            height: 30px;
+            line-height: 30px;
+            li{
+                box-sizing: border-box;
+                height: 30px;
+                line-height: 30px;
+                padding: 0 8px;
+                border:1px solid $border-color;
+                margin-right: 3px;
+                &:hover{
+                    cursor: pointer;
+                    background-color: #ddd;
+                }
+            }
+            li:not(:first-child){
+                border-left:1px solid $border-color;
+            }
+            .t_period_btn_active{
+                box-sizing: border-box;
+                height: 30px;
+                border:1px solid #CB1313 !important;
+                color:#CB1313;
+                background: #FFF5F5 url('./Img/time_active.png') no-repeat right bottom;
+            }
+        }
+    }
+    .tfoot_list{
+        li{
+            float: left;
+            width: 129px;
+            text-align: center;
+            &:first-child{
+                width: 250px;
+            }
+            &:last-child{
+                width: 190px;
+            }
+        }
+
+    }
+}

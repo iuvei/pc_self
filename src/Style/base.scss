@@ -1,0 +1,225 @@
+@import './reset.scss';
+@import './variables.scss';
+@import './mixin.scss';
+@import './vender/antd.css';
+@import './vender/nprogress.css';
+@import './hover/hover-min.css';
+
+/* 浮动公共样式 */
+.left{ float:left; _display:inline; }
+.right{ float:right; _display:inline; }
+.clear:after{ display:block; content:''; clear:both;}
+.clear{ zoom:1;}
+
+.main_width{
+    width: $nav_width_1200;
+    margin: 0 auto;
+}
+/* 禁止页面选中复制 */
+.content_main, .disabled_copy{
+    -moz-user-select:none !important;
+    -webkit-user-select:none !important;
+}
+
+/*二级导航栏样式*/
+.a_m_controler{
+        background-color: #F4F4F4;
+        margin: 11px 0 30px 5px;
+        min-height: 700px;
+        .a_m_title{
+            @include lh(50px);
+            padding-left: 22px;
+            font-size: 14px;
+            color:$background-color;
+            background-color: #F4F4F4;
+        }
+        .a_m_nav{
+            background-color: #3E3E49;
+            color: #fff;
+            padding-left: 15px;
+            @include lh(45px);
+        }
+        .a_m_nav_list{
+            li{
+                a{
+                    display: inline-block;
+                    color: #fff;
+                    @include wh(116px, 43px);
+                    text-align: center;
+                }
+                float: left;
+                &:hover{
+                    cursor: pointer;
+                    background-color: #fff;
+                    color:#3A2C0F;
+                    a{
+                        color:#3A2C0F;
+                    }
+                }
+            }
+            .a_m_nav_active{
+                box-sizing: border-box;
+                background-color: #fff;
+                border-top: 2px solid #CB1313;
+                @include lh(45px);
+                color:#3A2C0F;
+                a{
+                    color:#3A2C0F;
+                }
+            }
+        }
+        .a_m_nav_list_p{
+            li{
+                padding: 0 20px;
+            }
+        }
+    }
+
+/*滚动条样式*/
+body,
+.bet_cody,
+.modal_detailes,
+.ant-select-dropdown-menu,
+.notice_controller,
+.notice_c_details,
+.ant-table-body,
+.ant-modal-body,
+.shishicai,.fucai,.pailie,.shiyixuanwu,.beijingkuaile,.bobing,
+.nongkuahang,.zhaohang,
+.commonProblems_main,
+.c_m_select_record_table{
+    /*---滚动条默认显示样式--*/
+    &::-webkit-scrollbar-thumb{
+        background-color:#484848;
+        height:50px;
+        outline-offset:-2px;
+        outline:2px solid #fff;
+        -webkit-border-radius:4px;
+        border: 2px solid #fff;
+    }
+
+    /*---鼠标点击滚动条显示样式--*/
+    &::-webkit-scrollbar-thumb:hover{
+        background-color:#363636;
+        height:50px;
+        -webkit-border-radius:4px;
+    }
+
+    /*---滚动条大小--*/
+    &::-webkit-scrollbar{
+        width:8px;
+        height:8px;
+    }
+
+    /*---滚动框背景样式--*/
+    &::-webkit-scrollbar-track-piece{
+        background-color:#fff;
+        -webkit-border-radius:0;
+    }
+}
+
+/*带滚动的table的header样式*/
+.ant-table-header{
+    border: 1px solid #ddd;
+    padding: 10px 0 !important;
+    margin-bottom: 0 !important;
+    th{
+        border-left: 1px solid #D6D6D6;
+        padding: 0 8px !important;
+        &:first-child{
+            border-left: 0;
+        }
+    }
+}
+
+/*不带带滚动的table的header样式*/
+.ant-table-body{
+    table{
+        border-collapse: collapse;
+    }
+    .ant-table-thead{
+        tr{
+            height: 36px;
+            border: 1px solid #ddd;
+        }
+        th{
+            padding: 0;
+            &>span{
+                display: inline-block;
+                width: 100%;
+                border-right: 1px solid #ccc;
+            }
+        }
+        th:last-child{
+            &>span{
+                border-right: 0;
+            }
+        }
+    }
+}
+.ant-table-thead{
+    font-size: 14px;
+}
+
+/*超过宽度以...现在*/
+.ellipsis{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+}
+.ellipsis_2{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+/*表格中金额内容靠右显示*/
+td.column-right {
+    text-align: right !important;
+}
+
+.ant-pagination-options-size-changer {
+    margin-right: 0;
+}
+/*输入正确-对勾*/
+.correct{
+    background: #fff url(../Images/correct.png) no-repeat 98% center !important;
+    background-size: 16px !important;
+    transition: all 0s;
+}
+/*输入正确-c错*/
+.wrong{
+    background: #fff url(../Images/wrong.png) no-repeat 98% center !important;
+    background-size: 16px !important;
+    transition: all 0s;
+}
+/*输入正确-对勾*/
+.correct_transparent{
+    background: #990000 url(../Images/correct.png) no-repeat 98% center !important;
+    background-size: 16px !important;
+    transition: all 0s;
+}
+/*输入正确-c错*/
+.wrong_transparent{
+    background: #990000 url(../Images/wrong.png) no-repeat 98% center !important;
+    background-size: 16px !important;
+    transition: all 0s;
+}
+
+/*-start-;table中可点击列的样式*/
+.hover_a{
+    color: #0088DE;
+}
+.hover_a:hover{
+    text-decoration: underline;
+}
+/*-end-*/
+
+/*table列文字样式*/
+.col_color_2BB851{
+    color: #2BB851;
+}
+.col_color_F01111{
+    color: #F01111;
+}

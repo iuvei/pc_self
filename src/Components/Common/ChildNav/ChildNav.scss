@@ -1,0 +1,40 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.c_nav{
+    background-color: #3E3E49;
+    color: #fff;
+    padding-left: 15px;
+    font-size: 14px;
+    @include lh(45px);
+    .nav_list{
+        li{
+            a{
+                display: inline-block;
+                color: #fff;
+                height: 45px;
+                padding: 0 20px;
+                text-align: center;
+            }
+            float: left;
+            &:hover{
+                cursor: pointer;
+                background-color: #fff;
+                color:#3A2C0F;
+                a{
+                    color:#3A2C0F;
+                }
+            }
+        }
+        .nav_active{
+            box-sizing: border-box;
+            background-color: #fff;
+            border-top: 2px solid #CB1313;
+            @include lh(45px);
+            color:#3A2C0F;
+            a{
+                color:#3A2C0F;
+            }
+        }
+    }
+}

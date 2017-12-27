@@ -1,0 +1,72 @@
+@import '../../../../Style/variables';
+@import '../../../../Style/mixin';
+
+$width_110px: 110px;
+.qq_wallet{
+    .r_m_list{
+        margin-left: 50px;
+        color: #1B1B21;
+        .r_m_qq_controler{
+            display: inline-block;
+            @include wh(142px, 35px);
+            border: 1px solid $border_color;
+            text-align: center;
+            .r_m_qq{
+                display: inline-block;
+                @include wh(85px, 35px);
+                line-height: 35px;
+                text-align: center;
+                padding-left: 30px;
+                background: url(./Img/qq_icon.png) no-repeat center left;
+                background-size: 25px;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+        .r_m_recharge_text{
+            padding-left: 20px;
+            background: url(./Img/plaint_icon.png) no-repeat center left;
+            color: #8C8C8C;
+        }
+        .r_m_dx{
+            margin: 10px 0 0 $width_110px+15px;
+        }
+        .ant-input-number{
+            width: 296px;
+        }
+        .ant-input-number-lg{
+            @include lh(35px);
+        }
+        .r_m_li_w{
+            display: inline-block;
+            width: $width_110px;
+            text-align: right;
+            margin-right: 15px;
+        }
+        .r_m_select_yhk{
+            width: 960px;
+            li{
+                float: left;
+                @include wh(170px, 44px);
+                border: 1px solid $border_color;
+                margin: 0 8px 9px 0;
+                background: #fff;
+                text-align: center;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+        &>li{
+            margin-bottom: 10px;
+        }
+    }
+    .r_m_active{
+        border: 1px solid $rodio-check-color !important;
+        background: #fff url(./Img/time_active.png) no-repeat bottom right !important;
+    }
+    .r_m_primary_btn{
+        padding-top: 50px;
+    }
+}

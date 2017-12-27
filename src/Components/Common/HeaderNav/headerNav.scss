@@ -1,0 +1,134 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+
+$nav-height: 80px;
+$menus-top: 25px;
+$hover-color: #FFDB70;
+$width_100: 100%;
+
+.header_main{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    .nav{
+        @include wh($width_100, $nav-height);
+        @include boxS(0, 2px, 5px, 0, #666, null);
+        background: $nav-background-color;
+        .nav-content{
+            width: $nav_width_1200;
+            margin: 0 auto;
+            .logo{
+                margin-top: 7.5px;
+            }
+            .menus {
+                position: relative;
+                float: right;
+                font-size: 14px;
+                .ant-menu-item > a{
+                    color: #fff;
+                    &:hover{
+                        color: #FFDB70;
+                    }
+                }
+            }
+        }
+        .nav-text{
+            height: ($nav-height)-3;
+            text-align: center;
+            p{
+                line-height: 17px;
+            }
+            p:nth-child(2){
+                font-size: 10px;
+                color: #868686;
+            }
+            a{
+                width: 96px;
+                height: ($nav-height)-3;
+                padding-top: 23px;
+                display: inline-block;
+                color: #fff;
+                &:hover{
+                    p{
+                        color: $hover-color;
+                    }
+                }
+            }
+        }
+        .ant-dropdown-link{
+            color: #fff;
+        }
+        .ant-menu-horizontal{
+            border: 0;
+        }
+        .ant-menu-submenu-horizontal, .ant-menu-submenu{
+            .ant-menu{
+                background: rgba(27,27,33,.8);
+                color: #fff;
+            }
+        }
+        .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+            a{
+                color:#FFDB70;
+            }
+        }
+    }
+    .lottery_name{
+        &:hover .lottery_name_type{
+            height: 225px;
+        }
+    }
+    .lottery_name_type{
+        position: absolute;
+        top: 80px;
+        left: -728px;
+        background-color: #1b1b21;
+        height: 0px;
+        width: 1200px;
+        overflow: hidden;
+        @include transform(height, 0.3s);
+        &:hover{
+            cursor: auto;
+        }
+        .l_n_list{
+            float: left;
+            color:#fff;
+            padding-top: 20px;
+            font-size: 14px;
+            margin: 0 40px;
+            li{
+                padding-right: 12px;
+                height: 30px;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+            li:first-child{
+                color:#E8CB75
+            }
+        }
+        .l_list_h{
+            background: url('./Img/nav_h.png') no-repeat right 93%;
+         }
+        .l_list_n{
+            padding-right: 12px;
+            background: url('./Img/nav_n.png') no-repeat right 93%;
+        }
+        .l_list_opa{
+            opacity:0.4;
+            filter:alpha(opacity=40);
+        }
+        .l_n_t_p{
+            text-align: center;
+            //transform: translateX(-50%);
+            //margin-left: 55%;
+        }
+    }
+}
+
+
+
+
+

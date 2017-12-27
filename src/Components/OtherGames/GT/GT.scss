@@ -1,0 +1,37 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.gt{
+    height: 779px;
+    @include bis('./Img/gt_bg.png');
+    text-align: center;
+    .gt_content{
+        position: relative;
+        .gt_img{
+            position: absolute;
+            top:6px;
+            left:200px;
+        }
+        ul{
+            width: 500px;
+            position: absolute;
+            top:611px;
+            left:890px;
+        }
+        li{
+            cursor: pointer;
+            float: left;
+        }
+       .gt_transfer{
+            width: 267px;
+            height: 101px;
+            margin-top: 12px;
+            margin-right: 10px;
+            padding-top: 53px;
+            color: #f7e154;
+           font-size: 17px;
+            @include bis('./Img/btn_transfer.png');
+        }
+    }
+
+}

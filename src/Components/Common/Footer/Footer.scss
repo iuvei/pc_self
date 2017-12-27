@@ -1,0 +1,45 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.f_partner{
+    background: #1F1D1D;
+    height: 138px;
+    padding-top: 35px;
+    color:#D1D1D1;
+    font-size: 12px;
+    .f_partner_list{
+        width: $nav_width_1200;
+        margin: 0 auto;
+        li{
+            float: left;
+        }
+        .f_warm_prompt{
+            margin: 8px 70px 0;
+            text-align: center;
+            .f_warm_prompt_list{
+                padding-left: 35px;
+                span{
+                    margin: 0 5px;
+                }
+                a{
+                    color:#D1D1D1;
+                    &:hover{
+                        color: #FACE69;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+    .f_partner_text{
+        margin-bottom: 8px;
+    }
+}
+.f_bottom{
+    width: $nav_width_1200;
+    @include lh(45px);
+    margin: 0 auto;
+    .footer_bottom{
+        height: 45px;
+    }
+}

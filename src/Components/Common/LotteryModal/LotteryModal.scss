@@ -1,0 +1,116 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+$border_color: #C8C8C8;
+
+.lottery-modal {
+    text-align: center;
+    white-space: nowrap;
+    .ant-modal{
+
+    }
+    .l_m_title{
+        font-weight: 900;
+        font-size: 14px;
+        margin-bottom: 17px;
+    }
+    .l_m_list{
+        width: 427px;
+        height: 167px;
+        margin-top: -9px;
+        margin-left: 29px;
+        text-align: left;
+        padding: 20px 27px 0;
+        font-size: 13px;
+        background: #fff;
+        box-shadow: 0px 3px 5px #d6d6d6 inset;
+        border: 1px solid $border_color;
+        li{
+            margin-top: 10px;
+        }
+        .l_m_unit{
+            display: inline-block;
+            float: right;
+        }
+
+    }
+    .l_m_warn{
+        margin-top: 14px;
+        margin-bottom: 15px;
+        color: #de0000;
+    }
+    .l_m_total{
+        font-size: 15px;
+        color: #de0000;
+    }
+    .ant-modal-content{
+        background: transparent;
+        box-shadow:none;
+    }
+    .ant-modal-body{
+        text-align: center;
+        white-space: pre-wrap;
+        background: #f1f1f1;
+    }
+    .ant-modal-header{
+        padding: 10px 16px;
+        text-align: center;
+        background: #48485f;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+    }
+    .ant-modal-title{
+        color: #fff;
+    }
+    .ant-modal-close{
+        color:white;
+        font-size: 16px;
+    }
+    .l_m_rectangle{
+        width: 455px;
+        height:16px;
+        margin: 0 auto;
+        background: url(./Img/rectangle.png) no-repeat bottom right;
+    }
+    .l_m_content{
+
+    }
+    .btn_group{
+        font-size: 13px;
+        margin-bottom: 8px;
+        margin-top: 18px;
+    }
+    .ant-btn-primary{
+        background-color: #ca1414;
+        border-color: #ca1414;
+        &:hover{
+            background-color: #ba0a0a;
+            border-color: #ba0a0a;
+        }
+    }
+    .btn_cancel{
+        background-color: #fff;
+        color: #333333;
+        border-color: $border_color;
+        margin-left: 15px;
+        &:hover{
+            background-color: #f3f3f3;
+            border-color: $border_color;
+        }
+    }
+}
+
+.lottery-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+}
+
+.lottery-modal .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: left;
+}

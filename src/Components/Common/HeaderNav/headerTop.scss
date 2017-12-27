@@ -1,0 +1,158 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+$width_100: 100%;
+.nav_top{
+    @include wh($width_100, 40px);
+    line-height: 40px;
+    background: #A30404;
+    .nav_top_content{
+        width: $nav_width_1200;
+        margin: 0 auto;
+        color: #fff;
+        a{
+            color: #fff;
+        }
+    }
+    .n_t_lt{
+        padding-left: 25px;
+        background: url(./Img/notice_icon.png) no-repeat center left;
+        a{
+            height: 40px;
+            display: inline-block;
+        }
+    }
+    .n_t_list>li{
+        padding: 0 15px;
+        float: left;
+        border-left: 1px solid #770000;
+        &:hover{
+            background: #770000;
+        }
+        &:last-child{
+            border-right: 1px solid #770000;
+        }
+    }
+    .n_t_list{
+        .n_t_position{
+            position: relative;
+            &:hover .n_t_controler{
+                height: 180px;
+                @include transform(height, 0.3s);
+            }
+        }
+        .n_t_controler{
+            position: absolute;
+            top: 40px;
+            left: -77px;
+            z-index: 99999;
+            height: 0;
+            overflow: hidden;
+        }
+        .n_t_drop_down{
+            padding-top: 10px;
+            .n_t_down_list{
+                @include wh(300px, 168px);
+                border: 1px solid #FFDB70;
+                background-color: #1D1D26;
+                color: #D0D0D0;
+                padding: 8px 12px 0;
+                &:before{
+                    @include icon_arrows_bg(5px,140px,#FFDB70,10px,#1D1D26,-45deg);
+                }
+                li{
+                    @include lh(31px);
+                    border-bottom: 1px dotted #7A7A7E;
+                    &:hover{
+                        cursor: auto;
+                    }
+                    &:last-child{
+                        border-bottom: 0;
+                        cursor: pointer;
+                    }
+                }
+                .n_t_exit{
+                    width: 80px;
+                    margin: 0 auto;
+                    padding-left: 20px;
+                    background: url(./Img/exit_icon.png) no-repeat center left;
+                }
+                .color_DFC674{
+                    color: #DFC674;
+                }
+            }
+        }
+        .n_t_cursor:hover{
+            cursor: pointer;
+        }
+        .n_t_cursor_color{
+            padding: 0;
+            a{
+                display: inline-block;
+                @include wh(55px, 40px);
+                text-align: center;
+            }
+            &:hover{
+                cursor: pointer;
+                color: #FFDB70;
+            }
+        }
+        .n_t_message{
+            width: 80px;
+        }
+        .n_t_balance_p{
+            position: relative;
+            &:hover .n_t_controler{
+                height: 240px;
+                @include transform(height, 0.3s);
+            }
+            .n_t_down_list{
+                @include wh(200px, 230px);
+                &:before{
+                    @include icon_arrows_bg(5px,100px,#FFDB70,10px,#1D1D26,-45deg);
+                }
+            }
+            .n_t_controler{
+                left: -6px;
+            }
+            .n_t_exit{
+                background: url(./Img/update_money.png) no-repeat center left !important;
+            }
+        }
+        .ant-badge-count{
+            @include lh(17px);
+            padding: 0 4px;
+            background:#1E1E1E;
+            box-shadow: none;
+            -webkit-transform: translateX(-10%);
+            -ms-transform: translateX(-10%);
+            transform: translateX(-10%);
+        }
+        .n_t_balance{
+            color: #FFDB70;
+            i{
+                font-style: normal;
+            }
+
+        }
+        .n_t_hide_balance{
+            padding: 0 5px;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+    .show-notice{
+        display: inline-block;
+        height: 40px;
+        overflow: hidden;
+        vertical-align: top;
+        li:hover{
+            cursor: pointer;
+        }
+    }
+    .anticon-caret-down{
+        font-size: 12px;
+        color: #610000;
+    }
+}

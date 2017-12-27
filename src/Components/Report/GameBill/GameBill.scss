@@ -1,0 +1,134 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+
+.game_bill{
+    .team_list_top{
+        padding: 30px 30px 13px;
+        border-bottom: 1px solid #ccc;
+        font-size: 14px;
+        color: $color_363636;
+        .t_l_time{
+            padding-bottom: 15px;
+            .t_m_date_classify{
+                display: inline-block;
+                width: 70px;
+                text-align: right;
+            }
+            .t_l_time_row{
+                @include lh(30px);
+                margin-bottom: 12px;
+                li{
+                    float: left;
+                }
+            }
+            .t_m_line{
+                margin: 3px 20px 0;
+                height: 22px;
+                border-left: 1px solid #AFAFAF;
+            }
+            .t_l_time_btn{
+                box-sizing: border-box;
+                @include lh(30px);
+                li{
+                    box-sizing: border-box;
+                    @include lh(30px);
+                    padding: 0 8px;
+                    border:1px solid $border-color;
+                    margin-right: 3px;
+                    @include borderRadius(3px);
+                    &:hover{
+                        cursor: pointer;
+                        background-color: #ddd;
+                    }
+                }
+                li:not(:first-child){
+                    border-left:1px solid $border-color;
+                }
+                .t_l_time_btn_active{
+                    box-sizing: border-box;
+                    height: 30px;
+                    border:1px solid #CB1313 !important;
+                    color:#CB1313;
+                    background: #FFF5F5 url('./Img/time_active.png') no-repeat right bottom;
+                }
+            }
+            .t_l_classify{
+                @include lh(30px);
+                .ant-btn{
+                    padding: 5px 15px;
+                    margin-left: 8px;
+                }
+                li{
+                    float: left;
+                    margin-right: 30px;
+                    .ant-input{
+                        width: 120px;
+                    }
+                    &:first-child{
+                        .ant-btn{
+                            @include borderRadius(0);
+                        }
+                    }
+                }
+                li:last-child{
+                    margin: 0;
+                }
+                .t_l_border{
+                    box-sizing: border-box;
+                    @include lh(30px);
+                    display: inline-block;
+                    border: 1px solid $border-color;
+                    padding: 0 10px;
+                    margin-left: 8px;
+                    &:hover{
+                        cursor: pointer;
+                        background-color: #ddd;
+                    }
+                }
+                .t_m_serch{
+                    margin-left: 5px;
+                    .ant-btn-primary{
+                        height: 30px;
+                    }
+                    &:hover{
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        .t_m_select_lottery{
+            padding: 0 5px 0;
+            height: 0;
+            overflow: hidden;
+            @include transform(height, 0.3s);
+            .ant-radio-wrapper{
+                margin: 10px 25px 0 0;
+            }
+        }
+        .t_m_select_lottery_show{
+            height: 60px;
+            border-top: 1px dotted #8B8D92;
+        }
+    }
+    .t_l_table{
+        background-color: #F4F4F4;
+        padding: 10px 12px 50px;
+        .t_l_table_list{
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding:8px 5px;
+        }
+        .t_l_page{
+            float: right;
+            margin-top: 8px;
+        }
+        .ant-select-selection{
+            @include borderRadius(4px);
+        }
+        .ant-pagination-options-size-changer{
+            margin-right: 0;
+        }
+    }
+}
+

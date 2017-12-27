@@ -1,0 +1,44 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.ea{
+    height: 779px;
+    background: url('./Img/ea_bg.png') no-repeat center center;
+    text-align: center;
+    .ea_content{
+        position: relative;
+        width: 1433px;
+        margin: 0 auto;
+        .ea_transfer{
+            position: absolute;
+            top: 319px;
+            left: 544px;
+            @include wh(223px, 42px);
+            background: url(./Img/ea_zz.png) no-repeat 0 0;
+            &:hover{
+                cursor: pointer;
+                background: url(./Img/ea_zz.png) no-repeat 0 -42px;
+            }
+        }
+        .ea_balance{
+            position: absolute;
+            top: 368px;
+            left: 544px;
+            @include wh(223px, 25px);
+            text-align: center;
+            font-size: 14px;
+            color:#fff;
+        }
+        .ea_start{
+            position: absolute;
+            top: 436px;
+            left: 537px;
+            @include wh(249px, 183px);
+            background: url(./Img/ea_start.png) no-repeat 0 -186px;
+            &:hover{
+                cursor: pointer;
+                background: url(./Img/ea_start.png) no-repeat 0 0;
+            }
+        }
+    }
+}

@@ -1,0 +1,43 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+$border_color: #C8C8C8;
+.sport{
+    height: 879px;
+    @include bis('./Img/sport_bg.png');
+    text-align: center;
+    .sport_content{
+        width: 1200px;
+        height: 304px;
+        margin: 0 auto;
+        color: #fff;
+        position: relative;
+        @include bis('./Img/sport_top.png');
+        .sport_remain{
+            position: absolute;
+            top:265px;
+            left: 21px;
+        }
+        .sport_transfer{
+            position: absolute;
+            width: 90px;
+            height: 30px;
+            top:258px;
+            left: 179px;
+            cursor: pointer;
+            color:#fff;
+            background: -webkit-linear-gradient(#e00000, #e71717, #ad0000); /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(#e00000, #e71717, #ad0000); /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(#e00000, #e71717, #ad0000); /* Firefox 3.6 - 15 */
+            background: linear-gradient(#e00000, #e71717, #ad0000); /* 标准的语法 */
+            border-radius: 4px;
+            border: 1px solid #a6a4a4;
+        }
+    }
+    .s_iframe{
+        width: 1200px;
+        height: 574px;
+        border: 0;
+    }
+}
+
+

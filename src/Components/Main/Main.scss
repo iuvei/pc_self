@@ -1,0 +1,18 @@
+@import '../../Style/variables';
+@import '../../Style/mixin';
+
+header {
+    @include wh(100%, 120px);
+}
+footer{
+    background: #E6EAE9;
+}
+.berCenter_bg{
+    background: #E6EAE9 url('../../Images/betCenter_bg.jpg') no-repeat;
+    background-size: 100% 614px;
+    .main{
+        width: $nav_width_1200;
+        min-height: 700px;
+        margin: 0 auto 20px;
+    }
+}

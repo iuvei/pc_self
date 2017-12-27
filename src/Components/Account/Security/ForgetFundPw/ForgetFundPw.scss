@@ -1,0 +1,97 @@
+@import '../../../../Style/variables';
+@import '../../../../Style/mixin';
+
+
+.center-modal-sec {
+    .ant-modal-body{
+        padding: 0;
+    }
+    text-align: center;
+    white-space: nowrap;
+    .ant-modal-body{
+        text-align: center;
+    }
+    li{
+        margin-bottom: 10px;
+    }
+    .sec_k_left{
+        display: inline-block;
+        width: 82px;
+        text-align: left;
+    }
+    .ant-input {
+        width:320px;
+        color:#333333;
+    }
+    .ant-modal-title{
+        text-align: center;
+        color: white;
+    }
+    .ant-modal-close{
+        color:white;
+    }
+    .ant-modal-header{
+        background:gray url(../Img/betCenter_bg.jpg) no-repeat top right;
+    }
+    .ant-select-selection--single{
+        height: 34px;
+        background-color: #f1f1f1;
+        color: #333333;
+    }
+    .sec_k_main{
+        color: $color_363636;
+        background-color: #ebeaea;
+        border-top: solid 1px #C8C8C8;
+        .sec_k_list{
+            margin: 0 auto;
+            padding-bottom: 10px;
+            li{
+                margin-bottom: 10px;
+                font-size: 14px;
+            }
+            li:first-child{
+                margin-top: 30px;
+            }
+            .forget_m_pwd{
+                padding-left: 10px;
+                color: #0099FF;
+                text-decoration: underline;
+            }
+            .s_advice{
+                color:$dotted-color;
+                margin: 30px 0;
+                text-align: center;
+            }
+            .inputText{
+                color:#333333;
+                margin-left: 12px;
+                strong{
+                    font-weight: normal;
+                    color:#D70000;
+                }
+            }
+
+        }
+        .sec_m_btn{
+            width: 127px;
+        }
+        .sec_k_left{
+            display: inline-block;
+            width: 115px;
+            text-align: left;
+        }
+        .ant-input {
+            width: 280px;
+            color:#333333;
+        }
+        .ant-select-selection__rendered{
+            line-height: 32px;
+        }
+    }
+
+    .s_m_primary_btn{
+        margin-top: 20px;
+    }
+}
+
+

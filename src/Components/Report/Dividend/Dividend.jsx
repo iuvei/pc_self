@@ -1,0 +1,398 @@
+/*分红*/
+import React, {Component} from 'react';
+import {observer} from 'mobx-react';
+import { Select, Table, Input, Button, Modal, message } from 'antd';
+const Option = Select.Option;
+const ButtonGroup = Button.Group;
+const confirm = Modal.confirm;
+import { stateVar } from '../../../State';
+
+import Fetch from '../../../Utils';
+
+import './Dividend.scss'
+
+@observer
+export default class Dividend extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            data: [],
+            divIdEndTotals: [], // 日期
+            sum: {}, // 总计
+            total: 0, //总条数
+
+            loading: false,
+            searchLoading: false,
+
+            postData: {
+                username: '',
+                starttime: null, //返回的divIdEndTotals列表里选一个Id
+                p: 1,
+                pn: 50,
+            },
+
+            historyVisible: false, //历史分红模态框
+            historyData: [],
+            historyDividendUName: '',
+            historyAllsalary: '',
+            loadingModal: false,
+            history: {
+                affects: 0, //条数
+                historyAllsalary: '', //历史分红总计
+            },
+            oneKeyDividend: 0, // 是否可以一键发放分红
+        }
+    };
+    componentDidMount() {
+        this.getData()
+    };
+    /*获取分红列表*/
+    getData(){
+        Fetch.dividendsalary({
+            method: 'POST',
+            body: JSON.stringify(this.state.postData),
+        }).then((res)=>{
+            this.setState({ searchLoading: false });
+            if(res.status == 200){
+                let data = res.repsoneContent,
+                    team = {},
+                    resultsFlag = data.alldata.results,
+                    sum = data.sum;
+                if(data.sum.userid != undefined){
+                    team = {
+                        userid: '-1',
+                        id: '-1',
+                        username: '团队数据',
+                        sale: sum.sale_total,
+                        gross_income: sum.gross_income,
+                        daily_salary: sum.team_daily_salary,
+                        lose_salary: sum.team_lose_salary,
+                        dividend_radio: sum.dividend_radio,
+                        allsalary: sum.allsalary,
+                        buttons:'----',
+                    };
+                    resultsFlag.unshift(team);
+                }
+                this.setState({
+                    data: resultsFlag,
+                    divIdEndTotals: data.dividendtotals,
+                    sum: sum,
+                    total: data.alldata.affects,
+                    oneKeyDividend: data.send_status,
+                });
+
+            }
+        })
+    };
+    /*搜索*/
+    onSearch() {
+        this.setState({ searchLoading: true });
+        this.getData();
+    };
+    /*切换每页条数*/
+    onShowSizeChange (current, pageSize) {
+        let postData = this.state.postData;
+        postData.p = current;
+        postData.pn = pageSize;
+        this.setState({postData: postData}, ()=>this.getData())
+    };
+    /*输入用户名*/
+    onChangeUserName(e) {
+        let postData = this.state.postData;
+        postData.username = e.target.value;
+        this.forceUpdate();
+    };
+    /*选择日期*/
+    onChangeSelect(val) {
+        let postData = this.state.postData;
+        postData.starttime = val;
+        this.forceUpdate();
+    };
+
+    /*关闭模态框*/
+    handleCancel(){
+        this.setState({
+            historyVisible: false,
+        });
+    };
+    /*操作按钮*/
+    onClickButton(val, username, record) {
+        console.log(val, username)
+        if(val == '历史分红'){
+            this.setState({
+                historyVisible: true,
+                loadingModal: true,
+            });
+            Fetch.personalsalary({
+                method:'POST',
+                body:JSON.stringify({username: username})
+            }).then((res)=>{
+                this.setState({loadingModal: false});
+                if(res.status == 200){
+                    let data = res.repsoneContent,
+                        history = this.state.history;
+                    history.historyAllsalary = data.history.history_allsalary;
+                    history.affects = data.alldata.affects;
+                    this.setState({
+                        historyDividendUName: username,
+                        historyData: data.alldata.results,
+                        history: history,
+                    })
+                }
+            })
+        }else if(val == '修改比例') {
+
+        }else if(val == '发放分红') {
+            let _this = this;
+            confirm({
+                title: val,
+                content: <div>
+                            <p>用户名：<span style={{fontWeight: 'bold'}}>{username}</span></p>
+                            <p>分红比例：{record.dividend_radio}</p>
+                            <p>本期分红：<span className={parseFloat(record.allsalary) < 0 ? 'col_color_2BB851' : 'col_color_F01111'}>{record.allsalary}</span></p>
+                        </div>,
+                okText: '确认发放',
+                okType: '取消',
+                onOk() {
+                    Fetch.sendDividendSalary({
+                        method: 'POST',
+                        body: JSON.stringify({userid: parseInt(record.userid), id: parseInt(record.id)})
+                    }).then((res)=>{
+                        if(res.status == 200){
+                            message.success(res.shortMessage);
+                            _this.getData();
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
+                    })
+                },
+            });
+        }else if(val == '一键发放分红'){
+            let _this = this;
+            confirm({
+                title: val,
+                content: <p>本期一键发放分红合计金额：{_this.state.sum.allsalary}</p>,
+                okText: '确认发放',
+                okType: '取消',
+                onOk() {
+                    Fetch.sendDividendSalary({
+                        method: 'POST',
+                        body: JSON.stringify({total_id: parseInt(_this.state.postData.starttime)})
+                    }).then((res)=>{
+                        if(res.status == 200){
+                            message.success(res.shortMessage);
+                            _this.getData();
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
+                    })
+                },
+            });
+        }else{
+            console.log(val)
+        }
+
+    };
+
+    render() {
+        const columns = [
+             {
+                title: '用户名',
+                dataIndex: 'username',
+                 render: (text)=>{
+                    if(text == '团队数据'){
+                        return {
+                            children: text,
+                            props: {
+                                colSpan: 2,
+                            },
+                        }
+                    }else{
+                        return text;
+                    }
+                 },
+                width: 100,
+            }, {
+                title: '所属组',
+                dataIndex: 'usergroup_name',
+                className: 'column-right',
+                render:(text, record)=>{
+                    if(record.username == '团队数据'){
+                        return{
+                            props: {
+                                colSpan: 0,
+                            }
+                        }
+                    } else {
+                        return text
+                    }
+                },
+                width: 80,
+            },
+            {
+                title: '有效投注量',
+                dataIndex: 'sale',
+                className: 'column-right',
+                width: 110,
+            },
+            {
+                title: '盈亏总额',
+                dataIndex: 'gross_income',
+                className: 'column-right',
+                width: 110,
+            }, {
+                title: '日工资总额',
+                dataIndex: 'daily_salary',
+                className: 'column-right',
+                width: 110,
+            }, {
+                title: '日亏损总额',
+                dataIndex: 'lose_salary',
+                className: 'column-right',
+                width: 110,
+            }, {
+                title: '分红比例',
+                dataIndex: 'dividend_radio',
+                className: 'column-right',
+                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_2BB851">{text}%</span> :
+                                                        <span className="col_color_F01111">{text}%</span>,
+                width: 100,
+            }, {
+                title: '分红',
+                dataIndex: 'allsalary',
+                className: 'column-right',
+                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_2BB851">{text}</span> :
+                                                        <span className="col_color_F01111">{text}</span>,
+                width: 100,
+            },
+            {
+                title: '操作',
+                dataIndex: 'buttons',
+                width: 230,
+                render: (text, record) => {
+                    if(record.username == '团队数据'){
+                        return text
+                    } else {
+                        return (
+                            <ButtonGroup>
+                                {
+                                    text.map((item,i)=>{
+                                        return <Button key={i} onClick={()=>this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
+                                    })
+                                }
+                            </ButtonGroup>
+                        )
+                    }
+                },
+            }
+            ];
+        const columnsModal = [
+                {
+                    title: '时间',
+                    dataIndex: 'growkey',
+                    width: 372,
+                }, {
+                    title: '分红',
+                    dataIndex: 'allsalary',
+                    width: 372,
+                }
+            ];
+        const { postData, sum, divIdEndTotals, total, oneKeyDividend, data } = this.state;
+        const footer = <ul className="footer clear">
+                            <li>总计</li>
+                            <li>{sum.sale}</li>
+                            <li>{sum.self_gross_income}</li>
+                            <li>{sum.daily_salary}</li>
+                            <li>{sum.lose_salary}</li>
+                            <li className={parseFloat(sum.dividend_radio) < 0 ? 'col_color_2BB851' : 'col_color_F01111'}>{sum.dividend_radio}%</li>
+                            <li className={parseFloat(sum.self_allsalary) < 0 ? 'col_color_2BB851' : 'col_color_F01111'}>{sum.self_allsalary}</li>
+                            <li>
+                                {
+                                    oneKeyDividend == 0 ?
+                                        <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
+                                        <ButtonGroup>
+                                            <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
+                                            <Button onClick={()=>this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
+                                        </ButtonGroup>
+                                }
+                            </li>
+                        </ul>;
+
+        return (
+            <div className="dividend_main">
+                <div className="team_list_top">
+                    <div className="t_l_time">
+                        <ul className="t_l_time_row">
+                            <li>
+                                <span>用户名：</span>
+                                <Input placeholder="请输入用户名" value={postData.username} onChange={(e)=>this.onChangeUserName(e)}/>
+                            </li>
+                            <li>
+                                <span>日期：</span>
+                                <Select placeholder="请选择日期范围" style={{ width: 180 }} onChange={(value)=>this.onChangeSelect(value)}>
+                                    {
+                                        divIdEndTotals.map((item,i)=>{
+                                            return <Option value={item.id} key={item.id}>{item.growkey}</Option>
+                                        })
+                                    }
+                                </Select>
+                            </li>
+                            <li>
+                                <Button type="primary"
+                                        icon="search"
+                                        loading={this.state.searchLoading}
+                                        onClick={()=>this.onSearch()}
+                                >
+                                    搜索
+                                </Button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div className="t_l_table">
+                    <div className="t_l_location_name">
+                    </div>
+                    <div className="t_l_table_list">
+                        <Table columns={columns}
+                               rowKey={record => record.id}
+                               dataSource={data}
+                               pagination={false}
+                               loading={this.state.loading}
+                               footer={total <= 0 || isNaN(total) || sum.sale == undefined ? null : ()=>footer}
+                               className="table_list"
+                        />
+                    </div>
+                    <Modal
+                        title="历史分红"
+                        visible={this.state.historyVisible}
+                        width={800}
+                        bodyStyle={{height: 400}}
+                        footer={null}
+                        maskClosable={false}
+                        onCancel={()=>this.handleCancel()}
+                        className="history_dividend_modal"
+                    >
+                        <p className="modal_username">查询用户名：{this.state.historyDividendUName}</p>
+                        <div className="modal_table">
+                            <Table columns={columnsModal}
+                                   rowKey={record => record.id}
+                                   dataSource={this.state.historyData}
+                                   pagination={false}
+                                   loading={this.state.loadingModal}
+                                   scroll={{y: 220}}
+                            />
+                            <ul className="dividendFooter clear" style={{display: this.state.history.affects == 0 ? 'none' : ''}}>
+                                <li>总计</li>
+                                <li>{this.state.history.historyAllsalary}</li>
+                            </ul>
+                        </div>
+                    </Modal>
+                </div>
+            </div>
+        );
+    }
+}

@@ -1,0 +1,51 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.home_main_left{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    @include wh(357px, 364px);
+    background: url(../Img/active_left.png) no-repeat center center;
+    z-index: 8;
+    .home_m_info_controler{
+        height: 120px;
+        overflow: hidden;
+        position: absolute;
+        top: 190px;
+        right:50px;
+    }
+    .home_m_info_list{
+        color: #fff;
+        font-size: 12px;
+        li{
+            @include lh(20px);
+            i{
+                font-style: normal;
+                display: inline-block;
+                color: #40FCDF;
+                width: 40px;
+            }
+            span{
+                margin-right: 5px;
+            }
+            em{
+                font-style: normal;
+                color:#FFDE45;
+            }
+            .home_m_lottery_name{
+                display: inline-block;
+                width: 65px;
+                margin:0 2px 0 5px;
+            }
+        }
+    }
+    .home_m_close{
+        position: absolute;
+        top: 140px;
+        right:25px;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}

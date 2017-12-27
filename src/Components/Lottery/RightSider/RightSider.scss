@@ -1,0 +1,128 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.right_sider{
+    margin: $content-top 0 10px -19px;
+}
+.user_info{
+    @include wh(210px, 178px);
+    background-color: #4A4A5F;
+    padding: 15px 15px 0 15px;
+    margin-bottom: 10px;
+    .user_info_list{
+        color: #fff;
+        font-size: 12px;
+        li{
+            margin-bottom: 7px;
+        }
+        .user_money{
+            font-size: 14px;
+            height: 18px;
+            span{
+                margin-right: 8px;
+            }
+            .update_money{
+                @include bis('./Img/update_money.png');
+                @include wh(16px,16px);
+                float: left;
+                margin-top: 2px;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+        .user_recharge{
+            @include bis('./Img/user_recharge_bg.png');
+            @include wh(179px, 35px);
+            line-height: 35px;
+            text-align: center;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+        .user_withdrawal_transfer{
+            span{
+                display: inline-block;
+                text-align: center;
+                @include bis('./Img/zz_tk_bg.png');
+                @include wh(90px, 40px);
+                line-height: 40px;
+
+            }
+            .withdrawal, .transfer{
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.history_period{
+    background-color: #fff;
+    padding-bottom: 24px;
+    width: 210px;
+    @include boxS(0, 4px, 18px, 0, #c3c3c3, null);
+    .thead_title{
+        background-color: #8D887B;
+        font-size: 14px;
+        color: #fff;
+        @include lh(35px);
+        li{
+            float:left;
+            text-align: center;
+            width: 33%;
+        }
+        li:last-child{
+            width: 34%;
+        }
+    }
+    $ball_r: 17px;
+    .right_ball_number_style{
+        @include wh($ball_r, $ball_r);
+        @include borderRadius($ball_r/2);
+        line-height: $ball_r;
+    }
+    .tbody_title{
+        @include lh(35px);
+        border-bottom: 1px dotted #C9C9C9;
+        li{
+            float:left;
+            text-align: center;
+        }
+        .right_ball_number{
+            margin-top: 8px;
+            li{
+                background-color: #CD242F;
+                color:#fff;
+                @extend .right_ball_number_style;
+                margin-right: 2px;
+            }
+            li:nth-child(4),li:nth-child(5){
+                @extend .right_ball_number_style;
+                background-color: #C9C9C9;
+                color:#000;
+            }
+        }
+    }
+    .tbody_title>li:first-child{
+        width: 30%;
+    }
+    .tbody_title>li:nth-child(2){
+        width: 50%;
+    }
+    .tbody_title>li:last-child{
+        width: 20%;
+    }
+    .r_sider_more{
+        margin-top: 10px;
+        text-align: center;
+        font-size: 12px;
+        color: #505050;
+        text-decoration: underline;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}
+

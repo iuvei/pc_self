@@ -1,0 +1,54 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.home_m_lottery{
+    min-height: 260px;
+    li{
+        float: left;
+        width: 33.33%;
+        position: relative;
+        overflow: hidden;
+        img{
+            vertical-align: middle;
+        }
+        &:hover .home_m_lottery_type{
+            bottom: 0;
+        }
+        &:hover .home_m_lottery_type_hover{
+            background: rgba(176,26,18, .7);
+        }
+    }
+    .home_m_lottery_type_hover{
+        @include wh(100%, 138px);
+        background: rgba(176,26,18, 0);
+    }
+    .home_m_lottery_type{
+        position: absolute;
+        bottom: -57px;
+        left: 0;
+        color: #fff;
+        padding: 20px 0 18px 20px;
+
+        transition: bottom .3s;
+        -moz-transition: bottom .3s; /* Firefox 4 */
+        -webkit-transition: bottom .3s; /* Safari 和 Chrome */
+        -o-transition: bottom .3s; /* Opera */
+        h3{
+            font-size: 18px;
+        }
+        h4{
+            font-size: 14px;
+        }
+        .home_m_gaming{
+            display: inline-block;
+            @include wh(107px, 32px);
+            line-height: 32px;
+            font-size: 14px;
+            margin-top: 15px;
+            @include borderRadius(16px);
+            background-color: #fff;
+            text-align: center;
+            color: #B12F2D;
+        }
+    }
+}

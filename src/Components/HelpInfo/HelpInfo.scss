@@ -1,0 +1,68 @@
+.helpInfo_main{
+    .a_m_controler{
+        margin: 11px 0 30px 5px;
+        min-height: 700px;
+    }
+    .a_m_title{
+        width: 182px;
+        float: left;
+        text-align: center;
+        padding-left: 0px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #3e3e49;
+        border-bottom: 1px solid #2c2c31;
+    }
+    .c_nav{
+        width: 182px;
+        min-height: 650px;
+        clear: both;
+        float: left;
+        text-align: center;
+        background-color: #3e3e49;
+        padding-left: 0;
+    }
+    .hvr-overline-from-left:before{
+        background:none;
+    }
+    .nav_list li{
+        border-bottom: 1px solid #2c2c31;
+        float: none;
+        &:hover{
+            border-left: 2px solid #CB1313;
+            cursor: pointer;
+        }
+        &:nth-child(1) a{
+            background: url(./Img/deposit.png) no-repeat left center;
+        }
+        &:nth-child(2) a{
+            background: url(./Img/introduce.png) no-repeat left center;
+        }
+        &:nth-child(3) a{
+             background: url(./Img/help.png) no-repeat left center;
+         }
+        &:nth-child(4) a{
+            background: url(./Img/about.png) no-repeat left center;
+        }
+        &:nth-child(1).nav_active a,&:nth-child(1) a:hover{
+            background: url(./Img/deposit_active.png) no-repeat left center;
+        }
+        &:nth-child(2).nav_active a,&:nth-child(2) a:hover{
+            background: url(./Img/introduce_active.png) no-repeat left center;
+        }
+        &:nth-child(3).nav_active a,&:nth-child(3) a:hover{
+            background: url(./Img/help_active.png) no-repeat left center;
+        }
+        &:nth-child(4).nav_active a,&:nth-child(4) a:hover{
+            background: url(./Img/about_active.png) no-repeat left center;
+        }
+    }
+    .hvr-fade{
+        display: block;
+    }
+    .c_nav .nav_list .nav_active{
+        background: #fff;
+        border-top: none;
+        border-left: 2px solid #CB1313;
+    }
+}

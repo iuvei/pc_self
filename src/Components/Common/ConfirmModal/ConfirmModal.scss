@@ -1,0 +1,79 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+$border_color: #C8C8C8;
+
+.confirm-modal {
+    text-align: center;
+    white-space: nowrap;
+    .ant-modal{
+        width: 420px !important;
+    }
+    .ant-modal-content{
+        background: transparent;
+        box-shadow:none;
+    }
+    .ant-modal-body{
+        text-align: center;
+        white-space: pre-wrap;
+        background: #fff;
+    }
+    .ant-modal-header{
+        padding: 10px 16px;
+        text-align: center;
+        background: #48485f;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+    }
+    .ant-modal-title{
+        color: #fff;
+    }
+    .ant-modal-close{
+        color:white;
+        font-size: 16px;
+    }
+    .confirm-text{
+        height: 50px;
+        line-height: 50px;
+        color: #333333;
+        font-size: 14px;
+    }
+    .btn_group{
+        font-size: 13px;
+        margin-bottom: 8px;
+        margin-top: 18px;
+    }
+    .ant-btn-primary{
+        background-color: #ca1414;
+        border-color: #ca1414;
+        &:hover{
+            background-color: #ba0a0a;
+            border-color: #ba0a0a;
+        }
+    }
+    .btn_cancel{
+        background-color: #fff;
+        color: #333333;
+        border-color: $border_color;
+        margin-left: 15px;
+        &:hover{
+            background-color: #f3f3f3;
+            border-color: $border_color;
+        }
+    }
+}
+
+.confirm-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+}
+
+.confirm-modal .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: left;
+}

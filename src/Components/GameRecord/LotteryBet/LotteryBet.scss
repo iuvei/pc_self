@@ -1,0 +1,85 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.lottery_bet_modal{
+    .ant-modal-body{
+        padding: 25px 10px 40px 10px;
+        background-color: $modal_background;
+        font-size: 14px;
+        color: #4B4B4B;
+    }
+    .bet_seat{
+        display: inline-block;
+        @include lh(30px);
+        padding-left: 35px;
+        margin-left: 12px;
+        background: url(./Img/seat.png) no-repeat left center;
+        background-size: 26px;
+        i{
+            color: $color_CF2027;
+            font-style: normal;
+        }
+    }
+    .bet_d_bg{
+        height: 10px;
+        margin-top: 8px;
+        border-radius: 5px;
+        @include gradient(0, 0, 0, bottom, #525151, #dedede);
+    }
+    .bet_details{
+        border: 1px solid #ccc;
+        border-top: 0;
+        margin: -3px 10px 0;
+        padding: 25px 10px;
+        background-color: #fff;
+        box-shadow: 0 3px 2px #CCC inset;
+        .bet_list{
+            padding:0 20px 18px;
+            border-bottom: 1px dotted #909090;
+            margin-bottom: 20px;
+            li{
+                float: left;
+                line-height: 35px;
+                width: 270px;
+            }
+        }
+        .bet_cody_style{
+            display: inline-block;
+            vertical-align: text-top;
+            width: 195px;
+            li{
+                float: left;
+                @include wh(22px,22px);
+                line-height: 22px;
+                text-align: center;
+                color: #fff;
+                border-radius: 11px;
+                margin: 0 5px 5px 0;
+                background-color: $rodio-check-color;
+            }
+        }
+        .bet_cao{
+            display: inline-block;
+            font-style: normal;
+            @include wh(20px, 20px);
+            line-height: 20px;
+            border-radius: 10px;
+            background-color: #FE7217;
+            font-size: 12px;
+            text-align: center;
+            color: #fff;
+        }
+        .bet_cody{
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            height: 120px;
+            padding: 10px 15px;
+            overflow-y: scroll;
+            word-wrap: break-word;
+            background-color: #FCFCFC;
+        }
+    }
+}
+
+

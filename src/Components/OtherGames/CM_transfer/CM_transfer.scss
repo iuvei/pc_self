@@ -1,0 +1,65 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.og_transferModal{
+    .ant-modal-content{
+        @include borderRadius(8px);
+        position: relative;
+    }
+    .ant-modal-body{
+        padding: 10px;
+        height: 254px;
+        background: url(./Img/transfer_bg.png) no-repeat center center;
+    }
+    .og_transfer_close{
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    .og_title{
+        font-size: 20px;
+        color: #fff;
+        text-align: center;
+        @include lh(50px);
+        margin-bottom: 6px;
+    }
+    .og_transfer_money{
+        margin-left: 52px;
+        width: 395px;
+        li{
+            @include lh(36px);
+            margin-bottom: 15px;
+        }
+        span{
+            color: #fff;
+            font-size: 14px;
+
+        }
+        .ant-input-number{
+            width: 190px;
+            background-color: #990000;
+            border: 0;
+            margin: 0 12px 0 8px;
+        }
+
+        .ant-input-number-handler-wrap{
+            display: none;
+        }
+        input{
+            color: #fff;
+        }
+        em{
+            font-style: normal;
+            color:#FF9999;
+        }
+    }
+    .transferPw_btn{
+        text-align: center;
+        margin-top: 25px;
+        img{
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}

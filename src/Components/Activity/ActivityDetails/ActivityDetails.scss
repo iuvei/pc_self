@@ -1,0 +1,125 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+
+.activity_details{
+    @include bis('./Img/details_bg.png');
+}
+.a_d_main{
+    @include boxS(0, 4px, 18px, 0, #DCDCDC, null);
+    .a_d_activeImg{
+        vertical-align: middle;
+    }
+    .a_d_activeName{
+        @include lh(45px);
+        background-color: $background-color;
+        color: #fff;
+        padding-left: 40px;
+        font-size: 18px;
+    }
+    .a_d_active_introduce{
+        padding: 15px 35px;
+        background-color: #fff;
+        .a_d_active{
+            width: 850px;
+        }
+        .a_d_list{
+            margin-left: 10px;
+            color: #000;
+            li{
+                @include lh(25px);
+            }
+            li:first-child{
+                color: #CC0000;
+            }
+        }
+        .a_d_apply{
+            margin-right: 8px;
+            .ant-btn-primary{
+                background-color: $color_0088DE;
+                border-color: $color_0088DE;
+            }
+            .ant-btn-primary:hover,
+            .ant-btn-primary:focus {
+                color: #fff;
+                background-color: #0396de;
+                border-color: #0396de;
+            }
+            .ant-btn-clicked:after {
+                border: 0 solid $color_0088DE;
+            }
+            .ant-btn-danger.ant-btn-clicked:after {
+                border-color: $color_0088DE;
+            }
+            .a_d_apply_btn{
+                @include wh(160px, 45px);
+                margin-top: 10px;
+                font-size: 16px;
+                display: block;
+            }
+            .a_d_residue_number{
+                text-align: center;
+                color: $color_363636;
+                margin-top: 3px;
+            }
+        }
+        .a_d_explain{
+            margin-top: 15px;
+            .a_d_explain_text{
+                margin: 0 0 2px 10px;
+                font-size: 14px;
+                color: $color_363636;
+            }
+            .a_d_table{
+                border: 1px solid #ccc;
+                padding: 15px 10px;
+            }
+        }
+
+    }
+    .a_d_explain_list{
+        border: 1px solid #ccc;
+        padding: 15px 10px 15px 20px;
+        color: $color_363636;
+        li{
+            margin-bottom: 8px;
+            &:last-child{
+                margin: 0;
+            }
+        }
+        i{
+            font-style: normal;
+            color: #CC0000;
+        }
+    }
+    .a_d_schedule{
+        width: 220px;
+        border: 1px solid #ccc;
+        color: $color_363636;
+        margin: 5px 0 18px;
+        padding-bottom: 10px;
+        .schedule_title{
+            @include lh(35px);
+            font-size: 14px;
+            color: #fff;
+            background-color: $background-color;
+            padding-left: 20px;
+        }
+        .schedule_list{
+            margin:15px 0 0 20px;
+            li{
+                @include lh(25px);
+            }
+        }
+        .lucky_draw{
+            text-decoration: underline;
+            color: $color_0088DE;
+            margin: 10px 20px 5px;
+        }
+        .lottery_name{
+            li{
+                width: 98px;
+            }
+        }
+    }
+}

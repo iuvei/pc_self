@@ -1,0 +1,33 @@
+@import '../../Style/variables';
+@import '../../Style/mixin';
+
+.s_m_main{
+    .ant-input{
+        height: 30px;
+    }
+    .ant-select-selection--single{
+        height: 30px;
+    }
+    .ant-select-selection__rendered{
+        line-height: 28px;
+    }
+}
+
+.table_modal{
+    .modal_username{
+        @include lh(40px);
+        font-size: 14px;
+    }
+    .ant-modal-body{
+        padding: 0 16px 16px;
+    }
+    .ant-modal-title{
+        text-align: center;
+    }
+    .modal_table{
+        position: relative;
+        border: 1px solid #ccc;
+        height: 345px;
+        padding: 8px 5px;
+    }
+}

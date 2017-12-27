@@ -1,0 +1,82 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.notice{
+    .notive_active{
+        background-color: #fff;
+        border-left: 3px solid #C40000 !important;
+    }
+    .notice_controller{
+        @include wh(242px, 500px);
+        background-color: #F0F0F0;
+        overflow: hidden;
+    }
+    .notice_list{
+        li{
+            position: relative;
+            @include wh(242px, 56px);
+            border-bottom: 1px solid #DCDCDC;
+            padding: 10px 0 10px 10px;
+            border-left: 3px solid transparent;
+            p{
+                width: 200px;
+                font-size: 14px;
+                color: #1F1F1F;
+                @include els;
+            }
+            h5{
+                color: #A4A4A4;
+            }
+            .badge{
+                position: absolute;
+                right: 4px;
+                top: 18px
+            }
+            &:hover{
+                cursor: pointer;
+                background-color: #fff;
+                border-left: 3px solid #C40000;
+            }
+        }
+    }
+    .notice_content{
+        width: 665px;
+        padding: 10px 15px;
+        .notice_c_title{
+            text-align: center;
+            padding: 15px 0 15px;
+            border-bottom: 1px solid #DCDCDC;
+            p{
+                color: #DE0000;
+                font-size: 18px;
+                @include lh(32px);
+            }
+            h3{
+                color: #666;
+            }
+        }
+        .notice_c_details{
+            height: 350px;
+            padding-top: 18px;
+            overflow: hidden;
+        }
+        .notice_c_text{
+            width: 625px;
+        }
+    }
+    .ant-modal-header{
+        background-color: $background-color;
+        text-align: center;
+    }
+    .ant-modal-title{
+        color: #fff;
+        font-size: 18px;
+    }
+    .ant-modal-close-x{
+        color: #fff;
+    }
+    .ant-modal-body{
+        height: 500px;
+        padding: 0;
+    }
+}

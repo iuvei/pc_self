@@ -1,0 +1,32 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.crumbs{
+    display: inline-block;
+    li{
+        float: left;
+        color: #0088DE;
+        &:hover{
+            cursor: pointer;
+        }
+        &:first-child:hover{
+            cursor: default;
+        }
+        &:after{
+            content: '>';
+            width: 16px;
+            display: inline-block;
+            color: $color_363636;
+            text-align: center;
+        }
+        &:last-child{
+            color: $color_363636;
+            &:hover{
+                cursor: default;
+            }
+            &:after{
+                content: '';
+            }
+        }
+    }
+}

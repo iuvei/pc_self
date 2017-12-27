@@ -1,0 +1,52 @@
+@import '../../../../Style/variables';
+@import '../../../../Style/mixin';
+
+.ar_details{
+    //position: absolute;
+    //top: 11px;
+    //width: 99.6%;
+    .details_content{
+        margin: 20px auto;
+        width: 1000px;
+        font-size: 14px;
+        li{
+            @include lh(55px);
+            color: #4E4E4E;
+            border-bottom: 1px dashed #B3B3B3;
+            span{
+                display: inline-block;
+                &:first-child{
+                    width: 350px;
+                    margin-left: 100px;
+                }
+                &:nth-child(2){
+                    width: 300px;
+                }
+                &:last-child{
+                    width: 200px;
+                }
+            }
+        }
+    }
+    .ant-btn{
+        font-size: 14px;
+        padding: 5px 32px;
+    }
+    .t_l_table{
+        margin: 25px 10px 10px;
+        padding: 6px;
+        border: 1px solid #ccc;
+        background: #fff;
+    }
+    .nav_list {
+        li:first-child {
+            &:hover {
+                cursor: pointer;
+                background-color: transparent;
+                a {
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

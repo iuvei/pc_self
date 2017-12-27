@@ -1,0 +1,28 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.after_record{
+    .b_f_common{
+        display: inline-block;
+        @include wh(30px,17px);
+        line-height: 17px;
+        color: #fff;
+        @include borderRadius(3px);
+        margin-right: 5px;
+        text-align: center;
+    }
+    .beginissue{
+        p{
+            text-align: left;
+            line-height: 20px;
+        }
+    }
+    .issuecount{
+        @extend .b_f_common;
+        background-color: #0087DD;
+    }
+    .finishedcount{
+        @extend .b_f_common;
+        background-color: #37C800;
+    }
+}

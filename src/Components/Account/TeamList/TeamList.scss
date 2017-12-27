@@ -1,0 +1,102 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+$border-color: #B2B2B2;
+
+.team_list{
+    color: #363636;
+    font-size: 14px;
+    .team_list_top{
+        padding: 30px 20px 13px;
+        border-bottom: 1px solid #ccc;
+        .t_l_time{
+            padding-bottom: 10px;
+            .t_m_date_classify{
+                display: inline-block;
+                margin-left: 30px;
+            }
+            .t_l_time_row{
+                @include lh(30px);
+                margin-bottom: 12px;
+                .ant-input{
+                    width: 155px;
+                    height: 30px;
+                }
+                .ant-input-number{
+                    width: 70px;
+                    @include lh(30px);
+                }
+                li{
+                    float: left;
+                }
+                li:first-child{
+                    margin-left: 15px;
+                }
+                .t_m_serch{
+                    height: 30px;
+                    margin-left: 12px;
+                    &:hover{
+                        cursor: pointer;
+                    }
+                }
+            }
+
+        }
+    }
+    .t_l_table{
+        background-color: #F4F4F4;
+        padding: 0 12px 50px;
+        .t_l_location_name{
+            @include lh(50px);
+        }
+        .t_l_table_list{
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 8px 5px;
+            .ant-btn{
+                padding: 2px 9px;
+                background-color: #F6F6F6;
+                border-color: #b2b2b2;
+            }
+        }
+    }
+    .ant-table-expanded-row{
+        td:first-child{
+            background-color: #ECFEFF;
+        }
+        td:last-child{
+            padding: 0;
+        }
+    }
+    .t_l_child_table{
+        tr{
+            background-color: #ECFEFF;
+        }
+    }
+    .tabel_footer{
+        text-align: center;
+        font-size: 14px;
+        span{
+            margin: 0 20px;
+        }
+        strong{
+            color: #E90000;
+            font-weight: normal;
+        }
+    }
+    .page{
+        margin-top: 10px;
+    }
+}
+.t_l_prompt{
+    background-color: #bbb;
+    padding: 5px;
+    @include borderRadius(2px);
+}
+.t_l_active{
+    box-sizing: border-box;
+    height: 28px;
+    border:1px solid #CB1313 !important;
+    color:#CB1313;
+    background: #FFF5F5 url('./Img/time_active.png') no-repeat right bottom;
+}

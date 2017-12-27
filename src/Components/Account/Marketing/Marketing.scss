@@ -1,0 +1,140 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+
+.marke_k_main{
+    padding: 0 15px 20px;
+    .marke_k_list{
+        margin: 50px 0 30px 100px;
+        li{
+            margin: 12px 0;
+            color:#363636;
+            font-size: 14px;
+            @include lh(35px);
+        }
+        li:last-child{
+            margin-top: 35px;
+        }
+        .inputText{
+            color: #797979;
+            margin-left: 12px;
+            strong{
+                font-weight: normal;
+                color:#D70000;
+            }
+        }
+        .marke_k_register_link{
+            border: 1px solid $rodio-check-color;
+            @include borderRadius(2px);
+            li{
+                float:left;
+                @include lh(30px);
+                margin: 0;
+                padding: 0 20px;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+            .register_link_active{
+                background-color: $rodio-check-color;
+                color:#fff;
+            }
+        }
+        .m_k_slider{
+            display: inline-block;
+            height: 32px;
+            li{
+                margin: 0 5px;
+                float: left;
+                line-height: 32px;
+            }
+            //.m_k_minus_add{
+            //    @include wh(20px, 20px);
+            //    line-height: 18px;
+            //    border: 1px solid #C8C8C8;
+            //    @include borderRadius(3px);
+            //    margin-top: 5.5px;
+            //    background-color: #fff;
+            //    text-align: center;
+            //    &:hover{
+            //        cursor: pointer;
+            //    }
+            //}
+        }
+    }
+    .marke_k_left{
+        display: inline-block;
+        width: 110px;
+        text-align: left;
+        padding-right: 17px;
+    }
+    .input_p{
+        padding-right: 24px;
+    }
+    .ant-input {
+        width: 236px;
+        -webkit-transition: all 0s;
+        transition: all 0s;
+    }
+    .marke_k_register_site{
+        padding: 15px 0;
+        color: #363636;
+        border-top: 1px dotted #85888D;
+    }
+    .t_l_table_list{
+        border: 1px solid #ccc;
+        background-color: #fff;
+        padding: 8px 5px;
+    }
+    .ant-btn-lg{
+        padding: 4px 26px 5px 26px;
+    }
+    .ant-slider{
+        border-top: 4px solid #F4F4F4;
+        border-bottom: 4px solid #F4F4F4;
+        background-color: #A9A9A9;
+    }
+    .qrcode{
+        .ant-btn-primary{
+            background-color: #37C800;
+            border-color: #37C800;
+        }
+        .ant-btn-primary:hover,
+        .ant-btn-primary:focus {
+            color: #fff;
+            background-color: #5DC803;
+            border-color: #5DC803;
+        }
+        .ant-btn-clicked:after {
+            border: 0 solid #37C800;
+        }
+        .ant-btn-danger.ant-btn-clicked:after {
+            border-color: #37C800;
+        }
+    }
+    .copy{
+        margin-right: 5px;
+        .ant-btn-primary{
+            background-color: #0087DD;
+            border-color: #0087DD;
+        }
+        .ant-btn-primary:hover,
+        .ant-btn-primary:focus {
+            color: #fff;
+            background-color: #0491DD;
+            border-color: #0491DD;
+        }
+        .ant-btn-clicked:after {
+            border: 0 solid #0087DD;
+        }
+        .ant-btn-danger.ant-btn-clicked:after {
+            border-color: #0087DD;
+        }
+    }
+    .switch{
+        .ant-switch-checked {
+            border-color: #009900;
+            background-color: #009900;
+        }
+    }
+}

@@ -1,0 +1,148 @@
+/*接口*/
+import { stateVar } from '../State'
+import {getStore } from "../CommonJs/common";
+
+
+const interFace = (key) => {
+    let INTERFACE = {};
+    // 获取sess
+    INTERFACE['SESS'] = 'sessValid=true';
+    // 登录,找回密码
+    INTERFACE['LOGIN'] = 'controller=default&action=login';
+    //重置密码
+    INTERFACE['RESETPWD'] = 'controller=user&action=ChangeLoginPass';
+    // 退出登录
+    INTERFACE['LOGINOUT'] = 'controller=default&action=logout';
+    // 投注中心
+    INTERFACE['PLAY'] = 'controller=game&action=play';
+
+    //获取投注玩法
+    INTERFACE['LOTTERYBET'] = 'controller=game&action=PlayMethods';
+
+    INTERFACE['ABOUTBET'] = 'controller=game&action=play';
+    INTERFACE['GAMEINFO'] = 'controller=gameinfo&action=CancelgameAjax';
+
+    // 日工资
+    INTERFACE['DAILYSALARY'] = 'controller=salarymanage&action=dailysalary';
+    // 历史日工资
+    INTERFACE['SALARYPERSONAMSALARY'] = 'controller=salarymanage&action=personalsalary';
+    // 各平台余额
+    INTERFACE['BALANCE'] = 'controller=wallet&action=Balance';
+    // 头部栏公告
+    // INTERFACE['NOTICE'] = 'controller=default&action=notice'; // 已删
+    // 平台公告
+    INTERFACE['NOTICELIST'] = 'controller=help&action=noticelist';
+    // 查看公告是否被阅读
+    INTERFACE['HELPNOTICE'] = 'controller=help&action=notice';
+    // 团队列表
+    INTERFACE['USERLIST'] = 'controller=user&action=list';
+    // 彩票投注
+    INTERFACE['NEWGAMELIST'] = 'controller=gameinfo&action=NewGameList';
+    // 撤单
+    INTERFACE['CANCELGAMEAJAX'] = 'controller=gameinfo&action=CancelgameAjax';
+    // 追号记录
+    INTERFACE['TRACEINFO'] = 'controller=report&action=TraceInfo';
+    // 体育投注
+    INTERFACE['SPORTSRECORDSEARCH'] = 'controller=gameinfo&action=SportsRecordSearch';
+    // 追号详情
+    INTERFACE['NEWTASKDETAIL'] = 'controller=report&action=newtaskdetail';
+    // 终止追号
+    INTERFACE['CANCELTASKAJAX'] = 'controller=gameinfo&action=CancelTaskAjax';
+    // 注册下级
+    INTERFACE['ADDUSER'] = 'controller=user&action=adduser';
+    // 真人投注
+    INTERFACE['WAGAMERECORDSEARCH'] = 'controller=gameinfo&action=EagameRecordSearch';
+    // 博饼投注
+    INTERFACE['BBBETTING'] = 'controller=gameinfo&action=bbbetting';
+    // PT投注
+    INTERFACE['PTBETS'] = 'controller=gameinfo&action=Ptbets';
+    // 修改用户信息
+    INTERFACE['CHANGENAME'] = 'controller=user&action=changename';
+    // 团队统计
+    INTERFACE['UPUSERTEAM'] = 'controller=user&action=UpUserTeam';
+    // 修改或删除生成的推广链接地址
+    INTERFACE['MAIN'] = 'controller=user&action=Main';
+    // 分红列表
+    INTERFACE['DIVIDENDSALAY'] = 'controller=dividendsalary&action=dividendsalary';
+    // 历史分红
+    INTERFACE['PERSONALSALARY'] = 'controller=dividendsalary&action=personalsalary';
+    // 发放分红
+    INTERFACE['SENDDIVIDENDSALARY'] = 'controller=dividendsalary&action=sendDividendSalary';
+    // 日亏损佣金列表
+    INTERFACE['LOSESALARY'] = 'controller=losesalary&action=losesalary';
+    // 日亏损佣金详情
+    INTERFACE['DETAIL'] = 'controller=losesalary&action=detail';
+    // 提交或修改密保问题 需要在后台添加对应的用户菜单权限才能访问
+    INTERFACE['BINDSEQUESTION'] = 'controller=user&action=Bindsequestion';
+    // 设置资金密码
+    INTERFACE['SETSECURITY'] = 'controller=security&action=setsecurity';
+    // 忘记资金密码 问题回答验证
+    INTERFACE['CHECKQUESTION'] = 'controller=user&action=checkquestion';
+    // pt游戏列表
+    INTERFACE['PTINDEX'] = 'controller=ptgame&action=index';
+    // pt-进入游戏
+    INTERFACE['PTPLAY'] = 'controller=ptgame&action=play';
+    // pt-登陆游戏跳转第三方
+    INTERFACE['PTLOGINNEW'] = '_api/ptlogin_new.php';
+    // pt-重置密码获取用户名
+    INTERFACE['SHOWSETPWD'] = 'controller=ptgame&action=showsetpwd';
+    // pt-确认重置密码
+    INTERFACE['SETPWDCOMMIT'] = 'controller=ptgame&action=setpwdcommit';
+    // pt-转账
+    INTERFACE['TRANFER'] = 'controller=ptgame&action=Tranfer';
+    // EA-娱乐城
+    INTERFACE['EAGAME'] = 'controller=eagame';
+    // 博饼游戏-转账
+    INTERFACE['BOBINGTRANSFER'] = 'controller=bobing&action=newtransfer';
+    // 奖金池
+    INTERFACE['NEWGETPRIZEPOOL'] = 'controller=bobing&action=newGetprizepool';
+    // 博饼游戏-登录
+    INTERFACE['BOBINLOGIN'] = 'controller=bobing&action=play';
+    // 获得绑定银行卡列表
+    INTERFACE['USERBANKINFO'] = 'controller=user&action=userbankinfo';
+    // 获得省份列表和银行卡列表
+    INTERFACE['ADDUSERBANK'] = 'controller=security&action=adduserbank';
+    // 走势图
+    INTERFACE['TREND'] = 'controller=game&action=BonusCode';
+    //自身协议
+    INTERFACE['SELFPROTO'] = 'controller=salarymanage&action=seeProtocol';
+    //用户列表
+    INTERFACE['CHILDRENUSERLIST'] = 'controller=user&action=list';
+    //配额契约
+    INTERFACE['QUOTA'] = 'controller=user&action=useraccnum';
+    //奖金组契约
+    INTERFACE['AWARDTEAM'] = 'controller=user&action=upedituser';
+    //如何存款
+    INTERFACE['HOWDEPOSIT'] = 'controller=help&action=Howtosaving';
+    //常见问题
+    INTERFACE['COMMONPROBLEMS'] = 'controller=help&action=Answer';
+    //玩法介绍
+    INTERFACE['PLAYMETHOD'] = 'controller=help&action=PlayInfo';
+    //体育竞技
+    INTERFACE['SPORT'] = 'controller=sportsbook';
+    // 站内信
+    INTERFACE['MESSAGES'] = 'controller=user&action=messages';
+    // 提款
+    INTERFACE['WITHDRAWEL'] = 'controller=financial&action=withdrawel';
+    //GT娱乐-登录
+    INTERFACE['GTLOGIN'] = 'controller=kgame&action=login';
+    //GT娱乐-转账
+    INTERFACE['GTTRANSFER'] = 'controller=kgame&action=Transfer';
+
+    let httpUrl = stateVar.httpUrl;
+    if(key == 'PTLOGINNEW') {
+        httpUrl += '/pcservice/' + INTERFACE[key];
+    }else if(key == 'BOBINGTRANSFER' || key == 'NEWGETPRIZEPOOL'){
+        httpUrl += '/bobing/?' + INTERFACE[key] + '&sess=' + getStore('session');
+    }else if(key == 'BOBINLOGIN') {
+        httpUrl += '/?' + INTERFACE[key] + '&sess=' + getStore('session');
+    }else{
+        httpUrl += '/pcservice/?' + INTERFACE[key] + '&sess=' + getStore('session');
+    }
+    return httpUrl
+};
+
+export default {
+    interFace
+}
+

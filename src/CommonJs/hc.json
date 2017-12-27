@@ -1,0 +1,171 @@
+{
+  "app_ver": {
+    "version": "1.0",
+    "updateFlag": 0,
+    "available": 1,
+    "url": "https://dn-scmobile.qbox.me/hc_mobile_dlh5.html"
+  },
+  "serverList": [
+    "http://www.hc88asia.org"
+  ],
+  "quickBet": {
+    "id": 1,
+    "methodid": 2274
+  },
+  "lotteryType": [
+    {
+      "cnname": "重庆时时彩",
+      "nav": "ssc",
+      "lotteryid": 1,
+      "lotteryCurmlotteryid": 50,
+      "lotteryDesc": "最经典的时时彩",
+      "methodid" : 5,
+      "lastupdate": 0,
+      "lotterytype": 2,
+      "curmid": 50
+    },
+    {
+      "cnname": "泰国秒秒彩",
+      "nav": "mmc",
+      "lotteryid": 23,
+      "lotteryCurmlotteryid": 311700,
+      "lotteryDesc": "即时开奖",
+      "methodid" : 1010475,
+      "lastupdate": 0,
+      "lotterytype": 1,
+      "curmid": 311700
+    },
+    {
+      "cnname": "泰国300秒",
+      "nav": "24xsc",
+      "lotteryid": 14,
+      "lotteryCurmlotteryid": 2325,
+      "lotteryDesc": "24小时全天开奖",
+      "methodid" : 2370,
+      "lastupdate": 0,
+      "lotterytype": 1,
+      "curmid": 2325
+    },
+    {
+      "cnname": "泰国60秒",
+      "nav": "ffc",
+      "lotteryid": 19,
+      "lotteryCurmlotteryid": 19000,
+      "lotteryDesc": "24小时全天开奖",
+      "methodid" : 190201,
+      "lastupdate": 0,
+      "lotterytype": 1,
+      "curmid": 19000
+    },
+    {
+      "cnname": "新疆时时彩",
+      "nav": "XJSSC",
+      "lotteryid": 6,
+      "lotteryCurmlotteryid": 220,
+      "lotteryDesc": "十分钟一期",
+      "methodid" : 265,
+      "lastupdate": 0,
+      "lotterytype": 2,
+      "curmid": 220
+    },
+    {
+      "cnname": "天津时时彩",
+      "nav": "TJSSC",
+      "lotteryid": 13,
+      "lotteryCurmlotteryid": 2265,
+      "lotteryDesc": "十分钟一期",
+      "methodid" : 2326,
+      "lastupdate": "044e884475a2166f6b7525a80f53c82c",
+      "lotterytype": 2,
+      "curmid": 2265
+    },
+    {
+      "cnname": "北京pk10",
+      "nav": "pk10",
+      "lotteryid": 26,
+      "lotteryCurmlotteryid": 313051,
+      "lotteryDesc": "赛车类时时彩",
+      "methodid" : 3111006,
+      "lastupdate": 0,
+      "lotterytype": 2,
+      "curmid": 313051
+    },
+    {
+      "cnname": "山东11选5",
+      "nav": "SD11Y",
+      "lotteryid": 5,
+      "lotteryCurmlotteryid": 174,
+      "lotteryDesc": "基诺型高频彩",
+      "methodid" : 238,
+      "lastupdate": 0,
+      "lotterytype": 3,
+      "curmid": 174
+    },
+    {
+      "cnname": "广东11选5",
+      "nav": "GD11-5",
+      "lotteryid": 8,
+      "lotteryCurmlotteryid": 302,
+      "lotteryDesc": "基诺型高频彩",
+      "methodid" : 355,
+      "lastupdate": 0,
+      "lotterytype": 3,
+      "curmid": 302
+    },
+    {
+      "cnname": "江西11选5",
+      "nav": "JX11-5",
+      "lotteryid": 7,
+      "lotteryCurmlotteryid": 256,
+      "lotteryDesc": "基诺型高频彩",
+      "methodid" : 321,
+      "lastupdate": 0,
+      "lotterytype": 3,
+      "curmid": 256
+    },
+    {
+      "cnname": "泰国11选5",
+      "nav": "TG11-5",
+      "lotteryid": 21,
+      "lotteryCurmlotteryid": 25024,
+      "lotteryDesc": "24小时全天开奖",
+      "methodid" : 1010439,
+      "lastupdate": 0,
+      "lotterytype": 1,
+      "curmid": 25024
+    },
+    {
+      "cnname": "3D福彩",
+      "nav": "fucaip3",
+      "lotteryid": 11,
+      "lotteryCurmlotteryid": 614,
+      "lotteryDesc": "24小时全天开奖",
+      "methodid" : 1189,
+      "lastupdate": 0,
+      "lotterytype": 5,
+      "curmid": 614
+    },
+    {
+      "cnname": "排列3",
+      "nav": "ticaip3",
+      "lotteryid": 12,
+      "lotteryCurmlotteryid": 615,
+      "lotteryDesc": "24小时全天开奖",
+      "methodid" : 2189,
+      "lastupdate": 0,
+      "lotterytype": 5,
+      "curmid": 615
+    },
+    {
+      "cnname": "腾讯分分彩",
+      "nav": "txffc",
+      "lotteryid": 29,
+      "lotteryCurmlotteryid": 313550,
+      "lotteryDesc": "24小时全天开奖",
+      "methodid" : 3111577,
+      "lastupdate": 0,
+      "lotterytype": 1,
+      "curmid": 313550
+    }
+  ]
+}

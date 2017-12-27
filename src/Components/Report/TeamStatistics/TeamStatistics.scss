@@ -1,0 +1,87 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.t_st_main{
+    padding: 23px 18px 48px;
+    .t_st_people_num{
+        li{
+            float:left;
+            @include wh(216px, 94px);
+            margin-right: 7px;
+            color: #fff;
+            font-size: 14px;
+            text-align: right;
+            padding: 25px 11px 0 15px;
+        }
+        li:nth-child(1){
+            background-color: #6D69E2;
+            div{
+                padding-left: 50px;
+                background: url(./Img/t_st_icon1.png) no-repeat center left;
+            }
+        }
+        li:nth-child(2){
+            background-color: #20C68E;
+            div{
+                padding-left: 50px;
+                background: url(./Img/t_st_icon3.png) no-repeat center left;
+            }
+        }
+        li:nth-child(3){
+            background-color: #F58B63;
+            div{
+                padding-left: 50px;
+                background: url(./Img/t_st_icon4.png) no-repeat center left;
+            }
+        }
+        li:nth-child(4){
+            background-color: #27AAE6;
+            div{
+                padding-left: 50px;
+                background: url(./Img/t_st_icon5.png) no-repeat center left;
+            }
+        }
+        li:nth-child(5){
+            background-color: #FF5757;
+            margin: 0;
+            div{
+                padding-left: 50px;
+                background: url(./Img/t_st_icon6.png) no-repeat center left;
+            }
+        }
+    }
+    .t_st_broken_line{
+        position: relative;
+        width: 1108px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        margin-top: 20px;
+        padding: 30px 20px;
+        .t_st_select_day{
+            position: absolute;
+            top:70px;
+            right: 20px;
+            border: 1px solid #CB1313;
+            @include borderRadius(3px);
+            z-index: 9;
+            li{
+                float: left;
+                @include wh(60px, 27px);
+                line-height: 27px;
+                text-align: center;
+                border-left: 1px solid #CB1313;
+                color: #363636;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+            li:first-child{
+                border: 0;
+            }
+            .select_day_active{
+                background-color: #CB1313;
+                color:#fff;
+            }
+        }
+    }
+}

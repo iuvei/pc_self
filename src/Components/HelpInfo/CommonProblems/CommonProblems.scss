@@ -1,0 +1,10 @@
+.commonProblems_main {
+    margin-right: 15px;
+    padding: 25px 30px;
+    height: 670px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    &::-webkit-scrollbar-track-piece{
+        background-color:#F4F4F4;
+    }
+}

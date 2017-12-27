@@ -1,0 +1,108 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.bo_bing{
+    height: 778px;
+    background: url('./Img/bobing_bg.png') no-repeat center center;
+    .b_b_content{
+        position: relative;
+        @include wh(1156px, 778px);
+        margin: 0 auto;
+        .b_b_bonus_pool{
+            position: absolute;
+            top: 80px;
+            left: 330px;
+            color: #FFC600;
+            font-size: 40px;
+            width: 535px;
+            text-align: center;
+        }
+        .bobing_btn{
+            position: absolute;
+            top: 400px;
+            left: 437px;
+            @include wh(333px, 112px);
+            background: url(./Img/bobing_btn1.png) no-repeat 0 0;
+            &:hover{
+                cursor: pointer;
+                background: url(./Img/bobing_btn1.png) no-repeat 0 -112px;
+            }
+        }
+        .account_money{
+            position: absolute;
+            top: 515px;
+            left: 430px;
+            color: #EF2800;
+            font-size: 20px;
+            width: 333px;
+            text-align: center;
+        }
+        .transfer_btn{
+            position: absolute;
+            top: 550px;
+            left: 500px;
+            @include wh(185px, 35px);
+            font-size: 16px;
+            @include borderRadius(17px);
+            color: #FFFFA2;
+            @include boxS(0, 3px, 2px, 0, #681002, null);
+            font-weight: bold;
+            span{
+                background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#FFF), to(#FFFF9D));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+        .ant-btn-primary{
+            @include gradient(0, 10, 0, bottom, #F33404, #981600);
+        }
+    }
+    .ant-btn{
+        line-height: 0;
+    }
+
+}
+.bobing_modal{
+    .bobing_iframe{
+        height: 715px;
+        width: 773px;
+        border: 0px;
+        position: absolute;
+        top: 20px;
+        left: 13px;
+    }
+    .ant-modal-body{
+        padding: 0;
+        height: 753px;
+        background: url('./Img/bobing_m_bg.png') no-repeat center center;
+    }
+    .ant-modal-content{
+        background-color: transparent;
+    }
+    .modal_close{
+        position: absolute;
+        right: -21px;
+        top: 22px;
+    }
+    .ant-btn{
+        padding: 2px 8px;
+        font-size: 20px;
+    }
+    .ant-btn-primary{
+        background-color: #242424;
+        border-color: #242424;
+    }
+    .ant-btn-primary:hover,
+    .ant-btn-primary:focus {
+        color: #fff;
+        background-color: #1A1C24;
+        border-color: #1A1C24;
+    }
+    .ant-btn-clicked:after {
+        border: 0 solid #242424;
+    }
+    .ant-btn-danger.ant-btn-clicked:after {
+        border-color: #242424;
+    }
+
+}

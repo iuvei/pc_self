@@ -1,0 +1,12 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.sports{
+    .team_list_top .t_m_select_lottery_show{
+        height: 285px;
+    }
+    .team_list_top .t_m_select_lottery .ant-radio-wrapper{
+        margin: 10px 15px 0 0;
+        width: 136px;
+    }
+}
