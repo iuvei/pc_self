@@ -37,16 +37,21 @@ export default class Losesalary extends Component {
         };
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*获取日亏损佣金列表*/
     getData(){
+        this.setState({ loading: true });
         Fetch.losesalary({
             method: 'POST',
             body: JSON.stringify(this.state.postData),
         }).then((res)=>{
-            this.setState({ searchLoading: false });
-            if(res.status == 200){
+            this.setState({ searchLoading: false, loading: false });
+            if(this._ismount && res.status == 200){
                 let data = res.repsoneContent;
                 this.setState({
                     data: data.list.results,
@@ -107,9 +112,11 @@ export default class Losesalary extends Component {
             method: 'POST',
             body: JSON.stringify(modalPostData),
         }).then((res)=>{
-            this.setState({loadingModal: false});
-            if(res.status == 200) {
-                this.setState({modalResp: res.repsoneContent});
+            if(this._ismount){
+                this.setState({loadingModal: false});
+                if(res.status == 200) {
+                    this.setState({modalResp: res.repsoneContent});
+                }
             }
         })
 
@@ -124,15 +131,15 @@ export default class Losesalary extends Component {
                 title: '个人日亏损佣金',
                 dataIndex: 'self_sale',
                 className: 'column-right',
-                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_2BB851">{text}</span> :
-                                                        <span className="col_color_F01111">{text}</span>,
+                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                                                        <span className="col_color_ying">{text}</span>,
                 width: 275,
             }, {
                 title: '团队日亏损佣金',
                 dataIndex: 'salary',
                 className: 'column-right',
-                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_2BB851">{text}</span> :
-                                                        <span className="col_color_F01111">{text}</span>,
+                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                                                        <span className="col_color_ying">{text}</span>,
                 width: 275,
             }, {
                 title: '操作',
@@ -173,8 +180,8 @@ export default class Losesalary extends Component {
                     title: '产生佣金',
                     dataIndex: 'lose_salary',
                     className: 'column-right',
-                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_2BB851">{text}</span> :
-                                                            <span className="col_color_F01111">{text}</span>,
+                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                                                            <span className="col_color_ying">{text}</span>,
                     width: 110,
                 }
             ];
@@ -183,7 +190,7 @@ export default class Losesalary extends Component {
         const list = modalResp.list != undefined ? modalResp.list : FLAG_OBJECT;
         const footer = <ul className="losesaLary_footer clear">
                             <li>总计</li>
-                            <li className={parseFloat(sum) < 0 ? 'col_color_2BB851' : 'col_color_F01111'}>{sum}</li>
+                            <li className={parseFloat(sum) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum}</li>
                         </ul>;
 
         return (
@@ -261,7 +268,7 @@ export default class Losesalary extends Component {
                                 <li>{modalTotal.cp_point}</li>
                                 <li>{modalTotal.cp_bonus}</li>
                                 <li>{modalTotal.cp_win_lose}</li>
-                                <li className={parseFloat(modalTotal.lose_salary) < 0 ? 'col_color_2BB851' : 'col_color_F01111'}>{modalTotal.lose_salary}</li>
+                                <li className={parseFloat(modalTotal.lose_salary) < 0 ? 'col_color_shu' : 'col_color_ying'}>{modalTotal.lose_salary}</li>
                             </ul>
                         </div>
                     </Modal>

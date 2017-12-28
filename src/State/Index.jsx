@@ -6,9 +6,11 @@ class State {
 
     @observable userInfo = {// 用户信息
         userName: '请先登录',
+        userid: '',
         userType: '', //用户类型0：会员，1：代理
         accGroup: '', //奖金组
-        lastIp: '', //上次登录地点
+        lastIp: '', //上次登录地点ip
+        address: '', // 上次登录地点
         lastTime: '', //上次登录时间
         issetbank: '', //是否绑定过银行卡 0：已绑定
         setquestion: '', //是否设置过密保问题 no：设置过
@@ -19,6 +21,9 @@ class State {
     @observable afterDetails = false; // 追号详情时更换nav
     @observable pageSizeOptions = ['10', '25', '50']; // 表格分页时 指定每页可以显示多少条
     @observable bankWithdrawInfo = {}; // 提款信息
+    @observable unread = 0; // 站内信未读条数
+    @observable navIndex = 'lottery'; // 顶部导航选择状态
+
 
     @observable auth = false;
 

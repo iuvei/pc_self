@@ -17,7 +17,6 @@ export default class DayRate extends Component {
         super(props);
         this.state = {
             loading: false,
-            historyLoading: false,
             searchLoading: false,
 
             postData: {
@@ -44,7 +43,11 @@ export default class DayRate extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*获取日工资列表*/
     getData() {
@@ -53,24 +56,25 @@ export default class DayRate extends Component {
             method: "POST",
             body: JSON.stringify(this.state.postData)
         }).then((res)=>{
-            console.log(res);
-            this.setState({
-                loading: false,
-                searchLoading: false,
-            });
-            let table = this.state.table;
-            if(res.status === 200){
-                let data = res.repsoneContent;
-                table.dayRateList = data.results;
-                table.sum = data.sum;
-                table.total = parseInt(data.affects);
-                this.setState({table: table});
-            } else {
-                console.log(res.shortMessage);
-                table.dayRateList = [];
-                table.sum = [];
-                table.total = 0;
-                this.setState({table: table});
+            if(this._ismount){
+                this.setState({
+                    loading: false,
+                    searchLoading: false,
+                });
+                let table = this.state.table;
+                if(res.status == 200){
+                    let data = res.repsoneContent;
+                    table.dayRateList = data.results;
+                    table.sum = data.sum;
+                    table.total = parseInt(data.affects);
+                    this.setState({table: table});
+                } else {
+                    console.log(res.shortMessage);
+                    table.dayRateList = [];
+                    table.sum = [];
+                    table.total = 0;
+                    this.setState({table: table});
+                }
             }
         });
     };
@@ -97,7 +101,7 @@ export default class DayRate extends Component {
         postData.p = current;
         postData.pn = pageSize;
         this.setState({postData: postData},()=>this.getData())
-    }
+    };
     /*面包屑组件调用*/
     onChildState(item, table) {
         let postData = this.state.postData;
@@ -158,10 +162,11 @@ export default class DayRate extends Component {
                 method: 'POST',
                 body: JSON.stringify({username: record.username, begintime: '', eatime: record.gmt_sale})
             }).then((res)=>{
-                this.setState({loadingModal: false});
-                console.log(res)
-                if(res.status == 200){
-                    this.setState({historyData: res.repsoneContent.list});
+                if(this._ismount){
+                    this.setState({loadingModal: false});
+                    if(res.status == 200){
+                        this.setState({historyData: res.repsoneContent.list});
+                    }
                 }
             })
         }else if(type == '修改协议'){
@@ -233,7 +238,6 @@ export default class DayRate extends Component {
             <li>{table.sum.total_salary == null ? '-' : table.sum.total_salary}</li>
             <li>-</li>
         </ul>;
-
         const columnsModal = [
             {
                 title: '时间',
@@ -245,6 +249,7 @@ export default class DayRate extends Component {
                 width: 275,
             }
         ];
+
         return (
             <div className="dayRate_main">
                 <div className="team_list_top">
@@ -254,8 +259,8 @@ export default class DayRate extends Component {
                                 <span>用户名：</span>
                                 <Input placeholder="请输入用户名" onChange={(e)=>this.onUserName(e)} value={postData.username}/>
                             </li>
-                            <li className="t_m_date_classify">查询日期：</li>
-                            <li style={{marginLeft: '8px'}}>
+                            <li>
+                                <span className="t_m_date_classify">查询日期：</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     defaultValue={moment(common.setDateTime(-1))}
@@ -287,7 +292,7 @@ export default class DayRate extends Component {
                                rowKey={record => record.userid}
                                dataSource={table.dayRateList}
                                pagination={false}
-                               loading={this.state.historyLoading}
+                               loading={this.state.loading}
                                footer={table.total <= 0 ? null : ()=>footer}
                                // size="middle"
                         />

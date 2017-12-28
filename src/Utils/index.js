@@ -16,7 +16,7 @@ const aboutBet = (body) => request(http.interFace('ABOUTBET'),body);
 const gameInfo = (body) => request(http.interFace('GAMEINFO'),body);
 
 // 上次登录地点ip=>地址
-const lastIp = (ip, body) => request('http://ip.taobao.com/service/getIpInfo.php?ip='+ ip, body);
+const ipaddress = (body) => request(http.interFace('IPADDRESS'),body);
 //重置密码
 const resetPwd = (body) =>  request(http.interFace('RESETPWD'),body);
 // 日工资
@@ -93,7 +93,6 @@ const bobingtransfer = (body) =>  request(http.interFace('BOBINGTRANSFER'),body)
 const newGetprizepool = (body) =>  request(http.interFace('NEWGETPRIZEPOOL'),body);
 // 博饼游戏-登录
 const bobinglogin = (body) =>  request(http.interFace('BOBINLOGIN'),body);
-
 // 获得绑定银行卡列表
 const userbankinfo = (body) =>  request(http.interFace('USERBANKINFO'),body);
 // 获得省份列表和银行卡列表
@@ -118,8 +117,10 @@ const commonProblems= (body) =>  request(http.interFace('COMMONPROBLEMS'),body);
 const playMethod= (body) =>  request(http.interFace('PLAYMETHOD'),body);
 //体育竞技
 const sport= (body) =>  request(http.interFace('SPORT'),body);
-//体育竞技
+//提款
 const withdrawel= (body) =>  request(http.interFace('WITHDRAWEL'),body);
+//充提记录
+const getrwrecord= (body) =>  request(http.interFace('GETRWRECORD'),body);
 //GT娱乐-登录
 const gtLogin= (body) =>  request(http.interFace('GTLOGIN'),body);
 //GT娱乐-转账
@@ -132,7 +133,7 @@ export default {
     lotteryBets,
     aboutBet,
     gameInfo,
-    lastIp,
+    ipaddress,
     dailysalary,
     salarypersonalsalary,
     resetPwd,
@@ -185,6 +186,7 @@ export default {
     playMethod,
     sport,
     withdrawel,
+    getrwrecord,
     gtLogin,
     gtTransfer,
 }

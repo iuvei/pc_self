@@ -21,6 +21,12 @@ export default class BindingEmail extends Component {
             }
         };
     };
+    componentDidMount() {
+        this._ismount = true;
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
     /*提交*/
     onSubmitEmail(e) {
         console.log(e);
@@ -37,21 +43,23 @@ export default class BindingEmail extends Component {
                 method: 'POST',
                 body: JSON.stringify(postData),
             }).then((res)=>{
-                this.setState({emailLoading: false});
-                if(res.status == 200){
-                    let _this = this;
-                    Modal.success({
-                        title: res.shortMessage,
-                        onOk(){
-                            validate.email = 2;
-                            stateVar.userInfo.email = postData.email;
-                            _this.setState({disabled: !disabled});
-                        }
-                    });
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                if(this._ismount){
+                    this.setState({emailLoading: false});
+                    if(res.status == 200){
+                        let _this = this;
+                        Modal.success({
+                            title: res.shortMessage,
+                            onOk(){
+                                validate.email = 2;
+                                stateVar.userInfo.email = postData.email;
+                                _this.setState({disabled: !disabled});
+                            }
+                        });
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             })
         } else {

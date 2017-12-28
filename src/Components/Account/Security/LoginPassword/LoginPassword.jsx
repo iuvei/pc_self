@@ -25,6 +25,12 @@ export default class LoginPassword extends Component {
             },
         };
     };
+    componentDidMount() {
+        this._ismount = true;
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
     /*修改登录密码*/
     onChangeLoginPass() {
         let validate = this.state.validate,
@@ -54,29 +60,31 @@ export default class LoginPassword extends Component {
                 method: 'POST',
                 body: JSON.stringify(postDataFlag)
             }).then((res)=>{
-                this.setState({amendLoading: false});
-                if(res.status == 200){
-                    let _this = this,
-                        amendPostData = this.state.amendPostData;
-                    Modal.success({
-                        title: res.shortMessage,
-                        onOk() {
-                            validate.oldpass = 2;
-                            validate.newpass = 2;
-                            validate.confirm_newpass = 2;
-                            amendPostData.oldpass = null;
-                            amendPostData.newpass = null;
-                            amendPostData.confirm_newpass = null;
-                            _this.setState({
-                                validate: validate,
-                                amendPostData: amendPostData,
-                            });
-                        },
-                    });
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                if(this._ismount) {
+                    this.setState({amendLoading: false});
+                    if(res.status == 200){
+                        let _this = this,
+                            amendPostData = this.state.amendPostData;
+                        Modal.success({
+                            title: res.shortMessage,
+                            onOk() {
+                                validate.oldpass = 2;
+                                validate.newpass = 2;
+                                validate.confirm_newpass = 2;
+                                amendPostData.oldpass = null;
+                                amendPostData.newpass = null;
+                                amendPostData.confirm_newpass = null;
+                                _this.setState({
+                                    validate: validate,
+                                    amendPostData: amendPostData,
+                                });
+                            },
+                        });
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             })
         }

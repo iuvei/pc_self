@@ -50,14 +50,15 @@ export default class LotteryBet extends Component {
     };
 
     componentDidMount() {
+        this._ismount = true;
         this.getData()
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*获取彩票投注*/
     getData() {
-        this.setState({
-            searchLoading: true,
-            loading: true,
-        });
+        this.setState({loading: true});
         let postData = this.state.postData,
             name = this.props.location.query.name;
         if(name != undefined) {
@@ -68,27 +69,29 @@ export default class LotteryBet extends Component {
             method: 'POST',
             body: JSON.stringify(this.state.postData)
         }).then((res)=>{
-            this.setState({
-                searchLoading: false,
-                loading: false,
-            });
-            if(res.status == 200) {
-                let data = res.repsoneContent;
-                let responseData = {
-                  lotteryList: data.lotteryList,
-                  newCrowdList: data.newCrowdList,
-                  newMethodCrowdList: data.newMethodCrowdList,
-                };
+            if(this._ismount) {
                 this.setState({
-                  data: data.aProject,
-                  responseData: responseData,
-                  sum: data.allAmount,
-                  total: parseInt(data.offects),
-                })
-            }else{
-                Modal.warning({
-                  title: res.shortMessage,
+                    searchLoading: false,
+                    loading: false,
                 });
+                if(res.status == 200) {
+                    let data = res.repsoneContent;
+                    let responseData = {
+                        lotteryList: data.lotteryList,
+                        newCrowdList: data.newCrowdList,
+                        newMethodCrowdList: data.newMethodCrowdList,
+                    };
+                    this.setState({
+                        data: data.aProject,
+                        responseData: responseData,
+                        sum: data.allAmount,
+                        total: parseInt(data.offects),
+                    })
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -194,7 +197,7 @@ export default class LotteryBet extends Component {
             }else if(record.isgetprize == 2){
                 return '未中奖'
             }else if(record.isgetprize == 1){
-                return record.prizestatus == 0 ? '未派奖' : <b className="col_color_F01111">已派奖</b>
+                return record.prizestatus == 0 ? '未派奖' : <b className="col_color_ying">已派奖</b>
             }
         }else if(record.iscancel == 1){
             return '本人撤单'
@@ -217,16 +220,18 @@ export default class LotteryBet extends Component {
                     method:'POST',
                     body:JSON.stringify({id: seatModal.projectid})
                 }).then((res)=>{
-                    _this.setState({iscancancelLoading: false});
-                    if(res.status == 200){
-                        message.success(res.longMessage);
-                        let seatModal = _this.state.seatModal;
-                        seatModal.iscancancel = 11; // 随意设置一个值来判断关闭和撤单成功后是否重新刷新列表
-                        _this.setState({seatModal: seatModal});
-                    } else {
-                        Modal.warning({
-                            title: res.shortMessage,
-                        });
+                    if(_this._ismount){
+                        _this.setState({iscancancelLoading: false});
+                        if(res.status == 200){
+                            message.success(res.longMessage);
+                            let seatModal = _this.state.seatModal;
+                            seatModal.iscancancel = 11; // 随意设置一个值来判断关闭和撤单成功后是否重新刷新列表
+                            _this.setState({seatModal: seatModal});
+                        } else {
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
                     }
                 })
             }
@@ -313,7 +318,7 @@ export default class LotteryBet extends Component {
                 dataIndex: 'i_code',
                 render:(text,record)=>{
                     return (
-                        ''+text.length < 10 ? text :
+                        text != null && ''+text.length < 10 ? text :
                         <Popover content={<div style={{width: '150px',wordWrap: 'break-word'}}>{record.i_code}</div>} title="详细号码" trigger="hover">
                             <a className="hover_a" href="javascript:void(0)">详细号码</a>
                         </Popover>
@@ -331,8 +336,8 @@ export default class LotteryBet extends Component {
                 dataIndex: 'bonus',
                 className:'column-right',
                 render:(text)=>(
-                    text <= 0 ? <span className="col_color_F01111">{text}</span> :
-                                <span className="col_color_2BB851">{text}</span>
+                    text < 0 ? <span className="col_color_shu">{text}</span> :
+                                <span className="col_color_ying">{text}</span>
                 ),
                 sorter: (a, b) =>{},
                 width: 90,

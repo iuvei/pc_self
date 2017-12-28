@@ -38,7 +38,11 @@ export default class Person extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData()
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*获取真人投注记录*/
     getData() {
@@ -46,20 +50,21 @@ export default class Person extends Component {
             method: 'POST',
             body: JSON.stringify(this.state.postData)
         }).then((res)=>{
-            console.log(res)
-            this.setState({searchLoading: false});
-            if(res.status == 200) {
-                let data = res.repsoneContent;
-                this.setState({
-                    data: data.eagametzlist,
-                    lotteryList: data.nameList,
-                    sum: data.all_amount,
-                    total: parseInt(data.offects),
-                })
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                this.setState({searchLoading: false});
+                if(res.status == 200) {
+                    let data = res.repsoneContent;
+                    this.setState({
+                        data: data.eagametzlist,
+                        lotteryList: data.nameList,
+                        sum: data.all_amount,
+                        total: parseInt(data.offects),
+                    })
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -183,8 +188,8 @@ export default class Person extends Component {
                 dataIndex: 'clientbet_hold',
                 className:'column-right',
                 render:(text)=>(
-                    text <= 0 ? <span className="col_color_F01111">{text}</span> :
-                                <span className="col_color_2BB851">{text}</span>
+                    text < 0 ? <span className="col_color_shu">{text}</span> :
+                                <span className="col_color_ying">{text}</span>
                 ),
                 sorter: (a, b) =>{},
                 width: 130,
@@ -192,8 +197,8 @@ export default class Person extends Component {
                 title: '状态',
                 dataIndex: 'status',
                 render:(text)=>(
-                    text == '赢' ? <span className="col_color_2BB851">{text}</span> :
-                                   <span className="col_color_F01111">{text}</span>
+                    text == '赢' ? <span className="col_color_ying">{text}</span> :
+                                   <span className="col_color_shu">{text}</span>
                 ),
                 width: 100,
             }];

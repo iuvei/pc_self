@@ -10,22 +10,27 @@ import './EA.scss';
 import ea from './Img/ea.png';
 
 let LOGIN_FLAG = true;
-let MONEY_FLAG = true;
 @observer
 export default class EA extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            spinLoading: false,
             loginFlag: true,
             visible: false, //模态框默认关闭
         };
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
     };
+    componentDidMount() {
+        this._ismount = true;
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
     /*转账*/
     onTransfer(type, intoMoney, outMoney) {
-        if(MONEY_FLAG){
-            MONEY_FLAG = false;
+        this.setState({spinLoading: true});
             let postData = {};
             if(type == 'into') {
                 postData = {
@@ -46,18 +51,19 @@ export default class EA extends Component {
                 method: 'POST',
                 body: JSON.stringify(postData),
             }).then((res)=>{
-                MONEY_FLAG = true;
-                if(res.status == 200){
-                    Modal.success({
-                        title: res.shortMessage,
-                    });
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                if(this._ismount){
+                    this.setState({spinLoading: false});
+                    if(res.status == 200){
+                        Modal.success({
+                            title: res.shortMessage,
+                        });
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             })
-        }
 
     };
     /*关闭模态框*/
@@ -74,7 +80,7 @@ export default class EA extends Component {
                 body: JSON.stringify({do: 'login'})
             }).then((res)=>{
                 LOGIN_FLAG = true;
-                if(res.status == 200){
+                if(this._ismount && res.status == 200){
                     let data = res.repsoneContent;
                     window.open (data[0]);
                 }
@@ -93,6 +99,7 @@ export default class EA extends Component {
                 </div>
                 <CM_transfer title="EA"
                              visible={this.state.visible}
+                             spinLoading = {this.state.spinLoading}
                              hideModal={this.hideModal}
                              onTransfer={this.onTransfer}
                 />

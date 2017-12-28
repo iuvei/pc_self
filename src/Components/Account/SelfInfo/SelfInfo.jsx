@@ -18,6 +18,7 @@ export default class SelfInfo extends Component {
       super(porps);
       this.state = {
           disabled: true,
+          tableLoading: false,
           logs: [],
           postData: {
               flag: '', // 这个没传就是查看用户基本信息
@@ -35,40 +36,48 @@ export default class SelfInfo extends Component {
       }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData()
     };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
     getData(flag) {
-      Fetch.changename({
-          method: 'POST',
-          body: JSON.stringify(this.state.postData)
-      }).then((res)=>{
-          if(res.status == 200) {
-              if(flag == 'affirm') {
-                  let _this = this;
-                  Modal.success({
-                      title: res.shortMessage,
-                      onOk() {
-                          _this.setState({disabled: true});
-                      }
-                  });
-              } else {
-                  let data = res.repsoneContent,
-                      postData = this.state.postData;
-                  postData.tencent = data.tencent;
-                  postData.email = data.email;
-                  postData.phonenumber = data.phonenumber;
-                  postData.wechat = data.wechat;
-                  this.setState({
-                      postData: postData,
-                      logs: data.logs,
-                  });
-              }
-          }else{
-              Modal.warning({
-                  title: res.shortMessage,
-              });
-          }
-      })
+        this.setState({tableLoading: true});
+            Fetch.changename({
+              method: 'POST',
+              body: JSON.stringify(this.state.postData)
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({tableLoading: false});
+                    if(res.status == 200) {
+                        if(flag == 'affirm') {
+                            let _this = this;
+                            Modal.success({
+                                title: res.shortMessage,
+                                onOk() {
+                                    _this.setState({disabled: true});
+                                }
+                            });
+                        } else {
+                            let data = res.repsoneContent,
+                                postData = this.state.postData;
+                            postData.tencent = data.tencent;
+                            postData.email = data.email;
+                            postData.phonenumber = data.phonenumber;
+                            postData.wechat = data.wechat;
+                            this.setState({
+                                postData: postData,
+                                logs: data.logs,
+                            });
+                        }
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
+                }
+            })
     };
     /*修改*/
     onAmend() {
@@ -202,8 +211,8 @@ export default class SelfInfo extends Component {
         return classNames
     };
     render() {
-        const postData = this.state.postData,
-            validate = this.state.validate;
+        const userInfo = stateVar.userInfo;
+        const { postData, validate, disabled } = this.state;
         const columns = [
                 {
                     title: '序号',
@@ -231,21 +240,21 @@ export default class SelfInfo extends Component {
                             <div className="s_i_userIcon">
                                 <img src={user_icon} alt=""/>
                             </div>
-                            <p>{stateVar.userInfo.userName}</p>
+                            <p>{userInfo.userName}</p>
                         </div>
                     </div>
                     <ul className="self_i_info clear">
                         <li>
                             <span className="icon01 s_i_text">用户类型：</span>
-                            <span>{stateVar.userInfo.userType === 0 ? '会员' : '代理'}</span>
+                            <span>{userInfo.userType === 0 ? '会员' : '代理'}</span>
                         </li>
                         <li>
                             <span className="icon02 s_i_text">奖金组：</span>
-                            <span>{stateVar.userInfo.accGroup}</span>
+                            <span>{userInfo.accGroup}</span>
                         </li>
                         <li>
                             <span className="icon03 s_i_text">当前登录IP：</span>
-                            <span>{stateVar.userInfo.lastIp}</span>
+                            <span>{userInfo.lastIp} {userInfo.address}</span>
                         </li>
                     </ul>
                     <ul className="self_info_type clear">
@@ -265,7 +274,7 @@ export default class SelfInfo extends Component {
                                    value={postData.wechat}
                                    className={this.onValidate('wechat')}
                                    onChange={(e)=>this.onChangeWechat(e)}
-                                   disabled={this.state.disabled}
+                                   disabled={disabled}
                             />
                             <p className="prompt" style={{display: validate.wechat == 1 ? '' : 'none'}}>微信号不能有汉字且6-20个字符</p>
                         </li>
@@ -275,7 +284,7 @@ export default class SelfInfo extends Component {
                                    value={postData.email}
                                    className={this.onValidate('email')}
                                    onChange={(e)=>this.onChangeEmail(e)}
-                                   disabled={this.state.disabled}
+                                   disabled={disabled}
                             />
                             <p className="prompt" style={{display: validate.email == 1 ? '' : 'none'}}>请输入正确的邮箱地址</p>
                         </li>
@@ -285,15 +294,15 @@ export default class SelfInfo extends Component {
                                    value={postData.phonenumber}
                                    className={this.onValidate('phonenumber')}
                                    onChange={(e)=>this.onChangePhone(e)}
-                                   disabled={this.state.disabled}
+                                   disabled={disabled}
                             />
                             <p className="prompt" style={{display: validate.phonenumber == 1 ? '' : 'none'}}>手机号仅为数字且必须为11位</p>
                         </li>
                     </ul>
                     <div className="s_i_btn">
-                        <Button type="primary" onClick={()=>this.onAmend()} style={{display: this.state.disabled ? '' : 'none'}}>修改</Button>
-                        <Button type="primary" onClick={()=>this.onAffirm()} style={{display: !this.state.disabled ? '' : 'none'}}>确认</Button>
-                        <Button onClick={()=>this.onCancel()} style={{display: !this.state.disabled ? '' : 'none'}}>取消</Button>
+                        <Button type="primary" onClick={()=>this.onAmend()} style={{display: disabled ? '' : 'none'}}>修改</Button>
+                        <Button type="primary" onClick={()=>this.onAffirm()} style={{display: !disabled ? '' : 'none'}}>确认</Button>
+                        <Button onClick={()=>this.onCancel()} style={{display: !disabled ? '' : 'none'}}>取消</Button>
 
                     </div>
                 </div>
@@ -301,6 +310,7 @@ export default class SelfInfo extends Component {
                     <Table rowKey={record => record.times}
                            columns={columns}
                            dataSource={this.state.logs}
+                           loading={this.state.tableLoading}
                            pagination={false}
                            scroll={{ y: 200 }}
                     />

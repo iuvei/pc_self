@@ -81,6 +81,7 @@ export default class GT extends Component {
         this.setState({visible: false})
     };
     componentDidMount() {
+        this._ismount = true;
         this.getThirdAddress();
 
     };

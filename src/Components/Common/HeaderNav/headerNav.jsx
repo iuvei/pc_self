@@ -13,15 +13,21 @@ import logoSrc from '../../../Images/logo.png'
 export default class HeaderNav extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            current: 'lottery',
-        };
+        this.state = {};
+    };
+
+    componentDidMount() {
+        this._ismount = true;
+        stateVar.navIndex = 'lottery';
+        this.onWindowResize();
+        window.addEventListener('resize', this.onWindowResize.bind(this))
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+        window.removeEventListener('resize', this.onWindowResize.bind(this))
     };
     handleClick = (e) => {
-        console.log('click ', e);
-        this.setState({
-            current: e.key,
-        });
+        stateVar.navIndex = e.key;
     };
     //窗口改变大小后，使导航栏时刻和窗口宽度保持一致
     onWindowResize(){
@@ -29,14 +35,6 @@ export default class HeaderNav extends Component {
         this.lotteryNameType.style.left=-this.refs.menusWrap.offsetLeft-96+'px'; //获取整个menus与浏览器左部的距离-彩票游戏与首页的相对距离并给子菜单left绝对距离
         this.lotteryNameType.style.paddingLeft=this.refs.menusWrap.offsetLeft-271+'px';//获取整个menus与浏览器左部的距离-标题中文字与首页的相对距离给使子菜单与标题文字对齐
     }
-    componentDidMount() {
-        this.onWindowResize();
-        window.addEventListener('resize', this.onWindowResize.bind(this))
-    };
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.onWindowResize.bind(this))
-
-    };
     /*点击游戏记录*/
     onGameRecord() {
         stateVar.afterDetails = false;
@@ -47,13 +45,14 @@ export default class HeaderNav extends Component {
         Fetch.eagame({
             method: 'POST'
         }).then((res)=>{
-            console.log(res)
-            if(res.status == 200){
-                hashHistory.push('/ea');
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                if(res.status == 200){
+                    hashHistory.push('/ea');
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -62,12 +61,14 @@ export default class HeaderNav extends Component {
         Fetch.ptindex({
             method: 'POST',
         }).then((res)=>{
-            if(res.status == 200){
-                hashHistory.push('/pt');
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                if(res.status == 200){
+                    hashHistory.push('/pt');
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -77,12 +78,14 @@ export default class HeaderNav extends Component {
             method: 'POST',
             body: JSON.stringify({"do":"login"})
         }).then((res)=>{
-            if(res.status == 200){
-                hashHistory.push('/sport');
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                if(res.status == 200){
+                    hashHistory.push('/sport');
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -91,13 +94,30 @@ export default class HeaderNav extends Component {
         Fetch.gtLogin({
             method: 'POST'
         }).then((res)=>{
-            console.log("res",res)
-            if(res.status == 200){
-                hashHistory.push('/gt');
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                if(res.status == 200){
+                    hashHistory.push('/gt');
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    };
+    /*是否有权限进入博饼*/
+    onBobing() {
+        Fetch.newGetprizepool({
+            method: 'POST'
+        }).then((res)=>{
+            if(this._ismount){
+                if(res.status == 200){
+                    hashHistory.push('/bobing');
+                }else{
+                    Modal.warning({
+                        title: res.data,
+                    });
+                }
             }
         })
     };
@@ -113,7 +133,7 @@ export default class HeaderNav extends Component {
                         <div className="menus" ref="menusWrap">
                             <Menu
                                 onClick={this.handleClick}
-                                selectedKeys={[this.state.current]}
+                                selectedKeys={[stateVar.navIndex]}
                                 mode="horizontal"
                             >
                                 <Menu.Item key="home">
@@ -207,12 +227,10 @@ export default class HeaderNav extends Component {
                                         <a href="javascript:void(0)" onClick={()=>this.onGt()}>GT娱乐</a>
                                     </Menu.Item>
                                     <Menu.Item key="solution:5">
-                                        <Link to={`/bobing`}>
-                                            博饼
-                                        </Link>
+                                        <a href="javascript:void(0)" onClick={()=>this.onBobing()}>博饼</a>
                                     </Menu.Item>
                                 </SubMenu>
-                                <Menu.Item key="2">
+                                <Menu.Item key="activity">
                                     <div className="nav-text">
                                         <Link to={`/activity`}>
                                             <p>优惠活动</p>
@@ -220,7 +238,7 @@ export default class HeaderNav extends Component {
                                         </Link>
                                     </div>
                                 </Menu.Item>
-                                <Menu.Item key="3">
+                                <Menu.Item key="gameRecord">
                                     <div className="nav-text">
                                         <a href="javascript:void(0)" onClick={()=>this.onGameRecord()}>
                                             <p>游戏记录</p>
@@ -228,7 +246,7 @@ export default class HeaderNav extends Component {
                                         </a>
                                     </div>
                                 </Menu.Item>
-                                <Menu.Item key="4">
+                                <Menu.Item key="financial">
                                     <div className="nav-text">
                                         <Link to={
                                             {
@@ -241,7 +259,7 @@ export default class HeaderNav extends Component {
                                         </Link>
                                     </div>
                                 </Menu.Item>
-                                <Menu.Item key="5">
+                                <Menu.Item key="report">
                                     <div className="nav-text">
                                         <Link to={`/report`}>
                                             <p>报表管理</p>
@@ -249,7 +267,7 @@ export default class HeaderNav extends Component {
                                         </Link>
                                     </div>
                                 </Menu.Item>
-                                <Menu.Item key="6">
+                                <Menu.Item key="account">
                                     <div className="nav-text">
                                         <Link to={`/account`}>
                                             <p>账户管理</p>

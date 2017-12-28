@@ -237,7 +237,7 @@ export default class ContractModal extends Component {
 
     };
     componentDidMount() {
-
+        this._ismount = true;
         this.getUserInfo();
 
     };

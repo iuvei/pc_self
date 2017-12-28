@@ -33,7 +33,7 @@ export default class SelfTable extends Component {
         this.setState({showLottery: false})
     };
     componentDidMount() {
-
+        this._ismount = true;
     };
 
     handleChange(value) {

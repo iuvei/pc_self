@@ -37,7 +37,11 @@ export default class PtRecord extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData()
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*获取真人投注*/
     getData() {
@@ -45,21 +49,22 @@ export default class PtRecord extends Component {
             method: 'POST',
             body: JSON.stringify(this.state.postData)
         }).then((res)=>{
-            console.log(res);
-            this.setState({searchLoading: false});
-            if(res.status == 200) {
-                let data = res.repsoneContent;
-                this.setState({
-                    lotteryArr: data.gameCategory.category,
-                    games: data.gameCategory.games,
-                    data: data.winlosses instanceof Array ? data.winlosses : [],
-                    total: parseInt(data.affects),
-                    sum: data.winlossesAmount,
-                })
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                this.setState({searchLoading: false});
+                if(res.status == 200) {
+                    let data = res.repsoneContent;
+                    this.setState({
+                        lotteryArr: data.gameCategory.category,
+                        games: data.gameCategory.games,
+                        data: data.winlosses instanceof Array ? data.winlosses : [],
+                        total: parseInt(data.affects),
+                        sum: data.winlossesAmount,
+                    })
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -199,8 +204,8 @@ export default class PtRecord extends Component {
                 dataIndex: 'project_WinLossAmount',
                 className: 'column-right',
                 render: text => (
-                    text < 0 ? <span className="col_color_F01111">{text}</span> :
-                        <span className="col_color_2BB851">{text}</span>
+                    text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>
                 ),
                 sorter: (a, b) => a.age - b.age,
                 width: 135,

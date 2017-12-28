@@ -69,6 +69,12 @@ export default class Setsecurity extends Component {
             }
         };
     };
+    componentDidMount() {
+        this._ismount = true;
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
     /*确定设置密保*/
     getData() {
         let postData = this.state.postData,
@@ -108,7 +114,7 @@ export default class Setsecurity extends Component {
             method: 'POST',
             body: JSON.stringify(postData)
         }).then((res)=>{
-            if(res.status == 200){
+            if(this._ismount && res.status == 200){
                 let _this = this;
                 Modal.success({
                     title: res.shortMessage,
@@ -209,9 +215,7 @@ export default class Setsecurity extends Component {
     }
 
     render() {
-        const issueOne = this.state.issueOne;
-        const issueTwo = this.state.issueTwo;
-        const postData = this.state.postData;
+        const { issueOne, issueTwo, postData } = this.state;
         return (
             <div  className="sec_k_main clear">
                 {
@@ -227,7 +231,7 @@ export default class Setsecurity extends Component {
                                 >
                                     {
                                         issueOne.map((item,i)=>{
-                                            return <Option value={item.id} key={item.id}>{item.text}</Option>
+                                            return <Option value={''+item.id} key={item.id}>{item.text}</Option>
                                         })
                                     }
                                 </Select>
@@ -245,7 +249,7 @@ export default class Setsecurity extends Component {
                                 <Select placeholder="请选择密保问题" style={{ width: 320}} onChange={(value)=>{this.handleChangeIssueTwo(value)}}>
                                     {
                                         issueTwo.map((item,i)=>{
-                                            return <Option value={item.id} key={item.id}>{item.text}</Option>
+                                            return <Option value={''+item.id} key={item.id}>{item.text}</Option>
                                         })
                                     }
                                 </Select>

@@ -40,7 +40,11 @@ export default class TeamList extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getTeamList();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     handleTableChange = (pagination, filters, sorter) => {
         let selectInfo = this.state.selectInfo;
@@ -68,18 +72,20 @@ export default class TeamList extends Component {
             method: "POST",
             body: JSON.stringify(selectInfo)
         }).then((res)=>{
-            this.setState({loading: false});
-            if(res.status == 200){
-                let resData = res.repsoneContent,
-                    tableData = this.state.tableData;
-                tableData.dataSource = resData.results;
-                tableData.accnumall = parseInt(resData.accnumall);
-                tableData.total = parseInt(resData.affects);
-                this.setState({tableData: tableData});
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount) {
+                this.setState({loading: false});
+                if(res.status == 200){
+                    let resData = res.repsoneContent,
+                        tableData = this.state.tableData;
+                    tableData.dataSource = resData.results;
+                    tableData.accnumall = parseInt(resData.accnumall);
+                    tableData.total = parseInt(resData.affects);
+                    this.setState({tableData: tableData});
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };

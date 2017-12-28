@@ -43,6 +43,7 @@ export default class RightSider extends Component {
         }
     };
     componentDidMount(){
+        this._ismount = true;
     	this.getRecentIssue();
     }
     render() {

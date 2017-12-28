@@ -37,8 +37,12 @@ $width_110px: 110px;
             width: 945px;
             li{
                 float: left;
-                border: 1px solid $border-color;
                 margin: 0 8px 8px 0;
+                background: -webkit-linear-gradient(top,#FCFCFC, #E4E4E4);
+                //background: -o-linear-gradient(top,#FCFCFC, #E4E4E4);
+                &>div{
+                    border: 1px solid $border-color;
+                }
             }
         }
         .bank_v_top{
@@ -59,7 +63,7 @@ $width_110px: 110px;
         }
         .r_m_active{
             border: 1px solid $rodio-check-color !important;
-            background: #fff url(./Img/time_active.png) no-repeat bottom right !important;
+            background: url(./Img/time_active.png) no-repeat bottom right !important;
         }
         .span_margin{
             margin: 0 15px 0 3px;

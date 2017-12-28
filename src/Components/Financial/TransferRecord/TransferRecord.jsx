@@ -1,11 +1,242 @@
+/*充值记录*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import Fetch from '../../../Utils';
+import { stateVar } from '../../../State';
+import common from '../../../CommonJs/common';
+import { DatePicker,  Button, Checkbox, Input, Select, Table, Pagination } from 'antd';
+import moment from 'moment';
+const Option = Select.Option;
 
 @observer
 export default class TransferRecord extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            tableLoading: false,
+            data: [],
+            searchLoading: false,
+            postData: {
+                sdatetime: common.setDateTime(0), // 开始时间 2017-12-27
+                edatetime: common.setDateTime(1), // 结束时间 2017-12-27
+                type: 3, //1是充值 2是提款 3是充值和提款
+                status: 0, //1 是成功 2是失败 0是所有
+                username: '', // 用户名
+                child: 0, //是否包含所有下级 0: 不包含， 1：包含
+                p: 1,
+                size: 10,
+            },
+            response: {}
+        }
+    };
+
+    componentDidMount() {
+        this._ismount = true;
+        this.getData();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
+    /*获取充提列表*/
+    getData() {
+        this.setState({tableLoading: true});
+        Fetch.getrwrecord({
+            method: 'POST',
+            body: JSON.stringify(this.state.postData)
+        }).then((res)=>{
+            if(this._ismount) {
+                this.setState({tableLoading: false, searchLoading: false});
+                if(res.status == 200){
+                    this.setState({response: res.repsoneContent});
+                }
+            }
+
+        })
+    }
+    /*是否包含下级*/
+    onCheckbox(e) {
+        let postData = this.state.postData;
+        if(e.target.checked){
+            postData.child = 1;
+        }else{
+            postData.child = 0;
+        }
+        this.setState({postData});
+    }
+    /*开始查询日期*/
+    onChangeStartDate(date, dateString) {
+        let postData = this.state.postData;
+        postData.sdatetime = dateString;
+        this.setState({postData});
+    };
+    /*结束查询日期*/
+    onChangeEndDate(date, dateString) {
+        let postData = this.state.postData;
+        postData.edatetime = dateString;
+        this.setState({postData});
+    };
+    /*查询类型*/
+    onChangeType(val){
+        let postData = this.state.postData;
+        postData.type = parseInt(val);
+        this.setState({postData});
+    };
+    /*状态*/
+    onChangeStatus(val){
+        let postData = this.state.postData;
+        postData.status = parseInt(val);
+        this.setState({postData});
+    };
+    /*搜索*/
+    onSearch() {
+        this.setState({searchLoading: true});
+        this.getData();
+    };
+    /*切换每页显示条数*/
+    onShowSizeChange (current, pageSize) {
+        let postData = this.state.postData;
+        postData.p = current;
+        postData.size = pageSize;
+        this.setState({postData: postData},()=>this.getData())
+    };
+    /*切换页面时*/
+    onChangePagination(page) {
+        let postData = this.state.postData;
+        postData.p = page;
+        this.setState({postData: postData},()=>this.getData());
+    };
     render() {
+        const { response } = this.state;
+        const columns = [
+            {
+                title: '账变编号',
+                dataIndex: 'orderNo',
+                width: 160,
+            }, {
+                title: '用户名',
+                dataIndex: 'username',
+                width: 120,
+            }, {
+                title: '时间',
+                dataIndex: 'times',
+                width: 150,
+            }, {
+                title: '类型',
+                dataIndex: 'cntitle',
+                width: 100,
+            }, {
+                title: '收入',
+                dataIndex: 'amount',
+                render: (text, record) => record.operations == 1 ? <span className="col_color_ying">+{text}</span> : '',
+                width: 120,
+            }, {
+                title: '支出',
+                dataIndex: 'amount2',
+                className: 'column-right',
+                render: (text, record) => record.operations == 0 ? <span className="col_color_shu">-{record.amount}</span> : '',
+                width: 120,
+            },{
+                title: '余额',
+                dataIndex: 'availablebalance',
+                className: 'column-right',
+                width: 120,
+            }, {
+                title: '状态',
+                dataIndex: 'transferstatus',
+                render: text => text == 1 || text == 3 ? '失败' : '成功',
+                width: 90,
+            }, {
+                title: '备注',
+                dataIndex: 'description',
+                width: 100,
+            }
+        ];
+        const footer = <div className="mention_filling_record_footer clear">
+                           <span>
+                               总收入：
+                               <strong className="col_color_ying">{response.allAcount == null || response.allAcount.in == undefined? '0' : response.allAcount.in}</strong>
+                               元
+                           </span>
+            <span>
+                               总支出：
+                               <strong className="col_color_shu">{response.allAcount == null || response.allAcount.out == undefined ? '0' : response.allAcount.out}</strong>
+                               元
+                           </span>
+        </div>;
+
         return (
-            <div></div>
+            <div className="mention_filling_record">
+                <div className="team_list_top">
+                    <div className="t_l_time">
+                        <ul className="t_l_time_row">
+                            <li>
+                                <span>查询日期：</span>
+                                <DatePicker
+                                    format="YYYY-MM-DD"
+                                    placeholder="请选择查询开始日期"
+                                    defaultValue={moment(common.setDateTime(0))}
+                                    onChange={(date, dateString)=>{this.onChangeStartDate(date, dateString)}}
+                                />
+                            </li>
+                            <li>
+                                <span className="t_m_date_mar">至</span>
+                                <DatePicker
+                                    format="YYYY-MM-DD"
+                                    placeholder="请选择查询结束日期"
+                                    defaultValue={moment(common.setDateTime(1))}
+                                    onChange={(date, dateString)=>{this.onChangeEndDate(date, dateString)}}
+                                />
+                            </li>
+                            <li className="t_m_date_mar">
+                                由于第三方数据同步存在延迟，如需实时数据请您咨询客服!
+                            </li>
+                        </ul>
+                        <ul className="t_l_classify">
+                            <li>
+                                <span>查询类型：</span>
+                                <Select defaultValue="3" style={{ width: 100 }} onChange={(value)=>this.onChangeType(value)}>
+                                    <Option value="3">所有</Option>
+                                    <Option value="1">充值</Option>
+                                    <Option value="2">提现</Option>
+                                </Select>
+                            </li>
+                            <li>
+                                <span>状态：</span>
+                                <Select defaultValue="0" style={{ width: 100 }} onChange={(value)=>this.onChangeStatus(value)}>
+                                    <Option value="0">所有</Option>
+                                    <Option value="1">成功</Option>
+                                    <Option value="2">失败</Option>
+                                </Select>
+                            </li>
+                            <li className="t_m_serch">
+                                <Button type="primary" icon="search" loading={this.state.searchLoading} onClick={()=>this.onSearch()}>
+                                    搜索
+                                </Button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div className="t_l_table">
+                    <div className="t_l_table_list">
+                        <Table columns={columns}
+                               rowKey={(record, index)=> index}
+                               dataSource={response.result}
+                               pagination={false}
+                               loading={this.state.tableLoading}
+                               footer={response.resultCount <= 0 ? null : ()=>footer}
+                        />
+                    </div>
+                    <div className="t_l_page" style={{display: response.resultCount <= 0 ? 'none' : ''}}>
+                        <Pagination showSizeChanger
+                                    onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}}
+                                    onChange={(page)=>this.onChangePagination(page)}
+                                    defaultCurrent={1}
+                                    total={parseInt(response.resultCount)}
+                                    pageSizeOptions={stateVar.pageSizeOptions.slice()}
+                        />
+                    </div>
+                </div>
+            </div>
         );
     }
 }

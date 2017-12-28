@@ -108,8 +108,8 @@ export default class Login extends Component {
             body: JSON.stringify({
                 "sType": 'formal',
 
-             
-                "username": 'bery123',
+
+                "username": 'hobart',
 
                 "loginpass": md5((md5(this.state.aptchac) + md5('123qwe'))),
                 "validcode": this.state.aptchac
@@ -121,6 +121,7 @@ export default class Login extends Component {
                 stateVar.auth=true;
                 stateVar.userInfo = {
                     userName: result.username,
+                    userid: result.userid,
                     userType: result.usertype,
                     accGroup: result.accGroup,
                     lastIp: result.lastip,
@@ -130,20 +131,6 @@ export default class Login extends Component {
                     setsecurity: result.setsecurity,
                     email: result.email,
                 };
-                // 根据ip查询地址
-                // Fetch.lastIp(result.lastip, {
-                //     method: 'POST',
-                //     mode: "cors",
-                //     credentials: 'include',
-                //     headers: {
-                //         'Content-Type': 'application/x-www-form-urlencoded'
-                //     }
-                // }).then((res)=>{
-                //     console.log(res);
-                //     if(res.code === 0) {
-                //         stateVar.userInfo.lastIp =res.data.country;
-                //     }
-                // });
 
                 setStore("userName",this.state.account);
 
@@ -226,7 +213,7 @@ export default class Login extends Component {
                         method: "POST",
                         body:JSON.stringify({
                             "sType":'formal',
-                            "username":'bery123',
+                            "username":'hobart',
                             "loginpass":md5((md5(this.state.aptchacM)+md5('qwe123'))),
                             "validcode":this.state.aptchacM
                         })

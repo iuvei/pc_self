@@ -73,6 +73,12 @@ export default class CapitalPassword extends Component {
             },
         };
     };
+    componentDidMount() {
+        this._ismount = true;
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
     /*确认设置*/
     onSetCapitalPw() {
         let validate = this.state.validate,
@@ -84,23 +90,24 @@ export default class CapitalPassword extends Component {
                 method: 'POST',
                 body: JSON.stringify({secpass: md5(postData.secpass), secpass_confirm: md5(postData.secpass_confirm)})
             }).then((res) => {
-                console.log(res)
-                this.setState({setCapitalLoading: false});
-                let _this = this;
-                if(res.status == 200){
-                    Modal.success({
-                        title: res.shortMessage,
-                        onOk() {
-                            validate.secpass = 2;
-                            validate.secpass_confirm = 2;
-                            _this.setState({validate: validate},()=>stateVar.userInfo.setsecurity = 'no');
-                        },
+                if(this._ismount){
+                    this.setState({setCapitalLoading: false});
+                    let _this = this;
+                    if(res.status == 200){
+                        Modal.success({
+                            title: res.shortMessage,
+                            onOk() {
+                                validate.secpass = 2;
+                                validate.secpass_confirm = 2;
+                                _this.setState({validate: validate},()=>stateVar.userInfo.setsecurity = 'no');
+                            },
 
-                    });
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                        });
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             })
         }
@@ -184,30 +191,31 @@ export default class CapitalPassword extends Component {
                 method: 'POST',
                 body: JSON.stringify(amendPostData)
             }).then((res)=>{
-                console.log(res)
-                this.setState({amendLoading: false});
-                if(res.status == 200){
-                    let _this = this,
-                        amendPostData = this.state.amendPostData;
-                    Modal.success({
-                        title: res.longMessage,
-                        onOk() {
-                            validate.secpass = 2;
-                            validate.old = 2;
-                            validate.secpass_confirm = 2;
-                            amendPostData.oldpass = null;
-                            amendPostData.newpass = null;
-                            amendPostData.confirm_newpass = null;
-                            _this.setState({
-                                validate: validate,
-                                amendPostData: amendPostData,
-                            });
-                        },
-                    });
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                if(this._ismount){
+                    this.setState({amendLoading: false});
+                    if(res.status == 200){
+                        let _this = this,
+                            amendPostData = this.state.amendPostData;
+                        Modal.success({
+                            title: res.longMessage,
+                            onOk() {
+                                validate.secpass = 2;
+                                validate.old = 2;
+                                validate.secpass_confirm = 2;
+                                amendPostData.oldpass = null;
+                                amendPostData.newpass = null;
+                                amendPostData.confirm_newpass = null;
+                                _this.setState({
+                                    validate: validate,
+                                    amendPostData: amendPostData,
+                                });
+                            },
+                        });
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             })
         }

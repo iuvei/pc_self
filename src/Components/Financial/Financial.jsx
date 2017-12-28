@@ -12,13 +12,14 @@ export default class Financial extends Component {
         super(props);
         this.state = {
             navIndex: 0,
-        }
+        };
+        this.onChangeNavIndex = this.onChangeNavIndex.bind(this)
     };
     onChangeNavIndex(index) {
         this.setState({navIndex: index});
     };
     componentDidMount() {
-
+        this._ismount = true;
     };
 
     render() {
@@ -57,7 +58,10 @@ export default class Financial extends Component {
                                     <span> > </span>
                                     <span>{navList[this.state.navIndex].text}</span>
                                 </div>
-                                <ChildNav navList={navList} NavIndex={this.props.location.query} onChangeNavIndex={this.onChangeNavIndex.bind(this)}/>
+                                <ChildNav navList={navList}
+                                          NavIndex={this.props.location.query}
+                                          onChangeNavIndex={this.onChangeNavIndex}
+                                />
                                 <div>
                                     {this.props.children}
                                 </div>

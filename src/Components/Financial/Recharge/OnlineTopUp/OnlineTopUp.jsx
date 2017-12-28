@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import { InputNumber, Button } from 'antd';
+import { changeMoneyToChinese } from '../../../../CommonJs/common';
 
 import './OnlineTopUp.scss'
 
@@ -66,7 +67,7 @@ export default class OnlineTopUp extends Component {
                                     <strong style={{color: '#CB1313',fontWeight: 'normal'}}>50000</strong>
                                     ，单日充值总额无上限
                                 </span>
-                        <p className="r_m_dx">壹百元整</p>
+                        <p className="r_m_dx">{changeMoneyToChinese(1)}</p>
                     </li>
                     <li className="r_m_primary_btn">
                         <span className="r_m_li_w"></span>

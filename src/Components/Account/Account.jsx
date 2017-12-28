@@ -58,7 +58,10 @@ export default class Account extends Component {
                                     <span> > </span>
                                     <span>{navList[this.state.navIndex].text}</span>
                                 </div>
-                                <ChildNav navList={navList} onChangeNavIndex={this.onChangeNavIndex.bind(this)}/>
+                                <ChildNav navList={navList}
+                                          NavIndex={this.props.location.query}
+                                          onChangeNavIndex={this.onChangeNavIndex.bind(this)}
+                                />
                                 <div>
                                     {this.props.children}
                                 </div>

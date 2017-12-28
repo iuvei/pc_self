@@ -40,7 +40,11 @@ export default class Sports extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData()
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*获取体育投注*/
     getData() {
@@ -48,19 +52,21 @@ export default class Sports extends Component {
             method: 'POST',
             body: JSON.stringify(this.state.postData)
         }).then((res)=>{
-            this.setState({searchLoading: false});
-            if(res.status == 200) {
-                let data = res.repsoneContent;
-                this.setState({
-                    data: data.list,
-                    lotteryList: data.nameList,
-                    sum: data.all_sum.result,
-                    total: parseInt(data.offects),
-                })
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount) {
+                this.setState({searchLoading: false});
+                if(res.status == 200) {
+                    let data = res.repsoneContent;
+                    this.setState({
+                        data: data.list,
+                        lotteryList: data.nameList,
+                        sum: data.all_sum.result,
+                        total: parseInt(data.offects),
+                    })
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -181,8 +187,8 @@ export default class Sports extends Component {
                 className:'column-right',
                 width: 110,
                 render:(text)=>(
-                    text <= 0 ? <span className="col_color_F01111">{text}</span> :
-                                <span className="col_color_2BB851">{text}</span>
+                    text < 0 ? <span className="col_color_shu">{text}</span> :
+                                <span className="col_color_ying">{text}</span>
                 ),
                 sorter: (a, b) => a.age - b.age,
             }, {

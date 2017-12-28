@@ -44,43 +44,50 @@ export default class Dividend extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData()
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*获取分红列表*/
     getData(){
+        this.setState({ loading: true });
         Fetch.dividendsalary({
             method: 'POST',
             body: JSON.stringify(this.state.postData),
         }).then((res)=>{
-            this.setState({ searchLoading: false });
-            if(res.status == 200){
-                let data = res.repsoneContent,
-                    team = {},
-                    resultsFlag = data.alldata.results,
-                    sum = data.sum;
-                if(data.sum.userid != undefined){
-                    team = {
-                        userid: '-1',
-                        id: '-1',
-                        username: '团队数据',
-                        sale: sum.sale_total,
-                        gross_income: sum.gross_income,
-                        daily_salary: sum.team_daily_salary,
-                        lose_salary: sum.team_lose_salary,
-                        dividend_radio: sum.dividend_radio,
-                        allsalary: sum.allsalary,
-                        buttons:'----',
-                    };
-                    resultsFlag.unshift(team);
-                }
-                this.setState({
-                    data: resultsFlag,
-                    divIdEndTotals: data.dividendtotals,
-                    sum: sum,
-                    total: data.alldata.affects,
-                    oneKeyDividend: data.send_status,
-                });
+            if(this._ismount){
+                this.setState({ searchLoading: false, loading: false });
+                if(res.status == 200){
+                    let data = res.repsoneContent,
+                        team = {},
+                        resultsFlag = data.alldata.results,
+                        sum = data.sum;
+                    if(data.sum.userid != undefined){
+                        team = {
+                            userid: '-1',
+                            id: '-1',
+                            username: '团队数据',
+                            sale: sum.sale_total,
+                            gross_income: sum.gross_income,
+                            daily_salary: sum.team_daily_salary,
+                            lose_salary: sum.team_lose_salary,
+                            dividend_radio: sum.dividend_radio,
+                            allsalary: sum.allsalary,
+                            buttons:'----',
+                        };
+                        resultsFlag.unshift(team);
+                    }
+                    this.setState({
+                        data: resultsFlag,
+                        divIdEndTotals: data.dividendtotals,
+                        sum: sum,
+                        total: data.alldata.affects,
+                        oneKeyDividend: data.send_status,
+                    });
 
+                }
             }
         })
     };
@@ -127,17 +134,19 @@ export default class Dividend extends Component {
                 method:'POST',
                 body:JSON.stringify({username: username})
             }).then((res)=>{
-                this.setState({loadingModal: false});
-                if(res.status == 200){
-                    let data = res.repsoneContent,
-                        history = this.state.history;
-                    history.historyAllsalary = data.history.history_allsalary;
-                    history.affects = data.alldata.affects;
-                    this.setState({
-                        historyDividendUName: username,
-                        historyData: data.alldata.results,
-                        history: history,
-                    })
+                if(this._ismount){
+                    this.setState({loadingModal: false});
+                    if(res.status == 200){
+                        let data = res.repsoneContent,
+                            history = this.state.history;
+                        history.historyAllsalary = data.history.history_allsalary;
+                        history.affects = data.alldata.affects;
+                        this.setState({
+                            historyDividendUName: username,
+                            historyData: data.alldata.results,
+                            history: history,
+                        })
+                    }
                 }
             })
         }else if(val == '修改比例') {
@@ -149,7 +158,7 @@ export default class Dividend extends Component {
                 content: <div>
                             <p>用户名：<span style={{fontWeight: 'bold'}}>{username}</span></p>
                             <p>分红比例：{record.dividend_radio}</p>
-                            <p>本期分红：<span className={parseFloat(record.allsalary) < 0 ? 'col_color_2BB851' : 'col_color_F01111'}>{record.allsalary}</span></p>
+                            <p>本期分红：<span className={parseFloat(record.allsalary) < 0 ? 'col_color_shu' : 'col_color_ying'}>{record.allsalary}</span></p>
                         </div>,
                 okText: '确认发放',
                 okType: '取消',
@@ -158,13 +167,15 @@ export default class Dividend extends Component {
                         method: 'POST',
                         body: JSON.stringify({userid: parseInt(record.userid), id: parseInt(record.id)})
                     }).then((res)=>{
-                        if(res.status == 200){
-                            message.success(res.shortMessage);
-                            _this.getData();
-                        }else{
-                            Modal.warning({
-                                title: res.shortMessage,
-                            });
+                        if(this._ismount){
+                            if(res.status == 200){
+                                message.success(res.shortMessage);
+                                _this.getData();
+                            }else{
+                                Modal.warning({
+                                    title: res.shortMessage,
+                                });
+                            }
                         }
                     })
                 },
@@ -181,13 +192,15 @@ export default class Dividend extends Component {
                         method: 'POST',
                         body: JSON.stringify({total_id: parseInt(_this.state.postData.starttime)})
                     }).then((res)=>{
-                        if(res.status == 200){
-                            message.success(res.shortMessage);
-                            _this.getData();
-                        }else{
-                            Modal.warning({
-                                title: res.shortMessage,
-                            });
+                        if(this._ismount){
+                            if(res.status == 200){
+                                message.success(res.shortMessage);
+                                _this.getData();
+                            }else{
+                                Modal.warning({
+                                    title: res.shortMessage,
+                                });
+                            }
                         }
                     })
                 },
@@ -258,15 +271,15 @@ export default class Dividend extends Component {
                 title: '分红比例',
                 dataIndex: 'dividend_radio',
                 className: 'column-right',
-                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_2BB851">{text}%</span> :
-                                                        <span className="col_color_F01111">{text}%</span>,
+                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
+                                                        <span className="col_color_ying">{text}%</span>,
                 width: 100,
             }, {
                 title: '分红',
                 dataIndex: 'allsalary',
                 className: 'column-right',
-                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_2BB851">{text}</span> :
-                                                        <span className="col_color_F01111">{text}</span>,
+                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                                                        <span className="col_color_ying">{text}</span>,
                 width: 100,
             },
             {
@@ -308,8 +321,8 @@ export default class Dividend extends Component {
                             <li>{sum.self_gross_income}</li>
                             <li>{sum.daily_salary}</li>
                             <li>{sum.lose_salary}</li>
-                            <li className={parseFloat(sum.dividend_radio) < 0 ? 'col_color_2BB851' : 'col_color_F01111'}>{sum.dividend_radio}%</li>
-                            <li className={parseFloat(sum.self_allsalary) < 0 ? 'col_color_2BB851' : 'col_color_F01111'}>{sum.self_allsalary}</li>
+                            <li className={parseFloat(sum.dividend_radio) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.dividend_radio}%</li>
+                            <li className={parseFloat(sum.self_allsalary) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.self_allsalary}</li>
                             <li>
                                 {
                                     oneKeyDividend == 0 ?

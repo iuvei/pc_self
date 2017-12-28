@@ -2,7 +2,6 @@
 import { stateVar } from '../State'
 import {getStore } from "../CommonJs/common";
 
-
 const interFace = (key) => {
     let INTERFACE = {};
     // 获取sess
@@ -22,6 +21,8 @@ const interFace = (key) => {
     INTERFACE['ABOUTBET'] = 'controller=game&action=play';
     INTERFACE['GAMEINFO'] = 'controller=gameinfo&action=CancelgameAjax';
 
+    // 上次登录地点ip=>地址
+    INTERFACE['IPADDRESS'] = 'controller=default&action=Ipaddress';
     // 日工资
     INTERFACE['DAILYSALARY'] = 'controller=salarymanage&action=dailysalary';
     // 历史日工资
@@ -124,6 +125,8 @@ const interFace = (key) => {
     INTERFACE['MESSAGES'] = 'controller=user&action=messages';
     // 提款
     INTERFACE['WITHDRAWEL'] = 'controller=financial&action=withdrawel';
+    // 充提记录
+    INTERFACE['GETRWRECORD'] = 'controller=financial&action=getrwrecord';
     //GT娱乐-登录
     INTERFACE['GTLOGIN'] = 'controller=kgame&action=login';
     //GT娱乐-转账

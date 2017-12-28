@@ -12,6 +12,7 @@ export default class Message extends Component {
         super(props);
         this.state = {
             visible: false,
+            tableLoading: false,
             loading: false,
             data: [], //信息列表
             total: 0, //总条数
@@ -30,31 +31,38 @@ export default class Message extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData()
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     getData() {
         let postData = this.state.postData;
+        this.setState({ tableLoading: true });
         Fetch.messages({
             method: 'POST',
             body: JSON.stringify(postData)
         }).then((res)=>{
-            this.setState({ loading: false });
-            if(res.status == 200) {
-                if(postData.tag != ''){
-                    message.success(res.shortMessage);
-                    // this.setState({ data: this.state.data.filter((item, index) => item.entry !== key) });
-                    let postData = this.state.postData;
-                    postData.tag = '';
-                    postData.msgids = '';
+            if(this._ismount){
+                this.setState({ loading: false, tableLoading: false });
+                if(res.status == 200) {
+                    if(postData.tag != ''){
+                        message.success(res.shortMessage);
+                        // this.setState({ data: this.state.data.filter((item, index) => item.entry !== key) });
+                        let postData = this.state.postData;
+                        postData.tag = '';
+                        postData.msgids = '';
 
-                    this.setState({postData: postData}, ()=>this.getData());
+                        this.setState({postData: postData}, ()=>this.getData());
 
-                }else{
-                    let data = res.repsoneContent;
-                    this.setState({
-                        data: data.results,
-                        total: parseInt(data.affects),
-                    });
+                    }else{
+                        let data = res.repsoneContent;
+                        this.setState({
+                            data: data.results,
+                            total: parseInt(data.affects),
+                        });
+                    }
                 }
             }
         })
@@ -92,7 +100,7 @@ export default class Message extends Component {
             method: 'POST',
             body: JSON.stringify({tag:'viewdetail', msgid: record.entry})
         }).then((res)=>{
-            if(res.status == 200){
+            if(this._ismount && res.status == 200){
                 this.setState({repDetails: res.repsoneContent})
             }
         })
@@ -148,6 +156,7 @@ export default class Message extends Component {
                        dataSource={data}
                        bordered={true}
                        pagination={false}
+                       loading={this.state.tableLoading}
                        rowClassName={(record)=>{return record.isview == 0 ? 'message_unread' : ''}}
                 />
                 <div className="message_m_page" style={{display: total <= 0 ? 'none' : ''}}>

@@ -139,11 +139,11 @@ export default class ContentMian extends Component {
     };
     //初始化默认调用方法
     componentDidMount() {
-    	this.initData();
+    	// this.initData();
     	// this.getWebsoket();
-    	this.getFutureIssue();
-    	this.getlotterycode();
-    	this.getBetHistory();
+    	// this.getFutureIssue();
+    	// this.getlotterycode();
+    	// this.getBetHistory();
 
         mobx.autorun(() => console.log(this.getDan));
     };
@@ -1526,329 +1526,329 @@ export default class ContentMian extends Component {
                        animConfig={[
                            { opacity: [1, 0], translateY: [0, 50] }
                        ]}>
-            	<div className="bet_content" key="ContentTop">
-                    <div className="content_title">
-                        <ul className="title_list clear">
-                            <li>
-                                <div className="content_cz_logo">
-                                    <img src={cz_logo_11_5} alt=""/>
-                                </div>
-                            </li>
-                            <li>
-                                <ul className="content_center">
-                                    <li className="content_cz_text">
-                                        <div className="cz_name m_bottom">
-                                            <span>加拿大11选5</span>
-                                            <span className="c_t_facade">官网</span>
-                                        </div>
-                                        <div className="cz_periods m_bottom">
-                                            <span style={{color:'#FFE38E'}}>{this.state.nextIssue}</span>
-                                            <span>期</span>
-                                        </div>
-                                        <div className="voice_switch m_bottom">
-                                            <span>音效</span>
-                                            <Switch size="small" defaultChecked={false} onChange={(checked) => this.onChanges(checked)} />
-                                        </div>
-                                    </li>
-                                    <li className="abort_time">
-                                        <p className="abort_time_text">投注截止还有</p>
-                                        <div className="c_m_count_down">
-                                            <Row type="flex" align="bottom">
-                                                <Col span={6}>
-                                                    <div className="item_text">{this.state.timeShow.hour}</div>
-                                                </Col>
-                                                <Col span={2}>
-                                                    <div className="item_type">时</div>
-                                                </Col>
-                                                <Col span={6}>
-                                                    <div className="item_text">{this.state.timeShow.minute}</div>
-                                                </Col>
-                                                <Col span={2}>
-                                                    <div className="item_type">分</div>
-                                                </Col>
-                                                <Col span={6}>
-                                                    <div className="item_text">{this.state.timeShow.second}</div>
-                                                </Col>
-                                                <Col span={2}>
-                                                    <div className="item_type">秒</div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <div className="praise_mark">
-                                    <div className="praise_mark_text">
-                                        <span>第<span style={{color:'#FFE38E'}}>{this.state.nowIssue}</span>期&nbsp;开奖号码</span>
-                                        <span className="method_introduce right">玩法介绍</span>
-                                    </div>
-                                    <ul className="ball_number clear">
-	                                    {
-                                        	this.state.code.map((val,idx)=>{
-                                        		return (
-                                        			<li key={idx}>{val}</li>
-                                        		)
-                                        	})
-	                                    }
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="content_main" key="ContentMian">
-                    <div className="c_m_nav">
-                        <ul className="c_m_nav_list left">
-                            {
-                                // oneLotteryData.map(( element,index ) => {
-                                // 	if(element.title == '任选'){
-                                // 		return(
-                                // 			<li className='renxuan' key={index}>
-									// 			<div className="c_m_select">
-						         //                    <div className="c_m_select_method_text">{element.title+'玩法'}</div>
-						         //                    <ul className="c_m_select_list clear">
-						         //                    {
-						         //                    	element.label.map((val,idx)=>{
-						         //                    		let tempVal = val.gtitle.substr(0,2);
-						         //                    		if(objRen[tempVal] == undefined){
-						         //                    			objRen[tempVal] = tempVal
-						         //                    			return(
-							     //                        			<li onClick={() => this.changeMethod(index,idx)} key={idx}>{element.title + tempVal.split('')[1]}</li>
-							     //                        		)
-						         //                    		}
-						         //                    		return '';
-						         //                    	})
-						         //                    }
-						         //                    </ul>
-						         //                </div>
-									// 		</li>
-                                // 		)
-                                // 	}
-                                //     return(
-                                //         <li onClick={() => this.changeMethod(index)} className={ this.check_nav_index( index ) } key={index}>{element.title}</li>
-                                //     )
-                                // })
-                            }
-                        </ul>
-                    </div>
-                    <div className="c_m_controler">
-                        <div className="c_m_controler_method">
-                     	{/*{htmlmethod}*/}
-                        	{
-                        		// this.getnfprizeArea(oneLotteryData)
-                        	}
-                        </div>
-                        <div className="c_m_select_number">
-                            <div className="c_m_select_title">
-                                <div className="c_m_select_name">
-                                    {/*{oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].gtitle : (oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].gtitle + oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].name)}*/}
-                                </div>
-                                <div style={{display:'none'}}>
-	                                <ul className="c_m_select_hot">
-	                                    <li onClick={()=>{this.setState({hotIndex : 0})}} className={this.state.hotIndex === 0 ? 'active' : ''} >冷热</li>
-	                                    <li onClick={()=>{this.setState({hotIndex : 1})}} className={this.state.hotIndex === 1 ? 'active' : ''}>遗漏</li>
-	                                </ul>
-	                                <Button className="c_m_btn" onClick={()=>{this.setState({hotSwitch : !this.state.hotSwitch})}}>
-	                                    {this.state.hotSwitch ? '开' : '关'}
-	                                </Button>
-	                                <Radio.Group  onChange={(e)=>{this.handleSizeChange(e)}}>
-	                                    <Radio.Button value="30期">30期</Radio.Button>
-	                                    <Radio.Button value="60期">60期</Radio.Button>
-	                                    <Radio.Button value="100期">100期</Radio.Button>
-	                                </Radio.Group>
-                                </div>
-                                <span className="c_m_select_title_right right">
-                                    {/*<span>{oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methoddesc : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methoddesc}</span>*/}
-                                    <span className="c_m_lottery_explain">中奖说明</span>
-                                </span>
-                            </div>
-                            {/*{htmldata}*/}
-                        </div>
-                        <div className="c_m_select_operate">
-                            <div className="c_m_select_operate_text">
-                                <span className="c_m_select_money">您选择了<strong>{this.state.numss}</strong>注，共<strong>{this.state.money}</strong>元</span>
-                                <span className="c_m_select_multiple">
-                                    <span>倍数：</span>
-                                    <img className="hvr-grow-shadow" onClick={()=>{this.minusMultiple()}} src={minus_multiple} alt="减少倍数"/>
-                                    <input type="text" value={this.state.multipleValue} onChange={this.multipleValue.bind(this)}/>
-                                    <img className="hvr-grow-shadow" onClick={()=>{this.addMultiple()}} src={add_multiple} alt="增加倍数"/>
-                                </span>
-                                <span className="c_m_select_yjftype">
-                                    <span>模式：</span>
-                                    <ul className="c_m_select_yjf right">
-                                        {
-                                            this.state.modes.map((value,index)=>{
-                                                return (
-                                                  <li onClick={()=>this.changeMode(index)} className={this.state.selectYjf === index ? 'yjf_active' : ''} key={index}>{value.name}</li>
-                                                );
-                                            })
-                                        }
-                                    </ul>
-                                </span>
-                                <span className="c_m_future_expect">
-                                    <span>未来期：</span>
-                                    {
-                                    	(()=>{
-                                    		return (
-                                    			<span>
-			                                        <Select value={this.state.issueIndex} style={{ width: 170 }} onChange={(value) => this.handleChangeIssue(value)}>
-                                    					{
-                                    						this.state.todayAndTomorrow.map((val,index)=>{
-                                    							if(index == 0){
-                                    								return (
-	                                    								<Option key={index} value={val.issue}>{val.issue}(当前期)</Option>
-	                                    							)
-                                    							}else{
-                                    								if(index>=120){
-                                    									return ''
-                                    								}
-                                    								return (
-	                                    								<Option key={index} value={val.issue}>{val.issue}</Option>
-	                                    							)
-                                    							}
-                                    						})
-                                    					}
-			                                        </Select>
-			                                    </span>
-                                    		)
-                                    	})()
-                                    }
-                                </span>
-                            </div>
-                            <div className="c_m_select_button">
-                                <i className="c_m_add_btn" onClick={()=>this.addNum()}></i>
-                                <i className="c_m_bet_btn" onClick={()=>this.directBet()}></i>
-                            </div>
-                        </div>
-                        <div className="c_m_select_code_record">
-                            <div className="c_m_select_record_content">
-                                <Row>
-                                    <Col span={19}>
-                                        <div className="c_m_select_record_table">
-                                        {
-                                        	stateVar.BetContent.lt_same_code.length == 0 ? '选号区，请选择号码' : stateVar.BetContent.lt_same_code.map((value,index)=>{
-                                        		return (
-                                        			<ul className="c_m_select_record_list clear" key={index}>
-                                        				<li>{value.name}</li>
-		                                                <li>{value.numberbet}</li>
+                {/*<div className="bet_content" key="ContentTop">*/}
+                    {/*<div className="content_title">*/}
+                        {/*<ul className="title_list clear">*/}
+                            {/*<li>*/}
+                                {/*<div className="content_cz_logo">*/}
+                                    {/*<img src={cz_logo_11_5} alt=""/>*/}
+                                {/*</div>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                                {/*<ul className="content_center">*/}
+                                    {/*<li className="content_cz_text">*/}
+                                        {/*<div className="cz_name m_bottom">*/}
+                                            {/*<span>加拿大11选5</span>*/}
+                                            {/*<span className="c_t_facade">官网</span>*/}
+                                        {/*</div>*/}
+                                        {/*<div className="cz_periods m_bottom">*/}
+                                            {/*<span style={{color:'#FFE38E'}}>{this.state.nextIssue}</span>*/}
+                                            {/*<span>期</span>*/}
+                                        {/*</div>*/}
+                                        {/*<div className="voice_switch m_bottom">*/}
+                                            {/*<span>音效</span>*/}
+                                            {/*<Switch size="small" defaultChecked={false} onChange={(checked) => this.onChanges(checked)} />*/}
+                                        {/*</div>*/}
+                                    {/*</li>*/}
+                                    {/*<li className="abort_time">*/}
+                                        {/*<p className="abort_time_text">投注截止还有</p>*/}
+                                        {/*<div className="c_m_count_down">*/}
+                                            {/*<Row type="flex" align="bottom">*/}
+                                                {/*<Col span={6}>*/}
+                                                    {/*<div className="item_text">{this.state.timeShow.hour}</div>*/}
+                                                {/*</Col>*/}
+                                                {/*<Col span={2}>*/}
+                                                    {/*<div className="item_type">时</div>*/}
+                                                {/*</Col>*/}
+                                                {/*<Col span={6}>*/}
+                                                    {/*<div className="item_text">{this.state.timeShow.minute}</div>*/}
+                                                {/*</Col>*/}
+                                                {/*<Col span={2}>*/}
+                                                    {/*<div className="item_type">分</div>*/}
+                                                {/*</Col>*/}
+                                                {/*<Col span={6}>*/}
+                                                    {/*<div className="item_text">{this.state.timeShow.second}</div>*/}
+                                                {/*</Col>*/}
+                                                {/*<Col span={2}>*/}
+                                                    {/*<div className="item_type">秒</div>*/}
+                                                {/*</Col>*/}
+                                            {/*</Row>*/}
+                                        {/*</div>*/}
+                                    {/*</li>*/}
+                                {/*</ul>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                                {/*<div className="praise_mark">*/}
+                                    {/*<div className="praise_mark_text">*/}
+                                        {/*<span>第<span style={{color:'#FFE38E'}}>{this.state.nowIssue}</span>期&nbsp;开奖号码</span>*/}
+                                        {/*<span className="method_introduce right">玩法介绍</span>*/}
+                                    {/*</div>*/}
+                                    {/*<ul className="ball_number clear">*/}
+	                                    {/*{*/}
+                                        	{/*this.state.code.map((val,idx)=>{*/}
+                                        		{/*return (*/}
+                                        			{/*<li key={idx}>{val}</li>*/}
+                                        		{/*)*/}
+                                        	{/*})*/}
+	                                    {/*}*/}
+                                    {/*</ul>*/}
+                                {/*</div>*/}
+                            {/*</li>*/}
+                        {/*</ul>*/}
+                    {/*</div>*/}
+                {/*</div>*/}
+                {/*<div className="content_main" key="ContentMian">*/}
+                    {/*<div className="c_m_nav">*/}
+                        {/*<ul className="c_m_nav_list left">*/}
+                            {/*{*/}
+                                {/*// oneLotteryData.map(( element,index ) => {*/}
+                                {/*// 	if(element.title == '任选'){*/}
+                                {/*// 		return(*/}
+                                {/*// 			<li className='renxuan' key={index}>*/}
+									{/*// 			<div className="c_m_select">*/}
+						         {/*//                    <div className="c_m_select_method_text">{element.title+'玩法'}</div>*/}
+						         {/*//                    <ul className="c_m_select_list clear">*/}
+						         {/*//                    {*/}
+						         {/*//                    	element.label.map((val,idx)=>{*/}
+						         {/*//                    		let tempVal = val.gtitle.substr(0,2);*/}
+						         {/*//                    		if(objRen[tempVal] == undefined){*/}
+						         {/*//                    			objRen[tempVal] = tempVal*/}
+						         {/*//                    			return(*/}
+							     {/*//                        			<li onClick={() => this.changeMethod(index,idx)} key={idx}>{element.title + tempVal.split('')[1]}</li>*/}
+							     {/*//                        		)*/}
+						         {/*//                    		}*/}
+						         {/*//                    		return '';*/}
+						         {/*//                    	})*/}
+						         {/*//                    }*/}
+						         {/*//                    </ul>*/}
+						         {/*//                </div>*/}
+									{/*// 		</li>*/}
+                                {/*// 		)*/}
+                                {/*// 	}*/}
+                                {/*//     return(*/}
+                                {/*//         <li onClick={() => this.changeMethod(index)} className={ this.check_nav_index( index ) } key={index}>{element.title}</li>*/}
+                                {/*//     )*/}
+                                {/*// })*/}
+                            {/*}*/}
+                        {/*</ul>*/}
+                    {/*</div>*/}
+                    {/*<div className="c_m_controler">*/}
+                        {/*<div className="c_m_controler_method">*/}
+                     	{/*/!*{htmlmethod}*!/*/}
+                        	{/*{*/}
+                        		{/*// this.getnfprizeArea(oneLotteryData)*/}
+                        	{/*}*/}
+                        {/*</div>*/}
+                        {/*<div className="c_m_select_number">*/}
+                            {/*<div className="c_m_select_title">*/}
+                                {/*<div className="c_m_select_name">*/}
+                                    {/*/!*{oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].gtitle : (oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].gtitle + oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].name)}*!/*/}
+                                {/*</div>*/}
+                                {/*<div style={{display:'none'}}>*/}
+	                                {/*<ul className="c_m_select_hot">*/}
+	                                    {/*<li onClick={()=>{this.setState({hotIndex : 0})}} className={this.state.hotIndex === 0 ? 'active' : ''} >冷热</li>*/}
+	                                    {/*<li onClick={()=>{this.setState({hotIndex : 1})}} className={this.state.hotIndex === 1 ? 'active' : ''}>遗漏</li>*/}
+	                                {/*</ul>*/}
+	                                {/*<Button className="c_m_btn" onClick={()=>{this.setState({hotSwitch : !this.state.hotSwitch})}}>*/}
+	                                    {/*{this.state.hotSwitch ? '开' : '关'}*/}
+	                                {/*</Button>*/}
+	                                {/*<Radio.Group  onChange={(e)=>{this.handleSizeChange(e)}}>*/}
+	                                    {/*<Radio.Button value="30期">30期</Radio.Button>*/}
+	                                    {/*<Radio.Button value="60期">60期</Radio.Button>*/}
+	                                    {/*<Radio.Button value="100期">100期</Radio.Button>*/}
+	                                {/*</Radio.Group>*/}
+                                {/*</div>*/}
+                                {/*<span className="c_m_select_title_right right">*/}
+                                    {/*/!*<span>{oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methoddesc : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methoddesc}</span>*!/*/}
+                                    {/*<span className="c_m_lottery_explain">中奖说明</span>*/}
+                                {/*</span>*/}
+                            {/*</div>*/}
+                            {/*/!*{htmldata}*!/*/}
+                        {/*</div>*/}
+                        {/*<div className="c_m_select_operate">*/}
+                            {/*<div className="c_m_select_operate_text">*/}
+                                {/*<span className="c_m_select_money">您选择了<strong>{this.state.numss}</strong>注，共<strong>{this.state.money}</strong>元</span>*/}
+                                {/*<span className="c_m_select_multiple">*/}
+                                    {/*<span>倍数：</span>*/}
+                                    {/*<img className="hvr-grow-shadow" onClick={()=>{this.minusMultiple()}} src={minus_multiple} alt="减少倍数"/>*/}
+                                    {/*<input type="text" value={this.state.multipleValue} onChange={this.multipleValue.bind(this)}/>*/}
+                                    {/*<img className="hvr-grow-shadow" onClick={()=>{this.addMultiple()}} src={add_multiple} alt="增加倍数"/>*/}
+                                {/*</span>*/}
+                                {/*<span className="c_m_select_yjftype">*/}
+                                    {/*<span>模式：</span>*/}
+                                    {/*<ul className="c_m_select_yjf right">*/}
+                                        {/*{*/}
+                                            {/*this.state.modes.map((value,index)=>{*/}
+                                                {/*return (*/}
+                                                  {/*<li onClick={()=>this.changeMode(index)} className={this.state.selectYjf === index ? 'yjf_active' : ''} key={index}>{value.name}</li>*/}
+                                                {/*);*/}
+                                            {/*})*/}
+                                        {/*}*/}
+                                    {/*</ul>*/}
+                                {/*</span>*/}
+                                {/*<span className="c_m_future_expect">*/}
+                                    {/*<span>未来期：</span>*/}
+                                    {/*{*/}
+                                    	{/*(()=>{*/}
+                                    		{/*return (*/}
+                                    			{/*<span>*/}
+			                                        {/*<Select value={this.state.issueIndex} style={{ width: 170 }} onChange={(value) => this.handleChangeIssue(value)}>*/}
+                                    					{/*{*/}
+                                    						{/*this.state.todayAndTomorrow.map((val,index)=>{*/}
+                                    							{/*if(index == 0){*/}
+                                    								{/*return (*/}
+	                                    								{/*<Option key={index} value={val.issue}>{val.issue}(当前期)</Option>*/}
+	                                    							{/*)*/}
+                                    							{/*}else{*/}
+                                    								{/*if(index>=120){*/}
+                                    									{/*return ''*/}
+                                    								{/*}*/}
+                                    								{/*return (*/}
+	                                    								{/*<Option key={index} value={val.issue}>{val.issue}</Option>*/}
+	                                    							{/*)*/}
+                                    							{/*}*/}
+                                    						{/*})*/}
+                                    					{/*}*/}
+			                                        {/*</Select>*/}
+			                                    {/*</span>*/}
+                                    		{/*)*/}
+                                    	{/*})()*/}
+                                    {/*}*/}
+                                {/*</span>*/}
+                            {/*</div>*/}
+                            {/*<div className="c_m_select_button">*/}
+                                {/*<i className="c_m_add_btn" onClick={()=>this.addNum()}></i>*/}
+                                {/*<i className="c_m_bet_btn" onClick={()=>this.directBet()}></i>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
+                        {/*<div className="c_m_select_code_record">*/}
+                            {/*<div className="c_m_select_record_content">*/}
+                                {/*<Row>*/}
+                                    {/*<Col span={19}>*/}
+                                        {/*<div className="c_m_select_record_table">*/}
+                                        {/*{*/}
+                                        	{/*stateVar.BetContent.lt_same_code.length == 0 ? '选号区，请选择号码' : stateVar.BetContent.lt_same_code.map((value,index)=>{*/}
+                                        		{/*return (*/}
+                                        			{/*<ul className="c_m_select_record_list clear" key={index}>*/}
+                                        				{/*<li>{value.name}</li>*/}
+		                                                {/*<li>{value.numberbet}</li>*/}
 
-		                                                <li className="c_m_cody_close" onClick={()=>this.deleteBet(index)}><img src={close} alt=""/></li>
-		                                                <li>{value.money + '元'}</li>
-		                                                <li>{value.nums + '注'}</li>
-		                                                <li>{value.times + '倍'}</li>
-		                                                <li>{value.modeName}</li>
-                                        			</ul>
-                                        			)
-                                        	})
-                                        }
-                                        </div>
-                                    </Col>
-                                    <Col span={5}>
-                                        <div className="c_m_machine_select">
-                                            <Button className="c_m_machine_select_1" disabled={this.state.ifRandom} onClick={()=>this.setByRandom()}>机选一注</Button>
-                                            <Button className="c_m_machine_select_5" disabled={this.state.ifRandom} onClick={()=>this.setByRandom(5)}>机选五注</Button>
-                                            <div className="c_m_empty machine_active" onClick={()=>this.clearAllBet()}>清空号码</div>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </div>
-                            <div className="c_m_affirm_bet">
-                                <ul className="c_m_affirm_bet_list clear">
-                                    <li>
-                                        <span>单数：</span>
-                                        <span><strong>{stateVar.BetContent.totalDan}</strong>单</span>
-                                    </li>
-                                    <li>
-                                        <span>注数：</span>
-                                        <span><strong>{stateVar.BetContent.totalNum}</strong>注</span>
-                                    </li>
-                                    <li>
-                                        <span>总金额：</span>
-                                        <span><strong>{stateVar.BetContent.totalMoney}</strong>元</span>
-                                    </li>
-                                    <li className="c_m_affirm_bet_btn" onClick={()=>this.actionBet()}>确认投注</li>
-                                    <li className="c_m_superaddition"><Button disabled={stateVar.BetContent.lt_same_code == 0 ? true : false} onClick={()=>this.openTrace()}>追号</Button></li>
-                                </ul>
-                                <Modal
-					                width='865px'
-					                visible={this.state.childVisible}
-					                title= {<ModelView navList = {navList}/>}
-					                onCancel={()=>{this.onSuperaddition()}}
-					                maskClosable={false}
-					                footer={null}
-					                className="modal_content"
-					            >
-					                <div className="modal_main">
-					                    <div className="m_m_content clear">
-					                        <div className="modal_periods left">
-					                            <p className="m_p_text left">追号期数</p>
-					                            <ul className="m_periods_list left">
-					                                {
-					                                    periodsList.map((value, index)=>{
-					                                        return <li key={index} className={this.state.periodsIndex === index ? 'm_periods_active' : ''} onClick={()=>this.setState({periodsIndex: index})}>{value}</li>
-					                                    })
-					                                }
-					                            </ul>
-					                        </div>
-					                        <div className="periods_input left">
-					                            <span>手动输入</span>
-					                            <InputNumber min={1} max={10} defaultValue={1} onChange={(value)=>{this.onChange(value)}} />
-					                            <span>期</span>
-					                        </div>
-					                        <div className="multiple_input left">
-					                            <span>倍数</span>
-					                            <InputNumber min={1} max={10} defaultValue={1} onChange={(value)=>{this.onChange(value)}} />
-					                            <span>倍</span>
-					                        </div>
-					                        <Button type="primary" className="m_m_btn" loading={this.state.loading} onClick={()=>this.enterLoading()}>
-					                            生成
-					                        </Button>
-					                    </div>
-					                    <div className="m_m_table">
-					                        <Table rowSelection={rowSelection}
-					                               columns={columns}
-					                               dataSource={this.state.issueArray}
-					                               pagination={false}
-					                               scroll={{ y: 240 }}
-					                               size="middle"
-					                        />
-					                    </div>
-					                    <div className="m_m_footer clear">
-					                        <div className="m_m_left_btn left">
-					                            <Checkbox onChange={()=>this.onChange()}>中奖后停止追号</Checkbox>
-					                            <Button type="primary">清空号码</Button>
-					                        </div>
-					                        <ul className="m_m_footer_info right">
-					                            <li>
-					                                <span>总期数：</span>
-					                                <em>0</em>
-					                                <span>期，</span>
-					                            </li>
-					                            <li>
-					                                <span>追号总金额：</span>
-					                                <em>0.00</em>
-					                                <span>元</span>
-					                            </li>
-					                            <li>
-					                                <Button type="primary"
-					                                        loading={this.state.chaseLoading}
-					                                        onClick={()=>this.enterChaseLoading()}
-					                                        size="large"
-					                                >
-					                                    确定追号投注
-					                                </Button>
-					                            </li>
-					                        </ul>
-					                    </div>
-					                </div>
-					            </Modal>
-                            </div>
-                        </div>
-                        <BetRecordTable betHistory={this.state.historyBet}/>
-                    </div>
-                </div>
-                <AlterModal visible={this.state.visible} lotteryOkBet={this.lotteryOkBet.bind(this)} betData={this.state.betokObj}/>
+		                                                {/*<li className="c_m_cody_close" onClick={()=>this.deleteBet(index)}><img src={close} alt=""/></li>*/}
+		                                                {/*<li>{value.money + '元'}</li>*/}
+		                                                {/*<li>{value.nums + '注'}</li>*/}
+		                                                {/*<li>{value.times + '倍'}</li>*/}
+		                                                {/*<li>{value.modeName}</li>*/}
+                                        			{/*</ul>*/}
+                                        			{/*)*/}
+                                        	{/*})*/}
+                                        {/*}*/}
+                                        {/*</div>*/}
+                                    {/*</Col>*/}
+                                    {/*<Col span={5}>*/}
+                                        {/*<div className="c_m_machine_select">*/}
+                                            {/*<Button className="c_m_machine_select_1" disabled={this.state.ifRandom} onClick={()=>this.setByRandom()}>机选一注</Button>*/}
+                                            {/*<Button className="c_m_machine_select_5" disabled={this.state.ifRandom} onClick={()=>this.setByRandom(5)}>机选五注</Button>*/}
+                                            {/*<div className="c_m_empty machine_active" onClick={()=>this.clearAllBet()}>清空号码</div>*/}
+                                        {/*</div>*/}
+                                    {/*</Col>*/}
+                                {/*</Row>*/}
+                            {/*</div>*/}
+                            {/*<div className="c_m_affirm_bet">*/}
+                                {/*<ul className="c_m_affirm_bet_list clear">*/}
+                                    {/*<li>*/}
+                                        {/*<span>单数：</span>*/}
+                                        {/*<span><strong>{stateVar.BetContent.totalDan}</strong>单</span>*/}
+                                    {/*</li>*/}
+                                    {/*<li>*/}
+                                        {/*<span>注数：</span>*/}
+                                        {/*<span><strong>{stateVar.BetContent.totalNum}</strong>注</span>*/}
+                                    {/*</li>*/}
+                                    {/*<li>*/}
+                                        {/*<span>总金额：</span>*/}
+                                        {/*<span><strong>{stateVar.BetContent.totalMoney}</strong>元</span>*/}
+                                    {/*</li>*/}
+                                    {/*<li className="c_m_affirm_bet_btn" onClick={()=>this.actionBet()}>确认投注</li>*/}
+                                    {/*<li className="c_m_superaddition"><Button disabled={stateVar.BetContent.lt_same_code == 0 ? true : false} onClick={()=>this.openTrace()}>追号</Button></li>*/}
+                                {/*</ul>*/}
+                                {/*<Modal*/}
+					                {/*width='865px'*/}
+					                {/*visible={this.state.childVisible}*/}
+					                {/*title= {<ModelView navList = {navList}/>}*/}
+					                {/*onCancel={()=>{this.onSuperaddition()}}*/}
+					                {/*maskClosable={false}*/}
+					                {/*footer={null}*/}
+					                {/*className="modal_content"*/}
+					            {/*>*/}
+					                {/*<div className="modal_main">*/}
+					                    {/*<div className="m_m_content clear">*/}
+					                        {/*<div className="modal_periods left">*/}
+					                            {/*<p className="m_p_text left">追号期数</p>*/}
+					                            {/*<ul className="m_periods_list left">*/}
+					                                {/*{*/}
+					                                    {/*periodsList.map((value, index)=>{*/}
+					                                        {/*return <li key={index} className={this.state.periodsIndex === index ? 'm_periods_active' : ''} onClick={()=>this.setState({periodsIndex: index})}>{value}</li>*/}
+					                                    {/*})*/}
+					                                {/*}*/}
+					                            {/*</ul>*/}
+					                        {/*</div>*/}
+					                        {/*<div className="periods_input left">*/}
+					                            {/*<span>手动输入</span>*/}
+					                            {/*<InputNumber min={1} max={10} defaultValue={1} onChange={(value)=>{this.onChange(value)}} />*/}
+					                            {/*<span>期</span>*/}
+					                        {/*</div>*/}
+					                        {/*<div className="multiple_input left">*/}
+					                            {/*<span>倍数</span>*/}
+					                            {/*<InputNumber min={1} max={10} defaultValue={1} onChange={(value)=>{this.onChange(value)}} />*/}
+					                            {/*<span>倍</span>*/}
+					                        {/*</div>*/}
+					                        {/*<Button type="primary" className="m_m_btn" loading={this.state.loading} onClick={()=>this.enterLoading()}>*/}
+					                            {/*生成*/}
+					                        {/*</Button>*/}
+					                    {/*</div>*/}
+					                    {/*<div className="m_m_table">*/}
+					                        {/*<Table rowSelection={rowSelection}*/}
+					                               {/*columns={columns}*/}
+					                               {/*dataSource={this.state.issueArray}*/}
+					                               {/*pagination={false}*/}
+					                               {/*scroll={{ y: 240 }}*/}
+					                               {/*size="middle"*/}
+					                        {/*/>*/}
+					                    {/*</div>*/}
+					                    {/*<div className="m_m_footer clear">*/}
+					                        {/*<div className="m_m_left_btn left">*/}
+					                            {/*<Checkbox onChange={()=>this.onChange()}>中奖后停止追号</Checkbox>*/}
+					                            {/*<Button type="primary">清空号码</Button>*/}
+					                        {/*</div>*/}
+					                        {/*<ul className="m_m_footer_info right">*/}
+					                            {/*<li>*/}
+					                                {/*<span>总期数：</span>*/}
+					                                {/*<em>0</em>*/}
+					                                {/*<span>期，</span>*/}
+					                            {/*</li>*/}
+					                            {/*<li>*/}
+					                                {/*<span>追号总金额：</span>*/}
+					                                {/*<em>0.00</em>*/}
+					                                {/*<span>元</span>*/}
+					                            {/*</li>*/}
+					                            {/*<li>*/}
+					                                {/*<Button type="primary"*/}
+					                                        {/*loading={this.state.chaseLoading}*/}
+					                                        {/*onClick={()=>this.enterChaseLoading()}*/}
+					                                        {/*size="large"*/}
+					                                {/*>*/}
+					                                    {/*确定追号投注*/}
+					                                {/*</Button>*/}
+					                            {/*</li>*/}
+					                        {/*</ul>*/}
+					                    {/*</div>*/}
+					                {/*</div>*/}
+					            {/*</Modal>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
+                        {/*<BetRecordTable betHistory={this.state.historyBet}/>*/}
+                    {/*</div>*/}
+                {/*</div>*/}
+                {/*<AlterModal visible={this.state.visible} lotteryOkBet={this.lotteryOkBet.bind(this)} betData={this.state.betokObj}/>*/}
             </QueueAnim>
         );
     }

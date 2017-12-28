@@ -10,13 +10,13 @@ import CM_transfer from '../CM_transfer/CM_transfer';
 import bobing_01 from './Img/bobing_01.png'
 import './Bobing.scss'
 
-let MONEY_FLAG = true;
 @observer
 export default class Bobing extends Component {
     constructor(props) {
         super(props);
         this.state = {
             visible: false, //模态框默认关闭
+            spinLoading: false,
             modalVisible: false, // 开始游戏模态框
             bonusPool: 0, // 奖金池
         };
@@ -24,12 +24,15 @@ export default class Bobing extends Component {
         this.onTransfer = this.onTransfer.bind(this);
     };
     componentDidMount() {
+        this._ismount = true;
         this.onGetprizepool();
     }
+    componentWillUnmount() {
+        this._ismount = false;
+    };
     /*转账*/
     onTransfer(type, intoMoney, outMoney) {
-        if(MONEY_FLAG){
-            // MONEY_FLAG = false;
+        this.setState({spinLoading: true});
             let postData = {};
             if(type == 'into') {
                 postData = {
@@ -50,19 +53,19 @@ export default class Bobing extends Component {
                 method: 'POST',
                 body: JSON.stringify(postData),
             }).then((res)=>{
-                MONEY_FLAG = true;
-                console.log(res)
-                if(res.status == 200){
-                    Modal.success({
-                        title: res.shortMessage,
-                    });
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                if(this._ismount){
+                    this.setState({spinLoading: false});
+                    if(res.status == 200){
+                        Modal.success({
+                            title: res.shortMessage,
+                        });
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             })
-        }
 
     };
     /*关闭模态框*/
@@ -74,7 +77,7 @@ export default class Bobing extends Component {
         Fetch.newGetprizepool({
             method: 'POST',
         }).then((res)=>{
-            if(res.status == 200) {
+            if(this._ismount && res.status == 200) {
                 this.setState({bonusPool: res.repsoneContent.data.bonus})
             }
         })
@@ -93,6 +96,7 @@ export default class Bobing extends Component {
                 </div>
                 <CM_transfer title="博饼"
                              visible={this.state.visible}
+                             spinLoading = {this.state.spinLoading}
                              hideModal={this.hideModal}
                              onTransfer={this.onTransfer}
                 />

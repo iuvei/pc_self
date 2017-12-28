@@ -20,6 +20,7 @@ export default class ModalView extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
     	let tempArray = stateVar.issueItem
     	console.log(tempArray);
     	let acceptArray = [];

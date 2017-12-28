@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import {Modal} from 'antd';
+import {Modal, Spin} from 'antd';
 import echarts from 'echarts';
 import Fetch from '../../../Utils';
 import common from '../../../CommonJs/common';
@@ -12,6 +12,7 @@ export default class TeamStatistics extends Component {
     constructor(props){
         super(props);
         this.state={
+            spinLoading: false,
             postData: {
                 tag: 'getUserBaseData', //获得统计数据必传getUserBaseData这个值
                 limite_data: null,// 如果有传此参数就第获得多少天之前的数据,没传就只获得当天数据
@@ -33,8 +34,12 @@ export default class TeamStatistics extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.onSelectDay(7);
         this.getTodayData();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*获取今日相关数据*/
     getTodayData() {
@@ -42,7 +47,7 @@ export default class TeamStatistics extends Component {
             method: 'POST',
             body: JSON.stringify({tag: 'getUserBaseData'})
         }).then((res)=>{
-            if(res.status == 200){
+            if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,
                     response = {
                         add_money_count: data.add_money_count,
@@ -53,85 +58,84 @@ export default class TeamStatistics extends Component {
                     };
                 this.setState({response: response});
 
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
             }
         })
     };
     getData() {
+        this.setState({spinLoading: true});
         Fetch.UpUserTeam({
             method: 'POST',
             body: JSON.stringify(this.state.postData),
         }).then((res)=>{
-            if(res.status == 200){
-                let loginDataArr = [],
-                    registerDataArr = [],
-                    addMoneyDataArr = [],
-                    voteDataArr = [],
-                    data = res.repsoneContent,
-                    statistics = this.state.statistics,
-                    login_count = data.login_count,
-                    register_count = data.register_count,
-                    add_money_count = data.add_money_count,
-                    vote_count = data.vote_count;
-                for(let j = 0, date = statistics.date; j < date.length; j++) {
-                    let loginFlag = true,
-                        registerFlag = true,
-                        addMoneyFlag = true,
-                        voteFlag = true;
-                    for(let key in login_count) {
-                        if(key == date[j]){
-                            loginDataArr.push(login_count[key]);
-                            loginFlag = false;
-                            break;
+            if(this._ismount){
+                this.setState({spinLoading: false});
+                if(res.status == 200){
+                    let loginDataArr = [],
+                        registerDataArr = [],
+                        addMoneyDataArr = [],
+                        voteDataArr = [],
+                        data = res.repsoneContent,
+                        statistics = this.state.statistics,
+                        login_count = data.login_count,
+                        register_count = data.register_count,
+                        add_money_count = data.add_money_count,
+                        vote_count = data.vote_count;
+                    for(let j = 0, date = statistics.date; j < date.length; j++) {
+                        let loginFlag = true,
+                            registerFlag = true,
+                            addMoneyFlag = true,
+                            voteFlag = true;
+                        for(let key in login_count) {
+                            if(key == date[j]){
+                                loginDataArr.push(login_count[key]);
+                                loginFlag = false;
+                                break;
+                            }
+                        }
+                        if(loginFlag) {
+                            loginDataArr.push(0);
+                        }
+                        for(let key in register_count) {
+                            if(key == date[j]){
+                                registerDataArr.push(register_count[key]);
+                                registerFlag = false;
+                                break;
+                            }
+                        }
+                        if(registerFlag) {
+                            registerDataArr.push(0);
+                        }
+                        for(let key in add_money_count) {
+                            if(key == date[j]){
+                                addMoneyDataArr.push(add_money_count[key]);
+                                addMoneyFlag = false;
+                                break;
+                            }
+                        }
+                        if(addMoneyFlag) {
+                            addMoneyDataArr.push(0);
+                        }
+                        for(let key in vote_count) {
+                            if(key == date[j]){
+                                voteDataArr.push(vote_count[key]);
+                                voteFlag = false;
+                                break;
+                            }
+                        }
+                        if(voteFlag) {
+                            voteDataArr.push(0);
                         }
                     }
-                    if(loginFlag) {
-                        loginDataArr.push(0);
-                    }
-                    for(let key in register_count) {
-                        if(key == date[j]){
-                            registerDataArr.push(register_count[key]);
-                            registerFlag = false;
-                            break;
-                        }
-                    }
-                    if(registerFlag) {
-                        registerDataArr.push(0);
-                    }
-                    for(let key in add_money_count) {
-                        if(key == date[j]){
-                            addMoneyDataArr.push(add_money_count[key]);
-                            addMoneyFlag = false;
-                            break;
-                        }
-                    }
-                    if(addMoneyFlag) {
-                        addMoneyDataArr.push(0);
-                    }
-                    for(let key in vote_count) {
-                        if(key == date[j]){
-                            voteDataArr.push(vote_count[key]);
-                            voteFlag = false;
-                            break;
-                        }
-                    }
-                    if(voteFlag) {
-                        voteDataArr.push(0);
-                    }
+                    statistics.loginData = loginDataArr;
+                    statistics.registerData = registerDataArr;
+                    statistics.addMoneyData = addMoneyDataArr;
+                    statistics.voteData = voteDataArr;
+                    this.setState({statistics: statistics}, ()=>this.brokenLine());
+                }else{
+                    console.log(res.shortMessage)
                 }
-                statistics.loginData = loginDataArr;
-                statistics.registerData = registerDataArr;
-                statistics.addMoneyData = addMoneyDataArr;
-                statistics.voteData = voteDataArr;
-                this.setState({statistics: statistics}, ()=>this.brokenLine());
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
             }
+
         })
     };
     // 折线图
@@ -143,9 +147,16 @@ export default class TeamStatistics extends Component {
             tooltip: {
                 trigger: 'axis' // tooltip 的配置项显示提示框,axis 的时候可选
             },
+            selectedMode: 'single',
             legend: {
-                data:['注册人数','登陆人数','充值人数','投注人数']
+                data:['注册人数','登陆人数','充值人数','投注人数'],
+                selected: { // 默认不选中
+                    '登陆人数': false,
+                    '充值人数': false,
+                    '投注人数': false
+                },
             },
+
             grid: {
                 left: '3%',
                 right: '4%',
@@ -157,7 +168,7 @@ export default class TeamStatistics extends Component {
                 type: 'category',
                 boundaryGap: false,
                 data: this.state.statistics.date,
-                // axisLabel: {
+                // axisLabel: { // x轴文字角度
                 //     interval:0,
                 //     rotate:0
                 // },
@@ -296,18 +307,20 @@ export default class TeamStatistics extends Component {
                         </div>
                     </li>
                 </ul>
-                <div className="t_st_broken_line">
-                    <ul className="t_st_select_day">
-                        {
-                            selectDayArr.map((item,index)=>{
-                                return (
-                                    <li className={this.state.postData.limite_data === item.id ? 'select_day_active' : ''} onClick={()=>{this.onSelectDay(item.id)}} key={item.id}>{item.text}</li>
-                                )
-                            })
-                        }
-                    </ul>
-                    <div id="main" style={{ width: 1066, height: 400 }}></div>
-                </div>
+                <Spin spinning={this.state.spinLoading}>
+                    <div className="t_st_broken_line">
+                        <ul className="t_st_select_day">
+                            {
+                                selectDayArr.map((item,index)=>{
+                                    return (
+                                        <li className={this.state.postData.limite_data === item.id ? 'select_day_active' : ''} onClick={()=>{this.onSelectDay(item.id)}} key={item.id}>{item.text}</li>
+                                    )
+                                })
+                            }
+                        </ul>
+                        <div id="main" style={{ width: 1066, height: 400 }}></div>
+                    </div>
+                </Spin>
             </div>
         );
     }

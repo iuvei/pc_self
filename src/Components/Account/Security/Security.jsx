@@ -22,7 +22,8 @@ export default class Security extends Component {
             navListIndex: 3,
             visible1: false,
             visible2: false,
-        }
+        };
+        this.onChangeIndex = this.onChangeIndex.bind(this);
     };
     /*切换选择不同操作*/
     onChangeIndex(index) {
@@ -50,7 +51,7 @@ export default class Security extends Component {
             <LoginPassword/>,
             <CapitalPassword/>,
             <BindingEmail/>,
-            <Setsecurity onChangeIndex = {this.onChangeIndex.bind(this)}/>,
+            <Setsecurity onChangeIndex = {this.onChangeIndex}/>,
         ];
         const navListIndex = this.state.navListIndex;
         return (

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { stateVar } from '../../../State';
 import Fetch from '../../../Utils';
-import { Button, Input, Modal, InputNumber, Pagination, message } from 'antd';
+import { Button, Input, Modal, Pagination, message } from 'antd';
 const Search = Input.Search;
 import ChildNav from '../../Common/ChildNav/ChildNav';
 import CM_transfer from '../CM_transfer/CM_transfer';
@@ -15,7 +15,6 @@ import ranking2 from './Img/ranking2.png';
 import close from './Img/close.png';
 import resetPw_btn from './Img/resetPw_btn.png';
 
-let MONEY_FLAG = true;
 @observer
 export default class PT extends Component {
     constructor(props) {
@@ -23,7 +22,7 @@ export default class PT extends Component {
         this.state = {
             navIndex: 0,
             visible: false,
-
+            spinLoading: false,
             resetVisible: false, //重置密码弹出框
             startLoading: false, //开始游戏
             demoLoading: false, //免费试玩
@@ -46,10 +45,12 @@ export default class PT extends Component {
         this.onTransfer = this.onTransfer.bind(this);
     };
     componentDidMount() {
+        this._ismount = true;
         this.listGetData();
         this.onRankingList();
     }
     componentWillUnmount() {
+        this._ismount = false;
         // 清除定时器与暂停动画
         clearInterval(this._clearInt);
         cancelAnimationFrame(this._animationFrame);
@@ -60,7 +61,7 @@ export default class PT extends Component {
             method: 'POST',
             body: JSON.stringify(this.state.listPostData)
         }).then((res)=>{
-            if(res.status == 200){
+            if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,
                     allGame = {
                         id: '0',
@@ -135,8 +136,7 @@ export default class PT extends Component {
             method: 'POST',
             body: JSON.stringify({cate_id: 0, ishot: 1, pn: 10})
         }).then((res)=>{
-            console.log(res)
-            if(res.status == 200){
+            if(this._ismount && res.status == 200){
                 this.setState({topRanking: res.repsoneContent.aList},()=>this.getDestination())
             }
         })
@@ -153,7 +153,7 @@ export default class PT extends Component {
             method: 'POST',
             body: JSON.stringify({id: id, isclick: 1, isdemo: isdemo}),
         }).then((res)=>{
-            if(res.status == 200) {
+            if(this._ismount && res.status == 200) {
                 let data = res.repsoneContent;
                 let formData = new FormData();
                 formData.append("userinfo",data.sUserinfostr);
@@ -194,7 +194,7 @@ export default class PT extends Component {
         Fetch.showsetpwd({
             method: 'POST',
         }).then((res)=>{
-            if(res.status == 200) {
+            if(this._ismount && res.status == 200) {
                 this.setState({ptName: res.repsoneContent.ptname})
             }
         })
@@ -209,7 +209,7 @@ export default class PT extends Component {
             method: 'POST',
             body: JSON.stringify({pwd: resetPw})
         }).then((res)=>{
-            if(res.status == 200){
+            if(this._ismount && res.status == 200){
                 message.success(res.shortMessage);
             }else{
                 Modal.warning({
@@ -220,27 +220,29 @@ export default class PT extends Component {
     };
     /*转账*/
     onTransfer(type, intoMoney, outMoney) {
-        if(MONEY_FLAG){
-            MONEY_FLAG = false;
-            let postData = {};
-            if(type == 'into') {
-                postData = {
-                    targetpt: 2,
-                    frompt: 's',
-                    money: intoMoney,
-                }
-            }else{
-                postData = {
-                    targetpt: 's',
-                    frompt: 2,
-                    money: outMoney,
-                }
+        this.setState({spinLoading: true});
+        let postData = {};
+        if(type == 'into') {
+            postData = {
+                targetpt: 2,
+                frompt: 's',
+                money: intoMoney,
+                tag: 'transfer',
             }
-            Fetch.pttranfer({
-                method: 'POST',
-                body: JSON.stringify(postData),
-            }).then((res)=>{
-                MONEY_FLAG = true;
+        }else{
+            postData = {
+                targetpt: 's',
+                frompt: 2,
+                money: outMoney,
+                tag: 'transfer',
+            }
+        }
+        Fetch.pttranfer({
+            method: 'POST',
+            body: JSON.stringify(postData),
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({spinLoading: false});
                 if(res.status == 200){
                     Modal.success({
                         title: res.shortMessage,
@@ -250,9 +252,8 @@ export default class PT extends Component {
                         title: res.shortMessage,
                     });
                 }
-            })
-        }
-
+            }
+        })
     };
     /*关闭模态框*/
     hideModal() {
@@ -383,6 +384,7 @@ export default class PT extends Component {
                 </Modal>
                 <CM_transfer title="PT"
                              visible={this.state.visible}
+                             spinLoading = {this.state.spinLoading}
                              hideModal={this.hideModal}
                              onTransfer={this.onTransfer}
                 />

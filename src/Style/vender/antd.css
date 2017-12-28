@@ -14743,7 +14743,7 @@ textarea.ant-pagination-options-quick-jumper input {
   right: 16px;
 }
 .ant-spin {
-  color: #CF2027;
+  color: #1890ff;
   vertical-align: middle;
   text-align: center;
   opacity: 0;
@@ -14847,7 +14847,7 @@ textarea.ant-pagination-options-quick-jumper input {
   width: 9px;
   height: 9px;
   border-radius: 100%;
-  background-color: #CF2027;
+  background-color: #1890ff;
   -webkit-transform: scale(0.75);
   -ms-transform: scale(0.75);
   transform: scale(0.75);

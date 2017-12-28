@@ -15,6 +15,12 @@ export default class Notice extends Component {
             shouldUpdate: true,
         };
     };
+    componentDidMount() {
+        this._ismount = true;
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
     selectNotice(item) {
         this.props.onNoticeDetails(item);
         Fetch.helpNotice({
@@ -23,12 +29,14 @@ export default class Notice extends Component {
                 nid: item.id,
             })
         }).then((res)=>{
-            if(res.status === 200) {
-                this.props.onNoticeList(item);
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                if(res.status == 200) {
+                    this.props.onNoticeList(item);
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };

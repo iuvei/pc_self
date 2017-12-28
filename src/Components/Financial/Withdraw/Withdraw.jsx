@@ -1,5 +1,5 @@
 /*提现*/
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import Fetch from '../../../Utils';
@@ -7,8 +7,6 @@ import { stateVar } from '../../../State';
 import { InputNumber, Button, Modal } from 'antd';
 
 import './Withdraw.scss';
-
-import nongye from './Img/nongye.png'
 
 @observer
 export default class Withdraw extends Component {
@@ -27,7 +25,11 @@ export default class Withdraw extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getWithdrawel();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*获取用户可提款的银行卡信息和可提款金额*/
     getWithdrawel() {
@@ -35,7 +37,7 @@ export default class Withdraw extends Component {
             method: 'POST',
             body: JSON.stringify({type: 'wstep1'})
         }).then((res)=>{
-            if(res.status == 200) {
+            if(this._ismount && res.status == 200) {
                 let data = res.repsoneContent,
                     postData = this.state.postData;
                 postData.wstep1Code = data.wstep1Code;
@@ -50,7 +52,6 @@ export default class Withdraw extends Component {
     }
 
     onRechargeAmount(value) {
-        console.log('changed', value);
         let postData = this.state.postData;
         postData.money = value;
         this.setState({postData});
@@ -62,15 +63,16 @@ export default class Withdraw extends Component {
             method: 'POST',
             body: JSON.stringify(this.state.postData)
         }).then((res)=>{
-            console.log(res)
-            this.setState({ iconLoadingRecharge: false });
-            if(res.status == 200) {
-                stateVar.bankWithdrawInfo = res.repsoneContent;
-                hashHistory.push('/financial/withdraw/affirmWithdraw');
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                this.setState({ iconLoadingRecharge: false });
+                if(res.status == 200) {
+                    stateVar.bankWithdrawInfo = res.repsoneContent;
+                    hashHistory.push('/financial/withdraw/affirmWithdraw');
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -107,9 +109,11 @@ export default class Withdraw extends Component {
                                 response.bankList == undefined ? '' :
                                 response.bankList.map((item, i)=>{
                                     return (
-                                        <li className={this.state.defaultBank == item.id ? 'r_m_qq_controler r_m_active' : 'r_m_qq_controler'} key={item.id} onClick={()=>this.onSelectBank(item)}>
-                                            <img src={nongye} alt=""/>
-                                            <span className="r_m_qq">{item.bank_name}：{item.account.slice(-5)}[{item.account_name}]</span>
+                                        <li key={item.id} onClick={()=>this.onSelectBank(item)}>
+                                            <div className={this.state.defaultBank == item.id ? 'r_m_qq_controler r_m_active' : 'r_m_qq_controler'}>
+                                                <img src={require('./Img/'+item.bank_code+'.jpg')} alt=""/>
+                                                <span className="r_m_qq">{item.bank_name}：{item.account.slice(-5)}[{item.account_name}]</span>
+                                            </div>
                                         </li>
                                     )
                                 })

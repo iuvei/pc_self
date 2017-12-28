@@ -55,10 +55,11 @@ export default class Marketing extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         Fetch.adduser({
             method:'POST',
         }).then((res)=>{
-            if(res.status === 200){
+            if(this._ismount && res.status === 200){
                 let repsone = res.repsoneContent,
                     registerSlider = this.state.registerSlider,
                     generalizeSlider = this.state.generalizeSlider;
@@ -83,6 +84,10 @@ export default class Marketing extends Component {
                 });
             }
         })
+    };
+
+    componentWillUnmount() {
+        this._ismount = false;
     };
 
     /*注册-用户类型*/
@@ -196,31 +201,33 @@ export default class Marketing extends Component {
                 method:'POST',
                 body: JSON.stringify(this.state.registerPost),
             }).then((res)=>{
-                this.setState({
-                    iconLoadingRegister: false,
-                });
-                if(res.status == 200){
-                    let _this = this;
-                    Modal.success({
-                        title: res.shortMessage,
-                        content: res.repsoneContent,
-                        onOk() {
-                            let registerPost = _this.state.registerPost;
-                            registerPost.username = '';
-                            registerPost.userpass = '';
-                            registerPost.nickname = '';
-                            _this.setState({
-                                validateUserName: 2,
-                                validateUserPass: 2,
-                                validateNickName: 2,
-                                registerPost: registerPost,
-                            });
-                        },
+                if(this._ismount){
+                    this.setState({
+                        iconLoadingRegister: false,
                     });
-                } else {
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                    if(res.status == 200){
+                        let _this = this;
+                        Modal.success({
+                            title: res.shortMessage,
+                            content: res.repsoneContent,
+                            onOk() {
+                                let registerPost = _this.state.registerPost;
+                                registerPost.username = '';
+                                registerPost.userpass = '';
+                                registerPost.nickname = '';
+                                _this.setState({
+                                    validateUserName: 2,
+                                    validateUserPass: 2,
+                                    validateNickName: 2,
+                                    registerPost: registerPost,
+                                });
+                            },
+                        });
+                    } else {
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             })
         }else{
@@ -241,7 +248,7 @@ export default class Marketing extends Component {
             method: 'POST',
             body: JSON.stringify({flag: 'getlink'}),
         }).then((res)=>{
-            if(res.status == 200){
+            if(this._ismount && res.status == 200){
                 this.setState({generalizeData: res.repsoneContent})
             }else{
                 Modal.warning({
@@ -292,14 +299,16 @@ export default class Marketing extends Component {
             method: 'POST',
             body: JSON.stringify(this.state.generalizePost),
         }).then((res)=>{
-            this.setState({ generalizeIconLoading: false });
-            if(res.status == 200) {
-                message.success(res.shortMessage);
-                this.onReneralize();
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                this.setState({ generalizeIconLoading: false });
+                if(res.status == 200) {
+                    message.success(res.shortMessage);
+                    this.onReneralize();
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -343,13 +352,14 @@ export default class Marketing extends Component {
             method:'POST',
             body: JSON.stringify(postData)
         }).then((res)=>{
-            console.log(res)
-            if(res.status == 200) {
+            if(this._ismount){
+                if(res.status == 200) {
 
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -364,14 +374,16 @@ export default class Marketing extends Component {
             method:'POST',
             body: JSON.stringify(postData),
         }).then((res)=>{
-            if(res.status == 200){
-                message.success(res.shortMessage);
-                let generalizeData = this.state.generalizeData;
-                this.setState({ generalizeData: generalizeData.filter(item => item.id !== record.id) });
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                if(res.status == 200){
+                    message.success(res.shortMessage);
+                    let generalizeData = this.state.generalizeData;
+                    this.setState({ generalizeData: generalizeData.filter(item => item.id !== record.id) });
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };

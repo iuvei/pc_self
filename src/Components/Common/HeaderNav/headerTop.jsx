@@ -38,10 +38,14 @@ export default class HeaderTop extends Component {
         this.hideModal = this.hideModal.bind(this);
     };
     componentDidMount(){
+        this._ismount = true;
         this.getBalance();
         this.getNotice();
+        this.onUnread();
+        this.getress();
     };
     componentWillUnmount() {
+        this._ismount = false;
         // 清除定时器与暂停动画
         clearInterval(this._clearInt);
         cancelAnimationFrame(this._animationFrame);
@@ -78,42 +82,57 @@ export default class HeaderTop extends Component {
         };
         step()
     };
+    getress(){
+        let userInfo = stateVar.userInfo;
+        Fetch.ipaddress({
+            method: 'POST',
+            body: JSON.stringify({ip: userInfo.lastIp, userid: userInfo.userid})
+        }).then((res)=>{
+            if(this._ismount && res.status == 200){
+                userInfo.address = res.repsoneContent;
+            }
+        })
+    }
     /*获取公告*/
     getNotice() {
         Fetch.noticeList({
             method: 'POST',
             pagesize: 40,
         }).then((res)=>{
-            if(res.status === 200) {
-                this.setState({
-                    noticeList: res.repsoneContent.results,
-                },()=>this.getDestination());
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                if(res.status == 200) {
+                    this.setState({
+                        noticeList: res.repsoneContent.results,
+                    },()=>this.getDestination());
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
     /*获取各平台余额*/
     getBalance(){
         Fetch.balance({method: 'POST'}).then((res)=>{
-            if(res.status === 200) {
-                let repsoneContent = res.repsoneContent,
-                    allBalance = {
-                        cpbalance: repsoneContent.cpbalance,
-                        eabalance: repsoneContent.eabalance,
-                        ptbalance: repsoneContent.ptbalance,
-                        kgbalance: repsoneContent.kgbalance,
-                        bobingBalance: repsoneContent.bobingBalance,
-                        sbbalance: repsoneContent.sbbalance,
-                    };
-                stateVar.allBalance = allBalance;
-                this.setState({allBalance: allBalance});
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                if(res.status == 200) {
+                    let repsoneContent = res.repsoneContent,
+                        allBalance = {
+                            cpbalance: repsoneContent.cpbalance,
+                            eabalance: repsoneContent.eabalance,
+                            ptbalance: repsoneContent.ptbalance,
+                            kgbalance: repsoneContent.kgbalance,
+                            bobingBalance: repsoneContent.bobingBalance,
+                            sbbalance: repsoneContent.sbbalance,
+                        };
+                    stateVar.allBalance = allBalance;
+                    this.setState({allBalance: allBalance});
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -123,13 +142,15 @@ export default class HeaderTop extends Component {
             title: '确定要退出吗?',
             onOk() {
                 Fetch.logout({method: 'POST'}).then((res)=>{
-                    if(res.status == 200){
-                        common.removeStore('userName');
-                        hashHistory.push('/');
-                    }else{
-                        Modal.warning({
-                            title: res.shortMessage,
-                        });
+                    if(this._ismount){
+                        if(res.status == 200){
+                            common.removeStore('userName');
+                            hashHistory.push('/');
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
                     }
                 })
             },
@@ -171,6 +192,26 @@ export default class HeaderTop extends Component {
         if(!this.state.visible){
             this.getDestination()
         }
+    }
+
+    /*站内信未读条数*/
+    onUnread() {
+        Fetch.messages({
+            method: 'POST',
+            body: JSON.stringify({tag: 'unreadcount'})
+        }).then((res)=>{
+            if(this._ismount && res.status == 200) {
+                stateVar.unread = res.repsoneContent;
+            }
+        })
+    }
+    /*站内信*/
+    onHashHistory(router, nav, childNav) {
+        hashHistory.push({
+            pathname: router,
+            query: {navIndex: childNav}
+        });
+        stateVar.navIndex = nav;
     }
     render() {
         const allBalance = this.state.allBalance;
@@ -223,7 +264,7 @@ export default class HeaderTop extends Component {
                                         </li>
                                         <li>
                                             <span className="left">上次登录地点</span>
-                                            <span className="right color_DFC674">{userInfo.lastIp}</span>
+                                            <span className="right color_DFC674">{userInfo.lastIp} {userInfo.address}</span>
                                         </li>
                                         <li>
                                             <span className="left">上次登录时间</span>
@@ -237,9 +278,11 @@ export default class HeaderTop extends Component {
                             </div>
                         </li>
                         <li className="n_t_message n_t_cursor">
-                            <Badge count={119} overflowCount={99}>
-                                <img src={email_icon} alt="站内信"/>
-                            </Badge>
+                            <a href="javascript:void(0)" onClick={()=>this.onHashHistory('/account/message', 'account', 6)}>
+                                <Badge count={stateVar.unread} overflowCount={99} showZero>
+                                    <img src={email_icon} alt="站内信"/>
+                                </Badge>
+                            </a>
                         </li>
                         <li className="n_t_balance_p">
                             <span>余额：</span>
@@ -283,34 +326,19 @@ export default class HeaderTop extends Component {
                             </div>
                         </li>
                         <li className="n_t_cursor_color">
-                            <Link to={
-                                {
-                                    pathname: '/financial/recharge',
-                                    query: {navIndex: 0}
-                                }
-                            }>
+                            <a href="javascript:void(0)" onClick={()=>this.onHashHistory('/financial/recharge', 'financial', 0)}>
                                 充值
-                            </Link>
+                            </a>
                         </li>
                         <li className="n_t_cursor_color">
-                            <Link to={
-                                {
-                                    pathname: '/financial/withdraw',
-                                    query: {navIndex: 1}
-                                }
-                            }>
+                            <a href="javascript:void(0)" onClick={()=>this.onHashHistory('/financial/withdraw', 'financial', 1)}>
                                 提款
-                            </Link>
+                            </a>
                         </li>
                         <li className="n_t_cursor_color">
-                            <Link to={
-                                {
-                                    pathname: '/financial/transfer',
-                                    query: {navIndex: 3}
-                                }
-                            }>
+                            <a href="javascript:void(0)" onClick={()=>this.onHashHistory('/financial/transfer', 'financial',3)}>
                                 转账
-                            </Link>
+                            </a>
                         </li>
                     </ul>
                 </div>

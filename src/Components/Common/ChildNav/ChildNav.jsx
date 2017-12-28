@@ -10,7 +10,6 @@ export default class ChildNav extends PureComponent {
         super(props);
         this.state = {
             NavIndex: this.props.defaultIndex == undefined ? 0 : this.props.defaultIndex,
-            // NavIndex: this.props.location.query.defaultIndex == undefined ? 0 : this.props.location.query.defaultIndex,
         };
     };
     handClick(index, item) {
@@ -27,15 +26,14 @@ export default class ChildNav extends PureComponent {
        return true
     };
     render() {
-        console.log(this.props)
-        console.log(this.props.location)
+        console.log(this.state.NavIndex)
         return (
             <div className="c_nav">
                 <ul className="nav_list clear">
                     {
                         this.props.navList.map((item, index)=>{
                             return (
-                                <li className={index == this.state.NavIndex? 'nav_active' : 'hvr-overline-from-left hvr-fade'} onClick={()=>{this.handClick(index, item)}} key={index}>
+                                <li className={index == this.state.NavIndex ? 'nav_active' : 'hvr-overline-from-left hvr-fade'} onClick={()=>{this.handClick(index, item)}} key={index}>
 
                                     {
                                         item.link != undefined ?

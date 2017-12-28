@@ -32,7 +32,7 @@ export default class GameBill extends Component {
         this.setState({showLottery: false})
     };
     componentDidMount() {
-
+        this._ismount = true;
     };
 
     handleChange(value) {

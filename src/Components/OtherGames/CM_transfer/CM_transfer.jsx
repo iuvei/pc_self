@@ -1,7 +1,7 @@
 /*第三方转账*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Button, Input, Modal, InputNumber, Pagination, message } from 'antd';
+import { Modal, InputNumber, Spin} from 'antd';
 
 import './CM_transfer.scss';
 import close from './Img/close.png';
@@ -34,7 +34,7 @@ export default class CM_transfer extends Component {
             intoMoney: '',
             outMoney: '',
         })
-    }
+    };
     /*验证显示不同class*/
     onValidate(val) {
         let classNames,
@@ -78,7 +78,6 @@ export default class CM_transfer extends Component {
             outMoney: val,
         })
     };
-
     /*转账*/
     onTransfer(type) {
         let validate = this.state.validate,
@@ -113,8 +112,10 @@ export default class CM_transfer extends Component {
                 width={479}
                 className="og_transferModal"
             >
+                <Spin spinning={this.props.spinLoading} tip="正在充值，请稍后...">
                 <img className="og_transfer_close right" onClick={()=>this.onCloseTranfer()} src={close} alt="关闭"/>
                 <p className="og_title">{this.props.title}游戏转账</p>
+
                 <ul className="og_transfer_money">
                     <li>
                         <span>转入金额：</span>
@@ -137,6 +138,8 @@ export default class CM_transfer extends Component {
                     <img src={into_btn} onClick={()=>this.onTransfer('into')} alt="转入"/>
                     <img src={out_btn} onClick={()=>this.onTransfer('out')} alt="转出"/>
                 </p>
+                </Spin>
+
             </Modal>
         )
     }

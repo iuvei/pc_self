@@ -22,7 +22,11 @@ export default class ARdetails extends Component {
         };
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     getData() {
         this.setState({loading: true});
@@ -30,14 +34,15 @@ export default class ARdetails extends Component {
             method: 'POST',
             body: JSON.stringify({id: this.props.location.query.taskid})
         }).then((res)=>{
-            console.log(res)
-            this.setState({loading: false});
-            if(res.status == 200){
-                let data = res.repsoneContent;
-                this.setState({
-                    details: data.task,
-                    data: data.aTaskdetail.filter(item => item.projectid !== '0'),
-                })
+            if(this._ismount){
+                this.setState({loading: false});
+                if(res.status == 200){
+                    let data = res.repsoneContent;
+                    this.setState({
+                        details: data.task,
+                        data: data.aTaskdetail.filter(item => item.projectid !== '0'),
+                    })
+                }
             }
         })
     };
@@ -75,7 +80,7 @@ export default class ARdetails extends Component {
             }else if(record.isgetprize == 2){
                 return '未中奖'
             }else if(record.isgetprize == 1){
-                return record.prizestatus == 0 ? '未派奖' : <b className="col_color_F01111">已派奖</b>
+                return record.prizestatus == 0 ? '未派奖' : <b className="col_color_ying">已派奖</b>
             }
         }else if(record.iscancel == 1){
             return '本人撤单'
@@ -108,14 +113,16 @@ export default class ARdetails extends Component {
                     method: 'POST',
                     body: JSON.stringify(postData)
                 }).then((res)=>{
-                    _this.setState({stopLoading: false});
-                    if(res.status == 200){
-                        message.success(res.longMessage);
-                        _this.getData();
-                    } else {
-                        Modal.warning({
-                            title: res.longMessage,
-                        });
+                    if(this._ismount){
+                        _this.setState({stopLoading: false});
+                        if(res.status == 200){
+                            message.success(res.longMessage);
+                            _this.getData();
+                        } else {
+                            Modal.warning({
+                                title: res.longMessage,
+                            });
+                        }
                     }
                 })
             }
@@ -135,16 +142,18 @@ export default class ARdetails extends Component {
                     method:'POST',
                     body:JSON.stringify({id: seatModal.projectid})
                 }).then((res)=>{
-                    _this.setState({iscancancelLoading: false});
-                    if(res.status == 200){
-                        message.success(res.longMessage);
-                        let seatModal = _this.state.seatModal;
-                        seatModal.iscancancel = 11; // 随意设置一个值来判断关闭和撤单成功后是否重新刷新列表
-                        _this.setState({seatModal: seatModal});
-                    } else {
-                        Modal.warning({
-                            title: res.shortMessage,
-                        });
+                    if(_this._ismount) {
+                        _this.setState({iscancancelLoading: false});
+                        if(res.status == 200){
+                            message.success(res.longMessage);
+                            let seatModal = _this.state.seatModal;
+                            seatModal.iscancancel = 11; // 随意设置一个值来判断关闭和撤单成功后是否重新刷新列表
+                            _this.setState({seatModal: seatModal});
+                        } else {
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
                     }
                 })
             }
@@ -221,8 +230,8 @@ export default class ARdetails extends Component {
                 dataIndex: 'bonus',
                 className:'column-right',
                 render:(text)=>(
-                    text <= 0 ? <span className="col_color_F01111">{text}</span> :
-                        <span className="col_color_2BB851">{text}</span>
+                    text < 0 ? <span className="col_color_ying">{text}</span> :
+                        <span className="col_color_shu">{text}</span>
                 ),
                 width: 90,
             }, {
@@ -281,7 +290,7 @@ export default class ARdetails extends Component {
                         <span>中奖后终止：{details.stoponwin == 1 ? '是' : '否'}</span>
                         <span>
                             状态：{
-                                    details.status == 0 ? <em className="col_color_2BB851" style={{fontStyle: 'normal'}}>进行中</em> :
+                                    details.status == 0 ? <em className="col_color_shu" style={{fontStyle: 'normal'}}>进行中</em> :
                                     details.status == 1 ? '已取消' :
                                     details.status == 2 ? '已完成' : ''
                                   }

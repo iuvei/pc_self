@@ -79,8 +79,12 @@ export default class ForgetFundPw extends Component {
         };
     };
     componentDidMount() {
+        this._ismount = true;
         this.onForgetPw()
     }
+    componentWillUnmount() {
+        this._ismount = false;
+    };
 
     /*忘记资金密码*/
     onForgetPw() {
@@ -88,28 +92,30 @@ export default class ForgetFundPw extends Component {
         Fetch.bindsequestion({
             method: 'POST',
         }).then((res)=>{
-            if(res.status == 200) {
-                let data = res.repsoneContent,
-                    modalIssue = this.state.modalIssue,
-                    resetPostData = this.state.resetPostData;
-                resetPostData.dna_ques = data.dna_ques_1;
-                resetPostData.dna_ques1 = data.dna_ques_2;
-                issueFlag.forEach((item,i)=>{
-                    if(item.id == data.dna_ques_1){
-                        modalIssue.issue_1 = item.text;
-                    }
-                    if(item.id == data.dna_ques_2){
-                        modalIssue.issue_2 = item.text;
-                    }
-                });
-                this.setState({
-                    modalIssue: modalIssue,
-                    resetPostData: resetPostData,
-                });
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                if(res.status == 200) {
+                    let data = res.repsoneContent,
+                        modalIssue = this.state.modalIssue,
+                        resetPostData = this.state.resetPostData;
+                    resetPostData.dna_ques = data.dna_ques_1;
+                    resetPostData.dna_ques1 = data.dna_ques_2;
+                    issueFlag.forEach((item,i)=>{
+                        if(item.id == data.dna_ques_1){
+                            modalIssue.issue_1 = item.text;
+                        }
+                        if(item.id == data.dna_ques_2){
+                            modalIssue.issue_2 = item.text;
+                        }
+                    });
+                    this.setState({
+                        modalIssue: modalIssue,
+                        resetPostData: resetPostData,
+                    });
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
 
@@ -201,28 +207,30 @@ export default class ForgetFundPw extends Component {
                 method: 'POST',
                 body: JSON.stringify(resetPostDataFlag)
             })).then((res)=>{
-                this.setState({resetLoading: false});
-                if(res.status == 200) {
-                    let _this = this;
-                    Modal.success({
-                        title: res.shortMessage,
-                        onOk() {
-                            modalValidate.ans = 2;
-                            modalValidate.ans1 = 2;
-                            modalValidate.security_pass = 2;
-                            resetPostData.ans = '';
-                            resetPostData.ans1 = '';
-                            resetPostData.security_pass = '';
-                            _this.setState({
-                                modalValidate: modalValidate,
-                                resetPostData: resetPostData,
-                            })
-                        }
-                    });
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                if(this._ismount){
+                    this.setState({resetLoading: false});
+                    if(res.status == 200) {
+                        let _this = this;
+                        Modal.success({
+                            title: res.shortMessage,
+                            onOk() {
+                                modalValidate.ans = 2;
+                                modalValidate.ans1 = 2;
+                                modalValidate.security_pass = 2;
+                                resetPostData.ans = '';
+                                resetPostData.ans1 = '';
+                                resetPostData.security_pass = '';
+                                _this.setState({
+                                    modalValidate: modalValidate,
+                                    resetPostData: resetPostData,
+                                })
+                            }
+                        });
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             })
         }
@@ -234,7 +242,7 @@ export default class ForgetFundPw extends Component {
         hashHistory.push({
             pathname: '/account/security',
             query: {
-                defaultIndex: 5
+                navIndex: 5
             }
         });
     };

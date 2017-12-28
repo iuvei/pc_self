@@ -5,12 +5,12 @@ import { hashHistory, Link } from 'react-router';
 
 import './Activity.scss'
 
-import activity01 from './Img/activity01.png'
-import activity02 from './Img/activity02.png'
-import activity03 from './Img/activity03.png'
-import activity04 from './Img/activity04.png'
-import activity_apply from './Img/activity_apply.png'
-import activity_conduct from './Img/activity_conduct.png'
+import activity01 from './Img/activity01.png';
+import activity02 from './Img/activity02.png';
+import activity03 from './Img/activity03.png';
+import activity04 from './Img/activity04.png';
+import activity_apply from './Img/activity_apply.png';
+import activity_conduct from './Img/activity_conduct.png';
 
 @observer
 export default class Activity extends Component {

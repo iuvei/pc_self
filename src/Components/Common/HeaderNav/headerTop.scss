@@ -98,7 +98,14 @@ $width_100: 100%;
             }
         }
         .n_t_message{
-            width: 80px;
+            padding: 0;
+            a{
+                display: inline-block;
+                width: 79px;
+                height: 40px;
+                padding-right: 8px;
+                text-align: center;
+            }
         }
         .n_t_balance_p{
             position: relative;

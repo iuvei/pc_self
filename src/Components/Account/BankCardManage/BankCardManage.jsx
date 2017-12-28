@@ -55,7 +55,11 @@ export default class BankCardManage extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*获取银行卡列表*/
     getData() {
@@ -63,20 +67,23 @@ export default class BankCardManage extends Component {
         Fetch.userbankinfo({
             method: 'POST'
         }).then((res)=>{
-            this.setState({tableLoading: false});
-            if(res.status == 200){
-                let data = res.repsoneContent,
-                    response = {
-                        bankList: data.bankList,
-                        binded: data.binded,
-                        num: data.num,
-                    };
-                this.setState({response: response});
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount) {
+                this.setState({tableLoading: false});
+                if(res.status == 200){
+                    let data = res.repsoneContent,
+                        response = {
+                            bankList: data.bankList,
+                            binded: data.binded,
+                            num: data.num,
+                        };
+                    this.setState({response: response});
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
+
         })
     };
     /*获取开户行和省份*/
@@ -85,7 +92,7 @@ export default class BankCardManage extends Component {
             method: 'POST',
             body: JSON.stringify({flag: 'page'}),
         }).then((res)=>{
-            if(res.status == 200){
+            if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,
                     adduserbank = this.state.adduserbank;
                     adduserbank.banklist = data.banklist;
@@ -144,7 +151,7 @@ export default class BankCardManage extends Component {
             method: 'POST',
             body: JSON.stringify({flag: 'getCity', province: val}),
         }).then((res)=>{
-            if(res.status == 200) {
+            if(this._ismount && res.status == 200) {
                 adduserbank.city = res.repsoneContent;
                 this.setState({
                     adduserbank: adduserbank,
@@ -326,19 +333,21 @@ export default class BankCardManage extends Component {
                 method: 'POST',
                 body: JSON.stringify(addPostDataFlag),
             }).then((res)=>{
-                this.setState({ loading: false });
-                if(res.status == 200){
-                    message.success(res.shortMessage);
-                    this.setState({
-                        addPostData: {},
-                        validate: {},
-                    });
-                    this.getData();
+                if(this._ismount){
+                    this.setState({ loading: false });
+                    if(res.status == 200){
+                        message.success(res.shortMessage);
+                        this.setState({
+                            addPostData: {},
+                            validate: {},
+                        });
+                        this.getData();
 
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             })
         }

@@ -82,6 +82,7 @@ export default class Sport extends Component {
         this.setState({visible: false})
     };
     componentDidMount() {
+        this._ismount = true;
         this.getThirdAddress();
 
     };

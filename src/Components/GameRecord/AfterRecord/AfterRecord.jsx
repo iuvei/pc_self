@@ -46,33 +46,39 @@ export default class AfterRecord extends Component {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData()
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*获取追号记录*/
     getData() {
+        this.setState({loading: true});
         Fetch.traceInfo({
             method: 'POST',
             body: JSON.stringify(this.state.postData)
         }).then((res)=>{
-            console.log(res)
-            this.setState({searchLoading: false});
-            if(res.status == 200) {
-                let data = res.repsoneContent;
-                let responseData = {
-                    lotteryList: data.lotteryList,
-                    newCrowdList: data.newCrowdList,
-                    newMethodCrowdList: data.newMethodCrowdList,
-                };
-                this.setState({
-                    data: data.list,
-                    responseData: responseData,
-                    sum: data.all_sum,
-                    total: parseInt(data.offects),
-                })
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount) {
+                this.setState({searchLoading: false, loading: false});
+                if(res.status == 200) {
+                    let data = res.repsoneContent;
+                    let responseData = {
+                        lotteryList: data.lotteryList,
+                        newCrowdList: data.newCrowdList,
+                        newMethodCrowdList: data.newMethodCrowdList,
+                    };
+                    this.setState({
+                        data: data.list,
+                        responseData: responseData,
+                        sum: data.all_sum,
+                        total: parseInt(data.offects),
+                    })
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -245,9 +251,9 @@ export default class AfterRecord extends Component {
                     return (
                         <a href="javascript:void(0)" style={{textDecoration: 'underline'}} onClick={()=>this.onClickStatus(record)}>
                             {
-                                text == 0 ? <span className="col_color_2BB851">进行中</span> :
+                                text == 0 ? <span className="col_color_shu">进行中</span> :
                                     text == 1 ? '已取消' :
-                                        text == 2 ? <span className="col_color_F01111">已完成</span> : ''
+                                        text == 2 ? <span className="col_color_ying">已完成</span> : ''
                             }
                         </a>
                     )
@@ -256,7 +262,7 @@ export default class AfterRecord extends Component {
             }];
         const sum = this.state.sum;
         const total = this.state.total;
-        const footer = <div className="l_b_tabel_footer" style={{display: total < 1 ? 'none' : ''}} >
+        const footer = <div className="l_b_tabel_footer">
             <span>总计</span>
             <span>
                 追号总金额：

@@ -30,7 +30,11 @@ export default class BobingRecord extends PureComponent {
         }
     };
     componentDidMount() {
+        this._ismount = true;
         this.getData()
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     // shouldComponentUpdate(nextProps, nextState){
         // return nextState.data == this.state.data
@@ -41,18 +45,20 @@ export default class BobingRecord extends PureComponent {
             method: 'POST',
             body: JSON.stringify(this.state.postData)
         }).then((res)=>{
-            this.setState({searchLoading: false});
-            if(res.status == 200) {
-                let repsone = res.repsoneContent;
-                this.setState({
-                    data: repsone.aProject,
-                    totalInfo: repsone.all_info,
-                    total: parseInt(repsone.affects),
-                })
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                this.setState({searchLoading: false});
+                if(res.status == 200) {
+                    let repsone = res.repsoneContent;
+                    this.setState({
+                        data: repsone.aProject,
+                        totalInfo: repsone.all_info,
+                        total: parseInt(repsone.affects),
+                    })
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -118,7 +124,7 @@ export default class BobingRecord extends PureComponent {
         this.setState({postData: postData});
     };
     onColor() {
-        return parseFloat(this.state.totalInfo.sum_prizepool) < 0 ? 'col_color_F01111' : 'col_color_2BB851';
+        return parseFloat(this.state.totalInfo.sum_prizepool) < 0 ? 'col_color_shu' : 'col_color_ying';
     };
 
     render() {
@@ -198,8 +204,8 @@ export default class BobingRecord extends PureComponent {
                 dataIndex: 'total_account',
                 className: 'column-right',
                 render: text => (
-                    text < 0 ? <span className="col_color_F01111">{text}</span> :
-                            <span className="col_color_2BB851">{text}</span>
+                    text < 0 ? <span className="col_color_shu">{text}</span> :
+                            <span className="col_color_ying">{text}</span>
 
                 ),
                 // sorter: (a, b) => a.age - b.age,
