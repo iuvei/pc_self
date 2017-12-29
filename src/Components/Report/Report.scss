@@ -31,3 +31,139 @@
         padding: 8px 5px;
     }
 }
+
+
+$border-color: #B2B2B2;
+
+.lottery_bet{
+    color: #363636;
+    font-size: 14px;
+    .team_list_top{
+        padding: 30px 30px 13px;
+        border-bottom: 1px solid #ccc;
+        .t_l_time{
+            padding-bottom: 15px;
+            .t_m_date_classify{
+                display: inline-block;
+                width: 70px;
+                text-align: right;
+                margin-right: 10px;
+            }
+            .t_l_time_row{
+                @include lh(30px);
+                margin-bottom: 12px;
+                li{
+                    float: left;
+                    margin-right: 20px;
+                }
+            }
+            .t_m_line{
+                margin-top: 3px;
+                height: 22px;
+                border-left: 1px solid #AFAFAF;
+            }
+            .t_l_time_btn{
+                box-sizing: border-box;
+                @include lh(30px);
+                li{
+                    box-sizing: border-box;
+                    @include lh(30px);
+                    padding: 0 8px;
+                    border:1px solid $border-color;
+                    margin-right: 3px;
+                    &:hover{
+                        cursor: pointer;
+                        background-color: #ddd;
+                    }
+                }
+                li:not(:first-child){
+                    border-left:1px solid $border-color;
+                }
+            }
+            .t_l_classify{
+                @include lh(30px);
+                li{
+                    float: left;
+                    margin-right: 30px;
+                    .l_b_acount{
+
+                    }
+                    .ant-input{
+                        width: 120px;
+                    }
+                }
+                li:last-child{
+                    margin: 0;
+                }
+                .t_l_border{
+                    box-sizing: border-box;
+                    @include lh(30px);
+                    display: inline-block;
+                    border: 1px solid $border-color;
+                    padding: 0 10px;
+                    margin-left: 8px;
+                    &:hover{
+                        cursor: pointer;
+                        background-color: #ddd;
+                    }
+                }
+            }
+        }
+        .t_m_select_lottery{
+            padding: 0 5px 0;
+            height: 0;
+            overflow: hidden;
+            @include transform(height, 0.3s);
+            .ant-radio-wrapper{
+                margin: 10px 25px 0 0;
+                width: 105px;
+            }
+        }
+        .t_m_select_lottery_show{
+            height: 90px;
+            border-top: 1px dotted #8B8D92;
+        }
+    }
+    .t_l_table{
+        background-color: #F4F4F4;
+        padding: 10px 12px 50px;
+        .t_l_table_list{
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding:8px 5px;
+        }
+        .t_l_page{
+            float: right;
+            margin-top: 8px;
+        }
+        .ant-pagination-options-size-changer{
+            margin-right: 0;
+        }
+    }
+}
+.pt_record{
+    .ant-radio-wrapper{
+        width: 180px !important;
+    }
+}
+
+.t_l_prompt{
+    background-color: #bbb;
+    padding: 5px;
+    @include borderRadius(2px);
+}
+
+.g_r_main{
+    .a_m_title, .team_list_top{
+        background-color: #fff;
+    }
+    .ant-input{
+        height: 30px;
+    }
+    .ant-select-selection--single{
+        height: 30px;
+    }
+    .ant-select-selection__rendered{
+        line-height: 28px;
+    }
+}

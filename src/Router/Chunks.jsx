@@ -175,6 +175,12 @@ export const dayRate = (location, callback) => {
         callback(null, require('../Components/Report/DayRate/DayRate').default);
     }, 'dayRate');
 };
+// 报表管理/日工资
+export const lotteryReport = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/Report/LotteryReport/LotteryReport').default);
+    }, 'lotteryReport');
+};
 // 报表管理/日亏损佣金
 export const losesalary = (location, callback) => {
     require.ensure([], (require) => {

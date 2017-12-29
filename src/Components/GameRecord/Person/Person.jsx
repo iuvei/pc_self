@@ -2,6 +2,8 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { DatePicker, Radio, Table, Select, Pagination, Button, Icon, Modal, Input, Checkbox} from 'antd';
+const Option = Select.Option;
+const RadioGroup = Radio.Group;
 import moment from 'moment';
 import Fetch from '../../../Utils';
 import common from '../../../CommonJs/common';
@@ -202,8 +204,7 @@ export default class Person extends Component {
                 ),
                 width: 100,
             }];
-        const sum = this.state.sum;
-        const total = this.state.total;
+        const { sum, total, lotteryList } = this.state;
         const footer = <div className="l_b_tabel_footer" style={{display: total < 1 ? 'none' : ''}} >
             <span>总计</span>
             <span>
@@ -219,9 +220,6 @@ export default class Person extends Component {
                 <strong>{sum.all_hold}元</strong>
             </span>
         </div>;
-        const Option = Select.Option;
-        const RadioGroup = Radio.Group;
-        const lotteryList = this.state.lotteryList;
 
         return (
             <div className="lottery_bet after_record">

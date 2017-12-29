@@ -58,6 +58,7 @@ import {
     playMethodIntroduce,
     commonProblems,
     aboutHengCai,
+    lotteryReport,
 } from './Chunks';
 /*
 *通过判断是否登录过来控制导航条是否可以直接输入页面而进入相应页面
@@ -132,6 +133,7 @@ const routes = params => (
                 <Route path="/report/dividend" getComponent={dividend} params={params}/>
                 <Route path="/report/losesalary" getComponent={losesalary} params={params}/>
                 <Route path="/report/dayRate" getComponent={dayRate} params={params}/>
+                <Route path="/report/lotteryReport" getComponent={lotteryReport} params={params}/>
             </Route>
             <Route path="/helpInfo" getComponent={helpInfo} params={params}>
                 <IndexRoute getComponent={howDeposit} />

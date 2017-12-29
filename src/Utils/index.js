@@ -121,6 +121,10 @@ const sport= (body) =>  request(http.interFace('SPORT'),body);
 const withdrawel= (body) =>  request(http.interFace('WITHDRAWEL'),body);
 //充提记录
 const getrwrecord= (body) =>  request(http.interFace('GETRWRECORD'),body);
+//游戏账变
+const lotteryAccountChanged= (body) =>  request(http.interFace('LOTTERYACCOUNTCHANGED'),body);
+//彩票报表
+const historyteamlottery= (body) =>  request(http.interFace('HISTORYTEAMLOTTERY'),body);
 //GT娱乐-登录
 const gtLogin= (body) =>  request(http.interFace('GTLOGIN'),body);
 //GT娱乐-转账
@@ -187,6 +191,8 @@ export default {
     sport,
     withdrawel,
     getrwrecord,
+    lotteryAccountChanged,
+    historyteamlottery,
     gtLogin,
     gtTransfer,
 }

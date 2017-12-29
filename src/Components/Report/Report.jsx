@@ -22,6 +22,9 @@ export default class Report extends Component {
                 link: '/report/teamStatistics',
                 text: '团队统计'
             },{
+                link: '/report/lotteryReport',
+                text: '彩票报表'
+            },{
                 link: '/report/selfTable',
                 text: '个人总表'
             },{
