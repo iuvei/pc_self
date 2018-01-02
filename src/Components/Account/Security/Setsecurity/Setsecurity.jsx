@@ -158,7 +158,7 @@ export default class Setsecurity extends Component {
         postData.dna_ques_1 = val;
         this.setState({
             postData: postData,
-            issueTwo: issueFlag.filter(item => item.id !== val),
+            issueTwo: issueFlag.filter(item => item.id != val),
         });
     };
     /*问题2*/
@@ -167,7 +167,7 @@ export default class Setsecurity extends Component {
         postData.dna_ques_2 = val;
         this.setState({
             postData: postData,
-            issueOne: issueFlag.filter(item => item.id !== val),
+            issueOne: issueFlag.filter(item => item.id != val),
         });
     };
     /*没有设置资金密码时点击跳转到设置资金密码*/

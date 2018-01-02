@@ -19,9 +19,9 @@ export default class LotteryReport extends Component {
             loading: false,
             searchLoading: false,
             postData: {
+                username: '',
                 userid: null, //如果有这个参数就是拆开记录变多条
-                // lotteryid: null, //彩种id
-                parentid: null,
+                lotteryid: null,
                 starttime: common.setDateTime(0),// 查询日期
                 endtime: common.setDateTime(1),// 查询日期
                 p: 1,
@@ -34,13 +34,10 @@ export default class LotteryReport extends Component {
             indeterminate: true,
             checkAll: true,
 
-            searchUserName: '', //查询历史工资用户名
-            visible: false, // 模态框显示隐藏
-
             table: {
-                tableData: [], // 日工资列表
+                tableData: [], // 彩票报表列表
                 sum: {},
-                total: 0, // 日工资记录条数
+                total: 0, // 记录条数
                 history: [
                     {
                         name: stateVar.userInfo.userName,
@@ -48,7 +45,7 @@ export default class LotteryReport extends Component {
                     }
                 ],
             },
-            historyData: {},// 历史日工资
+            historyData: {},// 历史
 
             lotteryList: [], // 游戏种类
         }
@@ -61,14 +58,14 @@ export default class LotteryReport extends Component {
         this._ismount = false;
     };
     /*获取彩票报表列表*/
-    getData() {
+    getData(type, username) {
         this.setState({ loading: true });
         let postData = this.state.postData;
+        postData.lotteryid = this.state.checkedList.join(',');
         Fetch.historyteamlottery({
             method: "POST",
             body: JSON.stringify(postData)
         }).then((res)=>{
-            console.log(res)
             if(this._ismount){
                 this.setState({
                     loading: false,
@@ -76,23 +73,21 @@ export default class LotteryReport extends Component {
                 });
                 let { table } = this.state;
                 if(res.status == 200){
-                    let data = res.repsoneContent,
-                        lotteryIdArr = [];
+                    let data = res.repsoneContent;
                     table.tableData = data.results.slice(0, -1);
-                    table.sum = data.results.slice(-1);
+                    table.sum = data.results.slice(-1)[0];
                     table.total = parseInt(data.affects);
-                    data.lotterys.forEach((item, i)=>{
-                        lotteryIdArr.push(item.lotteryid)
-                    });
-
+                    if(type == 'DATE'){
+                        table.tableData.forEach((item, i)=>{
+                            item.username = username
+                        })
+                    }
                     this.setState({
                         table: table,
                         lotteryList: data.lotterys,
-                        checkedList: lotteryIdArr,
                         selfDate: postData.starttime +' 至 '+ postData.endtime,
                     });
                 } else {
-                    console.log(res.shortMessage);
                     table.tableData = [];
                     table.sum = {};
                     table.total = 0;
@@ -131,44 +126,57 @@ export default class LotteryReport extends Component {
         postData.pn = pageSize;
         this.setState({postData: postData},()=>this.getData())
     };
+    /*切换页面时*/
+    onChangePagination(page) {
+        let postData = this.state.postData;
+        postData.p = page;
+        this.setState({postData: postData},()=>this.getData());
+    };
     /*面包屑组件调用*/
     onChildState(item, table) {
         let postData = this.state.postData;
         postData.username = item.name;
+        postData.userid = null;
         this.setState({
             postData: postData,
             table: table,
         }, ()=>this.getData())
     };
-    /*点击用户名*/
+    /*点击日期和用户名*/
     onClickTable(type, record) {
         let table = this.state.table,
             historyArr = this.state.table.history,
             postData = this.state.postData,
-            historyFlag = true;
+            historyFlag = true,
+            history = {};
         if(type == 'DATE') {
             postData.userid = parseInt(record.userid);
-            postData.parentid = null;
+            postData.username = null;
+            history = {
+                name: record.username + '(每日数据)',
+                date: postData.starttime,
+            };
         }else{
-            postData.parentid = record.parentid;
+            postData.username = record.username;
             postData.userid = null;
+            history = {
+                name: record.username,
+                date: postData.starttime,
+            };
         }
 
         this.setState({postData: postData, table: table}, ()=> {
-            // let history = {
-            //     name: postData.username,
-            //     date: postData.starttime,
-            // };
-            // for(let i = 0; i < historyArr.length; i++) {
-            //     if(historyArr[i].name === history.name && historyArr[i].date === history.date) {
-            //         historyFlag = false;
-            //         break;
-            //     }
-            // }
-            // if (historyFlag) {
-            //     table.history.push(history);
-            // }
-            this.getData();
+            for(let i = 0; i < historyArr.length; i++) {
+            // && historyArr[i].date === history.date
+                if(historyArr[i].name === history.name) {
+                    historyFlag = false;
+                    break;
+                }
+            }
+            if (historyFlag) {
+                table.history.push(history);
+            }
+            this.getData(type, record.username);
         });
     };
     /*返回上一层table*/
@@ -180,6 +188,7 @@ export default class LotteryReport extends Component {
         }
         table.history.splice(-1, 1);
         postData.username = table.history[table.history.length-1].name;
+        postData.userid = null;
             this.setState({
                 postData: postData,
                 table: table,
@@ -217,18 +226,20 @@ export default class LotteryReport extends Component {
     };
 
     render() {
-        const { postData, table, historyData, lotteryList, selfDate } = this.state;
+        const { postData, table, lotteryList, selfDate } = this.state;
         const columns = [
             {
                 title: '日期',
-                dataIndex: 'self_date',
-                render: (text, record) => <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                dataIndex: 'dateLevel',
+                render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
                 width: 140,
                 filterIcon: <Icon type="smile-o" style={{ color: 'red' }} />,
             }, {
                 title: '用户名',
                 dataIndex: 'username',
-                render: (text, record) => <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)} style={{color: '#0088DE'}}>{text}</a>,
+                render: (text, record, index) => index == 0 || postData.userid != null ? text :
+                    <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                       style={{color: '#0088DE'}}>{text}</a>,
                 width: 120,
             }, {
                 title: '总投注',
@@ -262,15 +273,18 @@ export default class LotteryReport extends Component {
                 width: 130,
             }
         ];
-        const footer = <ul className="tfoot_list clear">
-            <li>合计</li>
-            <li>{table.sum.total_sale == null ? '-' : table.sum.total_sale}</li>
-            <li>{table.sum.total_effective_sale == null ? '-' : table.sum.total_effective_sale}</li>
-            <li>-</li>
-            <li>-</li>
-            <li>{table.sum.total_salary == null ? '-' : table.sum.total_salary}</li>
-            <li>-</li>
-        </ul>;
+        let footer;
+        if(table.sum != undefined) {
+            const sumAccout = (parseFloat(table.sum.sum_bonus) + parseFloat(table.sum.sum_diffmoney) - table.sum.sum_totalprice).toFixed(4);
+            footer = <ul className="tfoot_list clear">
+                <li>合计</li>
+                <li>{table.sum.sum_totalprice}</li>
+                <li>{table.sum.sum_effective_price}</li>
+                <li>{table.sum.sum_bonus}</li>
+                <li>{table.sum.sum_diffmoney}</li>
+                <li className={parseFloat(sumAccout) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sumAccout}</li>
+            </ul>;
+        };
 
         return (
             <div className="lottery_report">
@@ -350,14 +364,14 @@ export default class LotteryReport extends Component {
                                dataSource={table.tableData}
                                pagination={false}
                                loading={this.state.loading}
-                               footer={table.total <= 0 ? null : ()=>footer}
+                               footer={table.total <= 0 || isNaN(table.total) ? null : ()=>footer}
                                // size="middle"
                         />
                     </div>
-                    <div className="t_l_page right">
-                        <Pagination  style={{display: table.total < 1 ? 'none' : ''}}
-                                    showSizeChanger
+                    <div className="t_l_page right" style={{display: table.total <= 0 || isNaN(table.total) ? 'none' : ''}}>
+                        <Pagination showSizeChanger
                                     onShowSizeChange={(current, pageSize)=>this.onShowSizeChange(current, pageSize)}
+                                    onChange={(page)=>this.onChangePagination(page)}
                                     defaultCurrent={1}
                                     total={table.total}
                                     pageSizeOptions={stateVar.pageSizeOptions.slice()}

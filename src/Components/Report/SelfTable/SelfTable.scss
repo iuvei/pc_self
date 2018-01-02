@@ -10,11 +10,6 @@
         color: $color_363636;
         .t_l_time{
             padding-bottom: 15px;
-            .t_m_date_classify{
-                display: inline-block;
-                width: 70px;
-                text-align: right;
-            }
             .t_l_time_row{
                 @include lh(30px);
                 margin-bottom: 12px;
@@ -75,7 +70,7 @@
                     display: inline-block;
                     border: 1px solid $border-color;
                     padding: 0 10px;
-                    margin-left: 8px;
+                    margin-right: 8px;
                     &:hover{
                         cursor: pointer;
                         background-color: #ddd;
@@ -114,10 +109,6 @@
             background-color: #fff;
             padding:8px 5px;
         }
-        .t_l_page{
-            float: right;
-            margin-top: 8px;
-        }
         .ant-select-selection{
             @include borderRadius(4px);
         }
@@ -132,4 +123,18 @@
         color:#CB1313;
         background: #FFF5F5 url('./Img/time_active.png') no-repeat right bottom;
     }
+    .st_footer{
+        li{
+            float: left;
+            width: 85px;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 155px;
+            text-align: center;
+        }
+    }
+}
+.status_hide{
+    display: none;
 }

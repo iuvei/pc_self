@@ -159,12 +159,12 @@ export default class MentionFillingRecord extends Component {
         const footer = <div className="mention_filling_record_footer clear">
                            <span>
                                总收入：
-                               <strong className="col_color_ying">{response.allAcount == null || response.allAcount.in == undefined? '0' : response.allAcount.in}</strong>
+                               <strong className="col_color_ying">{response.allAcount == null || response.allAcount.in == undefined? '0' : '+' + response.allAcount.in}</strong>
                                元
                            </span>
                            <span>
                                总支出：
-                               <strong className="col_color_shu">{response.allAcount == null || response.allAcount.out == undefined ? '0' : response.allAcount.out}</strong>
+                               <strong className="col_color_shu">{response.allAcount == null || response.allAcount.out == undefined ? '0' : '-' + response.allAcount.out}</strong>
                                元
                            </span>
                         </div>;

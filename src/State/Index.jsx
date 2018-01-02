@@ -17,6 +17,7 @@ class State {
         setsecurity: '', //是否设置过资金密码 no：设置过
         email: '',
     };
+    @observable dailysalaryStatus = {}; // 获得日工资，亏损，分红签订状态
     @observable allBalance = {}; // 各平台余额
     @observable afterDetails = false; // 追号详情时更换nav
     @observable pageSizeOptions = ['10', '25', '50']; // 表格分页时 指定每页可以显示多少条

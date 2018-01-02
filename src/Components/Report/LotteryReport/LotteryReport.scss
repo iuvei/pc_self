@@ -112,13 +112,11 @@
     .tfoot_list{
         li{
             float: left;
-            width: 130px;
-            text-align: center;
+            text-align: right;
+            width: 158px;
             &:first-child{
-                width: 250px;
-            }
-            &:last-child{
-                width: 190px;
+                width: 300px;
+                text-align: center;
             }
         }
 

@@ -77,8 +77,11 @@
         .mention_filling_record_footer{
             text-align: center;
             font-size: 14px;
-            span:first-child{
+            span{
                 margin-right: 40px;
+            }
+            span:last-child{
+                margin-right: 0;
             }
             strong{
                 font-weight: normal;

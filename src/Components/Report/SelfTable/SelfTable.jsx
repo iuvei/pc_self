@@ -1,132 +1,270 @@
+/*个人总表*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { DatePicker, Radio, Button, Icon, Input, Select, Table, Pagination } from 'antd';
-const Option = Select.Option;
-const RadioGroup = Radio.Group;
+import Fetch from '../../../Utils';
+import { stateVar } from '../../../State';
+import { DatePicker, Button, Table } from 'antd';
+import moment from 'moment';
+import common from '../../../CommonJs/common';
 
 import './SelfTable.scss'
 
+const shortcutTime = [
+    {
+        text: '上周',
+        id: 3
+    },{
+        text: '上半月',
+        id: 4
+    },{
+        text: '下半月',
+        id: 5
+    },{
+        text: '本月',
+        id: 6
+    }
+];
 @observer
 export default class SelfTable extends Component {
     constructor(props){
         super(props);
         this.state = {
+            threeSeven: null,
             data: [],
-            pagination: {},
-            loading: false,
+            sum: {},
+            tableLoading: false,
+            searchLoading: false,
             classify: 1, // 游戏分类
             variety: 1, // 游戏种类
-            timeArrIndex: '', // 时间选择按钮
-            showLottery: false, // 隐藏彩种
-            value: 1,
-            searchLoading: false,
+            postData: {
+                starttime: common.setDateTime(0),
+                endtime: common.setDateTime(1),
+                p: 1,
+                pn: 10,
+            }
         }
-    };
-    onChange(date, dateString) {
-        console.log(date, dateString);
-    };
-    onSelectLottery(e) {
-        console.log('radio checked', e.target.value);
-        this.setState({
-            value: e.target.value,
-        });
-        this.setState({showLottery: false})
     };
     componentDidMount() {
         this._ismount = true;
+        this.getData();
     };
-
-    handleChange(value) {
-        console.log(`selected ${value}`);
+    componentWillUnmount() {
+        this._ismount = false;
     };
-    enterLoading() {
+    getData() {
+        this.setState({ tableLoading: true });
+        Fetch.profitLossLotteryBySelf({
+            method: 'POST',
+            body: JSON.stringify(this.state.postData),
+        }).then((res)=>{
+            console.log(res)
+            if(this._ismount) {
+                this.setState({ searchLoading: false, tableLoading: false });
+                if(res.status == 200) {
+                    let data = res.repsoneContent;
+                    this.setState({
+                        data: data.results,
+                        sum: data.total,
+                    });
+                }else{
+                    this.setState({
+                        data: [],
+                        sum: {},
+                    });
+                }
+            }
+        })
+    };
+    /*搜索*/
+    onSearch() {
         this.setState({ searchLoading: true });
+        this.getData();
     };
-    showLottery() {
-        this.setState({showLottery: !this.state.showLottery});
+    /*开始查询日期*/
+    onChangeStartTime(date, dateString) {
+        let postData = this.state.postData;
+        postData.starttime = dateString;
+        this.setState({postData})
     };
-    // 游戏分类
-    classify_index(index) {
-        return index === this.state.classify ? "t_l_border t_l_active" : "t_l_border"
+    /*结束查询日期*/
+    onChangeEndTime(date, dateString) {
+        let postData = this.state.postData;
+        postData.endtime = dateString;
+        this.setState({postData})
     };
-    // 游戏种类
-    variety_index(index) {
-        return index === this.state.variety ? "t_l_border t_l_active" : "t_l_border"
+    /*切换每页显示条数*/
+    onShowSizeChange (current, pageSize) {
+        let postData = this.state.postData;
+        postData.p = current;
+        postData.pn = pageSize;
+        this.setState({postData: postData},()=>this.getData())
+    };
+    /*切换页面时*/
+    onChangePagination(page) {
+        let postData = this.state.postData;
+        postData.p = page;
+        this.setState({postData: postData},()=>this.getData());
+    };
+    /*快捷选择时间*/
+    onShortcutTime(val) {
+        let threeSeven = this.state.threeSeven;
+        if(threeSeven == val) {
+            threeSeven = null
+        }else{
+            threeSeven = val;
+        }
+        this.setState({threeSeven});
     };
     render() {
-        const timeArr = ['上周','上半月','下半月','本月'];
+        const dailysalaryStatus = stateVar.dailysalaryStatus;
+        const { classify, variety, data, sum } = this.state;
         const columns = [
             {
                 title: '日期',
-                dataIndex: 'name',
+                dataIndex: 'date',
+                width: 85,
             }, {
                 title: '用户名',
-                dataIndex: 'age',
+                dataIndex: 'username',
+                width: 85,
             }, {
-                title: '投注',
-                dataIndex: 'address',
+                title: '投注量',
+                dataIndex: 'cp_stake',
+                className: 'column-right',
+                width: 85,
             }, {
+                title: '有效投注量',
+                dataIndex: 'cp_effective_stake',
+                className: 'column-right',
+                width: 85,
+            },  {
                 title: '中奖',
-                key: 'action',
+                dataIndex: 'cp_bonus',
+                className: 'column-right',
+                width: 85,
             }, {
                 title: '返点',
-                key: 'action1',
+                dataIndex: 'cp_point',
+                className: 'column-right',
+                width: 85,
             }, {
                 title: '毛收入',
-                key: 'action2',
+                dataIndex: 'income',
+                className: 'column-right',
+                width: 85,
             }, {
                 title: '日工资',
-                key: 'action3',
+                dataIndex: 'salary',
+                className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                width: 85,
             }, {
                 title: '日亏损',
-                key: 'action4',
+                dataIndex: 'lose_salary',
+                className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                width: 85,
             }, {
                 title: '活动',
-                key: 'action5',
+                dataIndex: 'sum_activity',
+                className: 'column-right',
+                width: 85,
             }, {
                 title: '净收入',
-                key: 'action6',
+                dataIndex: 'net_income',
+                className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                width: 85,
             }, {
                 title: '分红',
-                key: 'action7',
+                dataIndex: 'allsalary',
+                className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                width: 85,
             }, {
                 title: '总盈亏',
-                key: 'action8',
+                dataIndex: 'last_win_lose',
+                className: 'column-right',
+                render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                                            <span className="col_color_ying">{text}</span>,
+                width: 85,
             }
         ];
-        const data = [{
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York',
-        }, {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London',
-        }, {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sidney',
-        }];
+        const columnsRests = [
+            {
+                title: '日期',
+                dataIndex: 'usergroup_naeweme',
+                width: 130,
+            }, {
+                title: '用户名',
+                dataIndex: 'sale',
+                width: 130,
+            }, {
+                title: '投注',
+                dataIndex: 'effective_sale',
+                width: 130,
+            }, {
+                title: '有效投注',
+                dataIndex: 'usergroup_name',
+                width: 130,
+            }, {
+                title: '中奖金额',
+                dataIndex: 'safewale',
+                width: 130,
+            }, {
+                title: '返水',
+                dataIndex: 'effective_sale232',
+                width: 130,
+            }, {
+                title: '累计盈利',
+                dataIndex: 'effective323_sale',
+                width: 130,
+            }, {
+                title: '分红',
+                dataIndex: 'effecti235ve_sale',
+                width: 130,
+            }
+        ];
+        const footer = <ul className="st_footer clear">
+                            <li>总计</li>
+                            <li>{sum.sum_cp_stake}</li>
+                            <li>{sum.sum_cp_effective}</li>
+                            <li>{sum.sum_cp_bonust}</li>
+                            <li>{sum.sum_cp_point}</li>
+                            <li>{sum.sum_income}</li>
+                            <li>{sum.sum_salary}</li>
+                            <li>{sum.sum_lose_salary}</li>
+                            <li>{sum.sum_sum_activity}</li>
+                            <li>{sum.sum_net_income}</li>
+                            <li>{sum.sum_allsalary}</li>
+                            <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
+                        </ul>;
+
         return (
             <div className="self_table">
                 <div className="team_list_top">
                     <div className="t_l_time">
                         <ul className="t_l_time_row">
-                            <li className="t_m_date_classify">查询日期：</li>
-                            <li style={{marginLeft: '8px'}}><DatePicker onChange={(date, dateString)=>{this.onChange(date, dateString)}} /></li>
-                            <li style={{margin: '0 8px'}}>至</li>
-                            <li><DatePicker onChange={(date, dateString)=>{this.onChange(date, dateString)}} /></li>
+                            <li>
+                                <span>查询日期：</span>
+                                <DatePicker
+                                    format="YYYY-MM-DD"
+                                    placeholder="请选择开始查询日期"
+                                    defaultValue={moment(common.setDateTime(0))}
+                                    onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
+                                    disabledDate={(current)=>common.disabledDate(current, 'lt',-16)}
+                                />
+                                <span style={{margin: '0 8px'}}>至</span>
+                                <DatePicker
+                                    format="YYYY-MM-DD"
+                                    placeholder="请选择结束查询日期"
+                                    defaultValue={moment(common.setDateTime(1))}
+                                    onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
+                                    disabledDate={(current)=>common.disabledDate(current, 'gt', 1)}
+                                />
+                            </li>
                             <li className="t_m_line"></li>
                             <li>
                                 <ul className="t_l_time_btn clear">
                                     {
-                                        timeArr.map((value,index)=>{
-                                            return (
-                                                <li className={this.state.timeArrIndex === index ? 't_l_time_btn_active' : ''} onClick={()=>{this.setState({timeArrIndex: index})}} key={index}>{value}</li>
-                                            )
+                                        shortcutTime.map((item,i)=>{
+                                            return <li className={item.id === this.state.threeSeven ? 't_l_time_btn_active' : ''} onClick={()=>{this.onShortcutTime(item.id)}} key={item.id}>{item.text}</li>
                                         })
                                     }
                                 </ul>
@@ -134,23 +272,19 @@ export default class SelfTable extends Component {
                         </ul>
                         <ul className="t_l_classify">
                             <li>
-                                <span className="t_m_date_classify">游戏分类：</span>
-                                <span className={this.classify_index(1)} onClick={()=>{this.setState({classify: 1})}}>彩票</span>
-                                <span className={this.classify_index(2)} onClick={()=>{this.setState({classify: 2})}}>其他</span>
+                                <span>游戏分类：</span>
+                                <span className={1 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({classify: 1})}}>彩票</span>
+                                <span className={2 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({classify: 2})}}>第三方</span>
                             </li>
                             <li>
                                 <span>游戏种类：</span>
-                                <span className={this.variety_index(1)} onClick={()=>{this.setState({variety: 1})}}>全彩种</span>
-                            </li>
-                            <li>
-                                <span>用户名：</span>
-                                <Input placeholder="请输入用户名" />
+                                <span className={1 === variety ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({variety: 1})}}>全彩种</span>
                             </li>
                             <li className="t_m_serch">
                                 <Button type="primary"
                                         icon="search"
                                         loading={this.state.searchLoading}
-                                        onClick={()=>this.enterLoading()}
+                                        onClick={()=>this.onSearch()}
                                 >
                                     搜索
                                 </Button>
@@ -158,26 +292,28 @@ export default class SelfTable extends Component {
                         </ul>
                     </div>
                 </div>
-                <div className="t_l_table">
-                    <div className="t_l_table_list">
-                        <Table columns={columns}
-                               dataSource={data}
-                               pagination={false}
-                               footer={() => 'Footer'}
+                    <div className="t_l_table">
+                        <div className="t_l_table_list">
+                            {
+                                classify === 1 ?
+                                    <Table columns={columns}
+                                           rowKey={record => record.date}
+                                           dataSource={data}
+                                           loading={this.state.tableLoading}
+                                           pagination={false}
+                                           footer={data.length <= 0 ? null : ()=>footer}
+                                    /> :
+                                    <Table columns={columnsRests}
+                                           rowKey={record => record.date}
+                                           dataSource={data}
+                                           loading={this.state.tableLoading}
+                                           pagination={false}
+                                           footer={data.length <= 0 ? null : ()=>footer}
+                                    />
+                            }
 
-                        />
+                        </div>
                     </div>
-                    <div className="t_l_table_list" style={{marginTop: 10}}>
-                        <Table columns={columns}
-                               dataSource={data}
-                               pagination={false}
-                               footer={() => 'Footer'}
-                        />
-                    </div>
-                    <div className="t_l_page">
-                        <Pagination showSizeChanger onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}} defaultCurrent={1} total={500} />
-                    </div>
-                </div>
             </div>
         );
     }

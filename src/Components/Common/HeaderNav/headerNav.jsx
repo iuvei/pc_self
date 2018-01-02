@@ -269,7 +269,12 @@ export default class HeaderNav extends Component {
                                 </Menu.Item>
                                 <Menu.Item key="account">
                                     <div className="nav-text">
-                                        <Link to={`/account`}>
+                                        <Link to={
+                                            {
+                                                pathname : '/account',
+                                                query: {navIndex: 0}
+                                            }
+                                        }>
                                             <p>账户管理</p>
                                             <p>Account</p>
                                         </Link>

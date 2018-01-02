@@ -59,7 +59,7 @@ export default class Financial extends Component {
                                     <span>{navList[this.state.navIndex].text}</span>
                                 </div>
                                 <ChildNav navList={navList}
-                                          NavIndex={this.props.location.query}
+                                          defaultIndex={this.props.location.query.navIndex}
                                           onChangeNavIndex={this.onChangeNavIndex}
                                 />
                                 <div>

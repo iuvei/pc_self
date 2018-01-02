@@ -158,7 +158,7 @@ export default class PtRecord extends Component {
     render() {
         const total = this.state.total;
         const sum = this.state.sum;
-        const footer = <ul className="pt_footer clear" style={{display: total <= 0 ? 'none' : ''}}>
+        const footer = <ul className="pt_footer clear">
                             <li>总计</li>
                             <li>{sum.sum_pb}</li>
                             <li>{sum.sum_pw}</li>

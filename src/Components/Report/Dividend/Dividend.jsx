@@ -1,7 +1,7 @@
 /*分红*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Select, Table, Input, Button, Modal, message } from 'antd';
+import { Select, Table, Input, Button, Modal, message, InputNumber } from 'antd';
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
@@ -41,6 +41,8 @@ export default class Dividend extends Component {
                 historyAllsalary: '', //历史分红总计
             },
             oneKeyDividend: 0, // 是否可以一键发放分红
+
+            alterVisible: false, //修改比例
         }
     };
     componentDidMount() {
@@ -119,7 +121,7 @@ export default class Dividend extends Component {
     /*关闭模态框*/
     handleCancel(){
         this.setState({
-            historyVisible: false,
+            alterVisible: false,
         });
     };
     /*操作按钮*/
@@ -150,6 +152,9 @@ export default class Dividend extends Component {
                 }
             })
         }else if(val == '修改比例') {
+            this.setState({
+                alterVisible: true,
+            });
 
         }else if(val == '发放分红') {
             let _this = this;
@@ -167,7 +172,7 @@ export default class Dividend extends Component {
                         method: 'POST',
                         body: JSON.stringify({userid: parseInt(record.userid), id: parseInt(record.id)})
                     }).then((res)=>{
-                        if(this._ismount){
+                        if(_this._ismount){
                             if(res.status == 200){
                                 message.success(res.shortMessage);
                                 _this.getData();
@@ -210,6 +215,10 @@ export default class Dividend extends Component {
         }
 
     };
+    /*修改分红比例*/
+    onChangeAlterContract(val){
+        console.log('changed', val);
+    }
 
     render() {
         const columns = [
@@ -386,7 +395,7 @@ export default class Dividend extends Component {
                         bodyStyle={{height: 400}}
                         footer={null}
                         maskClosable={false}
-                        onCancel={()=>this.handleCancel()}
+                        onCancel={()=>this.setState({historyVisible: false})}
                         className="history_dividend_modal"
                     >
                         <p className="modal_username">查询用户名：{this.state.historyDividendUName}</p>
@@ -402,6 +411,49 @@ export default class Dividend extends Component {
                                 <li>总计</li>
                                 <li>{this.state.history.historyAllsalary}</li>
                             </ul>
+                        </div>
+                    </Modal>
+                    <Modal
+                        visible={this.state.alterVisible}
+                        footer={null}
+                        maskClosable={false}
+                        closable={false}
+                        width={560}
+                        className="alter_dividend"
+                    >
+                        <div className="alter_content clear">
+                            <ul className="a_c_list">
+                                <li>
+                                    <span>用户名：</span>
+                                    <i>467979879874</i>
+                                </li>
+                                <li>
+                                    <span>契约类型：</span>
+                                    <i>467979879874</i>
+                                </li>
+                            </ul>
+                            <div className="a_c_text">
+                                <p>契约内容：</p>
+                                <p>如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
+                                    <InputNumber min={1} max={10} defaultValue={3} onChange={(value)=>this.onChangeAlterContract(value)} />%。
+                                </p>
+                            </div>
+                            <div className="a_c_name a_c_active">
+                                <p>hobrt3</p>
+                                <p>2014.3.02</p>
+                            </div>
+                            <div className="a_c_btn">
+                                <Button type="primary"
+                                        loading={this.state.searchLoading}
+                                        onClick={()=>this.onSearch()}
+                                >
+                                    修改契约
+                                </Button>
+                                <Button className="a_c_cancel_btn" onClick={()=>this.setState({alterVisible: false})}
+                                >
+                                    取消
+                                </Button>
+                            </div>
                         </div>
                     </Modal>
                 </div>

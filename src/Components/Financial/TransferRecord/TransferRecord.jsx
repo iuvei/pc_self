@@ -1,13 +1,39 @@
-/*充值记录*/
+/*转账记录*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import common from '../../../CommonJs/common';
-import { DatePicker,  Button, Checkbox, Input, Select, Table, Pagination } from 'antd';
+import { DatePicker,  Button, Select, Table, Pagination } from 'antd';
 import moment from 'moment';
 const Option = Select.Option;
 
+const OptionArr = [
+    {
+        name: '所有类型',
+        id: 'all',
+    },
+    {
+        name: '彩票账户',
+        id: '0',
+    },
+    {
+        name: '体育',
+        id: '1',
+    },
+    {
+        name: 'EA',
+        id: '2',
+    },
+    {
+        name: 'PT',
+        id: '3',
+    },
+    {
+        name: '博饼',
+        id: '4',
+    },
+];
 @observer
 export default class TransferRecord extends Component {
     constructor(props){
@@ -15,18 +41,20 @@ export default class TransferRecord extends Component {
         this.state = {
             tableLoading: false,
             data: [],
+            total: 0,
             searchLoading: false,
+
+            outMoney: OptionArr,
+            inMoney: OptionArr,
             postData: {
-                sdatetime: common.setDateTime(0), // 开始时间 2017-12-27
-                edatetime: common.setDateTime(1), // 结束时间 2017-12-27
-                type: 3, //1是充值 2是提款 3是充值和提款
-                status: 0, //1 是成功 2是失败 0是所有
-                username: '', // 用户名
-                child: 0, //是否包含所有下级 0: 不包含， 1：包含
+                starttime: common.setDateTime(0), // 开始时间 2017-12-27
+                endtime: common.setDateTime(1), // 结束时间 2017-12-27
+                out_money: 'all', //出款方all 是所有 0是彩票账户 1是体育2是ea  3是pt  4是博饼
+                in_money: 'all', //收款方 all 是所有
+                status: 2, //2是所有 1成功 0失败
                 p: 1,
-                size: 10,
+                pagesize: 10,
             },
-            response: {}
         }
     };
 
@@ -40,47 +68,50 @@ export default class TransferRecord extends Component {
     /*获取充提列表*/
     getData() {
         this.setState({tableLoading: true});
-        Fetch.getrwrecord({
+        Fetch.fundreport({
             method: 'POST',
             body: JSON.stringify(this.state.postData)
         }).then((res)=>{
             if(this._ismount) {
                 this.setState({tableLoading: false, searchLoading: false});
+                console.log(res)
                 if(res.status == 200){
-                    this.setState({response: res.repsoneContent});
+                    let data = res.repsoneContent;
+                    this.setState({data: data.result, total: parseInt(data.total)})
                 }
             }
 
         })
     }
-    /*是否包含下级*/
-    onCheckbox(e) {
-        let postData = this.state.postData;
-        if(e.target.checked){
-            postData.child = 1;
-        }else{
-            postData.child = 0;
-        }
-        this.setState({postData});
-    }
     /*开始查询日期*/
     onChangeStartDate(date, dateString) {
         let postData = this.state.postData;
-        postData.sdatetime = dateString;
+        postData.starttime = dateString;
         this.setState({postData});
     };
     /*结束查询日期*/
     onChangeEndDate(date, dateString) {
         let postData = this.state.postData;
-        postData.edatetime = dateString;
+        postData.endtime = dateString;
         this.setState({postData});
     };
     /*查询类型*/
-    onChangeType(val){
-        let postData = this.state.postData;
-        postData.type = parseInt(val);
-        this.setState({postData});
+    onChangeType(val, type){
+        let postData = this.state.postData,
+            flag = [];
+        postData[type] = val;
+        if(val == '0') {
+            flag = OptionArr.filter(item => item.id != val).filter(item => item.id != 'all');
+        }else if(val == '1' || val == '2' || val == '3' || val == '4'){
+            flag = OptionArr.filter(item => item.id == '0')
+        }
+        if(type == 'in_money'){
+            this.setState({postData});
+        }else{
+            this.setState({postData, inMoney: flag});
+        }
     };
+
     /*状态*/
     onChangeStatus(val){
         let postData = this.state.postData;
@@ -96,7 +127,7 @@ export default class TransferRecord extends Component {
     onShowSizeChange (current, pageSize) {
         let postData = this.state.postData;
         postData.p = current;
-        postData.size = pageSize;
+        postData.pagesize = pageSize;
         this.setState({postData: postData},()=>this.getData())
     };
     /*切换页面时*/
@@ -106,63 +137,46 @@ export default class TransferRecord extends Component {
         this.setState({postData: postData},()=>this.getData());
     };
     render() {
-        const { response } = this.state;
+        const { response, outMoney, inMoney, data, total } = this.state;
         const columns = [
             {
-                title: '账变编号',
-                dataIndex: 'orderNo',
-                width: 160,
-            }, {
-                title: '用户名',
-                dataIndex: 'username',
-                width: 120,
-            }, {
                 title: '时间',
-                dataIndex: 'times',
+                dataIndex: 'time',
                 width: 150,
             }, {
-                title: '类型',
-                dataIndex: 'cntitle',
-                width: 100,
+                title: '单号',
+                dataIndex: 'trans_id',
+                width: 160,
             }, {
-                title: '收入',
-                dataIndex: 'amount',
-                render: (text, record) => record.operations == 1 ? <span className="col_color_ying">+{text}</span> : '',
-                width: 120,
+                title: '转出账户',
+                dataIndex: 'out',
+                width: 136,
             }, {
-                title: '支出',
-                dataIndex: 'amount2',
+                title: '转入账户',
+                dataIndex: 'in',
+                width: 136,
+            }, {
+                title: '转账金额',
+                dataIndex: 'tranfsAmout',
                 className: 'column-right',
-                render: (text, record) => record.operations == 0 ? <span className="col_color_shu">-{record.amount}</span> : '',
-                width: 120,
+                width: 136,
+            }, {
+                title: '转出账户金额',
+                dataIndex: 'before_blance',
+                className: 'column-right',
+                width: 136,
             },{
-                title: '余额',
-                dataIndex: 'availablebalance',
+                title: '转入账户金额',
+                dataIndex: 'new_blance',
                 className: 'column-right',
-                width: 120,
+                width: 136,
             }, {
                 title: '状态',
-                dataIndex: 'transferstatus',
-                render: text => text == 1 || text == 3 ? '失败' : '成功',
-                width: 90,
-            }, {
-                title: '备注',
-                dataIndex: 'description',
+                dataIndex: 'status',
+                render: text => text == '成功' ? <span className="col_color_ying">{text}</span> : text,
                 width: 100,
             }
         ];
-        const footer = <div className="mention_filling_record_footer clear">
-                           <span>
-                               总收入：
-                               <strong className="col_color_ying">{response.allAcount == null || response.allAcount.in == undefined? '0' : response.allAcount.in}</strong>
-                               元
-                           </span>
-            <span>
-                               总支出：
-                               <strong className="col_color_shu">{response.allAcount == null || response.allAcount.out == undefined ? '0' : response.allAcount.out}</strong>
-                               元
-                           </span>
-        </div>;
 
         return (
             <div className="mention_filling_record">
@@ -194,18 +208,29 @@ export default class TransferRecord extends Component {
                         <ul className="t_l_classify">
                             <li>
                                 <span>查询类型：</span>
-                                <Select defaultValue="3" style={{ width: 100 }} onChange={(value)=>this.onChangeType(value)}>
-                                    <Option value="3">所有</Option>
-                                    <Option value="1">充值</Option>
-                                    <Option value="2">提现</Option>
+                                <span className="t_m_date_mar">从</span>
+                                <Select defaultValue="all" style={{ width: 100 }} onChange={(value)=>this.onChangeType(value, 'out_money')}>
+                                    {
+                                        outMoney.map((item, i)=>{
+                                            return <Option value={item.id} key={item.id}>{item.name}</Option>
+                                        })
+                                    }
+                                </Select>
+                                <span className="t_m_date_mar">至</span>
+                                <Select defaultValue="all" style={{ width: 100 }} onChange={(value)=>this.onChangeType(value, 'in_money')}>
+                                    {
+                                        inMoney.map((item, i)=>{
+                                            return <Option value={item.id} key={item.id}>{item.name}</Option>
+                                        })
+                                    }
                                 </Select>
                             </li>
                             <li>
                                 <span>状态：</span>
-                                <Select defaultValue="0" style={{ width: 100 }} onChange={(value)=>this.onChangeStatus(value)}>
-                                    <Option value="0">所有</Option>
+                                <Select defaultValue="2" style={{ width: 100 }} onChange={(value)=>this.onChangeStatus(value)}>
+                                    <Option value="2">所有</Option>
                                     <Option value="1">成功</Option>
-                                    <Option value="2">失败</Option>
+                                    <Option value="0">失败</Option>
                                 </Select>
                             </li>
                             <li className="t_m_serch">
@@ -220,18 +245,18 @@ export default class TransferRecord extends Component {
                     <div className="t_l_table_list">
                         <Table columns={columns}
                                rowKey={(record, index)=> index}
-                               dataSource={response.result}
+                               dataSource={data}
                                pagination={false}
                                loading={this.state.tableLoading}
-                               footer={response.resultCount <= 0 ? null : ()=>footer}
+                               footer={null}
                         />
                     </div>
-                    <div className="t_l_page" style={{display: response.resultCount <= 0 ? 'none' : ''}}>
+                    <div className="t_l_page" style={{display: total <= 0 || isNaN(total) ? 'none' : ''}}>
                         <Pagination showSizeChanger
                                     onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}}
                                     onChange={(page)=>this.onChangePagination(page)}
                                     defaultCurrent={1}
-                                    total={parseInt(response.resultCount)}
+                                    total={total}
                                     pageSizeOptions={stateVar.pageSizeOptions.slice()}
                         />
                     </div>

@@ -16,25 +16,23 @@ export default class ChildNav extends PureComponent {
         this.setState({NavIndex: index});
         this.props.onChangeNavIndex(index, item);
     };
-    componentWillMount(){
-        this.props.NavIndex !== undefined ? this.setState({NavIndex: parseInt(this.props.NavIndex.navIndex)}) : null
-    };
-    shouldComponentUpdate(nextProps, nextState){
-        (nextProps.NavIndex !== undefined && nextProps.NavIndex.navIndex !== undefined) ?
-            this.setState({NavIndex: parseInt(nextProps.NavIndex.navIndex)}) :
-            null;
-       return true
-    };
+    /*选中项*/
+    onSelectClass(index) {
+        if(this.props.defaultIndex != undefined){
+            return index == this.props.defaultIndex ? 'nav_active' : 'hvr-overline-from-left hvr-fade';
+        }else{
+            return index == this.state.NavIndex ? 'nav_active' : 'hvr-overline-from-left hvr-fade';
+        }
+    }
+
     render() {
-        console.log(this.state.NavIndex)
         return (
             <div className="c_nav">
                 <ul className="nav_list clear">
                     {
                         this.props.navList.map((item, index)=>{
                             return (
-                                <li className={index == this.state.NavIndex ? 'nav_active' : 'hvr-overline-from-left hvr-fade'} onClick={()=>{this.handClick(index, item)}} key={index}>
-
+                                <li className={this.onSelectClass(index)} onClick={()=>{this.handClick(index, item)}} key={index}>
                                     {
                                         item.link != undefined ?
                                             <Link to={item.link}>{item.text}</Link> :

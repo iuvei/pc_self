@@ -14,7 +14,8 @@ export default class Account extends Component {
         super(props);
         this.state = {
             navIndex: 0,
-        }
+        };
+        this.onChangeNavIndex = this.onChangeNavIndex.bind(this)
     };
     onChangeNavIndex(index) {
         this.setState({navIndex: index});
@@ -59,8 +60,8 @@ export default class Account extends Component {
                                     <span>{navList[this.state.navIndex].text}</span>
                                 </div>
                                 <ChildNav navList={navList}
-                                          NavIndex={this.props.location.query}
-                                          onChangeNavIndex={this.onChangeNavIndex.bind(this)}
+                                          defaultIndex={this.props.location.query.navIndex}
+                                          onChangeNavIndex={this.onChangeNavIndex}
                                 />
                                 <div>
                                     {this.props.children}

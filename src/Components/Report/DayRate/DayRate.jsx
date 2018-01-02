@@ -1,7 +1,7 @@
 /*日工资*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import Fetch from '../../../Utils'
+import Fetch from '../../../Utils';
 import { DatePicker, Table, Pagination, Input, Button, Icon, Modal } from 'antd';
 import moment from 'moment';
 const ButtonGroup = Button.Group;
@@ -69,7 +69,6 @@ export default class DayRate extends Component {
                     table.total = parseInt(data.affects);
                     this.setState({table: table});
                 } else {
-                    console.log(res.shortMessage);
                     table.dayRateList = [];
                     table.sum = [];
                     table.total = 0;

@@ -2,22 +2,85 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Select, InputNumber, Input, Button } from 'antd';
+const Option = Select.Option;
+import { stateVar } from '../../../State';
 
 import './Transfer.scss'
 import trade_icon from './Img/trade_icon.png'
 
+const accoutArr = [
+    {
+        name: '彩票账户',
+        id: '0'
+    },
+    {
+        name: '体育账户',
+        id: '1'
+    },
+    {
+        name: 'EA账户',
+        id: '2'
+    },
+    {
+        name: 'PT账户',
+        id: '3'
+    },
+    {
+        name: '博饼账户',
+        id: '4'
+    }
+];
 @observer
 export default class Transfer extends Component {
     constructor(props){
       super(props);
       this.state = {
           confirmTransferLoading: false,
+          outAccout: accoutArr, //转出账户
+          inAccout: accoutArr, //转入账户
+          selectOut: null,
+          selectIn: null,
       }
     };
-    // 转出账户
-    onAccountOut(value) {
-        console.log(`selected ${value}`);
+    /*选择 转出转入 账户*/
+    onAccountOutIn(value, type) {
+        let { selectOut, selectIn } = this.state;
+        if(type === 'out'){
+            if(value == 0){
+                this.setState({
+                    selectOut: value,
+                    selectIn: null,
+                    inAccout: accoutArr.filter(item => item.id !== ''+ value)
+                })
+            }else{
+                this.setState({
+                    selectOut: value,
+                    selectIn: null,
+                    inAccout: accoutArr.filter(item => item.id === ''+ 0)
+                })
+            }
+        }else{
+            this.setState({selectIn: value})
+        }
     }
+    /*调换转入转出*/
+    onTrade() {
+        let { selectOut, selectIn } = this.state;
+        if(selectIn == 0){
+            this.setState({
+                selectOut: selectIn,
+                selectIn: selectOut,
+                inAccout: accoutArr.filter(item => item.id !== ''+ 0),
+            })
+        }else{
+            this.setState({
+                selectOut: selectIn,
+                selectIn: selectOut,
+                inAccout: accoutArr.filter(item => item.id === ''+ 0),
+            })
+        }
+
+    };
     // 转账金额
     onTransferAmount(value) {
         console.log('changed', value);
@@ -27,65 +90,77 @@ export default class Transfer extends Component {
         this.setState({ confirmTransferLoading: true });
     };
     render() {
-        const Option = Select.Option;
+        const allBalance = stateVar.allBalance;
+        const { outAccout, inAccout } = this.state;
+
         return (
             <div className="transfer_main">
                 <ul className="tf_m_balance_list clear">
                     <li>
                         <div className="tf_m_account_b">
                             <p>账户余额</p>
-                            <p>￥888.00</p>
+                            <p>￥{allBalance.cpbalance}</p>
                         </div>
                     </li>
                     <li>
                         <div className="tf_m_acount icon_top_02">
                             <p>体育余额</p>
-                            <p>￥0.00</p>
+                            <p>￥{allBalance.sbbalance}</p>
                         </div>
                     </li>
                     <li>
                         <div className="tf_m_acount icon_top_03">
-                            <p>体育余额</p>
-                            <p>￥0.00</p>
+                            <p>EA余额</p>
+                            <p>￥{allBalance.eabalance}</p>
                         </div>
                     </li>
                     <li>
                         <div className="tf_m_acount icon_top_04">
-                            <p>体育余额</p>
-                            <p>￥0.00</p>
+                            <p>博饼余额</p>
+                            <p>￥{allBalance.bobingBalance}</p>
                         </div>
                     </li>
                     <li>
                         <div className="tf_m_acount icon_top_05">
-                            <p>体育余额</p>
-                            <p>￥0.00</p>
+                            <p>PT余额</p>
+                            <p>￥{allBalance.ptbalance}</p>
                         </div>
                     </li>
                 </ul>
                 <div className="tr_m_account_info clear">
                     <div className="tr_m_form left">
                         <div className="tr_m_trade">
-                            <Button>
+                            <Button onClick={()=>this.onTrade()}>
                                 <img src={ trade_icon } alt="调换"/>
                             </Button>
                         </div>
                         <ul>
                             <li>
                                 <span className="tr_m_f_type">转出账户：</span>
-                                <Select size="large" style={{ width: 297 }} onChange={(value)=>{this.onAccountOut(value)}} placeholder="请输入转出账户">
-                                    <Option value="jack">Jack</Option>
-                                    <Option value="lucy">Lucy</Option>
-                                    <Option value="disabled" disabled>Disabled</Option>
-                                    <Option value="Yiminghe">yiminghe</Option>
+                                <Select size="large" style={{ width: 297 }}
+                                        value={this.state.selectOut}
+                                        onChange={(value)=>{this.onAccountOutIn(value, 'out')}}
+                                >
+                                    <Option value={null}>请选择转出账户</Option>
+                                    {
+                                        outAccout.map((item)=>{
+                                            return <Option value={item.id} key={item.id}>{item.name}</Option>
+                                        })
+                                    }
                                 </Select>
                             </li>
                             <li>
                                 <span className="tr_m_f_type">转入账户：</span>
-                                <Select size="large" style={{ width: 297 }} onChange={(value)=>{this.onAccountOut(value)}} placeholder="请输入转入账户">
-                                    <Option value="jack">Jack</Option>
-                                    <Option value="lucy">Lucy</Option>
-                                    <Option value="disabled" disabled>Disabled</Option>
-                                    <Option value="Yiminghe">yiminghe</Option>
+                                <Select size="large" style={{ width: 297 }}
+                                        value={this.state.selectIn}
+                                        onChange={(value)=>{this.onAccountOutIn(value, 'in')}}
+                                >
+                                    <Option value={null}>请选择转入账户</Option>
+                                    {
+                                        inAccout.map((item)=>{
+                                            return <Option value={item.id} key={item.id}>{item.name}</Option>
+                                        })
+                                    }
                                 </Select>
                             </li>
                             <li>

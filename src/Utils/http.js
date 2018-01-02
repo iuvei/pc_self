@@ -127,10 +127,14 @@ const interFace = (key) => {
     INTERFACE['WITHDRAWEL'] = 'controller=financial&action=withdrawel';
     // 充提记录
     INTERFACE['GETRWRECORD'] = 'controller=financial&action=getrwrecord';
+    // 转账记录
+    INTERFACE['FUNDREPORT'] = 'controller=report&action=fundreport';
     // 游戏账变
     INTERFACE['LOTTERYACCOUNTCHANGED'] = 'controller=gameinfo&action=LotteryAccountChanged';
     // 彩票报表
     INTERFACE['HISTORYTEAMLOTTERY'] = 'controller=gameinfo&action=historyteamlottery';
+    // 个人总表
+    INTERFACE['PROFITLOSSLOTTERYBYSELF'] = 'controller=report&action=ProfitLossLotteryBySelf';
     //GT娱乐-登录
     INTERFACE['GTLOGIN'] = 'controller=kgame&action=login';
     //GT娱乐-转账
