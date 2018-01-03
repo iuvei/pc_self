@@ -1,0 +1,86 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+.alter_dividend{
+    .ant-modal-body{
+        padding: 170px 0 0 0;
+        height: 653px;
+        background: url(../../../Images/contract.png) no-repeat center center;
+    }
+    .alter_content{
+        font-size: 14px;
+        color: #7F6B37;
+        width: 350px;
+        margin: 0 auto;
+    }
+    .a_c_list{
+        li{
+            @include lh(30px);
+            margin-bottom: 25px;
+        }
+        span{
+            display: inline-block;
+            width: 70px;
+            text-align: right;
+        }
+        i{
+            font-style: normal;
+            display: inline-block;
+            width: 275px;
+            padding-left: 10px;
+            border-bottom: 1px solid #7F6B37;
+        }
+    }
+    .a_c_text{
+        margin: 20px 0;
+    }
+    .a_c_name{
+        float: right;
+        @include wh(71px, 71px);
+        padding-top: 25px;
+        font-size: 12px;
+        p{
+            text-align: center;
+        }
+    }
+    .a_c_active{
+        background: url(../../../Images/seal.png) no-repeat center center;
+    }
+    .a_c_btn{
+        margin-top: 110px;
+        text-align: center;
+        .a_c_cancel_btn{
+            margin-right: 30px;
+        }
+    }
+    .text_content_list{
+        width: 450px;
+    }
+    .ant-btn{
+        width: 130px;
+        padding: 6px 15px;
+    }
+    .ant-input-number-handler-wrap{
+        display: none;
+    }
+    .ant-input-number{
+        @include borderRadius(0);
+        background-color: #fbfaf5;
+        border: 0;
+        border-bottom: 1px solid #C8C8C8;
+    }
+    .ant-input-number:hover{
+        border-color: #cf2027;
+    }
+    .ant-input-number-focused{
+        box-shadow: 0 0 0 0;
+        border-color: #cf2027;
+    }
+    .ant-input-number-input[disabled]{
+        color: rgb(109, 109, 109);
+    }
+    .ant-input-number-disabled .ant-input-number-input{
+        background-color: #fbfaf5;
+    }
+
+}

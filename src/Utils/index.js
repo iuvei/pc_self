@@ -23,6 +23,10 @@ const resetPwd = (body) =>  request(http.interFace('RESETPWD'),body);
 const dailysalary = (body) =>  request(http.interFace('DAILYSALARY'),body);
 // 历史日工资
 const salarypersonalsalary = (body) =>  request(http.interFace('SALARYPERSONAMSALARY'),body);
+// 日工资修改协议
+const dailysalaryupdate = (body) =>  request(http.interFace('DAILYSALARYUPDATE'),body);
+// 日工资自身协议
+const dailysalaryself = (body) =>  request(http.interFace('DAILYSALARYSELF'),body);
 // 各平台余额
 const balance = (body) =>  request(http.interFace('BALANCE'),body);
 // 平台公告
@@ -63,6 +67,8 @@ const dividendsalary = (body) =>  request(http.interFace('DIVIDENDSALAY'),body);
 const personalsalary = (body) =>  request(http.interFace('PERSONALSALARY'),body);
 // 发放分红
 const sendDividendSalary = (body) =>  request(http.interFace('SENDDIVIDENDSALARY'),body);
+// 修改分红比例
+const diviratio = (body) =>  request(http.interFace('DIVIRATIO'),body);
 // 日亏损佣金列表
 const losesalary = (body) =>  request(http.interFace('LOSESALARY'),body);
 // 日亏损佣金详情
@@ -165,6 +171,7 @@ export default {
     dividendsalary,
     personalsalary,
     sendDividendSalary,
+    diviratio,
     losesalary,
     detail,
     bindsequestion,
@@ -201,4 +208,6 @@ export default {
     profitLossLotteryBySelf,
     gtLogin,
     gtTransfer,
+    dailysalaryupdate,
+    dailysalaryself,
 }

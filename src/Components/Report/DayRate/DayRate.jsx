@@ -2,12 +2,13 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
-import { DatePicker, Table, Pagination, Input, Button, Icon, Modal } from 'antd';
+import { DatePicker, Table, Pagination, Input, Button, Icon, Modal, InputNumber, message } from 'antd';
 import moment from 'moment';
 const ButtonGroup = Button.Group;
 import { stateVar } from '../../../State';
 import common from '../../../CommonJs/common';
 import Crumbs from '../../Common/Crumbs/Crumbs';
+import Contract from '../../Common/Contract/Contract';
 
 import './DayRate.scss';
 
@@ -20,7 +21,8 @@ export default class DayRate extends Component {
             searchLoading: false,
 
             postData: {
-                username: stateVar.userInfo.userName,// 查询用户名
+                // username: stateVar.userInfo.userName,// 查询用户名
+                username: '',// 查询用户名
                 starttime: common.setDateTime(-1),// 查询日期
                 p: 1,
                 pn: 10,
@@ -39,8 +41,17 @@ export default class DayRate extends Component {
                     }
                 ],
             },
-            historyData: {}// 历史日工资
-        }
+            historyData: {},// 历史日工资
+
+            alterVisible: false, //修改比例
+            alterData: {},
+            affirmLoading: false,
+            disabled: true,
+            pros: [], // 日工资契约协议
+            salary_ratio: [], //修改协议
+        };
+        this.onCancel = this.onCancel.bind(this);
+        this.onDiviratio = this.onDiviratio.bind(this);
     };
     componentDidMount() {
         this._ismount = true;
@@ -59,7 +70,7 @@ export default class DayRate extends Component {
             if(this._ismount){
                 this.setState({
                     loading: false,
-                    searchLoading: false,
+                    searchLoading: false
                 });
                 let table = this.state.table;
                 if(res.status == 200){
@@ -150,7 +161,6 @@ export default class DayRate extends Component {
     };
     /*操作按钮*/
     onClickButton(type, record) {
-        console.log(type)
         if(type == '历史工资'){
             this.setState({
                 visible: true,
@@ -168,8 +178,26 @@ export default class DayRate extends Component {
                     }
                 }
             })
-        }else if(type == '修改协议'){
-
+        }else if(type == '修改协议' || type == '已签订过' || type == '等待同意' || type == '自身协议'){
+            this.setState({
+                alterData: record,
+                alterVisible: true,
+                disabled: true
+            });
+            let postDataSelf = {
+                userid: record.userid,
+                parentid: record.parent_id,
+                id: record.id,
+                gmt_sale: record.gmt_sale,
+            };
+            Fetch.dailysalaryself({
+                method: 'POST',
+                body: JSON.stringify(postDataSelf)
+            }).then((res)=>{
+                if(this._ismount && res.status == 200){
+                    this.setState({pros: res.repsoneContent.pros[0]})
+                }
+            })
         }else{
             console.log(type)
         }
@@ -180,8 +208,58 @@ export default class DayRate extends Component {
             visible: false,
         });
     };
+
+    /*修改值*/
+    onChangeAlterContract(val, item){
+        item.salary_ratio = val;
+        let salary_ratioFlag = this.state.pros;
+        salary_ratioFlag.forEach((data, i)=>{
+            if(data.sale == item.sale){
+                data.salary_ratio = val
+            }
+        });
+        this.setState({salary_ratio: salary_ratioFlag});
+    };
+    /*修改协议*/
+    onDiviratio(contract_name){
+        if(contract_name == '修改契约'){
+            this.setState({disabled: false})
+        }else{
+            this.setState({affirmLoading: true});
+            let alterData = this.state.alterData;
+            let postData = {
+                userid: alterData.userid,
+                id: alterData.id,
+                parentid: alterData.parent_id,
+                gmt_sale: alterData.gmt_sale,
+                salary_ratio: this.state.salary_ratio,
+            };
+            Fetch.dailysalaryupdate({
+                method: 'POST',
+                body: JSON.stringify(postData)
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({affirmLoading: false});
+                    if(res.status == 200){
+                        message.success(res.repsoneContent);
+                        this.setState({alterVisible: false, disabled: true});
+                        this.getData();
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
+                }
+            })
+        }
+
+    };
+    /*关闭修改日工资模态框*/
+    onCancel(){
+        this.setState({alterVisible: false});
+    };
     render() {
-        const { postData, table, historyData } = this.state;
+        const { postData, table, historyData, disabled, pros } = this.state;
         const columns = [
             {
                 title: '用户名',
@@ -331,6 +409,38 @@ export default class DayRate extends Component {
                         </ul>
                     </div>
                 </Modal>
+                <Contract
+                    title="日工资契约"
+                    textDescribe={
+                        <div className="a_c_text">
+                            <p>契约内容：</p>
+                            <div>
+                                <ul className="text_content_list">
+                                    {
+                                        pros.map((item, i)=>{
+                                            return (
+                                                <li key={item.sale}>
+                                                    第{i+1}档：日销量≥{item.sale.slice(0, -4)}{i != 5 &&<i>&nbsp;&nbsp;</i>}{i == 0 && <i>&nbsp;&nbsp;</i>}万元时，日工资比例为
+                                                    <InputNumber min={0} value={item.salary_ratio}
+                                                                 onChange={(value)=>this.onChangeAlterContract(value, item)}
+                                                                 disabled={disabled}
+                                                    />
+                                                    %。
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    alterData={this.state.alterData}
+                    alterVisible={this.state.alterVisible}
+                    affirmLoading={this.state.affirmLoading}
+                    disabled={this.state.disabled}
+                    onCancel={this.onCancel}
+                    onAffirm={this.onDiviratio}
+                />
             </div>
         );
     }

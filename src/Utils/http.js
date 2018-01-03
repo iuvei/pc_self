@@ -27,6 +27,10 @@ const interFace = (key) => {
     INTERFACE['DAILYSALARY'] = 'controller=salarymanage&action=dailysalary';
     // 历史日工资
     INTERFACE['SALARYPERSONAMSALARY'] = 'controller=salarymanage&action=personalsalary';
+    // 日工资修改协议
+    INTERFACE['DAILYSALARYUPDATE'] = 'controller=salarymanage&action=UpdateProtocol';
+    // 日工资自身协议
+    INTERFACE['DAILYSALARYSELF'] = 'controller=salarymanage&action=seeProtocol';
     // 各平台余额
     INTERFACE['BALANCE'] = 'controller=wallet&action=Balance';
     // 头部栏公告
@@ -69,6 +73,8 @@ const interFace = (key) => {
     INTERFACE['PERSONALSALARY'] = 'controller=dividendsalary&action=personalsalary';
     // 发放分红
     INTERFACE['SENDDIVIDENDSALARY'] = 'controller=dividendsalary&action=sendDividendSalary';
+    // 修改分红比例
+    INTERFACE['DIVIRATIO'] = 'controller=dividendsalary&action=ratio';
     // 日亏损佣金列表
     INTERFACE['LOSESALARY'] = 'controller=losesalary&action=losesalary';
     // 日亏损佣金详情
