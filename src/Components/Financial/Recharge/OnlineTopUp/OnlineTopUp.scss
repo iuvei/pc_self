@@ -42,9 +42,9 @@ $width_110px: 110px;
             width: 960px;
             li{
                 float: left;
-                @include wh(170px, 44px);
-                //line-height: 44px;
+                height: 44px;
                 border: 1px solid $border_color;
+                padding-right: 11px;
                 margin: 0 8px 9px 0;
                 background: #fff;
                 text-align: center;

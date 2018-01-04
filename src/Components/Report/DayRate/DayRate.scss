@@ -58,15 +58,12 @@
         li{
             float: left;
             width: 130px;
-            text-align: center;
+            text-align: right;
             &:first-child{
-                width: 250px;
-            }
-            &:last-child{
-                width: 190px;
+                width: 242px;
+                text-align: center;
             }
         }
-
     }
     .ant-table-thead > tr > th, .ant-table-footer{
         background-color: #F8F7F4;

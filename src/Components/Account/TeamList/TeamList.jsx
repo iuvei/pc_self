@@ -2,13 +2,15 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
-import { DatePicker, Table, Input, Button, Pagination, Modal } from 'antd';
+import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber } from 'antd';
 import Fetch from '../../../Utils';
 import Crumbs from '../../Common/Crumbs/Crumbs'
 import { stateVar } from '../../../State';
+import Contract from '../../Common/Contract/Contract';
 
 import './TeamList.scss'
 
+let typeContent = '';
 @observer
 export default class TeamList extends Component {
     constructor(props){
@@ -36,8 +38,18 @@ export default class TeamList extends Component {
                 uid: '', //点击用户名传入的用户id
 
                 sortby: null, // sortby: 字段名 asc(升序) desc(降序)
-            }
-        }
+            },
+            alterVisible: false, //修改比例
+            alterData: {},
+            affirmLoading: false,
+            disabled: true,
+            typeName: '', // 要修改类型的名字：日工资，分红，配额，奖金组
+            typeContent: '',
+
+            salary_ratio: [], //修改协议
+        };
+        this.onCancel = this.onCancel.bind(this);
+        this.onDiviratio = this.onDiviratio.bind(this);
     };
     componentDidMount() {
         this._ismount = true;
@@ -95,19 +107,6 @@ export default class TeamList extends Component {
         selectInfo.username =e.target.value;
         this.setState({selectInfo: selectInfo})
     }
-    // /*最小余额*/
-    // onChangeMinMoney(val) {
-    //     console.log(val);
-    //     let selectInfo = this.state.selectInfo;
-    //     selectInfo.min_money = val;
-    //     this.setState({selectInfo: selectInfo})
-    // };
-    // /*最大余额*/
-    // onChangeMaxMoney(val) {
-    //     let selectInfo = this.state.selectInfo;
-    //     selectInfo.max_money = val;
-    //     this.setState({selectInfo: selectInfo})
-    // };
     /*注册开始时间*/
     onRegisterTimeStart(date, dateString) {
         let selectInfo = this.state.selectInfo;
@@ -157,9 +156,106 @@ export default class TeamList extends Component {
             selectInfo: selectInfo
         }, ()=>this.getTeamList())
     };
-    /*奖金组*/
-    onClickPrizeGroup(val) {
+    /*修改契约*/
+    onClickColBtn(type, record) {
 
+        this.setState({
+            alterData: record,
+            alterVisible: true,
+            disabled: true
+        });
+        if(type == '配额'){
+            Fetch.quota({
+                method: 'POST',
+                body: JSON.stringify({uid: record.userid})
+            }).then((res)=>{
+                if(this._ismount && res.status == 200){
+                    typeContent = <div className="a_c_text">
+                        <p>契约内容：</p>
+                        <p>该用户可继续推广下级，其中可分配奖金组：</p>
+                        <ul className="text_content_list">
+                            {
+                                res.repsoneContent.aAllUserTypeAccNum.map((item, i)=>{
+                                    return (
+                                        <li key={item.uagid}>
+                                            {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个{''+this.state.disabled}
+                                            <span style={{display: this.state.disabled ? 'none' : ''}}>
+                                                ，再增加
+                                                <InputNumber min={0} value={item.salary_ratio}
+                                                             onChange={(value)=>this.onChangeAlterContract(value, item)}
+                                                />
+                                                个 （剩余可分配{item.accnum}个）
+                                            </span>
+
+                                        </li>
+                                    )
+                                })
+                            }
+                            <li>1948&nbsp;及以下剩余配额：无限；</li>
+                        </ul>
+                    </div>;
+                    this.setState({
+                        typeName: '配额契约',
+                        typeContent: typeContent,
+                    })
+                }
+            })
+        }else if(type == '日工资'){
+            let postDataSelf = {
+                userid: record.userid,
+                parentid: record.parentid,
+            };
+            Fetch.dailysalaryself({
+                method: 'POST',
+                body: JSON.stringify(postDataSelf)
+            }).then((res)=>{
+                if(this._ismount && res.status == 200){
+                    typeContent = <div className="a_c_text">
+                        <p>契约内容：</p>
+                        <div>
+                            <ul className="text_content_list">
+                                {
+                                    res.repsoneContent.pros[1].map((item, i)=>{
+                                        return (
+                                            <li key={item.sale}>
+                                                第{i+1}档：日销量≥{item.sale.slice(0, -4)}{i != 5 &&<i>&nbsp;&nbsp;</i>}{i == 0 && <i>&nbsp;&nbsp;</i>}万元时，日工资比例为
+                                                <InputNumber min={0} value={item.salary_ratio}
+                                                             onChange={(value)=>this.onChangeAlterContract(value, item)}
+                                                             disabled={this.state.disabled}
+                                                />
+                                                %。
+                                            </li>
+                                        )
+                                    })
+                                }
+                            </ul>
+                        </div>
+                    </div>;
+                    this.setState({
+                        typeName: '日工资契约',
+                        typeContent: typeContent,
+                    })
+                }
+            });
+        }else if(type == '分红'){
+            typeContent = <div className="a_c_text">
+                <p>契约内容：</p>
+                <div>
+                    如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
+                    <InputNumber min={0} value={this.state.alterData.dividend_radio}
+                                 onChange={(value)=>this.onChangeAlterContract(value)}
+                                 disabled={this.state.disabled}
+                    />
+                    %。
+                </div>
+            </div>;
+            this.setState({
+                typeName: '分红契约',
+                typeContent: typeContent,
+            })
+        }else{
+            this.setState({typeName: '奖金组契约'})
+        }
     };
     /*游戏记录*/
     onSelectGameRecord(record) {
@@ -169,9 +265,60 @@ export default class TeamList extends Component {
                     name: record.username
                 }
         });
+        stateVar.navIndex = 'gameRecord';
+    };
+
+    /*修改值*/
+    onChangeAlterContract(val, item){
+        item.salary_ratio = val;
+        let salary_ratioFlag = this.state.pros;
+        salary_ratioFlag.forEach((data, i)=>{
+            if(data.sale == item.sale){
+                data.salary_ratio = val
+            }
+        });
+        this.setState({salary_ratio: salary_ratioFlag});
+    };
+    /*修改协议*/
+    onDiviratio(contract_name){
+        if(contract_name == '修改契约'){
+            this.setState({disabled: false,});
+        }else{
+            this.setState({affirmLoading: true});
+            let alterData = this.state.alterData;
+            let postData = {
+                userid: alterData.userid,
+                id: alterData.id,
+                parentid: alterData.parent_id,
+                gmt_sale: alterData.gmt_sale,
+                salary_ratio: this.state.salary_ratio,
+            };
+            Fetch.dailysalaryupdate({
+                method: 'POST',
+                body: JSON.stringify(postData)
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({affirmLoading: false});
+                    if(res.status == 200){
+                        message.success(res.repsoneContent);
+                        this.setState({alterVisible: false, disabled: true});
+                        this.getData();
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
+                }
+            })
+        }
+
+    };
+    /*关闭修改日工资模态框*/
+    onCancel(){
+        this.setState({alterVisible: false});
     };
     render() {
-        const tableData = this.state.tableData;
+        const { tableData } = this.state;
         const columns = [
             {
                 title: '用户名',
@@ -190,7 +337,7 @@ export default class TeamList extends Component {
             }, {
                 title: '奖金组',
                 dataIndex: 'prize_group',
-                render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickPrizeGroup(record)}>{text}</a>,
+                render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
                 sorter: () => {},
                 width: 100,
             }, {
@@ -201,17 +348,17 @@ export default class TeamList extends Component {
             }, {
                 title: '日工资',
                 dataIndex: 'daily_salary_status',
-                render: text => <Button type="danger">{text==1 ? '已签订' : '未签订'}</Button>,
+                render: (text, record) => <Button type={text == 1 ? 'primary' : ''} onClick={()=>this.onClickColBtn('日工资', record)}>{text==1 ? '已签订' : '未签订'}</Button>,
                 width: 100,
             }, {
                 title: '分红',
                 dataIndex: 'dividend_salary_status',
-                render: text => <Button type="danger">{text==1 ? '已签订' : '未签订'}</Button>,
+                render: (text, record) => <Button type={text == 1 ? 'primary' : ''} onClick={()=>this.onClickColBtn('分红', record)}>{text==1 ? '已签订' : '未签订'}</Button>,
                 width: 100,
             }, {
                 title: '配额',
                 dataIndex: 'useraccgroup_status',
-                render: text => <Button type="danger">{text == 1 ? '已签订' : '未签订'}</Button>,
+                render: (text, record) => <Button type={text == 1 ? 'primary' : ''} onClick={()=>this.onClickColBtn('配额', record)}>{text == 1 ? '已签订' : '未签订'}</Button>,
                 width: 100,
             }, {
                 title: '最后登录时间',
@@ -220,7 +367,7 @@ export default class TeamList extends Component {
             }, {
                 title: '操作',
                 dataIndex: 'action',
-                render: (text, record) => <Button type="danger" onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>,
+                render: (text, record) => <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>,
                 width: 130,
             }];
         // 总计
@@ -241,14 +388,6 @@ export default class TeamList extends Component {
                                 <span>用户名：</span>
                                 <Input placeholder="请输入用户名" value={this.state.selectInfo.username} onChange={(e)=>this.onChangeUserName(e)}/>
                             </li>
-                            {/*<li className="t_m_date_classify">余额：</li>*/}
-                            {/*<li style={{marginLeft: '8px'}}>*/}
-                                {/*<InputNumber min={0} placeholder="余额" onChange={(val)=>this.onChangeMinMoney(val)} />*/}
-                            {/*</li>*/}
-                            {/*<li style={{margin: '0 8px'}}>至</li>*/}
-                            {/*<li>*/}
-                                {/*<InputNumber min={0} placeholder="余额" onChange={(val)=>this.onChangeMaxMoney(val)} />*/}
-                            {/*</li>*/}
                             <li className="t_m_date_classify">注册时间：</li>
                             <li style={{marginLeft: '8px'}}>
                                 <DatePicker showTime
@@ -300,6 +439,16 @@ export default class TeamList extends Component {
                         />
                     </div>
                 </div>
+                <Contract
+                    title={this.state.typeName}
+                    textDescribe={this.state.typeContent}
+                    alterData={this.state.alterData}
+                    alterVisible={this.state.alterVisible}
+                    affirmLoading={this.state.affirmLoading}
+                    disabled={this.state.disabled}
+                    onCancel={this.onCancel}
+                    onAffirm={this.onDiviratio}
+                />
             </div>
 
         );

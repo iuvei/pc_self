@@ -1,24 +1,12 @@
 /*在线充值*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import Fetch from '../../../../Utils';
 import { hashHistory } from 'react-router';
 import { InputNumber, Button } from 'antd';
 import { changeMoneyToChinese } from '../../../../CommonJs/common';
 
 import './OnlineTopUp.scss'
-
-import nongye from './Img/nongye.png'
-import jianshe from './Img/jianshe.png'
-import zhongxin from './Img/zhongxin.png'
-import guangda from './Img/guangda.png'
-import beijing from './Img/beijing.png'
-import gongshang from './Img/gongshang.png'
-import guangfa from './Img/guangfa.png'
-import pufa from './Img/pufa.png'
-import youzheng from './Img/youzheng.png'
-import shanghai from './Img/shanghai.png'
-import pingan from './Img/pingan.png'
-import xingye from './Img/xingye.png'
 
 @observer
 export default class OnlineTopUp extends Component {
@@ -26,8 +14,31 @@ export default class OnlineTopUp extends Component {
         super(props);
         this.state = {
             imgUrlIndex: 0,
+            backList: [], // 可选择银行
+            money: 0,
+            loadmax: 0, //渠道限额最多
+            loadmin: 0, //渠道限额最少
         };
     };
+    componentDidMount() {
+        this._ismount = true;
+        this.onLinePayment()
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
+    onLinePayment(){
+        Fetch.payment({
+            method: 'POST',
+            body:JSON.stringify({type: 'paymentBank', cateid: 1})
+        }).then((res)=>{
+            if(this._ismount && res.status == 200){
+                this.setState({
+                    backList: res.repsoneContent,
+                })
+            }
+        })
+    }
     // 立即充值
     onRecharge() {
         this.setState({ iconLoadingRecharge: true });
@@ -36,10 +47,16 @@ export default class OnlineTopUp extends Component {
     // 充值金额
     onRechargeAmount(value) {
         console.log('changed', value);
+        this.setState({money: value})
+    };
+    /*选择银行*/
+    selectActive(rid){
+        this.setState({imgUrlIndex: rid});
+        let backList = this.state.backList;
 
     };
     render() {
-        const imgUrl = [nongye, jianshe, zhongxin, guangda, beijing, gongshang, guangfa, pufa, youzheng, shanghai, pingan, xingye];
+
         return (
             <div className="online_top_up">
                 <div className="r_m_hint">
@@ -50,8 +67,12 @@ export default class OnlineTopUp extends Component {
                         <span className="r_m_li_w left" style={{marginTop: '10px'}}>选择充值银行：</span>
                         <ul className="r_m_select_yhk left">
                             {
-                                imgUrl.map((value, index)=>{
-                                    return <li className={ this.state.imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.setState({imgUrlIndex: index})}} key={index}><img src={value} alt="选择银行"/></li>
+                                this.state.backList.map((item, index)=>{
+                                    return (
+                                        <li className={ this.state.imgUrlIndex === item.rid ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid)}} key={item.code}>
+                                            <img src={require('./Img/yinhang/'+item.code+'.jpg')} alt="选择银行"/>
+                                        </li>
+                                    )
                                 })
                             }
                         </ul>
@@ -67,7 +88,7 @@ export default class OnlineTopUp extends Component {
                                     <strong style={{color: '#CB1313',fontWeight: 'normal'}}>50000</strong>
                                     ，单日充值总额无上限
                                 </span>
-                        <p className="r_m_dx">{changeMoneyToChinese(1)}</p>
+                        <p className="r_m_dx">{changeMoneyToChinese(this.state.money)}</p>
                     </li>
                     <li className="r_m_primary_btn">
                         <span className="r_m_li_w"></span>

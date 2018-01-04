@@ -1,7 +1,8 @@
 /*转账*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Select, InputNumber, Input, Button } from 'antd';
+import Fetch from '../../../Utils';
+import { Select, InputNumber, Modal, Button, message } from 'antd';
 const Option = Select.Option;
 import { stateVar } from '../../../State';
 
@@ -40,11 +41,18 @@ export default class Transfer extends Component {
           inAccout: accoutArr, //转入账户
           selectOut: null,
           selectIn: null,
+          money: 0, //转账金额
       }
+    };
+    componentDidMount() {
+        this._ismount = true;
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     /*选择 转出转入 账户*/
     onAccountOutIn(value, type) {
-        let { selectOut, selectIn } = this.state;
+        console.log(value)
         if(type === 'out'){
             if(value == 0){
                 this.setState({
@@ -83,11 +91,175 @@ export default class Transfer extends Component {
     };
     // 转账金额
     onTransferAmount(value) {
-        console.log('changed', value);
+        this.setState({money: value})
     }
+    /*体育转账*/
+    transferSport(postData){
+        Fetch.sport({
+            method: 'POST',
+            body: JSON.stringify(postData),
+        }).then((res)=>{
+            if(this._ismount) {
+                this.setState({confirmTransferLoading: false});
+                if(res.status == 200){
+                    Modal.success({
+                        title: res.shortMessage,
+                    });
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    };
+    /*EA转账*/
+    transferEagame(postData){
+        Fetch.eagame({
+            method: 'POST',
+            body: JSON.stringify(postData),
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({confirmTransferLoading: false});
+                if(res.status == 200){
+                    Modal.success({
+                        title: res.shortMessage,
+                    });
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    };
+    /*PT转账*/
+    transferPttranfer(postData){
+        Fetch.pttranfer({
+            method: 'POST',
+            body: JSON.stringify(postData),
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({confirmTransferLoading: false});
+                if(res.status == 200){
+                    Modal.success({
+                        title: res.shortMessage,
+                    });
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    };
+    /*博饼转账*/
+    transferBobing(postData){
+        Fetch.bobingtransfer({
+            method: 'POST',
+            body: JSON.stringify(postData),
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({confirmTransferLoading: false});
+                if(res.status == 200){
+                    Modal.success({
+                        title: res.shortMessage,
+                    });
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    };
     // 确认转账
     onConfirmTransfer() {
+        let { selectOut, selectIn } = this.state,
+            postData = {};
+        if(selectOut == null){
+            message.warning('请先选择转出账户！');
+            return
+        }
+        if(selectIn == null){
+            message.warning('请先选择转入账户！');
+            return
+        }
         this.setState({ confirmTransferLoading: true });
+        if(selectOut == 0){//0：彩票账户转入第三方，其他第三方转入彩票账户
+            if(selectIn == 1){ // 转入体育账户
+                postData = {
+                    tran_from: "1",
+                    tran_to: "s",
+                    money: this.state.money,
+                    doFunToPe:"ok",
+                };
+                this.transferSport(postData);
+            }else if(selectIn == 2){ // 转入EA账户
+                postData = {
+                    tran_from: 's',
+                    tran_to: 2,
+                    money: this.state.money,
+                    doFunToEa: 'ok'
+                };
+                this.transferEagame(postData);
+            }else if(selectIn == 3){ //转入pt账户
+                postData = {
+                    targetpt: 2,
+                    frompt: 's',
+                    money: this.state.money,
+                    tag: 'transfer',
+                };
+                this.transferPttranfer(postData);
+            }else if(selectIn == 4) {
+                postData = {
+                    from: 'ssc',
+                    target: 'bb',
+                    money: this.state.money,
+                    tag: 'transfer'
+                }
+                this.transferBobing(postData);
+            }else{
+
+            }
+        }else if(selectOut == 1){
+            postData = {
+                tran_from: 's',
+                tran_to: '1',
+                money: this.state.money,
+                doFunToPe:"ok",
+            };
+            this.transferSport(postData);
+        }else if(selectOut == 2){
+            postData = {
+                tran_from: 2,
+                tran_to: 's',
+                money: this.state.money,
+                doFunToEa: 'ok'
+            };
+            this.transferEagame(postData);
+        }else if(selectOut == 3){
+            postData = {
+                targetpt: 's',
+                frompt: 2,
+                money: this.state.money,
+                tag: 'transfer',
+            };
+            this.transferPttranfer(postData);
+        }else if(selectOut == 4){
+            postData = {
+                from: 'bb',
+                target: 'ssc',
+                money: outMoney,
+                tag: 'transfer'
+            };
+            this.transferBobing(postData);
+        }else{
+
+        }
+
+
+
     };
     render() {
         const allBalance = stateVar.allBalance;
@@ -165,16 +337,12 @@ export default class Transfer extends Component {
                             </li>
                             <li>
                                 <span className="tr_m_f_type">转账金额：</span>
-                                <InputNumber min={10} max={5000} defaultValue={10}
+                                <InputNumber min={10} defaultValue={10}
                                              formatter={value => `${value}元`}
                                              parser={value => value.replace('元', '')}
                                              onChange={(value)=>{this.onTransferAmount(value)}} />
                                 <p className="tr_m_f_text">转账金额至少10元以上</p>
 
-                            </li>
-                            <li>
-                                <span className="tr_m_f_type">资金密码：</span>
-                                <Input size="large" style={{ width: 297, height: 35 }} placeholder="请输入资金密码" />
                             </li>
                             <li>
                                 <span className="tr_m_f_type"></span>

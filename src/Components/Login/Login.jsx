@@ -109,7 +109,7 @@ export default class Login extends Component {
                 "sType": 'formal',
 
 
-                "username": 'bery88',
+                "username": 'hobart',
 
                 "loginpass": md5((md5(this.state.aptchac) + md5('123qwe'))),
                 "validcode": this.state.aptchac
@@ -213,7 +213,7 @@ export default class Login extends Component {
                         method: "POST",
                         body:JSON.stringify({
                             "sType":'formal',
-                            "username":'bery88',
+                            "username":'hobart',
                             "loginpass":md5((md5(this.state.aptchacM)+md5('qwe123'))),
                             "validcode":this.state.aptchacM
                         })

@@ -19,7 +19,7 @@ export default class Contract extends Component {
     onAffirm() {
         let contract_name = this.state.contract_name;
         if(contract_name == '修改契约'){
-            this.setState({contract_name:  '提交契约'});
+            this.setState({contract_name:  '签订契约'});
         }else{
             this.setState({contract_name: '修改契约'})
         }
@@ -29,7 +29,17 @@ export default class Contract extends Component {
     onCancel(){
         this.props.onCancel();
         this.setState({contract_name: '修改契约'})
-    }
+    };
+    /*是否已签订*/
+    isSign() {
+        let { disabled, alterData } = this.props;
+        console.log(alterData)
+        if(alterData.daily_salary_status == 1 || alterData.dividend_salary_status == 1 || alterData.useraccgroup_status == 1){
+            return disabled ? 'a_c_name a_c_active' : 'a_c_name';
+        }else{
+            return disabled ? 'a_c_name a_c_active' : 'a_c_name';
+        }
+    };
     render() {
         const { alterData, title, alterVisible, textDescribe, disabled } = this.props;
         const { contract_name } = this.state;
@@ -54,24 +64,28 @@ export default class Contract extends Component {
                         </li>
                     </ul>
                     {textDescribe}
-                    <div className={disabled ? 'a_c_name a_c_active' : 'a_c_name'}>
+                    <div className={this.isSign()}>
                         <p>{alterData.username}</p>
                         <p>{common.setDateTime(0)}</p>
                     </div>
-                    <div className="a_c_btn">
-                        <Button type="primary"
-                                style={{display: stateVar.userInfo.userName == alterData.username ? 'none' : ''}}
-                                loading={this.props.affirmLoading}
-                                onClick={()=>this.onAffirm()}
-                                className="a_c_cancel_btn"
-                        >
-                            {contract_name}
-                        </Button>
-                        <Button onClick={()=>this.onCancel()}
-                        >
-                            取消
-                        </Button>
-                    </div>
+                    {
+                        stateVar.userInfo.userName == alterData.username ?
+                            <div className="a_c_btn_one">
+                                <Button onClick={()=>this.onCancel()}>关闭</Button>
+                            </div> :
+                            <div className="a_c_btn">
+                                <Button loading={this.props.affirmLoading}
+                                        onClick={()=>this.onAffirm()}
+                                        className="a_c_cancel_btn"
+                                >
+                                    {contract_name}
+                                </Button>
+                                <Button onClick={()=>this.onCancel()}
+                                >
+                                    关闭
+                                </Button>
+                            </div>
+                    }
                 </div>
             </Modal>
         )

@@ -129,6 +129,8 @@ const withdrawel= (body) =>  request(http.interFace('WITHDRAWEL'),body);
 const getrwrecord= (body) =>  request(http.interFace('GETRWRECORD'),body);
 //转账记录
 const fundreport= (body) =>  request(http.interFace('FUNDREPORT'),body);
+//充提
+const payment= (body) =>  request(http.interFace('PAYMENT'),body);
 //游戏账变
 const lotteryAccountChanged= (body) =>  request(http.interFace('LOTTERYACCOUNTCHANGED'),body);
 //彩票报表
@@ -203,6 +205,7 @@ export default {
     withdrawel,
     getrwrecord,
     fundreport,
+    payment,
     lotteryAccountChanged,
     historyteamlottery,
     profitLossLotteryBySelf,

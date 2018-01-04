@@ -75,7 +75,7 @@ export default class ContractModal extends Component {
                 <p>2017.11.14</p>
             </div>
             <div className='c_btn0'>
-                <Button type="primary">提交契约</Button>
+                <Button type="primary">签订契约</Button>
                 <Button type="primary" className='c_btn_cancel0'onClick={()=>this.onCancel()}>取消</Button>
             </div>
 
@@ -95,7 +95,7 @@ export default class ContractModal extends Component {
                 <p>2017.11.14</p>
             </div>
             <div className='c_btn1'>
-                <Button type="primary">提交契约</Button>
+                <Button type="primary">签订契约</Button>
                 <Button type="primary" className='c_btn_cancel1' onClick={()=>this.onCancel()}>取消</Button>
             </div>
 
@@ -147,7 +147,7 @@ export default class ContractModal extends Component {
                 <p>2017.11.14</p>
             </div>
             <div className='c_btn2'>
-                <Button type="primary">提交契约</Button>
+                <Button type="primary">签订契约</Button>
                 <Button type="primary" className='c_btn_cancel2' onClick={()=>this.onCancel()}>取消</Button>
             </div>
         </div>;
@@ -186,7 +186,7 @@ export default class ContractModal extends Component {
                 <p>2017.11.14</p>
             </div>
             <div className='c_btn0'>
-                <Button type="primary">提交契约</Button>
+                <Button type="primary">签订契约</Button>
                 <Button type="primary" className='c_btn_cancel0'onClick={()=>this.onCancel()}>取消</Button>
             </div>
 

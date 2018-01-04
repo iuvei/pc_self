@@ -111,7 +111,7 @@ export default class Withdraw extends Component {
                                     return (
                                         <li key={item.id} onClick={()=>this.onSelectBank(item)}>
                                             <div className={this.state.defaultBank == item.id ? 'r_m_qq_controler r_m_active' : 'r_m_qq_controler'}>
-                                                <img src={require('./Img/'+item.bank_code+'.jpg')} alt=""/>
+                                                <img src={require('./Img/yinhang/'+item.bank_code+'.jpg')} alt=""/>
                                                 <span className="r_m_qq">{item.bank_name}：{item.account.slice(-5)}[{item.account_name}]</span>
                                             </div>
                                         </li>

@@ -135,6 +135,8 @@ const interFace = (key) => {
     INTERFACE['GETRWRECORD'] = 'controller=financial&action=getrwrecord';
     // 转账记录
     INTERFACE['FUNDREPORT'] = 'controller=report&action=fundreport';
+    // 充值
+    INTERFACE['PAYMENT'] = 'controller=financial&action=payment';
     // 游戏账变
     INTERFACE['LOTTERYACCOUNTCHANGED'] = 'controller=gameinfo&action=LotteryAccountChanged';
     // 彩票报表

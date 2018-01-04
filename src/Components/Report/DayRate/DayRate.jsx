@@ -195,7 +195,7 @@ export default class DayRate extends Component {
                 body: JSON.stringify(postDataSelf)
             }).then((res)=>{
                 if(this._ismount && res.status == 200){
-                    this.setState({pros: res.repsoneContent.pros[0]})
+                    this.setState({pros: res.repsoneContent.pros[0], salary_ratio: res.repsoneContent.pros[0]})
                 }
             })
         }else{
@@ -272,24 +272,31 @@ export default class DayRate extends Component {
                 dataIndex: 'usergroup_name',
                 width: 130,
             }, {
-                title: '日销量',
+                title: '投注量',
                 dataIndex: 'sale',
+                className: 'column-right',
                 width: 130,
             }, {
-                title: '日有效量',
+                title: '有效投注量',
                 dataIndex: 'effective_sale',
+                className: 'column-right',
                 width: 130,
             }, {
                 title: '日工资比例',
                 dataIndex: 'salary_ratio',
+                className: 'column-right',
                 width: 130,
             }, {
                 title: '团队日工资',
                 dataIndex: 'allsalary',
+                className: 'column-right',
                 width: 130,
             }, {
                 title: '日工资',
                 dataIndex: 'salary',
+                className: 'column-right',
+                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                                                        <span className="col_color_ying">{text}</span>,
                 width: 130,
             }, {
                 title: '操作',
@@ -313,7 +320,6 @@ export default class DayRate extends Component {
             <li>-</li>
             <li>-</li>
             <li>{table.sum.total_salary == null ? '-' : table.sum.total_salary}</li>
-            <li>-</li>
         </ul>;
         const columnsModal = [
             {

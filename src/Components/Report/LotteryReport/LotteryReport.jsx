@@ -85,7 +85,7 @@ export default class LotteryReport extends Component {
                     this.setState({
                         table: table,
                         lotteryList: data.lotterys,
-                        selfDate: postData.starttime +' 至 '+ postData.endtime,
+                        selfDate: postData.starttime.slice(5) +' 至 '+ postData.endtime.slice(5),
                     });
                 } else {
                     table.tableData = [];
