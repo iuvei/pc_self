@@ -124,6 +124,8 @@ export default class Withdraw extends Component {
                         <span className="r_m_li_w">提款金额：</span>
                         <InputNumber min={response.iMinMoney} max={response.iMaxMoney}
                                      defaultValue={1}
+                                     formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      size="large"
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
                         />

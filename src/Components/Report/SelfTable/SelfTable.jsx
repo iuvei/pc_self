@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
-import { DatePicker, Button, Table } from 'antd';
+import { DatePicker, Button, Table, Popover } from 'antd';
 import moment from 'moment';
 import common from '../../../CommonJs/common';
 
@@ -122,68 +122,87 @@ export default class SelfTable extends Component {
             {
                 title: '日期',
                 dataIndex: 'date',
-                width: 85,
+                render: text => text.slice(5),
+                width: 50,
             }, {
                 title: '用户名',
                 dataIndex: 'username',
+                render:(text)=>{
+                    return (
+                        text.length < 10 ? text :
+                            <Popover content={text} title={null} trigger="hover">
+                                <span className="ellipsis" style={{display: 'inline-block', width: 70}}>{text}</span>
+                            </Popover>
+                    )
+                },
                 width: 85,
             }, {
                 title: '投注量',
                 dataIndex: 'cp_stake',
                 className: 'column-right',
-                width: 85,
+                render: text => parseFloat(text).toFixed(3),
+                width: 95,
             }, {
                 title: '有效投注量',
                 dataIndex: 'cp_effective_stake',
                 className: 'column-right',
-                width: 85,
+                render: text => parseFloat(text).toFixed(3),
+                width: 95,
             },  {
                 title: '中奖',
                 dataIndex: 'cp_bonus',
                 className: 'column-right',
-                width: 85,
+                render: text => parseFloat(text).toFixed(3),
+                width: 95,
             }, {
                 title: '返点',
                 dataIndex: 'cp_point',
                 className: 'column-right',
+                render: text => parseFloat(text).toFixed(3),
                 width: 85,
             }, {
                 title: '毛收入',
                 dataIndex: 'income',
                 className: 'column-right',
-                width: 85,
+                render: text => parseFloat(text).toFixed(3),
+                width: 95,
             }, {
                 title: '日工资',
                 dataIndex: 'salary',
                 className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                render: text => parseFloat(text).toFixed(3),
                 width: 85,
             }, {
                 title: '日亏损',
                 dataIndex: 'lose_salary',
                 className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
-                width: 85,
+                render: text => parseFloat(text).toFixed(3),
+                width: 70,
             }, {
                 title: '活动',
                 dataIndex: 'sum_activity',
                 className: 'column-right',
-                width: 85,
+                render: text => parseFloat(text).toFixed(3),
+                width: 70,
             }, {
                 title: '净收入',
                 dataIndex: 'net_income',
                 className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
-                width: 85,
+                render: text => parseFloat(text).toFixed(3),
+                width: 95,
             }, {
                 title: '分红',
                 dataIndex: 'allsalary',
                 className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                render: text => parseFloat(text).toFixed(3),
                 width: 85,
             }, {
                 title: '总盈亏',
                 dataIndex: 'last_win_lose',
                 className: 'column-right',
-                render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
-                                            <span className="col_color_ying">{text}</span>,
-                width: 85,
+                render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                                            <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                width: 90,
             }
         ];
         const columnsRests = [

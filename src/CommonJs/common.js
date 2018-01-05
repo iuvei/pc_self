@@ -55,7 +55,7 @@ export const changeMoneyToChinese = (money) => {
     let DecimalNum; //金额小数部分
     let ChineseStr=""; //输出的中文金额字符串
     let parts; //分离金额后用的数组，预定义
-    if( money == "" ){
+    if( money === "" ){
         return "";
     }
     money = parseFloat(money);
@@ -103,7 +103,7 @@ export const changeMoneyToChinese = (money) => {
     if( DecimalNum!= '' ){//小数部分
         let decLen = DecimalNum.length;
         for( let i=0; i<decLen; i++ ){
-            n = DecimalNum.substr(i,1);
+            let n = DecimalNum.substr(i,1);
             if( n != '0' ){
                 ChineseStr += cnNums[Number(n)]+cnDecUnits[i];
             }

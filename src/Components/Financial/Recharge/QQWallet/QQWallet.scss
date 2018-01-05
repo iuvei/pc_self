@@ -11,18 +11,6 @@ $width_110px: 110px;
             @include wh(142px, 35px);
             border: 1px solid $border_color;
             text-align: center;
-            .r_m_qq{
-                display: inline-block;
-                @include wh(85px, 35px);
-                line-height: 35px;
-                text-align: center;
-                padding-left: 30px;
-                background: url(./Img/qq_icon.png) no-repeat center left;
-                background-size: 25px;
-                &:hover{
-                    cursor: pointer;
-                }
-            }
         }
         .r_m_recharge_text{
             padding-left: 20px;
@@ -48,9 +36,10 @@ $width_110px: 110px;
             width: 960px;
             li{
                 float: left;
-                @include wh(170px, 44px);
+                height: 44px;
                 border: 1px solid $border_color;
                 margin: 0 8px 9px 0;
+                padding-right: 11px;
                 background: #fff;
                 text-align: center;
                 &:hover{

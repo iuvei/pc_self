@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import { Input,Button,Icon,Checkbox,Modal  } from 'antd';
-import 'whatwg-fetch'
 import md5 from 'md5';
 import Fetch from '../../Utils';
 import { stateVar } from '../../State';

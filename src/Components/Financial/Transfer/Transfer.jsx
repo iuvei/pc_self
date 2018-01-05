@@ -338,9 +338,9 @@ export default class Transfer extends Component {
                             <li>
                                 <span className="tr_m_f_type">转账金额：</span>
                                 <InputNumber min={10} defaultValue={10}
-                                             formatter={value => `${value}元`}
-                                             parser={value => value.replace('元', '')}
-                                             onChange={(value)=>{this.onTransferAmount(value)}} />
+                                             formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                             parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                             onChange={(value)=>{this.onTransferAmount(value)}} />元
                                 <p className="tr_m_f_text">转账金额至少10元以上</p>
 
                             </li>

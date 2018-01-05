@@ -1,8 +1,10 @@
 /*QQ钱包*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { hashHistory } from 'react-router';
+import Fetch from '../../../../Utils';
+import { stateVar } from '../../../../State';
 import { InputNumber, Button } from 'antd';
+import { changeMoneyToChinese } from '../../../../CommonJs/common';
 
 import './QQWallet.scss'
 
@@ -12,41 +14,132 @@ export default class QQWallet extends Component {
         super(props);
         this.state = {
             iconLoadingRecharge: false,
+            imgUrlIndex: 0,
+            backList: [], // 可选择银行
+            loadmax: 0, //渠道限额最多
+            loadmin: 0, //渠道限额最少
+
+            postData: {
+                type: 'deposit', //操作类型
+                tag: 'qqqianbao', //充值分类  qq钱包 qqqianbao
+                payment: '', //银行渠道code
+                bid: null, //银行渠道id
+                money: 0,//充值金额
+                rid: null, //充值银行id
+                code: '', //充值银行code
+            }
         };
     };
+    componentDidMount() {
+        this._ismount = true;
+        this.onLinePayment()
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
+    onLinePayment(){
+        Fetch.payment({
+            method: 'POST',
+            body:JSON.stringify({type: 'paymentBank', cateid: 2})
+        }).then((res)=>{
+            if(this._ismount && res.status == 200){
+                let data = res.repsoneContent,
+                    postData = this.state.postData;
+                postData.money = data[0].loadmin;
+                postData.payment = data[0].payport_name;
+                postData.bid = data[0].id;
+                postData.rid = data[0].rid;
+                postData.code = data[0].code;
+                this.setState({
+                    backList: data,
+                    loadmin: data[0].loadmin,
+                    loadmax: data[0].loadmax,
+                    postData: postData
+                })
+            }
+        })
+    }
     // 立即充值
     onRecharge() {
         this.setState({ iconLoadingRecharge: true });
+        Fetch.payment({
+            method: 'POST',
+            body: JSON.stringify(this.state.postData)
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({ iconLoadingRecharge: false });
+                if(res.status == 200){
+                    window.open(stateVar.httpUrl + res.repsoneContent.payUrl)
+                }
+            }
+        })
     };
     // 充值金额
     onRechargeAmount(value) {
-        console.log('changed', value);
+        let postData = this.state.postData;
+        postData.money = value;
+        this.setState({postData})
+    };
+    /*选择*/
+    selectActive(rid, index){
+        let selectBank = this.state.backList.filter(item => item.rid == rid)[0],
+            postData = this.state.postData;
+        postData.payment = selectBank.payport_name;
+        postData.bid = parseInt(selectBank.id);
+        postData.rid = parseInt(selectBank.rid);
+        postData.code = selectBank.code;
+        this.setState({
+            imgUrlIndex: index,
+            loadmin: selectBank.loadmin,
+            loadmax: selectBank.loadmax,
+            postData: postData,
+        });
     };
     render() {
         return (
             <div className="qq_wallet">
                 <ul className="r_m_list">
                     <li>
-                        <span className="r_m_li_w">选择充值银行：</span>
-                        <span className="r_m_qq_controler r_m_active">
-                                        <span className="r_m_qq">QQ钱包</span>
-                                    </span>
+                        <span className="r_m_li_w left">选择充值方式：</span>
+                        {
+                            this.state.backList.length == 0 ? <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
+                                <ul className="r_m_select_yhk left">
+                                    {
+                                        this.state.backList.map((item, index)=>{
+                                            return (
+                                                <li className={ this.state.imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
+                                                    <img src={require('./Img/'+item.code+'.png')} alt="选择"/>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                        }
                     </li>
                     <li style={{height: '70px'}}>
                         <span className="r_m_li_w">充值金额：</span>
-                        <InputNumber min={1} max={100000} defaultValue={1} size="large" onChange={(value)=>{this.onRechargeAmount(value)}} />
+                        <InputNumber min={parseFloat(this.state.loadmin)} max={parseFloat(this.state.loadmax)} size="large"
+                                     defaultValue={1}
+                                     formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                     onChange={(value)=>{this.onRechargeAmount(value)}}
+                        />
                         <span style={{margin: '0 15px 0 3px'}}>元</span>
                         <span className="r_m_recharge_text">
-                                        单笔充值限额：最低
-                                        <strong style={{color: '#CB1313',fontWeight: 'normal'}}>10</strong>
-                                        ，最高
-                                        <strong style={{color: '#CB1313',fontWeight: 'normal'}}>50000</strong>
-                                    </span>
-                        <p className="r_m_dx">壹百元整</p>
+                            单笔充值限额：最低
+                            <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmin}</strong>
+                            元，最高
+                            <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmax}</strong>
+                            元
+                        </span>
+                        <p className="r_m_dx">{changeMoneyToChinese(this.state.postData.money)}</p>
                     </li>
                     <li className="r_m_primary_btn">
                         <span className="r_m_li_w"></span>
-                        <Button type="primary" size="large" loading={this.state.iconLoadingRecharge} onClick={()=>{this.onRecharge()}}>
+                        <Button type="primary" size="large" loading={this.state.iconLoadingRecharge}
+                                onClick={()=>{this.onRecharge()}}
+                                disabled={this.state.backList.length == 0}
+                        >
                             立即充值
                         </Button>
                     </li>

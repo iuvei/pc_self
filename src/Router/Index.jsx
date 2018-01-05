@@ -29,10 +29,10 @@ import {
     weChat,
     aliPay,
     eBank,
-    promptlyRecharge,
     withdraw,
     affirmWithdraw,
     mentionFillingRecord,
+    promptlyRecharge,
     transfer,
     transferRecord,
     accountChange,
@@ -110,13 +110,13 @@ const routes = params => (
                 <IndexRoute getComponent={recharge} />
                 <Route path="/financial/recharge" getComponent={recharge} params={params}>
                     <IndexRoute getComponent={onlineTopUp} />
+                    <Route path="/financial/recharge/promptlyRecharge" getComponent={promptlyRecharge} params={params}/>
                     <Route path="/financial/recharge/onlineTopUp" getComponent={onlineTopUp} params={params}/>
                     <Route path="/financial/recharge/qqWallet" getComponent={qqWallet} params={params}/>
                     <Route path="/financial/recharge/weChat" getComponent={weChat} params={params}/>
                     <Route path="/financial/recharge/aliPay" getComponent={aliPay} params={params}/>
                     <Route path="/financial/recharge/eBank" getComponent={eBank} params={params}/>
                 </Route>
-                <Route path="/financial/recharge/promptlyRecharge" getComponent={promptlyRecharge} params={params}/>
                 <Route path="/financial/withdraw" getComponent={withdraw} params={params}/>
                 <Route path="/financial/mentionFillingRecord" getComponent={mentionFillingRecord} params={params}/>
                 <Route path="/financial/transfer" getComponent={transfer} params={params}/>

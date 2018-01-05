@@ -212,12 +212,6 @@ export const onlineTopUp = (location, callback) => {
         callback(null, require('../Components/Financial/Recharge/OnlineTopUp/OnlineTopUp').default);
     }, 'onlineTopUp');
 };
-// 财务中心/充值/立即充值
-export const promptlyRecharge = (location, callback) => {
-    require.ensure([], (require) => {
-        callback(null, require('../Components/Financial/Recharge/OnlineTopUp/PromptlyRecharge/PromptlyRecharge').default);
-    }, 'promptlyRecharge');
-};
 // 财务中心/充值/qq钱包
 export const qqWallet = (location, callback) => {
     require.ensure([], (require) => {
@@ -235,6 +229,12 @@ export const aliPay = (location, callback) => {
     require.ensure([], (require) => {
         callback(null, require('../Components/Financial/Recharge/AliPay/AliPay').default);
     }, 'aliPay');
+};
+// 财务中心/充值/支付宝确认
+export const promptlyRecharge = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/Financial/Recharge/AliPay/promptlyRecharge/promptlyRecharge').default);
+    }, 'promptlyRecharge');
 };
 // 财务中心/充值/网银转账
 export const eBank = (location, callback) => {
