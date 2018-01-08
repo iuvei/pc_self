@@ -27,6 +27,9 @@ export default class WeChat extends Component {
                 money: 0,//充值金额
                 rid: null, //充值银行id
                 code: '', //充值银行code
+            },
+            validate: {
+                money: 2, // 0: 对， 1：错
             }
         };
     };
@@ -45,7 +48,6 @@ export default class WeChat extends Component {
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,
                     postData = this.state.postData;
-                postData.money = data[0].loadmin;
                 postData.payment = data[0].payport_name;
                 postData.bid = data[0].id;
                 postData.rid = data[0].rid;
@@ -61,6 +63,12 @@ export default class WeChat extends Component {
     }
     // 立即充值
     onRecharge() {
+        if(this.state.validate.money != 0){
+            let validate = this.state.validate;
+            validate.money = 1;
+            this.setState({validate});
+            return
+        }
         this.setState({ iconLoadingRecharge: true });
         Fetch.payment({
             method: 'POST',
@@ -74,11 +82,32 @@ export default class WeChat extends Component {
             }
         })
     };
+    /*验证显示不同class*/
+    onValidate(val) {
+        let classNames,
+            validate = this.state.validate;
+        if(validate[val] == 0) {
+            classNames = 'correct'
+        } else if(validate[val] == 1) {
+            classNames = 'wrong'
+        } else {
+            classNames = ''
+        }
+        return classNames
+    };
     // 充值金额
     onRechargeAmount(value) {
-        let postData = this.state.postData;
+        console.log(value)
+        let validate = this.state.validate,
+            postData = this.state.postData;
+        if(value == '' ||value == 0 || value == undefined || value < this.state.loadmin || value > this.state.loadmax){
+            validate.money = 1;
+        }else{
+            validate.money = 0;
+        }
         postData.money = value;
-        this.setState({postData})
+        this.setState({postData, validate});
+
     };
     /*选择*/
     selectActive(rid, index){
@@ -99,7 +128,7 @@ export default class WeChat extends Component {
         return (
             <div className="qq_wallet">
                 <ul className="r_m_list">
-                    <li>
+                    <li className="clear">
                         <span className="r_m_li_w left">选择充值方式：</span>
                         {
                             this.state.backList.length == 0 ? <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
@@ -116,13 +145,13 @@ export default class WeChat extends Component {
                                 </ul>
                         }
                     </li>
-                    <li style={{height: '70px'}}>
+                    <li>
                         <span className="r_m_li_w">充值金额：</span>
                         <InputNumber min={parseFloat(this.state.loadmin)} max={parseFloat(this.state.loadmax)} size="large"
-                                     defaultValue={1}
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
+                                     className={this.onValidate('money')}
                         />
                         <span style={{margin: '0 15px 0 3px'}}>元</span>
                         <span className="r_m_recharge_text">

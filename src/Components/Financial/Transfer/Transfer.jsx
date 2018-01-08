@@ -42,6 +42,9 @@ export default class Transfer extends Component {
           selectOut: null,
           selectIn: null,
           money: 0, //转账金额
+          validate: {
+              money: 2, // 0: 对， 1：错
+          }
       }
     };
     componentDidMount() {
@@ -52,7 +55,6 @@ export default class Transfer extends Component {
     };
     /*选择 转出转入 账户*/
     onAccountOutIn(value, type) {
-        console.log(value)
         if(type === 'out'){
             if(value == 0){
                 this.setState({
@@ -70,7 +72,20 @@ export default class Transfer extends Component {
         }else{
             this.setState({selectIn: value})
         }
-    }
+    };
+    /*验证显示不同class*/
+    onValidate(val) {
+        let classNames,
+            validate = this.state.validate;
+        if(validate[val] == 0) {
+            classNames = 'correct'
+        } else if(validate[val] == 1) {
+            classNames = 'wrong'
+        } else {
+            classNames = ''
+        }
+        return classNames
+    };
     /*调换转入转出*/
     onTrade() {
         let { selectOut, selectIn } = this.state;
@@ -91,7 +106,13 @@ export default class Transfer extends Component {
     };
     // 转账金额
     onTransferAmount(value) {
-        this.setState({money: value})
+        let validate = this.state.validate;
+        if(value == '' || value < 10){
+            validate.money = 1;
+        }else{
+            validate.money = 0;
+        }
+        this.setState({validate, money: value})
     }
     /*体育转账*/
     transferSport(postData){
@@ -185,12 +206,18 @@ export default class Transfer extends Component {
             message.warning('请先选择转入账户！');
             return
         }
+        if(this.state.validate.money != 0){
+            let validate = this.state.validate;
+            validate.money = 1;
+            this.setState({validate});
+            return
+        }
         this.setState({ confirmTransferLoading: true });
         if(selectOut == 0){//0：彩票账户转入第三方，其他第三方转入彩票账户
             if(selectIn == 1){ // 转入体育账户
                 postData = {
-                    tran_from: "1",
-                    tran_to: "s",
+                    tran_from: "s",
+                    tran_to: "1",
                     money: this.state.money,
                     doFunToPe:"ok",
                 };
@@ -224,8 +251,8 @@ export default class Transfer extends Component {
             }
         }else if(selectOut == 1){
             postData = {
-                tran_from: 's',
-                tran_to: '1',
+                tran_from: '1',
+                tran_to: 's',
                 money: this.state.money,
                 doFunToPe:"ok",
             };
@@ -337,10 +364,12 @@ export default class Transfer extends Component {
                             </li>
                             <li>
                                 <span className="tr_m_f_type">转账金额：</span>
-                                <InputNumber min={10} defaultValue={10}
+                                <InputNumber min={10}
                                              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                              parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                             onChange={(value)=>{this.onTransferAmount(value)}} />元
+                                             onChange={(value)=>{this.onTransferAmount(value)}}
+                                             className={this.onValidate('money')}
+                                />元
                                 <p className="tr_m_f_text">转账金额至少10元以上</p>
 
                             </li>

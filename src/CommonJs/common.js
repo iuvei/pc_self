@@ -26,6 +26,25 @@ export const setNewDateTime = (n) => {
 };
 
 /**
+ * 倒计时
+ */
+export const genCountdown = (sec) => {
+    let h = parseInt(sec / 3600);
+    let m = parseInt((sec - h * 3600) / 60);
+    let s = sec - h * 3600 - m * 60;
+    if (h < 10) {
+        h = '0' + h;
+    };
+    if (m < 10) {
+        m = '0' + m;
+    };
+    if (s < 10) {
+        s = '0' + s;
+    };
+    return h + ':' + m + ':' + s;
+};
+
+/**
  * current: 时间选择器穿过来的参数
  * n：天数,
  * lt: 小于
@@ -55,7 +74,7 @@ export const changeMoneyToChinese = (money) => {
     let DecimalNum; //金额小数部分
     let ChineseStr=""; //输出的中文金额字符串
     let parts; //分离金额后用的数组，预定义
-    if( money === "" ){
+    if( money == "" || money == undefined || money == null){
         return "";
     }
     money = parseFloat(money);
@@ -152,6 +171,7 @@ export const removeStore = name => {
 export default {
     setDateTime,
     setNewDateTime,
+    genCountdown,
     disabledDate,
     changeMoneyToChinese,
     getStore,

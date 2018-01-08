@@ -24,6 +24,8 @@ class State {
     @observable bankWithdrawInfo = {}; // 提款信息
     @observable unread = 0; // 站内信未读条数
     @observable navIndex = 'lottery'; // 顶部导航选择状态
+    @observable aliPayInfo = {}; // 支付宝充值相关信息
+    @observable navListIndex = 0; // 充值页面下的充值方式
 
 
     @observable auth = false;

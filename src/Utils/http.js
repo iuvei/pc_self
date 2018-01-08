@@ -33,8 +33,6 @@ const interFace = (key) => {
     INTERFACE['DAILYSALARYSELF'] = 'controller=salarymanage&action=seeProtocol';
     // 各平台余额
     INTERFACE['BALANCE'] = 'controller=wallet&action=Balance';
-    // 头部栏公告
-    // INTERFACE['NOTICE'] = 'controller=default&action=notice'; // 已删
     // 平台公告
     INTERFACE['NOTICELIST'] = 'controller=help&action=noticelist';
     // 查看公告是否被阅读
@@ -143,6 +141,14 @@ const interFace = (key) => {
     INTERFACE['HISTORYTEAMLOTTERY'] = 'controller=gameinfo&action=historyteamlottery';
     // 个人总表
     INTERFACE['PROFITLOSSLOTTERYBYSELF'] = 'controller=report&action=ProfitLossLotteryBySelf';
+    // 个人总表-EA娱乐城
+    INTERFACE['HISTORYEA'] = 'controller=report&action=historyea';
+    // 个人总表-PT
+    INTERFACE['PTDAILY'] = 'controller=gameinfo&action=ptdaily';
+    // 个人总表-体育
+    INTERFACE['HISTORYSPORTS'] = 'controller=report&action=historysports';
+    // 个人总表-博饼
+    INTERFACE['BBDAIYSELF'] = 'controller=report&action=bbdailybyself';
     //GT娱乐-登录
     INTERFACE['GTLOGIN'] = 'controller=kgame&action=login';
     //GT娱乐-转账

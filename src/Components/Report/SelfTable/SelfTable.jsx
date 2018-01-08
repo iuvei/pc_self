@@ -24,6 +24,24 @@ const shortcutTime = [
         id: 6
     }
 ];
+const otherGArr = [
+    {
+        text: 'EA娱乐城',
+        id: 0
+    },
+    {
+        text: 'PT游戏',
+        id: 1
+    },
+    {
+        text: '体育竞技',
+        id: 2
+    },
+    {
+        text: '博饼',
+        id: 3
+    }
+];
 @observer
 export default class SelfTable extends Component {
     constructor(props){
@@ -34,13 +52,15 @@ export default class SelfTable extends Component {
             sum: {},
             tableLoading: false,
             searchLoading: false,
-            classify: 1, // 游戏分类
-            variety: 1, // 游戏种类
+            classify: 0, // 游戏分类
+            variety: 0, // 游戏种类
+            otherGamesData: [],
+            otherGamesSum: {},
             postData: {
                 starttime: common.setDateTime(0),
                 endtime: common.setDateTime(1),
-                p: 1,
-                pn: 10,
+                // p: 1,
+                // pn: 10,
             }
         }
     };
@@ -53,27 +73,104 @@ export default class SelfTable extends Component {
     };
     getData() {
         this.setState({ tableLoading: true });
-        Fetch.profitLossLotteryBySelf({
-            method: 'POST',
-            body: JSON.stringify(this.state.postData),
-        }).then((res)=>{
-            console.log(res)
-            if(this._ismount) {
-                this.setState({ searchLoading: false, tableLoading: false });
-                if(res.status == 200) {
-                    let data = res.repsoneContent;
-                    this.setState({
-                        data: data.results,
-                        sum: data.total,
-                    });
-                }else{
-                    this.setState({
-                        data: [],
-                        sum: {},
-                    });
+        let { classify, variety } = this.state;
+        if(classify == 0){
+            Fetch.profitLossLotteryBySelf({
+                method: 'POST',
+                body: JSON.stringify(this.state.postData),
+            }).then((res)=>{
+                if(this._ismount) {
+                    this.setState({ searchLoading: false, tableLoading: false });
+                    if(res.status == 200) {
+                        let data = res.repsoneContent;
+                        this.setState({
+                            data: data.results,
+                            sum: data.total,
+                        });
+                    }else{
+                        this.setState({
+                            data: [],
+                            sum: {},
+                        });
+                    }
                 }
+            })
+        }else{
+            let postData = this.state.postData,
+                postFlag = {
+                    start_date: postData.starttime,
+                    end_date: postData.endtime,
+                };
+            if(variety == 0){
+                Fetch.historyea({
+                    method: 'POST',
+                    body: JSON.stringify(postFlag)
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({ searchLoading: false, tableLoading: false });
+                        if(res.status == 200){
+                            let data = res.repsoneContent;
+                            this.setState({
+                                otherGamesData: data.result,
+                                otherGamesSum: data.report_total,
+                            });
+                        }
+                    }
+
+                })
+            }else if(variety == 1){
+                postFlag.search = 1;
+                Fetch.ptdaily({
+                    method: 'POST',
+                    body: JSON.stringify(postFlag)
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({ searchLoading: false, tableLoading: false });
+                        if(res.status == 200){
+                            let data = res.repsoneContent;
+                            this.setState({
+                                otherGamesData: data.results,
+                                otherGamesSum: data.total,
+                            });
+                        }
+                    }
+                })
+            }else if(variety == 2){
+                Fetch.historysports({
+                    method: 'POST',
+                    body: JSON.stringify(postFlag)
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({ searchLoading: false, tableLoading: false });
+                        if(res.status == 200){
+                            let data = res.repsoneContent;
+                            this.setState({
+                                otherGamesData: data.result,
+                                otherGamesSum: data.report_total,
+                            });
+                        }
+                    }
+                })
+            }else if(variety == 3){
+                Fetch.bbdailybyself({
+                    method: 'POST',
+                    body: JSON.stringify(postFlag)
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({ searchLoading: false, tableLoading: false });
+                        if(res.status == 200){
+                            let data = res.repsoneContent;
+                            this.setState({
+                                otherGamesData: data.results,
+                                otherGamesSum: data.total,
+                            });
+                        }
+                    }
+                })
+
             }
-        })
+        }
+
     };
     /*搜索*/
     onSearch() {
@@ -115,9 +212,18 @@ export default class SelfTable extends Component {
         }
         this.setState({threeSeven});
     };
+    /*游戏分类-其他类型*/
+    onRests() {
+        this.setState({classify: 1});
+    }
+    /*游戏种类-选择第三方时*/
+    onOtherGame(id) {
+        this.setState({variety: id});
+    };
+
     render() {
         const dailysalaryStatus = stateVar.dailysalaryStatus;
-        const { classify, variety, data, sum } = this.state;
+        const { classify, variety, data, sum, otherGamesData, otherGamesSum } = this.state;
         const columns = [
             {
                 title: '日期',
@@ -254,6 +360,15 @@ export default class SelfTable extends Component {
                             <li>{sum.sum_allsalary}</li>
                             <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
                         </ul>;
+        const otherGamesFooter = <ul className="st_footer clear">
+            <li>总计</li>
+            {/*<li>{otherGamesSum.sum_income}</li>*/}
+            {/*<li>{otherGamesSum.sum_salary}</li>*/}
+            {/*<li>{otherGamesSum.sum_lose_salary}</li>*/}
+            {/*<li>{otherGamesSum.sum_sum_activity}</li>*/}
+            {/*<li>{otherGamesSum.sum_net_income}</li>*/}
+            {/*<li className={parseFloat(otherGamesSum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.sum_last_win_lose}</li>*/}
+        </ul>;
 
         return (
             <div className="self_table">
@@ -292,12 +407,22 @@ export default class SelfTable extends Component {
                         <ul className="t_l_classify">
                             <li>
                                 <span>游戏分类：</span>
-                                <span className={1 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({classify: 1})}}>彩票</span>
-                                <span className={2 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({classify: 2})}}>第三方</span>
+                                <span className={0 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({classify: 0, variety: 0})}}>彩票</span>
+                                <span className={1 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.onRests()}>其他</span>
                             </li>
                             <li>
                                 <span>游戏种类：</span>
-                                <span className={1 === variety ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({variety: 1})}}>全彩种</span>
+                                {
+                                    this.state.classify == 0 ?
+                                        <span className={0 === variety ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({variety: 1})}}>全彩种</span> :
+                                        <span>
+                                            {
+                                                otherGArr.map((item)=>{
+                                                    return <span className={item.id === variety ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.onOtherGame(item.id)} key={item.id}>{item.text}</span>
+                                                })
+                                            }
+                                        </span>
+                                }
                             </li>
                             <li className="t_m_serch">
                                 <Button type="primary"
@@ -314,7 +439,7 @@ export default class SelfTable extends Component {
                     <div className="t_l_table">
                         <div className="t_l_table_list">
                             {
-                                classify === 1 ?
+                                classify === 0 ?
                                     <Table columns={columns}
                                            rowKey={record => record.date}
                                            dataSource={data}
@@ -324,10 +449,10 @@ export default class SelfTable extends Component {
                                     /> :
                                     <Table columns={columnsRests}
                                            rowKey={record => record.date}
-                                           dataSource={data}
+                                           dataSource={otherGamesData}
                                            loading={this.state.tableLoading}
                                            pagination={false}
-                                           footer={data.length <= 0 ? null : ()=>footer}
+                                           footer={otherGamesData.length <= 0 ? null : ()=>otherGamesFooter}
                                     />
                             }
 

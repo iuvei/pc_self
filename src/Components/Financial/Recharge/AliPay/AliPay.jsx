@@ -29,6 +29,10 @@ export default class AliPay extends Component {
                 rid: null, //充值银行id
                 code: '', //充值银行code
                 alipayName: '', //支付宝转账需要填写姓名
+            },
+            validate: {
+                money: 2, // 0: 对， 1：错
+                alipayName: 2,
             }
         };
     };
@@ -47,7 +51,6 @@ export default class AliPay extends Component {
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,
                     postData = this.state.postData;
-                postData.money = data[0].loadmin;
                 postData.payment = data[0].payport_name;
                 postData.bid = data[0].id;
                 postData.rid = data[0].rid;
@@ -60,34 +63,80 @@ export default class AliPay extends Component {
                 })
             }
         })
-    }
+    };
     // 立即充值
     onRecharge() {
+        let validate = this.state.validate;
+        if(validate.alipayName != 0){
+            validate.alipayName = 1;
+            this.setState({validate});
+            return
+        }
+        if(validate.money != 0){
+            validate.money = 1;
+            this.setState({validate});
+            return
+        }
         this.setState({ iconLoadingRecharge: true });
-        hashHistory.push('/financial/recharge/promptlyRecharge');
-        // Fetch.payment({
-        //     method: 'POST',
-        //     body: JSON.stringify(this.state.postData)
-        // }).then((res)=>{
-        //     if(this._ismount){
-        //         this.setState({ iconLoadingRecharge: false });
-        //         if(res.status == 200){
-        //             // window.open(stateVar.httpUrl + res.repsoneContent.payUrl)
-        //         }
-        //     }
-        // })
+
+        Fetch.payment({
+            method: 'POST',
+            body: JSON.stringify(this.state.postData)
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({ iconLoadingRecharge: false });
+                if(res.status == 200){
+                    stateVar.aliPayInfo = res.repsoneContent.payInfo;
+                    hashHistory.push({
+                        pathname: '/financial/recharge/promptlyRecharge',
+                        query: {
+                            name: 'aliPay'
+                        }
+                    });
+                }
+            }
+        })
+    };
+    /*验证显示不同class*/
+    onValidate(val) {
+        let classNames,
+            validate = this.state.validate;
+        if(validate[val] == 0) {
+            classNames = 'correct'
+        } else if(validate[val] == 1) {
+            classNames = 'wrong'
+        } else {
+            classNames = ''
+        }
+        return classNames
     };
     // 充值金额
     onRechargeAmount(value) {
-        let postData = this.state.postData;
+        let validate = this.state.validate,
+            postData = this.state.postData;
+        if(value == '' ||value == 0 || value == undefined || value < this.state.loadmin || value > this.state.loadmax){
+            validate.money = 1;
+        }else{
+            validate.money = 0;
+        }
         postData.money = value;
-        this.setState({postData})
+        this.setState({postData, validate});
+
     };
     //输入用户真实姓名
     onAlipayName(e){
-        let postData = this.state.postData;
-        postData.alipayName = e.target.value;
-        this.setState({postData});
+        let value = e.target.value,
+            validate = this.state.validate,
+            postData = this.state.postData,
+            regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
+            regCn = /[！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
+        if(value == '' || regEn.test(value) || regCn.test(value)){
+            validate.alipayName = 1;
+        }else{
+            validate.alipayName = 0;
+        }
+        postData.alipayName = value;
+        this.setState({postData, validate});
     }
     /*选择充值方式*/
     selectActive(rid, index){
@@ -130,7 +179,10 @@ export default class AliPay extends Component {
                     </li>
                     <li>
                         <span className="ali_m_li_w">支付宝真实姓名：</span>
-                        <Input  size="large" onChange={(e)=>{this.onAlipayName(e)}} />
+                        <Input  size="large"
+                                onChange={(e)=>{this.onAlipayName(e)}}
+                                className={this.onValidate('alipayName')}
+                        />
                         &nbsp;
                         <span className="ali_m_recharge_text" style={{marginLeft: 28}}>
                             不得输入除[·]以外的符号，姓名错误将无法上分
@@ -139,10 +191,10 @@ export default class AliPay extends Component {
                     <li>
                         <span className="ali_m_li_w">充值金额：</span>
                         <InputNumber min={parseFloat(this.state.loadmin)} max={parseFloat(this.state.loadmax)} size="large"
-                                     defaultValue={1}
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
+                                     className={this.onValidate('money')}
                         />
                         <span style={{margin: '0 15px 0 3px'}}>元</span>
                         <span className="ali_m_recharge_text">

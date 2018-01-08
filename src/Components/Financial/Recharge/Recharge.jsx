@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
+import { stateVar } from '../../../State';
 
 import OnlineTopUp from './OnlineTopUp/OnlineTopUp';
 import AliPay from './AliPay/AliPay';
@@ -10,15 +11,9 @@ import './Recharge.scss'
 
 @observer
 export default class Recharge extends Component {
-    constructor(props){
-      super(props);
-      this.state = {
-          navListIndex: 0,
-      }
-    };
 
     onChangeRecharge(index) {
-        this.setState({navListIndex: index});
+        stateVar.navListIndex = index;
         switch (index) {
             case 0:
                 return hashHistory.push('/financial/recharge/onlineTopUp');
@@ -46,13 +41,13 @@ export default class Recharge extends Component {
                 <ul className="r_m_select_list">
                     {
                         navList.map((value, index)=>{
-                            return <li className={this.state.navListIndex === index ? 'r_m_select_list_active' : ''}
+                            return <li className={stateVar.navListIndex == index ? 'r_m_select_list_active' : ''}
                                         onClick={() => {this.onChangeRecharge(index)}} key={index}>{value}</li>
                         })
                     }
                 </ul>
                 {
-                    this.state.navListIndex===0? <OnlineTopUp/>:this.props.children
+                    stateVar.navListIndex == 0? <OnlineTopUp/>:this.props.children
                 }
             </div>
         );

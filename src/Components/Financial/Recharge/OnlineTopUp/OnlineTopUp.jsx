@@ -24,9 +24,12 @@ export default class OnlineTopUp extends Component {
                 tag: 'zaixianchongzhi', //充值分类  在线充值zaixianchongzhi
                 payment: '', //银行渠道code
                 bid: null, //银行渠道id
-                money: 0,//充值金额
+                money: null,//充值金额
                 rid: null, //充值银行id
                 code: '', //充值银行code
+            },
+            validate: {
+                money: 2, // 0: 对， 1：错
             }
         };
     };
@@ -45,7 +48,6 @@ export default class OnlineTopUp extends Component {
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,
                     postData = this.state.postData;
-                postData.money = data[0].loadmin;
                 postData.payment = data[0].payport_name;
                 postData.bid = data[0].id;
                 postData.rid = data[0].rid;
@@ -58,9 +60,28 @@ export default class OnlineTopUp extends Component {
                 })
             }
         })
-    }
+    };
+    /*验证显示不同class*/
+    onValidate(val) {
+        let classNames,
+            validate = this.state.validate;
+        if(validate[val] == 0) {
+            classNames = 'correct'
+        } else if(validate[val] == 1) {
+            classNames = 'wrong'
+        } else {
+            classNames = ''
+        }
+        return classNames
+    };
     // 立即充值
     onRecharge() {
+        if(this.state.validate.money != 0){
+            let validate = this.state.validate;
+            validate.money = 1;
+            this.setState({validate});
+            return
+        }
         this.setState({ iconLoadingRecharge: true });
         Fetch.payment({
             method: 'POST',
@@ -76,9 +97,16 @@ export default class OnlineTopUp extends Component {
     };
     // 充值金额
     onRechargeAmount(value) {
-        let postData = this.state.postData;
+        let validate = this.state.validate,
+            postData = this.state.postData;
+        if(value == '' ||value == 0 || value == undefined || value < this.state.loadmin || value > this.state.loadmax){
+            validate.money = 1;
+        }else{
+            validate.money = 0;
+        }
         postData.money = value;
-        this.setState({postData})
+        this.setState({postData, validate});
+
     };
     /*选择银行*/
     selectActive(rid, index){
@@ -104,7 +132,7 @@ export default class OnlineTopUp extends Component {
                 </div>
                 <ul className="r_m_list">
                     <li className="clear">
-                        <span className="r_m_li_w left" style={{marginTop: '10px'}}>选择充值银行：</span>
+                        <span className="r_m_li_w left">选择充值银行：</span>
                         {
                             this.state.backList.length == 0 ? <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
                                 <ul className="r_m_select_yhk left">
@@ -112,7 +140,7 @@ export default class OnlineTopUp extends Component {
                                         this.state.backList.map((item, index)=>{
                                             return (
                                                 <li className={ this.state.imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
-                                                    <img src={require('./Img/yinhang/'+item.code+'.jpg')} alt="选择银行"/>
+                                                    <img src={require('../Img/'+item.code+'.jpg')} alt="选择银行"/>
                                                 </li>
                                             )
                                         })
@@ -123,9 +151,9 @@ export default class OnlineTopUp extends Component {
                     <li>
                         <span className="r_m_li_w">充值金额：</span>
                         <InputNumber min={parseFloat(this.state.loadmin)} max={parseFloat(this.state.loadmax)} size="large"
-                                     defaultValue={1}
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                     className={this.onValidate('money')}
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
                         />
                         <span style={{margin: '0 15px 0 3px'}}>元</span>

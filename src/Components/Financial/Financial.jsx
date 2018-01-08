@@ -1,9 +1,10 @@
+/*财务中心*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import {Link} from 'react-router';
+import { stateVar } from '../../State';
 import { Row, Col } from 'antd';
 import QueueAnim from 'rc-queue-anim';
-import ChildNav from '../Common/ChildNav/ChildNav'
+import ChildNav from '../Common/ChildNav/ChildNav';
 
 import './Financial.scss';
 @observer
@@ -16,6 +17,7 @@ export default class Financial extends Component {
         this.onChangeNavIndex = this.onChangeNavIndex.bind(this)
     };
     onChangeNavIndex(index) {
+        stateVar.navListIndex = index;
         this.setState({navIndex: index});
     };
     componentDidMount() {
