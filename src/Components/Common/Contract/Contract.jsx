@@ -33,7 +33,6 @@ export default class Contract extends Component {
     /*是否已签订*/
     isSign() {
         let { disabled, alterData } = this.props;
-        console.log(alterData)
         if(alterData.daily_salary_status == 1 || alterData.dividend_salary_status == 1 || alterData.useraccgroup_status == 1){
             return disabled ? 'a_c_name a_c_active' : 'a_c_name';
         }else{

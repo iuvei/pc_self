@@ -34,6 +34,33 @@
     .a_c_text{
         margin: 20px 0;
     }
+    .prize_group_slider{
+        position: relative;
+        margin-top: 40px;
+        .slider_left{
+            position: absolute;
+            left: -32px;
+            top: -9px;
+            padding: 8px 12px;
+            &:hover{
+                cursor: pointer;
+                color: $color_CF2027;
+            }
+        }
+        .slider_right{
+            position: absolute;
+            right: -32px;
+            top: -9px;
+            padding: 8px 12px;
+            &:hover{
+                cursor: pointer;
+                color: $color_CF2027;
+            }
+        }
+    }
+    .ant-slider{
+        border-color: #FBFAF5;
+    }
     .a_c_name{
         position: absolute;
         bottom: 15%;
@@ -63,6 +90,9 @@
     }
     .text_content_list{
         width: 460px;
+        li{
+            @include lh(28px);
+        }
         .subaccnum{
             display: inline-block;
             width: 50px;

@@ -34,7 +34,7 @@ export default class Activity extends Component {
                         </p>
                         <i>{item.activityTime}</i>
                     </div>
-                    <a href="#/activity/activityDetails" target="_blank">
+                    <a href="#/activity/activityDetails">
                         <Button className="right" type="primary" size="large">
                             立即参与
                         </Button>

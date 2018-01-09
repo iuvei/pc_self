@@ -23,7 +23,7 @@ export default class DayRate extends Component {
             postData: {
                 // username: stateVar.userInfo.userName,// 查询用户名
                 username: '',// 查询用户名
-                starttime: common.setDateTime(-1),// 查询日期
+                starttime: common.setDateTime(0),// 查询日期
                 p: 1,
                 pn: 10,
             },
@@ -37,7 +37,7 @@ export default class DayRate extends Component {
                 history: [
                     {
                         name: stateVar.userInfo.userName,
-                        date: common.setDateTime(-1),
+                        date: common.setDateTime(0),
                     }
                 ],
             },
@@ -346,10 +346,10 @@ export default class DayRate extends Component {
                                 <span className="t_m_date_classify">查询日期：</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
-                                    defaultValue={moment(common.setDateTime(-1))}
+                                    defaultValue={moment(common.setDateTime(0))}
                                     placeholder="请选择日期"
                                     onChange={(date, dateString)=>{this.onChangeDate(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, 'gt',-1)}
+                                    disabledDate={(current)=>common.disabledDate(current, -35, 0)}
                                 />
                             </li>
                             <li>

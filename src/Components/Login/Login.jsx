@@ -108,7 +108,7 @@ export default class Login extends Component {
                 "sType": 'formal',
 
 
-                "username": 'hobart',
+                "username": this.state.account,
 
                 "loginpass": md5((md5(this.state.aptchac) + md5('123qwe'))),
                 "validcode": this.state.aptchac

@@ -42,6 +42,7 @@ const otherGArr = [
         id: 3
     }
 ];
+let columnsRests = [], otherGamesFooter = {};
 @observer
 export default class SelfTable extends Component {
     constructor(props){
@@ -57,10 +58,8 @@ export default class SelfTable extends Component {
             otherGamesData: [],
             otherGamesSum: {},
             postData: {
-                starttime: common.setDateTime(0),
-                endtime: common.setDateTime(1),
-                // p: 1,
-                // pn: 10,
+                starttime: common.setDateTime(-1),
+                endtime: common.setDateTime(0),
             }
         }
     };
@@ -116,7 +115,6 @@ export default class SelfTable extends Component {
                             });
                         }
                     }
-
                 })
             }else if(variety == 1){
                 postFlag.search = 1;
@@ -204,26 +202,38 @@ export default class SelfTable extends Component {
     };
     /*快捷选择时间*/
     onShortcutTime(val) {
-        let threeSeven = this.state.threeSeven;
+        let { postData, threeSeven } = this.state;
+        let yearMonth = common.setDateTime(0).slice(0, 8);
+        if(val == 3){ // 上周
+            postData.starttime = common.getTime(7);
+            postData.endtime = common.getTime(1);
+        }else if(val == 4){ // 上半月
+            postData.starttime = yearMonth + '01';
+            postData.endtime = yearMonth + '15';
+        }else if(val == 5){ // 下半月
+            postData.starttime = yearMonth + '15';
+            postData.endtime = common.getMonthEndDate();
+        }else if(val == 6){ // 本月
+            postData.starttime = yearMonth + '01';
+            postData.endtime = common.getMonthEndDate();
+        }else{
+            // postData.starttime = common.setDateTime(-1);
+            // postData.endtime = common.setDateTime(0);
+        }
         if(threeSeven == val) {
             threeSeven = null
         }else{
             threeSeven = val;
         }
-        this.setState({threeSeven});
+        this.setState({threeSeven, postData});
     };
-    /*游戏分类-其他类型*/
-    onRests() {
-        this.setState({classify: 1});
-    }
-    /*游戏种类-选择第三方时*/
-    onOtherGame(id) {
-        this.setState({variety: id});
+    /*游戏种类*/
+    onVariety(id){
+        this.setState({otherGamesSum: {}, otherGamesData: [], variety: id});
     };
-
     render() {
-        const dailysalaryStatus = stateVar.dailysalaryStatus;
-        const { classify, variety, data, sum, otherGamesData, otherGamesSum } = this.state;
+        const { dailysalaryStatus, userInfo } = stateVar;
+        const { classify, variety, data, sum, otherGamesData, otherGamesSum, postData } = this.state;
         const columns = [
             {
                 title: '日期',
@@ -311,64 +321,185 @@ export default class SelfTable extends Component {
                 width: 90,
             }
         ];
-        const columnsRests = [
-            {
-                title: '日期',
-                dataIndex: 'usergroup_naeweme',
-                width: 130,
-            }, {
-                title: '用户名',
-                dataIndex: 'sale',
-                width: 130,
-            }, {
-                title: '投注',
-                dataIndex: 'effective_sale',
-                width: 130,
-            }, {
-                title: '有效投注',
-                dataIndex: 'usergroup_name',
-                width: 130,
-            }, {
-                title: '中奖金额',
-                dataIndex: 'safewale',
-                width: 130,
-            }, {
-                title: '返水',
-                dataIndex: 'effective_sale232',
-                width: 130,
-            }, {
-                title: '累计盈利',
-                dataIndex: 'effective323_sale',
-                width: 130,
-            }, {
-                title: '分红',
-                dataIndex: 'effecti235ve_sale',
-                width: 130,
-            }
-        ];
         const footer = <ul className="st_footer clear">
-                            <li>总计</li>
-                            <li>{sum.sum_cp_stake}</li>
-                            <li>{sum.sum_cp_effective}</li>
-                            <li>{sum.sum_cp_bonust}</li>
-                            <li>{sum.sum_cp_point}</li>
-                            <li>{sum.sum_income}</li>
-                            <li>{sum.sum_salary}</li>
-                            <li>{sum.sum_lose_salary}</li>
-                            <li>{sum.sum_sum_activity}</li>
-                            <li>{sum.sum_net_income}</li>
-                            <li>{sum.sum_allsalary}</li>
-                            <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
-                        </ul>;
-        const otherGamesFooter = <ul className="st_footer clear">
             <li>总计</li>
-            {/*<li>{otherGamesSum.sum_income}</li>*/}
-            {/*<li>{otherGamesSum.sum_salary}</li>*/}
-            {/*<li>{otherGamesSum.sum_lose_salary}</li>*/}
-            {/*<li>{otherGamesSum.sum_sum_activity}</li>*/}
-            {/*<li>{otherGamesSum.sum_net_income}</li>*/}
-            {/*<li className={parseFloat(otherGamesSum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.sum_last_win_lose}</li>*/}
+            <li>{sum.sum_cp_stake}</li>
+            <li>{sum.sum_cp_effective}</li>
+            <li>{sum.sum_cp_bonust}</li>
+            <li>{sum.sum_cp_point}</li>
+            <li>{sum.sum_income}</li>
+            <li>{sum.sum_salary}</li>
+            <li>{sum.sum_lose_salary}</li>
+            <li>{sum.sum_sum_activity}</li>
+            <li>{sum.sum_net_income}</li>
+            <li>{sum.sum_allsalary}</li>
+            <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
         </ul>;
+        if(variety == 0){
+            columnsRests = [
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    width: 180,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'userName',
+                    render: text => userInfo.userName,
+                    width: 180,
+                }, {
+                    title: '投注',
+                    dataIndex: 'stake_amount',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '有效投注',
+                    dataIndex: 'valid_amount',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '中奖金额',
+                    dataIndex: 'back_amount',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '累计盈利',
+                    dataIndex: 'win_lose',
+                    className: 'column-right',
+                    render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
+                    width: 180,
+                }
+            ];
+            otherGamesFooter = <ul className="o_g_footer clear">
+                <li>总计</li>
+                <li>{otherGamesSum.total_stake}</li>
+                <li>{otherGamesSum.total_valid}</li>
+                <li>{otherGamesSum.total_back}</li>
+                <li className={parseFloat(otherGamesSum.win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_lose}</li>
+            </ul>;
+        }else if(variety == 1){
+            columnsRests = [
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    width: 180,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'userName',
+                    render: text => userInfo.userName,
+                    width: 180,
+                }, {
+                    title: '投注',
+                    dataIndex: 'total_bet',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '有效投注',
+                    dataIndex: 'total_valid_bet',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '中奖金额',
+                    dataIndex: 'total_valid_win',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '累计盈利',
+                    dataIndex: 'total_win_loss',
+                    className: 'column-right',
+                    render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
+                    width: 180,
+                }
+            ];
+            otherGamesFooter = <ul className="o_g_footer clear">
+                <li>总计</li>
+                <li>{otherGamesSum.bet}</li>
+                <li>{otherGamesSum.valid_bet}</li>
+                <li>{otherGamesSum.valid_win}</li>
+                <li className={parseFloat(otherGamesSum.win_loss) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_loss}</li>
+            </ul>;
+        }else if(variety == 2){
+            columnsRests = [
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    width: 180,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'userName',
+                    render: text => userInfo.userName,
+                    width: 180,
+                }, {
+                    title: '投注',
+                    dataIndex: 'stake_amount',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '有效投注',
+                    dataIndex: 'valid_amount',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '累计盈利',
+                    dataIndex: 'back_amount',
+                    className: 'column-right',
+                    render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
+                    width: 180,
+                }
+            ];
+            otherGamesFooter = <ul className="o_g_tl_footer clear">
+                <li>总计</li>
+                <li>{otherGamesSum.total_stake}</li>
+                <li>{otherGamesSum.total_valid}</li>
+                <li className={parseFloat(otherGamesSum.win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_lose}</li>
+            </ul>;
+        }else if(variety == 3){
+            columnsRests = [
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    width: 180,
+                }, {
+                    title: '总投注金额',
+                    dataIndex: 'total_bet',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '返点总额',
+                    dataIndex: 'total_point',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '中奖总额',
+                    dataIndex: 'total_win',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '奖池奖金总额',
+                    dataIndex: 'total_win_pool',
+                    className: 'column-right',
+                    width: 180,
+                }, {
+                    title: '累计盈利',
+                    dataIndex: 'total_winloss',
+                    className: 'column-right',
+                    render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
+                    width: 180,
+                }
+            ];
+            otherGamesFooter = <ul className="o_g_bobing_footer clear">
+                <li>总计</li>
+                <li>{otherGamesSum.total_bet}</li>
+                <li>{otherGamesSum.total_point}</li>
+                <li>{otherGamesSum.total_win}</li>
+                <li>{otherGamesSum.total_win_pool}</li>
+                <li className={parseFloat(otherGamesSum.total_winloss) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.total_winloss}</li>
+            </ul>;
+        }else{}
+
 
         return (
             <div className="self_table">
@@ -380,17 +511,17 @@ export default class SelfTable extends Component {
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     placeholder="请选择开始查询日期"
-                                    defaultValue={moment(common.setDateTime(0))}
+                                    value={moment(postData.starttime)}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, 'lt',-16)}
+                                    disabledDate={(current)=>common.disabledDate(current, -35, 1)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     placeholder="请选择结束查询日期"
-                                    defaultValue={moment(common.setDateTime(1))}
+                                    value={moment(postData.endtime)}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, 'gt', 1)}
+                                    disabledDate={(current)=>common.disabledDate(current, -35, 1)}
                                 />
                             </li>
                             <li className="t_m_line"></li>
@@ -408,7 +539,7 @@ export default class SelfTable extends Component {
                             <li>
                                 <span>游戏分类：</span>
                                 <span className={0 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({classify: 0, variety: 0})}}>彩票</span>
-                                <span className={1 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.onRests()}>其他</span>
+                                <span className={1 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.setState({classify: 1})}>其他</span>
                             </li>
                             <li>
                                 <span>游戏种类：</span>
@@ -418,7 +549,7 @@ export default class SelfTable extends Component {
                                         <span>
                                             {
                                                 otherGArr.map((item)=>{
-                                                    return <span className={item.id === variety ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.onOtherGame(item.id)} key={item.id}>{item.text}</span>
+                                                    return <span className={item.id === variety ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.onVariety(item.id)} key={item.id}>{item.text}</span>
                                                 })
                                             }
                                         </span>
@@ -448,7 +579,7 @@ export default class SelfTable extends Component {
                                            footer={data.length <= 0 ? null : ()=>footer}
                                     /> :
                                     <Table columns={columnsRests}
-                                           rowKey={record => record.date}
+                                           rowKey={record => record.id}
                                            dataSource={otherGamesData}
                                            loading={this.state.tableLoading}
                                            pagination={false}

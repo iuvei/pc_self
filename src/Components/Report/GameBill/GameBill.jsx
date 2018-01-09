@@ -8,7 +8,6 @@ import moment from 'moment';
 import Fetch from '../../../Utils';
 import common from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
-// import './GameBill.scss'
 
 @observer
 export default class GameBill extends Component {
@@ -200,7 +199,7 @@ export default class GameBill extends Component {
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(common.setDateTime(0))}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, 'lt',-16)}
+                                    disabledDate={(current)=>common.disabledDate(current, -35, 1)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
@@ -208,7 +207,7 @@ export default class GameBill extends Component {
                                     placeholder="请选择结束时间"
                                     defaultValue={moment(common.setDateTime(1))}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, 'gt', 0)}
+                                    disabledDate={(current)=>common.disabledDate(current, -35, 1)}
                                 />
                             </li>
                         </ul>

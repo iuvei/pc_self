@@ -30,6 +30,7 @@
                     @include lh(30px);
                     padding: 0 8px;
                     border:1px solid $border-color;
+                    @include borderRadius(3px);
                     margin-right: 3px;
                     &:hover{
                         cursor: pointer;
@@ -67,6 +68,7 @@
                 .t_l_border{
                     box-sizing: border-box;
                     @include lh(30px);
+                    @include borderRadius(3px);
                     display: inline-block;
                     border: 1px solid $border-color;
                     padding: 0 10px;
@@ -130,8 +132,50 @@
             text-align: right;
         }
         li:nth-child(1){
-            width: 155px;
+            width: 120px;
             text-align: center;
+        }
+        li:nth-child(2),li:nth-child(3), li:nth-child(4), li:nth-child(6), li:nth-child(10){
+            width: 96px;
+        }
+        li:nth-child(8), li:nth-child(9){
+            width: 72px;
+        }
+        li:nth-child(12){
+            width: 92px;
+        }
+    }
+    .o_g_footer{
+        li{
+            float: left;
+            width: 185px;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 352px;
+            text-align: center;
+        }
+    }
+    .o_g_tl_footer{
+        li{
+            float: left;
+            width: 222px;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 425px;
+            text-align: center;
+        }
+    }
+    .o_g_bobing_footer{
+        li{
+            float: left;
+            width: 185px;
+            text-align: right;
+        }
+        li:nth-child(1){
+            text-align: center;
+            width: 167px;
         }
     }
 }

@@ -249,7 +249,7 @@ export default class Sports extends Component {
                                     placeholder="请选择结束时间"
                                     defaultValue={moment(common.setDateTime(1) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, 'gt', 0)}
+                                    // disabledDate={(current)=>common.disabledDate(current, 'gt', 0)}
                                 />
                             </li>
                         </ul>

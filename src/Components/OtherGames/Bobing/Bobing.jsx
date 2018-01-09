@@ -6,6 +6,7 @@ import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import { getStore } from "../../../CommonJs/common";
 import CM_transfer from '../CM_transfer/CM_transfer';
+import Iframe from 'react-iframe';
 
 import bobing_01 from './Img/bobing_01.png'
 import './Bobing.scss'
@@ -110,6 +111,7 @@ export default class Bobing extends Component {
                     <Button className="modal_close" onClick={()=>this.setState({modalVisible: false})} type="primary" icon="close"></Button>
                     <iframe scrolling="no"
                             id="main" name="main"
+                            // allowtransparency={true}
                             src={stateVar.httpUrl + '?controller=bobing&action=play&' + getStore('session')}
                             className="bobing_iframe"
                     >

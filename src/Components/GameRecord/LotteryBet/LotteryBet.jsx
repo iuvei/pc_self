@@ -384,7 +384,7 @@ export default class LotteryBet extends Component {
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(common.setDateTime(0) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, 'lt',-16)}
+                                    disabledDate={(current)=>common.disabledDate(current, -16, 0)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
@@ -393,7 +393,7 @@ export default class LotteryBet extends Component {
                                     placeholder="请选择结束时间"
                                     defaultValue={moment(common.setDateTime(1) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, 'gt',0)}
+                                    disabledDate={(current)=>common.disabledDate(current, -16, 0)}
                                 />
                             </li>
                             <li className="t_m_line"></li>
