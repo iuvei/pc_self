@@ -5,7 +5,7 @@ import { hashHistory } from 'react-router';
 import Fetch from '../../../../Utils';
 import { stateVar } from '../../../../State';
 import { InputNumber, Button, Input } from 'antd';
-import { changeMoneyToChinese } from '../../../../CommonJs/common';
+import { changeMoneyToChinese, onValidate } from '../../../../CommonJs/common';
 
 import './AliPay.scss'
 
@@ -97,19 +97,7 @@ export default class AliPay extends Component {
             }
         })
     };
-    /*验证显示不同class*/
-    onValidate(val) {
-        let classNames,
-            validate = this.state.validate;
-        if(validate[val] == 0) {
-            classNames = 'correct'
-        } else if(validate[val] == 1) {
-            classNames = 'wrong'
-        } else {
-            classNames = ''
-        }
-        return classNames
-    };
+
     // 充值金额
     onRechargeAmount(value) {
         let validate = this.state.validate,
@@ -181,7 +169,7 @@ export default class AliPay extends Component {
                         <span className="ali_m_li_w">支付宝真实姓名：</span>
                         <Input  size="large"
                                 onChange={(e)=>{this.onAlipayName(e)}}
-                                className={this.onValidate('alipayName')}
+                                className={onValidate('alipayName', this.state.validate)}
                         />
                         &nbsp;
                         <span className="ali_m_recharge_text" style={{marginLeft: 28}}>
@@ -194,7 +182,7 @@ export default class AliPay extends Component {
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
-                                     className={this.onValidate('money')}
+                                     className={onValidate('money', this.state.validate)}
                         />
                         <span style={{margin: '0 15px 0 3px'}}>元</span>
                         <span className="ali_m_recharge_text">

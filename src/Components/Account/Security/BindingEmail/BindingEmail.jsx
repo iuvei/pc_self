@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import { Input,Button, Modal } from 'antd';
 import Fetch from '../../../../Utils';
 import { stateVar } from '../../../../State';
+import { onValidate } from '../../../../CommonJs/common';
 
 @observer
 export default class BindingEmail extends Component {
@@ -29,7 +30,6 @@ export default class BindingEmail extends Component {
     };
     /*提交*/
     onSubmitEmail(e) {
-        console.log(e);
         let disabled = this.state.disabled,
             validate = this.state.validate,
             postData = this.state.postData;
@@ -88,19 +88,6 @@ export default class BindingEmail extends Component {
             postData: postData,
         });
     };
-    /*验证显示不同class*/
-    onValidate(val) {
-        let classNames,
-            validate = this.state.validate;
-        if(validate[val] == 0) {
-            classNames = 'correct'
-        } else if(validate[val] == 1) {
-            classNames = 'wrong'
-        } else {
-            classNames = ''
-        }
-        return classNames
-    };
 
     render() {
         const userInfo = stateVar.userInfo;
@@ -116,7 +103,8 @@ export default class BindingEmail extends Component {
                                    disabled={ userInfo.email != '' && !disabled}
                                    value={postData.email}
                                    onChange={(e)=>this.onChangeEmail(e)}
-                                   className={this.onValidate('email')}
+                                   className={onValidate('email', this.state.validate)}
+
                             />
                         </li>
                         <li className="s_m_primary_btn">

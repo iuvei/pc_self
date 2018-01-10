@@ -40,7 +40,7 @@ export default class Contract extends Component {
         }
     };
     render() {
-        const { alterData, title, alterVisible, textDescribe, disabled } = this.props;
+        const { alterData, title, alterVisible, textDescribe } = this.props;
         const { contract_name } = this.state;
         return (
             <Modal

@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import Fetch from '../../../../Utils';
 import { stateVar } from '../../../../State';
 import { InputNumber, Button } from 'antd';
-import { changeMoneyToChinese } from '../../../../CommonJs/common';
+import { changeMoneyToChinese, onValidate } from '../../../../CommonJs/common';
 
 import './QQWallet.scss'
 
@@ -82,19 +82,7 @@ export default class QQWallet extends Component {
             }
         })
     };
-    /*验证显示不同class*/
-    onValidate(val) {
-        let classNames,
-            validate = this.state.validate;
-        if(validate[val] == 0) {
-            classNames = 'correct'
-        } else if(validate[val] == 1) {
-            classNames = 'wrong'
-        } else {
-            classNames = ''
-        }
-        return classNames
-    };
+
     // 充值金额
     onRechargeAmount(value) {
         let validate = this.state.validate,
@@ -150,7 +138,7 @@ export default class QQWallet extends Component {
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
-                                     className={this.onValidate('money')}
+                                     className={onValidate('money', this.state.validate)}
                         />
                         <span style={{margin: '0 15px 0 3px'}}>元</span>
                         <span className="r_m_recharge_text">

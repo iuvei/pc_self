@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import { Button, Table, Input, Modal } from 'antd';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State'
+import { onValidate } from '../../../CommonJs/common';
 
 import './SelfInfo.scss'
 import user_icon from './Img/user_icon.png';
@@ -197,19 +198,7 @@ export default class SelfInfo extends Component {
             postData: postData,
         });
     };
-    /*验证显示不同class*/
-    onValidate(val) {
-        let classNames,
-            validate = this.state.validate;
-        if(validate[val] == 0) {
-            classNames = 'correct'
-        } else if(validate[val] == 1) {
-            classNames = 'wrong'
-        } else {
-            classNames = ''
-        }
-        return classNames
-    };
+
     render() {
         const userInfo = stateVar.userInfo;
         const { postData, validate, disabled } = this.state;
@@ -261,7 +250,7 @@ export default class SelfInfo extends Component {
                         <li>
                             <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={qq} alt=""/>}
                                    value={postData.tencent}
-                                   className={this.onValidate('tencent')}
+                                   className={onValidate('tencent', this.state.validate)}
                                    onChange={(e)=>this.onChangeTencent(e)}
                                    placeholder="点击修改按钮填写"
                                    disabled={this.state.disabled}
@@ -272,7 +261,7 @@ export default class SelfInfo extends Component {
                             <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={wechat} alt=""/>}
                                    placeholder="点击修改按钮填写"
                                    value={postData.wechat}
-                                   className={this.onValidate('wechat')}
+                                   className={onValidate('wechat', this.state.validate)}
                                    onChange={(e)=>this.onChangeWechat(e)}
                                    disabled={disabled}
                             />
@@ -282,7 +271,7 @@ export default class SelfInfo extends Component {
                             <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={email} alt=""/>}
                                    placeholder="点击修改按钮填写"
                                    value={postData.email}
-                                   className={this.onValidate('email')}
+                                   className={onValidate('email', this.state.validate)}
                                    onChange={(e)=>this.onChangeEmail(e)}
                                    disabled={disabled}
                             />
@@ -292,7 +281,7 @@ export default class SelfInfo extends Component {
                             <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={phone} alt=""/>}
                                    placeholder="点击修改按钮填写"
                                    value={postData.phonenumber}
-                                   className={this.onValidate('phonenumber')}
+                                   className={onValidate('phonenumber', this.state.validate)}
                                    onChange={(e)=>this.onChangePhone(e)}
                                    disabled={disabled}
                             />

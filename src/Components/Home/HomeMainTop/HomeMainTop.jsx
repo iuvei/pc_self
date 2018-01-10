@@ -41,9 +41,9 @@ export default class HomeMainTop extends Component {
                 >
                     <div className="home_m_top_text" key="OverPack01">
                         <TweenOne
-                            key="h3"
+                            key="h4"
                             animation={oneAnim}
-                            component="h3"
+                            component="h4"
                             reverseDelay={100}
                         >
                             MOBILE PHONE CLIENT
@@ -56,11 +56,11 @@ export default class HomeMainTop extends Component {
                             恒彩手机客户端
                         </TweenOne>
                         <TweenOne
-                            key="h3_v2"
+                            key="h3"
                             animation={{ ...oneAnim, delay: 200 }}
                             component="h3"
                         >
-                            随时随地随心，从此财富只在指尖流动
+                            随 时 随 地 随 心， 从 此 财 富 只 在 指 尖 流 动
                         </TweenOne>
                         <TweenOne
                             key="download"

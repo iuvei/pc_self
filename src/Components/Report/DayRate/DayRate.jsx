@@ -202,13 +202,6 @@ export default class DayRate extends Component {
             console.log(type)
         }
     };
-    /*关闭模态框*/
-    handleCancel(){
-        this.setState({
-            visible: false,
-        });
-    };
-
     /*修改值*/
     onChangeAlterContract(val, item){
         item.salary_ratio = val;
@@ -377,7 +370,6 @@ export default class DayRate extends Component {
                                pagination={false}
                                loading={this.state.loading}
                                footer={table.total <= 0 ? null : ()=>footer}
-                               // size="middle"
                         />
                     </div>
                     <div className="t_l_page right">
@@ -397,7 +389,7 @@ export default class DayRate extends Component {
                     bodyStyle={{height: 400}}
                     footer={null}
                     maskClosable={false}
-                    onCancel={()=>this.handleCancel()}
+                    onCancel={()=>this.setState({visible: false})}
                     className="table_modal"
                 >
                     <p className="modal_username">查询用户：{this.state.searchUserName}</p>

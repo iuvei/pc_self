@@ -231,6 +231,22 @@ export const removeStore = name => {
     if (!name) return;
     window.localStorage.removeItem(name)
 };
+
+/**
+ * 输入框格式验证显示不同样式
+ */
+export const onValidate = (val, validate) => {
+    let classNames;
+    if(validate[val] == 0) {
+        classNames = 'correct' //正确
+    } else if(validate[val] == 1) {
+        classNames = 'wrong' // 错误
+    } else {
+        classNames = ''
+    }
+    return classNames
+};
+
 export default {
     setDateTime,
     setNewDateTime,
@@ -242,6 +258,6 @@ export default {
     getStore,
     removeStore,
     setStore,
-
+    onValidate,
 }
 

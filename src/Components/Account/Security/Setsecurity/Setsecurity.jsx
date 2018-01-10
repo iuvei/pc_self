@@ -5,6 +5,7 @@ import { Select,Input,Button,Modal } from 'antd';
 const Option = Select.Option;
 import { stateVar } from '../../../../State';
 import Fetch from '../../../../Utils';
+import { onValidate } from '../../../../CommonJs/common';
 import md5 from 'md5';
 const issueFlag = [
     {
@@ -139,19 +140,6 @@ export default class Setsecurity extends Component {
             }
         })
     }
-    /*验证显示不同class*/
-    onValidate(val) {
-        let classNames,
-            validate = this.state.validate;
-        if(validate[val] == 0) {
-            classNames = 'correct'
-        } else if(validate[val] == 1) {
-            classNames = 'wrong'
-        } else {
-            classNames = ''
-        }
-        return classNames
-    };
     /*问题1*/
     handleChangeIssueOne(val) {
         let postData = this.state.postData;
@@ -241,7 +229,7 @@ export default class Setsecurity extends Component {
                                 <Input size="large" placeholder="请输入答案1"
                                        value={postData.ans1}
                                        onChange={(e)=>this.onChangeAns1(e)}
-                                       className={this.onValidate('ans1')}
+                                       className={onValidate('ans1', this.state.validate)}
                                 />
                             </li>
                             <li>
@@ -259,7 +247,7 @@ export default class Setsecurity extends Component {
                                 <Input size="large" placeholder="请输入答案2"
                                        value={postData.ans2}
                                        onChange={(e)=>this.onChangeAns2(e)}
-                                       className={this.onValidate('ans2')}
+                                       className={onValidate('ans2', this.state.validate)}
                                 />
                             </li>
                             <li>
@@ -268,7 +256,7 @@ export default class Setsecurity extends Component {
                                        type="password"
                                        value={postData.security_pass}
                                        onChange={(e)=>this.onChangeCapitalPw(e)}
-                                       className={this.onValidate('security_pass')}
+                                       className={onValidate('security_pass', this.state.validate)}
                                 />
                             </li>
                             <li className="s_m_primary_btn">

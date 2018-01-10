@@ -6,6 +6,7 @@ import { Button, Input, Modal } from 'antd';
 import Fetch from '../../../../Utils';
 import { stateVar } from '../../../../State';
 import ForgetFundPw from '../../../Account/Security/ForgetFundPw/ForgetFundPw';
+import { onValidate } from '../../../../CommonJs/common';
 import md5 from 'md5';
 
 import './AffirmWithdraw.scss';
@@ -74,19 +75,6 @@ export default class AffirmWithdraw extends Component {
     onHideChildModal() {
         this.setState({forgetVisible: false})
     }
-    /*验证显示不同class*/
-    onValidate(val) {
-        let classNames,
-            validate = this.state.validate;
-        if(validate[val] == 0) {
-            classNames = 'correct'
-        } else if(validate[val] == 1) {
-            classNames = 'wrong'
-        } else {
-            classNames = ''
-        }
-        return classNames
-    };
     /*验证资金密码*/
     onVerifyPw(e) {
         let value = e.target.value,
@@ -134,7 +122,7 @@ export default class AffirmWithdraw extends Component {
                         <span className="r_m_li_w">请验证资金密码：</span>
                         <Input value={this.state.secpass} type="password" size="large" placeholder="请输入资金密码"
                                onChange={(e)=>this.onVerifyPw(e)}
-                               className={this.onValidate('secpass')}
+                               className={onValidate('secpass', this.state.validate)}
                         />
                         <a href="javascript:void(0)" className="a_m_password" onClick={()=>this.setState({forgetVisible: true})}>忘记资金密码？</a>
                     </li>

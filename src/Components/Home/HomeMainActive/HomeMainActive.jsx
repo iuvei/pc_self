@@ -20,7 +20,7 @@ export default class HomeMainActive extends Component {
     getChildrenToRender(item, i) {
         return (
             <li key={i}>
-                <a href="#">
+                <a href="javascript:void(0)">
                     <img src={item.img} alt=""/>
                     <p className="home_m_active_type">{item.content}</p>
                 </a>
@@ -62,11 +62,12 @@ export default class HomeMainActive extends Component {
                             >
                                 FAVOURABLE ACTIVITY
                             </TweenOne>
-                            <QueueAnim type="bottom"
-                                       component="ul"
-                                       className="home_m_active_list clear"
-                                       key="ul"
-                                       leaveReverse
+                            <QueueAnim
+                                    type="bottom"
+                                    component="ul"
+                                    className="home_m_active_list clear"
+                                    key="ul"
+                                    leaveReverse
                             >
                                 {childrenToRender}
                             </QueueAnim>

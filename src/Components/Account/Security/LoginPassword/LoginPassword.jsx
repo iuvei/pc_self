@@ -1,8 +1,9 @@
 /*修改登录密码*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Select,Input,Button,Modal } from 'antd';
+import { Input,Button,Modal } from 'antd';
 import Fetch from '../../../../Utils';
+import { onValidate } from '../../../../CommonJs/common';
 import md5 from 'md5';
 
 @observer
@@ -89,19 +90,7 @@ export default class LoginPassword extends Component {
             })
         }
     };
-    /*验证显示不同class*/
-    onValidate(val) {
-        let classNames,
-            validate = this.state.validate;
-        if(validate[val] == 0) {
-            classNames = 'correct'
-        } else if(validate[val] == 1) {
-            classNames = 'wrong'
-        } else {
-            classNames = ''
-        }
-        return classNames
-    };
+
     /*旧登录密码*/
     onChangeOldpass(e) {
         let value = e.target.value,
@@ -167,7 +156,7 @@ export default class LoginPassword extends Component {
                         <Input value={amendPostData.oldpass}
                                type="password"
                                onChange={(e)=>this.onChangeOldpass(e)} size="large" placeholder="请输入旧登录密码"
-                               className={this.onValidate('oldpass')}
+                               className={onValidate('oldpass', this.state.validate)}
                         />
                     </li>
                     <li>
@@ -175,7 +164,7 @@ export default class LoginPassword extends Component {
                         <Input value={amendPostData.newpass}
                                type="password"
                                onChange={(e)=>this.onChangeNewpass(e)} size="large" placeholder="请输入新登录密码"
-                               className={this.onValidate('newpass')}
+                               className={onValidate('newpass', this.state.validate)}
                         />
                     </li>
                     <li>
@@ -183,7 +172,7 @@ export default class LoginPassword extends Component {
                         <Input value={amendPostData.confirm_newpass}
                                type="password"
                                onChange={(e)=>this.onChangeConfirmNewpass(e)} size="large" placeholder="请输入新登录密码"
-                               className={this.onValidate('confirm_newpass')}
+                               className={onValidate('confirm_newpass', this.state.validate)}
                         />
                     </li>
                     <li className='s_advice' style={{color:'#85888D'}}>

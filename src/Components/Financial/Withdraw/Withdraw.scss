@@ -7,7 +7,6 @@ $width_110px: 110px;
     font-size: 14px;
     .tr_m_text{
         width: 1096px;
-        height:57px;
         border: 1px dotted #C7C6C4;
         background-color: #FEFCF2;
         margin: 24px auto 0;
@@ -22,10 +21,12 @@ $width_110px: 110px;
         i{
             font-style: normal;
             color: #00C192;
+            font-size: 16px;
         }
         em{
             font-style: normal;
             color: #CE2424;
+            font-size: 16px;
         }
     }
 
@@ -42,6 +43,10 @@ $width_110px: 110px;
                     border: 1px solid $border-color;
                 }
             }
+        }
+        .fAvailableBalance{
+            color: #E10000;
+            font-size: 18px;
         }
         .bank_v_top{
             vertical-align: top;

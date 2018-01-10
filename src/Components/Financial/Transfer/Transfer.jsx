@@ -5,6 +5,7 @@ import Fetch from '../../../Utils';
 import { Select, InputNumber, Modal, Button, message } from 'antd';
 const Option = Select.Option;
 import { stateVar } from '../../../State';
+import { onValidate } from '../../../CommonJs/common';
 
 import './Transfer.scss'
 import trade_icon from './Img/trade_icon.png'
@@ -73,19 +74,7 @@ export default class Transfer extends Component {
             this.setState({selectIn: value})
         }
     };
-    /*验证显示不同class*/
-    onValidate(val) {
-        let classNames,
-            validate = this.state.validate;
-        if(validate[val] == 0) {
-            classNames = 'correct'
-        } else if(validate[val] == 1) {
-            classNames = 'wrong'
-        } else {
-            classNames = ''
-        }
-        return classNames
-    };
+
     /*调换转入转出*/
     onTrade() {
         let { selectOut, selectIn } = this.state;
@@ -107,12 +96,12 @@ export default class Transfer extends Component {
     // 转账金额
     onTransferAmount(value) {
         let validate = this.state.validate;
-        if(value == '' || value < 10){
+        if(value == '' || value == undefined || value < 10){
             validate.money = 1;
         }else{
             validate.money = 0;
         }
-        this.setState({validate, money: value})
+        this.setState({validate, money: value});
     }
     /*体育转账*/
     transferSport(postData){
@@ -368,7 +357,7 @@ export default class Transfer extends Component {
                                              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                              parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                              onChange={(value)=>{this.onTransferAmount(value)}}
-                                             className={this.onValidate('money')}
+                                             className={onValidate('money', this.state.validate)}
                                 />元
                                 <p className="tr_m_f_text">转账金额至少10元以上</p>
 

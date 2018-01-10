@@ -5,6 +5,7 @@ import { hashHistory } from 'react-router';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import { InputNumber, Button, Modal } from 'antd';
+import { onValidate } from '../../../CommonJs/common';
 
 import './Withdraw.scss';
 
@@ -21,6 +22,9 @@ export default class Withdraw extends Component {
                 money: 1,
                 bankinfo: '', //银行卡id#银行id 例: 122#10
                 wstep1Code: '' //传入wstep1的密钥
+            },
+            validate: {
+                money: 2, // 0: 对， 1：错
             }
         }
     };
@@ -52,12 +56,24 @@ export default class Withdraw extends Component {
     }
 
     onRechargeAmount(value) {
-        let postData = this.state.postData;
+        let { validate, postData, response } = this.state;
         postData.money = value;
-        this.setState({postData});
+        if(value == '' || value == undefined || value < response.iMinMoney || value > response.iMaxMoney){
+            validate.money = 1;
+        }else{
+            validate.money = 0;
+        }
+        postData.money = value;
+        this.setState({postData, validate});
     }
     // 提现下一步
     onRecharge() {
+        let { validate } = this.state;
+        if(validate.money != 0){
+            validate.money = 1;
+            this.setState({validate});
+            return
+        }
         this.setState({ iconLoadingRecharge: true });
         Fetch.withdrawel({
             method: 'POST',
@@ -90,7 +106,7 @@ export default class Withdraw extends Component {
             <div className="withdraw_main">
                 <div className="tr_m_text">
                     <h4>
-                        温馨提示：提款时间00：00：00至23：59：59，全天候为您服务！每天限提&nbsp;<i>{response.plattimes}</i>&nbsp;次，今天您已经成功发起了&nbsp;<em>{response.todaytimes}</em>&nbsp;次提现申请
+                        提款时间00：00：00至23：59：59，全天候为您服务！每天限提&nbsp;<i>{response.plattimes}</i>&nbsp;次，今天您已经成功发起了&nbsp;<em>{response.todaytimes}</em>&nbsp;次提现申请
                     </h4>
                 </div>
                 <ul className="r_m_list">
@@ -100,14 +116,14 @@ export default class Withdraw extends Component {
                     </li>
                     <li>
                         <span className="r_m_li_w">可提款金额：</span>
-                        <span className="r_m_qq">￥{response.fAvailableBalance}</span>
+                        <span className="r_m_qq fAvailableBalance">￥{response.fAvailableBalance}</span>
                     </li>
                     <li className="clear">
                         <span className="r_m_li_w bank_v_top">可提款银行：</span>
                         <ul className="back_list">
                             {
                                 response.bankList == undefined ? '' :
-                                response.bankList.map((item, i)=>{
+                                response.bankList.map((item)=>{
                                     return (
                                         <li key={item.id} onClick={()=>this.onSelectBank(item)}>
                                             <div className={this.state.defaultBank == item.id ? 'r_m_qq_controler r_m_active' : 'r_m_qq_controler'}>
@@ -123,17 +139,17 @@ export default class Withdraw extends Component {
                     <li>
                         <span className="r_m_li_w">提款金额：</span>
                         <InputNumber min={response.iMinMoney} max={response.iMaxMoney}
-                                     defaultValue={1}
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      size="large"
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
+                                     className={onValidate('money', this.state.validate)}
                         />
                         <span className="span_margin">元</span>
                         <span className="r_m_recharge_text">
-                            单笔充值限额：最低
+                            单笔充值限额：最低：
                             <strong>{response.iMinMoney} 元</strong>
-                            ，最高
+                            ，最高：
                             <strong>{response.iMaxMoney} 元</strong>
                         </span>
                     </li>

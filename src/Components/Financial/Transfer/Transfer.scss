@@ -9,6 +9,7 @@
         border: 1px solid #ddd;
         border-top: 2px solid $rodio-check-color;
         margin-bottom: 8px;
+        background-color: #fff;
         li{
             float: left;
             text-align: center;
@@ -40,13 +41,17 @@
             background: url(./Img/balance_icon05.png) no-repeat top center;
         }
         .tf_m_account_b{
-            padding-left: 40px;
-            width: 130px;
-            //height: 115px;
+            padding-left: 45px;
+            width: 180px;
             margin: 35px auto 0;
+            text-align: left;
+            font-size: 16px;
             background: url(./Img/balance_icon01.png) no-repeat center left;
             p{
                 color: #179500;
+            }
+            p:nth-child(1){
+                padding-left: 3px;
             }
         }
     }
@@ -60,7 +65,7 @@
             .tr_m_trade{
                 position: absolute;
                 top: 27px;
-                right: -52px;
+                right: -40px;
                 &:before{
                     content: '';
                     @include wh(50px, 54px);

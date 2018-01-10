@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
-import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon } from 'antd';
+import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, message } from 'antd';
 import Fetch from '../../../Utils';
 import Crumbs from '../../Common/Crumbs/Crumbs'
 import { stateVar } from '../../../State';
@@ -29,14 +29,11 @@ export default class TeamList extends Component {
             },
             selectInfo: {
                 username: '', //用户id
-                // min_money: '', //金额筛选最小值
-                // max_money: '', //金额筛选最大值
                 register_time_begin: '', //开始时间
                 register_time_end: '', //结束时间
                 p: 1, //页数
                 pn: 10, //每页条数
                 uid: '', //点击用户名传入的用户id
-
                 sortby: null, // sortby: 字段名 asc(升序) desc(降序)
             },
             alterVisible: false, //修改比例
@@ -46,9 +43,22 @@ export default class TeamList extends Component {
             typeName: '', // 要修改类型的名字：日工资，分红，配额，奖金组
             contentArr: [],
             prizeGroupList: [], //可设置的奖金组列表
-            prizeGroupFlag: 0, // 奖金组
+            prizeGroupFlag: 0, // 需要修改的奖金组
 
             salary_ratio: [], //修改协议
+
+            agPost: {// 配额请求参数
+                flag: 'post', //修改配额的时候必须传这个值
+                accgroup: [], //返回的奖金组agid
+                accnum: [], // 与accgroup顺序一致, 增加的配额个数
+                uid: null, //要修改的用户id
+            },
+            diviPost:{// 分红请求参数
+                userid: null,
+                // id: null,
+                dividend_radio: null, // 要修改的比例
+            },
+            prizeGroupPost: {}, // 奖金组请求参数
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -169,20 +179,10 @@ export default class TeamList extends Component {
             alterData: record,
             alterVisible: true,
             disabled: true,
-            prizeGroupFlag: record.prize_group
+            prizeGroupFlag: record.prize_group,
         });
         if(type == '配额'){
-            Fetch.quota({
-                method: 'POST',
-                body: JSON.stringify({uid: record.userid})
-            }).then((res)=>{
-                if(this._ismount && res.status == 200){
-                    this.setState({
-                        typeName: '配额契约',
-                        contentArr: res.repsoneContent.aAllUserTypeAccNum,
-                    })
-                }
-            })
+            this.getAccGroupList(record);
         }else if(type == '日工资'){
             let postDataSelf = {
                 userid: record.userid,
@@ -201,8 +201,11 @@ export default class TeamList extends Component {
                 }
             });
         }else if(type == '分红'){
+            let { diviPost } = this.state;
+            diviPost.dividend_radio = record.dividend_radio;
             this.setState({
                 typeName: '分红契约',
+                diviPost,
             })
         }else{
             //获取可设置的奖金组列表
@@ -211,9 +214,15 @@ export default class TeamList extends Component {
                 body: JSON.stringify({uid: record.userid})
             }).then((res)=>{
                 if(this._ismount && res.status == 200){
+                    let { prizeGroupPost } = this.state,
+                        data = res.repsoneContent;
+                    prizeGroupPost.uid = data.uid;
+                    prizeGroupPost.flag = 'rapid';
+                    prizeGroupPost.selfPoint = data.selfPoint;
                     this.setState({
                         typeName: '奖金组契约',
-                        prizeGroupList: res.repsoneContent.list
+                        prizeGroupList: data.list,
+                        prizeGroupPost,
                     })
                 }
             })
@@ -229,11 +238,10 @@ export default class TeamList extends Component {
         });
         stateVar.navIndex = 'gameRecord';
     };
-
-    /*修改值*/
+    /*日工资修改值处理*/
     onChangeAlterContract(val, item){
         item.salary_ratio = val;
-        let salary_ratioFlag = this.state.pros;
+        let salary_ratioFlag = this.state.contentArr;
         salary_ratioFlag.forEach((data, i)=>{
             if(data.sale == item.sale){
                 data.salary_ratio = val
@@ -241,43 +249,101 @@ export default class TeamList extends Component {
         });
         this.setState({salary_ratio: salary_ratioFlag});
     };
-    /*修改协议*/
+    /*提交协议*/
     onDiviratio(contract_name){
         if(contract_name == '修改契约'){
             this.setState({disabled: false,});
         }else{
+            let { typeName, alterData } = this.state;
             this.setState({affirmLoading: true});
-            let alterData = this.state.alterData;
-            let postData = {
-                userid: alterData.userid,
-                id: alterData.id,
-                parentid: alterData.parent_id,
-                gmt_sale: alterData.gmt_sale,
-                salary_ratio: this.state.salary_ratio,
-            };
-            Fetch.dailysalaryupdate({
-                method: 'POST',
-                body: JSON.stringify(postData)
-            }).then((res)=>{
-                if(this._ismount){
-                    this.setState({affirmLoading: false});
-                    if(res.status == 200){
-                        message.success(res.repsoneContent);
-                        this.setState({alterVisible: false, disabled: true});
-                        this.getData();
-                    }else{
-                        Modal.warning({
-                            title: res.shortMessage,
-                        });
+            if(typeName == '配额契约'){
+                let { agPost } = this.state;
+                agPost.uid = alterData.userid;
+                Fetch.quota({
+                    method: 'POST',
+                    body: JSON.stringify(agPost)
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({affirmLoading: false});
+                        if(res.status == 200){
+                            message.success(res.repsoneContent);
+                            this.setState({disabled: true});
+                            this.getAccGroupList(alterData);
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
                     }
-                }
-            })
+                })
+            }else if(typeName == '分红契约'){
+                let diviPost = this.state.diviPost;
+                diviPost.userid = alterData.userid;
+                Fetch.diviratio({
+                    method: 'POST',
+                    body: JSON.stringify(diviPost)
+                }).then((res)=>{
+                    if(this._ismount) {
+                        this.setState({affirmLoading: false});
+                        if(res.status == 200){
+                            message.success(res.repsoneContent);
+                            this.setState({disabled: true});
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
+                    }
+                })
+            }else if(typeName == '日工资契约'){
+                let postData = {
+                    userid: alterData.userid,
+                    parentid: alterData.parentid,
+                    salary_ratio: this.state.salary_ratio,
+                };
+                Fetch.dailysalaryupdate({
+                    method: 'POST',
+                    body: JSON.stringify(postData)
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({affirmLoading: false});
+                        if(res.status == 200){
+                            message.success(res.repsoneContent);
+                            this.setState({disabled: true});
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
+                    }
+                })
+            }else if(typeName == '奖金组契约'){
+                let { prizeGroupFlag, prizeGroupPost, prizeGroupList } = this.state;
+                let selectPrizeGroup = prizeGroupList.filter((item, index) => item.prizeGroup == prizeGroupFlag)[0];
+                prizeGroupPost.groupLevel = prizeGroupFlag;
+                prizeGroupPost.keeppoint = ((prizeGroupPost.selfPoint - selectPrizeGroup.high) * 100).toFixed(2);
+                Fetch.awardTeam({
+                    method: 'POST',
+                    body: JSON.stringify(prizeGroupPost)
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({affirmLoading: false});
+                        if(res.status == 200){
+                            message.success(res.repsoneContent);
+                            this.setState({disabled: true});
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
+                    }
+                })
+            }
         }
-
     };
-    /*关闭修改日工资模态框*/
+    /*关闭模态框*/
     onCancel(){
-        this.setState({alterVisible: false});
+        this.setState({alterVisible: false, affirmLoading: false});
     };
     /*奖金组设置 滑动条*/
     onRegisterSetBonus(value) {
@@ -298,8 +364,42 @@ export default class TeamList extends Component {
         }
         this.setState({prizeGroupFlag: this.state.prizeGroupFlag + 2});
     };
+    /*设置配额契约*/
+    onChangeAccGroup(value, item){
+        let { agPost } = this.state,
+            accgroup = agPost.accgroup;
+        for(let i = 0; i < accgroup.length; i++){
+            if(accgroup[i] == item.agid){
+                agPost.accnum[i] = value;
+                break;
+            }
+        }
+        this.setState({agPost});
+    };
+    /*获取对应用户配额列表*/
+    getAccGroupList(record){
+        Fetch.quota({
+            method: 'POST',
+            body: JSON.stringify({uid: record.userid})
+        }).then((res)=>{
+            if(this._ismount && res.status == 200){
+                let aAllUserTypeAccNum = res.repsoneContent.aAllUserTypeAccNum,
+                    { agPost } = this.state;
+                agPost.accgroup = [];
+                agPost.accnum = [];
+                aAllUserTypeAccNum.forEach((item)=>{
+                    agPost.accgroup.push(item.agid);
+                    agPost.accnum.push(0);
+                });
+                this.setState({
+                    typeName: '配额契约',
+                    contentArr: aAllUserTypeAccNum,
+                })
+            }
+        })
+    }
     render() {
-        const { tableData, typeName, contentArr, prizeGroupList } = this.state;
+        const { tableData, typeName, contentArr, prizeGroupList, agPost, diviPost } = this.state;
         const columns = [
             {
                 title: '用户名',
@@ -370,8 +470,9 @@ export default class TeamList extends Component {
                                     {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个
                                     <span style={{display: this.state.disabled ? 'none' : ''}}>
                                             ，再增加
-                                            <InputNumber min={0} value={item.salary_ratio}
-                                                         onChange={(value)=>this.onChangeAlterContract(value, item)}
+                                            <InputNumber min={0}
+                                                         value={agPost.accnum[i]}
+                                                         onChange={(value)=>this.onChangeAccGroup(value, item)}
                                             />
                                             个 （剩余可分配{item.accnum}个）
                                         </span>
@@ -407,8 +508,11 @@ export default class TeamList extends Component {
                 <p>契约内容：</p>
                 <div>
                     如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
-                    <InputNumber min={0} value={this.state.alterData.dividend_radio}
-                                 onChange={(value)=>this.onChangeAlterContract(value)}
+                    <InputNumber min={0} value={diviPost.dividend_radio}
+                                 onChange={(value)=>{
+                                     diviPost.dividend_radio = value;
+                                     this.setState({diviPost});
+                                 }}
                                  disabled={this.state.disabled}
                     />
                     %。
@@ -431,7 +535,7 @@ export default class TeamList extends Component {
                                 max={prizeGroupList.length !== 0 && prizeGroupList[prizeGroupList.length-1].prizeGroup}
                                 step={2}
                                 onChange={(value)=>{this.onRegisterSetBonus(value)}}
-                                value={this.state.prizeGroupFlag}
+                                value={parseInt(this.state.prizeGroupFlag)}
                                 disabled={this.state.disabled}
                         />
                         <Icon className="slider_right" onClick={()=>this.onAdd()} type="right" />
@@ -517,7 +621,6 @@ export default class TeamList extends Component {
                     onAffirm={this.onDiviratio}
                 />
             </div>
-
         );
     }
 }

@@ -6,7 +6,6 @@ import HomeMainTop from './HomeMainTop/HomeMainTop'
 import HomeMainLottery from './HomeMainLottery/HomeMainLottery'
 import HomeMainActive from './HomeMainActive/HomeMainActive'
 import HomeMainBottom from './HomeMainBottom/HomeMainBottom'
-import HomeMainLeft from './HomeMainLeft/HomeMainLeft'
 
 @observer
 export default class Home extends Component {
@@ -23,15 +22,12 @@ export default class Home extends Component {
 
     };
 
-
-
     render() {
         const main = [
             <HomeMainTop key="HomeMainTop"/>,
             <HomeMainLottery key="HomeMainLottery"/>,
             <HomeMainActive key="HomeMainActive"/>,
             <HomeMainBottom key="HomeMainBottom"/>,
-            <HomeMainLeft key="HomeMainLeft"/>,
         ];
         return (
             <div className="home_main">

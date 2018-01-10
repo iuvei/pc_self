@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import Fetch from '../../../../Utils';
 import { stateVar } from '../../../../State';
 import { InputNumber, Button } from 'antd';
-import { changeMoneyToChinese } from '../../../../CommonJs/common';
+import { changeMoneyToChinese, onValidate } from '../../../../CommonJs/common';
 
 import './OnlineTopUp.scss'
 
@@ -61,19 +61,7 @@ export default class OnlineTopUp extends Component {
             }
         })
     };
-    /*验证显示不同class*/
-    onValidate(val) {
-        let classNames,
-            validate = this.state.validate;
-        if(validate[val] == 0) {
-            classNames = 'correct'
-        } else if(validate[val] == 1) {
-            classNames = 'wrong'
-        } else {
-            classNames = ''
-        }
-        return classNames
-    };
+
     // 立即充值
     onRecharge() {
         if(this.state.validate.money != 0){
@@ -153,7 +141,7 @@ export default class OnlineTopUp extends Component {
                         <InputNumber min={parseFloat(this.state.loadmin)} max={parseFloat(this.state.loadmax)} size="large"
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                     className={this.onValidate('money')}
+                                     className={onValidate('money', this.state.validate)}
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
                         />
                         <span style={{margin: '0 15px 0 3px'}}>元</span>

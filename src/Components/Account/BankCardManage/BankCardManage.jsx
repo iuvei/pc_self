@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import { Table, Button, Modal, Select, Input, message } from 'antd';
 const Option = Select.Option;
+import { onValidate } from '../../../CommonJs/common';
 import ForgetFundPw from '../Security/ForgetFundPw/ForgetFundPw';
 import md5 from 'md5';
 
@@ -169,19 +170,7 @@ export default class BankCardManage extends Component {
             addPostData: addPostData,
         });
     }
-    /*验证显示不同class*/
-    onValidate(val) {
-        let classNames,
-            validate = this.state.validate;
-        if(validate[val] == 0) {
-            classNames = 'correct'
-        } else if(validate[val] == 1) {
-            classNames = 'wrong'
-        } else {
-            classNames = ''
-        }
-        return classNames
-    };
+
     /*支行名称*/
     onBranch(e){
         let val = e.target.value,
@@ -427,9 +416,13 @@ export default class BankCardManage extends Component {
                     <div className="a_aa_main">
                         <div className="a_aa_form">
                             <ul className="a_aa_list">
-                                <li>
+                                <li id="select_p1">
                                     <span className="a_aa_left_text">开户银行：</span>
-                                    <Select value={addPostData.bank_id} size="large" style={{ width: 280 }} onChange={(value)=>{this.onSelectBank(value)}} placeholder="请选择开户银行">
+                                    <Select value={addPostData.bank_id} size="large"
+                                            style={{ width: 280 }}
+                                            onChange={(value)=>{this.onSelectBank(value)}} placeholder="请选择开户银行"
+                                            getPopupContainer={() => document.getElementById('select_p1')}
+                                    >
                                         <Option value='-1'>请选择开户银行</Option>
                                         {
                                             adduserbank.banklist.map((item, i)=>{
@@ -438,9 +431,14 @@ export default class BankCardManage extends Component {
                                         }
                                     </Select>
                                 </li>
-                                <li>
+                                <li id="select_p2">
                                     <span className="a_aa_left_text">开户银行区域：</span>
-                                    <Select value={addPostData.province_id} className="a_aa_marg" size="large" style={{ width: 280 }} onChange={(value)=>{this.onProvince(value)}} placeholder="请选择省份">
+                                    <Select value={addPostData.province_id} className="a_aa_marg" size="large"
+                                            style={{ width: 280 }}
+                                            onChange={(value)=>{this.onProvince(value)}}
+                                            placeholder="请选择省份"
+                                            getPopupContainer={() => document.getElementById('select_p2')}
+                                    >
                                         <Option value='-1'>请选择省份</Option>
                                         {
                                             adduserbank.provincelist.map((item, i)=>{
@@ -448,7 +446,10 @@ export default class BankCardManage extends Component {
                                             })
                                         }
                                     </Select>
-                                    <Select value={addPostData.city_id} size="large" style={{ width: 280 }} onChange={(value)=>{this.onCity(value)}} placeholder="请选择城市">
+                                    <Select value={addPostData.city_id} size="large" style={{ width: 280 }}
+                                            onChange={(value)=>{this.onCity(value)}} placeholder="请选择城市"
+                                            getPopupContainer={() => document.getElementById('select_p2')}
+                                    >
                                         <Option value='-1'>请选择城市</Option>
                                         {
                                             adduserbank.city.map((item, i)=>{
@@ -461,7 +462,7 @@ export default class BankCardManage extends Component {
                                     <span className="a_aa_left_text">支行名称：</span>
                                     <Input value={addPostData.branch}
                                            onChange={(e)=>this.onBranch(e)}
-                                           className={this.onValidate('branch')}
+                                           className={onValidate('branch', this.state.validate)}
                                            size="large" style={{width: 280}} placeholder="请输入支行名称"
                                     />
                                     <span className="a_aa_right_text">由1至20个字符或汉字组成，不能使用特殊字符</span>
@@ -470,7 +471,7 @@ export default class BankCardManage extends Component {
                                     <span className="a_aa_left_text">开户人姓名：</span>
                                     <Input value={addPostData.account_name}
                                            onChange={(e)=>this.onAccountName(e)}
-                                           className={this.onValidate('account_name')}
+                                           className={onValidate('account_name', this.state.validate)}
                                            size="large" style={{width: 280}} placeholder="请输入开户人姓名"
                                     />
                                     <span className="a_aa_right_text" style={{verticalAlign: 'bottom'}}>请填写您的真实姓名，只能是中文字符，支持以 下姓名分隔符"·"".""。"</span>
@@ -479,7 +480,7 @@ export default class BankCardManage extends Component {
                                     <span className="a_aa_left_text">银行卡号：</span>
                                     <Input value={addPostData.account}
                                            onChange={(e)=>this.onAccount(e)}
-                                           className={this.onValidate('account')}
+                                           className={onValidate('account', this.state.validate)}
                                            size="large" style={{width: 280}} placeholder="请输入银行卡号"
                                     />
                                     <span className="a_aa_right_text">银行卡卡号由16位或19位数字组成</span>
@@ -488,7 +489,7 @@ export default class BankCardManage extends Component {
                                     <span className="a_aa_left_text">确认卡号：</span>
                                     <Input value={addPostData.account_again}
                                            onChange={(e)=>this.onAccountAgain(e)}
-                                           className={this.onValidate('account_again')}
+                                           className={onValidate('account_again', this.state.validate)}
                                            size="large" style={{width: 280}} placeholder="请输入确认卡号" />
                                     <span className="a_aa_right_text">银行账号只能手动输入，不能粘贴</span>
                                 </li>
@@ -496,7 +497,7 @@ export default class BankCardManage extends Component {
                                     <span className="a_aa_left_text">验证资金密码：</span>
                                     <Input value={addPostData.security_pass}
                                            onChange={(e)=>this.onSecurityPass(e)}
-                                           className={this.onValidate('security_pass')}
+                                           className={onValidate('security_pass', this.state.validate)}
                                            type="password" size="large" style={{width: 280}} placeholder="请输入验证资金密码"
                                     />
                                     <a onClick={()=>this.setState({childVisible: true})} href="javascript:void(0)" style={{textDecoration:'underline', color:'#0393EF', display: this.state.ModalTitle ? 'none' : ''}}>忘记资金密码？</a>

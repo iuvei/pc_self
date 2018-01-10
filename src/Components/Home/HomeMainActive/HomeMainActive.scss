@@ -30,14 +30,14 @@
             margin-top: 25px;
             li{
                 float:left;
-                margin-right: 21px;
-                transform: scale(1.2);
+                margin-right: 20px;
                 @include transform(transform, 0.3s);
                 &:last-child{
                     margin-right: 0;
                 }
                 img{
                     vertical-align: middle;
+                    width: 285px;
                 }
                 &:hover .home_m_active_type{
                     background-color: #BC0000;
@@ -45,7 +45,7 @@
                     @include transform(background-color, 0.3s);
                 }
                 &:hover{
-                    transform: scale(1.05);
+                    transform: scale(1.05) !important;
                 }
             }
             .home_m_active_type{

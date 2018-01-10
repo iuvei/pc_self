@@ -15475,7 +15475,7 @@ textarea.ant-pagination-options-quick-jumper input {
   /*overflow: hidden;*/
 }
 .ant-table-thead > tr > th {
-  background: #f7f7f7;
+  background: #F8F7F4;
   font-weight: 500;
   -webkit-transition: background .3s ease;
   transition: background .3s ease;
@@ -15520,8 +15520,8 @@ textarea.ant-pagination-options-quick-jumper input {
   background: none;
 }
 .ant-table-footer {
-  padding: 16px 8px;
-  background: #f7f7f7;
+  background-color: #F8F7F4;
+  padding: 11px 8px;
   border-radius: 0 0 3px 3px;
   position: relative;
 }

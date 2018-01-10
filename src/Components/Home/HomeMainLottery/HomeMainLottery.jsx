@@ -2,19 +2,13 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import QueueAnim from 'rc-queue-anim';
-
 import './HomeMainLottery.scss'
-
 import home_lottery01 from '../Img/home_lottery01.jpg';
 import home_lottery02 from '../Img/home_lottery02.jpg';
 import home_lottery03 from '../Img/home_lottery03.jpg';
 
 @observer
 export default class HomeMainLottery extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {}
-    };
     getChildrenToRender(item, i){
         return (
             <li key={i}>
