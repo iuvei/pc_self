@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
-import common from '../../../CommonJs/common';
+import { setDateTime } from '../../../CommonJs/common';
 import { DatePicker,  Button, Checkbox, Input, Select, Table, Pagination } from 'antd';
 import moment from 'moment';
 const Option = Select.Option;
@@ -294,8 +294,8 @@ export default class AccountChange extends Component {
             data: [],
             searchLoading: false,
             postData: {
-                sdatetime: common.setDateTime(0), // 开始时间 2017-12-27
-                edatetime: common.setDateTime(1), // 结束时间 2017-12-27
+                sdatetime: setDateTime(0), // 开始时间 2017-12-27
+                edatetime: setDateTime(1), // 结束时间 2017-12-27
                 type: 4, //4资金帐变
                 otype: null,
                 status: 0, //1 是成功 2是失败 0是所有
@@ -458,7 +458,7 @@ export default class AccountChange extends Component {
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     placeholder="请选择查询开始日期"
-                                    defaultValue={moment(common.setDateTime(0))}
+                                    defaultValue={moment(setDateTime(0))}
                                     onChange={(date, dateString)=>{this.onChangeStartDate(date, dateString)}}
                                 />
                             </li>
@@ -467,7 +467,7 @@ export default class AccountChange extends Component {
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     placeholder="请选择查询结束日期"
-                                    defaultValue={moment(common.setDateTime(1))}
+                                    defaultValue={moment(setDateTime(1))}
                                     onChange={(date, dateString)=>{this.onChangeEndDate(date, dateString)}}
                                 />
                             </li>

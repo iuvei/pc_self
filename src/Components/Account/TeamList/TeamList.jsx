@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
-import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, message } from 'antd';
+import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, message, Spin } from 'antd';
 import Fetch from '../../../Utils';
 import Crumbs from '../../Common/Crumbs/Crumbs'
 import { stateVar } from '../../../State';

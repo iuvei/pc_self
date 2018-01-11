@@ -4,6 +4,7 @@ import 'whatwg-fetch'
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import CM_transfer from '../CM_transfer/CM_transfer';
+import { Modal } from 'antd';
 
 import './GT.scss';
 
@@ -69,7 +70,6 @@ export default class GT extends Component {
                    thirdAddress:data.repsoneContent[0],
                })
             }
-            console.log("thirdAddress",this.state.thirdAddress)
         })
     };
     /*新窗口打开游戏界面*/

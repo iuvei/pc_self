@@ -1,5 +1,5 @@
 /**
- * 获取当前日期的前后val日期
+ * 获取当前日期的前后n日期
  */
 export const setDateTime = (n) => {
     let s, d, t, t2;
@@ -12,7 +12,26 @@ export const setDateTime = (n) => {
     s += ('00' + d.getUTCDate()).slice(-2);
     return s;
 };
-
+/**
+ * 获取时间data（2018-02）下月年月
+ */
+export const getNextMonth = (date) =>{
+    let arr = date.split('-');
+    let year = arr[0]; //获取当前日期的年份
+    let month = arr[1]; //获取当前日期的月份
+    let days = new Date(year, month, 0);
+    days = days.getDate(); //获取当前日期中的月的天数
+    let year2 = year;
+    let month2 = parseInt(month) + 1;
+    if (month2 == 13) {
+        year2 = parseInt(year2) + 1;
+        month2 = 1;
+    }
+    if (month2 < 10) {
+        month2 = '0' + month2;
+    }
+    return year2 + '-' + month2;
+};
 /**
  * 获取毫秒数
  */
@@ -222,7 +241,7 @@ export const setStore = (name, content) => {
         content = JSON.stringify(content)
     }
     window.localStorage.setItem(name, content)
-}
+};
 
 /**
  * 删除localStorage
@@ -250,6 +269,7 @@ export const onValidate = (val, validate) => {
 export default {
     setDateTime,
     setNewDateTime,
+    getNextMonth,
     getTime,
     genCountdown,
     disabledDate,

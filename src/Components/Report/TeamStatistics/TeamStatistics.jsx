@@ -1,9 +1,10 @@
+/*团队统计*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import {Modal, Spin} from 'antd';
+import { Spin} from 'antd';
 import echarts from 'echarts';
 import Fetch from '../../../Utils';
-import common from '../../../CommonJs/common';
+import { setDateTime } from '../../../CommonJs/common';
 
 import './TeamStatistics.scss'
 
@@ -30,6 +31,12 @@ export default class TeamStatistics extends Component {
                 loginData: [], // 登录
                 addMoneyData: [], // 充值
                 voteData: [], // 投注
+            },
+            defaultSelect: {// 默认是否选中
+                register: true,
+                login: false,
+                recharge: false,
+                bet:false,
             }
         }
     };
@@ -130,10 +137,9 @@ export default class TeamStatistics extends Component {
                     statistics.registerData = registerDataArr;
                     statistics.addMoneyData = addMoneyDataArr;
                     statistics.voteData = voteDataArr;
+                    console.log(statistics)
                     this.setState({statistics: statistics}, ()=>this.brokenLine());
-                }else{
-                    console.log(res.shortMessage)
-                }
+                }else{}
             }
 
         })
@@ -142,21 +148,29 @@ export default class TeamStatistics extends Component {
     brokenLine(){
         // 基于准备好的dom，初始化echarts实例
         let myChart = echarts.init(document.getElementById('main')),
-            statistics = this.state.statistics;
+            { statistics, defaultSelect } = this.state,
+            _this = this;
         let option = {
             tooltip: {
-                trigger: 'axis' // tooltip 的配置项显示提示框,axis 的时候可选
+                trigger: 'axis'
             },
-            selectedMode: 'single',
             legend: {
                 data:['注册人数','登陆人数','充值人数','投注人数'],
-                selected: { // 默认不选中
-                    '登陆人数': false,
-                    '充值人数': false,
-                    '投注人数': false
+                selected: { // 默认是否选中
+                    '注册人数': defaultSelect.register,
+                    '登陆人数': defaultSelect.login,
+                    '充值人数': defaultSelect.recharge,
+                    '投注人数': defaultSelect.bet
                 },
             },
-
+            xAxis:  {
+                type: 'category',
+                boundaryGap: false,
+                data: statistics.date
+            },
+            yAxis: {
+                type: 'value',
+            },
             grid: {
                 left: '3%',
                 right: '4%',
@@ -164,23 +178,10 @@ export default class TeamStatistics extends Component {
                 bottom: '3%',// 控制图表上下左右的空白尺寸
                 containLabel: true
             },
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: this.state.statistics.date,
-                // axisLabel: { // x轴文字角度
-                //     interval:0,
-                //     rotate:0
-                // },
-            },
-            yAxis: {
-                type: 'value'
-            },
             series: [
                 {
                     name:'注册人数',
                     type:'line',
-                    stack: '总量',
                     data:statistics.registerData,
                     itemStyle : {
                         normal : {
@@ -194,7 +195,6 @@ export default class TeamStatistics extends Component {
                 {
                     name:'登陆人数',
                     type:'line',
-                    stack: '总量',
                     data:statistics.loginData,
                     itemStyle : {
                         normal : {
@@ -208,7 +208,6 @@ export default class TeamStatistics extends Component {
                 {
                     name:'充值人数',
                     type:'line',
-                    stack: '总量',
                     data:statistics.addMoneyData,
                     itemStyle : {
                         normal : {
@@ -222,7 +221,6 @@ export default class TeamStatistics extends Component {
                 {
                     name:'投注人数',
                     type:'line',
-                    stack: '总量',
                     data:statistics.voteData,
                     itemStyle : {
                         normal : {
@@ -232,9 +230,37 @@ export default class TeamStatistics extends Component {
                             }
                         }
                     },
-                }
+                },
             ]
         };
+
+        // 图例开关的行为只会触发 legendselectchanged 事件
+        myChart.on('legendselectchanged', function (params) {
+            // 获取点击图例的选中状态
+            let isSelected = params.selected[params.name];
+            if(isSelected){
+                if(params.name == '注册人数'){
+                    defaultSelect.register = true
+                }else if(params.name == '登陆人数'){
+                    defaultSelect.login = true
+                }else if(params.name == '充值人数'){
+                    defaultSelect.recharge = true
+                }else if(params.name == '投注人数'){
+                    defaultSelect.bet = true
+                }else{}
+            }else{
+                if(params.name == '注册人数'){
+                    defaultSelect.register = false
+                }else if(params.name == '登陆人数'){
+                    defaultSelect.login = false
+                }else if(params.name == '充值人数'){
+                    defaultSelect.recharge = false
+                }else if(params.name == '投注人数'){
+                    defaultSelect.bet = false
+                }else{}
+            }
+            _this.setState({defaultSelect});
+        });
         // 绘制图表
         myChart.setOption(option);
     };
@@ -248,7 +274,7 @@ export default class TeamStatistics extends Component {
         }
         postData.limite_data = val;
         for(let i = 1; i <= val; i++){
-            let day = common.setDateTime(-i);
+            let day = setDateTime(-i);
             dateFlag.unshift(day);
         }
         statistics.date = dateFlag;

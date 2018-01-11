@@ -87,7 +87,6 @@ export default class Message extends Component {
     };
     /*切换每页条数*/
     onShowSizeChange(current, pageSize) {
-        console.log(current, pageSize);
         let postData = this.state.postData;
         postData.p = current;
         postData.pn = pageSize;

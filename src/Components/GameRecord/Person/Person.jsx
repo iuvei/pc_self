@@ -6,7 +6,7 @@ const Option = Select.Option;
 const RadioGroup = Radio.Group;
 import moment from 'moment';
 import Fetch from '../../../Utils';
-import common from '../../../CommonJs/common';
+import { setDateTime, disabledDate } from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
 
 @observer
@@ -24,8 +24,8 @@ export default class Person extends Component {
 
             postData: {
                 username: null, //查询用户名
-                starttime: common.setDateTime(0) + ' 02:00:00',
-                endtime: common.setDateTime(1) + ' 02:00:00',
+                starttime: setDateTime(0) + ' 02:00:00',
+                endtime: setDateTime(1) + ' 02:00:00',
                 code: 0, // 游戏编码（游戏名称）
                 status: '-1', //3 :和 1：赢 2： 输  -1：所有
                 ptype: 'noteam', // team (团对)
@@ -232,18 +232,18 @@ export default class Person extends Component {
                                     showTime
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择开始时间"
-                                    defaultValue={moment(common.setDateTime(0) + ' 02:00:00')}
+                                    defaultValue={moment(setDateTime(0) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -16, 0)}
+                                    disabledDate={(current)=>disabledDate(current, -16, 0)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     showTime
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择结束时间"
-                                    defaultValue={moment(common.setDateTime(1) + ' 02:00:00')}
+                                    defaultValue={moment(setDateTime(1) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -16, 0)}
+                                    disabledDate={(current)=>disabledDate(current, -16, 0)}
                                 />
                             </li>
                         </ul>

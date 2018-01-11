@@ -31,7 +31,6 @@ export default class Contract extends Component {
     }
 
     onShowSizeChange(current, pageSize) {
-        console.log(current, pageSize);
         this.setState({pagination: current})
     };
     showModal(){

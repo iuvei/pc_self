@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Link, hashHistory } from 'react-router';
-import Fetch from '../../../Utils'
+import { hashHistory } from 'react-router';
+import Fetch from '../../../Utils';
 import { Icon, Badge, Modal } from 'antd';
 const confirm = Modal.confirm;
 import { stateVar } from '../../../State';
 import './headerTop.scss'
-import common from '../../../CommonJs/common';
+import { removeStore } from '../../../CommonJs/common';
 import Notice from '../Notice/Notice'
 
-import name_icon from './Img/name_icon.png'
-import email_icon from './Img/email_icon.png'
-import off_icon from './Img/off_icon.png'
-import on_icon from './Img/on_icon.png'
+import name_icon from './Img/name_icon.png';
+import email_icon from './Img/email_icon.png';
+import off_icon from './Img/off_icon.png';
+import on_icon from './Img/on_icon.png';
 
 @observer
 export default class HeaderTop extends Component {
@@ -138,13 +138,14 @@ export default class HeaderTop extends Component {
     };
     /*退出登录*/
     onLogout() {
+        let _this = this;
         confirm({
             title: '确定要退出吗?',
             onOk() {
                 Fetch.logout({method: 'POST'}).then((res)=>{
-                    if(this._ismount){
+                    if(_this._ismount){
                         if(res.status == 200){
-                            common.removeStore('userName');
+                            removeStore('userName');
                             hashHistory.push('/');
                         }else{
                             Modal.warning({
@@ -155,7 +156,6 @@ export default class HeaderTop extends Component {
                 })
             },
             onCancel() {
-                console.log('Cancel');
             },
         });
 
@@ -181,19 +181,16 @@ export default class HeaderTop extends Component {
       for(let i = 0; i < noticeList.length;i++) {
           if(noticeList[i].id === item.id){
               noticeList[i].unread_id = 0;
-              console.log(this.state.noticeList);
               this.setState({noticeList: noticeList});
               break;
           }
       }
     };
-
     onOutModal() {
         if(!this.state.visible){
             this.getDestination()
         }
     }
-
     /*站内信未读条数*/
     onUnread() {
         Fetch.messages({
@@ -214,7 +211,7 @@ export default class HeaderTop extends Component {
         stateVar.navIndex = nav;
     }
     render() {
-        const allBalance = this.state.allBalance;
+        const { allBalance } = this.state;
         const userInfo = stateVar.userInfo;
 
         return (
@@ -224,7 +221,7 @@ export default class HeaderTop extends Component {
                         <div className="show-notice">
                             <ul className="notice-list left" style={{transform: 'translateY(-'+this.state.noticePosition+'px) translateZ(0px)'}}>
                                 {
-                                    this.state.noticeList.map((item, index)=>{
+                                    this.state.noticeList.map((item)=>{
                                         return (
                                             <li key={item.id} onClick={()=>this.showModal(item)}
                                                 onMouseOver={()=>{

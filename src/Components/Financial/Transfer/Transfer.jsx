@@ -358,7 +358,7 @@ export default class Transfer extends Component {
                                              parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                              onChange={(value)=>{this.onTransferAmount(value)}}
                                              className={onValidate('money', this.state.validate)}
-                                />元
+                                /> 元
                                 <p className="tr_m_f_text">转账金额至少10元以上</p>
 
                             </li>

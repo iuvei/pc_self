@@ -74,7 +74,6 @@ export default class TransferRecord extends Component {
         }).then((res)=>{
             if(this._ismount) {
                 this.setState({tableLoading: false, searchLoading: false});
-                console.log(res)
                 if(res.status == 200){
                     let data = res.repsoneContent;
                     this.setState({data: data.result, total: parseInt(data.total)})

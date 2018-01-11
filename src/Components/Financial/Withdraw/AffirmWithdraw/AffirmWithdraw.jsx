@@ -89,7 +89,6 @@ export default class AffirmWithdraw extends Component {
     render() {
         const userInfo = stateVar.userInfo;
         const bankWithdrawInfo = stateVar.bankWithdrawInfo;
-        console.log(stateVar.bankWithdrawInfo);
 
         return (
             <div className="affirm_withdraw">

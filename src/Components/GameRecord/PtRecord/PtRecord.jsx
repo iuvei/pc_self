@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import { DatePicker, Modal, Checkbox, Radio, Table, Select, Input, Pagination, Button, Icon } from 'antd';
 import moment from 'moment';
 import Fetch from '../../../Utils'
-import common from '../../../CommonJs/common';
+import { setDateTime } from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
 
 @observer
@@ -21,8 +21,8 @@ export default class PtRecord extends Component {
             sum: {}, //总计
             postData: {
                 username:'', //查询用户名
-                starttime: common.setDateTime(0) + ' 02:00:00',
-                endtime: common.setDateTime(1) + ' 02:00:00',
+                starttime: setDateTime(0) + ' 02:00:00',
+                endtime: setDateTime(1) + ' 02:00:00',
                 type:"personal", // group(团队) personal(个人)
                 search: 1,
                 gamecate: null, // 游戏分类 默认：15(老虎机)
@@ -237,7 +237,7 @@ export default class PtRecord extends Component {
                                     showTime
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择开始时间"
-                                    defaultValue={moment(common.setDateTime(0) + ' 02:00:00')}
+                                    defaultValue={moment(setDateTime(0) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
@@ -245,7 +245,7 @@ export default class PtRecord extends Component {
                                     showTime
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择结束时间"
-                                    defaultValue={moment(common.setDateTime(1) + ' 02:00:00')}
+                                    defaultValue={moment(setDateTime(1) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
                                     onOk={(date)=>{this.onOk(date)}}
                                 />

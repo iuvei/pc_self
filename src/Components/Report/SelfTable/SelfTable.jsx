@@ -7,8 +7,6 @@ import { DatePicker, Button, Table, Popover } from 'antd';
 import moment from 'moment';
 import common from '../../../CommonJs/common';
 
-import './SelfTable.scss'
-
 const shortcutTime = [
     {
         text: '上周',
@@ -60,7 +58,9 @@ export default class SelfTable extends Component {
             postData: {
                 starttime: common.setDateTime(-1),
                 endtime: common.setDateTime(0),
-            }
+            },
+            startHMS: '02:00:00',
+            endHMS: '01:59:59'
         }
     };
     componentDidMount() {
@@ -201,35 +201,68 @@ export default class SelfTable extends Component {
         this.setState({postData: postData},()=>this.getData());
     };
     /*快捷选择时间*/
-    onShortcutTime(val) {
-        let { postData, threeSeven } = this.state;
-        let yearMonth = common.setDateTime(0).slice(0, 8);
-        if(val == 3){ // 上周
-            postData.starttime = common.getTime(7);
-            postData.endtime = common.getTime(1);
-        }else if(val == 4){ // 上半月
-            postData.starttime = yearMonth + '01';
-            postData.endtime = yearMonth + '15';
-        }else if(val == 5){ // 下半月
-            postData.starttime = yearMonth + '15';
-            postData.endtime = common.getMonthEndDate();
-        }else if(val == 6){ // 本月
-            postData.starttime = yearMonth + '01';
-            postData.endtime = common.getMonthEndDate();
-        }else{
-            // postData.starttime = common.setDateTime(-1);
-            // postData.endtime = common.setDateTime(0);
+    onShortcutTime(val, type) {
+        let { postData, threeSeven, classify } = this.state;
+        let yearMonth = common.setDateTime(0).slice(0, 8),
+            startHMSFlag = '', endHMSFlag = '';
+        if(classify == 0){//游戏分类为：彩票
+            startHMSFlag = '02:00:00';
+            endHMSFlag = '01:59:59';
+            if(val == 3){ // 上周
+                postData.starttime = common.getTime(7);
+                postData.endtime = common.getTime(0);
+            }else if(val == 4){ // 上半月
+                postData.starttime = yearMonth + '01';
+                postData.endtime = yearMonth + '16';
+            }else if(val == 5){ // 下半月
+                postData.starttime = yearMonth + '16';
+                postData.endtime = common.getNextMonth(yearMonth) + '-01';
+            }else if(val == 6){ // 本月
+                postData.starttime = yearMonth + '01';
+                postData.endtime = common.getNextMonth(yearMonth) + '-01';
+            }else{}
+        }else{//游戏分类为：其他
+            startHMSFlag = '00:00:00';
+            endHMSFlag = '23:59:59';
+            if(val == 3){ // 上周
+                postData.starttime = common.getTime(7);
+                postData.endtime = common.getTime(1);
+            }else if(val == 4){ // 上半月
+                postData.starttime = yearMonth + '01';
+                postData.endtime = yearMonth + '15';
+            }else if(val == 5){ // 下半月
+                postData.starttime = yearMonth + '15';
+                postData.endtime = common.getMonthEndDate();
+            }else if(val == 6){ // 本月
+                postData.starttime = yearMonth + '01';
+                postData.endtime = common.getMonthEndDate();
+            }else{}
         }
-        if(threeSeven == val) {
-            threeSeven = null
-        }else{
-            threeSeven = val;
+        if(type !== 'classify'){
+            if(threeSeven == val) {
+                threeSeven = null
+            }else{
+                threeSeven = val;
+            }
         }
-        this.setState({threeSeven, postData});
+        this.setState({
+            threeSeven,
+            postData,
+            startHMS: startHMSFlag,
+            endHMS: endHMSFlag
+        });
     };
     /*游戏种类*/
     onVariety(id){
         this.setState({otherGamesSum: {}, otherGamesData: [], variety: id});
+    };
+    /*游戏分类*/
+    onClassify(type){
+        if(type === 0){
+            this.setState({classify: 0, variety: 0}, ()=>this.onShortcutTime(this.state.threeSeven, 'classify'));
+        }else{
+            this.setState({classify: 1}, ()=>this.onShortcutTime(this.state.threeSeven, 'classify'))
+        }
     };
     render() {
         const { dailysalaryStatus, userInfo } = stateVar;
@@ -500,16 +533,15 @@ export default class SelfTable extends Component {
             </ul>;
         }else{}
 
-
         return (
-            <div className="self_table">
+            <div className="report">
                 <div className="team_list_top">
                     <div className="t_l_time">
                         <ul className="t_l_time_row">
                             <li>
                                 <span>查询日期：</span>
                                 <DatePicker
-                                    format="YYYY-MM-DD"
+                                    format={ "YYYY-MM-DD" + ' ' + this.state.startHMS }
                                     placeholder="请选择开始查询日期"
                                     value={moment(postData.starttime)}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
@@ -517,7 +549,7 @@ export default class SelfTable extends Component {
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
-                                    format="YYYY-MM-DD"
+                                    format={ "YYYY-MM-DD" + ' ' + this.state.endHMS }
                                     placeholder="请选择结束查询日期"
                                     value={moment(postData.endtime)}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
@@ -538,8 +570,8 @@ export default class SelfTable extends Component {
                         <ul className="t_l_classify">
                             <li>
                                 <span>游戏分类：</span>
-                                <span className={0 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({classify: 0, variety: 0})}}>彩票</span>
-                                <span className={1 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.setState({classify: 1})}>其他</span>
+                                <span className={0 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.onClassify(0)}>彩票</span>
+                                <span className={1 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.onClassify(1)}>其他</span>
                             </li>
                             <li>
                                 <span>游戏种类：</span>

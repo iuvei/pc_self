@@ -9,17 +9,8 @@ import HomeMainBottom from './HomeMainBottom/HomeMainBottom'
 
 @observer
 export default class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-
-        };
-    };
     shouldComponentUpdate(){
         return (this.props.router.location.action === 'PUSH')
-    };
-    componentDidMount() {
-
     };
 
     render() {

@@ -6,7 +6,7 @@ const Option = Select.Option;
 const RadioGroup = Radio.Group;
 import moment from 'moment';
 import Fetch from '../../../Utils';
-import common from '../../../CommonJs/common';
+import { setDateTime, disabledDate } from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
 
 @observer
@@ -25,8 +25,8 @@ export default class GameBill extends Component {
             postData: {
                 lotteryid: 0, //彩种id
                 modes: 0,
-                starttime: common.setDateTime(0),
-                endtime: common.setDateTime(1),
+                starttime: setDateTime(0),
+                endtime: setDateTime(1),
                 ordertype: 0,
                 p:1, //页码
                 pn: 10,
@@ -188,7 +188,7 @@ export default class GameBill extends Component {
             }];
 
         return (
-            <div className="lottery_bet after_record">
+            <div className="report">
                 <div className="team_list_top">
                     <div className="t_l_time">
                         <ul className="t_l_time_row">
@@ -197,17 +197,17 @@ export default class GameBill extends Component {
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     placeholder="请选择开始时间"
-                                    defaultValue={moment(common.setDateTime(0))}
+                                    defaultValue={moment(setDateTime(0))}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -35, 1)}
+                                    disabledDate={(current)=>disabledDate(current, -35, 1)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     placeholder="请选择结束时间"
-                                    defaultValue={moment(common.setDateTime(1))}
+                                    defaultValue={moment(setDateTime(1))}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -35, 1)}
+                                    disabledDate={(current)=>disabledDate(current, -35, 1)}
                                 />
                             </li>
                         </ul>

@@ -2,8 +2,8 @@ import { observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
 import { Row, Col } from 'antd';
-import HeaderNav from '../Common/HeaderNav/headerNav'
-import Footer from '../Common/Footer/Footer'
+import HeaderNav from '../Common/HeaderNav/headerNav';
+import Footer from '../Common/Footer/Footer';
 import LeftSider from '../Lottery/LeftSider/LeftSider';
 import RightPlug from '../Common/RightPlug/RightPlug'
 import './Main.scss';

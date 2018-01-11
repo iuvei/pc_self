@@ -41,33 +41,7 @@ export default class Report extends Component {
         super(props);
         this.state = {
             navIndex: 0,
-            navList: [
-                {
-                    link: '/report/teamStatistics',
-                    text: '团队统计'
-                },{
-                    link: '/report/lotteryReport',
-                    text: '彩票报表'
-                },{
-                    link: '/report/selfTable',
-                    text: '个人总表'
-                },{
-                    link: '/report/teamTable',
-                    text: '团队总表'
-                },{
-                    link: '/report/gameBill',
-                    text: '游戏帐变'
-                },{
-                    link: '/report/dividend',
-                    text: '分红'
-                },{
-                    link: '/report/dayRate',
-                    text: '日工资'
-                },{
-                    link: '/report/losesalary',
-                    text: '日亏损佣金'
-                }
-            ],
+            navList: navListFlag,
         }
     };
     componentDidMount(){
@@ -118,32 +92,30 @@ export default class Report extends Component {
     render() {
         const { navList } = this.state;
         return (
-            <div className="s_m_main">
-                <QueueAnim duration={2000}
-                           animConfig={[
-                               { opacity: [1, 0] }
-                           ]}>
-                    <div className="g_r_main" key="report">
-                        <Row type="flex" justify="center" align="top">
-                            <Col span={24}>
-                                <div className="a_m_controler">
-                                    <div className="a_m_title">
-                                        <span>报表管理</span>
-                                        <span> > </span>
-                                        <span>{navList[this.state.navIndex].text}</span>
-                                    </div>
-                                    <ChildNav navList={navList}
-                                              onChangeNavIndex={this.onChangeNavIndex.bind(this)}
-                                    />
-                                    <div>
-                                        {this.props.children}
-                                    </div>
+            <QueueAnim duration={2000}
+                       animConfig={[
+                           { opacity: [1, 0] }
+                       ]}>
+                <div className="g_r_main" key="report">
+                    <Row type="flex" justify="center" align="top">
+                        <Col span={24}>
+                            <div className="a_m_controler">
+                                <div className="a_m_title">
+                                    <span>报表管理</span>
+                                    <span> > </span>
+                                    <span>{navList[this.state.navIndex].text}</span>
                                 </div>
-                            </Col>
-                        </Row>
-                    </div>
-                </QueueAnim>
-            </div>
+                                <ChildNav navList={navList}
+                                          onChangeNavIndex={this.onChangeNavIndex.bind(this)}
+                                />
+                                <div>
+                                    {this.props.children}
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
+            </QueueAnim>
         );
     }
 }

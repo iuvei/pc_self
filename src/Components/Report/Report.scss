@@ -1,66 +1,33 @@
 @import '../../Style/variables';
 @import '../../Style/mixin';
 
-.s_m_main{
-    .ant-input{
-        height: 30px;
-    }
-    .ant-select-selection--single{
-        height: 30px;
-    }
-    .ant-select-selection__rendered{
-        line-height: 28px;
-    }
-}
-
-.table_modal{
-    .modal_username{
-        @include lh(40px);
-        font-size: 14px;
-    }
-    .ant-modal-body{
-        padding: 0 16px 16px;
-    }
-    .ant-modal-title{
-        text-align: center;
-    }
-    .modal_table{
-        position: relative;
-        border: 1px solid #ccc;
-        height: 345px;
-        padding: 8px 5px;
-    }
-}
-
-
 $border-color: #B2B2B2;
 
-.lottery_bet{
-    color: #363636;
-    font-size: 14px;
+/*个人总表*/
+.report{
     .team_list_top{
         padding: 30px 30px 13px;
         border-bottom: 1px solid #ccc;
+        background-color: #fff;
+        font-size: 14px;
+        color: $color_363636;
         .t_l_time{
             padding-bottom: 15px;
-            .t_m_date_classify{
-                display: inline-block;
-                width: 70px;
-                text-align: right;
-                margin-right: 10px;
-            }
             .t_l_time_row{
                 @include lh(30px);
                 margin-bottom: 12px;
                 li{
                     float: left;
-                    margin-right: 20px;
+                    margin-right: 10px;
                 }
-            }
-            .t_m_line{
-                margin-top: 3px;
-                height: 22px;
-                border-left: 1px solid #AFAFAF;
+                .ant-input{
+                    width: 150px;
+                }
+                .t_m_line{
+                    margin: 3px 20px 0 10px !important;
+                    height: 22px;
+                    border-left: 1px solid #AFAFAF;
+                }
             }
             .t_l_time_btn{
                 box-sizing: border-box;
@@ -70,6 +37,7 @@ $border-color: #B2B2B2;
                     @include lh(30px);
                     padding: 0 8px;
                     border:1px solid $border-color;
+                    @include borderRadius(3px);
                     margin-right: 3px;
                     &:hover{
                         cursor: pointer;
@@ -79,15 +47,19 @@ $border-color: #B2B2B2;
                 li:not(:first-child){
                     border-left:1px solid $border-color;
                 }
+                .t_l_time_btn_active{
+                    box-sizing: border-box;
+                    height: 30px;
+                    border:1px solid #CB1313 !important;
+                    color:#CB1313;
+                    background: #FFF5F5 url('./Img/time_active.png') no-repeat right bottom;
+                }
             }
             .t_l_classify{
                 @include lh(30px);
                 li{
                     float: left;
                     margin-right: 30px;
-                    .l_b_acount{
-
-                    }
                     .ant-input{
                         width: 120px;
                     }
@@ -98,13 +70,23 @@ $border-color: #B2B2B2;
                 .t_l_border{
                     box-sizing: border-box;
                     @include lh(30px);
+                    @include borderRadius(3px);
                     display: inline-block;
                     border: 1px solid $border-color;
                     padding: 0 10px;
-                    margin-left: 8px;
+                    margin-right: 8px;
                     &:hover{
                         cursor: pointer;
                         background-color: #ddd;
+                    }
+                }
+                .t_m_serch{
+                    margin-left: 5px;
+                    .ant-btn-primary{
+                        height: 30px;
+                    }
+                    &:hover{
+                        cursor: pointer;
                     }
                 }
             }
@@ -132,25 +114,219 @@ $border-color: #B2B2B2;
             background-color: #fff;
             padding:8px 5px;
         }
-        .t_l_page{
-            float: right;
-            margin-top: 8px;
+        .t_l_location_name{
+            margin: 5px 0 12px;
+            font-size: 14px;
+            .t_l_goBack{
+                margin-right: 5px;
+            }
+        }
+        .ant-select-selection{
+            @include borderRadius(3px);
         }
         .ant-pagination-options-size-changer{
             margin-right: 0;
         }
+        .dividend_table{
+            /*分红footer*/
+            .dividend_footer{
+                line-height: 28px;
+                li{
+                    float: left;
+                    text-align: right;
+                }
+                li:first-child{
+                    width: 189px;
+                    text-align: center;
+                }
+                li:nth-child(2){
+                    width: 109px;
+                }
+                li:nth-child(3),li:nth-child(4),li:nth-child(5){
+                    width: 116px;
+                }
+                li:nth-child(6),li:nth-child(7){
+                    width: 105px;
+                }
+                li:nth-child(8){
+                    text-align: center;
+                    width: 252px;
+                    padding-left: 9px;
+                }
+            }
+            .ant-table-footer{
+                padding: 6px 0 !important;
+            }
+        }
     }
-}
-.pt_record{
-    .ant-radio-wrapper{
-        width: 180px !important;
+    .t_l_active{
+        box-sizing: border-box;
+        height: 28px;
+        border:1px solid #CB1313 !important;
+        color:#CB1313;
+        background: #FFF5F5 url('./Img/time_active.png') no-repeat right bottom;
     }
-}
+    .st_footer{
+        li{
+            float: left;
+            width: 85px;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 120px;
+            text-align: center;
+        }
+        li:nth-child(2),li:nth-child(3), li:nth-child(4), li:nth-child(6), li:nth-child(10){
+            width: 96px;
+        }
+        li:nth-child(8), li:nth-child(9){
+            width: 72px;
+        }
+        li:nth-child(12){
+            width: 92px;
+        }
+    }
+    .o_g_footer{
+        li{
+            float: left;
+            width: 185px;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 352px;
+            text-align: center;
+        }
+    }
+    .o_g_tl_footer{
+        li{
+            float: left;
+            width: 222px;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 425px;
+            text-align: center;
+        }
+    }
+    .o_g_bobing_footer{
+        li{
+            float: left;
+            width: 185px;
+            text-align: right;
+        }
+        li:nth-child(1){
+            text-align: center;
+            width: 167px;
+        }
+    }
 
-.t_l_prompt{
-    background-color: #bbb;
-    padding: 5px;
-    @include borderRadius(2px);
+    .ant-checkbox-group{
+        display: inline;
+    }
+    .ant-checkbox-wrapper{
+        width: 125px;
+        margin: 7px 8px 0 0;
+    }
+    /*日工资footer*/
+    .tfoot_list{
+        li{
+            float: left;
+            width: 130px;
+            text-align: right;
+            &:first-child{
+                width: 242px;
+                text-align: center;
+            }
+        }
+    }
+    /*日亏损佣金footer*/
+    .losesaLary_footer{
+        line-height: 28px;
+        li{
+            float: left;
+            width: 256px;
+            text-align: right;
+        }
+        li:first-child{
+            width: 282px;
+            text-align: center;
+        }
+    }
+    /*彩票报表footer*/
+    .lotteryReport_footer{
+        li{
+            float: left;
+            text-align: right;
+            width: 158px;
+            &:first-child{
+                width: 300px;
+                text-align: center;
+            }
+        }
+    }
+}
+.status_hide{
+    display: none;
+}
+/*模态框*/
+.table_modal{
+    .modal_username{
+        @include lh(40px);
+        font-size: 14px;
+    }
+    .ant-modal-body{
+        padding: 0 16px 16px;
+    }
+    .ant-modal-title{
+        text-align: center;
+    }
+    .modal_table{
+        position: relative;
+        border: 1px solid #ccc;
+        height: 345px;
+        padding: 8px 5px;
+    }
+    .historyTfoot_list{
+        position: absolute;
+        bottom: 0;
+        background-color: #f7f7f7;
+        color: $color_363636;
+        li{
+            float: left;
+            @include lh(45px);
+            width: 378px;
+            text-align: center;
+        }
+    }
+    /*日亏损佣金-查看详情footer*/
+    .modalFooter{
+        position: absolute;
+        bottom: 0;
+        background-color: #f7f7f7;
+        li{
+            float: left;
+            text-align: right;
+            width: 107px;
+            padding: 0 8px;
+            @include lh(45px);
+        }
+        li:first-child{
+            width: 220px;
+            text-align: center;
+        }
+    }
+    /*分红-历史分红footer*/
+    .dividend_modal_Footer{
+        position: absolute;
+        bottom: 0;
+        background-color: #f7f7f7;
+        li{
+            float: left;
+            @include lh(45px);
+            text-align: center;
+            width: 378px;
+        }
+    }
 }
 
 .g_r_main{
@@ -167,3 +343,5 @@ $border-color: #B2B2B2;
         line-height: 28px;
     }
 }
+
+

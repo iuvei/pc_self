@@ -6,11 +6,9 @@ import { DatePicker, Table, Pagination, Input, Button, Icon, Modal, InputNumber,
 import moment from 'moment';
 const ButtonGroup = Button.Group;
 import { stateVar } from '../../../State';
-import common from '../../../CommonJs/common';
+import { setDateTime, disabledDate } from '../../../CommonJs/common';
 import Crumbs from '../../Common/Crumbs/Crumbs';
 import Contract from '../../Common/Contract/Contract';
-
-import './DayRate.scss';
 
 @observer
 export default class DayRate extends Component {
@@ -23,7 +21,7 @@ export default class DayRate extends Component {
             postData: {
                 // username: stateVar.userInfo.userName,// 查询用户名
                 username: '',// 查询用户名
-                starttime: common.setDateTime(0),// 查询日期
+                starttime: setDateTime(0),// 查询日期
                 p: 1,
                 pn: 10,
             },
@@ -37,7 +35,7 @@ export default class DayRate extends Component {
                 history: [
                     {
                         name: stateVar.userInfo.userName,
-                        date: common.setDateTime(0),
+                        date: setDateTime(0),
                     }
                 ],
             },
@@ -173,6 +171,9 @@ export default class DayRate extends Component {
             }).then((res)=>{
                 if(this._ismount){
                     this.setState({loadingModal: false});
+                    let abg = {
+                        results: []
+                    };
                     if(res.status == 200){
                         this.setState({historyData: res.repsoneContent.list});
                     }
@@ -198,15 +199,13 @@ export default class DayRate extends Component {
                     this.setState({pros: res.repsoneContent.pros[0], salary_ratio: res.repsoneContent.pros[0]})
                 }
             })
-        }else{
-            console.log(type)
-        }
+        }else{}
     };
     /*修改值*/
     onChangeAlterContract(val, item){
         item.salary_ratio = val;
         let salary_ratioFlag = this.state.pros;
-        salary_ratioFlag.forEach((data, i)=>{
+        salary_ratioFlag.forEach((data)=>{
             if(data.sale == item.sale){
                 data.salary_ratio = val
             }
@@ -327,7 +326,7 @@ export default class DayRate extends Component {
         ];
 
         return (
-            <div className="dayRate_main">
+            <div className="report">
                 <div className="team_list_top">
                     <div className="t_l_time">
                         <ul className="t_l_time_row">
@@ -339,10 +338,10 @@ export default class DayRate extends Component {
                                 <span className="t_m_date_classify">查询日期：</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
-                                    defaultValue={moment(common.setDateTime(0))}
+                                    defaultValue={moment(setDateTime(0))}
                                     placeholder="请选择日期"
                                     onChange={(date, dateString)=>{this.onChangeDate(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -35, 0)}
+                                    disabledDate={(current)=>disabledDate(current, -35, 0)}
                                 />
                             </li>
                             <li>

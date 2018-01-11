@@ -6,7 +6,7 @@ import { DatePicker, Radio, Table, Select, Pagination, Button, Icon, Popover, Mo
 import { stateVar } from '../../../State';
 import moment from 'moment';
 import Fetch from '../../../Utils';
-import common from '../../../CommonJs/common';
+import { setDateTime, disabledDate } from '../../../CommonJs/common';
 
 import './AfterRecord.scss';
 
@@ -27,8 +27,8 @@ export default class AfterRecord extends Component {
                 lotteryid: null, //彩种id，0为全部
                 methodid: '-1', //玩法id 0为全部
                 threeSeven:0, //3 近三天  7 近七天
-                starttime: common.setDateTime(0) + ' 02:00:00',
-                endtime: common.setDateTime(1) + ' 02:00:00',
+                starttime: setDateTime(0) + ' 02:00:00',
+                endtime: setDateTime(1) + ' 02:00:00',
                 zhstatus: '-1', //0:进行中;1:已取消;2:已完成;-1:所有
                 pn: 10, // 每页显示条数
                 p:1, //页码
@@ -303,18 +303,18 @@ export default class AfterRecord extends Component {
                                     showTime
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择开始时间"
-                                    defaultValue={moment(common.setDateTime(0) + ' 02:00:00')}
+                                    defaultValue={moment(setDateTime(0) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -16, 0)}
+                                    disabledDate={(current)=>disabledDate(current, -16, 0)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     showTime
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择结束时间"
-                                    defaultValue={moment(common.setDateTime(1) + ' 02:00:00')}
+                                    defaultValue={moment(setDateTime(1) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -16, 0)}
+                                    disabledDate={(current)=>disabledDate(current, -16, 0)}
                                 />
                             </li>
                             <li className="t_m_line"></li>

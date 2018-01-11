@@ -6,10 +6,8 @@ import { DatePicker, Table, Pagination, Input, Button, Icon, Checkbox } from 'an
 
 import moment from 'moment';
 import { stateVar } from '../../../State';
-import common from '../../../CommonJs/common';
+import { setDateTime, disabledDate } from '../../../CommonJs/common';
 import Crumbs from '../../Common/Crumbs/Crumbs';
-
-import './LotteryReport.scss';
 
 @observer
 export default class LotteryReport extends Component {
@@ -22,8 +20,8 @@ export default class LotteryReport extends Component {
                 username: '',
                 userid: null, //如果有这个参数就是拆开记录变多条
                 lotteryid: null,
-                starttime: common.setDateTime(0),// 查询日期
-                endtime: common.setDateTime(1),// 查询日期
+                starttime: setDateTime(0),// 查询日期
+                endtime: setDateTime(1),// 查询日期
                 p: 1,
                 pn: 10,
             },
@@ -41,7 +39,7 @@ export default class LotteryReport extends Component {
                 history: [
                     {
                         name: stateVar.userInfo.userName,
-                        date: common.setDateTime(-1),
+                        date: setDateTime(-1),
                     }
                 ],
             },
@@ -276,7 +274,7 @@ export default class LotteryReport extends Component {
         let footer;
         if(table.sum != undefined) {
             const sumAccout = (parseFloat(table.sum.sum_bonus) + parseFloat(table.sum.sum_diffmoney) - table.sum.sum_totalprice).toFixed(4);
-            footer = <ul className="tfoot_list clear">
+            footer = <ul className="lotteryReport_footer clear">
                 <li>合计</li>
                 <li>{table.sum.sum_totalprice}</li>
                 <li>{table.sum.sum_effective_price}</li>
@@ -287,7 +285,7 @@ export default class LotteryReport extends Component {
         };
 
         return (
-            <div className="lottery_report">
+            <div className="report">
                 <div className="team_list_top">
                     <div className="t_l_time">
                         <ul className="t_l_time_row">
@@ -296,17 +294,17 @@ export default class LotteryReport extends Component {
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     placeholder="请选择开始查询日期"
-                                    defaultValue={moment(common.setDateTime(0))}
+                                    defaultValue={moment(setDateTime(0))}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -35, 1)}
+                                    disabledDate={(current)=>disabledDate(current, -35, 1)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     placeholder="请选择结束查询日期"
-                                    defaultValue={moment(common.setDateTime(1))}
+                                    defaultValue={moment(setDateTime(1))}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -35, 1)}
+                                    disabledDate={(current)=>disabledDate(current, -35, 1)}
                                 />
                             </li>
                         </ul>

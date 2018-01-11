@@ -42,7 +42,6 @@ export default class Notice extends Component {
     };
     render() {
         const noticeDetails = this.props.noticeDetails;
-        console.log(noticeDetails)
         return (
             <Modal
                 width="918px"

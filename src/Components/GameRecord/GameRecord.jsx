@@ -9,6 +9,27 @@ import QueueAnim from 'rc-queue-anim';
 
 import './GameRecord.scss'
 
+const navList = [
+    {
+        link: '/gameRecord/lotteryBet',
+        text: '彩票投注'
+    },{
+        link: '/gameRecord/afterRecord',
+        text: '追号记录'
+    },{
+        link: '/gameRecord/person',
+        text: '真人投注'
+    },{
+        link: '/gameRecord/sports',
+        text: '体育投注'
+    },{
+        link: '/gameRecord/ptRecord',
+        text: 'PT投注'
+    },{
+        link: '/gameRecord/bobingRecord',
+        text: '博饼投注'
+    }
+];
 @observer
 export default class GameRecord extends Component {
     constructor(props){
@@ -22,27 +43,6 @@ export default class GameRecord extends Component {
     };
 
     render() {
-        const navList = [
-            {
-                link: '/gameRecord/lotteryBet',
-                text: '彩票投注'
-            },{
-                link: '/gameRecord/afterRecord',
-                text: '追号记录'
-            },{
-                link: '/gameRecord/person',
-                text: '真人投注'
-            },{
-                link: '/gameRecord/sports',
-                text: '体育投注'
-            },{
-                link: '/gameRecord/ptRecord',
-                text: 'PT投注'
-            },{
-                link: '/gameRecord/bobingRecord',
-                text: '博饼投注'
-            }
-        ];
         return (
             <div className="s_m_main">
                 <QueueAnim duration={2000}

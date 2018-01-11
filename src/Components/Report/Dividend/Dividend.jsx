@@ -10,8 +10,6 @@ import { stateVar } from '../../../State';
 
 import Contract from '../../Common/Contract/Contract';
 
-import './Dividend.scss'
-
 @observer
 export default class Dividend extends Component {
     constructor(props){
@@ -131,7 +129,6 @@ export default class Dividend extends Component {
     };
     /*操作按钮*/
     onClickButton(val, username, record) {
-        console.log(val)
         if(val == '历史分红'){
             this.setState({
                 historyVisible: true,
@@ -216,9 +213,7 @@ export default class Dividend extends Component {
                     })
                 },
             });
-        }else{
-            console.log(val)
-        }
+        }else{}
 
     };
     /*修改分红比例*/
@@ -360,7 +355,7 @@ export default class Dividend extends Component {
                 }
             ];
         const { postData, sum, divIdEndTotals, total, oneKeyDividend, data, disabled } = this.state;
-        const footer = <ul className="footer clear">
+        const footer = <ul className="dividend_footer clear">
                             <li>总计</li>
                             <li>{sum.sale}</li>
                             <li>{sum.self_gross_income}</li>
@@ -381,7 +376,7 @@ export default class Dividend extends Component {
                         </ul>;
 
         return (
-            <div className="dividend_main">
+            <div className="report">
                 <div className="team_list_top">
                     <div className="t_l_time">
                         <ul className="t_l_time_row">
@@ -414,7 +409,7 @@ export default class Dividend extends Component {
                 <div className="t_l_table">
                     <div className="t_l_location_name">
                     </div>
-                    <div className="t_l_table_list">
+                    <div className="t_l_table_list dividend_table">
                         <Table columns={columns}
                                rowKey={record => record.id}
                                dataSource={data}
@@ -432,7 +427,7 @@ export default class Dividend extends Component {
                         footer={null}
                         maskClosable={false}
                         onCancel={()=>this.setState({historyVisible: false})}
-                        className="history_dividend_modal"
+                        className="table_modal"
                     >
                         <p className="modal_username">查询用户名：{this.state.historyDividendUName}</p>
                         <div className="modal_table">
@@ -443,7 +438,7 @@ export default class Dividend extends Component {
                                    loading={this.state.loadingModal}
                                    scroll={{y: 220}}
                             />
-                            <ul className="dividendFooter clear" style={{display: this.state.history.affects <= 0 ? 'none' : ''}}>
+                            <ul className="dividend_modal_Footer clear" style={{display: this.state.history.affects <= 0 ? 'none' : ''}}>
                                 <li>总计</li>
                                 <li>{this.state.history.historyAllsalary}</li>
                             </ul>

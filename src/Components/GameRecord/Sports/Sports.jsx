@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import { DatePicker, Radio, Table, Select, Pagination, Button, Icon, Modal, Input, Checkbox} from 'antd';
 import moment from 'moment';
 import Fetch from '../../../Utils';
-import common from '../../../CommonJs/common';
+import { setDateTime } from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
 
 import './Sports.scss';
@@ -23,8 +23,8 @@ export default class Sports extends Component {
             total: 0,//总条数
 
             postData: {
-                starttime: common.setDateTime(0) + ' 02:00:00',
-                endtime: common.setDateTime(1) + ' 02:00:00',
+                starttime: setDateTime(0) + ' 02:00:00',
+                endtime: setDateTime(1) + ' 02:00:00',
                 p:1, //页码
                 pn: 10,
                 status: '0', //WON  LOSE  running  Reject Refund  DRAW  Void  waiting
@@ -238,18 +238,16 @@ export default class Sports extends Component {
                                     showTime
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择开始时间"
-                                    defaultValue={moment(common.setDateTime(0) + ' 02:00:00')}
+                                    defaultValue={moment(setDateTime(0) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    // disabledDate={(current)=>common.disabledDate(current, 'lt',-16)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     showTime
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择结束时间"
-                                    defaultValue={moment(common.setDateTime(1) + ' 02:00:00')}
+                                    defaultValue={moment(setDateTime(1) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    // disabledDate={(current)=>common.disabledDate(current, 'gt', 0)}
                                 />
                             </li>
                         </ul>

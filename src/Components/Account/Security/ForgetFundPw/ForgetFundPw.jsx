@@ -127,7 +127,6 @@ export default class ForgetFundPw extends Component {
             modalValidate = this.state.modalValidate,
             resetPostData = this.state.resetPostData;
         resetPostData.ans = value;
-        console.log(value)
         if(value == ''){
             modalValidate.ans = 1
         }else{
