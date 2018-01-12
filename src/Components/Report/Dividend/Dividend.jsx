@@ -10,6 +10,7 @@ import { stateVar } from '../../../State';
 
 import Contract from '../../Common/Contract/Contract';
 
+let key = 1;
 @observer
 export default class Dividend extends Component {
     constructor(props){
@@ -432,7 +433,7 @@ export default class Dividend extends Component {
                         <p className="modal_username">查询用户名：{this.state.historyDividendUName}</p>
                         <div className="modal_table">
                             <Table columns={columnsModal}
-                                   rowKey={record => record.id != undefined ? record.id : ''}
+                                   rowKey={record => record.id != undefined ? record.id : key++ }
                                    dataSource={this.state.historyData}
                                    pagination={false}
                                    loading={this.state.loadingModal}

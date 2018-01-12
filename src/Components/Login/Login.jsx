@@ -124,6 +124,7 @@ export default class Login extends Component {
                     userType: result.usertype,
                     accGroup: result.accGroup,
                     lastIp: result.lastip,
+                    sType: result.sType,
                     lastTime: result.lasttime,
                     issetbank: result.issetbank,
                     setquestion: result.setquestion,

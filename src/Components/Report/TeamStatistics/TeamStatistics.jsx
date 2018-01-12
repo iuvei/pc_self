@@ -137,7 +137,6 @@ export default class TeamStatistics extends Component {
                     statistics.registerData = registerDataArr;
                     statistics.addMoneyData = addMoneyDataArr;
                     statistics.voteData = voteDataArr;
-                    console.log(statistics)
                     this.setState({statistics: statistics}, ()=>this.brokenLine());
                 }else{}
             }

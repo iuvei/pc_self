@@ -102,7 +102,6 @@ export default class Bobing extends Component {
                              onTransfer={this.onTransfer}
                 />
                 <Modal visible={this.state.modalVisible}
-                        // maskClosable={false}
                         closable={false}
                         footer={null}
                         width={807}
@@ -112,7 +111,7 @@ export default class Bobing extends Component {
                     <iframe scrolling="no"
                             id="main" name="main"
                             // allowtransparency={true}
-                            src={stateVar.httpUrl + '?controller=bobing&action=play&' + getStore('session')}
+                            src={stateVar.httpUrl + '?controller=bobing&action=play&sess=' + getStore('session')}
                             className="bobing_iframe"
                     >
 

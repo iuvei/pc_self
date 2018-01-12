@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { stateVar } from '../../../State';
 import Fetch from '../../../Utils';
-import { Button, Input, Modal, Pagination, message } from 'antd';
+import { Button, Input, Modal, Pagination, message, Spin } from 'antd';
 const Search = Input.Search;
 import ChildNav from '../../Common/ChildNav/ChildNav';
 import CM_transfer from '../CM_transfer/CM_transfer';
@@ -40,6 +40,9 @@ export default class PT extends Component {
             resetPw: '',
 
             noticePosition: 0,
+            startVisible: false,
+            ptUrl: '',
+            ptLoading: false,
         };
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
@@ -144,10 +147,18 @@ export default class PT extends Component {
     /*开始游戏或免费试玩*/
     onStartGame(id, isdemo, type) {
         if(type == 'start'){
-            this.setState({startLoading: true})
+            this.setState({
+                startVisible: true,
+                startLoading: true,
+                // ptLoading: true,
+            })
         }
         if(type == 'demo'){
-            this.setState({demoLoading: true})
+            this.setState({
+                startVisible: true,
+                demoLoading: true,
+                // ptLoading: true,
+            })
         }
         Fetch.ptplay({
             method: 'POST',
@@ -167,19 +178,11 @@ export default class PT extends Component {
                         this.setState({
                             demoLoading: false,
                             startLoading: false,
+                            ptLoading: false,
+                            ptUrl: ress.repsoneContent.aUserinfo.returnurl,
                         });
-                        let datas = ress.repsoneContent;
-                        window.open (datas.aUserinfo.returnurl);
-                        //
-                        // var a = document.createElement('a');
-                        // a.setAttribute('href', datas.aUserinfo.returnurl);
-                        // a.setAttribute('target', '_blank');
-                        // a.setAttribute('id', id);
-                        // // 防止反复添加
-                        // if(!document.getElementById(id)) {
-                        //     document.body.appendChild(a);
-                        // }
-                        // a.click();
+                        // let datas = ress.repsoneContent;
+                        // window.open (datas.aUserinfo.returnurl);
                     }
                 })
             }
@@ -381,6 +384,33 @@ export default class PT extends Component {
                     <p className="resetPw_btn">
                         <img src={resetPw_btn} onClick={()=>this.onAffirmReset()} alt=""/>
                     </p>
+                </Modal>
+                <Modal visible={this.state.startVisible}
+                       closable={false}
+                       mask={false}
+                       style={{ top: 120 }}
+                       footer={null}
+                       width='100%'
+                       loading={this.state.ptLoading}
+                       className="pt_modal"
+                >
+                    {/*<Spin spinning={this.state.ptLoading}>*/}
+                        <div className="pt_m_content">
+                            <Button className="modal_close" onClick={()=>this.setState({startVisible: false})} type="primary" icon="close"></Button>
+                            <iframe scrolling="no"
+                                    id="main" name="main"
+                                    src={this.state.ptUrl}
+                                    className="pt_iframe"
+                            >
+
+                            </iframe>
+                            <div className="pt_m_gameList">
+                                <ul>
+                                    <li></li>
+                                </ul>
+                            </div>
+                        </div>
+                    {/*</Spin>*/}
                 </Modal>
                 <CM_transfer title="PT"
                              visible={this.state.visible}

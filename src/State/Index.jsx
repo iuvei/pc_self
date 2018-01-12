@@ -10,6 +10,7 @@ class State {
         userType: '', //用户类型0：会员，1：代理
         accGroup: '', //奖金组
         lastIp: '', //上次登录地点ip
+        sType: '', //正式或者试玩
         address: '', // 上次登录地点
         lastTime: '', //上次登录时间
         issetbank: '', //是否绑定过银行卡 0：已绑定

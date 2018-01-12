@@ -142,7 +142,10 @@ export default class HeaderTop extends Component {
         confirm({
             title: '确定要退出吗?',
             onOk() {
-                Fetch.logout({method: 'POST'}).then((res)=>{
+                Fetch.logout({
+                    method: 'POST',
+                    body: JSON.stringify({sType: stateVar.userInfo.sType})
+                }).then((res)=>{
                     if(_this._ismount){
                         if(res.status == 200){
                             removeStore('userName');
@@ -246,7 +249,7 @@ export default class HeaderTop extends Component {
                     <ul className="n_t_list right">
                         <li className="n_t_cursor n_t_position">
                             <img src={name_icon} style={{verticalAlign: 'middle',marginRight: 5}}/>
-                            {userInfo.userName}
+                            { userInfo.sType == 'demo' ? '试玩用户' : userInfo.userName }
                             <Icon type="caret-down" style={{marginLeft: '5px'}}/>
                             <div className="n_t_controler">
                                 <div className="n_t_drop_down">

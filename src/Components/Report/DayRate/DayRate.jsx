@@ -250,6 +250,12 @@ export default class DayRate extends Component {
     onCancel(){
         this.setState({alterVisible: false});
     };
+    /*某页*/
+    onChangePage(page){
+        let postData = this.state.postData;
+        postData.p = page;
+        this.setState({postData: postData},()=>this.getData())
+    };
     render() {
         const { postData, table, historyData, disabled, pros } = this.state;
         const columns = [
@@ -371,10 +377,11 @@ export default class DayRate extends Component {
                                footer={table.total <= 0 ? null : ()=>footer}
                         />
                     </div>
-                    <div className="t_l_page right">
+                    <div className="t_l_page">
                         <Pagination  style={{display: table.total < 1 ? 'none' : ''}}
                                     showSizeChanger
                                     onShowSizeChange={(current, pageSize)=>this.onShowSizeChange(current, pageSize)}
+                                    onChange={(pageNumber)=>this.onChangePage(pageNumber)}
                                     defaultCurrent={1}
                                     total={table.total}
                                     pageSizeOptions={stateVar.pageSizeOptions.slice()}

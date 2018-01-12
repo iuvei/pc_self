@@ -145,6 +145,8 @@ const ptdaily= (body) =>  request(http.interFace('PTDAILY'),body);
 const historysports= (body) =>  request(http.interFace('HISTORYSPORTS'),body);
 /*个人总表-体育*/
 const bbdailybyself= (body) =>  request(http.interFace('BBDAIYSELF'),body);
+/*团队总表*/
+const teammain= (body) =>  request(http.interFace('TEAMMAIN'),body);
 /*GT娱乐-登录*/
 const gtLogin= (body) =>  request(http.interFace('GTLOGIN'),body);
 /*GT娱乐-转账*/
@@ -220,6 +222,7 @@ export default {
     ptdaily,
     historysports,
     bbdailybyself,
+    teammain,
     gtLogin,
     gtTransfer,
     dailysalaryupdate,

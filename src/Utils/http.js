@@ -149,6 +149,8 @@ const interFace = (key) => {
     INTERFACE['HISTORYSPORTS'] = 'controller=report&action=historysports';
     // 个人总表-博饼
     INTERFACE['BBDAIYSELF'] = 'controller=report&action=bbdailybyself';
+    // 团队总表
+    INTERFACE['TEAMMAIN'] = 'controller=gameinfo&action=Main';
     //GT娱乐-登录
     INTERFACE['GTLOGIN'] = 'controller=kgame&action=login';
     //GT娱乐-转账

@@ -186,6 +186,27 @@ $border-color: #B2B2B2;
             width: 92px;
         }
     }
+    /*团队总表footer*/
+    .tt_footer{
+        li{
+            float: left;
+            width: 83px;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 167px;
+            text-align: center;
+        }
+        li:nth-child(2),li:nth-child(3), li:nth-child(4), li:nth-child(6), li:nth-child(10){
+            width: 91px;
+        }
+        li:nth-child(8), li:nth-child(9){
+            width: 67px;
+        }
+        li:nth-child(12){
+            width: 85px;
+        }
+    }
     .o_g_footer{
         li{
             float: left;
@@ -329,19 +350,19 @@ $border-color: #B2B2B2;
     }
 }
 
-.g_r_main{
-    .a_m_title, .team_list_top{
-        background-color: #fff;
-    }
-    .ant-input{
-        height: 30px;
-    }
-    .ant-select-selection--single{
-        height: 30px;
-    }
-    .ant-select-selection__rendered{
-        line-height: 28px;
-    }
-}
+//.g_r_main{
+//    .a_m_title, .team_list_top{
+//        background-color: #fff;
+//    }
+//    .ant-input{
+//        height: 30px;
+//    }
+//    .ant-select-selection--single{
+//        height: 30px;
+//    }
+//    .ant-select-selection__rendered{
+//        line-height: 28px;
+//    }
+//}
 
 

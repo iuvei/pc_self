@@ -59,8 +59,8 @@ export default class SelfTable extends Component {
                 starttime: common.setDateTime(-1),
                 endtime: common.setDateTime(0),
             },
-            startHMS: '02:00:00',
-            endHMS: '01:59:59'
+            startHMS: '02:00',
+            endHMS: '01:59'
         }
     };
     componentDidMount() {
@@ -206,8 +206,8 @@ export default class SelfTable extends Component {
         let yearMonth = common.setDateTime(0).slice(0, 8),
             startHMSFlag = '', endHMSFlag = '';
         if(classify == 0){//游戏分类为：彩票
-            startHMSFlag = '02:00:00';
-            endHMSFlag = '01:59:59';
+            startHMSFlag = '02:00';
+            endHMSFlag = '01:59';
             if(val == 3){ // 上周
                 postData.starttime = common.getTime(7);
                 postData.endtime = common.getTime(0);
@@ -222,8 +222,8 @@ export default class SelfTable extends Component {
                 postData.endtime = common.getNextMonth(yearMonth) + '-01';
             }else{}
         }else{//游戏分类为：其他
-            startHMSFlag = '00:00:00';
-            endHMSFlag = '23:59:59';
+            startHMSFlag = '00:00';
+            endHMSFlag = '23:59';
             if(val == 3){ // 上周
                 postData.starttime = common.getTime(7);
                 postData.endtime = common.getTime(1);

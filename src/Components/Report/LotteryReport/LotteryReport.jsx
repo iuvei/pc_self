@@ -43,10 +43,9 @@ export default class LotteryReport extends Component {
                     }
                 ],
             },
-            historyData: {},// 历史
-
             lotteryList: [], // 游戏种类
-        }
+        };
+        this.onChildState = this.onChildState.bind(this);
     };
     componentDidMount() {
         this._ismount = true;
@@ -165,7 +164,6 @@ export default class LotteryReport extends Component {
 
         this.setState({postData: postData, table: table}, ()=> {
             for(let i = 0; i < historyArr.length; i++) {
-            // && historyArr[i].date === history.date
                 if(historyArr[i].name === history.name) {
                     historyFlag = false;
                     break;
@@ -353,7 +351,7 @@ export default class LotteryReport extends Component {
                 <div className="t_l_table">
                     <div className="t_l_location_name">
                         <span className="left">当前位置：</span>
-                        <Crumbs table={table} onChildState={this.onChildState.bind(this)}/>
+                        <Crumbs table={table} onChildState={this.onChildState}/>
                         <a className="t_l_goBack right" href="javascript:void(0)" onClick={()=>this.onClickGoBac_1()}> &lt;&lt;返回上一层 </a>
                     </div>
                     <div className="t_l_table_list">
@@ -363,7 +361,6 @@ export default class LotteryReport extends Component {
                                pagination={false}
                                loading={this.state.loading}
                                footer={table.total <= 0 || isNaN(table.total) ? null : ()=>footer}
-                               // size="middle"
                         />
                     </div>
                     <div className="t_l_page right" style={{display: table.total <= 0 || isNaN(table.total) ? 'none' : ''}}>
