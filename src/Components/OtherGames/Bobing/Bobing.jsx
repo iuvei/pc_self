@@ -6,7 +6,6 @@ import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import { getStore } from "../../../CommonJs/common";
 import CM_transfer from '../CM_transfer/CM_transfer';
-import Iframe from 'react-iframe';
 
 import bobing_01 from './Img/bobing_01.png'
 import './Bobing.scss'

@@ -246,6 +246,27 @@ $color_FFDC52: #FFDC52;
             overflow: hidden;
             padding: 3px;
         }
+
+        .icon_p{
+            position: relative;
+            .anticon{
+                color: #fff;
+                font-size: 30px;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+            .ic_left-circle{
+                position: absolute;
+                top: 60px;
+                left: -35px;
+            }
+            .ic_right-circle{
+                position: absolute;
+                top: 60px;
+                right: -35px;
+            }
+        }
         .pt_iframe{
             height: 80%;
             width: 100%;

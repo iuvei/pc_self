@@ -71,15 +71,6 @@ $width_100: 100%;
                         cursor: pointer;
                     }
                 }
-                .n_t_exit{
-                    width: 100%;
-                    margin: 0 auto;
-                    padding-left: 20px;
-                    background: url(./Img/exit_icon.png) no-repeat center left;
-                    &:hover{
-                        color: #fff;
-                    }
-                }
                 .color_DFC674{
                     color: #DFC674;
                 }
@@ -121,21 +112,6 @@ $width_100: 100%;
                 &:before{
                     @include icon_arrows_bg(5px,100px,#FFDB70,10px,#1D1D26,-45deg);
                 }
-                .ant-btn, .ant-btn-primary{
-                    width: 100%;
-                    background-color: transparent;
-                    border-color: transparent;
-                    color: #D0D0D0;
-                }
-                .ant-btn:before{
-                    background: transparent;
-                }
-                .ant-btn-primary:hover,
-                .ant-btn-primary:focus {
-                    color: #fff;
-                    background-color: transparent;
-                    border-color: transparent;
-                }
             }
             .n_t_controler{
                 left: -6px;
@@ -176,5 +152,20 @@ $width_100: 100%;
     .anticon-caret-down{
         font-size: 12px;
         color: #610000;
+    }
+    .ant-btn, .ant-btn-primary{
+        width: 100%;
+        background-color: transparent;
+        border-color: transparent;
+        color: #D0D0D0;
+    }
+    .ant-btn:before{
+        background: transparent;
+    }
+    .ant-btn-primary:hover,
+    .ant-btn-primary:focus {
+        color: #fff;
+        background-color: transparent;
+        border-color: transparent;
     }
 }

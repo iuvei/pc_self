@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { stateVar } from '../../../State';
 import Fetch from '../../../Utils';
-import { Button, Input, Modal, Pagination, message, Spin, Carousel } from 'antd';
+import { Button, Input, Modal, Pagination, message, Spin, Carousel, Icon } from 'antd';
 const Search = Input.Search;
 import ChildNav from '../../Common/ChildNav/ChildNav';
 import CM_transfer from '../CM_transfer/CM_transfer';
@@ -409,7 +409,9 @@ export default class PT extends Component {
                             >
 
                             </iframe>
-                            <div className="pt_m_gameList">
+                            <div className="icon_p">
+                                <Icon type="left-circle" className="ic_left-circle"/>
+                                <div className="pt_m_gameList">
                                     <ul className="games_list clear">
                                         {
                                             gameList.map((item, i)=>{
@@ -422,7 +424,8 @@ export default class PT extends Component {
                                             })
                                         }
                                     </ul>
-
+                                </div>
+                                <Icon type="right-circle" className="ic_right-circle"/>
                             </div>
                         {/*</Spin>*/}
                     </div>

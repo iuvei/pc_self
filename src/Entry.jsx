@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, hashHistory,browserHistory } from 'react-router';
-import Perf from 'react-addons-perf';
-window.Perf = Perf; // 挂载到全局变量方便使用
+// import Perf from 'react-addons-perf';
+// window.Perf = Perf; // 挂载到全局变量方便使用
 
 import Routes from './Router/Index';
 

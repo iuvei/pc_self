@@ -294,8 +294,10 @@ export default class HeaderTop extends Component {
                                             <span className="left">上次登录时间</span>
                                             <span className="right">{userInfo.lastTime}</span>
                                         </li>
-                                        <li>
-                                            <p className="n_t_exit" onClick={()=>this.onLogout()}>退出登录</p>
+                                        <li style={{textAlign: 'center'}}>
+                                            <Button type="primary" icon="logout" onClick={()=>this.onLogout()}>
+                                                退出登录
+                                            </Button>
                                         </li>
                                     </ul>
                                 </div>
