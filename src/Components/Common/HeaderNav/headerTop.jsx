@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import Fetch from '../../../Utils';
-import { Icon, Badge, Modal } from 'antd';
+import { Icon, Badge, Modal, Button } from 'antd';
 const confirm = Modal.confirm;
 import { stateVar } from '../../../State';
 import './headerTop.scss'
@@ -14,6 +14,7 @@ import email_icon from './Img/email_icon.png';
 import off_icon from './Img/off_icon.png';
 import on_icon from './Img/on_icon.png';
 
+const allBalance = {};
 @observer
 export default class HeaderTop extends Component {
     constructor(props) {
@@ -32,6 +33,7 @@ export default class HeaderTop extends Component {
             noticeList: [], // 公告列表
             noticeDetails: {}, // 点击查看公告
             noticePosition: 0, // 列表位置
+            updateMLoading: false, //刷新余额
         };
         this.onNoticeDetails = this.onNoticeDetails.bind(this);
         this.onNoticeList = this.onNoticeList.bind(this);
@@ -39,6 +41,7 @@ export default class HeaderTop extends Component {
     };
     componentDidMount(){
         this._ismount = true;
+        this.getMenu();
         this.getBalance();
         this.getNotice();
         this.onUnread();
@@ -112,22 +115,37 @@ export default class HeaderTop extends Component {
             }
         })
     };
+    /*获取本平台余额*/
+    getMenu() {
+        Fetch.menu({
+            method: 'POST',
+            body: JSON.stringify({"flag":"getmoney"})
+        }).then((res)=>{
+            if(this._ismount) {
+                if (res.status == 200) {
+                    allBalance.cpbalance = res.repsoneContent;
+                    stateVar.allBalance = allBalance;
+                    this.setState({allBalance: allBalance});
+                }
+            }
+        })
+    };
     /*获取各平台余额*/
     getBalance(){
         Fetch.balance({method: 'POST'}).then((res)=>{
             if(this._ismount){
                 if(res.status == 200) {
-                    let repsoneContent = res.repsoneContent,
-                        allBalance = {
-                            cpbalance: repsoneContent.cpbalance,
-                            eabalance: repsoneContent.eabalance,
-                            ptbalance: repsoneContent.ptbalance,
-                            kgbalance: repsoneContent.kgbalance,
-                            bobingBalance: repsoneContent.bobingBalance,
-                            sbbalance: repsoneContent.sbbalance,
-                        };
+                    let repsoneContent = res.repsoneContent;
+                        allBalance.eabalance = repsoneContent.eabalance;
+                        allBalance.ptbalance = repsoneContent.ptbalance;
+                        allBalance.kgbalance = repsoneContent.kgbalance;
+                        allBalance.bobingBalance = repsoneContent.bobingBalance;
+                        allBalance.sbbalance = repsoneContent.sbbalance;
                     stateVar.allBalance = allBalance;
-                    this.setState({allBalance: allBalance});
+                    this.setState({
+                        updateMLoading: false,
+                        allBalance: allBalance
+                    });
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -212,7 +230,13 @@ export default class HeaderTop extends Component {
             query: {navIndex: childNav}
         });
         stateVar.navIndex = nav;
-    }
+    };
+    /*刷新余额*/
+    onUpdateMondy(){
+        this.setState({updateMLoading: true});
+        this.getMenu();
+        this.getBalance();
+    };
     render() {
         const { allBalance } = this.state;
         const userInfo = stateVar.userInfo;
@@ -296,30 +320,56 @@ export default class HeaderTop extends Component {
                                     <ul className="n_t_down_list">
                                         <li>
                                             <span className="left">彩票余额：</span>
-                                            <span className="right color_DFC674">￥{allBalance.cpbalance<0 ? '0.00' : allBalance.cpbalance}</span>
+                                            <span className="right color_DFC674">￥
+                                                {
+                                                    allBalance.cpbalance == undefined || allBalance.cpbalance<0? '0.00' : allBalance.cpbalance
+                                                }
+                                            </span>
                                         </li>
                                         <li>
                                             <span className="left">EA余额：</span>
-                                            <span className="right color_DFC674">￥{allBalance.eabalance<0 ? '0.00' : allBalance.eabalance}</span>
+                                            <span className="right color_DFC674">
+                                                {
+                                                    allBalance.eabalance == undefined || allBalance.eabalance<0 ? <Icon type="loading"> 加载中...</Icon> : '￥' + allBalance.eabalance
+                                                }
+                                            </span>
                                         </li>
                                         <li>
                                             <span className="left">PT余额：</span>
-                                            <span className="right color_DFC674">￥{allBalance.ptbalance<0 ? '0.00' : allBalance.ptbalance}</span>
+                                            <span className="right color_DFC674">
+                                                {
+                                                    allBalance.ptbalance == undefined || allBalance.ptbalance<0 ? <Icon type="loading"> 加载中...</Icon> : '￥' + allBalance.ptbalance
+                                                }
+                                            </span>
                                         </li>
                                         <li>
                                             <span className="left">GT余额：</span>
-                                            <span className="right color_DFC674">￥{allBalance.kgbalance<0 ? '0.00' : allBalance.kgbalance}</span>
+                                            <span className="right color_DFC674">
+                                                {
+                                                    allBalance.kgbalance == undefined || allBalance.kgbalance<0 ? <Icon type="loading"> 加载中...</Icon> :  '￥' + allBalance.kgbalance
+                                                }
+                                            </span>
                                         </li>
                                         <li>
                                             <span className="left">博饼余额：</span>
-                                            <span className="right color_DFC674">￥{allBalance.bobingBalance<0 ? '0.00' : allBalance.bobingBalance}</span>
+                                            <span className="right color_DFC674">
+                                                {
+                                                    allBalance.bobingBalance == undefined || allBalance.bobingBalance<0 ? <Icon type="loading"> 加载中...</Icon> :  '￥' + allBalance.bobingBalance
+                                                }
+                                            </span>
                                         </li>
                                         <li>
                                             <span className="left">体育余额：</span>
-                                            <span className="right color_DFC674">￥{allBalance.sbbalance<0 ? '0.00' : allBalance.sbbalance}</span>
+                                            <span className="right color_DFC674">
+                                                {
+                                                    allBalance.sbbalance == undefined || allBalance.sbbalance<0 ? <Icon type="loading"> 加载中...</Icon> :  '￥' + allBalance.sbbalance
+                                                }
+                                            </span>
                                         </li>
-                                        <li>
-                                            <p className="n_t_exit" onClick={()=>this.getBalance()}>刷新余额</p>
+                                        <li style={{textAlign: 'center'}}>
+                                            <Button type="primary" icon="sync" loading={this.state.updateMLoading} onClick={()=>this.onUpdateMondy()}>
+                                                刷新余额
+                                            </Button>
                                         </li>
                                     </ul>
                                 </div>

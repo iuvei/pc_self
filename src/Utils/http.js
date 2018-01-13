@@ -31,6 +31,8 @@ const interFace = (key) => {
     INTERFACE['DAILYSALARYUPDATE'] = 'controller=salarymanage&action=UpdateProtocol';
     // 日工资自身协议
     INTERFACE['DAILYSALARYSELF'] = 'controller=salarymanage&action=seeProtocol';
+    // 本平台余额
+    INTERFACE['MENU'] = 'controller=default&action=menu';
     // 各平台余额
     INTERFACE['BALANCE'] = 'controller=wallet&action=Balance';
     // 平台公告

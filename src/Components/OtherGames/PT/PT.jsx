@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { stateVar } from '../../../State';
 import Fetch from '../../../Utils';
-import { Button, Input, Modal, Pagination, message, Spin } from 'antd';
+import { Button, Input, Modal, Pagination, message, Spin, Carousel } from 'antd';
 const Search = Input.Search;
 import ChildNav from '../../Common/ChildNav/ChildNav';
 import CM_transfer from '../CM_transfer/CM_transfer';
@@ -150,14 +150,14 @@ export default class PT extends Component {
             this.setState({
                 startVisible: true,
                 startLoading: true,
-                // ptLoading: true,
+                ptLoading: true,
             })
         }
         if(type == 'demo'){
             this.setState({
                 startVisible: true,
                 demoLoading: true,
-                // ptLoading: true,
+                ptLoading: true,
             })
         }
         Fetch.ptplay({
@@ -165,6 +165,11 @@ export default class PT extends Component {
             body: JSON.stringify({id: id, isclick: 1, isdemo: isdemo}),
         }).then((res)=>{
             if(this._ismount && res.status == 200) {
+                this.setState({
+                    demoLoading: false,
+                    startLoading: false,
+                    ptLoading: false,
+                });
                 let data = res.repsoneContent;
                 let formData = new FormData();
                 formData.append("userinfo",data.sUserinfostr);
@@ -176,9 +181,6 @@ export default class PT extends Component {
                     let ress = JSON.parse(res);
                     if(ress.status == 200) {
                         this.setState({
-                            demoLoading: false,
-                            startLoading: false,
-                            ptLoading: false,
                             ptUrl: ress.repsoneContent.aUserinfo.returnurl,
                         });
                         // let datas = ress.repsoneContent;
@@ -262,6 +264,9 @@ export default class PT extends Component {
     hideModal() {
         this.setState({visible: false})
     };
+    onAfterChange(a, b, c){
+        console.log(a, b, c);
+    }
 
     render() {
         const navList = this.state.navList;
@@ -282,7 +287,7 @@ export default class PT extends Component {
                                     gameList.map((item, i)=>{
                                         return (
                                             <li key={item.id}>
-                                                <img src={'http://10.63.15.242:81/pcservice/'+item.pic} width={'100%'} className="games_type" alt=""/>
+                                                <img src={stateVar.httpUrl + '/pcservice/' + item.pic} width={'100%'} className="games_type" alt=""/>
                                                 <p className="games_name">{item.cn_name}</p>
                                                 <div className="games_hover">
                                                     <Button type="primary" loading={this.state.startLoading} onClick={()=>this.onStartGame(item.id, item.isdemo, 'start')}>开始游戏</Button>
@@ -335,7 +340,7 @@ export default class PT extends Component {
                                             topRanking.map((item, i)=>{
                                                 return (
                                                     <li key={item.id}>
-                                                        <img src={'http://10.63.15.242:81/pcservice/'+item.pic} alt=""/>
+                                                        <img src={stateVar.httpUrl + '/pcservice/' + item.pic} alt=""/>
                                                         <div className="ranking_info">
                                                             <img src={ranking0} style={{display: i == 0 ? '' : 'none'}} alt=""/>
                                                             <img src={ranking1} style={{display: i == 1 ? '' : 'none'}} alt=""/>
@@ -394,8 +399,8 @@ export default class PT extends Component {
                        loading={this.state.ptLoading}
                        className="pt_modal"
                 >
-                    {/*<Spin spinning={this.state.ptLoading}>*/}
-                        <div className="pt_m_content">
+                    <div className="pt_m_content">
+                        {/*<Spin spinning={this.state.ptLoading} tip="加载中...">*/}
                             <Button className="modal_close" onClick={()=>this.setState({startVisible: false})} type="primary" icon="close"></Button>
                             <iframe scrolling="no"
                                     id="main" name="main"
@@ -405,12 +410,23 @@ export default class PT extends Component {
 
                             </iframe>
                             <div className="pt_m_gameList">
-                                <ul>
-                                    <li></li>
-                                </ul>
+                                    <ul className="games_list clear">
+                                        {
+                                            gameList.map((item, i)=>{
+                                                return (
+                                                    <li key={item.id}>
+                                                        <img src={stateVar.httpUrl + '/pcservice/' + item.pic} alt=""/>
+                                                        <p className="games_name">{item.cn_name}</p>
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                    </ul>
+
                             </div>
-                        </div>
-                    {/*</Spin>*/}
+                        {/*</Spin>*/}
+                    </div>
+
                 </Modal>
                 <CM_transfer title="PT"
                              visible={this.state.visible}

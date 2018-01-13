@@ -27,6 +27,8 @@ const salarypersonalsalary = (body) =>  request(http.interFace('SALARYPERSONAMSA
 const dailysalaryupdate = (body) =>  request(http.interFace('DAILYSALARYUPDATE'),body);
 /* 日工资自身协议*/
 const dailysalaryself = (body) =>  request(http.interFace('DAILYSALARYSELF'),body);
+/* 本平台余额*/
+const menu = (body) =>  request(http.interFace('MENU'),body);
 /* 各平台余额*/
 const balance = (body) =>  request(http.interFace('BALANCE'),body);
 /* 平台公告*/
@@ -163,6 +165,7 @@ export default {
     dailysalary,
     salarypersonalsalary,
     resetPwd,
+    menu,
     balance,
     noticeList,
     helpNotice,
@@ -197,7 +200,7 @@ export default {
     eagame,
     bobingtransfer,
     newGetprizepool,
-    bobinglogin,
+    // bobinglogin,
     cancelTaskAjax,
     userbankinfo,
     adduserbank,

@@ -178,13 +178,13 @@ export default class SelfTable extends Component {
     /*开始查询日期*/
     onChangeStartTime(date, dateString) {
         let postData = this.state.postData;
-        postData.starttime = dateString;
+        postData.starttime = dateString.slice(0, 10);
         this.setState({postData})
     };
     /*结束查询日期*/
     onChangeEndTime(date, dateString) {
         let postData = this.state.postData;
-        postData.endtime = dateString;
+        postData.endtime = dateString.slice(0, 10);
         this.setState({postData})
     };
     /*切换每页显示条数*/
@@ -254,14 +254,20 @@ export default class SelfTable extends Component {
     };
     /*游戏种类*/
     onVariety(id){
-        this.setState({otherGamesSum: {}, otherGamesData: [], variety: id});
+        this.setState({otherGamesSum: {}, otherGamesData: [], variety: id}, ()=>this.getData());
     };
     /*游戏分类*/
     onClassify(type){
         if(type === 0){
-            this.setState({classify: 0, variety: 0}, ()=>this.onShortcutTime(this.state.threeSeven, 'classify'));
+            this.setState({classify: 0, variety: 0}, ()=>{
+                this.onShortcutTime(this.state.threeSeven, 'classify');
+                this.getData();
+            });
         }else{
-            this.setState({classify: 1}, ()=>this.onShortcutTime(this.state.threeSeven, 'classify'))
+            this.setState({classify: 1}, ()=>{
+                this.onShortcutTime(this.state.threeSeven, 'classify');
+                this.getData();
+            })
         }
     };
     render() {

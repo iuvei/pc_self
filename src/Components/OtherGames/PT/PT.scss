@@ -242,13 +242,53 @@ $color_FFDC52: #FFDC52;
         padding-top: 10px;
         .pt_m_gameList{
             width: 100%;
-            height: 19%;
-            background: #FFF;
+            height: 156px;
+            overflow: hidden;
+            padding: 3px;
         }
         .pt_iframe{
             height: 80%;
             width: 100%;
             border: 0;
+        }
+        .games_list{
+            width: 2500px;
+            height: 150px;
+            li{
+                float: left;
+                @include wh(160px, 150px);
+                position: relative;
+                overflow: hidden;
+                margin-right: 10px;
+                background: #eee;
+                &:hover{
+                    cursor: pointer;
+                    box-shadow: 0 0 10px #A5A2A8;
+                }
+            }
+            .games_name{
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                background: rgba(0,0,0, .6);
+                @include wh(210px, 36px);
+                font-size: 14px;
+                line-height: 36px;
+                color:#fff;
+                padding-left: 15px;
+            }
+
+        }
+        .ant-spin-nested-loading, .ant-spin-container{
+            height: 100%;
+        }
+        .ant-carousel .slick-slide {
+            text-align: center;
+            height: 150px;
+
+            line-height: 150px;
+            background: #364d79;
+            overflow: hidden;
         }
     }
     .ant-modal-body{
@@ -256,13 +296,13 @@ $color_FFDC52: #FFDC52;
         height: 100%;
     }
     .ant-modal-content{
-        background: rgb(255,255,255);
+        background: rgba(255,255,255, 0);
         height: 100%;
     }
     .modal_close{
         position: absolute;
         right: -38px;
-        top: 10px;
+        top: 0;
     }
     .ant-btn{
         padding: 2px 8px;

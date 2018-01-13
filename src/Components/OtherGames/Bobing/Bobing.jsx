@@ -111,7 +111,7 @@ export default class Bobing extends Component {
                     <iframe scrolling="no"
                             id="main" name="main"
                             // allowtransparency={true}
-                            src={stateVar.httpUrl + '?controller=bobing&action=play&sess=' + getStore('session')}
+                            src={stateVar.httpUrl + '?controller=bobing&action=play&absecs=True&sess=' + getStore('session')}
                             className="bobing_iframe"
                     >
 

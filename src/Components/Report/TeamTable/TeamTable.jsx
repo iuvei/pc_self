@@ -52,10 +52,8 @@ export default class TeamTable extends Component {
             searchLoading: false,
             classify: 0, // 游戏分类
             variety: 0, // 游戏种类
-            otherGamesData: [],
-            otherGamesSum: {},
             postData: {
-                sdatetime: setDateTime(-30),
+                sdatetime: setDateTime(-1),
                 edatetime: setDateTime(0),
                 fType: 'getTeamLotteryReport', // getTeamLotteryReport获取团队彩票总表; getTeamThirdReport 获取团队第三方总表
                 username: null,
@@ -153,14 +151,14 @@ export default class TeamTable extends Component {
     /*开始查询日期*/
     onChangeStartTime(date, dateString) {
         let postData = this.state.postData;
-        postData.sdatetime = dateString;
-        this.setState({postData})
+        postData.sdatetime = dateString.slice(0, 10);
+        this.setState({postData});
     };
     /*结束查询日期*/
     onChangeEndTime(date, dateString) {
         let postData = this.state.postData;
-        postData.edatetime = dateString;
-        this.setState({postData})
+        postData.edatetime = dateString.slice(0, 10);
+        this.setState({postData});
     };
     /*切换每页显示条数*/
     onShowSizeChange (current, pageSize) {
@@ -229,21 +227,28 @@ export default class TeamTable extends Component {
     };
     /*游戏种类*/
     onVariety(id){
-        this.setState({otherGamesSum: {}, otherGamesData: [], variety: id});
+        this.setState({variety: id}, ()=>this.getData());
     };
     /*游戏分类*/
     onClassify(type){
-        if(type === 0){
-            this.setState({classify: 0, variety: 0}, ()=>this.onShortcutTime(this.state.threeSeven, 'classify'));
-        }else{
-            this.setState({classify: 1}, ()=>this.onShortcutTime(this.state.threeSeven, 'classify'))
+        if(type === 0){ //彩票
+            this.setState({classify: 0, variety: 0}, ()=>{
+                this.onShortcutTime(this.state.threeSeven, 'classify');
+                this.getData();
+            });
+        }else{ //其他
+            this.setState({classify: 1}, ()=>{
+                this.onShortcutTime(this.state.threeSeven, 'classify');
+                this.getData();
+            });
         }
+
     };
     /*获取查询用户名*/
     onUserName(e) {
         let postData = this.state.postData;
         postData.username = e.target.value;
-        this.setState({postData: postData})
+        this.setState({postData: postData});
     };
 
     /*面包屑组件调用*/
@@ -310,8 +315,8 @@ export default class TeamTable extends Component {
         }, ()=>this.getData())
     };
     render() {
-        const { dailysalaryStatus, userInfo } = stateVar;
-        const { table, classify, variety, otherGamesData, otherGamesSum, postData, selfDate } = this.state;
+        const { dailysalaryStatus } = stateVar;
+        const { table, classify, variety, postData, selfDate } = this.state;
         const columns = [
             {
                 title: '日期',
@@ -410,35 +415,38 @@ export default class TeamTable extends Component {
             <li>{sum.total_dividents}</li>
             <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
         </ul>;
-        if(variety == 0){
+        if(variety == 0 || variety == 1){
             columnsRests = [
                 {
                     title: '日期',
-                    dataIndex: 'date',
-                    width: 180,
+                    dataIndex: 'rdate',
+                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    width: 110,
                 }, {
                     title: '用户名',
-                    dataIndex: 'userName',
-                    render: text => userInfo.userName,
-                    width: 180,
+                    dataIndex: 'username',
+                    render: (text, record, index) => index == 0 || postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                           style={{color: '#0088DE'}}>{text}</a>,
+                    width: 200,
                 }, {
                     title: '投注',
-                    dataIndex: 'stake_amount',
+                    dataIndex: 'sum_price',
                     className: 'column-right',
                     width: 180,
                 }, {
                     title: '有效投注',
-                    dataIndex: 'valid_amount',
+                    dataIndex: 'sum_effective_price',
                     className: 'column-right',
                     width: 180,
                 }, {
                     title: '中奖金额',
-                    dataIndex: 'back_amount',
+                    dataIndex: 'sum_bonus',
                     className: 'column-right',
                     width: 180,
                 }, {
                     title: '累计盈利',
-                    dataIndex: 'win_lose',
+                    dataIndex: 'sum_total',
                     className: 'column-right',
                     render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
@@ -447,77 +455,38 @@ export default class TeamTable extends Component {
             ];
             otherGamesFooter = <ul className="o_g_footer clear">
                 <li>总计</li>
-                <li>{otherGamesSum.total_stake}</li>
-                <li>{otherGamesSum.total_valid}</li>
-                <li>{otherGamesSum.total_back}</li>
-                <li className={parseFloat(otherGamesSum.win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_lose}</li>
-            </ul>;
-        }else if(variety == 1){
-            columnsRests = [
-                {
-                    title: '日期',
-                    dataIndex: 'date',
-                    width: 180,
-                }, {
-                    title: '用户名',
-                    dataIndex: 'userName',
-                    render: text => userInfo.userName,
-                    width: 180,
-                }, {
-                    title: '投注',
-                    dataIndex: 'total_bet',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '有效投注',
-                    dataIndex: 'total_valid_bet',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '中奖金额',
-                    dataIndex: 'total_valid_win',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '累计盈利',
-                    dataIndex: 'total_win_loss',
-                    className: 'column-right',
-                    render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
-                        <span className="col_color_ying">{text}</span>,
-                    width: 180,
-                }
-            ];
-            otherGamesFooter = <ul className="o_g_footer clear">
-                <li>总计</li>
-                <li>{otherGamesSum.bet}</li>
-                <li>{otherGamesSum.valid_bet}</li>
-                <li>{otherGamesSum.valid_win}</li>
-                <li className={parseFloat(otherGamesSum.win_loss) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_loss}</li>
+                <li>{sum.total_price}</li>
+                <li>{sum.total_effective_price}</li>
+                <li>{sum.total_bonus}</li>
+                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }else if(variety == 2){
             columnsRests = [
                 {
                     title: '日期',
-                    dataIndex: 'date',
-                    width: 180,
+                    dataIndex: 'rdate',
+                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    width: 110,
                 }, {
                     title: '用户名',
-                    dataIndex: 'userName',
-                    render: text => userInfo.userName,
-                    width: 180,
+                    dataIndex: 'username',
+                    render: (text, record, index) => index == 0 || postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                           style={{color: '#0088DE'}}>{text}</a>,
+                    width: 200,
                 }, {
                     title: '投注',
-                    dataIndex: 'stake_amount',
+                    dataIndex: 'sum_price',
                     className: 'column-right',
                     width: 180,
                 }, {
                     title: '有效投注',
-                    dataIndex: 'valid_amount',
+                    dataIndex: 'sum_effective_price',
                     className: 'column-right',
                     width: 180,
                 }, {
                     title: '累计盈利',
-                    dataIndex: 'back_amount',
+                    dataIndex: 'sum_total',
                     className: 'column-right',
                     render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
@@ -526,39 +495,47 @@ export default class TeamTable extends Component {
             ];
             otherGamesFooter = <ul className="o_g_tl_footer clear">
                 <li>总计</li>
-                <li>{otherGamesSum.total_stake}</li>
-                <li>{otherGamesSum.total_valid}</li>
-                <li className={parseFloat(otherGamesSum.win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_lose}</li>
+                <li>{sum.total_price}</li>
+                <li>{sum.total_effective_price}</li>
+                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }else if(variety == 3){
             columnsRests = [
                 {
                     title: '日期',
-                    dataIndex: 'date',
+                    dataIndex: 'rdate',
+                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    width: 180,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render: (text, record, index) => index == 0 || postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                           style={{color: '#0088DE'}}>{text}</a>,
                     width: 180,
                 }, {
                     title: '总投注金额',
-                    dataIndex: 'total_bet',
+                    dataIndex: 'sum_price',
                     className: 'column-right',
                     width: 180,
                 }, {
                     title: '返点总额',
-                    dataIndex: 'total_point',
+                    dataIndex: 'sum_point',
                     className: 'column-right',
                     width: 180,
                 }, {
                     title: '中奖总额',
-                    dataIndex: 'total_win',
+                    dataIndex: 'sum_bonus',
                     className: 'column-right',
                     width: 180,
                 }, {
                     title: '奖池奖金总额',
-                    dataIndex: 'total_win_pool',
+                    dataIndex: 'sum_prizepool',
                     className: 'column-right',
                     width: 180,
                 }, {
                     title: '累计盈利',
-                    dataIndex: 'total_winloss',
+                    dataIndex: 'sum_total',
                     className: 'column-right',
                     render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
@@ -567,11 +544,11 @@ export default class TeamTable extends Component {
             ];
             otherGamesFooter = <ul className="o_g_bobing_footer clear">
                 <li>总计</li>
-                <li>{otherGamesSum.total_bet}</li>
-                <li>{otherGamesSum.total_point}</li>
-                <li>{otherGamesSum.total_win}</li>
-                <li>{otherGamesSum.total_win_pool}</li>
-                <li className={parseFloat(otherGamesSum.total_winloss) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.total_winloss}</li>
+                <li>{sum.total_price}</li>
+                <li>{sum.total_point}</li>
+                <li>{sum.total_bonus}</li>
+                <li>{sum.total_prizepool}</li>
+                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }else{}
 
@@ -662,11 +639,11 @@ export default class TeamTable extends Component {
                                        footer={table.tableData.length <= 0 ? null : ()=>footer}
                                 /> :
                                 <Table columns={columnsRests}
-                                       rowKey={record => record.id}
-                                       dataSource={otherGamesData}
+                                       rowKey={record => record.rdate !== undefined ? record.rdate : record.userid}
+                                       dataSource={table.tableData}
                                        loading={this.state.tableLoading}
                                        pagination={false}
-                                       footer={otherGamesData.length <= 0 ? null : ()=>otherGamesFooter}
+                                       footer={table.tableData.length <= 0 ? null : ()=>otherGamesFooter}
                                 />
                         }
 
