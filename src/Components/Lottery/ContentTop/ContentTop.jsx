@@ -21,7 +21,6 @@ export default class ContentTop extends Component {
         };
     }
     componentDidMount() {
-        this._ismount = true;
     	this.initData();
     };
     initData(){

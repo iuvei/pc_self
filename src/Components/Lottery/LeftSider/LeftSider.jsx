@@ -2,11 +2,13 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Menu, Affix } from 'antd';
 import QueueAnim from 'rc-queue-anim';
+import { hashHistory } from 'react-router';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
 import './LeftSider.scss'
 import { stateVar } from '../../../State'
+import common from '../../../CommonJs/common';
 
 import Transform from '../../../CommonJs/transform.react.js';
 
@@ -20,7 +22,51 @@ import triangle_right from './Img/triangle_right.png'
 @observer
 export default class LeftSider extends Component {
     handleClick(e) {
-    	stateVar.nowlottery.lotteryId = e.key
+    	if(!stateVar.openLotteryFlag){
+    		return;
+    	}
+    	let tempId = e.key;
+    	let tempMethod = common.getStore(common.getStore('userId'));
+    	let thisUrl = window.location.href.indexOf('lottery') > -1 ? true : false;
+    	if(thisUrl){
+    		if(tempMethod == undefined || stateVar.nowlottery.lotteryId == tempId){
+	    		return;
+	    	}else{
+	    		for(let val in tempMethod){
+					if(val == tempId){
+						if(tempMethod[val].msg == undefined){
+							stateVar.kjNumberList = [];
+							clearInterval(window.interval);
+							stateVar.checkLotteryId= false;
+							stateVar.nowlottery.lotteryId = e.key;
+							stateVar.BetContent = {
+						        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
+						    };
+						    this.props.resetInit();
+							stateVar.isload = false;
+						}else{
+							alert(tempMethod[val].msg);
+							return;
+						}
+					}
+				}
+	    	}
+    	}else{
+    		stateVar.kjNumberList = [];
+    		for(let val in tempMethod){
+				if(val == tempId){
+					if(tempMethod[val].msg == undefined){
+						stateVar.nowlottery.lotteryId = e.key;
+						hashHistory.push('/lottery');
+					}else{
+						alert(tempMethod[val].msg);
+						stateVar.nowlottery.lotteryId = 'ssc'
+						hashHistory.push('/lottery');
+						return;
+					}
+				}
+			}
+    	}
     }
     render() {
         return (

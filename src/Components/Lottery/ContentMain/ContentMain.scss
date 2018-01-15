@@ -2,7 +2,19 @@
 @import '../../../Style/mixin';
 
 $c_m_background: #4A4A5F;
-
+.content_bet{
+    float: left;
+    padding-left: 50px;
+}
+.loadingbet{
+    text-align: center;
+    padding: 109px 0;
+    float: left;
+    width: 945px;
+    .ant-spin-text{
+        font-size: 18px;
+    }
+}
 .content_main{
     width: 925px;
     margin-left: 5px;
@@ -118,13 +130,15 @@ $c_m_background: #4A4A5F;
                 margin-right: 15px;
             }
             .c_m_method_details{
+                max-width: 600px;
                 li{
                     float: left;
                     height: 24px;
                     padding: 0 16px;
-                    line-height: 24px;
+                    line-height: 20px;
                     margin-right: 5px;
                     text-align: center;
+                    border:2px solid rgba(0,0,0,0);
                     @include borderRadius(12px);
                     &:hover{
                         background-color: #EEEEEE;
@@ -133,7 +147,6 @@ $c_m_background: #4A4A5F;
                 }
                 .method_details_active{
                     border: 2px solid #DCBD84;
-                    line-height: 20px;
                     color:#DCBD84;
                 }
             }
@@ -216,11 +229,16 @@ $c_m_background: #4A4A5F;
                         line-height: 24px;
                         text-align: center;
                         background: #8D887B;
+                        padding: 0;
                         color: #fff;
                         margin-left: 15px;
                         @include boxS(0, 0, 10px, 0, #9c9b9b, null);
+                        border:none;
                         &:hover{
                             cursor: pointer;
+                        }
+                        span{
+                            color:#fff;
                         }
                     }
                 }
@@ -583,6 +601,18 @@ $c_m_background: #4A4A5F;
                             }
                         }
                     }
+                    .ddsdiv {
+                        li.dds{
+                            @include wh(102px, 47px);
+                            font-size: 18px;
+                            @include bis('./Img/dds.png');
+                        }
+                        li.number_active{
+                            font-size: 18px;
+                            @include bis('./Img/dds_select.png');
+                            color: #fff;
+                        }
+                    }
                     .c_m_number_select{
                         float: right;
                         margin-right: 1px;
@@ -641,13 +671,19 @@ $c_m_background: #4A4A5F;
                     display: inline-block;
                     height: 30px;
                     line-height: 30px;
+                    .ant-input-number{
+                        width: 60px;
+                        height: 30px;
+                        line-height: 30px;
+                        margin: 0 4px;
+                    }
+                    .ant-input-number-handler-wrap{
+                        display: none;
+                    }
                     input{
-                        @include wh(40px, 30px);
-                        border: 1px solid #B2B2B2;
+                        padding: 0;
+                        margin: 0;
                         text-align: center;
-                        color:$c_m_background;
-                        margin: 0 5px;
-                        @include gradient(0, 0, 0, 5, #D4D4D4, #fff);
                     }
                     img{
                         vertical-align: middle;
@@ -705,10 +741,22 @@ $c_m_background: #4A4A5F;
                 }
                 .c_m_bet_btn{
                     display: inline-block;
+                    padding: 0;
+                    margin: 0;
+                    border: none;
+                    outline: none;
                     @include wh(160px,54px);
-                    @include bis('./Img/bet_btn.png');
+                    background:url('./Img/bet_btn.png') no-repeat; 
                     &:hover{
                         cursor: pointer;
+                    }
+                    &:disabled{
+                        padding: 0;
+                        margin: 0;
+                        border: none;
+                        opacity: .9;
+                        cursor: not-allowed;
+                        
                     }
                 }
             }
@@ -825,6 +873,29 @@ $c_m_background: #4A4A5F;
                         font-weight: normal;
                         color:#B88932;
                     }
+                    .c_m_select_multiple_div{
+                        float: right;
+                        .c_m_select_multiple{
+                            display: inline-block;
+                            height: 30px;
+                            line-height: 30px;
+                            margin-right: 17px;
+                            input{
+                                @include wh(40px, 30px);
+                                border: 1px solid #B2B2B2;
+                                text-align: center;
+                                color:$c_m_background;
+                                margin: 0 5px;
+                                @include gradient(0, 0, 0, 5, #D4D4D4, #fff);
+                            }
+                            img{
+                                vertical-align: middle;
+                                &:hover{
+                                    cursor:pointer;
+                                }
+                            }
+                        }
+                    }
                     .c_m_superaddition{
                         @include wh(85px, 50px);
                         @include bis('./Img/superaddition_bg.png');
@@ -872,6 +943,7 @@ $c_m_background: #4A4A5F;
     margin: 0 10px 10px 5px;
 }
 .content_title{
+    overflow: hidden;
     @include wh(925px, 127px);
     @include bis('./Img/content_title.jpg');
     .content_cz_logo{
@@ -887,6 +959,35 @@ $c_m_background: #4A4A5F;
 .title_list>li{
    float: left;
 }
+.title_list .monikj{
+    float: left;
+    margin-top: 41px;
+    margin-left: 60px;
+    cursor: pointer;
+    width: 166px;
+    height: 55px;
+    border: none;
+    outline: none;
+    background: url('./Img/moni.png') no-repeat;
+    line-height: 47px;
+    color: #ffdb70;
+    font-size: 20px;
+    text-indent: 34px;
+    font-weight: bold;
+    &:hover{
+        background: url('./Img/moni.png') no-repeat;
+        color: #ffdb70;
+    }
+    &:active{
+        outline: none;
+        border: none;
+    }
+    &:disabled{
+        outline: none;
+        border: none;
+        cursor:not-allowed;
+    }
+}
 .content_center{
     width: 450px;
     padding-top: ($content-top)+17px;
@@ -894,15 +995,37 @@ $c_m_background: #4A4A5F;
         float: left;
     }
 }
+.mmc{
+    width: auto;
+    li{
+        margin-top: 24px;
+    }
+}
+.ball_number_mmc{
+    min-width: 320px;
+    float: left;
+    margin-top: 38px;
+    li{
+        float: left;
+        @include bis('./Img/number-bg.png');
+        @include wh(62px, 64px);
+        line-height: 57px;
+        text-align: center;
+        font-size: 30px;
+        color: #fff;
+        font-weight: bold;
+        font-family: myFirstFont;
+    }
+}
 .m_bottom{
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     color: #fff;
 }
 .content_cz_text{
     width: 160px;
     padding-left: 15px;
     .cz_name{
-        font-size: 16px;
+        font-size: 20px;
         span{
             margin-right:10px;
         }
@@ -952,15 +1075,19 @@ $c_m_background: #4A4A5F;
 }
 .praise_mark{
     margin: ($content-top)+17px 0 0 20px;
+    position: relative;
+    overflow: hidden;
     .praise_mark_text{
         color: #fff;
         font-size: 14px;
         margin: 0 6px 10px 10px;
         .method_introduce{
-            @include wh(60px, 18px);
+            @include wh(auto, 18px);
             @include borderRadius(2px);
             background-color: #D6D6D7;
             color: #4C4C4C;
+            padding: 0 4px;
+            margin-right: 3px;
             text-align: center;
             font-size: 12px;
             &:hover{
@@ -968,7 +1095,24 @@ $c_m_background: #4A4A5F;
             }
         }
     }
+    .praise_mark_text_pk10{
+        float: left;
+        color: #fff;
+        font-size: 14px;
+        margin: 8px 10px 0 3px;
+        .method_introduce{
+            color: #e7dbdb;
+            text-align: left;
+            font-size: 12px;
+            text-decoration: underline;
+            &:hover{
+                cursor: pointer
+            }
+        }
+    }
     .ball_number{
+        left: 0;
+        min-width: 320px;
         li{
             float: left;
             @include bis('./Img/number-bg.png');
@@ -976,6 +1120,25 @@ $c_m_background: #4A4A5F;
             line-height: 57px;
             text-align: center;
             font-size: 30px;
+            color: #fff;
+            font-weight: bold;
+            font-family: myFirstFont;
+            .kjCodeClass{
+                font-size: 30px;
+            }
+        }
+    }
+    .ball_number_pk10{
+        float: left;
+        width: 215px;
+        margin-top: 2px;
+        li{
+            float: left;
+            @include bis('./Img/pk10ball.png');
+            @include wh(41px, 41px);
+            line-height: 37px;
+            text-align: center;
+            font-size: 22px;
             color: #fff;
             font-weight: bold;
             font-family: myFirstFont;
@@ -996,105 +1159,4 @@ $c_m_background: #4A4A5F;
     height: 17px;
     top: -2.5px;
     left: -3.5px;
-}
-.modal_content{
-    .ant-modal-header{
-        padding: 0;
-}
-.ant-modal-body{
-    background-color: #F1F1F1;
-}
-.ant-modal-close{
-    color: #fff;
-}
-.modal_main{
-    .m_m_content{
-        margin: 20px 0;
-        font-size: 14px;
-        color: $color_363636;
-
-        .modal_periods{
-            .m_p_text{
-                margin: 0 10px 0 20px;
-                @include lh(28px);
-            }
-            .m_periods_list{
-                li{
-                    float: left;
-                    border: 1px solid #B2B2B2;
-                    @include wh(42px, 28px);
-                    line-height: 26px;
-                    margin-right: 5px;
-                    text-align: center;
-                    &:hover{
-                        cursor: pointer;
-                    }
-                }
-                .m_periods_active{
-                    background: #FFF5F5 url(./Img/time_active.png) no-repeat bottom right;
-                    border: 1px solid $rodio-check-color;
-                    color: $rodio-check-color;
-                }
-            }
-        }
-        .periods_input, .multiple_input{
-            margin-left: 20px;
-            &>span{
-                margin: 0 8px;
-            }
-        }
-        .m_m_btn{
-            margin-left: 20px;
-            height: 30px;
-        }
-        .ant-input-number{
-            @include borderRadius(0);
-        }
-    }
-    .m_m_table{
-        border: 1px solid #ccc;
-        background-color: #fff;
-        padding: 8px;
-        .ant-input-number{
-            @include borderRadius(0);
-            width: 70px;
-        }
-    }
-    .m_m_footer{
-        margin-top: 15px;
-        @include lh(37px);
-        color: $color_363636;
-        .m_m_left_btn{
-            .ant-btn-primary{
-                background-color: #4D4D4D;
-                border-color: #4D4D4D;
-            }
-            .ant-btn-primary:hover,
-            .ant-btn-primary:focus {
-                color: #fff;
-                background-color: #676767;
-                border-color: #676767;
-            }
-            .ant-btn-clicked:after {
-                border: 0 solid #4F4F4F;
-            }
-            .ant-btn-danger.ant-btn-clicked:after {
-                border-color: #4F4F4F;
-            }
-        }
-        .m_m_footer_info{
-            font-size: 14px;
-            li{
-                float: left;
-                em{
-                    font-style: normal;
-                    color: #BD0000;
-                }
-                &:last-child{
-                    margin-left: 20px;
-                }
-            }
-        }
-    }
-}
 }

@@ -21,5 +21,16 @@
         padding: 5px 8px;
         @include gradient(0, 10.5, 0, bottom, #fff, #F0F0F0);
     }
+    .buyAgain,.canclebet{
+        cursor: pointer;
+    }
+    .ant-btn-primary{
+        background: none;
+        border: none;
+        color: #333;
+    }
+    .ant-btn-primary:hover, .ant-btn-primary:focus{
+        color: #333;
+    }
 }
 
