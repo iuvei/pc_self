@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { stateVar } from '../../../State';
 import Fetch from '../../../Utils';
-import { Button, Input, Modal, Pagination, message, Spin, Carousel, Icon } from 'antd';
+import { Button, Input, Modal, Pagination, message, Spin, Icon } from 'antd';
 const Search = Input.Search;
+import TweenOne from 'rc-tween-one';
 import ChildNav from '../../Common/ChildNav/ChildNav';
 import CM_transfer from '../CM_transfer/CM_transfer';
 
@@ -43,6 +44,9 @@ export default class PT extends Component {
             startVisible: false,
             ptUrl: '',
             ptLoading: false,
+
+            moment: null,
+            paused: true,
         };
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
@@ -120,7 +124,6 @@ export default class PT extends Component {
         };
         step()
     };
-
     /*切换页面时*/
     onChangePagination(page) {
         let listPostData = this.state.listPostData;
@@ -265,12 +268,7 @@ export default class PT extends Component {
         this.setState({visible: false})
     };
     render() {
-        const navList = this.state.navList;
-        const gameList = this.state.gameList;
-        const topRanking = this.state.topRanking;
-        const total = this.state.total;
-        const ptName = this.state.ptName;
-        const resetPw = this.state.resetPw;
+        const { startVisible, navList, gameList, topRanking, total, ptName, resetPw } = this.state;
 
         return (
             <div className="pt">
@@ -386,7 +384,7 @@ export default class PT extends Component {
                         <img src={resetPw_btn} onClick={()=>this.onAffirmReset()} alt=""/>
                     </p>
                 </Modal>
-                <Modal visible={this.state.startVisible}
+                <Modal visible={startVisible}
                        closable={false}
                        mask={false}
                        style={{ top: 120 }}
@@ -398,15 +396,24 @@ export default class PT extends Component {
                     <div className="pt_m_content">
                         <Button className="modal_close" onClick={()=>this.setState({startVisible: false})} type="primary" icon="close"></Button>
                         <Spin className="pt_loading" spinning={this.state.ptLoading} tip="加载中..."/>
-                        <iframe scrolling="no"
-                                id="main" name="main"
-                                src={this.state.ptUrl}
-                                className="pt_iframe"
-                        >
-                        </iframe>
+                        {
+                            startVisible ? <iframe scrolling="no"
+                                                   id="main" name="main"
+                                                   src={this.state.ptUrl}
+                                                   className="pt_iframe"
+                            >
+                            </iframe> : null
+                        }
+
                         <div className="icon_p">
                             <Icon type="left-circle" className="ic_left-circle"/>
                             <div className="pt_m_gameList">
+                                <TweenOne
+                                            animation={{left: '160px', duration: 2000}}
+                                            paused={this.state.paused}
+                                            moment={this.state.moment}
+                                            className="box-shape"
+                                >
                                 <ul className="games_list clear">
                                     {
                                         gameList.map((item, i)=>{
@@ -419,8 +426,18 @@ export default class PT extends Component {
                                         })
                                     }
                                 </ul>
+                                </TweenOne>
                             </div>
-                            <Icon type="right-circle" className="ic_right-circle"/>
+                            <Icon type="right-circle" className="ic_right-circle"
+                                  onClick={()=>this.setState({
+                                      paused: false,
+                                      moment: 0,
+                                  }, ()=>{
+                                      this.setState({
+                                          moment: null,
+                                      });
+                                  })}
+                            />
                         </div>
                     </div>
 
