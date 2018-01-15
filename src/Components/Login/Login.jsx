@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import { Input,Button,Icon,Checkbox,Modal  } from 'antd';
-import md5 from 'md5';
+import 'whatwg-fetch'
 import Fetch from '../../Utils';
+import md5 from 'md5';
 import { stateVar } from '../../State';
 import onCanvas from './canvas';
 import './Login.scss';
@@ -12,6 +13,7 @@ import speedSrc from './Img/speed.png';
 import dnsSrc from './Img/dns.png';
 import warnSrc from './Img/warn.png';
 import serviceSrc from './Img/service.png';
+import valicodeSrc from './Img/valicode.png';
 const validImgSrc='http://10.63.15.242:81/pcservice/index.php?useValid=true';
 import { debounce } from 'react-decoration';
 import { withRouter } from 'react-router';
@@ -35,8 +37,8 @@ export default class Login extends Component {
             visible1: false, //控制模态框显示
             visible2: false,
             visible3: false,
-            validImg:null,   //验证码图片
-            validImgM:null,
+            validImg:valicodeSrc,   //验证码图片
+            validImgM:valicodeSrc,
             session: null,//提交后台时带的sess
             warn:null,//登录错误提示信息
             warnM:null,
@@ -47,7 +49,7 @@ export default class Login extends Component {
             newPwdM:'',
             confirmPwdM:'',
             checkPw:getStore('checkFlag'),
-            aa:false,
+
         }
     };
     /*
@@ -59,19 +61,24 @@ export default class Login extends Component {
             let parseData = JSON.parse(data);
             this.setState({
                 session: parseData.repsoneContent,
-                validImg:validImgSrc+"&sess="+parseData.repsoneContent,
-                validImgM:validImgSrc+'?rand='+Math.random()+"&sess="+parseData.repsoneContent,
             });
             setStore("session",parseData.repsoneContent)
         })
 
     }
     /*
-    * 按下enter按钮处理提交
+    * 正常登录按下enter按钮处理提交
     */
     loginEnter(e){
         if(e.keyCode==13){
             this.enterLogin();
+        }
+    }
+    /*
+    *试玩模式按下enter按钮处理提交 */
+    trygameloginEnter(e){
+        if(e.keyCode==13){
+            this.enterTryGameLogin();
         }
     }
     /*
@@ -84,43 +91,118 @@ export default class Login extends Component {
     */
     // @debounce(500)
     enterLogin() {
+        this.setState({ loading: true });
         if(this.state.account===''||this.state.password===''){
             this.setState({
                 warn:"用户名或密码为空",
                 displayWarn:true,
-            });
+                loading: false,
+            },()=>this.refreshImg());
         }else if(this.state.aptchac===''){
             this.setState({
                 warn:"验证码为空",
                 displayWarn:true,
-            });
+                loading:false,
+            },()=>this.refreshImg());
         }else {
             this.login()
         }
 
     };
+    /*
+    * 试玩模式登录
+    * 验证验证码是否为空
+    * 验证成功后进入主界面
+    * 根据后台返回数据显示错误信息
+    * */
+    enterTryGameLogin(){
+        if(this.state.aptchac===''){
+            this.setState({
+                warn:"验证码为空",
+                displayWarn:true,
+                loading:false,
+            },()=>this.refreshImg());
+        }else {
+            this.trygameLogin()
+        }
+    }
+    /*
+    * 请求登录接口（试玩模式）
+    * 并存储登录后所需使用的数据
+    * */
+    trygameLogin(){
+        Fetch.login({
+            method: "POST",
+            body: JSON.stringify({
+                "sType": 'demo',
+                "validcode": this.state.aptchac
+            })
+        }).then((data)=>{
+            this.setState({ loading: false });
+            if(this._ismount){
+                let result = data.repsoneContent;
+                console.log("trygameLogin.data",data);
+                if(data.status==200) {
+                    stateVar.auth=true;
+                    stateVar.userInfo = {
+                        userId:result.userid,
+                        userName: result.username,
+                        userType: result.usertype,
+                        accGroup: result.accGroup,
+                        lastIp: result.lastip,
+                        sType: result.sType,
+                        lastTime: result.lasttime,
+                        issetbank: result.issetbank,
+                        setquestion: result.setquestion,
+                        setsecurity: result.setsecurity,
+                        email: result.email,
+                    };
+
+                    setStore("userId",result.userid);
+                    setStore("userName",result.username);
+                    setStore("userType",result.usertype);
+                    setStore("accGroup",result.accGroup);
+                    setStore("lastIp",result.lastip);
+                    setStore("sType",result.sType);
+                    setStore("lastTime",result.lasttime);
+                    setStore("issetbank",result.issetbank);
+                    setStore("setquestion",result.setquestion);
+                    setStore("setsecurity",result.setsecurity);
+                    setStore("email",result.emai);
+                    hashHistory.push('/lottery');
+                }else{
+                    this.setState({
+                        warn:data.longMessage,
+                        displayWarn:true,
+                    },()=>this.refreshImg());
+                }
+            }
+
+        })
+    };
+    /*
+    * 请求登录接口
+    * 并存储登录后所需用的数据
+    * */
     login() {
-        this.setState({ loading: true });
         //登录
         Fetch.login({
             method: "POST",
             body: JSON.stringify({
                 "sType": 'formal',
-
-
-                "username": this.state.account,
-
+                "username": 'hobart',
                 "loginpass": md5((md5(this.state.aptchac) + md5('123qwe'))),
                 "validcode": this.state.aptchac
             })
         }).then((data)=>{
             this.setState({ loading: false });
             let result = data.repsoneContent;
+            console.log("login.data",data);
             if(data.status===200){
                 stateVar.auth=true;
                 stateVar.userInfo = {
+                    userId:result.userid,
                     userName: result.username,
-                    userid: result.userid,
                     userType: result.usertype,
                     accGroup: result.accGroup,
                     lastIp: result.lastip,
@@ -132,7 +214,17 @@ export default class Login extends Component {
                     email: result.email,
                 };
 
-                setStore("userName",this.state.account);
+                setStore("userName",result.username);
+                setStore("userId",result.userid);
+                setStore("userType",result.usertype);
+                setStore("accGroup",result.accGroup);
+                setStore("lastIp",result.lastip);
+                setStore("sType",result.sType);
+                setStore("lastTime",result.lasttime);
+                setStore("issetbank",result.issetbank);
+                setStore("setquestion",result.setquestion);
+                setStore("setsecurity",result.setsecurity);
+                setStore("email",result.emai);
 
                 if(this.state.checkPw){
                     setStore("loginPwd",this.state.password);
@@ -190,23 +282,25 @@ export default class Login extends Component {
     * 忘记密码后的弹出框处理
     * 1.找回密码（包括显示提示信息和提交数据）
     * 2.重置密码（包括显示提示信息和提交数据）
+    * 登录即同意协议的模态框显示
     * */
     showModal(value) {
-        if (value === 'forget_pwd') {
+        if (value === 'forget_pwd') { //显示忘记密码模态框
             this.setState({
                 visible1: true,
+                displayWarn:false,
             });
-        } else if(value ==='reset_pwd'){
+        } else if(value ==='reset_pwd'){ //显示重置密码模态框
             if(this.state.accountM==''||this.state.passwordM==''){
                 this.setState({
                     warnM:"用户名或密码为空",
                     displayWarnM:true,
-                });
+                },()=>this.refreshImgModal());
             }else if(this.state.aptchacM==''){
                 this.setState({
                     warnM:"验证码为空",
                     displayWarnM:true,
-                });
+                },()=>this.refreshImgModal());
             }else{
                 Fetch.login(  //找回密码
                     {
@@ -271,22 +365,34 @@ export default class Login extends Component {
                 })
 
             }
-        }else if(value ==='l_accept'){
+        }else if(value ==='l_accept'){//显示登录即同意协议模态框
             this.setState({
                 visible4: true,
+                displayWarn:false,
             });
         }
 
     };
-
+    /*切换登录模式
+    * 1.将上个模式的报错信息隐藏
+    * 2.将验证码图片置为初始状态*/
+    onChangLoginMode(index){
+        this.setState({
+            navListIndex: index,
+            displayWarn:false,
+            validImg:valicodeSrc,
+        })
+    }
 
     componentDidMount() {
         // let indx = Math.floor(Math.random()*(onCanvas.length-1));
+        this._ismount = true;
         onCanvas[1]();
         this.getSession();
 
     };
     componentWillUnmount(){
+        this._ismount = false;
     };
 
     loginMain() {
@@ -301,7 +407,7 @@ export default class Login extends Component {
                     <span className="l_forget" onClick={()=>{this.showModal('forget_pwd')}}>忘记密码？</span>
                 </div>
                 <div className="l_vali">
-                    <Input size="large" className='login_input'  value={this.state.aptchac}  onChange={(e)=>{this.onAptchac(e)}} placeholder="验证码" />
+                    <Input size="large" className='login_input'  value={this.state.aptchac}  onFocus={()=>{this.refreshImg()}} onChange={(e)=>{this.onAptchac(e)}} placeholder="验证码" />
                     <img className="l_valicode" src={this.state.validImg} onClick={()=>{this.refreshImg()}}/>
                 </div>
 
@@ -327,7 +433,7 @@ export default class Login extends Component {
                         <Input size="large"  placeholder="用户名" onChange={(e)=>{this.onAccountM(e)}}/>
                         <Input type="password" size="large"  placeholder="资金密码" onChange={(e)=>{this.onPwdM(e)}}/>
                         <div className="l_m_vali">
-                            <Input size="large"   value={this.state.aptchacM}  onChange={(e)=>{this.onaptchacM(e)}} placeholder="验证码" />
+                            <Input size="large"   value={this.state.aptchacM} onFocus={()=>{this.refreshImgModal()}} onChange={(e)=>{this.onaptchacM(e)}} placeholder="验证码" />
                             <img className="l_m_valicode" src={this.state.validImgM} onClick={()=>{this.refreshImgModal()}}/>
                         </div>
                         <Button type="primary"  onClick={()=>{this.showModal('reset_pwd')}}>
@@ -412,11 +518,16 @@ export default class Login extends Component {
         * 试玩账号
         */
         const ul_1 =  <div className="login_wrap">
-            <div className='l_input' >
-                <Input size="large"value={this.state.aptchac} className='login_input' onChange={(e)=>{this.onAptchac(e)}} placeholder="验证码" />
+            <div className='l_input' onKeyDown={(e)=>{this.trygameloginEnter(e)}}>
+                <p className='l_try_txt'><span className='l_line'></span>恭喜您获得<span className='l_try_888'>888</span>元免费试玩体验金！</p>
+                <div className="l_vali">
+                    <Input size="large" className='login_input'  value={this.state.aptchac} onFocus={()=>{this.refreshImg()}}   onChange={(e)=>{this.onAptchac(e)}} placeholder="验证码" />
+                    <img className="l_valicode" src={this.state.validImg} onClick={()=>{this.refreshImg()}}/>
+                </div>
+
             </div>
 
-            <Button type="primary" className='login_btn' icon="right-circle" loading={this.state.loading} onClick={()=>{this.enterLogin()}}>
+            <Button type="primary" className='login_btn' icon="right-circle" loading={this.state.loading} onClick={()=>{this.enterTryGameLogin()}}>
                 立即登录
             </Button>
         </div>;
@@ -459,7 +570,7 @@ export default class Login extends Component {
                         {
                             navList.map((value, index)=>{
                                 return <li className={this.state.navListIndex === index ? 'l_m_select_list_active' : ''}
-                                           onClick={() => {this.setState({navListIndex: index})}} key={index}>{value}</li>
+                                           onClick={()=> {this.onChangLoginMode(index)}} key={index}>{value}</li>
                             })
                         }
 

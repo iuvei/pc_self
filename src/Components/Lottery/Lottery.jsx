@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import QueueAnim from 'rc-queue-anim';
 
 import './Lottery.scss';
 
 import RightSider from './RightSider/RightSider';
 import ContentMian from './ContentMain/ContentMian';
 
-var url1 = require("./sound/kaijiang.mp3");
-var url1a = require("./sound/kaijiang.ogg");
-var url2 = require("./sound/fengdan.mp3");
-var url2a = require("./sound/fengdan.ogg");
-var url3 = require("./sound/minute1.mp3");
-var url3a = require("./sound/minute1.ogg");
+const url1 = require("./sound/kaijiang.mp3");
+const url1a = require("./sound/kaijiang.ogg");
+const url2 = require("./sound/fengdan.mp3");
+const url2a = require("./sound/fengdan.ogg");
+const url3 = require("./sound/minute1.mp3");
+const url3a = require("./sound/minute1.ogg");
 @observer
 export default class Lottery extends Component {
     render() {

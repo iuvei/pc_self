@@ -66,7 +66,7 @@ module.exports = {
                 //注意后面那个limit的参数，当你图片大小小于这个限制的时候，会自动启用base64编码图片
             },
             {
-                test: /\.(mp4|ogg|svg)$/,
+                test: /\.(mp3|mp4|ogg|svg)$/,
                 loader: 'file-loader'
             }
         ]

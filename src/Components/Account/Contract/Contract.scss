@@ -2,6 +2,9 @@ $border_color: #C8C8C8;
 .contract_main{
     margin:20px 34px 0;
     padding-bottom: 34px;
+    .c_top{
+        height: 251px;
+    }
     .c_top>li{
         margin-right: 10px;
         border: 1px solid $border_color;
@@ -31,54 +34,56 @@ $border_color: #C8C8C8;
     }
 
     .c_salary{
-        width: 520px;
+        width: 550px;
         height: 250px;
         ul{
             height: 65px;
             border-bottom: 1px solid $border_color;
-            text-align: end;
+            text-align: start;
         }
         ul:last-child{
             border-bottom:none;
         }
         li{
             height: 65px;
-            width: 259px;
-            padding-top: 28px;
-            padding-right: 34px;
+            line-height: 65px;
+            width: 274px;
+            padding-left: 5px;
             display: inline-block;
-            font-size: 22px;
+            font-size: 14px;
         }
-
-
+        .c_no{
+            font-size: 22px;
+            color: #dedede;
+        }
+        .c_number{
+            font-size: 22px;
+            padding: 0 5px;
+        }
+        .c_percent{
+            font-weight: 600;
+        }
 
     }
     .c_table1{
         li:nth-child(1){
-
-            background:  url(./Img/table1.png) no-repeat center;
             border-right: 1px solid $border_color;
         }
         li:nth-child(2){
-            background:  url(./Img/table2.png) no-repeat center;
         }
     }
     .c_table2{
         li:nth-child(1){
-            background:  url(./Img/table3.png) no-repeat center;
             border-right: 1px solid $border_color;
         }
         li:nth-child(2){
-            background:  url(./Img/table4.png) no-repeat center;
         }
     }
     .c_table3{
         li:nth-child(1){
-            background:  url(./Img/table5.png) no-repeat center;
             border-right: 1px solid $border_color;
         }
         li:nth-child(2){
-            background:  url(./Img/table6.png) no-repeat center;
         }
     }
     .c_table_wrap{
@@ -94,15 +99,15 @@ $border_color: #C8C8C8;
         font-size: 20px;
     }
     .c_portion{
-        width: 205px;
+        width: 192px;
         height: 250px;
     }
     .c_award{
-        width: 205px;
+        width: 192px;
         height: 250px;
     }
     .c_setContract{
-        width: 115px;
+        width: 113px;
         height: 250px;
         display: table;
         cursor: pointer;
@@ -136,7 +141,7 @@ $border_color: #C8C8C8;
 
 .ant-tooltip-inner{
     max-width: 540px;
-    //height: 314px;
+    height: 314px;
     font-size: 14px;
     background-color:rgba(0,0,0,0.8);
     padding: 8px 21px;

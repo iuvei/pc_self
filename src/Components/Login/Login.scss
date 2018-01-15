@@ -92,6 +92,27 @@ $width_100: 100%;
         }
 
     }
+    /*试玩模式 begin*/
+    .l_try_txt{
+        padding-left: 40px;
+        width: 436px;
+        display: inline-block;
+        height: 29px;
+        font-size: 15px;
+        background: url(./Img/888.png) no-repeat left center;
+    }
+    .l_line{
+        width: 1px;
+        height: 12px;
+        background: $border_color;
+        display: inline-block;
+        margin-right: 13px;
+    }
+    .l_try_888{
+        font-size: 18px;
+        color: #df0019;
+    }
+    /*end*/
 }
 .login{
     width: 820px;
@@ -202,6 +223,7 @@ $width_100: 100%;
         display: block;
         width: 240px;
         margin: 0 auto 20px;
+        height: 37px;
 
     }
     .l_m_vali{
@@ -209,7 +231,7 @@ $width_100: 100%;
         display: inline-block;
         .l_m_valicode{
             position: absolute;
-            top: 3px;
+            top: 1px;
             right: 2px;
             color: red;
             &:hover{

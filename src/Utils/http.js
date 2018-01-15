@@ -14,9 +14,13 @@ const interFace = (key) => {
     INTERFACE['LOGINOUT'] = 'controller=default&action=logout';
     // 投注中心
     INTERFACE['PLAY'] = 'controller=game&action=play';
+    
+    INTERFACE['KJHISTOERY'] = 'controller=game&action=CodeShape';
 
     //获取投注玩法
     INTERFACE['LOTTERYBET'] = 'controller=game&action=PlayMethods';
+    
+    INTERFACE['MMCLOTERYBET'] = 'controller=mmcgamenewapi&action=play';
 
     INTERFACE['ABOUTBET'] = 'controller=game&action=play';
     INTERFACE['GAMEINFO'] = 'controller=gameinfo&action=CancelgameAjax';

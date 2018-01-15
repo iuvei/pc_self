@@ -11,13 +11,17 @@ const logout = (body) =>  request(http.interFace('LOGINOUT'),body);
 /*获取投注玩法接口*/
 const lotteryBets = (body) =>  request(http.interFace('LOTTERYBET'),body);
 
+const aboutMmc = (body) => request(http.interFace('MMCLOTERYBET'),body);
+
 const aboutBet = (body) => request(http.interFace('ABOUTBET'),body);
 
 const gameInfo = (body) => request(http.interFace('GAMEINFO'),body);
 
-/* 上次登录地点ip=>地址*/
+const ksHistoery = (body) => request(http.interFace('KJHISTOERY'),body);
+
+// 上次登录地点ip=>地址
 const ipaddress = (body) => request(http.interFace('IPADDRESS'),body);
-/*重置密码*/
+//重置密码
 const resetPwd = (body) =>  request(http.interFace('RESETPWD'),body);
 /* 日工资*/
 const dailysalary = (body) =>  request(http.interFace('DAILYSALARY'),body);
@@ -208,6 +212,8 @@ export default {
     cancelTaskAjax,
     userbankinfo,
     adduserbank,
+    ksHistoery,
+    aboutMmc,
     messages,
     trend,
     selfproto,

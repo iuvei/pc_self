@@ -16,10 +16,11 @@ $border_color: #C8C8C8;
     .l_m_list{
         width: 427px;
         height: 167px;
+        overflow-y: auto;
         margin-top: -9px;
         margin-left: 29px;
         text-align: left;
-        padding: 20px 27px 0;
+        padding: 20px 27px 8px;
         font-size: 13px;
         background: #fff;
         box-shadow: 0px 3px 5px #d6d6d6 inset;
@@ -79,6 +80,10 @@ $border_color: #C8C8C8;
         font-size: 13px;
         margin-bottom: 8px;
         margin-top: 18px;
+        .oktz:disabled{
+            opacity: .9;
+            color: #fff;
+        }
     }
     .ant-btn-primary{
         background-color: #ca1414;
@@ -114,3 +119,30 @@ $border_color: #C8C8C8;
     top: 0;
     text-align: left;
 }
+.mmclxgame{
+    button{
+        margin-top: 5px;
+        padding: 4px 20px;
+        font-size: 14px;
+    }
+    text-align: center;
+    padding: 4px 0;
+}
+.lxp{
+    text-align: center;
+    font-size: 13px;
+}
+.mmcDiv{
+    width: 370px !important;
+    top: 37%;
+    .ant-modal-content{
+        border-radius: 5px;
+    }
+    .ant-modal-close{
+        display: none;
+    }
+}
+.fontcolor{
+    color: #de0000;
+}
+    

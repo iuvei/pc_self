@@ -33,9 +33,15 @@ class State {
 
     @observable sess = null;
     @observable childNavIndex = 0;
+    @observable todoList = [];
     @observable homeMainLeftActive = true;
     @observable allLottery = [];
+    @observable alllotteryType = {};
+    @observable nowlottery = {'lotteryId':'ssc','cuimId':'',defaultMethodId:0,lotteryBetId:1,cnname:'重庆时时彩',imgUrl:''};
+    @observable defaultMethod = 0;
     @observable nowlottery = {lotteryId: 'ssc'};
+    @observable openLotteryFlag = true;
+    @observable savePkInput = {};
     @observable aboutGame = {
         data_sel:[],
         methodID:'',
@@ -56,7 +62,11 @@ class State {
         lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
     };
     @observable issueItem = [];
-
+    @observable kjNumberList = [];
+    @observable mmCkjNumberList = [];
+	@observable methodIdItem = [];
+	@observable shapeObj = {type:'',content:[]};
+	@observable checkLotteryId = true;
 }
 
 export const stateVar = new State();

@@ -12,7 +12,12 @@ $c_color:#7f6b37;
     width: 71px;
     height: 71px;
     padding-top: 25px;
-    padding-left: 7px;
+    background:none;
+    p{
+        text-align: center;
+    }
+}
+.c_b_user0.active,.c_b_user1.active,.c_b_user2.active{
     background: url(./Img/seal.png) no-repeat center left;
 }
 .c_b_user0{
@@ -303,6 +308,13 @@ $c_color:#7f6b37;
             margin: 0 5px;
             float: left;
             line-height: 32px;
+        }
+        .c_slider_icon{
+            cursor: pointer;
+        }
+        .ant-slider{
+            border-top: 4px solid #fbfaf5;
+            border-bottom: 4px solid #fbfaf5;
         }
     }
     .c_aa_form{
