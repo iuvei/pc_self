@@ -167,6 +167,7 @@ export default class HeaderTop extends Component {
                     if(_this._ismount){
                         if(res.status == 200){
                             removeStore('userName');
+                            removeStore('session');
                             hashHistory.push('/');
                         }else{
                             Modal.warning({

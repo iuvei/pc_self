@@ -220,28 +220,21 @@ export const changeMoneyToChinese = (money) => {
     return ChineseStr;
 };
 
-/**
+/*
 * 获取localStorage
 */
 export const getStore = name => {
-    if (!name) return;
-    let contentBody = window.localStorage.getItem(name);
-    if (typeof contentBody != 'string') {
-        contentBody = JSON.parse(window.localStorage.getItem(name))
-    }
+    let contentBody = JSON.parse(window.localStorage.getItem(name))
     return contentBody;
 };
 
-/**
+/*
 * 存储localStorage
 */
 export const setStore = (name, content) => {
-    if (!name) return;
-    if (typeof content !== 'string') {
-        content = JSON.stringify(content)
-    }
-    window.localStorage.setItem(name, content)
-};
+    let tempContent = JSON.stringify(content)
+    window.localStorage.setItem(name, tempContent)
+}
 
 /**
  * 删除localStorage
