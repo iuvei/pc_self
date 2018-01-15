@@ -4,6 +4,8 @@
 .left_sider{
     margin-top: $content-top;
     width: 50px;
+    position: absolute;
+    z-index: 10;
     .l_s_bg_01{
         display: inline-block;
         @include wh(28px, 26px);

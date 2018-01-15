@@ -276,8 +276,226 @@ const methodId =  {
     //任选四-组选6
     3111812:'RXZU6FFC4', 3111813:'RXZU6FFC4',3111814:'RXZU6FFC4', 3111815:'RXZU6FFC4',3111816:'RXZU6FFC4',
     //任选四-组选4
-    3111817:'RXZU4FFC4', 3111818:'RXZU4FFC4', 3111819:'RXZU4FFC4', 3111820:'RXZU4FFC4', 3111821:'RXZU4FFC4'
+    3111817:'RXZU4FFC4', 3111818:'RXZU4FFC4', 3111819:'RXZU4FFC4', 3111820:'RXZU4FFC4', 3111821:'RXZU4FFC4',
     //腾讯分分彩end
+    //mmc
+    1010472:'ZX3',
+	1010473:'ZXHZ',
+	1010475:'ZX3',
+	1010476:'ZXHZ',
+	1010478:'ZUS',
+	1010479:'ZUL',
+	1010480:'HHZX',
+	1010481:'ZUHZ',
+	1010482:'ZU3BD',
+	1010484:'ZUS',
+	1010485:'ZUL',
+	1010486:'HHZX',
+	1010487:'ZUHZ',
+	1010488:'ZU3BD',
+	1010490:'BDW1',
+	1010491:'BDW1',
+	1010493:'BDW2',
+	1010495:'ZX2',
+	1010496:'ZX2',
+	1010497:'ZXHZ2',
+	1010498:'ZXHZ2',
+	1010501:'DWD',
+	1010502:'DWD',
+	1010503:'DWD',
+	1010504:'DWD',
+	1010505:'DWD',
+	1010507:'DXDS',
+	1010508:'DXDS',
+	1010510:'ZX4',
+	1010512:'ZH4',
+	1010514:'SXZU24',
+	1010515:'SXZU12',
+	1010516:'SXZU6',
+	1010517:'SXZU4',
+	1010519:'ZX5',
+	1010521:'ZH5',
+	1010523:'WXZU120',
+	1010524:'WXZU60',
+	1010525:'WXZU30',
+	1010526:'WXZU20',
+	1010527:'WXZU10',
+	1010528:'WXZU5',
+	1010530:'BDW1',
+	1010531:'HSCS',
+	1010532:'SXBX',
+	1010533:'SJFC',
+	1010535:'ZX3',
+	1010536:'ZXHZ',
+	1010538:'ZUS',
+	1010539:'ZUL',
+	1010540:'HHZX',
+	1010541:'ZUHZ',
+	1010543:'RXZXSSC2',
+	1010544:'RXZXSSC2',
+	1010545:'RXZXSSC2',
+	1010546:'RXZXSSC2',
+	1010547:'RXZXSSC2',
+	1010548:'RXZXSSC2',
+	1010549:'RXZXSSC2',
+	1010550:'RXZXSSC2',
+	1010551:'RXZXSSC2',
+	1010552:'RXZXSSC2',
+	1010553:'RXZXSSC2DS',
+	1010554:'RXZXSSC2DS',
+	1010555:'RXZXSSC2DS',
+	1010556:'RXZXSSC2DS',
+	1010557:'RXZXSSC2DS',
+	1010558:'RXZXSSC2DS',
+	1010559:'RXZXSSC2DS',
+	1010560:'RXZXSSC2DS',
+	1010561:'RXZXSSC2DS',
+	1010562:'RXZXSSC2DS',
+	1010563:'RXZXSSC2HZ',
+	1010564:'RXZXSSC2HZ',
+	1010565:'RXZXSSC2HZ',
+	1010566:'RXZXSSC2HZ',
+	1010567:'RXZXSSC2HZ',
+	1010568:'RXZXSSC2HZ',
+	1010569:'RXZXSSC2HZ',
+	1010570:'RXZXSSC2HZ',
+	1010571:'RXZXSSC2HZ',
+	1010572:'RXZXSSC2HZ',
+	1010574:'RXZUSSC2',
+	1010575:'RXZUSSC2',
+	1010576:'RXZUSSC2',
+	1010577:'RXZUSSC2',
+	1010578:'RXZUSSC2',
+	1010579:'RXZUSSC2',
+	1010580:'RXZUSSC2',
+	1010581:'RXZUSSC2',
+	1010582:'RXZUSSC2',
+	1010583:'RXZUSSC2',
+	1010584:'RXZUSSC2DS',
+	1010585:'RXZUSSC2DS',
+	1010586:'RXZUSSC2DS',
+	1010587:'RXZUSSC2DS',
+	1010588:'RXZUSSC2DS',
+	1010589:'RXZUSSC2DS',
+	1010590:'RXZUSSC2DS',
+	1010591:'RXZUSSC2DS',
+	1010592:'RXZUSSC2DS',
+	1010593:'RXZUSSC2DS',
+	1010594:'RXZUSSC2HZ',
+	1010595:'RXZUSSC2HZ',
+	1010596:'RXZUSSC2HZ',
+	1010597:'RXZUSSC2HZ',
+	1010598:'RXZUSSC2HZ',
+	1010599:'RXZUSSC2HZ',
+	1010600:'RXZUSSC2HZ',
+	1010601:'RXZUSSC2HZ',
+	1010602:'RXZUSSC2HZ',
+	1010603:'RXZUSSC2HZ',
+	1010605:'RXZXSSC3',
+	1010606:'RXZXSSC3',
+	1010607:'RXZXSSC3',
+	1010608:'RXZXSSC3',
+	1010609:'RXZXSSC3',
+	1010610:'RXZXSSC3',
+	1010611:'RXZXSSC3',
+	1010612:'RXZXSSC3',
+	1010613:'RXZXSSC3',
+	1010614:'RXZXSSC3',
+	1010615:'RXZXSSC3DS',
+	1010616:'RXZXSSC3DS',
+	1010617:'RXZXSSC3DS',
+	1010618:'RXZXSSC3DS',
+	1010619:'RXZXSSC3DS',
+	1010620:'RXZXSSC3DS',
+	1010621:'RXZXSSC3DS',
+	1010622:'RXZXSSC3DS',
+	1010623:'RXZXSSC3DS',
+	1010624:'RXZXSSC3DS',
+	1010625:'RXZXSSC3HZ',
+	1010626:'RXZXSSC3HZ',
+	1010627:'RXZXSSC3HZ',
+	1010628:'RXZXSSC3HZ',
+	1010629:'RXZXSSC3HZ',
+	1010630:'RXZXSSC3HZ',
+	1010631:'RXZXSSC3HZ',
+	1010632:'RXZXSSC3HZ',
+	1010633:'RXZXSSC3HZ',
+	1010634:'RXZXSSC3HZ',
+	1010636:'RXZUSANSSC3',
+	1010637:'RXZUSANSSC3',
+	1010638:'RXZUSANSSC3',
+	1010639:'RXZUSANSSC3',
+	1010641:'RXZUSANSSC3',
+	1010642:'RXZUSANSSC3',
+	1010643:'RXZUSANSSC3',
+	1010644:'RXZUSANSSC3',
+	1010645:'RXZUSANSSC3',
+	1010646:'RXZUSIXSSC3',
+	1010647:'RXZUSIXSSC3',
+	1010648:'RXZUSIXSSC3',
+	1010649:'RXZUSIXSSC3',
+	1010650:'RXZUSIXSSC3',
+	1010651:'RXZUSIXSSC3',
+	1010652:'RXZUSIXSSC3',
+	1010653:'RXZUSIXSSC3',
+	1010654:'RXZUSIXSSC3',
+	1010655:'RXZUSIXSSC3',
+	1010656:'RXZUSSC3HH',
+	1010657:'RXZUSSC3HH',
+	1010658:'RXZUSSC3HH',
+	1010659:'RXZUSSC3HH',
+	1010660:'RXZUSSC3HH',
+	1010661:'RXZUSSC3HH',
+	1010662:'RXZUSSC3HH',
+	1010663:'RXZUSSC3HH',
+	1010664:'RXZUSSC3HH',
+	1010665:'RXZUSSC3HH',
+	1010666:'RXZUSSC3HZ',
+	1010667:'RXZUSSC3HZ',
+	1010668:'RXZUSSC3HZ',
+	1010669:'RXZUSSC3HZ',
+	1010670:'RXZUSSC3HZ',
+	1010671:'RXZUSSC3HZ',
+	1010672:'RXZUSSC3HZ',
+	1010673:'RXZUSSC3HZ',
+	1010674:'RXZUSSC3HZ',
+	1010675:'RXZUSSC3HZ',
+	1010676:'RXZUSANSSC3',
+	1010678:'RXZXSSC4',
+	1010679:'RXZXSSC4',
+	1010680:'RXZXSSC4',
+	1010681:'RXZXSSC4',
+	1010682:'RXZXSSC4',
+	1010683:'RXZXSSC4DS',
+	1010684:'RXZXSSC4DS',
+	1010685:'RXZXSSC4DS',
+	1010686:'RXZXSSC4DS',
+	1010687:'RXZXSSC4DS',
+	1010689:'RXZU24SSC4',
+	1010690:'RXZU24SSC4',
+	1010691:'RXZU24SSC4',
+	1010692:'RXZU24SSC4',
+	1010693:'RXZU24SSC4',
+	1010694:'RXZU12SSC4',
+	1010695:'RXZU12SSC4',
+	1010696:'RXZU12SSC4',
+	1010697:'RXZU12SSC4',
+	1010698:'RXZU12SSC4',
+	1010699:'RXZU6SSC4',
+	1010700:'RXZU6SSC4',
+	1010701:'RXZU6SSC4',
+	1010702:'RXZU6SSC4',
+	1010703:'RXZU6SSC4',
+	1010704:'RXZU4SSC4',
+	1010705:'RXZU4SSC4',
+	1010706:'RXZU4SSC4',
+	1010707:'RXZU4SSC4',
+	1010708:'RXZU4SSC4',
+	1020494:'BDW2',
+	1020500:'ZU2',
+	1020501:'ZU2',
+	1020502:'ZUHZ2',
+	1020503:'ZUHZ2'
 };
 //投注
 const checkNum = ()=>{
@@ -300,7 +518,7 @@ const checkNum = ()=>{
                     nums = _inputCheck_Num(3,false,_HHZXcheck,true);
                     if( mname == 'RXZUSSC3HH'||mname == 'RXZUWFC3HH'||mname == 'RXZUFFC3HH'){
                         nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 3);
-                        recordPoschoose();
+                        /*recordPoschoose();*/
                     }
                     break;
                 case 'ZX2'  : nums = _inputCheck_Num(2,false); break;
@@ -323,7 +541,7 @@ const checkNum = ()=>{
                 case "RXZXFFC2DS":
                     nums = _inputCheck_Num(2, false);
                     nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 2);
-                    recordPoschoose();
+                    /*recordPoschoose();*/
                     break;
                 //任选二-组选单式
                 case "RXZUSSC2DS":
@@ -331,7 +549,7 @@ const checkNum = ()=>{
                 case "RXZUFFC2DS":
                     nums = _inputCheck_Num(2, false, _HHZXcheck, true);
                     nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 2);
-                    recordPoschoose();
+                    /*recordPoschoose();*/
                     break;
                 //任选三 直选 直选单式
                 case "RXZXWFC3DS":
@@ -339,7 +557,7 @@ const checkNum = ()=>{
                 case "RXZXSSC3DS":
                     nums = _inputCheck_Num(3, false);
                     nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 3);
-                    recordPoschoose();
+                    /*recordPoschoose();*/
                     break;
                 //任选四 任四直选 直选单式
                 case "RXZXWFC4DS":
@@ -347,7 +565,7 @@ const checkNum = ()=>{
                 case "RXZXSSC4DS":
                     nums = _inputCheck_Num(4, false);
                     nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 4);
-					recordPoschoose();
+					/*recordPoschoose();*/
 	break;
                 //pk10单式
             	case "PK10ZX2":
@@ -355,7 +573,7 @@ const checkNum = ()=>{
                 case "PK10ZX4":
                 case "PK10ZX5":
                 case "PK10ZX6":
-                var baseLen = parseInt(methodname.substr(6,1));
+                var baseLen = parseInt(mname.substr(6,1));
                 nums = play.calculateInputNumbersLength(play.checkInputNumbersArray(stateVar.aboutGame.data_sel[0],baseLen).length);  
                 
                     break;
@@ -422,7 +640,7 @@ const checkNum = ()=>{
                 };
                 if( mname == 'RXZXSSC3HZ' || mname == 'RXZUSSC3HZ'||mname == 'RXZXWFC3HZ' || mname == 'RXZUWFC3HZ'||mname == 'RXZXFFC3HZ' || mname == 'RXZUFFC3HZ' ){//任选三直选和值,任选三组选和值
                     nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 3);
-                    recordPoschoose();
+                    /*recordPoschoose();*/
                 }
                 break;
             case 'ZUS'  :   //组三
@@ -437,7 +655,7 @@ const checkNum = ()=>{
                 };
                 if (mname == 'RXZUSANSSC3'||mname == 'RXZUSANWFC3'||mname == 'RXZUSANFFC3') {
                     nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 3);
-                    recordPoschoose();
+                    /*recordPoschoose();*/
                 }
                 break;
             case 'ZUL'  :   //组六
@@ -452,7 +670,7 @@ const checkNum = ()=>{
                 };
                 if (mname == 'RXZUSIXSSC3'||mname == 'RXZUSIXWFC3'||mname == 'RXZUSIXFFC3') {
                     nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 3);
-                    recordPoschoose();
+                    /*recordPoschoose();*/
                 }
                 break;
             case 'ZH5':
@@ -741,7 +959,7 @@ const checkNum = ()=>{
                     case 5:multi = 10;break;
                 }
                 nums = nums * multi;
-                recordPoschoose();
+                /*recordPoschoose();*/
                 break;
             //任选二-直选和值
             case "RXZXWFC2HZ":
@@ -755,7 +973,7 @@ const checkNum = ()=>{
                     }
                 }
                 nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 2);
-                recordPoschoose();
+                /*recordPoschoose();*/
                 break;
             //任选二-组选和值
             case "RXZUWFC2HZ":
@@ -769,7 +987,7 @@ const checkNum = ()=>{
                     }
                 }
                 nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 2);
-                recordPoschoose();
+                /*recordPoschoose();*/
                 break;
             //任选三-直选复式
             case "RXZXSSC3":
@@ -832,7 +1050,7 @@ const checkNum = ()=>{
                     nums += commone.Combination(s, 4);
                 }
                 nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 4);
-                recordPoschoose();
+                /*recordPoschoose();*/
                 break;
             //任选四-组选-组选12
             case "RXZU12WFC4":
@@ -856,7 +1074,7 @@ const checkNum = ()=>{
                     nums += tmp_nums;
                 }
                 nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 4);
-                recordPoschoose();
+                /*recordPoschoose();*/
                 break;
             //任选四-组选-组选6
             case "RXZU6WFC4":
@@ -866,7 +1084,7 @@ const checkNum = ()=>{
                     nums += commone.Combination(stateVar.aboutGame.data_sel[0].length, stateVar.aboutGame.minchosen[0]);
                 }
                 nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 4);
-				recordPoschoose();
+				/*recordPoschoose();*/
                 break;
 			//3星直选跨度
 			case '3XZXKD' :
@@ -1150,13 +1368,13 @@ let _HHZXcheck = (n,len) => {//混合组选合法号码检测，合法返回TRUE
     return false;
 };
 let _SDinputCheck = (n,len) => {//山东十一运的手动输入型的检测[不能重复，只能是01-11的数字]
-    t = n.split(" ");
-    l = t.length;
-    for( i=0; i<l; i++ ){
+    let t = n.split(" ");
+    let l = t.length;
+    for(let i=0; i<l; i++ ){
         if( Number(t[i]) > 11 || Number(t[i]) < 1 ){//超过指定范围
             return false;
         }
-        for( j=i+1; j<l; j++ ){
+        for(let j=i+1; j<l; j++ ){
             if( Number(t[i]) == Number(t[j]) ){//重复的号码
                 return false;
             }
@@ -1185,7 +1403,7 @@ let play = {
     },
     //格式化文本域的值
     formatInputNumbers:() => {
-        var val = $("#lt_write_box").val();
+        var val = $(".textAreaClass").val();
         return play.replaceInputNumbers(val," ");
     },
     //删除文本域中的重复和长度不符合玩法的号码,参数（该玩法的号码长度，需要验证的数组）
@@ -1208,8 +1426,7 @@ let play = {
         return val.split(",");
     },
     getCheckedInputNumbersArray: (num_arr,base_len,num_separator,check_type) => {
-        var lt_elem = $("#lt_write_del");
-        lt_elem.removeData("error_num").removeData('repeat_num').removeData('no_repeat_num');
+        stateVar.savePkInput = {};
         var error_num = [], repeat_num = [], no_repeat_num = [];
         var max = 10;
         var min = 1;
@@ -1265,7 +1482,7 @@ let play = {
                 }
             }
         }
-        lt_elem.data("error_num", error_num).data('repeat_num', repeat_num).data('no_repeat_num', no_repeat_num).data('right_num', num_arr);   
+        stateVar.savePkInput = {error_num:error_num,repeat_num:no_repeat_num,right_num:num_arr,no_repeat_num:no_repeat_num};
         return num_arr;
     },  
     //号码验证:不允许重复
@@ -1280,17 +1497,7 @@ let play = {
             if (!flag) break;
         }
         return flag;
-    },    
-    //显示删除的重复号
-    showErrorNumbers:(lt_elem,error_num,repeat_num) => {
-        var content = "已删除以下重复或错误号码：<br/>";            
-        var no_repeat_num = lt_elem.data('no_repeat_num');
-        lt_elem.data('right_num',no_repeat_num).data('repeat_num',[]).data('error_num',[]);
-        $("#lt_write_box").val(no_repeat_num.join(','));
-        content += (error_num.length > 0 ? (error_num.join() + '\n') : '') + repeat_num.join();
-        //$("#lt_sel_nums").html(play.calculateInputNumbersLength(no_repeat_num.length));
-        checkNum();
-    }
+    },
 };
 /*------------------------------------------------------------------------------------------------------------*/
 //生成随机号码方法
@@ -1389,44 +1596,51 @@ const random = () => {
 			random_number = getSuiji3(10, [1, 0, 0, 0, 0], "true");
 			break;
 		case 'SDZX3':
-			random_number = getSuiji(10, [1, 0, 0, 0, 0]);
+			random_number = getSuiji2(11, [1, 1, 1, 0, 0]);
 			break;
 		case 'SDZU3':
-			random_number = getSuiji(10, [3, 0, 0, 0, 0]);
+			random_number = getSuiji2(11, [3, 0, 0, 0, 0]);
 			break;
 		case 'SDZX2':
-			random_number = getSuiji(10, [0, 1, 0, 0, 0]);
+			random_number = getSuiji2(11, [1, 1, 0, 0, 0]);
 			break;
 		case 'SDZU2':
-			random_number = getSuiji(10, [2, 0, 0, 0, 0]);
+			random_number = getSuiji2(11, [2, 0, 0, 0, 0]);
+			break;
+		case 'SDDWD':
+			let suijiNum = Math.random()*10;
+			if(suijiNum <= 3){
+				random_number = getSuiji2(11, [1, 0, 0, 0, 0]);
+			}else if(suijiNum > 3 && suijiNum <= 6){
+				random_number = getSuiji2(11, [0, 1, 0, 0, 0]);
+			}else{
+				random_number = getSuiji2(11, [0, 0, 1, 0, 0]);
+			}
 			break;
 		case 'SDBDW':
-		case 'SDDWD':
-		case 'SDDDS':
-		case 'SDCZW':
 		case 'SDRX1':
-			random_number = getSuiji(10, [1, 0, 0, 0, 0]);
+			random_number = getSuiji2(11, [1, 0, 0, 0, 0]);
 			break;
 		case 'SDRX2':
-			random_number = getSuiji(10, [2, 0, 0, 0, 0]);
+			random_number = getSuiji2(11, [2, 0, 0, 0, 0]);
 			break;
 		case 'SDRX3':
-			random_number = getSuiji(10, [3, 0, 0, 0, 0]);
+			random_number = getSuiji2(11, [3, 0, 0, 0, 0]);
 			break;
 		case 'SDRX4':
-			random_number = getSuiji(10, [4, 0, 0, 0, 0]);
+			random_number = getSuiji2(11, [4, 0, 0, 0, 0]);
 			break;
 		case 'SDRX5':
-			random_number = getSuiji(10, [5, 0, 0, 0, 0]);
+			random_number = getSuiji2(11, [5, 0, 0, 0, 0]);
 			break;
 		case 'SDRX6':
-			random_number = getSuiji(10, [6, 0, 0, 0, 0]);
+			random_number = getSuiji2(11, [6, 0, 0, 0, 0]);
 			break;
 		case 'SDRX7':
-			random_number = getSuiji(10, [7, 0, 0, 0, 0]);
+			random_number = getSuiji2(11, [7, 0, 0, 0, 0]);
 			break;
 		case 'SDRX8':
-			random_number = getSuiji(10, [8, 0, 0, 0, 0]);
+			random_number = getSuiji2(11, [8, 0, 0, 0, 0]);
 			break;
 		case 'BJRX2':
 			random_number = getSuiji(10, [2, 0, 0, 0, 0]);
@@ -1446,6 +1660,7 @@ const random = () => {
 		case 'BJRX7':
 			random_number = getSuiji(10, [7, 0, 0, 0, 0]);
 			break;
+		case 'PK10DXDS':
 		case 'DXDS':
 			random_number = getSuiji(4, [1, 1, 0, 0, 0]);
 			for (var i = random_number.length - 1; i >= 0; i--) {
@@ -1467,6 +1682,27 @@ const random = () => {
 
 			};
 			break;
+		case 'DXDS3':
+			random_number = getSuiji(4, [1, 1, 1, 0, 0]);
+			for (var i = random_number.length - 1; i >= 0; i--) {
+				switch (random_number[i][0]) {
+					case 0:
+						random_number[i][0] = '大';
+						break;
+					case 1:
+						random_number[i][0] = '小';
+						break;
+	
+					case 2:
+						random_number[i][0] = '单';
+						break;
+					case 3:
+						random_number[i][0] = '双';
+						break;
+				};
+	
+			};
+			break;
 		case 'SD337': //220
 			random_number = getSuiji2(11, [1, 1, 1]);
 			break;
@@ -1485,13 +1721,13 @@ const random = () => {
 		case 'SD347': //230
 			random_number = getSuiji2(11, [1, 0, 0, 1, 1], "true");
 			break;
-		case 'SDQWX1': //234
+		case 'SDDDS': //234
 			var r5 = getSuijiDing(['5单0双', '4单1双', '3单2双', '2单3双', '1单4双', '0单5双']);
 			var results = [];
 			results[0] = r5;
 			random_number = results;
 			break;
-		case 'SDQWX2': //236
+		case 'SDCZW': //236
 			random_number = getSuiji(1, [1], "zw");
 			break;
 		case 'SD355': //238
@@ -1518,20 +1754,26 @@ const random = () => {
 		case 'SD369': //258
 			random_number = getSuiji2(11, [8]);
 			break;
-		case 'PK10CGJ': //2357
+		case 'CGJ':
 			random_number = getSuiji2(10, [1]);
 			break;
-		case "PK10CGYJ": //2359
+		case "PK10ZX2":
 			random_number = getSuiji2(10, [1, 1]);
 			break;
-		case "PK10CQ3": //2361 
+		case "PK10ZX3":
 			random_number = getSuiji2(10, [1, 1, 1]);
 			break;
-		case "PK10CQ4": //2363 
+		case "PK10ZX4":
 			random_number = getSuiji2(10, [1, 1, 1, 1]);
 			break;
-		case "PK10CQ5": //2365
+		case "PK10ZX5":
 			random_number = getSuiji2(10, [1, 1, 1, 1, 1]);
+			break;
+		case "PK10ZX6":
+			random_number = getSuiji2(10, [1, 1, 1, 1, 1,1]);
+			break;
+		case 'PK10DWD':
+			random_number = getSuiji2(10, [1, 0, 0, 0, 0], 'true');
 			break;
 		case 'JSK3a1': //2338
 			var list1 = getSuijiDing([11, 22, 33, 44, 55, 66]);

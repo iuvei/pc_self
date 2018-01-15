@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import mobx,{computed, autorun} from "mobx";
 import { Table, Button, Modal, Select, InputNumber, Checkbox } from 'antd';
 import ModelView from '../../../Common/ChildNav/ChildNav'
 import { stateVar } from '../../../../State'
 
 import './Modal.scss'
 
-const mostNum = 30;
 @observer
 export default class ModalView extends Component {
     constructor(props) {
@@ -15,30 +15,13 @@ export default class ModalView extends Component {
             loading: false,
             chaseLoading: false,
             periodsIndex: null,
-            issueArray : [],
-            dataTemp:[]
+            issueItem:[],
+            checkAll:false,
+            checkedList:[]
         }
     };
-    componentDidMount() {
-        this._ismount = true;
-    	let tempArray = stateVar.issueItem
-    	console.log(tempArray);
-    	let acceptArray = [];
-    	for(let i=0;i<tempArray.length;i++){
-    		if(i == mostNum){
-    			break;
-    		}
-    		let obj = {
-    			key: i+1,
-                name: i+1,
-                age: tempArray[i].issue,
-                address: '0',
-                address1: '0',
-                address2: tempArray[i].saleend,
-    		}
-    		acceptArray.push(obj);
-    	}
-    	this.setState({dataTemp:acceptArray})
+    componentDidMount(){
+    	this.setState({issueItem:stateVar.issueItem});
     };
     enterLoading() {
         this.setState({ loading: true });
@@ -49,7 +32,34 @@ export default class ModalView extends Component {
     enterChaseLoading() {
         this.setState({ chaseLoading: true });
     };
+    handerClick(){
+    	
+    };
+    onCheckAllChange(e){
+    	this.setState({indeterminate:!this.state.indeterminate,checkAll:!this.state.checkAll},()=>{
+    		if(this.state.checkAll){
+    			
+    		}
+    	});
+    };
     render() {
+    	let tempData = stateVar.issueItem || [];
+    	let dataTemp = []
+    	for(let i=0;i<tempData.length;i++){
+    		if(i == 120){
+    			break;
+    		}else{
+    			let obj = {
+	    			key: i+1,
+	                name: i+1,
+	                age: tempData[i].issue,
+	                address: '0',
+	                address1: '0',
+	                address2: tempData[i].saleend,
+	    		}
+    			dataTemp.push(obj)
+    		}
+    	}
         const navList = [
             {
                 link: '',
@@ -62,70 +72,8 @@ export default class ModalView extends Component {
                 text: '翻倍追号'
             }
         ];
-        const periodsList = ['10期', '20期', '50期', '全部'];
+        const periodsList = ['5期','10期', '20期', '50期', '全部'];
 
-        const columns = [
-            {
-                title: '序号',
-                dataIndex: 'name',
-                width: 50,
-            }, {
-                title: '期数',
-                dataIndex: 'age',
-                width: 150,
-            }, {
-                title: '倍率',
-                dataIndex: 'address',
-                width: 200,
-                render: (text, record) => (
-                    <span>
-                        <InputNumber min={1} max={10} disabled={record.visited ? false : true}  defaultValue={0} onChange={()=>this.onChange()} />&nbsp;倍
-                    </span>
-                ),
-            }, {
-                title: '金额',
-                dataIndex: 'address1',
-                width: 150,
-                render: (text) => (
-                    <span style={{color: '#CB1313'}}>{text}元</span>
-                ),
-            }, {
-                title: '开奖时间',
-                dataIndex: 'address2',
-                width: 200,
-            }
-        ];
-        const rowSelection = {
-            onChange: (selectedRowKeys, selectedRows) => {
-                console.log(selectedRowKeys);
-            },
-            onSelect:(a,b,c)=>{
-            	const newData = this.state.dataTemp;
-            	const target = newData.filter(item => a.key === item.key)[0];
-            	if(target){
-            		if(b){
-            			target.visited = true;
-            		}else{
-            			target.visited = false;
-            		}
-            		this.setState({dataTemp:newData});
-            	}
-            	console.log(b)
-            },
-            onSelectAll:(a,b,c)=>{
-            	const newData = this.state.dataTemp;
-            	if(a){
-            		for(let i=0;i<newData.length;i++){
-            			newData[i].visited = true;
-            		}
-            	}else{
-            		for(let i=0;i<newData.length;i++){
-            			newData[i].visited = false;
-            		}
-            	}
-            	this.setState({dataTemp:newData});
-            }
-        };
         return (
             <Modal
                 width='865px'
@@ -137,13 +85,18 @@ export default class ModalView extends Component {
                 className="modal_content"
             >
                 <div className="modal_main">
+                {
+                	((){
+                		
+                	})()
+                }
                     <div className="m_m_content clear">
                         <div className="modal_periods left">
                             <p className="m_p_text left">追号期数</p>
                             <ul className="m_periods_list left">
                                 {
                                     periodsList.map((value, index)=>{
-                                        return <li key={index} className={this.state.periodsIndex === index ? 'm_periods_active' : ''} onClick={()=>this.setState({periodsIndex: index})}>{value}</li>
+                                        return <li key={index} className={this.state.periodsIndex === index ? 'm_periods_active' : ''} onClick={()=>this.setState({periodsIndex: index})} key={index}>{value}</li>
                                     })
                                 }
                             </ul>
@@ -163,13 +116,32 @@ export default class ModalView extends Component {
                         </Button>
                     </div>
                     <div className="m_m_table">
-                        <Table rowSelection={rowSelection}
-                               columns={columns}
-                               dataSource={this.state.dataTemp}
-                               pagination={false}
-                               scroll={{ y: 240 }}
-                               size="middle"
-                        />
+                    	<div className='thClass'>
+                    		<div style={{width:'15%'}}>序号</div>
+                    		<div style={{width:'20%'}}><Checkbox onChange={(e)=>this.onCheckAllChange(e)} checked={this.state.checkAll}>期数</Checkbox></div>
+                    		<div style={{width:'25%'}}>倍率</div>
+                    		<div style={{width:'15%'}}>金额</div>
+                    		<span className='span' style={{width:'25%'}}>开奖时间</span>
+                    	</div>
+                    	<div className='tableTrace'>
+	                        <table>
+	                        	<tbody>
+		                        	{
+		                        		dataTemp.map((value,index)=>{
+		                        			return(
+		                        				<tr key={index}>
+					                        		<td style={{width:'15%'}}>{index+1}</td>
+					                        		<td style={{width:'20%'}}><Checkbox onChange={this.handerClick}>{value.age}</Checkbox></td>
+					                        		<td style={{width:'25%'}}><InputNumber min={1} disabled={true} max={9999} defaultValue={0} onChange={(value)=>{this.onChange(value)}} />&nbsp;倍</td>
+					                        		<td style={{width:'15%',color:'#cb1414'}}>{value.address1}元</td>
+					                        		<td style={{width:'25%'}}>{value.address2}</td>
+		                        				</tr>
+		                        			)
+		                        		})
+		                        	}
+	                        	</tbody>
+                        </table>
+                        </div>
                     </div>
                     <div className="m_m_footer clear">
                         <div className="m_m_left_btn left">

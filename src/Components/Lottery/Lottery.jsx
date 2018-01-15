@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Row, Col } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 
 import './Lottery.scss';
@@ -8,33 +7,33 @@ import './Lottery.scss';
 import RightSider from './RightSider/RightSider';
 import ContentMian from './ContentMain/ContentMian';
 
+var url1 = require("./sound/kaijiang.mp3");
+var url1a = require("./sound/kaijiang.ogg");
+var url2 = require("./sound/fengdan.mp3");
+var url2a = require("./sound/fengdan.ogg");
+var url3 = require("./sound/minute1.mp3");
+var url3a = require("./sound/minute1.ogg");
 @observer
 export default class Lottery extends Component {
-    // shouldComponentUpdate(nextProps, nextState){
-    //     Perf.start();
-    //     return true
-    // }
-    // componentDidUpdate() {
-    //     Perf.stop();
-    //     var measurements = Perf.getLastMeasurements();
-    //     Perf.printInclusive(measurements);
-    // }
     render() {
         return (
-            <div>
-                {/*<QueueAnim duration={1000}*/}
-                    {/*animConfig={[*/}
-                    {/*{ opacity: [1, 0], translateY: [0, 50] }*/}
-                    {/*]}>*/}
-                    <Row type="flex" justify="center" align="top" key="betcenter">
-                        <Col span={20}>
-                            <ContentMian key="ContentMian"/>
-                        </Col>
-                        <Col span={4}>
-                            <RightSider/>
-                        </Col>
-                    </Row>
-                {/*</QueueAnim>*/}
+        	<div className='main'>
+	            <div className='all_bet'>
+	                <ContentMian key="ContentMian"/>
+	                <RightSider key="RightSider"/>
+	            </div>
+	            <audio preload='meta' id='kjsound' controls="controls" style={{width:0,height:0}}>
+	            	<source src={url1}></source>
+	            	<source src={url1a}></source>
+	            </audio>
+	            <audio preload='meta' id='fengdansound' controls="controls" style={{width:0,height:0}}>
+		            <source src={url2}></source>
+		            <source src={url2a}></source>
+	            </audio>
+	            <audio preload='meta' id='minutesound' controls="controls" style={{width:0,height:0}}>
+	            	<source src={url3}></source>
+	            	<source src={url3a}></source>
+	            </audio>
             </div>
         );
     }

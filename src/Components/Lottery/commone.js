@@ -63,7 +63,7 @@ const diff = (t) => {//根据时间差返回相隔时间
 		hour : fftime(Math.floor(t%86400/3600)),
 		minute : fftime(Math.floor(t%3600/60)),
 		second : fftime(Math.floor(t%60))
-	} : {day:0,hour:0,minute:0,second:0};
+	} : {day:'00',hour:'00',minute:'00',second:'00'};
 }
 Array.prototype.each = function(fn){
     fn = fn || Function.K;

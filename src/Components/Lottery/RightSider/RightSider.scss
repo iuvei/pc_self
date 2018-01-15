@@ -2,7 +2,8 @@
 @import '../../../Style/mixin';
 
 .right_sider{
-    margin: $content-top 0 10px -19px;
+    margin: $content-top 0 10px 0;
+    float: left;
 }
 .user_info{
     @include wh(210px, 178px);
@@ -71,48 +72,81 @@
         li{
             float:left;
             text-align: center;
-            width: 33%;
-        }
-        li:last-child{
-            width: 34%;
+            font-size: 12px;
         }
     }
-    $ball_r: 17px;
+    .mmc_title{
+        li{
+           width:100% !important;
+        }
+    }
+    $ball_r: 16px;
     .right_ball_number_style{
         @include wh($ball_r, $ball_r);
         @include borderRadius($ball_r/2);
         line-height: $ball_r;
     }
     .tbody_title{
+        position: relative;
         @include lh(35px);
         border-bottom: 1px dotted #C9C9C9;
         li{
             float:left;
             text-align: center;
         }
+        .banker,.player,.tie{
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            background: #e7250f;
+            border-radius: 50%;
+            color:#fff;
+            margin-top: 7px;
+            margin-left: 16px;
+        }
+        .player{
+            background: #154cb0;
+        }
+        .tie{
+            background: #4db923;
+        }
         .right_ball_number{
             margin-top: 8px;
-            li{
+            li.selected{
                 background-color: #CD242F;
                 color:#fff;
                 @extend .right_ball_number_style;
-                margin-right: 2px;
+                margin-right: 1px;
             }
-            li:nth-child(4),li:nth-child(5){
+            li.morelength{
+                width: 18px;
+                height: 18px;
+                line-height: 18px;
+                border-radius: 9px;
+            }
+            li.morepklength{
+                width: 18px;
+                height: 18px;
+                line-height: 18px;
+                border-radius: 50%;
+                margin-top: 1px;
+            }
+            li{
                 @extend .right_ball_number_style;
-                background-color: #C9C9C9;
                 color:#000;
+                background: #E6E6E6;
             }
         }
     }
-    .tbody_title>li:first-child{
-        width: 30%;
-    }
-    .tbody_title>li:nth-child(2){
-        width: 50%;
-    }
-    .tbody_title>li:last-child{
-        width: 20%;
+    .mmc_tbody_title>li{
+        width:100%!important;
+        .right_ball_number{
+            float: left;
+            margin-left: 54px;
+            li{
+                margin: 3px;
+            }
+        }
     }
     .r_sider_more{
         margin-top: 10px;
