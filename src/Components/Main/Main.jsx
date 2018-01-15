@@ -8,37 +8,10 @@ import LeftSider from '../Lottery/LeftSider/LeftSider';
 import RightPlug from '../Common/RightPlug/RightPlug'
 import './Main.scss';
 
-
-
-var _t;
+/*检测界面是否刷新*/
 window.onbeforeunload = function(){
-    event.preventDefault();
-    /*setTimeout(function(){_t = setTimeout(onload, 0)}, 0);
-    return "真的离开?";*/
+    return "真的离开?";
 }
-window.onload = function(){
-    clearTimeout(_t);
-   // event.preventDefault();
-   // window.location.assign("/#/autoLogin");
-    alert("取消离开");
-}
-
-/*window.onhashchange = function (){
-    alert("eartha1");
-}*/
-/*
-window.onbeforeunload=function (e){
-    e = e || window.event;
-
-    // 兼容IE8和Firefox 4之前的版本
-    if (e) {
-        e.returnValue = '关闭提示';
-    }
-
-    // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-    return '关闭提示';
-}
-*/
 
 @observer
 export default class Main extends Component {
@@ -47,50 +20,14 @@ export default class Main extends Component {
         this.state = {
 
         }
+
     };
 
-    /*主界面刷新弹出是否重新加载
-    * 点击确定进入自动登录界面
-    * */
-    keyBoard(){
-
-        alert("a");
-        return '555555';
-        /*F5 or ctrl+r 刷新 */
-       // if(e.keyCode==116||(e.ctrlKey && (e.keyCode==78||e.keyCode==82)))
-       //  {
-       //      e.preventDefault();
-       //      e.stopPropagation();
-
-           // if(confirm("系统可能不会保存您所做的更改")){
-           //     window.location.assign("/#/autoLogin");
-           //   //  hashHistory.push('/autoLogin');
-           // };
-        // }
-        // console.log("keyBoard")
+    componentDidMount() {
 
     }
-        componentDidMount() {
-            /*捕捉键盘事件以及浏览器离开主界面行为*/
-          /* window.addEventListener("beforeunload",function (e) {
-               return '您正在编辑的 issue 还没有提交，确定要离开？';
-           });*/
-          /*  this.props.router.setRouteLeaveHook(
-                this.props.route,
-                this.routerWillLeave
-            )*/
-        }
-        /*捕获到URL改变行为后弹出确认框*/
-      /*  routerWillLeave(nextLocation) {
-            if(confirm("系统可能不会保存您所做的更改")){
-                location.reload();
-                hashHistory.push('/autoLogin');
-            };
-
-        }*/
 
     componentWillUnmount(){
-        // window.removeEventListener("keydown",(e)=>this.keyBoard(e))
     };
 
     showLeftSider() {
@@ -102,7 +39,8 @@ export default class Main extends Component {
             hashHistory.getCurrentLocation().pathname === '/ea' ||
             hashHistory.getCurrentLocation().pathname === '/pt'||
             hashHistory.getCurrentLocation().pathname === '/gt'||
-            hashHistory.getCurrentLocation().pathname === '/sport'
+            hashHistory.getCurrentLocation().pathname === '/sport'||
+            hashHistory.getCurrentLocation().pathname === '/downLoadClient'
         ) {
             return true
         } else {

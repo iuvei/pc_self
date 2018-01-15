@@ -115,6 +115,8 @@ const interFace = (key) => {
     INTERFACE['SELFPROTO'] = 'controller=salarymanage&action=seeProtocol';
     //用户列表
     INTERFACE['CHILDRENUSERLIST'] = 'controller=user&action=list';
+    //契约列表
+    INTERFACE['CONTRACTLIST'] = 'controller=user&action=team';
     //配额契约
     INTERFACE['QUOTA'] = 'controller=user&action=useraccnum';
     //奖金组契约
@@ -157,6 +159,8 @@ const interFace = (key) => {
     INTERFACE['GTLOGIN'] = 'controller=kgame&action=login';
     //GT娱乐-转账
     INTERFACE['GTTRANSFER'] = 'controller=kgame&action=Transfer';
+    //投诉建议
+    INTERFACE['COMPLAINANDSUGGESTS'] = 'controller=help&action=AddComplain';
 
     let httpUrl = stateVar.httpUrl;
     if(key == 'PTLOGINNEW') {

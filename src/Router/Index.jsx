@@ -1,6 +1,7 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRoute,IndexRedirect } from 'react-router';
 import { stateVar } from '../State';
+import {getStore } from "../CommonJs/common";
 import {
     login,
     main,
@@ -29,10 +30,10 @@ import {
     weChat,
     aliPay,
     eBank,
+    promptlyRecharge,
     withdraw,
     affirmWithdraw,
     mentionFillingRecord,
-    promptlyRecharge,
     transfer,
     transferRecord,
     accountChange,
@@ -59,13 +60,14 @@ import {
     commonProblems,
     aboutHengCai,
     lotteryReport,
+    downLoadClient,
 } from './Chunks';
 /*
 *通过判断是否登录过来控制导航条是否可以直接输入页面而进入相应页面
  */
 const requireAuth = (nextState, replace) => {
     if (!stateVar.auth) {
-        replace({ pathname: '/' }) // 路由重定向到登录页面
+        replace({ pathname: '/' }) // 路由重定向到根目录
     }else{
         // ...
     }
@@ -74,9 +76,9 @@ const requireAuth = (nextState, replace) => {
 const routes = params => (
 
     <Route path="/">
-        <IndexRoute getComponent={login}  />
-       {/* <IndexRoute getComponent={autoLogin}  />*/}
+        <IndexRedirect to={getStore("session")?"/autoLogin":"/login"} />
         <Route path="/autoLogin" getComponent={autoLogin} params={params}/>
+        <Route path="/login" getComponent={login} params={params}/>
         <Route path="/main" getComponent={main} params={params} onEnter={requireAuth}  >
            {/* <IndexRedirect to="/home" />*/}
             <IndexRoute getComponent={lottery} />
@@ -142,6 +144,7 @@ const routes = params => (
                 <Route path="/helpInfo/commonProblems" getComponent={commonProblems} params={params}/>
                 <Route path="/helpInfo/aboutHengCai" getComponent={aboutHengCai} params={params}/>
             </Route>
+            <Route path="/downLoadClient" getComponent={downLoadClient} params={params}/>
             <Route path="/bobing" getComponent={bobing} params={params}/>
             <Route path="/ea" getComponent={ea} params={params}/>
             <Route path="/gt" getComponent={gt} params={params}/>

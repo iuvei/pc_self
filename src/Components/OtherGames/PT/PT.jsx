@@ -264,10 +264,6 @@ export default class PT extends Component {
     hideModal() {
         this.setState({visible: false})
     };
-    onAfterChange(a, b, c){
-        console.log(a, b, c);
-    }
-
     render() {
         const navList = this.state.navList;
         const gameList = this.state.gameList;
@@ -400,34 +396,32 @@ export default class PT extends Component {
                        className="pt_modal"
                 >
                     <div className="pt_m_content">
-                        {/*<Spin spinning={this.state.ptLoading} tip="加载中...">*/}
-                            <Button className="modal_close" onClick={()=>this.setState({startVisible: false})} type="primary" icon="close"></Button>
-                            <iframe scrolling="no"
-                                    id="main" name="main"
-                                    src={this.state.ptUrl}
-                                    className="pt_iframe"
-                            >
-
-                            </iframe>
-                            <div className="icon_p">
-                                <Icon type="left-circle" className="ic_left-circle"/>
-                                <div className="pt_m_gameList">
-                                    <ul className="games_list clear">
-                                        {
-                                            gameList.map((item, i)=>{
-                                                return (
-                                                    <li key={item.id}>
-                                                        <img src={stateVar.httpUrl + '/pcservice/' + item.pic} alt=""/>
-                                                        <p className="games_name">{item.cn_name}</p>
-                                                    </li>
-                                                )
-                                            })
-                                        }
-                                    </ul>
-                                </div>
-                                <Icon type="right-circle" className="ic_right-circle"/>
+                        <Button className="modal_close" onClick={()=>this.setState({startVisible: false})} type="primary" icon="close"></Button>
+                        <Spin className="pt_loading" spinning={this.state.ptLoading} tip="加载中..."/>
+                        <iframe scrolling="no"
+                                id="main" name="main"
+                                src={this.state.ptUrl}
+                                className="pt_iframe"
+                        >
+                        </iframe>
+                        <div className="icon_p">
+                            <Icon type="left-circle" className="ic_left-circle"/>
+                            <div className="pt_m_gameList">
+                                <ul className="games_list clear">
+                                    {
+                                        gameList.map((item, i)=>{
+                                            return (
+                                                <li key={item.id}>
+                                                    <img src={stateVar.httpUrl + '/pcservice/' + item.pic} alt=""/>
+                                                    <p className="games_name">{item.cn_name}</p>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
                             </div>
-                        {/*</Spin>*/}
+                            <Icon type="right-circle" className="ic_right-circle"/>
+                        </div>
                     </div>
 
                 </Modal>

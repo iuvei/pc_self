@@ -113,7 +113,9 @@ const trend = (body) =>  request(http.interFace('TREND'),body);
 const selfproto= (body) =>  request(http.interFace('SELFPROTO'),body);
 /*用户列表*/
 const childrenList= (body) =>  request(http.interFace('CHILDRENUSERLIST'),body);
-/*配额契约*/
+//契约列表
+const contractList= (body) =>  request(http.interFace('CONTRACTLIST'),body);
+//配额契约
 const quota= (body) =>  request(http.interFace('QUOTA'),body);
 /*奖金组契约*/
 const awardTeam= (body) =>  request(http.interFace('AWARDTEAM'),body);
@@ -153,6 +155,8 @@ const teammain= (body) =>  request(http.interFace('TEAMMAIN'),body);
 const gtLogin= (body) =>  request(http.interFace('GTLOGIN'),body);
 /*GT娱乐-转账*/
 const gtTransfer= (body) =>  request(http.interFace('GTTRANSFER'),body);
+//投诉建议
+const complainAndSuggests= (body) =>  request(http.interFace('COMPLAINANDSUGGESTS'),body);
 
 export default {
     getSess,
@@ -230,4 +234,6 @@ export default {
     gtTransfer,
     dailysalaryupdate,
     dailysalaryself,
+    complainAndSuggests,
+    contractList,
 }

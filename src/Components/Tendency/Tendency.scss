@@ -40,6 +40,7 @@ $border_color: #C8C8C8;
                     cursor: pointer;
                     background-color: #ddd;
                 }
+
             }
             li:not(:first-child){
                 border-left:1px solid $border-color;
@@ -66,5 +67,47 @@ $border_color: #C8C8C8;
             }
         }
 
+    }
+    .c_table{
+        clear: both;
+        padding-top: 22px;
+        /*去除表头的全局样式*/
+        .ant-table-thead{
+            th{
+                &>span{
+                    border-right: none;
+                }
+            }
+        }
+        /*表格样式*/
+        .trend_table_wrap{
+            white-space:nowrap;
+            .trend_awardNo{
+                background:url('./Img/ball.png') no-repeat center;
+                color: #fff;
+            }
+            .ant-table-thead{
+                .trend_awardNo,th{
+                    background: #515368;
+                    color: #fff;
+                }
+            }
+            .ant-table-tbody{
+                tr:nth-last-child(1),
+                tr:nth-last-child(2),
+                tr:nth-last-child(3),
+                tr:nth-last-child(4),
+                tr:nth-last-child(1) td.trend_awardNo,
+                tr:nth-last-child(2) td.trend_awardNo,
+                tr:nth-last-child(3) td.trend_awardNo,
+                tr:nth-last-child(4) td.trend_awardNo{
+                    background:#515368;
+                    color:#fff;
+                    &:hover{
+                        background:#515368 !important;
+                    }
+                }
+            }
+        }
     }
 }

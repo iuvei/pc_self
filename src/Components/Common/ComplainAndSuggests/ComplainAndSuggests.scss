@@ -1,0 +1,94 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+$border_color: #C8C8C8;
+
+.complain-modal {
+    text-align: center;
+    white-space: nowrap;
+    .ant-modal-close-x{
+        font-size: 19px;
+    }
+    .ant-modal-content{
+        background: transparent;
+        box-shadow:none;
+    }
+    .ant-modal-body{
+        white-space: pre-wrap;
+        font-size: 15px;
+        background: #fff;
+    }
+    .ant-input{
+        width: 400px;
+        font-size: 15px;
+        margin-left: 30px;
+    }
+    .complain_textarea{
+        vertical-align: text-top;
+        margin-left: 30px;
+        width: 400px;
+        height: 110px;
+        overflow-y: scroll;
+    }
+    .complain_textarea:focus{
+        outline:none;
+        border-color: #CF2027;
+    }
+    .ant-modal-header{
+        padding: 10px 16px;
+        text-align: center;
+        background: #48485f;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+    }
+    .ant-modal-title{
+        color: #fff;
+        font-size: 16px;
+    }
+    .ant-modal-close{
+        font-size: 16px;
+        color:white;
+    }
+    li{
+        margin-top: 10px;
+    }
+    .c_warn_txt{
+        margin-left: 10px;
+        color: red;
+    }
+    .ant-btn{
+        margin-left: 60px;
+        font-size: 14px;
+    }
+    .btn_group{
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+    .c_tip{
+        text-align: end;
+        margin-right: 26px;
+    }
+    .ant-btn-primary{
+        background-color: #ca1414;
+        border-color: #ca1414;
+        &:hover{
+            background-color: #ba0a0a;
+            border-color: #ba0a0a;
+        }
+    }
+}
+
+.complain-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+}
+
+.complain-modal .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: left;
+}

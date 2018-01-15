@@ -55,10 +55,7 @@ export default class HelpInfo extends Component {
                                 <div className="a_m_title">
                                     <span>帮助中心</span>
                                 </div>
-                                <ChildNav navList={navList}
-                                          defaultIndex={this.state.navIndex}
-                                          onChangeNavIndex={this.onChangeNavIndex.bind(this)}
-                                />
+                                <ChildNav navList={navList} defaultIndex={this.state.navIndex}  onChangeNavIndex={this.onChangeNavIndex.bind(this)}/>
                                 <div>
                                     {this.props.children}
                                 </div>

@@ -5,83 +5,144 @@
     position: fixed;
     right: 0;
     top: 30%;
-    background-color: #282828;
-    width: 50px;
     z-index: 99;
+    width: 140px;
     .right_list{
         li{
-            text-align: center;
+            margin-top: 0;
+            width: 140px;
+            color:#fff;
+            text-align: end;
             height: 47px;
             line-height: 47px;
-            border-bottom: 1px solid #3C3C3C;
-            &:hover{
-                cursor: pointer;
-                background: $rodio-check-color;
+            /*border-bottom: 1px solid #3C3C3C;*/
+            label{
+                padding-right: 15px;
             }
-            &:last-child{
-                border: 0;
-                height: 16px;
-                line-height: 15px;
-                background-color: #3C3C3C;
-                i{
-                    color: #878787;
-                }
-                &:hover i{
-                    color: #fff;
-                    transform: scale(1.2);
-                    @include transform(transform, 0.3s);
-                }
+            i{
+                border-bottom: 1px solid #3C3C3C;
             }
+
             .r_p_common{
-                @include wh(50px, 46px);
+                @include wh(50px, 47px);
                 display: inline-block;
+                vertical-align: middle;
                 &:hover{
-                    transform: scale(1.2);
-                    @include transform(transform, 0.3s);
+                   /* transform: scale(1.2);
+                    @include transform(transform, 0.3s);*/
                 }
             }
             .r_p_goOld{
-                background: url(./Img/fanhui1.png) no-repeat center center;
+                background:#282828 url(./Img/fanhui1.png) no-repeat center center;
                 &:hover{
-                    background: url(./Img/fanhui2.png) no-repeat center center;
+                    background:$rodio-check-color url(./Img/fanhui2.png) no-repeat center center;
                 }
             }
             .r_p_chongzhi{
-                background: url(./Img/chongzhi1.png) no-repeat center center;
+                background:#282828 url(./Img/chongzhi1.png) no-repeat center center;
                 &:hover{
-                    background: url(./Img/chongzhi2.png) no-repeat center center;
+                    background:$rodio-check-color url(./Img/chongzhi2.png) no-repeat center center;
                 }
             }
             .r_p_kefu{
-                background: url(./Img/kefu1.png) no-repeat center center;
+                background:#282828 url(./Img/kefu1.png) no-repeat center center;
                 &:hover{
-                    background: url(./Img/kefu2.png) no-repeat center center;
+                    background:$rodio-check-color url(./Img/kefu2.png) no-repeat center center;
                 }
             }
             .r_p_kehuduan{
-                background: url(./Img/kehuduan1.png) no-repeat center center;
+                background:#282828 url(./Img/kehuduan1.png) no-repeat center center;
                 &:hover{
-                    background: url(./Img/kehuduan2.png) no-repeat center center;
+                    background:$rodio-check-color url(./Img/kehuduan2.png) no-repeat center center;
                 }
             }
             .r_p_app{
-                background: url(./Img/shoujiapp1.png) no-repeat center center;
+                background:#282828 url(./Img/shoujiapp1.png) no-repeat center center;
                 &:hover{
-                    background: url(./Img/shoujiapp2.png) no-repeat center center;
+                    background:$rodio-check-color url(./Img/shoujiapp2.png) no-repeat center center;
                 }
             }
             .r_p_zoushi{
-                background: url(./Img/zoushi1.png) no-repeat center center;
+                background:#282828 url(./Img/zoushi1.png) no-repeat center center;
                 &:hover{
-                    background: url(./Img/zoushi2.png) no-repeat center center;
+                    background:$rodio-check-color url(./Img/zoushi2.png) no-repeat center center;
                 }
             }
             .r_p_tousu{
-                background: url(./Img/tousu1.png) no-repeat center center;
+                background:#282828 url(./Img/tousu1.png) no-repeat center center;
                 &:hover{
-                    background: url(./Img/tousu2.png) no-repeat center center;
+                    background:$rodio-check-color url(./Img/tousu2.png) no-repeat center center;
                 }
             }
         }
+
+        li.active{
+            margin-top: 1px;
+            cursor: pointer;
+            background: $rodio-check-color;
+            label{
+                cursor: pointer;
+            }
+            .r_p_goOld{
+                    background:$rodio-check-color url(./Img/fanhui2.png) no-repeat center center;
+
+            }
+            .r_p_chongzhi{
+                    background:$rodio-check-color url(./Img/chongzhi2.png) no-repeat center center;
+
+            }
+            .r_p_kefu{
+                    background:$rodio-check-color url(./Img/kefu2.png) no-repeat center center;
+            }
+            .r_p_kehuduan{
+                    background:$rodio-check-color url(./Img/kehuduan2.png) no-repeat center center;
+
+            }
+            .r_p_app{
+                    background:$rodio-check-color url(./Img/shoujiapp2.png) no-repeat center center;
+
+            }
+            .r_p_zoushi{
+
+                    background:$rodio-check-color url(./Img/zoushi2.png) no-repeat center center;
+
+            }
+            .r_p_tousu{
+
+                    background:$rodio-check-color url(./Img/tousu2.png) no-repeat center center;
+
+            }
+        }
+        li:nth-child(5).active{
+            background:transparent;
+        }
+    }
+    .p_QR{
+        position: fixed;
+        right: 47px;
+        top: 41%;
+    }
+
+}
+
+.r_caret-right{
+    text-align: center;
+    width: 50px;
+    border: 0;
+    height: 16px;
+    line-height: 15px;
+    background-color: #3C3C3C;
+    position: fixed;
+    right: 0;
+    top: 63%;
+    z-index: 99;
+    margin-top: -5px;
+    i{
+        color: #878787;
+
+    }
+    &:hover i{
+        color: #fff;
+
     }
 }

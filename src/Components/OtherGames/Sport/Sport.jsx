@@ -6,6 +6,7 @@ import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import CM_transfer from '../CM_transfer/CM_transfer';
 import './Sport.scss';
+import { Modal  } from 'antd';
 
 import sport_top from './Img/sport_top.png';
 let MONEY_FLAG = true;
@@ -46,15 +47,15 @@ export default class Sport extends Component {
             let postData = {};
             if(type == 'into') {
                 postData = {
-                    tran_from: "1",
-                    tran_to: "s",
+                    tran_from: "s",
+                    tran_to: "1",
                     money: intoMoney,
                     doFunToPe:"ok",
                 }
             }else{
                 postData = {
-                    tran_from: 's',
-                    tran_to: '1',
+                    tran_from: '1',
+                    tran_to: 's',
                     money: outMoney,
                     doFunToPe:"ok",
                 }
@@ -82,7 +83,6 @@ export default class Sport extends Component {
         this.setState({visible: false})
     };
     componentDidMount() {
-        this._ismount = true;
         this.getThirdAddress();
 
     };

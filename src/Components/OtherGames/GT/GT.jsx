@@ -4,7 +4,7 @@ import 'whatwg-fetch'
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import CM_transfer from '../CM_transfer/CM_transfer';
-import { Modal } from 'antd';
+import { Modal  } from 'antd';
 
 import './GT.scss';
 
@@ -29,15 +29,15 @@ export default class GT extends Component {
             let postData = {};
             if(type == 'into') {
                 postData = {
-                    frompt: "2",
-                    targetpt: "s",
+                    frompt: "s",
+                    targetpt: "2",
                     money: intoMoney,
                     tag:"transfer",
                 }
             }else{
                 postData = {
-                    frompt: 's',
-                    targetpt: '2',
+                    frompt: '2',
+                    targetpt: 's',
                     money: outMoney,
                     tag:"transfer",
                 }
@@ -81,9 +81,7 @@ export default class GT extends Component {
         this.setState({visible: false})
     };
     componentDidMount() {
-        this._ismount = true;
         this.getThirdAddress();
-
     };
 
     render() {

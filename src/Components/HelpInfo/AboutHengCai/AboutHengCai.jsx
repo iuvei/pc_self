@@ -18,7 +18,7 @@ export default class AboutHengCai extends Component {
     render() {
         return (
             <div className="aboutHengCai_main" >
-                <p className='a_title'></p>
+                <p className='a_title'>关于恒彩</p>
                 <div className='a_content'>
                     <p>恒彩娱乐平台成立于2013年，注册资金6亿，由多家资本基金联合投资成立，恒彩娱乐平台持有多个认证机构联合颁发的《网络彩票经营销售许可证》的一家有彩票合法销售经营权的网站。恒彩娱乐平台的网络营业执照是由四个国家的博彩委员会颁发并负责监管，并拥有菲律宾新任总统杜特地唯一认可且最具权威的PAGCOR博彩运营牌照。卡加延博彩管理局是国际博彩资源协会认可的亚洲首个和唯一一个交互博彩管理体系；我们致力于为客户创造安全、诚信、可靠的博彩环境，以保证能够提供世界一流的服务。
                     </p>

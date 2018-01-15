@@ -67,7 +67,6 @@ export default class HowDeposit extends Component {
         }
     }
     componentDidMount() {
-        this._ismount = true;
         this.getHowDeposit();
     };
 

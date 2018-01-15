@@ -246,7 +246,14 @@ $color_FFDC52: #FFDC52;
             overflow: hidden;
             padding: 3px;
         }
-
+        .pt_loading{
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            .ant-spin-dot{
+                margin: 5px auto;
+            }
+        }
         .icon_p{
             position: relative;
             .anticon{
@@ -271,6 +278,7 @@ $color_FFDC52: #FFDC52;
             height: 80%;
             width: 100%;
             border: 0;
+            background: #eee;
         }
         .games_list{
             width: 2500px;

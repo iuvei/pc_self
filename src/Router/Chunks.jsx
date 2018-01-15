@@ -344,3 +344,9 @@ export const aboutHengCai = (location, callback) => {
         callback(null, require('../Components/HelpInfo/AboutHengCai/AboutHengCai').default);
     }, 'aboutHengCai');
 };
+// 下载客户端
+export const downLoadClient = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/DownLoadClient/DownLoadClient').default);
+    }, 'downLoadClient');
+};
