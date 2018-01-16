@@ -6,7 +6,7 @@ class State {
 
     @observable userInfo = {// 用户信息
         userName: '请先登录',
-        userid: '',
+        userId: '',
         userType: '', //用户类型0：会员，1：代理
         accGroup: '', //奖金组
         lastIp: '', //上次登录地点ip

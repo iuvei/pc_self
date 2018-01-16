@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Button, Icon,Modal,Select,Slider,InputNumber ,message } from 'antd';
-import 'whatwg-fetch';
-import Fetch from '../../../../Utils';
+import Fetch from '../../../../../Utils';
 import './ContractModal.scss';
 import guanbi  from  './Img/guanbi.png'
 

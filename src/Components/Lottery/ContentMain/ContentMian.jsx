@@ -231,7 +231,7 @@ export default class ContentMian extends Component {
     }
     //初始化默认调用方法
     componentDidMount() {
-    	this.initData();
+    	// this.initData();
     };
     handleData(data){
     	var message = eval('('+ data +')');
@@ -399,7 +399,7 @@ export default class ContentMian extends Component {
 				}
     		},50);
 		});
-    	
+
     };
     //获取所有彩种玩法
     getLotteryData(){
@@ -1043,13 +1043,13 @@ export default class ContentMian extends Component {
                 case 'SDRX6' :
                 case 'SDRX7' :
                 case 'SDRX8' :
-                case 'SDZU2' : 
+                case 'SDZU2' :
                 	this.setState({textAreaValue:stateVar.aboutGame.data_sel[0].join(" ")},()=>{
 	                	this._inptu_deal();
 	                });
                    	alert('已删除以下重复号'+'\r\n'+err.join(";"));
                    	break;
-                default : 
+                default :
                 	this.setState({textAreaValue:stateVar.aboutGame.data_sel[0].join(" ")},()=>{
 	                	this._inptu_deal();
 	                });
@@ -1136,7 +1136,7 @@ export default class ContentMian extends Component {
                 ermsg += '以下号码重复，已自动进行过滤'+'\n'+edump.join(", ");
                 nums = Method.checkNum();
                 money = Math.round(times * nums * 2 * (this.state.modes[this.state.selectYjf].rate * 1000)) /1000;  //倍数*注数*单价 * 模式
-                
+
             }
             switch(mname){//根据类型不同做不同检测
                 //任三 直选 直选单式
@@ -1186,7 +1186,7 @@ export default class ContentMian extends Component {
                 case "PK10ZX5":
                 case "PK10ZX6":
 	                if(stateVar.savePkInput.error_num.length > 0 || stateVar.savePkInput.repeat_num.length > 0){
-	                	let content = "已删除以下重复或错误号码：<br/>";            
+	                	let content = "已删除以下重复或错误号码：<br/>";
 				        let no_repeat_num = stateVar.savePkInput.no_repeat_num;
 				        stateVar.savePkInput.right_num = no_repeat_num;
 				        stateVar.savePkInput.repeat_num = [];
@@ -1672,7 +1672,7 @@ export default class ContentMian extends Component {
 				if(!tempData[i]){
 					tempTraceItem[i].times = 0;
 					tempTraceItem[i].money= 0;
-					
+
 				}else{
 					tempTraceItem[i].times = 1;
 					tempTraceItem[i].money = tempTraceItem[i].times * stateVar.BetContent.totalMoney;
@@ -1835,7 +1835,7 @@ export default class ContentMian extends Component {
         if(typeof postData[wqbsglth] != 'undefined'){
         	tempIndex = postData[wqbsglth].split('-')[1]
         	this.setState({navFourIndex:tempIndex},()=>{
-        		this.selectAreaData(this.state.lotteryMethod,true,postData)	
+        		this.selectAreaData(this.state.lotteryMethod,true,postData)
         	})//龙虎特殊处理
         }else{
         	let tempWqbsg = _wqbsg + 'l';
@@ -1877,7 +1877,7 @@ export default class ContentMian extends Component {
 	    		});
 	    	});
     	}else{
-    		
+
     	}
     	stateVar.methodIdItem = tempArray;
     	stateVar.aboutGame.methodID = numberObj.methodid;
@@ -2434,7 +2434,7 @@ export default class ContentMian extends Component {
 	                    		return topHtml;
 	                    	})()
 	                    }
-	                        
+
 	                    </div>
 	                </div>
 	                <div className="content_main" key="ContentMian">
@@ -2584,7 +2584,7 @@ export default class ContentMian extends Component {
 	                                        			<ul className="c_m_select_record_list clear" key={index}>
 	                                        				<li>{value.name}</li>
 			                                                <li>{value.numberbet}</li>
-	
+
 			                                                <li className="c_m_cody_close" onClick={()=>this.deleteBet(index)}><img src={close} alt=""/></li>
 			                                                <li>{value.money + '元'}</li>
 			                                                <li>{value.nums + '注'}</li>
@@ -2699,7 +2699,7 @@ export default class ContentMian extends Component {
 							                        <Button type="primary" className="m_m_btn" loading={this.state.loading} onClick={()=>this.enterLoading()}>
 							                            生成
 							                        </Button>
-							                        
+
 							                    </div>
 							                    <div style={{display:this.state.traceTitleIndex ==1 ? 'block':'none'}}>
 							                    	<div className="multiple_input left">

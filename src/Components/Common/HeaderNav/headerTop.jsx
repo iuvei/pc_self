@@ -89,7 +89,7 @@ export default class HeaderTop extends Component {
         let userInfo = stateVar.userInfo;
         Fetch.ipaddress({
             method: 'POST',
-            body: JSON.stringify({ip: userInfo.lastIp, userid: userInfo.userid})
+            body: JSON.stringify({ip: userInfo.lastIp, userid: userInfo.userId})
         }).then((res)=>{
             if(this._ismount && res.status == 200){
                 userInfo.address = res.repsoneContent;

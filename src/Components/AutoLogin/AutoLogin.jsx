@@ -8,6 +8,7 @@ import serviceSrc from './Img/service.png'
 import './AutoLogin.scss'
 import { stateVar } from '../../State'
 import onCanvas from './canvas'
+import {getStore } from "../../CommonJs/common";
 @observer
 export default class AutoLogin extends Component {
     constructor(props) {
@@ -34,10 +35,26 @@ export default class AutoLogin extends Component {
 
     }
     componentDidMount() {
-        let indx = Math.floor(Math.random()*(onCanvas.length-1));
-        onCanvas[indx]();
+      //  let indx = Math.floor(Math.random()*(onCanvas.length-1));
+       // onCanvas[indx]();
+        onCanvas[1]();
+        /*将本地存储变量获取到全局*/
+        stateVar.userInfo = {
+            userId:getStore("userId"),
+            userName: getStore("userName"),
+            userType: getStore("userType"),
+            accGroup: getStore("accGroup"),
+            lastIp: getStore("lastIp"),
+            sType: getStore("sType"),
+            lastTime: getStore("lastTime"),
+            issetbank: getStore("issetbank"),
+            setquestion: getStore("setquestion"),
+            setsecurity: getStore("setsecurity"),
+            email: getStore("email"),
+        };
         this.refs.progress.style.width=0;
         this.interval = setInterval(() => this.tick(), 10);
+
 
     };
     render() {

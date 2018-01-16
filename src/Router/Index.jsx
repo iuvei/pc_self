@@ -72,9 +72,7 @@ const requireAuth = (nextState, replace) => {
         // ...
     }
 }
-
 const routes = params => (
-
     <Route path="/">
         <IndexRedirect to={getStore("session")?"/autoLogin":"/login"} />
         <Route path="/autoLogin" getComponent={autoLogin} params={params}/>

@@ -11,7 +11,7 @@ import './Main.scss';
 /*检测界面是否刷新*/
 window.onbeforeunload = function(){
     return "真的离开?";
-}
+};
 
 @observer
 export default class Main extends Component {

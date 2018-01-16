@@ -81,7 +81,7 @@ if (process.env.NODE_ENV === "production") {
             filename: "js/vendor.bundle.js"
         }),
         new ExtractTextPlugin({
-            filename: "css/[name].style.[contenthash].css",
+            filename: "[name].style.[contenthash].css",
             disable: false,
             allChunks: true
         }),

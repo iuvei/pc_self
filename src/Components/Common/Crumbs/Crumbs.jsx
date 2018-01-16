@@ -1,11 +1,11 @@
 /*面包屑导航*/
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {observer} from 'mobx-react';
 
 import './Crumbs.scss';
 
 @observer
-export default class Crumbs extends Component {
+export default class Crumbs extends PureComponent {
     /*点击面包屑导航*/
     onCrumbsName(item, i) {
         if(this.props.table.history.length-1 === i){

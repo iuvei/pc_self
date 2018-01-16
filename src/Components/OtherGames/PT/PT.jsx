@@ -45,8 +45,8 @@ export default class PT extends Component {
             ptUrl: '',
             ptLoading: false,
 
-            moment: null,
             paused: true,
+            step: 0,
         };
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
@@ -143,6 +143,7 @@ export default class PT extends Component {
             body: JSON.stringify({cate_id: 0, ishot: 1, pn: 10})
         }).then((res)=>{
             if(this._ismount && res.status == 200){
+                console.log(res.repsoneContent.aList)
                 this.setState({topRanking: res.repsoneContent.aList},()=>this.getDestination())
             }
         })
@@ -163,6 +164,12 @@ export default class PT extends Component {
                 ptLoading: true,
             })
         }
+        clearInterval(this._clearInt);
+        cancelAnimationFrame(this._animationFrame);
+        this.onptplay(id, isdemo);
+    };
+    /*开始游戏*/
+    onptplay(id, isdemo){
         Fetch.ptplay({
             method: 'POST',
             body: JSON.stringify({id: id, isclick: 1, isdemo: isdemo}),
@@ -171,7 +178,6 @@ export default class PT extends Component {
                 this.setState({
                     demoLoading: false,
                     startLoading: false,
-                    ptLoading: false,
                 });
                 let data = res.repsoneContent;
                 let formData = new FormData();
@@ -184,6 +190,7 @@ export default class PT extends Component {
                     let ress = JSON.parse(res);
                     if(ress.status == 200) {
                         this.setState({
+                            ptLoading: false,
                             ptUrl: ress.repsoneContent.aUserinfo.returnurl,
                         });
                         // let datas = ress.repsoneContent;
@@ -267,6 +274,34 @@ export default class PT extends Component {
     hideModal() {
         this.setState({visible: false})
     };
+    /*向左滑动*/
+    onClickLeft() {
+        let { step } = this.state;
+        if(step >= 0){
+            return
+        }
+        this.setState({
+            step: step + 170,
+            paused: false,
+        });
+    };
+    /*向右滑动*/
+    onClickRight() {
+        let { step, topRanking } = this.state;
+        if(topRanking.length * 170 + step > 1100){
+            this.setState({
+                step: step - 170,
+                paused: false,
+            });
+        }
+    };
+    /*关闭游戏*/
+    onCloseGames(){
+        this.setState({
+            startVisible: false,
+            step: 0,
+        })
+    };
     render() {
         const { startVisible, navList, gameList, topRanking, total, ptName, resetPw } = this.state;
 
@@ -323,11 +358,11 @@ export default class PT extends Component {
                                     <b>TOP游戏排行榜</b>
                                 </p>
                                 <div className="pt_top_content"
-                                     onMouseOver={()=>{
-                                        clearInterval(this._clearInt);
-                                        cancelAnimationFrame(this._animationFrame)
-                                    }}
-                                     onMouseOut={()=>this.getDestination()}
+                                    //  onMouseOver={()=>{
+                                    //     clearInterval(this._clearInt);
+                                    //     cancelAnimationFrame(this._animationFrame)
+                                    // }}
+                                    //  onMouseOut={()=>this.getDestination()}
                                 >
                                     <ul className="ranking_list" style={{transform: 'translateY(-'+this.state.noticePosition+'px) translateZ(0px)'}}>
                                         {
@@ -394,7 +429,7 @@ export default class PT extends Component {
                        className="pt_modal"
                 >
                     <div className="pt_m_content">
-                        <Button className="modal_close" onClick={()=>this.setState({startVisible: false})} type="primary" icon="close"></Button>
+                        <Button className="modal_close" onClick={()=>this.onCloseGames()} type="primary" icon="close"></Button>
                         <Spin className="pt_loading" spinning={this.state.ptLoading} tip="加载中..."/>
                         {
                             startVisible ? <iframe scrolling="no"
@@ -406,19 +441,20 @@ export default class PT extends Component {
                         }
 
                         <div className="icon_p">
-                            <Icon type="left-circle" className="ic_left-circle"/>
+                            <Icon type="left-circle" className="ic_left-circle"
+                                  onClick={()=>this.onClickLeft()}
+                            />
                             <div className="pt_m_gameList">
                                 <TweenOne
-                                            animation={{left: '160px', duration: 2000}}
+                                            animation={{left: this.state.step + 'px', duration: 300}}
                                             paused={this.state.paused}
-                                            moment={this.state.moment}
                                             className="box-shape"
                                 >
-                                <ul className="games_list clear">
+                                <ul className="games_list clear" style={{width: topRanking.length * 170}}>
                                     {
-                                        gameList.map((item, i)=>{
+                                        topRanking.map((item, i)=>{
                                             return (
-                                                <li key={item.id}>
+                                                <li key={item.id} onClick={()=>this.onptplay(item.id, item.isdemo)}>
                                                     <img src={stateVar.httpUrl + '/pcservice/' + item.pic} alt=""/>
                                                     <p className="games_name">{item.cn_name}</p>
                                                 </li>
@@ -429,14 +465,7 @@ export default class PT extends Component {
                                 </TweenOne>
                             </div>
                             <Icon type="right-circle" className="ic_right-circle"
-                                  onClick={()=>this.setState({
-                                      paused: false,
-                                      moment: 0,
-                                  }, ()=>{
-                                      this.setState({
-                                          moment: null,
-                                      });
-                                  })}
+                                  onClick={()=>this.onClickRight()}
                             />
                         </div>
                     </div>

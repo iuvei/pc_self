@@ -115,7 +115,6 @@ export default class TeamTable extends Component {
                     let data = res.repsoneContent;
                     table.tableData = data.forYourself.concat(data.forYourTeamResult);
                     table.sum = data.totalSum;
-
                     if(type == 'DATE'){
                         table.tableData.forEach((item, i)=>{
                             item.username = username

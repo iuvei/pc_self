@@ -199,16 +199,12 @@ export default class BankCardManage extends Component {
             validate = this.state.validate,
             addPostData = this.state.addPostData;
         addPostData.account_name = val;
-        if (val != '') {
-            let reg = /^[.。·\u4e00-\u9fa5]+$/;
-            let r = reg.test(val);
-            if (r) {
-                validate.account_name = 0;
-            } else {
-                validate.account_name = 1;
-            }
-        }else{
+        let reg = /^[.。·\u4e00-\u9fa5]{2,15}$/;
+        let r = reg.test(val);
+        if (r) {
             validate.account_name = 0;
+        } else {
+            validate.account_name = 1;
         }
         this.setState({
             addPostData: addPostData,
