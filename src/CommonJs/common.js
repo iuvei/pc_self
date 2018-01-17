@@ -220,24 +220,24 @@ export const changeMoneyToChinese = (money) => {
     return ChineseStr;
 };
 
-/*
+/**
 * 获取localStorage
 */
 export const getStore = name => {
-    let contentBody = JSON.parse(window.localStorage.getItem(name))
-    return contentBody;
+    return JSON.parse(window.localStorage.getItem(name));
 };
 
-/*
+/**
 * 存储localStorage
 */
 export const setStore = (name, content) => {
+
 	if(content == undefined){
 		content = '';
 	}
-    let tempContent = JSON.stringify(content)
+    let tempContent = JSON.stringify(content);
     window.localStorage.setItem(name, tempContent)
-}
+};
 
 /**
  * 删除localStorage

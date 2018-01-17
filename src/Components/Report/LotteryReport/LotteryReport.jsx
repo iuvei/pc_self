@@ -45,7 +45,7 @@ export default class LotteryReport extends Component {
             },
             lotteryList: [], // 游戏种类
         };
-        this.onChildState = this.onChildState.bind(this);
+        // this.onChildState = this.onChildState.bind(this);
     };
     componentDidMount() {
         this._ismount = true;
@@ -149,6 +149,7 @@ export default class LotteryReport extends Component {
         if(type == 'DATE') {
             postData.userid = parseInt(record.userid);
             postData.username = null;
+            postData.gDate = 1;
             history = {
                 name: record.username + '(每日数据)',
                 date: postData.starttime,
@@ -156,6 +157,7 @@ export default class LotteryReport extends Component {
         }else{
             postData.username = record.username;
             postData.userid = null;
+            postData.gDate = 0;
             history = {
                 name: record.username,
                 date: postData.starttime,
@@ -185,9 +187,9 @@ export default class LotteryReport extends Component {
         table.history.splice(-1, 1);
         postData.username = table.history[table.history.length-1].name;
         postData.userid = null;
-            this.setState({
-                postData: postData,
-                table: table,
+        this.setState({
+            postData: postData,
+            table: table,
         }, ()=>this.getData())
     };
     /*选择彩种名称*/
@@ -264,7 +266,7 @@ export default class LotteryReport extends Component {
                 render: (text, record)=> {
                     let acount = (parseFloat(record.sum_bonus) + parseFloat(record.sum_diffmoney) - record.sum_totalprice).toFixed(4);
                     return parseFloat(acount) < 0 ? <span className="col_color_shu">{acount}</span> :
-                                                    <span className="col_color_ying">{acount}</span>
+                        <span className="col_color_ying">{acount}</span>
                 },
                 width: 130,
             }
@@ -280,8 +282,7 @@ export default class LotteryReport extends Component {
                 <li>{table.sum.sum_diffmoney}</li>
                 <li className={parseFloat(sumAccout) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sumAccout}</li>
             </ul>;
-        };
-
+        }
         return (
             <div className="report">
                 <div className="team_list_top">
@@ -351,7 +352,7 @@ export default class LotteryReport extends Component {
                 <div className="t_l_table">
                     <div className="t_l_location_name">
                         <span className="left">当前位置：</span>
-                        <Crumbs table={table} onChildState={this.onChildState}/>
+                        <Crumbs table={table} onChildState={this.onChildState.bind(this)}/>
                         <a className="t_l_goBack right" href="javascript:void(0)" onClick={()=>this.onClickGoBac_1()}> &lt;&lt;返回上一层 </a>
                     </div>
                     <div className="t_l_table_list">
@@ -363,7 +364,7 @@ export default class LotteryReport extends Component {
                                footer={table.total <= 0 || isNaN(table.total) ? null : ()=>footer}
                         />
                     </div>
-                    <div className="t_l_page right" style={{display: table.total <= 0 || isNaN(table.total) ? 'none' : ''}}>
+                    <div className="t_l_page" style={{display: table.total <= 0 || isNaN(table.total) ? 'none' : ''}}>
                         <Pagination showSizeChanger
                                     onShowSizeChange={(current, pageSize)=>this.onShowSizeChange(current, pageSize)}
                                     onChange={(page)=>this.onChangePagination(page)}

@@ -28,6 +28,7 @@ export default class Message extends Component {
                 sendtime: '加载中...',
                 content: '加载中...',
             },
+            isview: 0, //本来是否已读，用来判断关闭后是否重新更新列表
         }
     };
     componentDidMount() {
@@ -94,7 +95,10 @@ export default class Message extends Component {
     };
     /*详情*/
     onCheckContent(record) {
-        this.setState({visible: true});
+        this.setState({
+            visible: true,
+            isview: record.isview
+        });
         Fetch.messages({
             method: 'POST',
             body: JSON.stringify({tag:'viewdetail', msgid: record.entry})
@@ -109,7 +113,7 @@ export default class Message extends Component {
         this.setState({
             visible: false,
         });
-        this.getData();
+        this.state.isview == 0 && this.getData();
     };
     render() {
         const { loading, data, total, postData, repDetails } = this.state;

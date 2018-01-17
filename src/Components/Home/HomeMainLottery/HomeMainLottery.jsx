@@ -3,9 +3,9 @@ import {observer} from 'mobx-react';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import QueueAnim from 'rc-queue-anim';
 import './HomeMainLottery.scss'
-import home_lottery01 from '../Img/home_lottery01.jpg';
-import home_lottery02 from '../Img/home_lottery02.jpg';
-import home_lottery03 from '../Img/home_lottery03.jpg';
+import home_lottery01 from '../Img/chongqing.png';
+import home_lottery02 from '../Img/beijingPK10.png';
+import home_lottery03 from '../Img/taiguommc.png';
 
 @observer
 export default class HomeMainLottery extends Component {

@@ -314,7 +314,7 @@ export default class ContractModal extends Component {
     /*获取分红契约数据(分红比例)*/
     getPortionData(uid){
         let userid = uid||this.state.userid;
-        Fetch.changedividendsalary({
+        Fetch.diviratio({
             method: "POST",
             body: JSON.stringify({
                 userid:userid,
@@ -352,7 +352,7 @@ export default class ContractModal extends Component {
                     loading:false,
                 });
             }else{
-                Fetch.changedividendsalary({
+                Fetch.diviratio({
                     method: "POST",
                     body: JSON.stringify({
                         userid:this.state.userid,

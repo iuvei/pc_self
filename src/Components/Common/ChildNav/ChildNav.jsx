@@ -8,10 +8,23 @@ import './ChildNav.scss'
 export default class ChildNav extends PureComponent {
     constructor(props) {
         super(props);
+        this.state = {
+            NavIndex: this.props.defaultIndex == undefined ? 0 : this.props.defaultIndex,
+        };
     };
-    handClick(index) {
-        this.props.onChangeNavIndex(index);
+    handClick(index, item) {
+        this.setState({NavIndex: index});
+        this.props.onChangeNavIndex(index, item);
     };
+    /*选中项*/
+    onSelectClass(index) {
+        if(this.props.defaultIndex != undefined){
+            return index == this.props.defaultIndex ? 'nav_active' : 'hvr-overline-from-left hvr-fade';
+        }else{
+            return index == this.state.NavIndex ? 'nav_active' : 'hvr-overline-from-left hvr-fade';
+        }
+    }
+
     render() {
         return (
             <div className="c_nav">
@@ -19,8 +32,7 @@ export default class ChildNav extends PureComponent {
                     {
                         this.props.navList.map((item, index)=>{
                             return (
-                                <li className={index === this.props.defaultIndex ? 'nav_active' : 'hvr-overline-from-left hvr-fade'} onClick={()=>{this.handClick(index)}} key={index}>
-
+                                <li className={this.onSelectClass(index)} onClick={()=>{this.handClick(index, item)}} key={index}>
                                     {
                                         item.link != undefined ?
                                             <Link to={item.link}>{item.text}</Link> :
