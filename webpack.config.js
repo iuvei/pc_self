@@ -2,7 +2,7 @@ const path = require("path"),
     webpack = require("webpack"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     ExtractTextPlugin = require("extract-text-webpack-plugin"),
-    HOST = "10.63.34.38",
+    HOST = "10.63.34.36",
     PORT = 4040;
 let commonPlugins = [],
     cssExtract = process.env.NODE_ENV === "production"
@@ -81,7 +81,7 @@ if (process.env.NODE_ENV === "production") {
             filename: "js/vendor.bundle.js"
         }),
         new ExtractTextPlugin({
-            filename: "css/[name].style.[contenthash].css",
+            filename: "[name].style.[contenthash].css",
             disable: false,
             allChunks: true
         }),

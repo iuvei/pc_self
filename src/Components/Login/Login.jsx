@@ -224,7 +224,7 @@ export default class Login extends Component {
                 setStore("issetbank",result.issetbank);
                 setStore("setquestion",result.setquestion);
                 setStore("setsecurity",result.setsecurity);
-                setStore("email",result.emai);
+                setStore("email",result.email);
 
                 if(this.state.checkPw){
                     setStore("loginPwd",this.state.password);

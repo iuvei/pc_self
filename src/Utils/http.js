@@ -7,11 +7,18 @@ const interFace = (key) => {
     // 获取sess
     INTERFACE['SESS'] = 'sessValid=true';
     // 登录,找回密码
+    
     INTERFACE['LOGIN'] = 'controller=default&action=login';
+    
     //重置密码
     INTERFACE['RESETPWD'] = 'controller=user&action=ChangeLoginPass';
+    
+    //返回旧版
+    INTERFACE['SWITCHOLD'] = 'controller=default&action=switch&_v=3.0';
+    
     // 退出登录
     INTERFACE['LOGINOUT'] = 'controller=default&action=logout';
+    
     // 投注中心
     INTERFACE['PLAY'] = 'controller=game&action=play';
     

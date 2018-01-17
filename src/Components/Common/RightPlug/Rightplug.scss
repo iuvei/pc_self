@@ -1,10 +1,39 @@
 @import '../../../Style/variables';
 @import '../../../Style/mixin';
 
+.right_plug_open{
+    position: fixed;
+    right: -15px;
+    top: 50%;
+    margin-top: -25px;
+    z-index: 98;
+    .openRight{
+        text-align: center;
+        width: 15px;
+        border: 0;
+        height: 50px;
+        line-height: 50px;
+        background-color: #3C3C3C;
+        position: absolute;
+        right: 0;
+        top:0;
+        cursor: pointer;
+        z-index: 99;
+        i{
+            color: #878787;
+    
+        }
+        &:hover i{
+            color: #fff;
+    
+        }
+    }
+}
 .right_plug{
     position: fixed;
     right: 0;
-    top: 30%;
+    top: 50%;
+    margin-top: -165px;
     z-index: 99;
     width: 140px;
     .right_list{
@@ -17,16 +46,25 @@
             line-height: 47px;
             /*border-bottom: 1px solid #3C3C3C;*/
             label{
-                padding-right: 15px;
+                color: #fff;
             }
             i{
-                border-bottom: 1px solid #3C3C3C;
+                position: relative;
+            }
+            i::before{
+                width: 100%;
+                display: block;
+                content: '';
+                position: absolute;
+                height: 1px;
+                bottom: 0;
+                left: 0;
+                background: #3C3C3C;
             }
 
             .r_p_common{
                 @include wh(50px, 47px);
                 display: inline-block;
-                vertical-align: middle;
                 &:hover{
                    /* transform: scale(1.2);
                     @include transform(transform, 0.3s);*/
@@ -77,11 +115,19 @@
         }
 
         li.active{
-            margin-top: 1px;
             cursor: pointer;
+            position: relative;
             background: $rodio-check-color;
             label{
                 cursor: pointer;
+                position: absolute;
+                width: 90px;
+                top: 0;
+                left: 0;
+                text-align: center;
+                padding: 0;
+                margin: 0;
+                color: #fff;
             }
             .r_p_goOld{
                     background:$rodio-check-color url(./Img/fanhui2.png) no-repeat center center;
@@ -130,11 +176,12 @@
     width: 50px;
     border: 0;
     height: 16px;
-    line-height: 15px;
+    line-height: 16px;
     background-color: #3C3C3C;
-    position: fixed;
+    position: absolute;
     right: 0;
-    top: 63%;
+    bottom: -16px;
+    cursor: pointer;
     z-index: 99;
     margin-top: -5px;
     i{

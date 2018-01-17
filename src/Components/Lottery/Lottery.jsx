@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import './Lottery.scss';
 
 import RightSider from './RightSider/RightSider';
+import RightPlug from './../Common/RightPlug/RightPlug';
 import ContentMian from './ContentMain/ContentMian';
 
 const url1 = require("./sound/kaijiang.mp3");
@@ -33,6 +34,7 @@ export default class Lottery extends Component {
 	            	<source src={url3}></source>
 	            	<source src={url3a}></source>
 	            </audio>
+	            <RightPlug />
             </div>
         );
     }

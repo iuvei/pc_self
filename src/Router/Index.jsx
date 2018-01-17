@@ -72,7 +72,6 @@ const requireAuth = (nextState, replace) => {
         // ...
     }
 }
-
 const routes = params => (
 
     <Route path="/">

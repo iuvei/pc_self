@@ -5,7 +5,7 @@ import { Row, Col } from 'antd';
 import HeaderNav from '../Common/HeaderNav/headerNav';
 import Footer from '../Common/Footer/Footer';
 import LeftSider from '../Lottery/LeftSider/LeftSider';
-import RightPlug from '../Common/RightPlug/RightPlug'
+import RightPlug from '../Common/RightPlug/RightPlug';
 import './Main.scss';
 
 /*检测界面是否刷新*/
@@ -31,17 +31,17 @@ export default class Main extends Component {
     };
 
     showLeftSider() {
-        if (hashHistory.getCurrentLocation().pathname === '/home' ||
-            hashHistory.getCurrentLocation().pathname === '/activity' ||
-            hashHistory.getCurrentLocation().pathname === '/activity/activityDetails' ||
-            hashHistory.getCurrentLocation().pathname === '/bobing' ||
-            hashHistory.getCurrentLocation().pathname === '/tendency' ||
-            hashHistory.getCurrentLocation().pathname === '/ea' ||
-            hashHistory.getCurrentLocation().pathname === '/pt'||
-            hashHistory.getCurrentLocation().pathname === '/gt'||
-            hashHistory.getCurrentLocation().pathname === '/sport'||
-            hashHistory.getCurrentLocation().pathname === '/downLoadClient'||
-            hashHistory.getCurrentLocation().pathname === '/lottery'
+        if (hashHistory.getCurrentLocation().pathname == '/home' ||
+            hashHistory.getCurrentLocation().pathname == '/activity' ||
+            hashHistory.getCurrentLocation().pathname == '/activity/activityDetails' ||
+            hashHistory.getCurrentLocation().pathname == '/bobing' ||
+            hashHistory.getCurrentLocation().pathname == '/tendency' ||
+            hashHistory.getCurrentLocation().pathname == '/ea' ||
+            hashHistory.getCurrentLocation().pathname == '/pt'||
+            hashHistory.getCurrentLocation().pathname == '/gt'||
+            hashHistory.getCurrentLocation().pathname == '/sport'||
+            hashHistory.getCurrentLocation().pathname == '/downLoadClient'||
+            hashHistory.getCurrentLocation().pathname == '/lottery'
         ) {
             return true
         } else {
@@ -50,11 +50,12 @@ export default class Main extends Component {
     };
     /*隐藏帮助中心下的左边导航条*/
     hideLeft(){
-        if (hashHistory.getCurrentLocation().pathname === '/helpInfo'||
-            hashHistory.getCurrentLocation().pathname === '/helpInfo/playMethodIntroduce'||
-            hashHistory.getCurrentLocation().pathname === '/helpInfo/howDeposit'||
-            hashHistory.getCurrentLocation().pathname === '/helpInfo/commonProblems'||
-            hashHistory.getCurrentLocation().pathname === '/helpInfo/aboutHengCai') {
+        if (hashHistory.getCurrentLocation().pathname == '/helpInfo'||
+            hashHistory.getCurrentLocation().pathname == '/helpInfo/playMethodIntroduce'||
+            hashHistory.getCurrentLocation().pathname == '/helpInfo/howDeposit'||
+            hashHistory.getCurrentLocation().pathname == '/helpInfo/commonProblems'||
+            hashHistory.getCurrentLocation().pathname == '/helpInfo/aboutHengCai'
+            ) {
             return true
         } else {
             return false

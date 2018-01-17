@@ -88,7 +88,8 @@ export default class ContentMian extends Component {
         	periodsIndex:-1,
         	traceTotalIssue:0,
         	traceTotalMoney:0,
-        	traceifStop:true
+        	traceifStop:true,
+        	tempLotteryLength:0
         }
         this.lotteryOkBet = this.lotteryOkBet.bind(this);
         this.getBetHistory = this.getBetHistory.bind(this);
@@ -248,6 +249,7 @@ export default class ContentMian extends Component {
 	    				}else{
 	    					tempCode = tempData['number'].split(' ');
 	    				}
+	    				this.setState({kjStopallFlag:true});
     					this.setState({code:tempCode,nowIssue:tempData.expectedIssue});
     					this.getKjHistory(true);
     				}
@@ -298,8 +300,8 @@ export default class ContentMian extends Component {
     		tempArrCode.push('-');
     		tempStopFlag.push(false);
     	}
-    	this.setState({code:tempArrCode,kjStopFlag:tempStopFlag,animateCode:tempArrCode},()=>{
-    		this.kjanimate(tempLotteryLength,0);
+    	this.setState({code:tempArrCode,kjStopFlag:tempStopFlag,animateCode:tempArrCode,tempLotteryLength:tempLotteryLength},()=>{
+    		this.kjanimate(0);
     	});
     	stateVar.alllotteryType = tempLotteryType;//所有彩种类型
     	stateVar.openLotteryFlag = false;//控制彩种是否可以点击
@@ -356,7 +358,8 @@ export default class ContentMian extends Component {
      Function 开奖动画
      param 号码个数
      */
-    kjanimate(param,b){
+    kjanimate(b){
+    	let param = this.state.tempLotteryLength;
     	if(this.state.kjStopTime >= 5){
     		return;
     	}
@@ -372,7 +375,7 @@ export default class ContentMian extends Component {
 			setTimeout(()=>{
 				if(b < 800){
 					b = b + 30;
-					this.kjanimate(param,b);
+					this.kjanimate(b);
 				}else{
 					if(this.state.kjStopallFlag){
 	    				let tempI = this.state.kjStopTime;
@@ -391,10 +394,10 @@ export default class ContentMian extends Component {
 	    							$(".kjCodeClass").animate({fontSize:"30px"},200);
 	    						});
 	    					});
-	    				},100);
-	    				this.kjanimate(param,500);
+	    				},50);
+	    				this.kjanimate(600);
 	    			}else{
-	    				this.kjanimate(param,800);
+	    				this.kjanimate(800);
 	    			}
 				}
     		},50);
@@ -481,7 +484,6 @@ export default class ContentMian extends Component {
     			let tempData = data.repsoneContent;
     			let tempArray = this.state.todayAndTomorrow;
     			if(data.status == 200){
-    				this.setState({kjStopallFlag:true});
     				if(a){
     					while(true){
 							if(this.state.todayAndTomorrow.length == 0){
@@ -499,6 +501,11 @@ export default class ContentMian extends Component {
     					tempCode = tempData.code.split('');
     				}else{
     					tempCode = tempData.code.split(' ');
+    				}
+    				if(this.state.code.join('') == tempCode.join('')){
+    					this.setState({kjStopallFlag:false});
+    				}else{
+    					this.setState({kjStopallFlag:true});
     				}
     				this.setState({code:tempCode,nowIssue:tempData.issue,nextIssue:tempData.curissue,issueIndex:tempArray.length != 0 ? tempArray[0].issue : '??????'},()=>{
     					if(a && tempArray.length != 0){
@@ -642,6 +649,10 @@ export default class ContentMian extends Component {
     		}
     		if( $.lt_time_leave == 0 ){//结束
     			this.actionSound(0);
+    			this.setState({kjStopallFlag:false,kjStopTime:0,kjStopFlag:[false,false,false,false,false]},()=>{
+    				this.kjanimate(0);
+    			});
+    			
                 clearInterval(window.interval);
 				message.config({
 				  top:'50%',
@@ -2647,7 +2658,7 @@ export default class ContentMian extends Component {
 	                                <Modal
 						                width='865px'
 						                visible={this.state.tracevisible}
-						                title= {<ModelView defaultIndex={this.state.traceTitleIndex} onChangeTraceNavIndex={this.onChangeNavIndex} navList = {navList}/>}
+						                title= {<ModelView defaultIndex={this.state.traceTitleIndex} onChangeNavIndex={this.onChangeNavIndex} navList = {navList}/>}
 						                onCancel={()=>{this.getSuperaddition()}}
 						                maskClosable={false}
 						                footer={null}

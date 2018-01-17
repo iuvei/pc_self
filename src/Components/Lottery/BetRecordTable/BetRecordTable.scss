@@ -14,11 +14,17 @@
             background-color: #F0F0F0;
         }
     }
+    .ant-table-header{
+        padding: 5px 0 !important;
+        border: none;
+    }
     .ant-table table{
-        @include borderRadius(0);
+        border: none;
+        border-collapse:collapse;
+        height: 50px;
     }
     .ant-table-small .ant-table-thead > tr > th:not(.ant-table-selection-column){
-        padding: 5px 8px;
+        padding: 2px 0 5px 0 !important;
         @include gradient(0, 10.5, 0, bottom, #fff, #F0F0F0);
     }
     .buyAgain,.canclebet{

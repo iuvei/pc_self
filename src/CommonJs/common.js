@@ -232,6 +232,9 @@ export const getStore = name => {
 * 存储localStorage
 */
 export const setStore = (name, content) => {
+	if(content == undefined){
+		content = '';
+	}
     let tempContent = JSON.stringify(content)
     window.localStorage.setItem(name, tempContent)
 }

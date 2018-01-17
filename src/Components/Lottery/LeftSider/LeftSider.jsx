@@ -52,6 +52,7 @@ export default class LeftSider extends Component {
 				}
 	    	}
     	}else{
+    		stateVar.navIndex = 'lottery';
     		stateVar.kjNumberList = [];
     		for(let val in tempMethod){
 				if(val == tempId){

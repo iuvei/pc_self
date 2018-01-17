@@ -168,7 +168,9 @@ export default class HeaderTop extends Component {
                         if(res.status == 200){
                             removeStore('userName');
                             removeStore('session');
-                            hashHistory.push('/');
+                            setTimeout(()=>{
+                            	hashHistory.push('/');
+                            },500);
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,

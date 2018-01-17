@@ -67,6 +67,7 @@ class State {
 	@observable methodIdItem = [];
 	@observable shapeObj = {type:'',content:[]};
 	@observable checkLotteryId = true;
+	@observable paused = true;
 }
 
 export const stateVar = new State();

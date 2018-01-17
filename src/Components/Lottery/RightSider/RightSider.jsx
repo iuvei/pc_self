@@ -8,6 +8,7 @@ import './RightSider.scss'
 import Fetch from '../../../Utils'
 import { stateVar } from '../../../State'
 import commone from '../commone.js'
+import common from './../../../CommonJs/common.js'
 
 @observer
 export default class RightSider extends Component {
@@ -67,10 +68,10 @@ export default class RightSider extends Component {
             <div className="right_sider" key="RightSider">
                 <div className="user_info">
                     <ul className="user_info_list">
-                        <li>您好！supervip01</li>
+                        <li>您好！{common.getStore('userName')}</li>
                         <li>彩票余额</li>
                         <li className="user_money">
-                            <span className="left">￥8888.88</span>
+                            <span className="left">￥{stateVar.allBalance.cpbalance}</span>
                         </li>
                         <li>
                             <div className="user_recharge">充值</div>

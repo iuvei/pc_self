@@ -161,6 +161,8 @@ const gtLogin= (body) =>  request(http.interFace('GTLOGIN'),body);
 const gtTransfer= (body) =>  request(http.interFace('GTTRANSFER'),body);
 //投诉建议
 const complainAndSuggests= (body) =>  request(http.interFace('COMPLAINANDSUGGESTS'),body);
+//返回旧版
+const switchold= (body) =>  request(http.interFace('SWITCHOLD'),body);
 
 export default {
     getSess,
@@ -242,4 +244,5 @@ export default {
     dailysalaryself,
     complainAndSuggests,
     contractList,
+    switchold
 }
