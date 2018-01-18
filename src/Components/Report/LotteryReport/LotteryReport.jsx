@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils'
-import { DatePicker, Table, Pagination, Input, Button, Icon, Checkbox } from 'antd';
+import { DatePicker, Table, Pagination, Input, Button, Icon, Checkbox, Modal } from 'antd';
 
 import moment from 'moment';
 import { stateVar } from '../../../State';
@@ -85,10 +85,13 @@ export default class LotteryReport extends Component {
                         selfDate: postData.starttime.slice(5) +' 至 '+ postData.endtime.slice(5),
                     });
                 } else {
-                    table.tableData = [];
-                    table.sum = {};
-                    table.total = 0;
-                    this.setState({table: table});
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                    // table.tableData = [];
+                    // table.sum = {};
+                    // table.total = 0;
+                    // this.setState({table: table});
                 }
             }
         });

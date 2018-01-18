@@ -652,7 +652,7 @@ export default class ContentMian extends Component {
     			this.setState({kjStopallFlag:false,kjStopTime:0,kjStopFlag:[false,false,false,false,false]},()=>{
     				this.kjanimate(0);
     			});
-    			
+
                 clearInterval(window.interval);
 				message.config({
 				  top:'50%',

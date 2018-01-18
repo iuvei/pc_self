@@ -1,14 +1,14 @@
 /* 画线对象*/
-DrawLine={
+const DrawLine={
 	AttributeGroup:[],
 	LineGroup:[],
 	table:false,
-	check:function(td){
-		return /^(charball|cbg)/i.test(td.className);
+	check:function(div){
+		return /^(ball|cbg)/i.test(div.className);
 	},
 	on_off:true,
-	bind:function(tid,_on_off){
-		this.table=tid;
+	bind:function(exist,_on_off){/*exist:当前表格是否渲染完毕*/
+	    this.table=exist;
 		this.on_off=_on_off;
 		return this;
 	},
@@ -20,18 +20,21 @@ DrawLine={
 		if(!this.table)return;
 		if(yes){
 			var qL=this.AttributeGroup.length;
+			var it=null;
 			for(var i=0;i<qL;i++){
-				var it=this.AttributeGroup[i];
+				it=this.AttributeGroup[i];
 				LG.color=it.color;
 				JoinLine.indent=it.indent;
-				this.LineGroup.push(new LG(this.table,it[0],it[1],it[2],it[3],this.check));
+				console.log("it[0]",it[0]);
+                console.log("AttributeGroup[i]",this.AttributeGroup[i]);
+				this.LineGroup.push(new LG(it[0],it[1],it[2],it[3],this.check));
 			}
 		}
 		if(this.on_off){
 			var _this=this;
-			var isshowline=document.getElementById(this.on_off);
+			var isshowline=document.getElementsByClassName(this.on_off);
 			if(isshowline)isshowline.onclick=function(){
-				_this.show(this.checked);
+				//_this.show(this.checked);
 			}
 		}
 		return this;
@@ -41,6 +44,7 @@ DrawLine={
 		for(var i=0;i<qL;i++){
 			this.LineGroup[i].show(yes)
 		}
+
 	},
 	/**
 	* x：列开始处,y：行开始处,w：组与组之间的距离,mb：与底部间的距离
@@ -51,10 +55,17 @@ DrawLine={
 		this.AttributeGroup[this.AttributeGroup.length-1].color=LG.color;
 		this.AttributeGroup[this.AttributeGroup.length-1].indent=JoinLine.indent;
 		return this;
-	}
+	},
+    remove:function(yes){
+        var qL=this.LineGroup.length;
+        for(var i=0;i<qL;i++){
+            this.LineGroup[i].remove(yes);
+        }
+
+    },
 }
 /* 连线类 */
-JoinLine=function(color,size){
+const JoinLine=function(color,size){
 	this.color=color||"#000000";
 	this.size=size||1;
 	this.lines=[];
@@ -64,7 +75,7 @@ JoinLine=function(color,size){
 JoinLine.prototype={
 	show:function(yes){
 		for(var i=0;i<this.lines.length;i++)
-			this.lines[i].style.visibility=yes?"visible":"hidden";		
+			this.lines[i].style.visibility=yes?"visible":"hidden";
 	},
 	remove:function(){
 		for(var i=0;i<this.lines.length;i++)
@@ -74,7 +85,7 @@ JoinLine.prototype={
 	join:function(objArray,hide){
 		this.remove();
 		this.visible=hide?"visible":"hidden";
-		this.tmpDom=document.createDocumentFragment();	
+		this.tmpDom=document.createDocumentFragment();
 		for(var i=0;i<objArray.length-1;i++){
 			var a=this.pos(objArray[i]);
 			var b=this.pos(objArray[i+1]);
@@ -88,7 +99,7 @@ JoinLine.prototype={
 					this.FFLine(a.x,a.y,b.x,b.y);
 				};
 		};
-		document.body.appendChild(this.tmpDom);		
+		document.body.appendChild(this.tmpDom);
 	},
 	 pos:function(obj){
 	 	if(obj.nodeType==undefined)return obj;
@@ -99,7 +110,7 @@ JoinLine.prototype={
 		return pos;
 	},
 	FFLine:function(x1,y1,x2,y2){
-		if(Math.abs(y1-y2)<(JoinLine.indent*2)&&x1==x2)return;//自动确定同列的是否连线		
+		if(Math.abs(y1-y2)<(JoinLine.indent*2)&&x1==x2)return;//自动确定同列的是否连线
 		var np=this.nPos(x1,y1,x2,y2,JoinLine.indent);//两端缩减函数（防止覆盖球）
 		x1=np[0];y1=np[1];x2=np[2];	y2=np[3];
 		var cvs=document.createElement("canvas");
@@ -115,20 +126,20 @@ JoinLine.prototype={
 		FG.save();//缓存历史设置
 		FG.strokeStyle=this.color;
 		FG.lineWidth=this.size;
-		FG.globalAlpha=1;//透明度；	
-		FG.beginPath(); 
+		FG.globalAlpha=1;//透明度；
+		FG.beginPath();
 		FG.moveTo(x1-newX,y1-newY);
 		FG.lineTo(x2-newX,y2-newY);
 		FG.closePath();
 		FG.stroke();
 		FG.restore();//恢复历史设置
 		this.lines.push(cvs);
-		this.tmpDom.appendChild(cvs);		
-	},	
+		this.tmpDom.appendChild(cvs);
+	},
 	IELine:function(x1,y1,x2,y2){
 		if(Math.abs(y1-y2)<(JoinLine.indent*2)&&x1==x2)return;//自动确定同列的是否连线
 		var np=this.nPos(x1,y1,x2,y2,JoinLine.indent);//两端缩减函数（防止覆盖球）
-		x1=np[0];y1=np[1];x2=np[2];	y2=np[3];		
+		x1=np[0];y1=np[1];x2=np[2];	y2=np[3];
 		var line = document .createElement( "<esun:line></esun:line>" );
 		line.from=x1+","+y1;
 		line.to=x2+","+y2;
@@ -146,37 +157,47 @@ JoinLine.prototype={
 		var x3, y3, x4, y4;
 		var _a = Math.round((a * r)/c);
 		var _b = Math.round((b * r)/c);
-		return [x2 + _a, y2 + _b, x1 - _a, y1 - _b]; 
+		return [x2 + _a, y2 + _b, x1 - _a, y1 - _b];
 	}
 };
 
 JoinLine.indent=8;
 
 /* 过滤搜索连线操纵类*/
-LG=function(table,_x,_y,width,margin_bottom,fn_check){
-	var rect={x:_x||0,y:_y||0,w:width||0,oh:margin_bottom||0};	
-	var trs=document.getElementById(table).rows;
+const LG=function(_x,_y,width,margin_bottom,fn_check){
+	var rect={x:_x||0,y:_y||0,w:width||0,oh:margin_bottom||0};
+	var trs=document.getElementsByTagName("tbody")[0].rows;
+
 	var row_start=rect.y<0?(trs.length+rect.y):rect.y;
 	var row_end=trs.length-rect.oh;
 	var col_start=rect.x<0?(trs[row_start].cells.length+rect.x):rect.x;
 	var col_end=col_start+rect.w;
-	if(col_end>trs[row_start].cells.length)col_end=trs[row_start].cells.length;	
-	if(rect.w==0)col_end=trs[row_start].cells.length;	
+	if(col_end>trs[row_start].cells.length)col_end=trs[row_start].cells.length;
+	if(rect.w==0)col_end=trs[row_start].cells.length;
+    console.log("rect.x",rect.x);
+    console.log("row_start",row_start);
+    console.log("row_start",row_start);
 	this.g=[];
 	for(var i=row_start;i<row_end;i++){/* 检测每一组图形 */
+        console.log("row_start",row_start);
+        console.log("row_end",row_end);
 		var tr=trs[i].cells;
+		console.log("col_start",col_start);
+        console.log("col_end",col_end);
 		for(var j=col_start;j<col_end;j++){
-			var td=tr[j];
+			var div=tr[j].childNodes.length;
+
 			/* 检测器返回绝对真时，单元格才被添加到组 */
-			if(td){
-				if(fn_check(td,j,i)===true)this.g.push(td);
+			if(div==1){
+                console.log("tr[j].innerText",tr[j].innerText);
+              this.g.push(tr[j]);/*将获取的当前显示单元格td加入画折线的队列中*/
 			}
 		};
 	};
 	if(LG.autoDraw)this.draw();
 };
-LG.color='#E4A8A8';/*折线默认色*/
-LG.size=2;/*折线宽度*/
+LG.color='#cd232d';/*折线默认色*/
+LG.size=1;/*折线宽度,必须为整数，不然不会画垂直的两个元素*/
 LG.autoDraw=true;/* 默认自动绘线 */
 LG.isShow=true;
 LG.prototype={
@@ -184,10 +205,12 @@ LG.prototype={
 		this.line=new JoinLine(LG.color,LG.size);
 		this.line.join(this.g,LG.isShow);
 	},
-	show:function(yes){this.line.show(yes)}
+	show:function(yes){this.line.show(yes)},
+    remove:function(yes){this.line.remove(yes)},
+
 }
 
-Chart={};
+const Chart={};
 Chart.on=function(o,type,fn){
 	o.attachEvent?o.attachEvent('on'+type,function(){
 		fn.call(o)
@@ -200,12 +223,22 @@ Chart.ini={
 /* 初始化折线的显示*/
 Chart.init=function(){
 	if(!Chart.ini.default_has_line)return;
-	var on_off=document.getElementById("has_line");
+	var on_off=document.getElementsByClassName("has_line");
 	if(!on_off)return;
-	on_off.checked='checked';
+	//on_off.checked='checked';
 };
 /* 重写fw.onReady 延迟执行到window.onload */
-fw={}
+const fw={}
 fw.onReady=function(fn){
 	Chart.on(window,'load',fn);
 }
+
+const Line = [
+    DrawLine,
+    JoinLine,
+    LG,
+    Chart,
+    fw,
+];
+
+export default Line

@@ -10,6 +10,15 @@ import { setDateTime, disabledDate } from '../../../CommonJs/common';
 
 import './AfterRecord.scss';
 
+const shortcutTime = [
+    {
+        text: '近三天',
+        id: 3
+    },{
+        text: '近七天',
+        id: 7
+    }
+];
 @observer
 export default class AfterRecord extends Component {
     constructor(props){
@@ -282,15 +291,6 @@ export default class AfterRecord extends Component {
         const responseData = this.state.responseData;
         const postData = this.state.postData;
         const crowdid = this.state.crowdid;
-        const shortcutTime = [
-            {
-                text: '近三天',
-                id: 3
-            },{
-                text: '近七天',
-                id: 7
-            }
-        ];
 
         return (
             <div className="lottery_bet after_record">

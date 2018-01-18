@@ -43,6 +43,7 @@ export default class GameRecord extends Component {
     };
 
     render() {
+        console.log(111)
         return (
             <div className="s_m_main">
                 <QueueAnim duration={2000}

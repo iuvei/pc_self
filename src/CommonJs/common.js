@@ -224,7 +224,10 @@ export const changeMoneyToChinese = (money) => {
 * 获取localStorage
 */
 export const getStore = name => {
-    return JSON.parse(window.localStorage.getItem(name));
+    if(window.localStorage.getItem(name) == null){
+        return
+    }
+    return window.localStorage.getItem(name);
 };
 
 /**

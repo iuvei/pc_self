@@ -143,7 +143,6 @@ export default class PT extends Component {
             body: JSON.stringify({cate_id: 0, ishot: 1, pn: 10})
         }).then((res)=>{
             if(this._ismount && res.status == 200){
-                console.log(res.repsoneContent.aList)
                 this.setState({topRanking: res.repsoneContent.aList},()=>this.getDestination())
             }
         })
@@ -164,8 +163,6 @@ export default class PT extends Component {
                 ptLoading: true,
             })
         }
-        clearInterval(this._clearInt);
-        cancelAnimationFrame(this._animationFrame);
         this.onptplay(id, isdemo);
     };
     /*开始游戏*/

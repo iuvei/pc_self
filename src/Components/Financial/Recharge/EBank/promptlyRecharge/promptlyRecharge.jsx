@@ -42,7 +42,7 @@ export default class promptlyRecharge extends Component {
                     <li>
                         <span className="p_r_text">收款银行：</span>
                         <span className="gathering_bank">
-                            <img src={require('../Img/yinhang/'+aliPayInfo.b_acc_name+'.jpg')} alt=""/>
+                            <img src={require('../Img/yinhang/'+ aliPayInfo.b_acc_name.toLowerCase() +'.jpg')} alt=""/>
                         </span>
                     </li>
                     <li>

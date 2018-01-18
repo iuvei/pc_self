@@ -17,17 +17,7 @@ window.onbeforeunload = function(){
 export default class Main extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-
-        }
-
-    };
-
-    componentDidMount() {
-
-    }
-
-    componentWillUnmount(){
+        this.state = {}
     };
 
     showLeftSider() {
@@ -68,7 +58,10 @@ export default class Main extends Component {
             return false
         }
     };
-
+    shouldComponentUpdate(){
+    //     /*使用了react-router低于4.x版本中的hashHistory，因为router中进行了一次push和一次pop，所以出现两次渲染，需要在shouldComponentUpdate()做一个判断： return (this.props.router.location.action === 'PUSH')或者 return (this.props.router.location.action === 'POP')；可解决渲染两次的问题*/
+        return this.props.router.location.action === 'POP';
+    }
     render() {
         const contain = <div>
             <div className="berCenter_bg">
@@ -88,7 +81,6 @@ export default class Main extends Component {
                 <header>
                     <HeaderNav/>
                 </header>
-
                 {
                     this.showLeftSider() ? this.props.children : contain
                 }

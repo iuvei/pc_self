@@ -45,40 +45,40 @@ export default class SelfInfo extends Component {
     };
     getData(flag) {
         this.setState({tableLoading: true});
-            Fetch.changename({
-              method: 'POST',
-              body: JSON.stringify(this.state.postData)
-            }).then((res)=>{
-                if(this._ismount){
-                    this.setState({tableLoading: false});
-                    if(res.status == 200) {
-                        if(flag == 'affirm') {
-                            let _this = this;
-                            Modal.success({
-                                title: res.shortMessage,
-                                onOk() {
-                                    _this.setState({disabled: true});
-                                }
-                            });
-                        } else {
-                            let data = res.repsoneContent,
-                                postData = this.state.postData;
-                            postData.tencent = data.tencent;
-                            postData.email = data.email;
-                            postData.phonenumber = data.phonenumber;
-                            postData.wechat = data.wechat;
-                            this.setState({
-                                postData: postData,
-                                logs: data.logs,
-                            });
-                        }
-                    }else{
-                        Modal.warning({
+        Fetch.changename({
+          method: 'POST',
+          body: JSON.stringify(this.state.postData)
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({tableLoading: false});
+                if(res.status == 200) {
+                    if(flag == 'affirm') {
+                        let _this = this;
+                        Modal.success({
                             title: res.shortMessage,
+                            onOk() {
+                                _this.setState({disabled: true});
+                            }
+                        });
+                    } else {
+                        let data = res.repsoneContent,
+                            postData = this.state.postData;
+                        postData.tencent = data.tencent;
+                        postData.email = data.email;
+                        postData.phonenumber = data.phonenumber;
+                        postData.wechat = data.wechat;
+                        this.setState({
+                            postData: postData,
+                            logs: data.logs,
                         });
                     }
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
                 }
-            })
+            }
+        })
     };
     /*修改*/
     onAmend() {
