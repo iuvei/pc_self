@@ -227,7 +227,7 @@ export const getStore = name => {
     if(window.localStorage.getItem(name) == null){
         return
     }
-    return window.localStorage.getItem(name);
+    return JSON.parse(window.localStorage.getItem(name));
 };
 
 /**
