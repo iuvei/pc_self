@@ -41,6 +41,10 @@ class State {
     @observable defaultMethod = 0;
     @observable nowlottery = {lotteryId: 'ssc'};
     @observable openLotteryFlag = true;
+    @observable todayAndTomorrow = [];
+    @observable tomorrowIssue = [];
+    @observable issueIndex = '?????';
+    @observable nextIssue = '?????';
     @observable savePkInput = {};
     @observable aboutGame = {
         data_sel:[],

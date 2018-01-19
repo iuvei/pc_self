@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute,IndexRedirect } from 'react-router';
 import { stateVar } from '../State';
-import {getStore } from "../CommonJs/common";
+import {getCookie,getStore} from "../CommonJs/common";
 import {
     login,
     main,
@@ -74,7 +74,7 @@ const requireAuth = (nextState, replace) => {
 }
 const routes = params => (
     <Route path="/">
-        <IndexRedirect to={getStore("session")?"/autoLogin":"/login"} />
+        <IndexRedirect to={(getCookie("sess") && (getStore('session') == getCookie("sess")))?"/autoLogin":"/login"} />
         <Route path="/autoLogin" getComponent={autoLogin} params={params}/>
         <Route path="/login" getComponent={login} params={params}/>
         <Route path="/main" getComponent={main} params={params} onEnter={requireAuth}  >

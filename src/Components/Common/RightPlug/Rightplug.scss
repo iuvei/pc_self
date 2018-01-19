@@ -35,11 +35,15 @@
     top: 50%;
     margin-top: -165px;
     z-index: 99;
-    width: 140px;
+    &:hover{
+        width: 140px;
+    }
     .right_list{
         li{
             margin-top: 0;
-            width: 140px;
+            &:hover{
+                width: 140px;
+            }
             color:#fff;
             text-align: end;
             height: 47px;

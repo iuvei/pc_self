@@ -14,7 +14,7 @@ import dnsSrc from './Img/dns.png';
 import warnSrc from './Img/warn.png';
 import serviceSrc from './Img/service.png';
 import valicodeSrc from './Img/valicode.png';
-const validImgSrc='http://10.63.15.242:81/pcservice/index.php?useValid=true';
+const validImgSrc = stateVar.httpUrl+'/pcservice/index.php?useValid=true';
 import { debounce } from 'react-decoration';
 import { withRouter } from 'react-router';
 import {removeStore, setStore,getStore } from "../../CommonJs/common";
@@ -63,6 +63,7 @@ export default class Login extends Component {
                 session: parseData.repsoneContent,
             });
             setStore("session",parseData.repsoneContent)
+            document.cookie = 'sess='+ parseData.repsoneContent + ';path=/';
         })
 
     }
@@ -143,6 +144,7 @@ export default class Login extends Component {
                 let result = data.repsoneContent;
                 console.log("trygameLogin.data",data);
                 if(data.status==200) {
+                	stateVar.nowlottery = {'lotteryId':'ssc','cuimId':'',defaultMethodId:0,lotteryBetId:1,cnname:'重庆时时彩',imgUrl:''};
                     stateVar.auth=true;
                     stateVar.userInfo = {
                         userId:result.userid,
@@ -190,7 +192,7 @@ export default class Login extends Component {
             method: "POST",
             body: JSON.stringify({
                 "sType": 'formal',
-                "username": 'hobart',
+                "username": this.state.account,
                 "loginpass": md5((md5(this.state.aptchac) + md5('123qwe'))),
                 "validcode": this.state.aptchac
             })
@@ -199,6 +201,7 @@ export default class Login extends Component {
             let result = data.repsoneContent;
             console.log("login.data",data);
             if(data.status===200){
+            	stateVar.nowlottery = {'lotteryId':'ssc','cuimId':'',defaultMethodId:0,lotteryBetId:1,cnname:'重庆时时彩',imgUrl:''};
                 stateVar.auth=true;
                 stateVar.userInfo = {
                     userId:result.userid,
@@ -307,7 +310,7 @@ export default class Login extends Component {
                         method: "POST",
                         body:JSON.stringify({
                             "sType":'formal',
-                            "username":'hobart',
+                            "username":this.state.accountM,
                             "loginpass":md5((md5(this.state.aptchacM)+md5('qwe123'))),
                             "validcode":this.state.aptchacM
                         })

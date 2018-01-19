@@ -219,7 +219,27 @@ export const changeMoneyToChinese = (money) => {
      } */
     return ChineseStr;
 };
-
+/**
+ * 读取cookie
+ * */
+export const getCookie = name => {
+	let arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+	if(arr=document.cookie.match(reg)){
+		return unescape(arr[2]);
+	}else{
+		return null;
+	}
+}
+/**
+ * 删除cookie
+ * */
+export const  delCookie = name =>{
+	let exp = new Date();
+	exp.setTime(exp.getTime() - 1);
+	let cval=getCookie(name);
+	if(cval!=null)
+	document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
 /**
 * 获取localStorage
 */
@@ -275,5 +295,7 @@ export default {
     removeStore,
     setStore,
     onValidate,
+    getCookie,
+    delCookie
 }
 
