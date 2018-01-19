@@ -665,7 +665,7 @@ export default class ContentMian extends Component {
     			this.getKjHistory();
             }
     		$.lt_time_leave = $.lt_time_leave - 1;
-    	},1000);
+    	},100000);
     }
     componentWillUnmount() {
     	stateVar.BetContent = {

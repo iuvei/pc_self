@@ -1,5 +1,5 @@
 /*个人信息*/
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {observer} from 'mobx-react';
 import { Button, Table, Input, Modal } from 'antd';
 import Fetch from '../../../Utils';
@@ -14,27 +14,27 @@ import email from './Img/email.png';
 import phone from './Img/phone.png';
 
 @observer
-export default class SelfInfo extends Component {
+export default class SelfInfo extends PureComponent {
     constructor(porps) {
-      super(porps);
-      this.state = {
-          disabled: true,
-          tableLoading: false,
-          logs: [],
-          postData: {
-              flag: '', // 这个没传就是查看用户基本信息
-              tencent: '', //要修改的qq号
-              wechat: '', //微信号
-              phonenumber: '', //正确格式的电话号码
-              email: '', //用户邮箱
-          },
-          validate: {
-              tencent: 2, // 0: 对， 1：错
-              wechat: 2,
-              email: 2,
-              phonenumber: 2,
-          }
-      }
+        super(porps);
+        this.state = {
+            disabled: true,
+            tableLoading: false,
+            logs: [],
+            postData: {
+                flag: '', // 这个没传就是查看用户基本信息
+                tencent: '', //要修改的qq号
+                wechat: '', //微信号
+                phonenumber: '', //正确格式的电话号码
+                email: '', //用户邮箱
+            },
+            validate: {
+                tencent: 2, // 0: 对， 1：错
+                wechat: 2,
+                email: 2,
+                phonenumber: 2,
+            }
+        }
     };
     componentDidMount() {
         this._ismount = true;
@@ -46,8 +46,8 @@ export default class SelfInfo extends Component {
     getData(flag) {
         this.setState({tableLoading: true});
         Fetch.changename({
-          method: 'POST',
-          body: JSON.stringify(this.state.postData)
+            method: 'POST',
+            body: JSON.stringify(this.state.postData)
         }).then((res)=>{
             if(this._ismount){
                 this.setState({tableLoading: false});
@@ -103,11 +103,11 @@ export default class SelfInfo extends Component {
     /*取消*/
     onCancel() {
         let validate = {
-                tencent: 2,
-                wechat: 2,
-                email: 2,
-                phonenumber: 2,
-            };
+            tencent: 2,
+            wechat: 2,
+            email: 2,
+            phonenumber: 2,
+        };
         this.setState({
             disabled: true,
             validate: validate,
@@ -203,24 +203,24 @@ export default class SelfInfo extends Component {
         const userInfo = stateVar.userInfo;
         const { postData, validate, disabled } = this.state;
         const columns = [
-                {
-                    title: '序号',
-                    dataIndex: 'no',
-                    render: (text, record, index)=>{
-                      return index+1;
-                    },
-                    width: '10%',
-                },{
-                    title: '登录时间',
-                    dataIndex: 'times',
-                    width: '45%',
-                }, {
-                    title: '登录IP',
-                    dataIndex: 'proxyip',
-                    render: (text, record)=> text+' '+record.ip_address,
-                    width: '45%',
-                }
-            ];
+            {
+                title: '序号',
+                dataIndex: 'no',
+                render: (text, record, index)=>{
+                    return index+1;
+                },
+                width: '10%',
+            },{
+                title: '登录时间',
+                dataIndex: 'times',
+                width: '45%',
+            }, {
+                title: '登录IP',
+                dataIndex: 'proxyip',
+                render: (text, record)=> text+' '+record.ip_address,
+                width: '45%',
+            }
+        ];
         return (
             <div className="self_i_main">
                 <div className="self_i_top clear">

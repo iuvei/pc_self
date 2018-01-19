@@ -11,10 +11,8 @@ export default class NormalTable extends Component {
         super(props);
         this.state = {
             awardNoLength:0,  /*当前开奖号码个数，用来间接计算走势图折线图的起始显示位置*/
-            checked:true,      /*控制是否显示折线图，默认显示*/
             tableData:[],     //走势图表格内容
             columns:[],  /*走势图表格表头*/
-            ac:0,
 
 
         }
@@ -90,8 +88,6 @@ export default class NormalTable extends Component {
             dataIndex: "award0",
             key: 'awardNo',
             className:"trend_awardNo",
-            onHeaderCell(column){
-            },
             colSpan: headAwardNo.length,
             render(value, row, index) {
                 let obj = {

@@ -239,11 +239,16 @@ export default class BankCardManage extends Component {
             validate = this.state.validate,
             addPostData = this.state.addPostData;
         addPostData.account_again = val;
-        if (val != addPostData.account) {
-            validate.account_again = 1;
+        if(validate.account == 0){
+            if (val != '' && val == addPostData.account) {
+                validate.account_again = 0;
+            }else{
+                validate.account_again = 1;
+            }
         }else{
-            validate.account_again = 0;
+            validate.account_again = 1;
         }
+
         this.setState({
             addPostData: addPostData,
             validate: validate,
@@ -267,10 +272,8 @@ export default class BankCardManage extends Component {
     };
     /*下一步*/
     onStep(){
-        let validate = this.state.validate,
-            addPostData = this.state.addPostData;
-
-        if(addPostData.bank_id == null) {
+        let { validate, ModalTitle, addPostData } = this.state;
+        if(addPostData.bank_id == '-1') {
             Modal.error({
                 title: '开户银行不能为空！',
             });
@@ -288,21 +291,29 @@ export default class BankCardManage extends Component {
             });
             return
         }
-        if(validate.branch != 0) {
-            validate.branch = 1
+        if(ModalTitle){
+            if(validate.branch != 0) {
+                validate.branch = 1
+            }
+            if(validate.account_name != 0) {
+                validate.account_name = 1
+            }
+            if(validate.account != 0) {
+                validate.account = 1
+            }
+            if(validate.account_again != 0) {
+                validate.account_again = 1
+            }
+            if(validate.security_pass != 0) {
+                validate.security_pass = 1
+            }
+        }else{
+            validate.account_again = 0;
+            if(validate.security_pass != 0) {
+                validate.security_pass = 1
+            }
         }
-        if(validate.account_name != 0) {
-            validate.account_name = 1
-        }
-        if(validate.account != 0) {
-            validate.account = 1
-        }
-        if(validate.account_again != 0) {
-            validate.account_again = 1
-        }
-        if(validate.security_pass != 0) {
-            validate.security_pass = 1
-        }
+
         this.setState({validate: validate});
         if(validate.branch != 0 ||
             validate.account_name != 0 ||
@@ -345,16 +356,13 @@ export default class BankCardManage extends Component {
             validate: {},
         })
     };
-
     /*子组件调用关闭模态框*/
     onHideChildModal() {
         this.setState({childVisible: false})
-    }
+    };
 
     render() {
-        const response = this.state.response;
-        const adduserbank = this.state.adduserbank;
-        const addPostData = this.state.addPostData;
+        const { response, adduserbank, addPostData, ModalTitle } = this.state;
         const columns = [
             {
                 title: '姓名',
@@ -404,7 +412,7 @@ export default class BankCardManage extends Component {
                 <Modal
                     width='865px'
                     visible={this.state.visible}
-                    title={this.state.ModalTitle === true ? '新增银行卡' : '修改银行卡'}
+                    title={ModalTitle === true ? '新增银行卡' : '修改银行卡'}
                     onCancel={()=>this.onHideModal()}
                     maskClosable={false}
                     footer={null}
@@ -412,6 +420,20 @@ export default class BankCardManage extends Component {
                     <div className="a_aa_main">
                         <div className="a_aa_form">
                             <ul className="a_aa_list">
+                                {
+                                    !ModalTitle ?
+                                        <li>
+                                            <span className="a_aa_left_text">银行卡号：</span>
+                                            <Input value={addPostData.account}
+                                                   onChange={(e)=>this.onAccount(e)}
+                                                   className={onValidate('account', this.state.validate)}
+                                                   size="large" style={{width: 280}} placeholder="请输入银行卡号"
+                                                   disabled={!ModalTitle}
+                                            />
+                                            <span className="a_aa_right_text">卡号错误请联系客服删除</span>
+                                        </li> :
+                                        null
+                                }
                                 <li id="select_p1">
                                     <span className="a_aa_left_text">开户银行：</span>
                                     <Select value={addPostData.bank_id} size="large"
@@ -472,23 +494,33 @@ export default class BankCardManage extends Component {
                                     />
                                     <span className="a_aa_right_text" style={{verticalAlign: 'bottom'}}>请填写您的真实姓名，只能是中文字符，支持以 下姓名分隔符"·"".""。"</span>
                                 </li>
-                                <li>
-                                    <span className="a_aa_left_text">银行卡号：</span>
-                                    <Input value={addPostData.account}
-                                           onChange={(e)=>this.onAccount(e)}
-                                           className={onValidate('account', this.state.validate)}
-                                           size="large" style={{width: 280}} placeholder="请输入银行卡号"
-                                    />
-                                    <span className="a_aa_right_text">银行卡卡号由16位或19位数字组成</span>
-                                </li>
-                                <li className="disabled_copy">
-                                    <span className="a_aa_left_text">确认卡号：</span>
-                                    <Input value={addPostData.account_again}
-                                           onChange={(e)=>this.onAccountAgain(e)}
-                                           className={onValidate('account_again', this.state.validate)}
-                                           size="large" style={{width: 280}} placeholder="请输入确认卡号" />
-                                    <span className="a_aa_right_text">银行账号只能手动输入，不能粘贴</span>
-                                </li>
+                                {
+                                    ModalTitle ?
+                                        <li>
+                                            <span className="a_aa_left_text">银行卡号：</span>
+                                            <Input value={addPostData.account}
+                                                   onChange={(e)=>this.onAccount(e)}
+                                                   className={onValidate('account', this.state.validate)}
+                                                   size="large" style={{width: 280}} placeholder="请输入银行卡号"
+                                                   disabled={!ModalTitle}
+                                            />
+                                            <span className="a_aa_right_text">银行卡卡号由16位或19位数字组成</span>
+                                        </li> :
+                                        null
+                                }
+                                {
+                                    ModalTitle ?
+                                    <li className="disabled_copy">
+                                        <span className="a_aa_left_text">确认卡号：</span>
+                                        <Input value={addPostData.account_again}
+                                               onChange={(e)=>this.onAccountAgain(e)}
+                                            // onPressEnter={()=>{alert(789)}}
+                                               className={onValidate('account_again', this.state.validate)}
+                                               size="large" style={{width: 280}} placeholder="请输入确认卡号" />
+                                        <span className="a_aa_right_text">银行账号只能手动输入，不要粘贴</span>
+                                    </li> :
+                                    null
+                                }
                                 <li>
                                     <span className="a_aa_left_text">验证资金密码：</span>
                                     <Input value={addPostData.security_pass}
@@ -496,7 +528,8 @@ export default class BankCardManage extends Component {
                                            className={onValidate('security_pass', this.state.validate)}
                                            type="password" size="large" style={{width: 280}} placeholder="请输入验证资金密码"
                                     />
-                                    <a onClick={()=>this.setState({childVisible: true})} href="javascript:void(0)" style={{textDecoration:'underline', color:'#0393EF', display: this.state.ModalTitle ? 'none' : ''}}>忘记资金密码？</a>
+                                    <a onClick={()=>this.setState({childVisible: true})} href="javascript:void(0)" style={{textDecoration:'underline', color:'#0393EF'}}>忘记资金密码？</a>
+                                    {/*, display: this.state.ModalTitle ? 'none' : ''*/}
                                 </li>
                             </ul>
                             <Button className="a_aa_btn" type="primary" loading={this.state.loading} onClick={()=>{this.onStep()}}>

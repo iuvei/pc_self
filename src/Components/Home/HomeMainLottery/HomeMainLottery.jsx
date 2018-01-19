@@ -12,20 +12,20 @@ export default class HomeMainLottery extends Component {
     getChildrenToRender(item, i){
         return (
             <li key={i}>
-                <img src={item.img} width="100%" alt=""/>
-                <div className="home_m_lottery_type home_m_lottery_type_hover">
-                    <h3>{item.name}</h3>
-                    <h4>{item.describe}</h4>
-                    <a href="javascript:void(0)" className="home_m_gaming">{item.action}</a>
+                <div className="h_l_content">
+                    <img src={item.img} width="100%" alt=""/>
+                    <div className="home_m_lottery_type home_m_lottery_type_hover">
+                        <a href="javascript:void(0)" className="home_m_gaming">{item.action}</a>
+                    </div>
                 </div>
             </li>
         )
     };
     render() {
         const dataArray = [
-            { img: home_lottery01, name: '重庆时时彩', describe: '重庆市福利彩票发行中心承销的福彩快开彩票', action: '立即游戏' },
-            { img: home_lottery02, name: '腾讯分分彩', describe: '重庆市福利彩票发行中心承销的福彩快开彩票', action: '立即游戏' },
-            { img: home_lottery03, name: '泰国300秒', describe: '重庆市福利彩票发行中心承销的福彩快开彩票', action: '立即游戏' },
+            { img: home_lottery01, action: '立即游戏' },
+            { img: home_lottery02, action: '立即游戏' },
+            { img: home_lottery03, action: '立即游戏' },
         ];
         const childrenToRender = dataArray.map(this.getChildrenToRender);
         return (

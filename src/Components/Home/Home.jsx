@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import './Home.scss'
 
 import HomeMainTop from './HomeMainTop/HomeMainTop'
 import HomeMainLottery from './HomeMainLottery/HomeMainLottery'

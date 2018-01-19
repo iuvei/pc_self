@@ -6,8 +6,12 @@
     li{
         float: left;
         width: 33.33%;
-        position: relative;
+        background: #fff;
         overflow: hidden;
+        .h_l_content{
+            position: relative;
+            margin: 4px 2px 0 2px;
+        }
         img{
             vertical-align: middle;
         }
@@ -19,32 +23,24 @@
         }
     }
     .home_m_lottery_type_hover{
-        @include wh(100%, 138px);
+        @include wh(100%, 50px);
         background: rgba(176,26,18, 0);
     }
     .home_m_lottery_type{
         position: absolute;
-        bottom: -57px;
+        bottom: -50px;
         left: 0;
         color: #fff;
-        padding: 20px 0 18px 20px;
-
-        transition: bottom .3s;
-        -moz-transition: bottom .3s; /* Firefox 4 */
-        -webkit-transition: bottom .3s; /* Safari 和 Chrome */
-        -o-transition: bottom .3s; /* Opera */
-        h3{
-            font-size: 18px;
-        }
-        h4{
-            font-size: 14px;
-        }
+        text-align: center;
+        line-height: 50px;
+        //padding: 20px 0 18px 20px;
+        //margin: 4px 2px 0 2px;
+        @include transform(bottom, 0.3s);
         .home_m_gaming{
             display: inline-block;
             @include wh(107px, 32px);
             line-height: 32px;
             font-size: 14px;
-            margin-top: 15px;
             @include borderRadius(16px);
             background-color: #fff;
             text-align: center;

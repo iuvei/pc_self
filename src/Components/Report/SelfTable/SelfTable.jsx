@@ -550,6 +550,7 @@ export default class SelfTable extends Component {
                                     format={ "YYYY-MM-DD" + ' ' + this.state.startHMS }
                                     placeholder="请选择开始查询日期"
                                     value={moment(postData.starttime)}
+                                    allowClear={false}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
                                     disabledDate={(current)=>common.disabledDate(current, -35, 1)}
                                 />
@@ -558,6 +559,7 @@ export default class SelfTable extends Component {
                                     format={ "YYYY-MM-DD" + ' ' + this.state.endHMS }
                                     placeholder="请选择结束查询日期"
                                     value={moment(postData.endtime)}
+                                    allowClear={false}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
                                     disabledDate={(current)=>common.disabledDate(current, -35, 1)}
                                 />

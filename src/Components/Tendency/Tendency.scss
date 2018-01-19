@@ -24,6 +24,11 @@ $border_color: #C8C8C8;
         .t-r-table{
             color: #0099FF;
             border-bottom: 1px solid #0099FF;
+            &:hover,&:active{
+                color: #CB1313;
+                border-bottom: 1px solid #CB1313;
+            }
+
         }
         .t-period{
             box-sizing: border-box;

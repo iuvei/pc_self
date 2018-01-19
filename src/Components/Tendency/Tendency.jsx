@@ -4,6 +4,8 @@ import { DatePicker, Checkbox,  Select,  Button } from 'antd';
 import './Tendency.scss'
 import Fetch from '../../Utils'
 import NormalTable from "./NormalTable/NormalTable";
+import ReverseTable from "./ReverseTable/ReverseTable";
+import {setStore,getStore} from "../../CommonJs/common";
 const Option = Select.Option;
 
 export default class Tendency extends Component {
@@ -26,6 +28,7 @@ export default class Tendency extends Component {
             lotteryCurType:"五星基本走势图" ,                  //当前彩种的走势图类型对应名字
             responseData:null,         /*请求返回的数据，作为属性传给走势图表格*/
             checked:true,         /*控制折线的显示*/
+            reversetable:false, /*控制是否上下转换表格，boolean*/
 
         }
     };
@@ -174,6 +177,10 @@ export default class Tendency extends Component {
    }
    /*倒转当前表格*/
     reverseTable() {
+        setStore("reversetable",!this.state.reversetable);
+        this.setState((prevState, props) => ({
+            reversetable: !prevState.reversetable,
+        }));
 
     }
     /*选择最近30期，最近50期，最近100期,并请求对应的表格行数*/
@@ -192,6 +199,19 @@ export default class Tendency extends Component {
             checked: e.target.checked,
         });
 
+    }
+    /*正确显示表格，包括倒转表格和正常表格*/
+    displapyTable(){
+         let reverseState= getStore("reversetable") ||this.state.reversetable;/*首先从缓存中获取表格显示样式*/
+         if(!this.state.loading){
+             if(reverseState){
+                 return <ReverseTable responseData={this.state.responseData} checked={this.state.checked} lotteryId={this.state.postData.lotteryId}/>;
+             }else{
+                 return <NormalTable responseData={this.state.responseData} checked={this.state.checked} lotteryId={this.state.postData.lotteryId}/>;
+             }
+         }else{
+             return "";
+         }
     }
     componentWillMount(){
         this._ismount = false;
@@ -300,7 +320,7 @@ export default class Tendency extends Component {
                     </li>
                 </ul>
                 <div className="c_table" >
-                    {!this.state.loading ? <NormalTable responseData={this.state.responseData} checked={this.state.checked} lotteryId={this.state.postData.lotteryId} />:""}
+                    { this.displapyTable() }
                 </div>
             </div>
         );

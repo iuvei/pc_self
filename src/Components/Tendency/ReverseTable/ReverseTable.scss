@@ -1,0 +1,53 @@
+/*表格样式*/
+.reverse_table_wrap{
+    white-space:nowrap;
+
+    .ball{
+        background:url('../Img/ball.png') no-repeat center;
+        color: #fff;
+        height: 19px;
+        width: 19px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -9px;
+        margin-left: -9px;
+    }
+    .ant-table-thead{
+        .trend_awardNo,th{
+            background: #515368;
+            color: #fff;
+        }
+    }
+    .ant-table-tbody{
+        .trend_awardNo{
+            background:url('../Img/ball.png') no-repeat center;
+            color: #fff;
+            &:hover{
+                background:url('../Img/ball.png') no-repeat center;
+            }
+
+        }
+        tr > td {
+            padding: 5px;
+            position: relative;
+
+        }
+        tr:nth-child(1),
+        tr:nth-child(2),
+        tr:nth-child(3),
+        tr:nth-child(1) td.trend_awardNo,
+        tr:nth-child(2) td.trend_awardNo,
+        tr:nth-child(3) td.trend_awardNo,
+        tr:nth-child(1) td,
+        tr:nth-child(2) td ,
+        tr:nth-child(3) td{
+            font-size: 14px;
+            background:#515368;
+            color:#fff;
+            &:hover{
+                background:#515368 !important;
+            }
+        }
+    }
+}

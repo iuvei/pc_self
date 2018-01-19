@@ -31,7 +31,7 @@
         color:white;
     }
     .ant-modal-header{
-        background:gray url(../Img/betCenter_bg.jpg) no-repeat top right;
+        border-bottom: 0;
     }
     .ant-select-selection--single{
         height: 34px;
@@ -40,8 +40,6 @@
     }
     .sec_k_main{
         color: $color_363636;
-        background-color: #ebeaea;
-        border-top: solid 1px #C8C8C8;
         .sec_k_list{
             margin: 0 auto;
             padding-bottom: 10px;

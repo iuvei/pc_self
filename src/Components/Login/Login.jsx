@@ -58,7 +58,7 @@ export default class Login extends Component {
     * */
     getSession(){
         Fetch.getSess({method: "POST"}).then((data)=>{
-            let parseData = JSON.parse(data);
+            let parseData = data;
             this.setState({
                 session: parseData.repsoneContent,
             });
