@@ -80,8 +80,6 @@ export default class Ebank extends Component {
                 this.setState({ iconLoadingRecharge: false });
                 if(res.status == 200){
                     stateVar.aliPayInfo = res.repsoneContent.payInfo;
-                    console.log(res.repsoneContent.payInfo.b_acc_name)
-                    console.log(res.repsoneContent.payInfo.b_acc_name.toLowerCase())
                     hashHistory.push({
                         pathname: '/financial/recharge/promptlyRecharge',
                         query: {

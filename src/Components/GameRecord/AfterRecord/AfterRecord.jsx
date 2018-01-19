@@ -361,11 +361,12 @@ export default class AfterRecord extends Component {
                                 >
                                     <Option value="-1">所有玩法组</Option>
                                     {
-                                        responseData.newMethodCrowdList[postData.lotteryid] == undefined ||
-                                        crowdid == '-1' ? '' :
+                                        responseData.newMethodCrowdList[postData.lotteryid] != undefined &&
+                                        responseData.newMethodCrowdList[postData.lotteryid][crowdid] != undefined &&
+                                        crowdid != '-1' ?
                                             responseData.newMethodCrowdList[postData.lotteryid][crowdid].map((item,i)=>{
                                                 return <Option value={item.methodid} key={item.methodid}>{item.methodname}</Option>
-                                            })
+                                            }) : ''
                                     }
                                 </Select>
                             </li>

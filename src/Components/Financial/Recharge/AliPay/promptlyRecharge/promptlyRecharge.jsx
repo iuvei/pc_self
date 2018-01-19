@@ -1,4 +1,4 @@
-/*网银充值确认*/
+/*支付宝网银充值确认*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Button, message } from 'antd';
@@ -44,8 +44,8 @@ export default class Promptly extends Component {
                             <li>
                                 <span className="p_r_text">收款银行：</span>
                                 <span className="gathering_bank">
-                            <img src={require('../Img/yinhang/'+aliPayInfo.b_acc_name+'.jpg')} alt=""/>
-                        </span>
+                                    <img src={require('../Img/yinhang/'+aliPayInfo.b_acc_name+'.jpg')} alt=""/>
+                                </span>
                             </li>
                             <li>
                                 <span className="p_r_text">收款人姓名：</span>
@@ -88,7 +88,7 @@ export default class Promptly extends Component {
                             <li>
                                 <span className="p_r_text">收款银行：</span>
                                 <span className="gathering_bank">
-                                    <img src={require('../Img/yinhang/'+aliPayInfo.b_acc_name+'.jpg')} alt=""/>
+                                    <img src={require('../Img/yinhang/'+aliPayInfo.b_acc_name.toLowerCase()+'.jpg')} alt=""/>
                                 </span>
                             </li>
                             <li>

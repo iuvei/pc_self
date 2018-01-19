@@ -184,11 +184,11 @@ export default class PT extends Component {
                     method: 'POST',
                     body: formData,
                 }).then((res)=>{
-                    let ress = JSON.parse(res);
-                    if(ress.status == 200) {
+                    // let ress = JSON.parse(res);
+                    if(res.status == 200) {
                         this.setState({
                             ptLoading: false,
-                            ptUrl: ress.repsoneContent.aUserinfo.returnurl,
+                            ptUrl: res.repsoneContent.aUserinfo.returnurl,
                         });
                         // let datas = ress.repsoneContent;
                         // window.open (datas.aUserinfo.returnurl);
