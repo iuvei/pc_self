@@ -64,7 +64,7 @@ const checkResponse = (response) => {
  * @return {*|{type, alias, describe}}
  */
 const toContentType = (response) => {
-	if(response.shortMessage.indexOf('请重新登录') > -1){
+	if(typeof response != 'string' && response.shortMessage.indexOf('请重新登录') > -1){
 		delCookie('sess');
 		removeStore('session');
 		hashHistory.push('/login');

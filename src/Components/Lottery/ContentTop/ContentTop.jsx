@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Websocket from 'react-websocket';
 import 'whatwg-fetch'
-import { Row, Col, Switch,message } from 'antd';
+import { Row, Col, Switch,message,Button} from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import './ContentTop.scss'
 import cz_logo_11_5 from './Img/cz_logo_11_5.png'
@@ -30,21 +30,20 @@ export default class ContentTop extends Component {
         	el1: {rotateZ: 0},
         	ifRandom:false,
         	betokObj:{},
-        	visible:false,
         	issueArray:[],
         	booleanValue:true,
         	imgUrl:'pk10',
-        	mmccode:['-','-','-','-','-'],
         	mmcmoni:true,
         	directFlag:false
         };
     }
     componentDidMount() {
-    	console.log(333333)
+    	this._ismount = true;
     	clearInterval(this.interval);
     	this.initData();
     };
     componentWillUnmount() {
+    	this._ismount = false;
 	    clearInterval(this.interval);
 	}
     initData(){
@@ -72,12 +71,16 @@ export default class ContentTop extends Component {
     	this.getlotterycode();
     	this.getFutureIssue();
     	this.getFutureIssue();
+    	this.getKjHistory();
     };
     /**
      Function 开奖动画
      param 号码个数
      */
     kjanimate(b){
+    	if(!this._ismount){
+			return;
+		}
     	let param = this.state.tempLotteryLength;
     	if(this.state.kjStopTime >= 5){
     		return;
@@ -133,16 +136,16 @@ export default class ContentTop extends Component {
     		method:"POST",
     		body:JSON.stringify({flag:'getTodayTomorrowIssue',lotteryid:stateVar.nowlottery.lotteryBetId})
     		}).then((data)=>{
-    			if(data.status == 200){
+    			if(this._ismount && data.status == 200){
     				stateVar.openLotteryFlag = true;
 					let todayData = data.repsoneContent.today;
 					let tomorrowData = data.repsoneContent.tomorrow;
 					todayData = todayData.concat(tomorrowData);
 					stateVar.tomorrowIssue = tomorrowData;
+					stateVar.checkTrace = false;
 					stateVar.todayAndTomorrow = todayData;
-					this.setState({issueIndex:todayData[0].issue},()=>{
-						/*this.actionTrace();*/
-					});
+					this.props.actionTrace();
+					this.setState({issueIndex:todayData[0].issue});
     			}
     		})
     };
@@ -161,7 +164,7 @@ export default class ContentTop extends Component {
 		    		method:"POST",
 		    		body:JSON.stringify({flag:'gettime',lotteryid:stateVar.nowlottery.lotteryBetId,issue:stateVar.nextIssue})
 		    		}).then((data)=>{
-		    			if(data.status == 200){
+		    			if(this._ismount && data.status == 200){
 		    				let tempData = data.repsoneContent || 0;
 		    				tempData = parseInt(tempData,10);
                             tempData = isNaN(tempData) ? 0 : tempData;
@@ -186,13 +189,50 @@ export default class ContentTop extends Component {
 				  top:'50%',
 				  duration: 3
 				});
-				this.setState({visible:false});
+				stateVar.betVisible = false;
 				message.info('当期销售已截止，请进入下一期购买');
 				this.getlotterycode(true);
             }
     		$.lt_time_leave = $.lt_time_leave - 1;
     	},1000);
     }
+    //得到最近历史开奖号码
+     getKjHistory(flag){
+     	if(stateVar.nowlottery.lotteryBetId == 23){
+     		Fatch.aboutMmc({
+	    		method:"POST",
+	    		body:JSON.stringify({lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,flag:'getlastcode'})
+	    		}).then((data)=>{
+	    			let tempData = data.repsoneContent;
+	    			if(this._ismount && data.status == 200){
+	    				this.setState({mmcmoni:false});
+	    				if(tempData.length > 0){
+	    					stateVar.mmccode = tempData[0].split(' ');
+	    				}
+	    				stateVar.mmCkjNumberList = tempData;
+	    			}else{
+	    				if(this._ismount){
+	    					this.setState({mmcmoni:false});
+	    				}
+	    			}
+    			})
+     	}else{
+     		let tempObj = {};
+     		if(flag){
+     			tempObj = {lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,curmid:stateVar.nowlottery.cuimId,cacheTrue:2};
+     		}else{
+     			tempObj = {lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,curmid:stateVar.nowlottery.cuimId};
+     		}
+     		Fatch.ksHistoery({
+	    		method:"POST",
+	    		body:JSON.stringify(tempObj)
+	    		}).then((data)=>{
+	    			if(this._ismount && data.status == 200){
+	    				stateVar.kjNumberList = data.repsoneContent;
+	    			}
+	    		})
+     	}
+    };
     //获取最近一期开奖号码和期号
     getlotterycode(a){
     	if(stateVar.nowlottery.lotteryBetId == 23){
@@ -204,7 +244,7 @@ export default class ContentTop extends Component {
     		}).then((data)=>{
     			let tempData = data.repsoneContent;
     			let tempArray = stateVar.todayAndTomorrow;
-    			if(data.status == 200){
+    			if(this._ismount && data.status == 200){
     				if(a){
     					while(true){
 							if(stateVar.todayAndTomorrow.length == 0){
@@ -233,10 +273,10 @@ export default class ContentTop extends Component {
     				this.setState({code:tempCode,nowIssue:tempData.issue},()=>{
     					if(a && tempArray.length != 0){
     						stateVar.todayAndTomorrow = tempArray;
+    						this.props.actionTrace();
     					}else{
     						this.getFutureIssue();
     					}
-    					/*this.actionTrace();*/
     					this.tick(tempData.datetime,tempData.cursaleend);
     				});
     			}
@@ -250,14 +290,18 @@ export default class ContentTop extends Component {
     		method:"POST",
     		body:JSON.stringify({"flag":"getcodes","lotteryid":23})
     		}).then((data)=>{
-    			this.setState({mmcmoni:false});
     			$(".monikj span").html('模拟开奖')
     			data = JSON.parse(data);
     			let tempData = data.repsoneContent;
-    			if(data.status == 200){
-    				this.setState({mmccode:tempData.split('')});
+    			if(this._ismount && data.status == 200){
+    				this.setState({mmcmoni:false});
+    				stateVar.mmccode = tempData.split('');
 					this.props.getBetHistory();
-					this.props.getKjHistory();
+					this.getKjHistory();
+    			}else{
+    				if(this._ismount){
+    					this.setState({mmcmoni:false});
+    				}
     			}
     		})
     };
@@ -353,7 +397,7 @@ export default class ContentTop extends Component {
 	    				}
 	    				this.setState({kjStopallFlag:true});
     					this.setState({code:tempCode,nowIssue:tempData.expectedIssue});
-    					this.props.getKjHistory(true);
+    					this.getKjHistory(true);
     				}
     			}
     		}else if(tempType == 4 || tempType == 3){
@@ -409,7 +453,7 @@ export default class ContentTop extends Component {
 	                            <li>
 	                            	<ul className="ball_number_mmc">
 						                {
-						                	this.state.mmccode.map((val,idx)=>{
+						                	stateVar.mmccode.map((val,idx)=>{
 						                		return (
 						                			<li key={idx}>{val}</li>
 						                		)

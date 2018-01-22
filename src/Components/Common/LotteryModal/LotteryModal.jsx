@@ -36,6 +36,21 @@ export default class AlterModal extends Component {
     		this.setState({mmcvisible:false,ifStop:false});
     	}
     };
+    getKjHistory(){
+ 		Fatch.aboutMmc({
+		method:"POST",
+		body:JSON.stringify({lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,flag:'getlastcode'})
+		}).then((data)=>{
+			let tempData = data.repsoneContent;
+			this.setState({mmcmoni:false});
+			if(data.status == 200){
+				if(tempData.length > 0){
+					stateVar.mmccode = tempData[0].split(' ');
+				}
+				stateVar.mmCkjNumberList = tempData;
+			}
+		})
+    };
     onOk(){
     	let tempObj  = this.props.betData;
     	let postData = {};
@@ -80,7 +95,7 @@ export default class AlterModal extends Component {
 	    			this.setState({tzloding:false});
 	    			this.props.lotteryOkBet();
 	    			if(data.status == 200){
-	    				this.props.mmchistoeryBet();
+	    				this.getKjHistory();
 						this.props.historyBet();
 	    				if(kjtime == tempObj.lt_trace_count_input){
 	    					if(kjtime > 1){
@@ -288,7 +303,7 @@ export default class AlterModal extends Component {
             <div>
                 <Modal
                     title="温馨提示"
-                    visible={this.props.visible}
+                    visible={stateVar.betVisible}
                     wrapClassName="lottery-modal"
                     onCancel={this.onCancel}
                     maskClosable={false}

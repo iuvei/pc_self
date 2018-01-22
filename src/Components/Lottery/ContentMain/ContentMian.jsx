@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Select,Table, Modal,message, InputNumber, Row, Col, Checkbox,Button, Radio ,Switch,Tooltip,Spin,notification,Icon } from 'antd';
+import { Select,Table, Modal,message, InputNumber, Row, Col, Checkbox,Button, Radio ,Switch,Tooltip,Spin } from 'antd';
 import mobx,{computed, autorun} from "mobx";
 import QueueAnim from 'rc-queue-anim';
 import './ContentMain.scss'
@@ -31,9 +31,6 @@ export default class ContentMian extends Component {
     constructor(props){
         super(props)
         this.state = {
-        	kjStopFlag:[],
-        	kjStopallFlag:false,
-        	kjStopTime:0,
             navIndex : 0,
             navTwoIndex : 0,
             navThreeIndex : 0,
@@ -54,13 +51,14 @@ export default class ContentMian extends Component {
             checked: true,
             omodel:'1',
             textAreaValue:'',
-            todayAndTomorrow : [],
-            tomorrowIssue:[],
+            code : [],//开奖号码
+            animateCode:[],//开奖动画号码
+        	nowIssue:'??????',//上一期前期号
+        	nextIssue:'??????',//当前期号
         	historyBet:[],//投注记录
         	el1: {rotateZ: 0},
         	ifRandom:false,
         	betokObj:{},
-        	visible:false,
         	issueArray:[],
         	booleanValue:true,
         	isPrizeStop:false,
@@ -83,89 +81,17 @@ export default class ContentMian extends Component {
         }
         this.lotteryOkBet = this.lotteryOkBet.bind(this);
         this.getBetHistory = this.getBetHistory.bind(this);
-        this.getKjHistory = this.getKjHistory.bind(this);
-        this.onChangeNavIndex = this.onChangeNavIndex.bind(this);
         this.getLotteryData = this.getLotteryData.bind(this);
-    };
-    componentDidMount() {
-    	this.initData();
-    };
-    componentWillUnmount() {
-    	stateVar.BetContent = {
-	        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
-	    };
-	    stateVar.openLotteryFlag = true;
-	    stateVar.checkLotteryId= true;
-	}
-    /**
-     *页面初始化 
-     */
-    initData(){
-    	let lotteryData = require('../../../CommonJs/common.json');
-    	let tempLotteryType = {};
-    	for(let i = 0,lotteryDt=lotteryData.lotteryType;i<lotteryDt.length;i++){
-    		if(lotteryDt[i]['nav'] == stateVar.nowlottery.lotteryId){
-				stateVar.nowlottery.cuimId = lotteryDt[i]['curmid'];
-				stateVar.nowlottery.defaultMethodId = lotteryDt[i]['methodid'];
-				stateVar.nowlottery.lotteryBetId = lotteryDt[i]['lotteryid'];
-				stateVar.nowlottery.cnname = lotteryDt[i]['cnname'];
-				stateVar.nowlottery.imgUrl =  lotteryDt[i]['imgUrl'];
-    		}
-    		if(lotteryDt[i]['lotteryid'] != 23){
-				tempLotteryType[lotteryDt[i]['nav']] = lotteryDt[i]['curmid']
-			}
-    	}
-    	stateVar.alllotteryType = tempLotteryType;//所有彩种类型
-    	stateVar.openLotteryFlag = false;//控制彩种是否可以点击
-    	this.setState({
-	    		kjStopFlag:[],
-	        	kjStopallFlag:false,
-	        	kjStopTime:0,
-	        	navIndex:0,
-	        	navTwoIndex: 0,
-	        	navThreeIndex:0,
-	        	navFourIndex:0,
-	        	renIndex:0,
-	        	textAreaValue:'',
-	        	historyBet:[],
-	        	modes:[],
-            	selectYjf: 0,
-            	defaultposition:[],
-            	lotteryMethod:[],
-            	numss:0,
-            	money:0,
-            	checked: true,
-            	omodel:'1'
-        	},()=>{
-        	stateVar.todayAndTomorrow = [];
-		    stateVar.tomorrowIssue = [];
-		    stateVar.issueIndex = '?????';
-    		stateVar.BetContent.lt_same_code = [];
-	    	stateVar.BetContent.totalDan = 0;
-	    	stateVar.BetContent.totalNum = 0;
-	       	stateVar.BetContent.totalMoney = 0;
-	       	stateVar.BetContent.lt_trace_base = 0;
-	       	stateVar.kjNumberList = []
-        	$("li.number_active").removeClass('number_active');
-        	$(".lh .hover").removeClass('hover');
-        	$(".zx span").removeClass('hover');
-        	//判断玩法是否有缓存，没有则重新获取所有玩法
-	    	let ifMehtod = common.getStore(common.getStore('userId')) == (null || undefined) ? false : true;
-	    	if(ifMehtod){
-				this.setOneMethod(common.getStore(common.getStore('userId')));
-	    	}else{
-	    		this.getLotteryData();
-	    	}
-	    	this.getBetHistory();
-	    	this.getKjHistory();
-    	});
+        this.onChangeNavIndex = this.onChangeNavIndex.bind(this);
+        this.actionTrace = this.actionTrace.bind(this);
     };
     //确定投注页面
     lotteryOkBet(param){
     	if(param){
-    		this.setState({visible:false});
+    		stateVar.betVisible = false;
     	}else{
-    		this.setState({visible:false,traceItem:[],checkselectItem:[]});
+    		stateVar.betVisible = false;
+    		this.setState({traceItem:[],checkselectItem:[]});
     		this.getSuperaddition();
     	}
     }
@@ -286,6 +212,127 @@ export default class ContentMian extends Component {
     onChangeStop(e){
     	this.setState({isPrizeStop:e.target.checked});
     }
+    //初始化默认调用方法
+    componentDidMount() {
+    	this._ismount = true;
+    	this.initData();
+    };
+    //离开页面
+    componentWillUnmount() {
+    	this._ismount = false;
+    	stateVar.BetContent = {
+	        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
+	    };
+	    stateVar.openLotteryFlag = true;
+	    stateVar.checkLotteryId= true;
+	}
+    initData(){
+    	let lotteryData = require('../../../CommonJs/common.json');
+    	let tempLotteryType = {};
+    	let tempLotteryLength;
+    	for(let i = 0,lotteryDt=lotteryData.lotteryType;i<lotteryDt.length;i++){
+    		if(lotteryDt[i]['nav'] == stateVar.nowlottery.lotteryId){
+				stateVar.nowlottery.cuimId = lotteryDt[i]['curmid'];
+				stateVar.nowlottery.defaultMethodId = lotteryDt[i]['methodid'];
+				stateVar.nowlottery.lotteryBetId = lotteryDt[i]['lotteryid'];
+				stateVar.nowlottery.cnname = lotteryDt[i]['cnname'];
+				stateVar.nowlottery.imgUrl =  lotteryDt[i]['imgUrl'];
+    		}
+    		if(lotteryDt[i]['lotteryid'] != 23){
+				tempLotteryType[lotteryDt[i]['nav']] = lotteryDt[i]['curmid']
+			}
+    	}
+    	stateVar.alllotteryType = tempLotteryType;//所有彩种类型
+    	stateVar.openLotteryFlag = false;//控制彩种是否可以点击
+    	this.setState({
+	        	navIndex:0,
+	        	navTwoIndex: 0,
+	        	navThreeIndex:0,
+	        	navFourIndex:0,
+	        	renIndex:0,
+	        	textAreaValue:'',
+	        	historyBet:[],
+	        	modes:[],
+            	selectYjf: 0,
+            	defaultposition:[],
+            	lotteryMethod:[],
+            	numss:0,
+            	money:0,
+            	checked: true,
+            	omodel:'1'
+        	},()=>{
+        	stateVar.todayAndTomorrow = [];
+		    stateVar.tomorrowIssue = [];
+		    stateVar.issueIndex = '?????';
+    		stateVar.BetContent.lt_same_code = [];
+	    	stateVar.BetContent.totalDan = 0;
+	    	stateVar.BetContent.totalNum = 0;
+	       	stateVar.BetContent.totalMoney = 0;
+	       	stateVar.BetContent.lt_trace_base = 0;
+	       	stateVar.kjNumberList = []
+        	$("li.number_active").removeClass('number_active');
+        	$(".lh .hover").removeClass('hover');
+        	$(".zx span").removeClass('hover');
+        	//判断玩法是否有缓存，没有则重新获取所有玩法
+	    	let ifMehtod = common.getStore(common.getStore('userId')) == (null || undefined) ? false : true;
+	    	if(ifMehtod){
+				this.setOneMethod(common.getStore(common.getStore('userId')));
+	    	}else{
+	    		this.getLotteryData();
+	    	}
+	    	this.getBetHistory();
+    	});
+    };
+    /**
+     Function 开奖动画
+     param 号码个数
+     */
+    kjanimate(b){
+    	let param = this.state.tempLotteryLength;
+    	if(this.state.kjStopTime >= 5){
+    		return;
+    	}
+		let tempCode = [];
+		for(let i=0; i<param;i++){
+			if(stateVar.nowlottery.cnname.indexOf('11选5') > -1){
+				tempCode.push(Math.floor(Math.random()*2)+''+Math.floor(Math.random()*10));
+			}else{
+				tempCode.push(Math.floor(Math.random()*10));
+			}
+		}
+		this.setState({animateCode:tempCode},()=>{
+			setTimeout(()=>{
+				if(b < 800){
+					b = b + 30;
+					this.kjanimate(b);
+				}else{
+					if(this.state.kjStopallFlag){
+	    				let tempI = this.state.kjStopTime;
+	    				setTimeout(()=>{
+	    					let tempArr = [];
+	    					for(let i=0;i<this.state.code.length;i++){
+	    						if(i <= tempI){
+	    							tempArr.push(true);
+	    						}else{
+									tempArr.push(false);
+	    						}
+	    					}
+	    					tempI += 1;
+	    					this.setState({kjStopFlag:tempArr,kjStopTime:tempI},()=>{
+	    						$(".kjCodeClass").eq(tempI-1).animate({fontSize:"36px"},50,()=>{
+	    							$(".kjCodeClass").animate({fontSize:"30px"},200);
+	    						});
+	    					});
+	    				},50);
+	    				this.kjanimate(600);
+	    			}else{
+	    				this.kjanimate(800);
+	    			}
+				}
+    		},50);
+		});
+
+    };
     //获取所有彩种玩法
     getLotteryData(){
     	Fatch.lotteryBets({
@@ -293,7 +340,7 @@ export default class ContentMian extends Component {
     		body : JSON.stringify({sCurmids:stateVar.alllotteryType})}
     		).then((data)=>{
     			this.setState({ loading: false });
-    			if(data.status == 200){
+    			if(this._ismount && data.status == 200){
     				let tempData = data.repsoneContent;
     				this.getMmcMethod(tempData);
     				this.setOneMethod(tempData);
@@ -309,7 +356,7 @@ export default class ContentMian extends Component {
     		}
     	).then((data)=>{
     		stateVar.openLotteryFlag = true;
-			if(data.status == 200){
+			if(this._ismount && data.status == 200){
 				let tempData = data.repsoneContent;
 				let tempBets = val;
 				tempBets['mmc'] = tempData;
@@ -354,25 +401,6 @@ export default class ContentMian extends Component {
     		alert(tempMsg);
     	}
     };
-    //秒秒彩模拟开号
-    monikj(){
-    	this.setState({mmcmoni:true});
-    	$(".monikj span").html('开奖中...')
-    	Fatch.aboutMmc({
-    		method:"POST",
-    		body:JSON.stringify({"flag":"getcodes","lotteryid":23})
-    		}).then((data)=>{
-    			this.setState({mmcmoni:false});
-    			$(".monikj span").html('模拟开奖')
-    			data = JSON.parse(data);
-    			let tempData = data.repsoneContent;
-    			if(data.status == 200){
-    				this.setState({mmccode:tempData.split('')});
-					this.getBetHistory();
-					this.getKjHistory();
-    			}
-    		})
-    };
     //得到投注记录
      getBetHistory(){
      	let tempObj = {flag:'getprojects',lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20}
@@ -382,7 +410,7 @@ export default class ContentMian extends Component {
 	    		body:JSON.stringify(tempObj)
 	    		}).then((data)=>{
     			let tempData = data.repsoneContent;
-    			if(data.status == 200){
+    			if(this._ismount && data.status == 200){
     				stateVar.openLotteryFlag = true;
 					this.setState({historyBet:tempData});
     			}
@@ -393,43 +421,10 @@ export default class ContentMian extends Component {
 	    		body:JSON.stringify(tempObj)
 	    		}).then((data)=>{
     			let tempData = data.repsoneContent;
-    			if(data.status == 200){
+    			if(this._ismount && data.status == 200){
 					this.setState({historyBet:tempData});
     			}
     		})
-     	}
-    };
-    //得到最近历史开奖号码
-     getKjHistory(flag){
-     	if(stateVar.nowlottery.lotteryBetId == 23){
-     		Fatch.aboutMmc({
-	    		method:"POST",
-	    		body:JSON.stringify({lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,flag:'getlastcode'})
-	    		}).then((data)=>{
-	    			let tempData = data.repsoneContent;
-	    			this.setState({mmcmoni:false});
-	    			if(data.status == 200){
-	    				if(tempData.length > 0){
-	    					this.setState({mmccode:tempData[0].split(' ')})
-	    				}
-	    				stateVar.mmCkjNumberList = tempData;
-	    			}
-    			})
-     	}else{
-     		let tempObj = {};
-     		if(flag){
-     			tempObj = {lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,curmid:stateVar.nowlottery.cuimId,cacheTrue:2};
-     		}else{
-     			tempObj = {lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,curmid:stateVar.nowlottery.cuimId};
-     		}
-     		Fatch.ksHistoery({
-	    		method:"POST",
-	    		body:JSON.stringify(tempObj)
-	    		}).then((data)=>{
-	    			if(data.status == 200){
-	    				stateVar.kjNumberList = data.repsoneContent;
-	    			}
-	    		})
      	}
     };
     //玩法切换
@@ -1136,7 +1131,8 @@ export default class ContentMian extends Component {
     	for(let i=0;i<stateVar.BetContent.lt_same_code.length;i++){
     		tempObj.lt_project.push(stateVar.BetContent.lt_same_code[i])
     	}
-    	this.setState({betokObj:mobx.toJS(tempObj),visible:true})
+    	stateVar.betVisible = true;
+    	this.setState({betokObj:mobx.toJS(tempObj)});
     }
     //打开追号
     openTrace(){
@@ -1248,8 +1244,9 @@ export default class ContentMian extends Component {
 		let tempTime = 0;
 		let tempFlag = false;
 		let p = 0;//奖金
+		debugger
     	if(this.state.traceTitleIndex == 0){
-    		if(tempTotalIssue == stateVar.tomorrowIssue.length){
+    		if(tempTotalIssue == this.state.traceItem.length){
     			tempFlag = true;
     		}
     		for(let i=0;i<tempTraceItem.length;i++){
@@ -1266,7 +1263,7 @@ export default class ContentMian extends Component {
     			}
     		}
     	}else if(this.state.traceTitleIndex == 1){
-    		if(tempTotalIssue == stateVar.tomorrowIssue.length){
+    		if(tempTotalIssue == this.state.traceItem.length){
     			tempFlag = true;
     		}
     		for(let i=0;i<tempTraceItem.length;i++){
@@ -1387,7 +1384,8 @@ export default class ContentMian extends Component {
     	for(let i=0;i<stateVar.BetContent.lt_same_code.length;i++){
     		tempObj.lt_project.push(stateVar.BetContent.lt_same_code[i])
     	}
-    	this.setState({betokObj:mobx.toJS(tempObj),visible:true})
+    	this.setState({betokObj:mobx.toJS(tempObj)});
+    	stateVar.betVisible = true;
     };
     computeByMargin(s,m,b,o,p){
         s = s ? parseInt(s,10) : 0;
@@ -1502,7 +1500,7 @@ export default class ContentMian extends Component {
     	let dataTemp = [];
     	let tempArray = [];
     	for(let i=0;i<tempData.length;i++){
-    		if(i >= stateVar.tomorrowIssue.length){
+    		if(i >= 50){
     			break;
     		}else{
     			let obj = {};
@@ -2008,6 +2006,7 @@ export default class ContentMian extends Component {
     	return tempHtml;
     };
     render() {
+    	console.log(1111)
         const navList = [
             {
                 link: '',
@@ -2035,8 +2034,8 @@ export default class ContentMian extends Component {
         	<div>
 	        	<LeftSider resetInit={()=>this.initData()}></LeftSider>
 	            <div className='content_bet'>
-	            	<ContentTop getLotteryData={()=>this.getLotteryData()} getKjHistory={()=>this.getKjHistory()} getBetHistory={()=>this.getBetHistory()}></ContentTop>
 	                <div className="content_main" key="ContentMian">
+	                	<ContentTop getLotteryData={()=>this.getLotteryData()} getBetHistory={()=>this.getBetHistory()} actionTrace={()=>this.actionTrace()}></ContentTop>
 	                    <div className="c_m_nav">
 	                        <ul className="c_m_nav_list left">
 	                            {
@@ -2383,7 +2382,7 @@ export default class ContentMian extends Component {
 	                        <BetRecordTable histoeryBet={this.getBetHistory} betHistory={this.state.historyBet}/>
 	                    </div>
 	                </div>
-	                <AlterModal visible={this.state.visible} historyBet={this.getBetHistory} mmchistoeryBet={this.getKjHistory} lotteryOkBet={this.lotteryOkBet} betData={this.state.betokObj}/>
+	                <AlterModal historyBet={this.getBetHistory} lotteryOkBet={this.lotteryOkBet} betData={this.state.betokObj}/>
             	</div>
             </div>
         );

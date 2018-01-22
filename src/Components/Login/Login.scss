@@ -27,13 +27,29 @@ $width_100: 100%;
         .l_n_t_lt{
             padding-left: 25px;
         }
-        .l_n_t_list>li{
+        .l_n_t_list>a>li{
             padding: 0 15px;
             float: left;
             cursor: pointer;
-            &:hover{
-                background-color: #CB1313;
+            color:#888888;
+            img{
+                transition:All 0.4s ease-in-out;
+                -webkit-transition:All 0.4s ease-in-out;
+                -moz-transition:All 0.4s ease-in-out;
+                -o-transition:All 0.4s ease-in-out;
             }
+            &:hover{
+                color:#fff;
+                img{
+                    transform:rotateZ(360deg);
+                    -webkit-transform:rotateZ(360deg);
+                    -moz-transform:rotateZ(360deg);
+                    -o-transform:rotateZ(360deg);
+                    -ms-transform:rotateZ(360deg);
+                }
+
+            }
+
 
         }
         .l_n_t_list{
@@ -126,7 +142,8 @@ $width_100: 100%;
             width: 670px;
             background-color: #fff;
             display: inline-block;
-            border: 8px solid #fff;
+            border: 7px solid #fff;
+            border-top: 9px solid #fff;
             border-top-left-radius:5px;
             border-bottom-left-radius:5px;
 
@@ -208,13 +225,14 @@ $width_100: 100%;
     .ant-modal-header{
         padding: 10px 16px;
         text-align: center;
-        background: #48485f;
+        background: #fff;
+        border-bottom: none;
     }
     .ant-modal-title{
-        color: #fff;
+        color: #333333;
     }
     .ant-modal-close{
-        color:white;
+        color:#333333;
     }
     .ant-modal-close-x{
         font-size: 18px;
@@ -224,6 +242,11 @@ $width_100: 100%;
         width: 240px;
         margin: 0 auto 20px;
         height: 37px;
+
+    }
+    .ant-modal-footer{
+        padding: 24px 16px 24px 10px;
+        text-align: center;
 
     }
     .l_m_vali{
@@ -294,22 +317,51 @@ $width_100: 100%;
 }
 .m_accept_contract{
     text-align: center;
+    .ant-modal{
+        width: 720px !important;
+    }
+    .ant-modal-content{
+        border-radius: 10px;
+        padding: 0 28px;
+    }
     .ant-modal-body{
-        text-align: center;
         white-space: pre-wrap;
         height: 400px;
         overflow-y: scroll;
         background: #fff;
+        color: #333333;
+
+        padding-right: 5px;
+        p{
+            font-size: 14px;
+            text-indent: 28px;
+        }
+        .m_c_title{
+            font-weight: 600;
+            padding-left: 5px;
+        }
     }
     .ant-modal-header{
+        padding: 26px 16px;
+        background: #fff;
+
         border: none;
     }
     .ant-modal-title{
-        font-size: 20px;
         text-align: center;
-        font-weight: 800;
+        font-size: 22px;
+        color:#CF2027;
     }
-
+    .ant-modal-footer{
+        padding: 24px 16px 24px 10px;
+        text-align: center;
+        span{
+            font-size: 15px;
+        }
+    }
+    .ant-btn{
+        padding: 5px 50px;
+    }
 
 }
 .m_accept_contract:before {
