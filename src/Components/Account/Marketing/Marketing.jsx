@@ -62,8 +62,7 @@ export default class Marketing extends Component {
         }).then((res)=>{
             if(this._ismount && res.status === 200){
                 let repsone = res.repsoneContent,
-                    registerSlider = this.state.registerSlider,
-                    generalizeSlider = this.state.generalizeSlider;
+                    { registerSlider, generalizeSlider } = this.state;
                 registerSlider.sliderMax = repsone.groupLevel;
                 generalizeSlider.sliderMax = repsone.groupLevel;
                 this.setState({
@@ -456,11 +455,7 @@ export default class Marketing extends Component {
                 width: 130,
             }];
         const RadioGroup = Radio.Group;
-        const registerPost = this.state.registerPost;
-        const generalizePost = this.state.generalizePost;
-        const registerSlider = this.state.registerSlider;
-        const generalizeSlider = this.state.generalizeSlider;
-        const list = this.state.list;
+        const { registerPost, generalizePost, registerSlider, generalizeSlider, list } = this.state;
         return (
             <div className="marke_k_main">
                 {

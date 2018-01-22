@@ -24,6 +24,11 @@ $border_color: #C8C8C8;
         .t-r-table{
             color: #0099FF;
             border-bottom: 1px solid #0099FF;
+            &:hover,&:active{
+                color: #CB1313;
+                border-bottom: 1px solid #CB1313;
+            }
+
         }
         .t-period{
             box-sizing: border-box;
@@ -79,35 +84,6 @@ $border_color: #C8C8C8;
                 }
             }
         }
-        /*表格样式*/
-        .trend_table_wrap{
-            white-space:nowrap;
-            .trend_awardNo{
-                background:url('./Img/ball.png') no-repeat center;
-                color: #fff;
-            }
-            .ant-table-thead{
-                .trend_awardNo,th{
-                    background: #515368;
-                    color: #fff;
-                }
-            }
-            .ant-table-tbody{
-                tr:nth-last-child(1),
-                tr:nth-last-child(2),
-                tr:nth-last-child(3),
-                tr:nth-last-child(4),
-                tr:nth-last-child(1) td.trend_awardNo,
-                tr:nth-last-child(2) td.trend_awardNo,
-                tr:nth-last-child(3) td.trend_awardNo,
-                tr:nth-last-child(4) td.trend_awardNo{
-                    background:#515368;
-                    color:#fff;
-                    &:hover{
-                        background:#515368 !important;
-                    }
-                }
-            }
-        }
+
     }
 }

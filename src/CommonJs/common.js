@@ -244,6 +244,9 @@ export const  delCookie = name =>{
 * 获取localStorage
 */
 export const getStore = name => {
+    if(window.localStorage.getItem(name) == null){
+        return
+    }
     return JSON.parse(window.localStorage.getItem(name));
 };
 

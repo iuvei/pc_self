@@ -10,6 +10,15 @@ import { setDateTime, disabledDate } from '../../../CommonJs/common';
 
 import './AfterRecord.scss';
 
+const shortcutTime = [
+    {
+        text: '近三天',
+        id: 3
+    },{
+        text: '近七天',
+        id: 7
+    }
+];
 @observer
 export default class AfterRecord extends Component {
     constructor(props){
@@ -282,15 +291,6 @@ export default class AfterRecord extends Component {
         const responseData = this.state.responseData;
         const postData = this.state.postData;
         const crowdid = this.state.crowdid;
-        const shortcutTime = [
-            {
-                text: '近三天',
-                id: 3
-            },{
-                text: '近七天',
-                id: 7
-            }
-        ];
 
         return (
             <div className="lottery_bet after_record">
@@ -361,11 +361,12 @@ export default class AfterRecord extends Component {
                                 >
                                     <Option value="-1">所有玩法组</Option>
                                     {
-                                        responseData.newMethodCrowdList[postData.lotteryid] == undefined ||
-                                        crowdid == '-1' ? '' :
+                                        responseData.newMethodCrowdList[postData.lotteryid] != undefined &&
+                                        responseData.newMethodCrowdList[postData.lotteryid][crowdid] != undefined &&
+                                        crowdid != '-1' ?
                                             responseData.newMethodCrowdList[postData.lotteryid][crowdid].map((item,i)=>{
                                                 return <Option value={item.methodid} key={item.methodid}>{item.methodname}</Option>
-                                            })
+                                            }) : ''
                                     }
                                 </Select>
                             </li>

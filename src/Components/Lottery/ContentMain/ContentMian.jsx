@@ -427,6 +427,7 @@ export default class ContentMian extends Component {
     		})
      	}
     };
+    
     //玩法切换
      check_nav_index( index ){
         return index === this.state.navIndex ? "nav_list_active" : ""

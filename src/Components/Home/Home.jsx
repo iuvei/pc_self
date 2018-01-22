@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import './Home.scss'
 
-import HomeMainTop from './HomeMainTop/HomeMainTop'
-import HomeMainLottery from './HomeMainLottery/HomeMainLottery'
-import HomeMainActive from './HomeMainActive/HomeMainActive'
-import HomeMainBottom from './HomeMainBottom/HomeMainBottom'
+import HomeMainTop from './HomeMainTop/HomeMainTop';
+import HomeMainLottery from './HomeMainLottery/HomeMainLottery';
+import HomeMainActive from './HomeMainActive/HomeMainActive';
+import HomeMainBottom from './HomeMainBottom/HomeMainBottom';
 
 @observer
 export default class Home extends Component {
+    constructor(props){
+        super(props);
+    };
     shouldComponentUpdate(){
-        return (this.props.router.location.action === 'PUSH')
+        return (this.props.router.location.action === 'POP')
     };
 
     render() {

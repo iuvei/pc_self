@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import Fetch from '../../../Utils';
-import { Icon, Badge, Modal, Button } from 'antd';
+import { Icon, Badge, Modal, Button, Popover } from 'antd';
 const confirm = Modal.confirm;
 import { stateVar } from '../../../State';
 import './headerTop.scss'
