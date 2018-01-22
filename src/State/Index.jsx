@@ -39,7 +39,6 @@ class State {
     @observable alllotteryType = {};
     @observable nowlottery = {'lotteryId':'ssc','cuimId':'',defaultMethodId:0,lotteryBetId:1,cnname:'重庆时时彩',imgUrl:''};
     @observable defaultMethod = 0;
-    @observable nowlottery = {lotteryId: 'ssc'};
     @observable openLotteryFlag = true;
     @observable savePkInput = {};
     @observable aboutGame = {

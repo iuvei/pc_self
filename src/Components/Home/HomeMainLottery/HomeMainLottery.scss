@@ -17,6 +17,7 @@
         }
         &:hover .home_m_lottery_type{
             bottom: 0;
+            cursor: pointer;
         }
         &:hover .home_m_lottery_type_hover{
             background: rgba(176,26,18, .7);
@@ -33,18 +34,7 @@
         color: #fff;
         text-align: center;
         line-height: 50px;
-        //padding: 20px 0 18px 20px;
-        //margin: 4px 2px 0 2px;
+        font-size: 14px;
         @include transform(bottom, 0.3s);
-        .home_m_gaming{
-            display: inline-block;
-            @include wh(107px, 32px);
-            line-height: 32px;
-            font-size: 14px;
-            @include borderRadius(16px);
-            background-color: #fff;
-            text-align: center;
-            color: #B12F2D;
-        }
     }
 }

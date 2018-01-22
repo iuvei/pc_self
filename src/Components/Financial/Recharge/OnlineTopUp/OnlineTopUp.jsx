@@ -122,7 +122,8 @@ export default class OnlineTopUp extends Component {
                     <li className="clear">
                         <span className="r_m_li_w left">选择充值银行：</span>
                         {
-                            this.state.backList.length == 0 ? <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
+                            this.state.backList.length == 0 ?
+                                <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
                                 <ul className="r_m_select_yhk left">
                                     {
                                         this.state.backList.map((item, index)=>{

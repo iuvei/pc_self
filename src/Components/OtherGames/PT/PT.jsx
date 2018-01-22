@@ -143,7 +143,9 @@ export default class PT extends Component {
             body: JSON.stringify({cate_id: 0, ishot: 1, pn: 10})
         }).then((res)=>{
             if(this._ismount && res.status == 200){
-                this.setState({topRanking: res.repsoneContent.aList},()=>this.getDestination())
+                this.setState({topRanking: res.repsoneContent.aList},
+                    // ()=>this.getDestination()
+                )
             }
         })
     };
@@ -354,16 +356,10 @@ export default class PT extends Component {
                                 <p>
                                     <b>TOP游戏排行榜</b>
                                 </p>
-                                <div className="pt_top_content"
-                                    //  onMouseOver={()=>{
-                                    //     clearInterval(this._clearInt);
-                                    //     cancelAnimationFrame(this._animationFrame)
-                                    // }}
-                                    //  onMouseOut={()=>this.getDestination()}
-                                >
+                                <div className="pt_top_content">
                                     <ul className="ranking_list" style={{transform: 'translateY(-'+this.state.noticePosition+'px) translateZ(0px)'}}>
                                         {
-                                            topRanking.map((item, i)=>{
+                                            topRanking.slice(0, 3).map((item, i)=>{
                                                 return (
                                                     <li key={item.id}>
                                                         <img src={stateVar.httpUrl + '/pcservice/' + item.pic} alt=""/>
