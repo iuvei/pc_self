@@ -1,7 +1,7 @@
 /*右边快捷方式组件*/
 import { observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { Icon ,Modal} from 'antd';
+import { Icon ,Badge} from 'antd';
 import {Link} from 'react-router';
 
 import './Rightplug.scss'
@@ -26,6 +26,7 @@ export default class RightPlug extends Component {
             hover6:false,       //控制走势图标签的鼠标移入移出状态
             hover7:false,       //控制投诉建议标签的鼠标移入移出状态
             modalVisible: false,
+            showMsg: false,
         };
         this.hideChat = this.hideChat.bind(this);
     };
@@ -59,9 +60,14 @@ export default class RightPlug extends Component {
         this.setState({modalVisible: false})
     }
     componentDidMount() {
+        /*添加全局方法，给后台调用*/
+        window.onShowMsg = function(){
+            this.setState({showMsg: true});
+        };
         /*获取当前走势图的相对路径*/
         curLocation = curLocation.split("#")[0] + "#/tendency";
     };
+
     render() {
         return (
         	<div>
@@ -101,8 +107,13 @@ export default class RightPlug extends Component {
                             hover3:false,
                         });}}>
                             <label >{this.state.hover3?"在线客服":''}</label>
-                                <i className="r_p_kefu r_p_common" onClick={()=>this.setState({modalVisible: true})} onMouseEnter={()=>this.setState({hover3:true,
-                            })}></i>
+                            {
+                                this.state.showMsg ? <b className="r_p_common_extent"></b> : null
+                            }
+
+                            <i className="r_p_kefu r_p_common" onClick={()=>this.setState({modalVisible: true})} onMouseEnter={()=>this.setState({hover3:true,
+                        })}></i>
+
                         </li>
                         <li className={this.state.hover4?"active":""} onMouseLeave={()=>{this.setState({
                             hover4:false,

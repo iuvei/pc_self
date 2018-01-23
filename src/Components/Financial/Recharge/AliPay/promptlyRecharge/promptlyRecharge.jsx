@@ -164,7 +164,7 @@ export default class Promptly extends Component {
                                         stateVar.aliPayInfo.code == 'icbc' ? '7、平台工行充值只支持工行网银转账。' : '7、支持跨行转账，您也可自行登录其他银行官网进行转账。'
                                     }
                                 </p>
-                                <p>8、如充值后未到账，请联系在线客服。<a href="https://ngmm.livechatvalue.com/chat/chatClient/chatbox.jsp?companyID=12397&configID=50&jid=&s=1">点击联系在线客服</a></p>
+                                <p>8、如充值后未到账，请联系在线客服。<a href={stateVar.httpService}>点击联系在线客服</a></p>
                             </div>
                     }
                 </div>

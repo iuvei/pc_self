@@ -5,6 +5,7 @@ import Fetch from '../../../Utils';
 import { Table, Button, Modal, Select, Input, message } from 'antd';
 const Option = Select.Option;
 import { onValidate } from '../../../CommonJs/common';
+import { stateVar } from '../../../State';
 import ForgetFundPw from '../Security/ForgetFundPw/ForgetFundPw';
 import md5 from 'md5';
 
@@ -386,7 +387,7 @@ export default class BankCardManage extends Component {
                     <span>
                         <a href="javascript:void(0)" onClick={()=>{this.showModal('amend', record)}} style={{color: '#CB1313'}}>修改</a>
                         <span className="ant-divider" />
-                        <a href="https://ngmm.livechatvalue.com/chat/chatClient/chatbox.jsp?companyID=12397&configID=50&jid=&s=1" target="_blank" style={{color: '#3C77CB'}}>申请删除</a>
+                        <a href={stateVar.httpService} target="_blank" style={{color: '#3C77CB'}}>申请删除</a>
                     </span>
                 ),
             }

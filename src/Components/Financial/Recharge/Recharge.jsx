@@ -11,7 +11,12 @@ import './Recharge.scss'
 
 @observer
 export default class Recharge extends Component {
-
+    constructor(props) {
+        super(props);
+    }
+    componentDidMount(){
+        stateVar.navListIndex = 0;
+    }
     onChangeRecharge(index) {
         stateVar.navListIndex = index;
         switch (index) {

@@ -118,7 +118,8 @@ export default class QQWallet extends Component {
                     <li className="clear">
                         <span className="r_m_li_w left">选择充值方式：</span>
                         {
-                            this.state.backList.length == 0 ? <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
+                            this.state.backList.length == 0 ?
+                                <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
                                 <ul className="r_m_select_yhk left">
                                     {
                                         this.state.backList.map((item, index)=>{
@@ -140,15 +141,17 @@ export default class QQWallet extends Component {
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
                                      className={onValidate('money', this.state.validate)}
                         />
-                        <span style={{margin: '0 15px 0 3px'}}>元</span>
-                        <span className="r_m_recharge_text">
+                        <span style={{margin: '0 15px 0 5px'}}>元</span>
+                        <span>{changeMoneyToChinese(this.state.postData.money)}</span>
+                        <p className="r_m_dx">
+                            <span className="r_m_recharge_text">
                             单笔充值限额：最低
                             <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmin}</strong>
                             元，最高
                             <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmax}</strong>
                             元
                         </span>
-                        <p className="r_m_dx">{changeMoneyToChinese(this.state.postData.money)}</p>
+                        </p>
                     </li>
                     <li className="r_m_primary_btn">
                         <span className="r_m_li_w"></span>

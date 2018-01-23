@@ -146,12 +146,14 @@ export default class Withdraw extends Component {
                                      className={onValidate('money', this.state.validate)}
                         />
                         <span className="span_margin">元</span>
-                        <span className="r_m_recharge_text">
+                        <p className="r_m_dx">
+                            <span className="r_m_recharge_text">
                             单笔充值限额：最低：
                             <strong>{response.iMinMoney} 元</strong>
                             ，最高：
                             <strong>{response.iMaxMoney} 元</strong>
                         </span>
+                        </p>
                     </li>
                     <li className="r_m_primary_btn">
                         <span className="r_m_li_w"></span>

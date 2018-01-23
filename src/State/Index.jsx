@@ -3,6 +3,8 @@ import { observable, toJS, useStrict } from 'mobx';
 // useStrict(true);
 class State {
     @observable httpUrl = 'http://10.63.15.242:81'; // 域名
+    @observable httpService = 'https://ngmm.livechatvalue.com/chat/chatClient/chatbox.jsp?companyID=12397&configID=50&jid=&s=1'; // 联系客服url
+
 
     @observable userInfo = {// 用户信息
         userName: '请先登录',
@@ -19,7 +21,14 @@ class State {
         email: '',
     };
     @observable dailysalaryStatus = {}; // 获得日工资，亏损，分红签订状态
-    @observable allBalance = {}; // 各平台余额
+    @observable allBalance = {// 各平台余额
+        cpbalance: 0, // 恒彩主账户
+        eabalance: 0, // EA真人娱乐
+        ptbalance: 0, // PT娱乐
+        kgbalance: 0, // GT娱乐城
+        bobingBalance: 0, // 博饼账户
+        sbbalance: 0, // 体育
+    };
     @observable afterDetails = false; // 追号详情时更换nav
     @observable pageSizeOptions = ['10', '25', '50']; // 表格分页时 指定每页可以显示多少条
     @observable bankWithdrawInfo = {}; // 提款信息

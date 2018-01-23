@@ -5,7 +5,7 @@ import { hashHistory } from 'react-router';
 import Fetch from '../../../../Utils';
 import { stateVar } from '../../../../State';
 import { InputNumber, Button, Input } from 'antd';
-import { changeMoneyToChinese, onValidate } from '../../../../CommonJs/common';
+import { changeMoneyToChinese, onValidate, getStore } from '../../../../CommonJs/common';
 
 import './AliPay.scss'
 
@@ -16,7 +16,7 @@ export default class AliPay extends Component {
         this.state = {
             iconLoadingRecharge: false,
             imgUrlIndex: 0,
-            backList: [], // 可选择银行
+            backList: null, // 可选择银行
             loadmax: 0, //渠道限额最多
             loadmin: 0, //渠道限额最少
 
@@ -27,8 +27,8 @@ export default class AliPay extends Component {
                 bid: null, //银行渠道id
                 money: 0,//充值金额
                 rid: null, //充值银行id
-                code: '', //充值银行code
-                alipayName: '', //支付宝转账需要填写姓名
+                code: 'zfbsm', //充值银行code
+                // alipayName: '', //支付宝转账需要填写姓名
             },
             validate: {
                 money: 2, // 0: 对， 1：错
@@ -66,8 +66,8 @@ export default class AliPay extends Component {
     };
     // 立即充值
     onRecharge() {
-        let validate = this.state.validate;
-        if(validate.alipayName != 0){
+        let { validate, postData } = this.state;
+        if(postData.code !== 'zfbsm' && validate.alipayName != 0){
             validate.alipayName = 1;
             this.setState({validate});
             return
@@ -81,18 +81,22 @@ export default class AliPay extends Component {
 
         Fetch.payment({
             method: 'POST',
-            body: JSON.stringify(this.state.postData)
+            body: JSON.stringify(postData)
         }).then((res)=>{
             if(this._ismount){
                 this.setState({ iconLoadingRecharge: false });
                 if(res.status == 200){
-                    stateVar.aliPayInfo = res.repsoneContent.payInfo;
-                    hashHistory.push({
-                        pathname: '/financial/recharge/promptlyRecharge',
-                        query: {
-                            name: 'aliPay'
-                        }
-                    });
+                    if(postData.code == 'zfbsm'){ // 支付宝扫码
+                        window.open(stateVar.httpUrl + res.repsoneContent.payUrl+ '&sess=' + getStore('session'))
+                    }else{
+                        stateVar.aliPayInfo = res.repsoneContent.payInfo;
+                        hashHistory.push({
+                            pathname: '/financial/recharge/promptlyRecharge',
+                            query: {
+                                name: 'aliPay'
+                            }
+                        });
+                    }
                 }
             }
         })
@@ -134,6 +138,9 @@ export default class AliPay extends Component {
         postData.bid = parseInt(selectBank.id);
         postData.rid = parseInt(selectBank.rid);
         postData.code = selectBank.code;
+        if(selectBank.code == 'zfbsm'){
+            delete postData.alipayName
+        }
         this.setState({
             imgUrlIndex: index,
             loadmin: selectBank.loadmin,
@@ -142,6 +149,7 @@ export default class AliPay extends Component {
         });
     };
     render() {
+        const { backList } = this.state;
         return (
             <div className="ali_main">
                 <div className="ali_m_hint">
@@ -151,31 +159,35 @@ export default class AliPay extends Component {
                     <li className="clear">
                         <span className="ali_m_li_w left">选择充值方式：</span>
                         {
-                            this.state.backList.length == 0 ? <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
+                            backList == null ? <span style={{color: '#CF2027'}}>正在加载...</span> :
+                                backList.length == 0 ?
+                                <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
                                 <ul className="ali_m_select_yhk left">
                                     {
-                                            this.state.backList.map((item, index)=>{
-                                                return (
-                                                    <li className={ this.state.imgUrlIndex === index ? 'ali_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
-                                                        <img src={require('./Img/'+item.code+'.png')} alt=""/>
-                                                    </li>
-                                                )
-                                            })
+                                        backList.map((item, index)=>{
+                                            return (
+                                                <li className={ this.state.imgUrlIndex === index ? 'ali_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
+                                                    <img src={require('./Img/'+item.code+'.png')} alt=""/>
+                                                </li>
+                                            )
+                                        })
                                     }
                                 </ul>
                         }
                     </li>
-                    <li>
-                        <span className="ali_m_li_w">支付宝真实姓名：</span>
-                        <Input  size="large"
-                                onChange={(e)=>{this.onAlipayName(e)}}
-                                className={onValidate('alipayName', this.state.validate)}
-                        />
-                        &nbsp;
-                        <span className="ali_m_recharge_text" style={{marginLeft: 28}}>
-                            不得输入除[·]以外的符号，姓名错误将无法上分
-                        </span>
-                    </li>
+                    {
+                        this.state.postData.code == 'zfbsm' ? null :
+                            <li>
+                                <span className="ali_m_li_w">支付宝真实姓名：</span>
+                                <Input  size="large"
+                                        onChange={(e)=>{this.onAlipayName(e)}}
+                                        className={onValidate('alipayName', this.state.validate)}
+                                />
+                                <p className="ali_m_recharge_text" style={{margin: '5px 0 0 130px'}}>
+                                    不得输入除[·]以外的符号，姓名错误将无法上分
+                                </p>
+                            </li>
+                    }
                     <li>
                         <span className="ali_m_li_w">充值金额：</span>
                         <InputNumber min={parseFloat(this.state.loadmin)} max={parseFloat(this.state.loadmax)} size="large"
@@ -184,21 +196,23 @@ export default class AliPay extends Component {
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
                                      className={onValidate('money', this.state.validate)}
                         />
-                        <span style={{margin: '0 15px 0 3px'}}>元</span>
-                        <span className="ali_m_recharge_text">
+                        <span style={{margin: '0 15px 0 5px'}}>元</span>
+                        <span>{changeMoneyToChinese(this.state.postData.money)}</span>
+                        <p className="ali_m_dx">
+                            <span className="ali_m_recharge_text">
                             单笔充值限额：最低
                             <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmin}</strong>
                             元，最高
                             <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmax}</strong>
                             元，单日充值总额无上限
                         </span>
-                        <p className="ali_m_dx">{changeMoneyToChinese(this.state.postData.money)}</p>
+                        </p>
                     </li>
                     <li className="ali_m_primary_btn">
                         <span className="ali_m_li_w"></span>
                         <Button type="primary" size="large" loading={this.state.iconLoadingRecharge}
                                 onClick={()=>{this.onRecharge()}}
-                                disabled={this.state.backList.length == 0}
+                                disabled={backList == null || backList.length == 0}
                         >
                             立即充值
                         </Button>

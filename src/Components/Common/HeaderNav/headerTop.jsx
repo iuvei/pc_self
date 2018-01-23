@@ -13,6 +13,7 @@ import name_icon from './Img/name_icon.png';
 import email_icon from './Img/email_icon.png';
 import off_icon from './Img/off_icon.png';
 import on_icon from './Img/on_icon.png';
+import service_icon from './Img/service_icon.png';
 
 const allBalance = {};
 @observer
@@ -22,14 +23,6 @@ export default class HeaderTop extends Component {
         this.state = {
             hideBalance : true,
             visible: false,
-            allBalance: {
-                cpbalance: 0, // 恒彩主账户
-                eabalance: 0, // EA真人娱乐
-                ptbalance: 0, // PT娱乐
-                kgbalance: 0, // GT娱乐城
-                bobingBalance: 0, // 博饼账户
-                sbbalance: 0, // 体育
-            },
             noticeList: [], // 公告列表
             noticeDetails: {}, // 点击查看公告
             noticePosition: 0, // 列表位置
@@ -125,7 +118,7 @@ export default class HeaderTop extends Component {
                 if (res.status == 200) {
                     allBalance.cpbalance = res.repsoneContent;
                     stateVar.allBalance = allBalance;
-                    this.setState({allBalance: allBalance});
+                    // this.setState({allBalance: allBalance});
                 }
             }
         })
@@ -141,10 +134,18 @@ export default class HeaderTop extends Component {
                         allBalance.kgbalance = repsoneContent.kgbalance;
                         allBalance.bobingBalance = repsoneContent.bobingBalance;
                         allBalance.sbbalance = repsoneContent.sbbalance;
+                        for(var key in allBalance){
+                            if(typeof allBalance[key] == 'String'){
+                                parseFloat(allBalance[key])
+                            }
+                            if(allBalance[key] < 0){
+                                allBalance[key] = '0.00'
+                            }
+                        }
+
                     stateVar.allBalance = allBalance;
                     this.setState({
                         updateMLoading: false,
-                        allBalance: allBalance
                     });
                 }else{
                     Modal.warning({
@@ -242,8 +243,7 @@ export default class HeaderTop extends Component {
         this.getBalance();
     };
     render() {
-        const { allBalance } = this.state;
-        const userInfo = stateVar.userInfo;
+        const { allBalance, userInfo } = stateVar;
 
         return (
             <div className="nav_top">
@@ -394,6 +394,12 @@ export default class HeaderTop extends Component {
                         <li className="n_t_cursor_color">
                             <a href="javascript:void(0)" onClick={()=>this.onHashHistory('/financial/transfer', 'financial',3)}>
                                 转账
+                            </a>
+                        </li>
+                        <li>
+                            <img src={service_icon} style={{verticalAlign: 'middle',marginRight: 5}}/>
+                            <a href={stateVar.httpService} target="_blank">
+                                在线客服
                             </a>
                         </li>
                     </ul>

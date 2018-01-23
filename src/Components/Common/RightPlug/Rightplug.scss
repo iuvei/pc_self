@@ -21,11 +21,11 @@
         z-index: 99;
         i{
             color: #878787;
-    
+
         }
         &:hover i{
             color: #fff;
-    
+
         }
     }
 }
@@ -39,6 +39,17 @@
         width: 140px;
     }
     .right_list{
+        .r_p_common_extent {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 9;
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            background: $color_CF2027;
+        }
         li{
             margin-top: 0;
             &:hover{
@@ -48,7 +59,6 @@
             text-align: end;
             height: 47px;
             line-height: 47px;
-            /*border-bottom: 1px solid #3C3C3C;*/
             label{
                 color: #fff;
             }

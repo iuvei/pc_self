@@ -15,7 +15,7 @@ export default class OnlineTopUp extends Component {
         this.state = {
             iconLoadingRecharge: false,
             imgUrlIndex: 0,
-            backList: [], // 可选择银行
+            backList: null, // 可选择银行
             loadmax: 0, //渠道限额最多
             loadmin: 0, //渠道限额最少
 
@@ -112,7 +112,7 @@ export default class OnlineTopUp extends Component {
         });
     };
     render() {
-
+        const { backList } = this.state;
         return (
             <div className="online_top_up">
                 <div className="r_m_hint">
@@ -122,19 +122,20 @@ export default class OnlineTopUp extends Component {
                     <li className="clear">
                         <span className="r_m_li_w left">选择充值银行：</span>
                         {
-                            this.state.backList.length == 0 ?
-                                <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
-                                <ul className="r_m_select_yhk left">
-                                    {
-                                        this.state.backList.map((item, index)=>{
-                                            return (
-                                                <li className={ this.state.imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
-                                                    <img src={require('../Img/'+item.code+'.jpg')} alt="选择银行"/>
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                </ul>
+                            backList == null ? <span style={{color: '#CF2027'}}>正在加载...</span> :
+                                backList.length == 0 ?
+                                    <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
+                                    <ul className="r_m_select_yhk left">
+                                        {
+                                            this.state.backList.map((item, index)=>{
+                                                return (
+                                                    <li className={ this.state.imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
+                                                        <img src={require('../Img/'+item.code+'.jpg')} alt="选择银行"/>
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                    </ul>
                         }
                     </li>
                     <li>
@@ -145,21 +146,24 @@ export default class OnlineTopUp extends Component {
                                      className={onValidate('money', this.state.validate)}
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
                         />
-                        <span style={{margin: '0 15px 0 3px'}}>元</span>
-                        <span className="r_m_recharge_text">
-                                    单笔充值限额：最低
-                                    <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmin}</strong>
-                                    元，最高
-                                    <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmax}</strong>
-                                    元，单日充值总额无上限
-                                </span>
-                        <p className="r_m_dx">{changeMoneyToChinese(this.state.postData.money)}</p>
+                        <span style={{margin: '0 15px 0 5px'}}>元</span>
+                        <span>{changeMoneyToChinese(this.state.postData.money)}</span>
+                        {/*<p className="r_m_dx">{changeMoneyToChinese(this.state.postData.money)}</p>*/}
+                        <p className="r_m_dx">
+                            <span className="r_m_recharge_text">
+                                单笔充值限额：最低
+                                <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmin}</strong>
+                                元，最高
+                                <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmax}</strong>
+                                元，单日充值总额无上限
+                            </span>
+                        </p>
                     </li>
                     <li className="r_m_primary_btn">
                         <span className="r_m_li_w"></span>
                         <Button type="primary" size="large" loading={this.state.iconLoadingRecharge}
                                 onClick={()=>{this.onRecharge()}}
-                                disabled={this.state.backList.length == 0}
+                                disabled={backList == null || backList.length == 0}
                         >
                             立即充值
                         </Button>

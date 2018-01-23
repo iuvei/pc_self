@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
-import QueueAnim from 'rc-queue-anim';
 import { Link} from 'react-router';
-import './Footer.scss'
-import footer_1 from './Img/footer_1.png'
-import footer_2 from './Img/footer_2.png'
-import footer_bottom from './Img/footer_bottom.png'
+import './Footer.scss';
+import footer_1 from './Img/footer_1.png';
+import footer_2 from './Img/footer_2.png';
+import footer_bottom from './Img/footer_bottom.png';
 
 @observer
 export default class Footer extends Component {
@@ -50,8 +48,10 @@ export default class Footer extends Component {
                     </ul>
                 </div>
                 <ul className="f_bottom clear">
-                    <li className="left" key="footerLi04">Copyright&nbsp;&copy;&nbsp;2014-2017&nbsp;恒彩在线版权所有&nbsp;菲律宾政府合法博彩牌照认证</li>
-                    <li className="footer_bottom right" key="footerLi05"><img src={footer_bottom} alt=""/></li>
+                    <li className="left" key="footerLi04">Copyright&nbsp;&copy;&nbsp;2014-2018&nbsp;恒彩在线版权所有</li>
+                    <li className="footer_bottom right" key="footerLi05">
+                        <img src={footer_bottom} alt=""/>
+                    </li>
                 </ul>
             </div>
         );

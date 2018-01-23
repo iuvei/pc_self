@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Modal } from 'antd';
+import { stateVar } from '../../State';
 import { getStore } from "../../CommonJs/common";
 import './Chat.scss';
 
@@ -22,8 +23,8 @@ export default class Chat extends Component {
                    className="liaotian_modal"
             >
                 <iframe scrolling="no"
-                        id="main" name="main"
-                        src={'http://10.63.15.242:81/pcservice/?controller=user&action=UserTeam&tag=html&sess=' + getStore('session')}
+                        id="lt_main" name="lt_main"
+                        src={stateVar.httpUrl + '/pcservice/?controller=user&action=UserTeam&tag=html&sess=' + getStore('session')}
                         className="liaotian_iframe"
                         style={{height: 561, width: 830}}
                 >
