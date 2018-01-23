@@ -6,7 +6,7 @@ import { Icon, Badge, Modal, Button } from 'antd';
 const confirm = Modal.confirm;
 import { stateVar } from '../../../State';
 import './headerTop.scss'
-import { removeStore } from '../../../CommonJs/common';
+import { removeStore,delCookie } from '../../../CommonJs/common';
 import Notice from '../Notice/Notice'
 
 import name_icon from './Img/name_icon.png';
@@ -167,9 +167,10 @@ export default class HeaderTop extends Component {
                     if(_this._ismount){
                         if(res.status == 200){
                             removeStore('userName');
+                            delCookie('sess');
                             removeStore('session');
                             setTimeout(()=>{
-                            	hashHistory.push('/');
+                            	hashHistory.push('/login');
                             },500);
                         }else{
                             Modal.warning({

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import Websocket from 'react-websocket';
 import {observer} from 'mobx-react';
-import { Select,Table, Modal,message, InputNumber, Row, Col, Checkbox,Button, Radio ,Switch,Tooltip,Spin,notification,Icon } from 'antd';
+import { Select,Table, Modal,message, InputNumber, Row, Col, Checkbox,Button, Radio ,Switch,Tooltip,Spin } from 'antd';
 import mobx,{computed, autorun} from "mobx";
 import QueueAnim from 'rc-queue-anim';
 import './ContentMain.scss'
@@ -15,6 +14,7 @@ import commone from '../commone.js'
 import common from '../../../CommonJs/common';
 
 import LeftSider from './../LeftSider/LeftSider'
+import ContentTop from './../ContentTop/ContentTop'
 import BetRecordTable from '../BetRecordTable/BetRecordTable'
 import ModelView from './../../Common/ChildNav/ChildNav'
 import AlterModal from './../../Common/LotteryModal/LotteryModal'
@@ -31,9 +31,6 @@ export default class ContentMian extends Component {
     constructor(props){
         super(props)
         this.state = {
-        	kjStopFlag:[],
-        	kjStopallFlag:false,
-        	kjStopTime:0,
             navIndex : 0,
             navTwoIndex : 0,
             navThreeIndex : 0,
@@ -54,11 +51,6 @@ export default class ContentMian extends Component {
             checked: true,
             omodel:'1',
             textAreaValue:'',
-            todayAndTomorrow : [],
-            todayIssue:[],
-            tomorrowIssue:[],
-            timeShow:{hour:'00',second:'00',minute:'00',day:'00'},
-            issueIndex:'请选择期号',
             code : [],//开奖号码
             animateCode:[],//开奖动画号码
         	nowIssue:'??????',//上一期前期号
@@ -67,12 +59,8 @@ export default class ContentMian extends Component {
         	el1: {rotateZ: 0},
         	ifRandom:false,
         	betokObj:{},
-        	visible:false,
         	issueArray:[],
         	booleanValue:true,
-        	imgUrl:'pk10',
-        	mmccode:['-','-','-','-','-'],
-        	mmcmoni:true,
         	isPrizeStop:false,
         	directFlag:false,
         	defaultposition:[],
@@ -93,28 +81,22 @@ export default class ContentMian extends Component {
         }
         this.lotteryOkBet = this.lotteryOkBet.bind(this);
         this.getBetHistory = this.getBetHistory.bind(this);
-        this.getKjHistory = this.getKjHistory.bind(this);
+        this.getLotteryData = this.getLotteryData.bind(this);
         this.onChangeNavIndex = this.onChangeNavIndex.bind(this);
-    };
-    // 音效开关
-    onChangeSound(checked) {
-        if(checked){
-        	common.setStore('soundswitch','off');
-        }else{
-        	common.setStore('soundswitch','on');
-        }
+        this.actionTrace = this.actionTrace.bind(this);
     };
     //确定投注页面
     lotteryOkBet(param){
     	if(param){
-    		this.setState({visible:false});
+    		stateVar.betVisible = false;
     	}else{
-    		this.setState({visible:false,traceItem:[],checkselectItem:[]});
+    		stateVar.betVisible = false;
+    		this.setState({traceItem:[],checkselectItem:[]});
     		this.getSuperaddition();
     	}
     }
     handleChangeIssue( value ) {
-        this.setState({issueIndex:value});
+        stateVar.issueIndex = value;
     };
     handleChangeRatio(value) {
         this.setState({omodel:value});
@@ -232,51 +214,18 @@ export default class ContentMian extends Component {
     }
     //初始化默认调用方法
     componentDidMount() {
+    	this._ismount = true;
     	this.initData();
     };
-    handleData(data){
-    	var message = eval('('+ data +')');
-    	if(message.status == 1){
-    		let tempType = message.data.type;
-    		if(tempType == 1){
-    			let tempData = message.data.data;
-    			if(tempData){
-    				if(tempData.lotteryid == stateVar.nowlottery.lotteryBetId){
-    					this.actionSound('kj');
-    					let tempCode;
-    					if(tempData['number'].length <= 5){
-	    					tempCode = tempData['number'].split('');
-	    				}else{
-	    					tempCode = tempData['number'].split(' ');
-	    				}
-	    				this.setState({kjStopallFlag:true});
-    					this.setState({code:tempCode,nowIssue:tempData.expectedIssue});
-    					this.getKjHistory(true);
-    				}
-    			}
-    		}else if(tempType == 4 || tempType == 3){
-    			this.getBetHistory();
-    		}else if(tempType == 8){
-    			alert(33)
-    			common.removeStore(common.getStore('userId'))
-    			this.getLotteryData();
-    		}else if(tempType == 7){
-    			notification.open(
-    				{
-					    message: message.data.data.title,
-					    description: message.data.data.content,
-					    placement:'bottomRight',
-					    duration:10,
-					    icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
-					}
-    			)
-    		}
-    	}
-    }
-    openWebsocket(){
-    	var msg = {"method":"join","uid":common.getStore('userId'),"hobby":1};
-    	this.refWebSocket.state.ws.send(JSON.stringify(msg))
-    }
+    //离开页面
+    componentWillUnmount() {
+    	this._ismount = false;
+    	stateVar.BetContent = {
+	        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
+	    };
+	    stateVar.openLotteryFlag = true;
+	    stateVar.checkLotteryId= true;
+	}
     initData(){
     	let lotteryData = require('../../../CommonJs/common.json');
     	let tempLotteryType = {};
@@ -288,33 +237,14 @@ export default class ContentMian extends Component {
 				stateVar.nowlottery.lotteryBetId = lotteryDt[i]['lotteryid'];
 				stateVar.nowlottery.cnname = lotteryDt[i]['cnname'];
 				stateVar.nowlottery.imgUrl =  lotteryDt[i]['imgUrl'];
-				tempLotteryLength = lotteryDt[i].lotterLength == undefined ? 5 : lotteryDt[i].lotterLength;
     		}
     		if(lotteryDt[i]['lotteryid'] != 23){
 				tempLotteryType[lotteryDt[i]['nav']] = lotteryDt[i]['curmid']
 			}
     	}
-    	let tempArrCode = [];
-    	let tempStopFlag = [];
-    	for(let i=0;i<tempLotteryLength;i++){
-    		tempArrCode.push('-');
-    		tempStopFlag.push(false);
-    	}
-    	this.setState({code:tempArrCode,kjStopFlag:tempStopFlag,animateCode:tempArrCode,tempLotteryLength:tempLotteryLength},()=>{
-    		this.kjanimate(0);
-    	});
     	stateVar.alllotteryType = tempLotteryType;//所有彩种类型
     	stateVar.openLotteryFlag = false;//控制彩种是否可以点击
     	this.setState({
-	    		kjStopFlag:[],
-	        	kjStopallFlag:false,
-	        	kjStopTime:0,
-    			todayAndTomorrow:[],
-    			todayIssue:[],
-	    		tomorrowIssue:[],
-	    		timeShow:{hour:'00',second:'00',minute:'00',day:'00'},
-	    		nowIssue:'??????',
-	        	nextIssue:'??????',
 	        	navIndex:0,
 	        	navTwoIndex: 0,
 	        	navThreeIndex:0,
@@ -324,7 +254,6 @@ export default class ContentMian extends Component {
 	        	historyBet:[],
 	        	modes:[],
             	selectYjf: 0,
-            	issueIndex:'请选择期号',
             	defaultposition:[],
             	lotteryMethod:[],
             	numss:0,
@@ -332,6 +261,9 @@ export default class ContentMian extends Component {
             	checked: true,
             	omodel:'1'
         	},()=>{
+        	stateVar.todayAndTomorrow = [];
+		    stateVar.tomorrowIssue = [];
+		    stateVar.issueIndex = '?????';
     		stateVar.BetContent.lt_same_code = [];
 	    	stateVar.BetContent.totalDan = 0;
 	    	stateVar.BetContent.totalNum = 0;
@@ -348,10 +280,7 @@ export default class ContentMian extends Component {
 	    	}else{
 	    		this.getLotteryData();
 	    	}
-    		this.getFutureIssue();
-	    	this.getlotterycode();
 	    	this.getBetHistory();
-	    	this.getKjHistory();
     	});
     };
     /**
@@ -411,7 +340,7 @@ export default class ContentMian extends Component {
     		body : JSON.stringify({sCurmids:stateVar.alllotteryType})}
     		).then((data)=>{
     			this.setState({ loading: false });
-    			if(data.status == 200){
+    			if(this._ismount && data.status == 200){
     				let tempData = data.repsoneContent;
     				this.getMmcMethod(tempData);
     				this.setOneMethod(tempData);
@@ -427,7 +356,7 @@ export default class ContentMian extends Component {
     		}
     	).then((data)=>{
     		stateVar.openLotteryFlag = true;
-			if(data.status == 200){
+			if(this._ismount && data.status == 200){
 				let tempData = data.repsoneContent;
 				let tempBets = val;
 				tempBets['mmc'] = tempData;
@@ -472,72 +401,6 @@ export default class ContentMian extends Component {
     		alert(tempMsg);
     	}
     };
-    //获取最近一期开奖号码和期号
-    getlotterycode(a){
-    	if(stateVar.nowlottery.lotteryBetId == 23){
-    		return false;
-    	}
-    	Fatch.aboutBet({
-    		method:"POST",
-    		body:JSON.stringify({flag:'getlotterycode',lotteryid:stateVar.nowlottery.lotteryBetId})
-    		}).then((data)=>{
-    			let tempData = data.repsoneContent;
-    			let tempArray = this.state.todayAndTomorrow;
-    			if(data.status == 200){
-    				if(a){
-    					while(true){
-							if(this.state.todayAndTomorrow.length == 0){
-								break;
-							}
-	    					if(tempData.curissue != tempArray[0].issue){
-	    						tempArray.splice(0,1);
-	    					}else{
-	    						break;
-	    					}
-	    				}
-    				}
-    				let tempCode = [];
-    				if(tempData.code.length <= 5){
-    					tempCode = tempData.code.split('');
-    				}else{
-    					tempCode = tempData.code.split(' ');
-    				}
-    				if(this.state.code.join('') == tempCode.join('')){
-    					this.setState({kjStopallFlag:false});
-    				}else{
-    					this.setState({kjStopallFlag:true});
-    				}
-    				this.setState({code:tempCode,nowIssue:tempData.issue,nextIssue:tempData.curissue,issueIndex:tempArray.length != 0 ? tempArray[0].issue : '??????'},()=>{
-    					if(a && tempArray.length != 0){
-    						this.setState({todayAndTomorrow:tempArray});
-    					}else{
-    						this.getFutureIssue();
-    					}
-    					this.actionTrace();
-    					this.tick(tempData.datetime,tempData.cursaleend);
-    				});
-    			}
-    		})
-    };
-    //秒秒彩模拟开号
-    monikj(){
-    	this.setState({mmcmoni:true});
-    	$(".monikj span").html('开奖中...')
-    	Fatch.aboutMmc({
-    		method:"POST",
-    		body:JSON.stringify({"flag":"getcodes","lotteryid":23})
-    		}).then((data)=>{
-    			this.setState({mmcmoni:false});
-    			$(".monikj span").html('模拟开奖')
-    			data = JSON.parse(data);
-    			let tempData = data.repsoneContent;
-    			if(data.status == 200){
-    				this.setState({mmccode:tempData.split('')});
-					this.getBetHistory();
-					this.getKjHistory();
-    			}
-    		})
-    };
     //得到投注记录
      getBetHistory(){
      	let tempObj = {flag:'getprojects',lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20}
@@ -547,7 +410,7 @@ export default class ContentMian extends Component {
 	    		body:JSON.stringify(tempObj)
 	    		}).then((data)=>{
     			let tempData = data.repsoneContent;
-    			if(data.status == 200){
+    			if(this._ismount && data.status == 200){
     				stateVar.openLotteryFlag = true;
 					this.setState({historyBet:tempData});
     			}
@@ -558,142 +421,13 @@ export default class ContentMian extends Component {
 	    		body:JSON.stringify(tempObj)
 	    		}).then((data)=>{
     			let tempData = data.repsoneContent;
-    			if(data.status == 200){
+    			if(this._ismount && data.status == 200){
 					this.setState({historyBet:tempData});
     			}
     		})
      	}
     };
-    //得到最近历史开奖号码
-     getKjHistory(flag){
-     	if(stateVar.nowlottery.lotteryBetId == 23){
-     		Fatch.aboutMmc({
-	    		method:"POST",
-	    		body:JSON.stringify({lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,flag:'getlastcode'})
-	    		}).then((data)=>{
-	    			let tempData = data.repsoneContent;
-	    			this.setState({mmcmoni:false});
-	    			if(data.status == 200){
-	    				if(tempData.length > 0){
-	    					this.setState({mmccode:tempData[0].split(' ')})
-	    				}
-	    				stateVar.mmCkjNumberList = tempData;
-	    			}
-    			})
-     	}else{
-     		let tempObj = {};
-     		if(flag){
-     			tempObj = {lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,curmid:stateVar.nowlottery.cuimId,cacheTrue:2};
-     		}else{
-     			tempObj = {lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,curmid:stateVar.nowlottery.cuimId};
-     		}
-     		Fatch.ksHistoery({
-	    		method:"POST",
-	    		body:JSON.stringify(tempObj)
-	    		}).then((data)=>{
-	    			if(data.status == 200){
-	    				stateVar.kjNumberList = data.repsoneContent;
-	    			}
-	    		})
-     	}
-    };
-    //获取未来期
-    getFutureIssue(){
-    	//返回根据彩种类型返回彩种ID
-    	if(stateVar.nowlottery.lotteryBetId == 23){
-    		return false;
-    	}
-    	Fatch.aboutBet({
-    		method:"POST",
-    		body:JSON.stringify({flag:'getTodayTomorrowIssue',lotteryid:stateVar.nowlottery.lotteryBetId})
-    		}).then((data)=>{
-    			if(data.status == 200){
-    				stateVar.openLotteryFlag = true;
-					let todayData = data.repsoneContent.today;
-					let tomorrowData = data.repsoneContent.tomorrow;
-					todayData = todayData.concat(tomorrowData);
-					this.setState({tomorrowIssue:tomorrowData,todayIssue:todayData,todayAndTomorrow:todayData,issueIndex:todayData[0].issue},()=>{
-						this.actionTrace();
-					});
-    			}
-    		})
-    };
-    //开奖倒计时
-    tick(starttime,endtime){
-        if( starttime == "" || endtime == "" ){
-            $.lt_time_leave = 0;
-        }else{
-            $.lt_time_leave = (commone.format(endtime).getTime()- commone.format(starttime).getTime())/1000;//总秒数
-        }
-        let hsm = commone.diff($.lt_time_leave);
-        this.setState({timeShow:hsm});
-    	window.interval = setInterval(()=>{
-    		if($.lt_time_leave > 0 && ($.lt_time_leave % 240 == 0 || $.lt_time_leave == 60 )){//每隔4分钟以及最后一分钟重新读取服务器时间
-    			Fatch.aboutBet({
-		    		method:"POST",
-		    		body:JSON.stringify({flag:'gettime',lotteryid:stateVar.nowlottery.lotteryBetId,issue:this.state.nextIssue})
-		    		}).then((data)=>{
-		    			if(data.status == 200){
-		    				let tempData = data.repsoneContent || 0;
-		    				tempData = parseInt(tempData,10);
-                            tempData = isNaN(tempData) ? 0 : tempData;
-                            tempData = tempData <= 0 ? 0 : tempData;
-                            $.lt_time_leave = tempData;
-		    			}
-		    		})
-            }
-    		let tempTime = commone.diff($.lt_time_leave);
-    		this.setState({timeShow:tempTime});
-    		if($.lt_time_leave == 60){
-    			this.actionSound(60);
-    		}
-    		if( $.lt_time_leave == 0 ){//结束
-    			this.actionSound(0);
-    			this.setState({kjStopallFlag:false,kjStopTime:0,kjStopFlag:[false,false,false,false,false]},()=>{
-    				this.kjanimate(0);
-    			});
-
-                clearInterval(window.interval);
-				message.config({
-				  top:'50%',
-				  duration: 3
-				});
-				this.setState({visible:false});
-				message.info('当期销售已截止，请进入下一期购买');
-				this.getlotterycode(true);
-    			this.getBetHistory();
-    			this.getKjHistory();
-            }
-    		$.lt_time_leave = $.lt_time_leave - 1;
-    	},100000);
-    }
-    componentWillUnmount() {
-    	stateVar.BetContent = {
-	        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
-	    };
-	    stateVar.openLotteryFlag = true;
-	    stateVar.checkLotteryId= true;
-	    clearInterval(window.interval);
-	}
-    //处理声音
-    actionSound(param){
-    	let tempHtml;
-    	if(param == 0){
-    		tempHtml = document.getElementById('fengdansound');
-    	}else if(param == 60){
-    		tempHtml = document.getElementById('minutesound');
-    	}else if(param == 'kj'){
-    		tempHtml = document.getElementById('kjsound');
-    	}else{
-    		return;
-    	}
-    	if(common.getStore('soundswitch') == 'off'){
-    		tempHtml.muted = true;
-    	}else{
-    		tempHtml.muted = false;
-    	}
-    	tempHtml.play();
-    };
+    
     //玩法切换
      check_nav_index( index ){
         return index === this.state.navIndex ? "nav_list_active" : ""
@@ -1267,8 +1001,8 @@ export default class ContentMian extends Component {
 	    		flag :"save",
 	    		play_source : 10,
 	    		lt_allin_if : "no",
-	    		lt_furture_issue : this.state.issueIndex,
-	    		lt_issue_start : this.state.nextIssue,
+	    		lt_furture_issue : stateVar.issueIndex,
+	    		lt_issue_start : stateVar.nextIssue,
 	    		lt_total_nums : nums,
 	    		lt_total_money : money,
 	    		randomNum : Math.floor((Math.random() * 10000) + 1),
@@ -1380,8 +1114,8 @@ export default class ContentMian extends Component {
     		flag : "save",
     		play_source : 10,
     		lt_allin_if : "no",
-    		lt_furture_issue : this.state.issueIndex,
-    		lt_issue_start : this.state.nextIssue,
+    		lt_furture_issue : stateVar.issueIndex,
+    		lt_issue_start : stateVar.nextIssue,
     		lt_total_nums : stateVar.BetContent.totalNum,
     		lt_total_money : stateVar.BetContent.totalMoney,
     		lt_trace_times_margin : 1,
@@ -1398,7 +1132,8 @@ export default class ContentMian extends Component {
     	for(let i=0;i<stateVar.BetContent.lt_same_code.length;i++){
     		tempObj.lt_project.push(stateVar.BetContent.lt_same_code[i])
     	}
-    	this.setState({betokObj:mobx.toJS(tempObj),visible:true})
+    	stateVar.betVisible = true;
+    	this.setState({betokObj:mobx.toJS(tempObj)});
     }
     //打开追号
     openTrace(){
@@ -1510,8 +1245,9 @@ export default class ContentMian extends Component {
 		let tempTime = 0;
 		let tempFlag = false;
 		let p = 0;//奖金
+		debugger
     	if(this.state.traceTitleIndex == 0){
-    		if(tempTotalIssue == this.state.tomorrowIssue.length){
+    		if(tempTotalIssue == this.state.traceItem.length){
     			tempFlag = true;
     		}
     		for(let i=0;i<tempTraceItem.length;i++){
@@ -1528,7 +1264,7 @@ export default class ContentMian extends Component {
     			}
     		}
     	}else if(this.state.traceTitleIndex == 1){
-    		if(tempTotalIssue == this.state.tomorrowIssue.length){
+    		if(tempTotalIssue == this.state.traceItem.length){
     			tempFlag = true;
     		}
     		for(let i=0;i<tempTraceItem.length;i++){
@@ -1622,7 +1358,7 @@ export default class ContentMian extends Component {
     	let summitTime = {};
     	for(let i=0;i<tempIssue.length;i++){
     		if(this.state.checkselectItem[i]){
-    			let tempaaa = this.state.todayAndTomorrow[i].issue;
+    			let tempaaa = stateVar.todayAndTomorrow[i].issue;
     			submitIssue.push(tempaaa);
     			summitTime['lt_trace_times_'+tempaaa] = tempIssue[i].times;
     		}
@@ -1633,7 +1369,7 @@ export default class ContentMian extends Component {
     		flag : "save",
     		play_source : 10,
     		lt_allin_if : "no",
-    		lt_issue_start : this.state.nextIssue,
+    		lt_issue_start : stateVar.nextIssue,
     		lt_total_nums : stateVar.BetContent.totalNum,
     		lt_total_money : stateVar.BetContent.totalMoney,
     		lt_trace_stop: this.state.traceifStop ? 'yes' : 'no',
@@ -1649,7 +1385,8 @@ export default class ContentMian extends Component {
     	for(let i=0;i<stateVar.BetContent.lt_same_code.length;i++){
     		tempObj.lt_project.push(stateVar.BetContent.lt_same_code[i])
     	}
-    	this.setState({betokObj:mobx.toJS(tempObj),visible:true})
+    	this.setState({betokObj:mobx.toJS(tempObj)});
+    	stateVar.betVisible = true;
     };
     computeByMargin(s,m,b,o,p){
         s = s ? parseInt(s,10) : 0;
@@ -1760,11 +1497,11 @@ export default class ContentMian extends Component {
     	}
     	let tempMoney = 0;
     	let tempTime = 0;
-    	let tempData = this.state.todayAndTomorrow;
+    	let tempData = stateVar.todayAndTomorrow;
     	let dataTemp = [];
     	let tempArray = [];
     	for(let i=0;i<tempData.length;i++){
-    		if(i >= this.state.tomorrowIssue.length){
+    		if(i >= 50){
     			break;
     		}else{
     			let obj = {};
@@ -2269,55 +2006,8 @@ export default class ContentMian extends Component {
 		}
     	return tempHtml;
     };
-    //显示开奖号码
-    showkjNumber(){
-    	if(stateVar.nowlottery.lotteryId == 'pk10'){
-    		return(
-    			<div className="praise_mark">
-		    		<div className="praise_mark_text_pk10">
-		                <div>第&nbsp;<span style={{color:'#FFE38E'}}>{this.state.nowIssue}</span>&nbsp;期</div>
-		                <div>开奖号码</div>
-		                <div>
-			                <span className="method_introduce">走势图</span>&nbsp;
-			                <span className="method_introduce">玩法介绍</span>
-		                </div>
-		            </div>
-		            <ul className="ball_number_pk10">
-		                {
-		                	this.state.code.map((val,idx)=>{
-		                		return (
-		                			<li key={idx}>{val}</li>
-		                		)
-		                	})
-		                }
-		            </ul>
-            	</div>
-    		)
-    	}else{
-    		return(
-    			<div className="praise_mark">
-		    		<div className="praise_mark_text">
-		                <span>第<span style={{color:'#FFE38E'}}>{this.state.nowIssue}</span>期&nbsp;开奖号码</span>
-		                <span className="method_introduce right">玩法介绍</span>
-		                <span className="method_introduce right">走势图</span>
-		            </div>
-		            <ul className="ball_number clear">
-		                {
-		                	this.state.code.map((val,idx)=>{
-		                		return (
-		                			<li key={idx}>
-		                				<span className='kjCodeClass' style={{display:this.state.kjStopFlag[idx] ? 'block' : 'none'}}>{val}</span>
-		                				<span style={{display:this.state.kjStopFlag[idx] ? 'none' : 'block'}}>{this.state.animateCode[idx]}</span>
-		                			</li>
-		                		)
-		                	})
-		                }
-		            </ul>
-            	</div>
-    		)
-    	}
-    }
     render() {
+    	console.log(1111)
         const navList = [
             {
                 link: '',
@@ -2343,112 +2033,10 @@ export default class ContentMian extends Component {
     	let imgUrl = stateVar.nowlottery.imgUrl;
         return (
         	<div>
-        		<Websocket url='ws://10.63.15.242:9502' onMessage={this.handleData.bind(this)} onOpen={this.openWebsocket.bind(this)}
-        			ref = {Websocket => {
-                  this.refWebSocket = Websocket;
-                }}
-        		/>
 	        	<LeftSider resetInit={()=>this.initData()}></LeftSider>
 	            <div className='content_bet'>
-	            	<div className="bet_content" key="ContentTop">
-	                    <div className="content_title">
-	                    {
-	                    	(()=>{
-	                    		let topHtml;
-	                    		if(stateVar.nowlottery.lotteryBetId == 23){
-	                    			topHtml = <ul className="title_list clear">
-			                            <li>
-			                                <div className="content_cz_logo">
-			                                    <img src={require('./Img/'+imgUrl+'.png')} alt=""/>
-			                                </div>
-			                            </li>
-			                            <li>
-			                                <ul className="content_center mmc">
-			                                    <li className="content_cz_text">
-			                                        <div className="cz_name m_bottom">
-			                                            <span>{stateVar.nowlottery.cnname}</span>
-			                                        </div>
-			                                    </li>
-			                                </ul>
-			                            </li>
-			                            <li>
-			                            	<ul className="ball_number_mmc">
-								                {
-								                	this.state.mmccode.map((val,idx)=>{
-								                		return (
-								                			<li key={idx}>{val}</li>
-								                		)
-								                	})
-								                }
-								           	</ul>
-			                            </li>
-			                            <li>
-			                            	<Button className='monikj' disabled={this.state.mmcmoni} onClick={()=>this.monikj()}>模拟开奖</Button>
-			                            </li>
-			                        </ul>
-	                    		}else{
-	                    			topHtml = <ul className="title_list clear">
-			                            <li>
-			                                <div className="content_cz_logo">
-			                                    <img src={require('./Img/'+imgUrl+'.png')} alt=""/>
-			                                </div>
-			                            </li>
-			                            <li>
-			                                <ul className="content_center">
-			                                    <li className="content_cz_text">
-			                                        <div className="cz_name m_bottom">
-			                                            <span>{stateVar.nowlottery.cnname}</span>
-			                                        </div>
-			                                        <div className="cz_periods m_bottom">
-			                                            <span style={{color:'#FFE38E'}}>{this.state.nextIssue}</span>
-			                                            <span>期</span>
-			                                        </div>
-			                                        <div className="voice_switch m_bottom">
-			                                            <span>音效</span>
-			                                            <Switch size="small" defaultChecked={common.getStore('soundswitch') == 'off' ? true : false} onChange={(checked) => this.onChangeSound(checked)} />
-			                                        </div>
-			                                    </li>
-			                                    <li className="abort_time">
-			                                        <p className="abort_time_text">投注截止还有</p>
-			                                        <div className="c_m_count_down">
-			                                            <Row type="flex" align="bottom">
-			                                                <Col span={6}>
-			                                                    <div className="item_text">{this.state.timeShow.hour}</div>
-			                                                </Col>
-			                                                <Col span={2}>
-			                                                    <div className="item_type">时</div>
-			                                                </Col>
-			                                                <Col span={6}>
-			                                                    <div className="item_text">{this.state.timeShow.minute}</div>
-			                                                </Col>
-			                                                <Col span={2}>
-			                                                    <div className="item_type">分</div>
-			                                                </Col>
-			                                                <Col span={6}>
-			                                                    <div className="item_text">{this.state.timeShow.second}</div>
-			                                                </Col>
-			                                                <Col span={2}>
-			                                                    <div className="item_type">秒</div>
-			                                                </Col>
-			                                            </Row>
-			                                        </div>
-			                                    </li>
-			                                </ul>
-			                            </li>
-			                            <li>
-				                            {
-				                            	this.showkjNumber()
-				                            }
-			                            </li>
-			                        </ul>
-	                    		}
-	                    		return topHtml;
-	                    	})()
-	                    }
-
-	                    </div>
-	                </div>
 	                <div className="content_main" key="ContentMian">
+	                	<ContentTop getLotteryData={()=>this.getLotteryData()} getBetHistory={()=>this.getBetHistory()} actionTrace={()=>this.actionTrace()}></ContentTop>
 	                    <div className="c_m_nav">
 	                        <ul className="c_m_nav_list left">
 	                            {
@@ -2551,15 +2139,15 @@ export default class ContentMian extends Component {
 				                                    	(()=>{
 				                                    		return (
 				                                    			<span>
-							                                        <Select value={this.state.issueIndex} style={{ width: 170 }} onChange={(value) => this.handleChangeIssue(value)}>
+							                                        <Select value={stateVar.issueIndex} style={{ width: 170 }} onChange={(value) => this.handleChangeIssue(value)}>
 				                                    					{
-				                                    						this.state.todayAndTomorrow.map((val,index)=>{
+				                                    						stateVar.todayAndTomorrow.map((val,index)=>{
 				                                    							if(index == 0){
 				                                    								return (
 					                                    								<Option key={index} value={val.issue}>{val.issue}(当前期)</Option>
 					                                    							)
 				                                    							}else{
-				                                    								if(index >= this.state.tomorrowIssue.length){
+				                                    								if(index >= stateVar.tomorrowIssue.length){
 				                                    									return ''
 				                                    								}
 				                                    								return (
@@ -2795,7 +2383,7 @@ export default class ContentMian extends Component {
 	                        <BetRecordTable histoeryBet={this.getBetHistory} betHistory={this.state.historyBet}/>
 	                    </div>
 	                </div>
-	                <AlterModal visible={this.state.visible} historyBet={this.getBetHistory} mmchistoeryBet={this.getKjHistory} lotteryOkBet={this.lotteryOkBet} betData={this.state.betokObj}/>
+	                <AlterModal historyBet={this.getBetHistory} lotteryOkBet={this.lotteryOkBet} betData={this.state.betokObj}/>
             	</div>
             </div>
         );

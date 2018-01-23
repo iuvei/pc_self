@@ -51,7 +51,7 @@ export default class RightPlug extends Component {
         });
     };
     switchOld(){
-    	window.location.href = 'http://10.63.15.242:81?controller=default&action=switch&_v=3.0&sess='+getStore('session');
+    	window.location.href = '/?controller=default&action=switch&_v=3.0';
     };
     /*关闭上下级聊天*/
     hideChat() {

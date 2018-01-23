@@ -3,6 +3,8 @@
  * See: https://github.com/leifoolsen/webpack2-boilerplate/blob/master/src/utils/request.js
  */
 
+import { hashHistory } from 'react-router';
+import {delCookie,removeStore} from "../CommonJs/common";
 import 'whatwg-fetch';
 
 /**
@@ -49,8 +51,11 @@ const checkResponse = (response) => {
     if (!response.ok) {
         throw apiError(response);
     }
-
-    return response;
+    if (response.headers.get('Content-Type').indexOf('application/json') > -1 ||
+        response.headers.get('Content-Type').indexOf('text/html')) {
+        return response.json();
+    }
+    return response.text();
 };
 
 /**
@@ -59,12 +64,13 @@ const checkResponse = (response) => {
  * @return {*|{type, alias, describe}}
  */
 const toContentType = (response) => {
-    if (response.headers.get('Content-Type').indexOf('application/json') > -1 ||
-        response.headers.get('Content-Type').indexOf('text/html')) {
-        return response.json();
-    }
+	if(typeof response != 'string' && response.shortMessage.indexOf('请重新登录') > -1){
+		delCookie('sess');
+		removeStore('session');
+		hashHistory.push('/login');
+	}
+    return response;
 
-    return response.text();
 };
 
 /**
