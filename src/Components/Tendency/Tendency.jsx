@@ -29,7 +29,6 @@ export default class Tendency extends Component {
             responseData:null,         /*请求返回的数据，作为属性传给走势图表格*/
             checked:true,         /*控制折线的显示*/
             reversetable:false, /*控制是否上下转换表格，boolean*/
-
         }
     };
 
@@ -200,14 +199,14 @@ export default class Tendency extends Component {
         });
 
     }
-    /*正确显示表格，包括倒转表格和正常表格*/
+    /*正确显示表格，包括倒转表格和正常表格,当彩种为北京pk10时，表格生成滚动条*/
     displapyTable(){
          let reverseState= getStore("reversetable") ||this.state.reversetable;/*首先从缓存中获取表格显示样式*/
          if(!this.state.loading){
              if(reverseState){
-                 return <ReverseTable responseData={this.state.responseData} checked={this.state.checked} lotteryId={this.state.postData.lotteryId}/>;
+                 return <ReverseTable responseData={this.state.responseData}  checked={this.state.checked} lotteryId={this.state.postData.lotteryId}/>;
              }else{
-                 return <NormalTable responseData={this.state.responseData} checked={this.state.checked} lotteryId={this.state.postData.lotteryId}/>;
+                 return <NormalTable responseData={this.state.responseData}  checked={this.state.checked} lotteryId={this.state.postData.lotteryId}/>;
              }
          }else{
              return "";
@@ -221,14 +220,12 @@ export default class Tendency extends Component {
     componentDidMount() {
         this._ismount = true;
 
-
     };
     componentWillUpdate(){
 
     }
 
     componentWillUnmount(){
-
     }
     render() {
         const tableTrendTotal=this.state.tableTrendTotal;

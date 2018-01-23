@@ -8,6 +8,18 @@ import { setDateTime } from '../../../CommonJs/common';
 
 import './TeamStatistics.scss'
 
+const selectDayArr = [
+    {
+        text: '七天',
+        id: 7,
+    },{
+        text: '十五天',
+        id: 15,
+    },{
+        text: '三十天',
+        id: 30,
+    }
+];
 @observer
 export default class TeamStatistics extends Component {
     constructor(props){
@@ -19,11 +31,11 @@ export default class TeamStatistics extends Component {
                 limite_data: null,// 如果有传此参数就第获得多少天之前的数据,没传就只获得当天数据
             },
             response: {
-                add_money_count: null, //今日充值人数
-                login_count: null,//今日登陆人数
-                register_count: null,//今日注册人数
-                team_count: null,//团队总人数
-                vote_count: null,//今日投注人数
+                add_money_count: 0, //今日充值人数
+                login_count: 0,//今日登陆人数
+                register_count: 0,//今日注册人数
+                team_count: 0,//团队总人数
+                vote_count: 0,//今日投注人数
             },
             statistics: {
                 date: [], // 日期
@@ -285,18 +297,6 @@ export default class TeamStatistics extends Component {
     }
     render() {
         const response = this.state.response;
-        const selectDayArr = [
-                {
-                    text: '七天',
-                    id: 7,
-                },{
-                    text: '十五天',
-                    id: 15,
-                },{
-                    text: '三十天',
-                    id: 30,
-                }
-            ];
 
         return (
             <div className="t_st_main">
@@ -304,31 +304,31 @@ export default class TeamStatistics extends Component {
                     <li>
                         <div className="t_st_sum_preple">
                             <p>团队总人数</p>
-                            <p>{response.team_count == null ? 0 : response.team_count}人</p>
+                            <p>{response.team_count}人</p>
                         </div>
                     </li>
                     <li>
                         <div>
                             <p>今日注册人数</p>
-                            <p>{response.register_count == null ? 0 : response.register_count}人</p>
+                            <p>{response.register_count}人</p>
                         </div>
                     </li>
                     <li>
                         <div>
                             <p>今日登陆人数</p>
-                            <p>{response.login_count == null ? 0 : response.login_count}人</p>
+                            <p>{response.login_count}人</p>
                         </div>
                     </li>
                     <li>
                         <div>
                             <p>今日充值人数</p>
-                            <p>{response.add_money_count == null ? 0 : response.add_money_count}人</p>
+                            <p>{response.add_money_count}人</p>
                         </div>
                     </li>
                     <li>
                         <div>
                             <p>今日投注人数</p>
-                            <p>{response.vote_count == null ? 0 : response.vote_count}人</p>
+                            <p>{response.vote_count}人</p>
                         </div>
                     </li>
                 </ul>

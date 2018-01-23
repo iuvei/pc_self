@@ -27,12 +27,13 @@ export default class Sport extends Component {
     /*获取第三方网址*/
     getThirdAddress(){
         Fetch.sport({
-            method: "POST"
+            method: "POST",
+            body: JSON.stringify({"do":"login"}),
         }).then((data)=> {
             console.log("login",data);
             if(data.status==200){
                 this.setState({
-                    thirdAddress:data.repsoneContent,
+                    thirdAddress:data.repsoneContent[0],
                 })
 
             }

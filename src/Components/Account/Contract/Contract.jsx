@@ -1,11 +1,10 @@
 /*契约系统*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Table, Button, Popconfirm, Pagination, Icon,Modal,Select,Input,Slider,InputNumber ,Tooltip } from 'antd';
+import { Table, Icon,Select,Tooltip,Spin } from 'antd';
 import ContractModal from './ContractModal/ContractModal'
 import 'whatwg-fetch'
 import Fetch from '../../../Utils';
-import Footer from '../../Common/Footer/Footer'
 const Option=Select.Option
 
 import addSrc from './Img/add.png';
@@ -254,15 +253,16 @@ export default class Contract extends Component {
 
         return (
            <div className='contract_main'>
+             <Spin tip="加载中..." spinning={this.state.loading}  size="large"/>
                {
-                   !this.state.loading?<div>
+                   !this.state.loading?
+                   <div>
                        <ul className='c_top'>
                            {daily_salary_status ==1 ? <li className='c_salary' >
                                <p className='c_title'><img src={moneySrc}/>我的日工资比例
-                                   <Tooltip placement="bottom" title={text} >
+                                   <Tooltip placement="bottom" title={text}  overlayClassName='contract_helpinfo'>
                                        <Icon className='c-info' type="info-circle" />
                                    </Tooltip>
-
                                </p>
                                <ul className='c_table1'>
                                    <li><span className='c_no'>1、</span>日有效量<span className='c_number'>1</span>万<span className='c_no'> , </span>日工资<span className='c_number'>{cur_daily_salary[0].salary_ratio}</span><span className='c_percent'>%</span></li>
@@ -285,7 +285,6 @@ export default class Contract extends Component {
                                        <p className='c_txt'>{cur_dividend_radio}%</p>
                                    </div>
                                </div>
-
                            </li>:""}
                            <li className='c_award' >
                                <p className='c_title'><img src={dollarSrc}/>我的奖金组</p>
@@ -295,7 +294,6 @@ export default class Contract extends Component {
                                        <p className='c_txt'>{cur_prize}</p>
                                    </div>
                                </div>
-
                            </li>
                            <li className='c_setContract' onClick={()=>{this.showModal()}}>
                                <div>
@@ -308,7 +306,6 @@ export default class Contract extends Component {
                        <div className="c_table">
                            <Table columns={columns} dataSource={tableData} bordered={true} loading={this.state.loading} pagination={true}/>
                        </div>
-
                    </div>:""
                }
             </div>

@@ -25,8 +25,6 @@ const DrawLine={
 				it=this.AttributeGroup[i];
 				LG.color=it.color;
 				JoinLine.indent=it.indent;
-				console.log("it[0]",it[0]);
-                console.log("AttributeGroup[i]",this.AttributeGroup[i]);
 				this.LineGroup.push(new LG(it[0],it[1],it[2],it[3],this.check));
 			}
 		}
@@ -174,22 +172,14 @@ const LG=function(_x,_y,width,margin_bottom,fn_check){
 	var col_end=col_start+rect.w;
 	if(col_end>trs[row_start].cells.length)col_end=trs[row_start].cells.length;
 	if(rect.w==0)col_end=trs[row_start].cells.length;
-    console.log("rect.x",rect.x);
-    console.log("row_start",row_start);
-    console.log("row_start",row_start);
 	this.g=[];
 	for(var i=row_start;i<row_end;i++){/* 检测每一组图形 */
-        console.log("row_start",row_start);
-        console.log("row_end",row_end);
 		var tr=trs[i].cells;
-		console.log("col_start",col_start);
-        console.log("col_end",col_end);
 		for(var j=col_start;j<col_end;j++){
 			var div=tr[j].childNodes.length;
 
 			/* 检测器返回绝对真时，单元格才被添加到组 */
 			if(div==1){
-                console.log("tr[j].innerText",tr[j].innerText);
               this.g.push(tr[j]);/*将获取的当前显示单元格td加入画折线的队列中*/
 			}
 		};

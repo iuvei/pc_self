@@ -66,8 +66,14 @@ import {
 *通过判断是否登录过来控制导航条是否可以直接输入页面而进入相应页面
  */
 const requireAuth = (nextState, replace) => {
+    if(nextState.location.pathname=="/tendency"){/*当push或者通过a链接的pathname为“/tendency”直接进入其目录*/
+        stateVar.auth =true;
+    }
     if (!stateVar.auth) {
-        replace({ pathname: '/' }) // 路由重定向到根目录
+        if(nextState.location.pathname!="/tendency"){
+            replace({ pathname: '/' }) // 路由重定向到根目录
+        }
+
     }else{
         // ...
     }

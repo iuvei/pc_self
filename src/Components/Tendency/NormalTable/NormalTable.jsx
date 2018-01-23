@@ -5,7 +5,6 @@ import './NormalTable.scss'
 import Line from '../line';
 
 
-let trendAvailWidth=window.screen.availWidth-30;   //界面的有效宽度，控制表格滚动条出现的阈值
 export default class NormalTable extends Component {
     constructor(props) {
         super(props);
@@ -521,17 +520,11 @@ export default class NormalTable extends Component {
         })
 
     }
-
-    componentWillMount(){
-        this.getTable();
-    };
-
-    componentDidMount() {
-        /*
-       * 走势图折线
-       * 遍历大表头，每个大表头下画折线
-       */
-
+    /*
+      * 走势图折线
+      * 遍历大表头，每个大表头下画折线
+      */
+    drawTrendLine(){
         let columns = this.state.columns;
         let bigColumn = columns.length - this.state.awardNoLength -1; /*获取大表头的个数*/
 
@@ -539,27 +532,59 @@ export default class NormalTable extends Component {
         Line[0].color('#cd232d');/*设置折线的颜色*/
         Line[0].bind(true,"has_line");
         Line[0].AttributeGroup=[];  /*将表格画线的起始位置，结束位置至空，因为有缓存*/
-            let startCol=null;/*每个大表头的起始列位置*/
-            let litleColLen=0;/*小标题个数*/
-             for(let i=0;i< bigColumn ;i++) {
-                 if(columns[this.state.awardNoLength +i+ 1].children){
-                     if (i == 0) {
-                         startCol = this.state.awardNoLength + 1;
-                     } else {
-                         startCol += litleColLen; /*起始行=上一次起始行+上一次的小标题个数*/
-                     }
-                     litleColLen = columns[this.state.awardNoLength +i+ 1].children.length;/*对应表头的子标题长度*/
-                     Line[0].add(parseInt(startCol), 0, litleColLen, 4);/*四个参数：列起始位置，行起始位置，列起始位与下一起始列间距，结束行与底部行数*/
-                 }
+        let startCol=null;/*每个大表头的起始列位置*/
+        let litleColLen=0;/*小标题个数*/
+        for(let i=0;i< bigColumn ;i++) {
+            if(columns[this.state.awardNoLength +i+ 1].children){
+                if (i == 0) {
+                    startCol = this.state.awardNoLength + 1;
+                } else {
+                    startCol += litleColLen; /*起始行=上一次起始行+上一次的小标题个数*/
+                }
+                litleColLen = columns[this.state.awardNoLength +i+ 1].children.length;/*对应表头的子标题长度*/
+                Line[0].add(parseInt(startCol), 0, litleColLen, 4);/*四个参数：列起始位置，行起始位置，列起始位与下一起始列间距，结束行与底部行数*/
+            }
 
-             }
+        }
 
         Line[0].draw(true);
         Line[0].show(this.props.checked);/*通过显示折线复选框的选择状态，显示隐藏折线*/
+    }
+    onWindowResize(){
+       let  windowWidth=$(window).width();
+        if(($("table").width()>$('body').width()-45)||windowWidth<1200)
+        {
+            $('body').width($("table").width() +46+ "px");
+        }else{
+            $('body').width(windowWidth);
+        }
+        Line[0].remove(true);
+        this.drawTrendLine();
+    }
+
+    componentWillMount(){
+        this.getTable();
+    };
+
+    componentDidMount() {
+        let windowWidth=$(window).width();
+        /*当表格宽度大于body时，将body宽度等于表格宽度
+        * 否则body等于实际界面显示宽度*/
+        if($("table").width()>$('body').width()-40)
+        {
+            $('body').width($("table").width() +46+ "px");
+        }else{
+                $('body').width(windowWidth);
+
+        }
+        window.addEventListener('resize', this.onWindowResize.bind(this))
+        this.drawTrendLine();
 
     };
     componentDidUpdate(){
+
         Line[0].show(this.props.checked);/*通过显示折线复选框的选择状态，显示隐藏折线*/
+
 
     }
     componentWillUpdate(){
@@ -567,6 +592,8 @@ export default class NormalTable extends Component {
     }
     componentWillUnmount(){
         Line[0].remove(true);   /*删除折线*/
+        window.removeEventListener('resize', this.onWindowResize.bind(this))
+
     }
     render() {
 
@@ -578,7 +605,6 @@ export default class NormalTable extends Component {
                           pagination={false}
                           bordered={true}
                           onChange={this.handleTableChange}
-                          scroll={{ x: trendAvailWidth}}
                           className="trend_table_wrap"
 
                     />

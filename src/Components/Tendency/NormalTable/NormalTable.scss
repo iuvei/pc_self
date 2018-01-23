@@ -1,12 +1,13 @@
 /*表格样式*/
+
 .trend_table_wrap{
     white-space:nowrap;
 
     .ball{
         background:url('../Img/ball.png') no-repeat center;
         color: #fff;
-        height: 19px;
-        width: 19px;
+        height: 18px;
+        width: 18px;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -17,6 +18,10 @@
         .trend_awardNo,th{
             background: #515368;
             color: #fff;
+
+        }
+        .trend_awardNo{
+            padding: 5px !important;
         }
     }
     .ant-table-tbody{
@@ -29,7 +34,7 @@
 
         }
         tr > td {
-            padding: 5px;
+            padding: 3px;
             position: relative;
 
         }
@@ -45,11 +50,28 @@
         tr:nth-last-child(2) td ,
         tr:nth-last-child(3) td,
         tr:nth-last-child(4) td{
+            font-size: 14px;
             background:#515368;
             color:#fff;
             &:hover{
                 background:#515368 !important;
             }
         }
+    }
+}
+@media screen and (min-width:1401px) and (max-width:1700px){
+    .trend_table_wrap .ant-table-tbody tr > td{
+        padding: 1px 3px;
+    }
+    .trend_table_wrap .trend_awardNo{
+        padding: 5px !important;
+    }
+}
+@media screen  and (max-width:1400px){
+    .trend_table_wrap .ant-table-tbody tr > td{
+        padding: 0 2px;
+    }
+    .trend_table_wrap .trend_awardNo{
+        padding: 5px !important;
     }
 }

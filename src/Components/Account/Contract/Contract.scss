@@ -135,34 +135,41 @@ $border_color: #C8C8C8;
         }
     }
 
-
+    .ant-spin{
+        position: absolute;
+        top:50%;
+        left: 50%;
+    }
 
 }
+.contract_helpinfo{
+    .ant-tooltip-inner{
+        max-width: 540px;
+        height: 314px;
+        font-size: 14px;
+        background-color:rgba(0,0,0,0.8);
+        padding: 8px 21px 17px;
+        .c_info_wrap{
+            p{
+                line-height: 25px;
+            }
+        }
+        .c_info_title{
+            margin-top: 10px;
+            color: #ffdb70;
+            text-align: center;
+            font-size: 16px;
+        }
+        .c_i_title1{
+            margin-top: 10px;
+            color: #ffdb70;
 
-.ant-tooltip-inner{
-    max-width: 540px;
-    height: 314px;
-    font-size: 14px;
-    background-color:rgba(0,0,0,0.8);
-    padding: 8px 21px;
-    .c_info_wrap{
-        p{
-            line-height: 25px;
+        }
+        .c_i_title2{
+            color: #ffdb70;
+
         }
     }
-    .c_info_title{
-        margin-top: 10px;
-        color: #ffdb70;
-        text-align: center;
-        font-size: 16px;
-    }
-    .c_i_title1{
-        margin-top: 10px;
-        color: #ffdb70;
-
-    }
-    .c_i_title2{
-        color: #ffdb70;
-
-    }
 }
+
+

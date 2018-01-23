@@ -10,6 +10,7 @@ import {getStore } from "../../../CommonJs/common";
 import ComplainAndSuggests from "../ComplainAndSuggests/ComplainAndSuggests";
 import Chat from '../../Chat/Chat';
 import p_QRSrc from "./Img/p_QR.png";
+let curLocation = location.href;  /*当前浏览器url地址*/
 @observer
 export default class RightPlug extends Component {
     constructor(props){
@@ -57,6 +58,10 @@ export default class RightPlug extends Component {
     hideChat() {
         this.setState({modalVisible: false})
     }
+    componentDidMount() {
+        /*获取当前走势图的相对路径*/
+        curLocation = curLocation.split("#")[0] + "#/tendency";
+    };
     render() {
         return (
         	<div>
@@ -121,13 +126,11 @@ export default class RightPlug extends Component {
                         <li  className={this.state.hover6?"active":""} onMouseLeave={()=>{this.setState({
                             hover6:false,
                         });}}>
-	                        <Link to="/tendency">
 	                        	<label >{this.state.hover6?"走势图":''}</label>
-	                            <i className="r_p_zoushi r_p_common" onMouseEnter={()=>{this.setState({
-	                                hover6:true,
-	                            });}}>
-	                            </i>
-                            </Link>
+                                <a href={curLocation} target="_blank"><i className="r_p_zoushi r_p_common" onMouseEnter={()=>{this.setState({
+                                    hover6:true,
+                                });}}>
+                                </i></a>
                         </li>
                         <li  className={this.state.hover7?"active":""} onMouseLeave={()=>{this.setState({
                             hover7:false,

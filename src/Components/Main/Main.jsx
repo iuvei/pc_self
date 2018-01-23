@@ -38,7 +38,7 @@ export default class Main extends Component {
             return false
         }
     };
-    /*隐藏帮助中心下的左边导航条*/
+    /*隐藏帮助中心下的右边导航条*/
     hideLeft(){
         if (hashHistory.getCurrentLocation().pathname == '/helpInfo'||
             hashHistory.getCurrentLocation().pathname == '/helpInfo/playMethodIntroduce'||
@@ -51,7 +51,16 @@ export default class Main extends Component {
             return false
         }
     }
+    /*隐藏帮助中心下的底部导航条*/
     showFooter() {
+        if (hashHistory.getCurrentLocation().pathname === '/tendency') {
+            return true
+        } else {
+            return false
+        }
+    };
+    /*隐藏帮助中心下的头部导航条*/
+    showHeader(){
         if (hashHistory.getCurrentLocation().pathname === '/tendency') {
             return true
         } else {
@@ -62,6 +71,7 @@ export default class Main extends Component {
     //     /*使用了react-router低于4.x版本中的hashHistory，因为router中进行了一次push和一次pop，所以出现两次渲染，需要在shouldComponentUpdate()做一个判断： return (this.props.router.location.action === 'PUSH')或者 return (this.props.router.location.action === 'POP')；可解决渲染两次的问题*/
         return this.props.router.location.action === 'POP';
     }
+    
     render() {
         const contain = <div>
             <div className="berCenter_bg">
@@ -78,7 +88,7 @@ export default class Main extends Component {
         </div>;
         return (
             <div>
-                <header>
+                <header style={{display: this.showHeader() ? 'none' : ''}}>
                     <HeaderNav/>
                 </header>
                 {

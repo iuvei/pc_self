@@ -390,17 +390,11 @@ export default class ReverseTable extends Component {
         })
 
     }
-
-    componentWillMount(){
-        this.getTable();
-    };
-
-    componentDidMount() {
-        /*
-       * 走势图折线
-       * 遍历大表头，每个大表头下画折线
-       */
-
+    /*
+      * 走势图折线
+      * 遍历大表头，每个大表头下画折线
+      */
+    drawTrendLine(){
         let columns = this.state.columns;
         let bigColumn = columns.length -1; /*获取大表头的个数*/
 
@@ -426,9 +420,42 @@ export default class ReverseTable extends Component {
         Line[0].draw(true);
         Line[0].show(this.props.checked);/*通过显示折线复选框的选择状态，显示隐藏折线*/
 
+    }
+    onWindowResize(){
+        let  windowWidth=$(window).width();
+        if(($("table").width()>$('body').width()-45)||windowWidth<1200)
+        {
+            $('body').width($("table").width() +46+ "px");
+        }else{
+            $('body').width(windowWidth);
+        }
+        Line[0].remove(true);
+        this.drawTrendLine();
+    }
+
+    componentWillMount(){
+        this.getTable();
+    };
+
+    componentDidMount() {
+        let windowWidth=$(window).width();
+        /*当表格宽度大于body时，将body宽度等于表格宽度
+        * 否则body等于实际界面显示宽度*/
+        if($("table").width()>$('body').width()-40)
+        {
+            $('body').width($("table").width() +46+ "px");
+        }else{
+            $('body').width(windowWidth);
+
+        }
+        window.addEventListener('resize', this.onWindowResize.bind(this))
+        this.drawTrendLine();
+
     };
     componentDidUpdate(){
+
         Line[0].show(this.props.checked);/*通过显示折线复选框的选择状态，显示隐藏折线*/
+
 
     }
     componentWillUpdate(){
@@ -436,6 +463,8 @@ export default class ReverseTable extends Component {
     }
     componentWillUnmount(){
         Line[0].remove(true);   /*删除折线*/
+        window.removeEventListener('resize', this.onWindowResize.bind(this))
+
     }
     render() {
 
@@ -448,7 +477,6 @@ export default class ReverseTable extends Component {
                          pagination={false}
                          bordered={true}
                          onChange={this.handleTableChange}
-                         scroll={{ x: trendAvailWidth}}
                          className="reverse_table_wrap"
 
             />
