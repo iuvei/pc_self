@@ -19,11 +19,11 @@ export default class TeamStatistics extends Component {
                 limite_data: null,// 如果有传此参数就第获得多少天之前的数据,没传就只获得当天数据
             },
             response: {
-                add_money_count: '', //今日充值人数
-                login_count: '',//今日登陆人数
-                register_count: '',//今日注册人数
-                team_count: '',//团队总人数
-                vote_count: '',//今日投注人数
+                add_money_count: null, //今日充值人数
+                login_count: null,//今日登陆人数
+                register_count: null,//今日注册人数
+                team_count: null,//团队总人数
+                vote_count: null,//今日投注人数
             },
             statistics: {
                 date: [], // 日期
@@ -304,31 +304,31 @@ export default class TeamStatistics extends Component {
                     <li>
                         <div className="t_st_sum_preple">
                             <p>团队总人数</p>
-                            <p>{response.team_count}人</p>
+                            <p>{response.team_count == null ? 0 : response.team_count}人</p>
                         </div>
                     </li>
                     <li>
                         <div>
                             <p>今日注册人数</p>
-                            <p>{response.register_count}人</p>
+                            <p>{response.register_count == null ? 0 : response.register_count}人</p>
                         </div>
                     </li>
                     <li>
                         <div>
                             <p>今日登陆人数</p>
-                            <p>{response.login_count}人</p>
+                            <p>{response.login_count == null ? 0 : response.login_count}人</p>
                         </div>
                     </li>
                     <li>
                         <div>
                             <p>今日充值人数</p>
-                            <p>{response.add_money_count}人</p>
+                            <p>{response.add_money_count == null ? 0 : response.add_money_count}人</p>
                         </div>
                     </li>
                     <li>
                         <div>
                             <p>今日投注人数</p>
-                            <p>{response.vote_count}人</p>
+                            <p>{response.vote_count == null ? 0 : response.vote_count}人</p>
                         </div>
                     </li>
                 </ul>
@@ -336,7 +336,7 @@ export default class TeamStatistics extends Component {
                     <div className="t_st_broken_line">
                         <ul className="t_st_select_day">
                             {
-                                selectDayArr.map((item,index)=>{
+                                selectDayArr.map((item)=>{
                                     return (
                                         <li className={this.state.postData.limite_data === item.id ? 'select_day_active' : ''} onClick={()=>{this.onSelectDay(item.id)}} key={item.id}>{item.text}</li>
                                     )

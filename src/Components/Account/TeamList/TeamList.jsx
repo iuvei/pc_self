@@ -55,7 +55,6 @@ export default class TeamList extends Component {
             },
             diviPost:{// 分红请求参数
                 userid: null,
-                // id: null,
                 dividend_radio: null, // 要修改的比例
             },
             prizeGroupPost: {}, // 奖金组请求参数
@@ -85,12 +84,16 @@ export default class TeamList extends Component {
         }
     };
     /*获取团队列表*/
-    getData() {
+    getData(type, record) {
         let selectInfo = this.state.selectInfo;
         this.setState({loading: true});
         if(selectInfo.username == stateVar.userInfo.userName) {
             selectInfo.username = '';
             selectInfo.uid = '';
+        }
+        if(type === 'clickName'){
+            let selectInfo = this.state.selectInfo;
+            selectInfo.uid = record.userid;
         }
         Fetch.usreList({
             method: "POST",
@@ -100,7 +103,20 @@ export default class TeamList extends Component {
                 this.setState({loading: false});
                 if(res.status == 200){
                     let resData = res.repsoneContent,
-                        tableData = this.state.tableData;
+                        tableData = this.state.tableData,
+                        historyFlag = true,
+                        history = tableData.history;
+                    if(type === 'clickName'){
+                        for(let i = 0; i < history.length; i++) {
+                            if(history[i].name === record.username) {
+                                historyFlag = false;
+                                break;
+                            }
+                        }
+                        if (historyFlag) {
+                            history.push({name: record.username, uid: record.userid});
+                        }
+                    }
                     tableData.dataSource = resData.results;
                     tableData.accnumall = parseInt(resData.accnumall);
                     tableData.total = parseInt(resData.affects);
@@ -130,27 +146,6 @@ export default class TeamList extends Component {
         let selectInfo = this.state.selectInfo;
         selectInfo.register_time_end = dateString;
         this.setState({selectInfo: selectInfo});
-    };
-    /*点击下级用户*/
-    onClickUserName(record) {
-        let historyFlag = true,
-            tableData = this.state.tableData,
-            selectInfo = this.state.selectInfo,
-            history = tableData.history;
-        selectInfo.uid = record.userid;
-        for(let i = 0; i < history.length; i++) {
-            if(history[i].name === record.username) {
-                historyFlag = false;
-                break;
-            }
-        }
-        if (historyFlag) {
-            history.push({name: record.username, uid: record.userid});
-        }
-        this.setState({
-            selectInfo: selectInfo,
-            tableData: tableData,
-        }, ()=>this.getData(record.userid));
     };
     /*切换每页显示条数*/
     onShowSizeChange (current, pageSize) {
@@ -404,7 +399,7 @@ export default class TeamList extends Component {
             {
                 title: '用户名',
                 dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
-                render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickUserName(record)}>{text}</a>,
+                render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
                 width: 140,
             }, {
                 title: '用户类型',

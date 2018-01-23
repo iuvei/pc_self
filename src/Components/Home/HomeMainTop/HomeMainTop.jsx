@@ -10,8 +10,7 @@ import './HomeMainTop.scss'
 @observer
 export default class HomeMainTop extends Component {
     constructor(props) {
-        super(props)
-        this.state = {}
+        super(props);
     };
     componentDidMount() {
         /*动态定义首页背景图父元素的高度*/
@@ -21,9 +20,7 @@ export default class HomeMainTop extends Component {
             homeBanner.style.height = document.documentElement.clientHeight - 120 + 'px';
         }
     };
-    componentDidUpdate() {
 
-    }
     render() {
         const oneAnim = { y: '+=30', opacity: 0, type: 'from', ease: 'easeOutQuad' };
         return (
@@ -66,7 +63,7 @@ export default class HomeMainTop extends Component {
                             key="download"
                             animation={{ ...oneAnim, delay: 300 }}
                         >
-                            <a href="#" className="home_m_top_download">立即下载</a>
+                            <a href="javascript:void(0)" className="home_m_top_download">立即下载</a>
                         </TweenOne>
                     </div>
                 </QueueAnim>

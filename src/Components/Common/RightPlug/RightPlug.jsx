@@ -6,11 +6,10 @@ import {Link} from 'react-router';
 
 import './Rightplug.scss'
 import { stateVar } from '../../../State'
-import TweenOne from 'rc-tween-one';
-import Fatch from '../../../Utils'
 import {getStore } from "../../../CommonJs/common";
 import ComplainAndSuggests from "../ComplainAndSuggests/ComplainAndSuggests";
-import p_QRSrc from "./Img/p_QR.png"
+import Chat from '../../Chat/Chat';
+import p_QRSrc from "./Img/p_QR.png";
 @observer
 export default class RightPlug extends Component {
     constructor(props){
@@ -25,7 +24,9 @@ export default class RightPlug extends Component {
             hover5:false,       //控制手机app标签的鼠标移入移出状态
             hover6:false,       //控制走势图标签的鼠标移入移出状态
             hover7:false,       //控制投诉建议标签的鼠标移入移出状态
-        }
+            modalVisible: false,
+        };
+        this.hideChat = this.hideChat.bind(this);
     };
     transferMsg(visible) {
         this.setState({
@@ -52,9 +53,17 @@ export default class RightPlug extends Component {
     switchOld(){
     	window.location.href = 'http://10.63.15.242:81?controller=default&action=switch&_v=3.0&sess='+getStore('session');
     };
+    /*关闭上下级聊天*/
+    hideChat() {
+        this.setState({modalVisible: false})
+    }
     render() {
         return (
         	<div>
+                <Chat
+                    visible={this.state.modalVisible}
+                    hideChat={this.hideChat}
+                />
 	        	<div className="box-shape right_plug" style={{right:stateVar.paused ? 0 : '-140px'}}>
                     <ul className="right_list">
                         <li className={this.state.hover1?"active":""} onMouseLeave={()=>{this.setState({
@@ -62,7 +71,7 @@ export default class RightPlug extends Component {
 		                        });}}>
 		                    <a onClick={()=>this.switchOld()} >
 		                        <label >{this.state.hover1?"返回旧版":''}</label>
-	
+
 	                        	<i className="r_p_goOld r_p_common"  onMouseEnter={()=>{
 		                            this.setState({
 		                                hover1:true,
@@ -85,10 +94,10 @@ export default class RightPlug extends Component {
                         </li>
                         <li className={this.state.hover3?"active":""} onMouseLeave={()=>{this.setState({
                             hover3:false,
-                        });}}><label >{this.state.hover3?"在线客服":''}</label>
-                            <a href="http://www.baidu.com/" target="_blank"> <i className="r_p_kefu r_p_common" onMouseEnter={()=>{this.setState({
-                                hover3:true,
-                            });}}></i></a>
+                        });}}>
+                            <label >{this.state.hover3?"在线客服":''}</label>
+                                <i className="r_p_kefu r_p_common" onClick={()=>this.setState({modalVisible: true})} onMouseEnter={()=>this.setState({hover3:true,
+                            })}></i>
                         </li>
                         <li className={this.state.hover4?"active":""} onMouseLeave={()=>{this.setState({
                             hover4:false,
