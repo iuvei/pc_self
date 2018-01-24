@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Affix } from 'antd';
+import { hashHistory } from 'react-router';
 import QueueAnim from 'rc-queue-anim';
 import Transform from '../../../CommonJs/transform.react.js';
 
@@ -30,6 +31,13 @@ export default class RightSider extends Component {
                 el1: {rotateZ: 0}
             })
         }
+    };
+    onHashHistory(router, nav, childNav) {
+        hashHistory.push({
+            pathname: router,
+            query: {navIndex: childNav}
+        });
+        stateVar.navIndex = nav;
     };
     showMore(){
     	this.setState({moreIndex:20});
@@ -69,16 +77,9 @@ export default class RightSider extends Component {
                 <div className="user_info">
                     <ul className="user_info_list">
                         <li>您好！{common.getStore('userName')}</li>
-                        <li>彩票余额</li>
-                        <li className="user_money">
-                            <span className="left">￥{stateVar.allBalance.cpbalance}</span>
-                        </li>
+                        <li>余额:<span>￥{stateVar.allBalance.cpbalance}</span></li>
                         <li>
-                            <div className="user_recharge">充值</div>
-                            <div className="user_withdrawal_transfer">
-                                <span className="withdrawal">提款</span>
-                                <span className="transfer">转账</span>
-                            </div>
+                            <div className="user_recharge" onClick={()=>this.onHashHistory('/financial/recharge', 'financial', 0)}>立即充值</div>
                         </li>
                     </ul>
                 </div>

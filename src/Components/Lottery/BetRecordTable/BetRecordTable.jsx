@@ -59,9 +59,9 @@ export default class BetRecordTable extends Component {
 	            { title: '投注时间', dataIndex: 'datatime', key: 'datatime',width: 110 },
 	            { title: '玩法', dataIndex: 'address', key: 'addr2ess',width: 110 },
 	            { title: '投注内容', dataIndex: 'betContent', key: 'add2ress',width: 110 ,render: (text) => 
-	            <Popover content={text}>
-				    <Button type="primary">{text.length > 10 ? text.substr(0,10)+'...' : text}</Button>
-				</Popover>
+	            text.length > 10 ? <Popover content={text}>
+				    <div>详细号码</div>
+				</Popover>  : text
 	            },
 	            { title: '开奖号', dataIndex: 'lotteryNumber', key: 'addre2ss',width: 85 },
 	            { title: '投注金额', dataIndex: 'betMoney', key: 'a2ddress',width: 85,render:(text) => <span>{text}</span> },
@@ -73,9 +73,9 @@ export default class BetRecordTable extends Component {
 	            { title: '期号', dataIndex: 'age', key: 'age',width: 110 },
 	            { title: '玩法', dataIndex: 'address', key: 'addr2ess',width: 110 },
 	            { title: '投注内容', dataIndex: 'betContent', key: 'add2ress',width: 110 ,render: (text) => 
-	            	<Popover content={text}>
-				    	<Button type="primary">{text.length > 10 ? text.substr(0,10)+'...' : text}</Button>
-					</Popover>
+	            	text.length > 10 ? <Popover content={text}>
+					    <div>详细号码</div>
+					</Popover>  : text
 	            },
 	            { title: '开奖号', dataIndex: 'lotteryNumber', key: 'addre2ss',width: 85 },
 	            { title: '投注金额', dataIndex: 'betMoney', key: 'a2ddress',width: 85,render:(text) => <span>{text}</span> },
@@ -83,9 +83,9 @@ export default class BetRecordTable extends Component {
 	            { title: '状态', dataIndex: 'status', key: 'a2ddres22s',width: 85 },
 	            { title: '操作', dataIndex: 'againBuy', key: 'x', render: (text,objThis) => {
 		            	if(text == 1){
-		            		return <Popconfirm className='canclebet' title='温馨提示' placement="topLeft" onConfirm={()=>this.cancelBet(objThis['key'])}><Button className='buyAgain'>撤单</Button></Popconfirm>
+		            		return <Popconfirm className='canclebet' title='再次购买吗？' placement="topLeft" onConfirm={()=>this.cancelBet(objThis['key'])}><Button className='buyAgain'>撤单</Button></Popconfirm>
 		            	}else{
-		            		return <Popconfirm placement="topLeft" title='温馨提示' onConfirm={()=>this.againBuy(objThis['key'])}><Button className='buyAgain'>再次购买</Button></Popconfirm>
+		            		return <Popconfirm placement="topLeft" title='再次购买吗？' onConfirm={()=>this.againBuy(objThis['key'])}><Button className='buyAgain'>再次购买</Button></Popconfirm>
 		            	}
 	           		}
 	            }
@@ -100,7 +100,7 @@ export default class BetRecordTable extends Component {
         return (
             <div className="bet_record_table">
                 <div className="b_r_top">{stateVar.nowlottery.cnname}&nbsp;最近20期投注记录</div>
-                <Table columns={columns} dataSource={data} pagination={ false } scroll={{ y: 240 }} size="small" loading={false}/>
+                <Table columns={columns} dataSource={data} pagination={ false } scroll={{ y: 254 }} size="small" loading={false}/>
                 <Modal
 	                title="投注单期记录"
 	                width={915}

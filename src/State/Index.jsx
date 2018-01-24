@@ -2,7 +2,8 @@ import { observable, toJS, useStrict } from 'mobx';
 
 // useStrict(true);
 class State {
-    @observable httpUrl = 'http://10.63.15.242:81'; // 域名
+    /*@observable httpUrl = window.location.origin || (window.location.protocol + '//' + window.location.host); // 域名*/
+   	@observable httpUrl = 'http://10.63.15.242:81'; // 域名
 
     @observable userInfo = {// 用户信息
         userName: '请先登录',

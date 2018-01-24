@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
+import Websocket from 'react-websocket';
 import Fetch from '../../../Utils';
 import { Icon, Badge, Modal, Button, Popover } from 'antd';
 const confirm = Modal.confirm;
 import { stateVar } from '../../../State';
 import './headerTop.scss'
+import common from '../../../CommonJs/common';
 import { removeStore,delCookie } from '../../../CommonJs/common';
 import Notice from '../Notice/Notice'
 
@@ -166,7 +168,6 @@ export default class HeaderTop extends Component {
                 }).then((res)=>{
                     if(_this._ismount){
                         if(res.status == 200){
-                            removeStore('userName');
                             delCookie('sess');
                             removeStore('session');
                             setTimeout(()=>{
@@ -241,12 +242,33 @@ export default class HeaderTop extends Component {
         this.getMenu();
         this.getBalance();
     };
+    handleData(data){
+    	var message = eval('('+ data +')');
+    	if(message.status == 1){
+    		let tempType = message.data.type;
+    		if(tempType == 5){
+    			this.getMenu();
+    		}else if(tempType == 6){
+    			this.getNotice();
+    		}else if(tempType == 7){
+    			this.onUnread();	
+    		}
+    	}
+    }
+    openWebsocket(){
+    	var msg = {"method":"join","uid":common.getStore('userId'),"hobby":1};
+    	this.refWebSocket.state.ws.send(JSON.stringify(msg))
+    }
     render() {
         const { allBalance } = this.state;
         const userInfo = stateVar.userInfo;
-
         return (
             <div className="nav_top">
+           		<Websocket url='ws://10.63.15.242:9502' onMessage={this.handleData.bind(this)} onOpen={this.openWebsocket.bind(this)}
+        			ref = {Websocket => {
+                  	this.refWebSocket = Websocket;
+                }}
+        		/>
                 <div className="nav_top_content">
                     <div className="n_t_lt left">
                         <div className="show-notice">

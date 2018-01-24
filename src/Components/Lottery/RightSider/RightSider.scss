@@ -2,13 +2,13 @@
 @import '../../../Style/mixin';
 
 .right_sider{
-    margin: $content-top 0 10px 0;
+    margin: $content-top 0 10px 10px;
     float: left;
 }
 .user_info{
-    @include wh(210px, 178px);
-    background-color: #4A4A5F;
-    padding: 15px 15px 0 15px;
+    width:210px;
+    background-color: #434350;
+    padding: 15px 15px 9px 15px;
     margin-bottom: 10px;
     .user_info_list{
         color: #fff;
@@ -65,7 +65,7 @@
     width: 210px;
     @include boxS(0, 4px, 18px, 0, #c3c3c3, null);
     .thead_title{
-        background-color: #8D887B;
+        background-color: #4A4A5F;
         font-size: 14px;
         color: #fff;
         @include lh(35px);

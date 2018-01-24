@@ -1,7 +1,7 @@
 /*公用模态框*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import {Button,Modal} from 'antd';
+import {Button,Modal,Popover} from 'antd';
 import mobx,{computed, autorun} from "mobx";
 import Fatch from '../../../Utils'
 import './LotteryModal.scss'
@@ -51,6 +51,19 @@ export default class AlterModal extends Component {
 			}
 		})
     };
+    /*获取本平台余额*/
+    getMenu() {
+        Fatch.menu({
+            method: 'POST',
+            body: JSON.stringify({"flag":"getmoney"})
+        }).then((res)=>{
+            if(this._ismount) {
+                if (res.status == 200) {
+                    stateVar.allBalance = res.repsoneContent;
+                }
+            }
+        })
+    };
     onOk(){
     	let tempObj  = this.props.betData;
     	let postData = {};
@@ -96,6 +109,7 @@ export default class AlterModal extends Component {
 	    			this.props.lotteryOkBet();
 	    			if(data.status == 200){
 	    				this.getKjHistory();
+	    				this.getMenu();
 						this.props.historyBet();
 	    				if(kjtime == tempObj.lt_trace_count_input){
 	    					if(kjtime > 1){
@@ -273,6 +287,7 @@ export default class AlterModal extends Component {
 	    			this.props.lotteryOkBet();
 	    			this.setState({tzloding:false});
 	    			if(data.status == 200){
+	    				this.getMenu();
 	    				const modal = Modal.success({
 						    title: '温馨提示',
 						    content: data.longMessage,
@@ -319,7 +334,13 @@ export default class AlterModal extends Component {
                             {
                             	tempData.lt_project ? tempData.lt_project.map((val,index)=>{
                             		return(
-                            			<li key={index}>{val.desc}<span className='l_m_unit' key={index}>{val.modeName}</span></li>
+                            			<li key={index}>{
+                            				val.desc.length > 40 ? <Popover content={val.desc}>
+																	    <span>{val.desc.substr(0,40)+'...'}</span>
+																	</Popover> : val.desc
+                            			}
+                            			<span className='l_m_unit'>{val.modeName}</span>
+                            			</li>
                             		)
                             	}) : ''
                             }

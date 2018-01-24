@@ -22,6 +22,8 @@ const interFace = (key) => {
     // 投注中心
     INTERFACE['PLAY'] = 'controller=game&action=play';
     
+    INTERFACE['GETVERSION'] = 'controller=default&action=kefu';
+    
     INTERFACE['KJHISTOERY'] = 'controller=game&action=CodeShape';
 
     //获取投注玩法
