@@ -148,10 +148,16 @@ export default class AliPay extends Component {
             postData: postData,
         });
     };
+    /*enter键提交*/
+    onSubmit(e){
+        if(e.keyCode == 13){
+            this.onRecharge()
+        }
+    }
     render() {
         const { backList } = this.state;
         return (
-            <div className="ali_main">
+            <div className="ali_main" onKeyDown={(e)=>this.onSubmit(e)}>
                 <div className="ali_m_hint">
                     <p>平台填写金额应当与网银汇款金额完全一致，否则将无法即使到账！</p>
                 </div>

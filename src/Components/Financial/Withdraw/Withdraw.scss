@@ -5,6 +5,17 @@ $border_color: #C8C8C8;
 $width_110px: 110px;
 .withdraw_main{
     font-size: 14px;
+    .w_m_nopassword{
+        text-align: center;
+        margin-top: 200px;
+        span{
+            color: rgb(3, 9, 255);
+            text-decoration: underline;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
     .tr_m_text{
         width: 1096px;
         border: 1px dotted #C7C6C4;

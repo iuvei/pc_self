@@ -27,8 +27,8 @@ export default class CapitalPassword extends Component {
                 old: 2,
             },
             amendPostData: {
-                flag: 'changpass',// 修改密码的时候传
-                changetype: 'sepass', // sepass:修改资金密码
+                flag: 'changepass',// 修改密码的时候传
+                changetype: 'secpass', // secpass:修改资金密码
                 oldpass: '',// 原密码 Md5(确认要设置的密码)
                 newpass: '',//新密码 Md5(确认要设置的密码)
                 confirm_newpass: '',//确认新密码 Md5(确认要设置的密码)
@@ -57,7 +57,7 @@ export default class CapitalPassword extends Component {
                     let _this = this;
                     if(res.status == 200){
                         Modal.success({
-                            title: res.shortMessage,
+                            title: res.repsoneContent,
                             onOk() {
                                 validate.secpass = 2;
                                 validate.secpass_confirm = 2;
@@ -228,28 +228,35 @@ export default class CapitalPassword extends Component {
     onHideModal() {
         this.setState({visible: false})
     }
-
+    /*enter键提交*/
+    onSubmit(e){
+        if(e.keyCode == 13){
+            this.onChangeCapitaPass()
+        }
+    }
     render() {
         const postData = this.state.postData;
         const amendPostData = this.state.amendPostData;
         const userInfo = stateVar.userInfo;
 
         return (
-            <div  className="sec_k_main clear">
+            <div  className="sec_k_main clear" onKeyDown={(e)=>this.onSubmit(e)}>
                 {
                     userInfo.setsecurity == 'yes' ?
                         <ul className="sec_k_list">
                             <li>
                                 <span className="sec_k_left">设置资金密码：</span>
-                                <Input value={postData.secpass}
-                                       type="password"
-                                       onChange={(e)=>this.onChangeSecpass(e)} size="large" placeholder="请输入资金密码"
-                                       className={onValidate('secpass', this.state.validate)}
+                                <Input
+                                    value={postData.secpass}
+                                    type="password"
+                                    onChange={(e)=>this.onChangeSecpass(e)} size="large" placeholder="请输入资金密码"
+                                    className={onValidate('secpass', this.state.validate)}
                                 />
                             </li>
                             <li>
                                 <span className="sec_k_left">确认资金密码：</span>
-                                <Input value={postData.secpass_confirm}
+                                <Input
+                                    value={postData.secpass_confirm}
                                        type="password"
                                        onChange={(e)=>this.onChangeSecpassConfirm(e)} size="large" placeholder="确认资金密码"
                                        className={onValidate('secpass_confirm', this.state.validate)}
@@ -273,7 +280,8 @@ export default class CapitalPassword extends Component {
                         <ul className="sec_k_list">
                             <li>
                                 <span className="sec_k_left">输入旧资金密码：</span>
-                                <Input value={amendPostData.oldpass}
+                                <Input
+                                    // value={amendPostData.oldpass}
                                        type="password"
                                        onChange={(e)=>this.onChangeOldpass(e)} size="large" placeholder="请输入旧资金密码"
                                        className={onValidate('old', this.state.validate)}
@@ -282,7 +290,8 @@ export default class CapitalPassword extends Component {
                             </li>
                             <li>
                                 <span className="sec_k_left">输入新资金密码：</span>
-                                <Input value={amendPostData.newpass}
+                                <Input
+                                    // value={amendPostData.newpass}
                                        type="password"
                                        onChange={(e)=>this.onChangeNewpass(e)} size="large" placeholder="请输入新资金密码"
                                        className={onValidate('secpass', this.state.validate)}
@@ -290,7 +299,8 @@ export default class CapitalPassword extends Component {
                             </li>
                             <li>
                                 <span className="sec_k_left">确定新资金密码：</span>
-                                <Input value={amendPostData.confirm_newpass}
+                                <Input
+                                    // value={amendPostData.confirm_newpass}
                                        type="password"
                                        onChange={(e)=>this.onChangeConfirmNewpass(e)} size="large" placeholder="请输入确定新资金密码"
                                        className={onValidate('secpass_confirm', this.state.validate)}

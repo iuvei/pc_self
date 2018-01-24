@@ -18,7 +18,7 @@ export default class Message extends Component {
             total: 0, //总条数
 
             postData: {
-                msgids: '',
+                msgids: [],
                 tag: '',
                 p: 1,
                 pn: 10,
@@ -104,16 +104,30 @@ export default class Message extends Component {
             body: JSON.stringify({tag:'viewdetail', msgid: record.entry})
         }).then((res)=>{
             if(this._ismount && res.status == 200){
-                this.setState({repDetails: res.repsoneContent})
+                this.setState({repDetails: res.repsoneContent});
             }
         })
     };
+    /*站内信未读条数*/
+    onUnread() {
+        Fetch.messages({
+            method: 'POST',
+            body: JSON.stringify({tag: 'unreadcount'})
+        }).then((res)=>{
+            if(this._ismount && res.status == 200) {
+                stateVar.unread = res.repsoneContent;
+            }
+        })
+    }
     /*关闭模态框*/
     onHideModal() {
         this.setState({
             visible: false,
         });
-        this.state.isview == 0 && this.getData();
+        if(this.state.isview == 0){
+            this.onUnread();
+            this.getData();
+        }
     };
     render() {
         const { loading, data, total, postData, repDetails } = this.state;
@@ -121,6 +135,7 @@ export default class Message extends Component {
                 {
                     title: '发送人',
                     dataIndex: 'sender_name',
+                    render: ()=> '平台',
                     width: 200,
                 }, {
                     title: '消息标题',
@@ -150,7 +165,7 @@ export default class Message extends Component {
             msgids,
             onChange: this.onSelectChange,
         };
-        const hasSelected = postData.msgids.length > 0;
+        const hasSelected = postData.msgids instanceof Array && postData.msgids.length > 0;
         return (
             <div className="message_main">
                 <Table rowSelection={rowSelection}

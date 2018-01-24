@@ -161,10 +161,7 @@ export default class ARdetails extends Component {
     };
 
     render() {
-        const total = this.state.total;
-        const details = this.state.details;
-        const seatModal = this.state.seatModal;
-
+        const {total, details, seatModal } = this.state;
         let columns = [
             {
                 title: '订单号',
@@ -240,17 +237,6 @@ export default class ARdetails extends Component {
                 render: (text,record)=>this.onWinningState(record),
                 width: 80,
             }];
-        const footer = <div className="l_b_tabel_footer" style={{display: total < 1 ? 'none' : ''}} >
-            {/*<span>总计</span>*/}
-            {/*<span>*/}
-                                  {/*总投注额：*/}
-                                  {/*<strong>{sum.all_totalprice}元</strong>*/}
-                              {/*</span>*/}
-            {/*<span>*/}
-                                  {/*总奖金：*/}
-                                  {/*<strong>{sum.all_bonus}元</strong>*/}
-                              {/*</span>*/}
-        </div>;
 
         return (
             <div className="ar_details">
@@ -264,7 +250,7 @@ export default class ARdetails extends Component {
                         <li onClick={(e)=>{this.handClick(e)}}>
                             <a href="javascript:void(0)">返回列表</a>
                         </li>
-                        <li className='nav_active' >
+                        <li className='nav_active'>
                             <a href="javascript:void(0)">追号详情</a>
                         </li>
                     </ul>
@@ -277,7 +263,10 @@ export default class ARdetails extends Component {
                     </li>
                     <li>
                         <span>游戏用户：{details.username}</span>
-                        <span>追号内容：{details.codes}</span>
+                        <span>
+                            <b>追号内容：</b>
+                            <b>{details.codes}</b>
+                        </span>
                         <span>完成期数：{details.finishedcount}期</span>
                     </li>
                     <li>
@@ -307,7 +296,7 @@ export default class ARdetails extends Component {
                                dataSource={this.state.data}
                                pagination={false}
                                loading={this.state.loading}
-                               footer={total <= 0 ? null : ()=>footer}
+                               footer={null}
                         />
                     </div>
                     <div className="t_l_page" style={{display: total < 1 ? 'none' : ''}}>

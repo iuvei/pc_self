@@ -148,7 +148,6 @@ export default class OnlineTopUp extends Component {
                         />
                         <span style={{margin: '0 15px 0 5px'}}>元</span>
                         <span>{changeMoneyToChinese(this.state.postData.money)}</span>
-                        {/*<p className="r_m_dx">{changeMoneyToChinese(this.state.postData.money)}</p>*/}
                         <p className="r_m_dx">
                             <span className="r_m_recharge_text">
                                 单笔充值限额：最低

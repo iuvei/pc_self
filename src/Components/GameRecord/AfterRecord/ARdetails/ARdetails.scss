@@ -2,15 +2,12 @@
 @import '../../../../Style/mixin';
 
 .ar_details{
-    //position: absolute;
-    //top: 11px;
-    //width: 99.6%;
     .details_content{
         margin: 20px auto;
         width: 1000px;
         font-size: 14px;
         li{
-            @include lh(55px);
+            line-height: 55px;
             color: #4E4E4E;
             border-bottom: 1px dashed #B3B3B3;
             span{
@@ -26,6 +23,22 @@
                     width: 200px;
                 }
             }
+        }
+        li:nth-child(2){
+            span{
+                b{
+                    font-weight: normal;
+                }
+                b:nth-child(2){
+                    width: 177px;
+                    display: inline-block;
+                    word-wrap: break-word;
+                    line-height: 20px;
+                    margin-top: 19px;
+                    vertical-align: top;
+                }
+            }
+
         }
     }
     .ant-btn{

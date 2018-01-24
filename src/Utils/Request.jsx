@@ -52,7 +52,7 @@ const checkResponse = (response) => {
         throw apiError(response);
     }
     if (response.headers.get('Content-Type').indexOf('application/json') > -1 ||
-        response.headers.get('Content-Type').indexOf('text/html')) {
+        response.headers.get('Content-Type').indexOf('text/html') > -1) {
         return response.json();
     }
     return response.text();

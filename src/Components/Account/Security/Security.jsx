@@ -1,9 +1,6 @@
 /*安全中心*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import Fetch from '../../../Utils';
-import { Select,Input,Button,Modal } from 'antd';
-const Option = Select.Option;
 import { stateVar } from '../../../State';
 
 import Setsecurity from './Setsecurity/Setsecurity';
@@ -19,7 +16,6 @@ export default class Security extends Component {
         super(props);
         this.state = {
             iconLoadingRecharge: false,
-            navListIndex: 3,
             visible1: false,
             visible2: false,
         };
@@ -27,11 +23,11 @@ export default class Security extends Component {
     };
     /*切换选择不同操作*/
     onChangeIndex(index) {
-        this.setState({navListIndex: index})
+        stateVar.securityIndex = index;
     };
 
     render() {
-        const userInfo = stateVar.userInfo;
+        const { userInfo, securityIndex } = stateVar;
         const navList = [
                 {
                     text: '修改登录密码',
@@ -53,20 +49,19 @@ export default class Security extends Component {
             <BindingEmail/>,
             <Setsecurity onChangeIndex = {this.onChangeIndex}/>,
         ];
-        const navListIndex = this.state.navListIndex;
         return (
             <div className="security_main">
                 <ul className="s_m_select_list clear">
                     {
-                        navList.map((item, index)=>{
-                            return <li className={navListIndex === item.id ? 's_m_select_list_active' : ''}
+                        navList.map((item)=>{
+                            return <li className={securityIndex === item.id ? 's_m_select_list_active' : ''}
                                        onClick={() => this.onChangeIndex(item.id)} key={item.id}>
                                         {item.text}
                                     </li>
                         })
                     }
                 </ul>
-                { childArr[navListIndex] }
+                { childArr[securityIndex] }
             </div>
         );
     }

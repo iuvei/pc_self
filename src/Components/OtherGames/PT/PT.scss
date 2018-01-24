@@ -110,27 +110,27 @@ $color_FFDC52: #FFDC52;
                         margin: 15px 10px 0 0;
                         font-size: 14px;
                     }
-                    .pt_transfer{
-                        .ant-btn{
-                            color: #1C1C1C !important;
-                        }
-                        .ant-btn-primary{
-                            background-color: $color_FFDC52;
-                            border-color: $color_FFDC52;
-                        }
-                        .ant-btn-primary:hover,
-                        .ant-btn-primary:focus {
-                            color: #fff;
-                            background-color: #ffec62;
-                            border-color: #ffec62;
-                        }
-                        .ant-btn-clicked:after {
-                            border: 0 solid $color_FFDC52;
-                        }
-                        .ant-btn-danger.ant-btn-clicked:after {
-                            border-color: $color_FFDC52;
-                        }
-                    }
+                    //.pt_transfer{
+                    //    .ant-btn{
+                    //        color: #1C1C1C !important;
+                    //    }
+                    //    .ant-btn-primary{
+                    //        background-color: $color_FFDC52;
+                    //        border-color: $color_FFDC52;
+                    //    }
+                    //    .ant-btn-primary:hover,
+                    //    .ant-btn-primary:focus {
+                    //        color: #fff;
+                    //        background-color: #ffec62;
+                    //        border-color: #ffec62;
+                    //    }
+                    //    .ant-btn-clicked:after {
+                    //        border: 0 solid $color_FFDC52;
+                    //    }
+                    //    .ant-btn-danger.ant-btn-clicked:after {
+                    //        border-color: $color_FFDC52;
+                    //    }
+                    //}
                 }
                 h3{
                     font-size: 14px;

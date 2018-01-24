@@ -22,14 +22,15 @@ class State {
     };
     @observable dailysalaryStatus = {}; // 获得日工资，亏损，分红签订状态
     @observable allBalance = {// 各平台余额
-        cpbalance: 0, // 恒彩主账户
-        eabalance: 0, // EA真人娱乐
-        ptbalance: 0, // PT娱乐
-        kgbalance: 0, // GT娱乐城
-        bobingBalance: 0, // 博饼账户
-        sbbalance: 0, // 体育
+        cpbalance: '0.00', // 恒彩主账户
+        eabalance: '0.00', // EA真人娱乐
+        ptbalance: '0.00', // PT娱乐
+        kgbalance: '0.00', // GT娱乐城
+        bobingBalance: '0.00', // 博饼账户
+        sbbalance: '0.00', // 体育
     };
     @observable afterDetails = false; // 追号详情时更换nav
+    @observable securityIndex = 3; // 安全中心 3：默认选择设置密保问题
     @observable pageSizeOptions = ['10', '25', '50']; // 表格分页时 指定每页可以显示多少条
     @observable bankWithdrawInfo = {}; // 提款信息
     @observable unread = 0; // 站内信未读条数

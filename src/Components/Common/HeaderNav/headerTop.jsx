@@ -15,7 +15,6 @@ import off_icon from './Img/off_icon.png';
 import on_icon from './Img/on_icon.png';
 import service_icon from './Img/service_icon.png';
 
-const allBalance = {};
 @observer
 export default class HeaderTop extends Component {
     constructor(props) {
@@ -116,9 +115,7 @@ export default class HeaderTop extends Component {
         }).then((res)=>{
             if(this._ismount) {
                 if (res.status == 200) {
-                    allBalance.cpbalance = res.repsoneContent;
-                    stateVar.allBalance = allBalance;
-                    // this.setState({allBalance: allBalance});
+                    stateVar.allBalance.cpbalance = res.repsoneContent;
                 }
             }
         })
@@ -128,7 +125,8 @@ export default class HeaderTop extends Component {
         Fetch.balance({method: 'POST'}).then((res)=>{
             if(this._ismount){
                 if(res.status == 200) {
-                    let repsoneContent = res.repsoneContent;
+                    let repsoneContent = res.repsoneContent,
+                        allBalance = stateVar.allBalance;
                         allBalance.eabalance = repsoneContent.eabalance;
                         allBalance.ptbalance = repsoneContent.ptbalance;
                         allBalance.kgbalance = repsoneContent.kgbalance;
@@ -142,8 +140,6 @@ export default class HeaderTop extends Component {
                                 allBalance[key] = '0.00'
                             }
                         }
-
-                    stateVar.allBalance = allBalance;
                     this.setState({
                         updateMLoading: false,
                     });
@@ -216,7 +212,7 @@ export default class HeaderTop extends Component {
         if(!this.state.visible){
             this.getDestination()
         }
-    }
+    };
     /*站内信未读条数*/
     onUnread() {
         Fetch.messages({
@@ -227,8 +223,8 @@ export default class HeaderTop extends Component {
                 stateVar.unread = res.repsoneContent;
             }
         })
-    }
-    /*站内信*/
+    };
+    /*跳站内信, 充值，提款，转账*/
     onHashHistory(router, nav, childNav) {
         hashHistory.push({
             pathname: router,
@@ -327,49 +323,37 @@ export default class HeaderTop extends Component {
                                         <li>
                                             <span className="left">彩票余额：</span>
                                             <span className="right color_DFC674">￥
-                                                {
-                                                    allBalance.cpbalance == undefined || allBalance.cpbalance<0? '0.00' : allBalance.cpbalance
-                                                }
+                                                {allBalance.cpbalance}
                                             </span>
                                         </li>
                                         <li>
                                             <span className="left">EA余额：</span>
                                             <span className="right color_DFC674">
-                                                {
-                                                    allBalance.eabalance == undefined || allBalance.eabalance<0 ? <Icon type="loading"> 加载中...</Icon> : '￥' + allBalance.eabalance
-                                                }
+                                                {allBalance.eabalance}
                                             </span>
                                         </li>
                                         <li>
                                             <span className="left">PT余额：</span>
                                             <span className="right color_DFC674">
-                                                {
-                                                    allBalance.ptbalance == undefined || allBalance.ptbalance<0 ? <Icon type="loading"> 加载中...</Icon> : '￥' + allBalance.ptbalance
-                                                }
+                                                {allBalance.ptbalance}
                                             </span>
                                         </li>
                                         <li>
                                             <span className="left">GT余额：</span>
                                             <span className="right color_DFC674">
-                                                {
-                                                    allBalance.kgbalance == undefined || allBalance.kgbalance<0 ? <Icon type="loading"> 加载中...</Icon> :  '￥' + allBalance.kgbalance
-                                                }
+                                                {allBalance.kgbalance}
                                             </span>
                                         </li>
                                         <li>
                                             <span className="left">博饼余额：</span>
                                             <span className="right color_DFC674">
-                                                {
-                                                    allBalance.bobingBalance == undefined || allBalance.bobingBalance<0 ? <Icon type="loading"> 加载中...</Icon> :  '￥' + allBalance.bobingBalance
-                                                }
+                                                {allBalance.bobingBalance}
                                             </span>
                                         </li>
                                         <li>
                                             <span className="left">体育余额：</span>
                                             <span className="right color_DFC674">
-                                                {
-                                                    allBalance.sbbalance == undefined || allBalance.sbbalance<0 ? <Icon type="loading"> 加载中...</Icon> :  '￥' + allBalance.sbbalance
-                                                }
+                                                {allBalance.sbbalance}
                                             </span>
                                         </li>
                                         <li style={{textAlign: 'center'}}>

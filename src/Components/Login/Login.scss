@@ -4,6 +4,10 @@ $border_color: #C8C8C8;
 $width_100: 100%;
 
 .login_main{
+    .loginLogo{
+        margin-left: 320px;
+        margin-bottom: 70px;
+    }
     canvas{
         background-image: radial-gradient(ellipse farthest-corner at center top, #000d4d 0%, #000105 100%);
         position: absolute;
@@ -16,16 +20,12 @@ $width_100: 100%;
         position: absolute;
         top:0;
         background-color: rgba(0,0,0,0.3);
-        border-bottom: 1px solid #343434;
         .l_nav_top_content{
             width: $nav_width_1200;
             color: #fff;
             a{
                 color: #fff;
             }
-        }
-        .l_n_t_lt{
-            padding-left: 25px;
         }
         .l_n_t_list>a>li{
             padding: 0 15px;
@@ -110,19 +110,11 @@ $width_100: 100%;
     }
     /*试玩模式 begin*/
     .l_try_txt{
-        padding-left: 40px;
+        padding-left: 7px;
         width: 436px;
         display: inline-block;
         height: 29px;
         font-size: 15px;
-        background: url(./Img/888.png) no-repeat left center;
-    }
-    .l_line{
-        width: 1px;
-        height: 12px;
-        background: $border_color;
-        display: inline-block;
-        margin-right: 13px;
     }
     .l_try_888{
         font-size: 18px;
@@ -135,7 +127,8 @@ $width_100: 100%;
     position: absolute;
     left: 50%;
     margin-left: -410px;
-    top: 40%;
+    top: 50%;
+    margin-top: -318px;
 
     .login_wrap{
         .l_input{
@@ -172,6 +165,7 @@ $width_100: 100%;
        li{
             width: 131px;
             height: 34px;
+           font-size: 14px;
             margin-left: 10px;
            margin-right: -20px;
            text-align: center;
@@ -319,6 +313,7 @@ $width_100: 100%;
     text-align: center;
     .ant-modal{
         width: 720px !important;
+
     }
     .ant-modal-content{
         border-radius: 10px;
@@ -375,7 +370,7 @@ $width_100: 100%;
 .m_accept_contract .ant-modal {
     display: inline-block;
     vertical-align: middle;
-    top: 0;
+    top: 154px;
     text-align: left;
 }
 .l_accept{

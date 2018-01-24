@@ -346,10 +346,8 @@ export default class PT extends Component {
                                 <div className="balance_text">
                                     <h3>账号余额： </h3>
                                     <h3>￥{stateVar.allBalance.ptbalance}元</h3>
+                                    <Button type="primary" onClick={()=>this.setState({visible: true})}>转账</Button>
                                     <Button type="primary" onClick={()=>this.onResetPw()}>重置密码</Button>
-                                    <b className="pt_transfer">
-                                        <Button type="primary" onClick={()=>this.setState({visible: true})}>转账</Button>
-                                    </b>
                                 </div>
                             </div>
                             <div className="pt_balance_content">

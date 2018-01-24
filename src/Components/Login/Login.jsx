@@ -8,7 +8,7 @@ import md5 from 'md5';
 import { stateVar } from '../../State';
 import onCanvas from './canvas';
 import './Login.scss';
-import loginlogoSrc from './Img/logologin.png';
+
 import warnSrc from './Img/warn.png';
 import speedSrc from './Img/speed.png';
 import dnsSrc from './Img/dns.png';
@@ -17,6 +17,7 @@ import speedSrc_active from './Img/speed_active.png';
 import dnsSrc_active from './Img/dns_active.png';
 import serviceSrc_active from './Img/service_active.png';
 import valicodeSrc from './Img/valicode.png';
+import loginSrc from './Img/logo.png';
 const validImgSrc='http://10.63.15.242:81/pcservice/index.php?useValid=true';
 import { debounce } from 'react-decoration';
 import { withRouter } from 'react-router';
@@ -543,7 +544,7 @@ export default class Login extends Component {
         */
         const ul_1 =  <div className="login_wrap">
             <div className='l_input' onKeyDown={(e)=>{this.trygameloginEnter(e)}}>
-                <p className='l_try_txt'><span className='l_line'></span>恭喜您获得<span className='l_try_888'>888</span>元免费试玩体验金！</p>
+                <p className='l_try_txt'>恭喜您获得<span className='l_try_888'>8888</span>元免费试玩体验金！</p>
                 <div className="l_vali">
                     <Input size="large" className='login_input'  value={this.state.aptchac} onFocus={()=>{this.refreshImg()}}   onChange={(e)=>{this.onAptchac(e)}} placeholder="验证码" />
                     <img className="l_valicode" src={this.state.validImg} onClick={()=>{this.refreshImg()}}/>
@@ -569,15 +570,12 @@ export default class Login extends Component {
 
     render() {
 
-        const navList = ['账号登录', '试玩账号'];
+        const navList = ['账号登录', '试玩模式'];
         return (
             <div className='login_main'>
                 <canvas id="canvas"></canvas>
                 <div className="l_nav_top">
                     <div className="l_nav_top_content">
-                        <div className="l_n_t_lt left">
-                            <img className="logo" src={loginlogoSrc} style={{width:180}} />
-                        </div>
                         <ul className="l_n_t_list right">
                             <a href="http://hengcai88.com/" target="_blank">
                                 <li className='l_speed' onMouseEnter={()=>{
@@ -609,7 +607,7 @@ export default class Login extends Component {
                     </div>
                 </div>
                 <div className="login">
-
+                    <img  className="loginLogo" src={loginSrc} />
                     <ul className="l_m_select_list clear">
                         {
                             navList.map((value, index)=>{

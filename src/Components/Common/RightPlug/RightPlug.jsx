@@ -31,6 +31,7 @@ export default class RightPlug extends Component {
         this.hideChat = this.hideChat.bind(this);
     };
     transferMsg(visible) {
+        console.log(window)
         this.setState({
             visible
         });
@@ -61,8 +62,10 @@ export default class RightPlug extends Component {
     }
     componentDidMount() {
         /*添加全局方法，给后台调用*/
+        let _this = this;
         window.onShowMsg = function(){
-            this.setState({showMsg: true});
+            alert(4545)
+            _this.setState({showMsg: true});
         };
         /*获取当前走势图的相对路径*/
         curLocation = curLocation.split("#")[0] + "#/tendency";
@@ -106,7 +109,7 @@ export default class RightPlug extends Component {
                         <li className={this.state.hover3?"active":""} onMouseLeave={()=>{this.setState({
                             hover3:false,
                         });}}>
-                            <label >{this.state.hover3?"在线客服":''}</label>
+                            <label >{this.state.hover3?"上下级聊天":''}</label>
                             {
                                 this.state.showMsg ? <b className="r_p_common_extent"></b> : null
                             }
