@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Select,Table, Modal,message, InputNumber, Row, Col, Checkbox,Button, Radio ,Switch,Tooltip,Spin } from 'antd';
+import { Select,Table, Modal,message, InputNumber, Row, Col, Checkbox,Button, Radio ,Switch,Tooltip,Spin,Popover } from 'antd';
 import mobx,{computed, autorun} from "mobx";
 import QueueAnim from 'rc-queue-anim';
 import './ContentMain.scss'
@@ -49,7 +49,7 @@ export default class ContentMian extends Component {
             numss:0,
             money:0,
             checked: true,
-            omodel:'1',
+            omodel:'2',
             textAreaValue:'',
             code : [],//开奖号码
             animateCode:[],//开奖动画号码
@@ -259,7 +259,7 @@ export default class ContentMian extends Component {
             	numss:0,
             	money:0,
             	checked: true,
-            	omodel:'1'
+            	omodel:'2'
         	},()=>{
         	stateVar.todayAndTomorrow = [];
 		    stateVar.tomorrowIssue = [];
@@ -281,7 +281,67 @@ export default class ContentMian extends Component {
 	    		this.getLotteryData();
 	    	}
 	    	this.getBetHistory();
+	    	this.getVersion();//得到版本号
     	});
+    };
+    getVersion(){
+    	let tempObj = {version:'push'};
+    	Fatch.getVersion({method:'post',body:JSON.stringify(tempObj)}).then((data)=>{
+    		if(data.status == 200){
+    			let tempData = data.repsoneContent || {};
+    			let oneFlag = true;
+    			let allFlag = true;
+    			for(let vl in tempData){
+    				let tempVl = vl;
+    				let dataStatus = tempData[vl];
+    				if(tempVl != 'userall'){
+    					if(!common.getStore('version')){
+    						let pushTemp = {};
+    						pushTemp[tempVl] = dataStatus;
+	    					common.setStore('version',pushTemp);
+	    				}else{
+	    					let objData = common.getStore('version');
+	    					let pushObj  = {};
+	    					let tempFlag = true;
+	    					for(let value in objData){
+	    						if(tempVl == value){
+	    							tempFlag = false;
+	    							if(objData[value] != dataStatus){
+	    								oneFlag = false;
+	    								pushObj[value] = objData[value];
+	    							}else{
+	    								pushObj[value] = dataStatus;
+	    							}
+	    						}else{
+	    							pushObj[value] = dataStatus;
+	    						}
+	    					}
+	    					if(tempFlag){
+	    						pushObj[tempVl] = dataStatus;
+	    					}
+	    					common.setStore('version',pushObj);
+	    				}
+    				}else{
+    					if(!common.getStore('versionAll')){
+	    					common.setStore('versionAll',dataStatus);
+	    				}else{
+	    					let objData = common.getStore('versionAll');
+	    					let pushObj;
+	    					if(objData != dataStatus){
+								allFlag = false;
+    						}
+    						pushObj = objData;
+	    					common.setStore('versionAll',dataStatus);
+	    				}
+    				}
+    			}
+    			if(!oneFlag || !allFlag){
+    				this.getLotteryData();
+    			}
+    		}else{
+    			
+    		}
+		});
     };
     /**
      Function 开奖动画
@@ -503,9 +563,9 @@ export default class ContentMian extends Component {
     	if($(a).hasClass('number_active')){
     		return;
     	}
-    	$(a).addClass('number_active')
+    	$(a).addClass('number_active');
     	let tempA = $(a).attr('value');
-    	let b = Number($(a).attr('name').replace('lt_place_',''))
+    	let b = Number($(a).attr('name').replace('lt_place_',''));
     	let data_sel = stateVar.aboutGame.data_sel;
 		tempA = tempA.replace(/\<div.*\<\/div>/g,"").replace(/\r\n/g,"");
 		let methodname = Method.methodId[stateVar.aboutGame.methodID];
@@ -1018,6 +1078,7 @@ export default class ContentMian extends Component {
 						    title: '温馨提示',
 						    content: data.longMessage,
 						});
+						this.getBetHistory();
 						setTimeout(() => modal.destroy(), 3000);
 						stateVar.BetContent = {
 					        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
@@ -1245,7 +1306,6 @@ export default class ContentMian extends Component {
 		let tempTime = 0;
 		let tempFlag = false;
 		let p = 0;//奖金
-		debugger
     	if(this.state.traceTitleIndex == 0){
     		if(tempTotalIssue == this.state.traceItem.length){
     			tempFlag = true;
@@ -1921,7 +1981,7 @@ export default class ContentMian extends Component {
     	if(oneLotteryData[this.state.navIndex].title == "龙虎庄闲"){
     		return (
     			<div className="c_m_method_type clear">
-    				<span className="left">{oneLotteryData[this.state.navIndex].title}</span>
+    				<span className="left">{oneLotteryData[this.state.navIndex].title}：</span>
 	    			<ul className="c_m_method_details left">{
 	    				oneLotteryData[this.state.navIndex].label.map((value,idx)=>{
 		    				return (
@@ -1949,7 +2009,7 @@ export default class ContentMian extends Component {
     				}
     				return (
 	    				<div className="c_m_method_type clear" key={idx}>
-	                        <span className="left">{value.gtitle}</span>
+	                        <span className="left">{value.gtitle}：</span>
 	                        <ul className="c_m_method_details left">
 	                        {
 	                        	value.label.map((val,index) =>{
@@ -1968,7 +2028,7 @@ export default class ContentMian extends Component {
     			oneLotteryData[this.state.navIndex].label.map((value,idx)=>{
     				return (
 	    				<div className="c_m_method_type clear" key={idx}>
-	                        <span className="left">{value.gtitle}</span>
+	                        <span className="left">{value.gtitle}：</span>
 	                        <ul className="c_m_method_details left">
 	                        {
 	                        	value.label.map((val,index) =>{
@@ -2100,7 +2160,7 @@ export default class ContentMian extends Component {
 	                                <span className="c_m_select_title_right right">
 	                                    <span>{oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methoddesc : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methoddesc}</span>
 	                                    <Tooltip placement="bottomRight" title={oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methodhelp : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methodhelp}>
-									        <Button className='c_m_lottery_explain'>中奖说明</Button>
+									        <span className='c_m_lottery_explain'>中奖说明</span>
 									    </Tooltip>
 	                                </span>
 	                            </div>
@@ -2168,8 +2228,8 @@ export default class ContentMian extends Component {
 	                                }
 	                            </div>
 	                            <div className="c_m_select_button">
-	                                <i className="c_m_add_btn" onClick={()=>this.addNum()}></i>
-	                                <Button style={{display:(stateVar.nowlottery.lotteryBetId == 23 ? 'none' : 'inline-block')}} disabled={this.state.directFlag} className="c_m_bet_btn directBet" onClick={()=>this.directBet()}></Button>
+	                                <span className="c_m_add_btn" onClick={()=>this.addNum()}>添加号码</span>
+	                                <Button style={{display:(stateVar.nowlottery.lotteryBetId == 23 ? 'none' : 'inline-block')}} disabled={this.state.directFlag} className="c_m_bet_btn directBet" onClick={()=>this.directBet()}>直接投注</Button>
 	                            </div>
 	                        </div>
 	                        <div className="c_m_select_code_record">
@@ -2182,7 +2242,11 @@ export default class ContentMian extends Component {
 	                                        		return (
 	                                        			<ul className="c_m_select_record_list clear" key={index}>
 	                                        				<li>{value.name}</li>
-			                                                <li>{value.numberbet}</li>
+			                                                <li>{
+			                                                	value.numberbet.length > 30 ? <Popover content={value.numberbet}>
+																	    <div>{value.numberbet.substr(0,30)+'...'}</div>
+																	</Popover> : value.numberbet
+			                                                }</li>
 
 			                                                <li className="c_m_cody_close" onClick={()=>this.deleteBet(index)}><img src={close} alt=""/></li>
 			                                                <li>{value.money + '元'}</li>

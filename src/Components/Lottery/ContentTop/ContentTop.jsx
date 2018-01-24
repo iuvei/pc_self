@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Websocket from 'react-websocket';
 import 'whatwg-fetch'
-import { Row, Col, Switch,message,Button} from 'antd';
+import { Row, Col, Switch,message,Button,notification,Icon} from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import './ContentTop.scss'
 import cz_logo_11_5 from './Img/cz_logo_11_5.png'
@@ -482,8 +482,8 @@ export default class ContentTop extends Component {
 	                                            <span style={{color:'#FFE38E'}}>{stateVar.nextIssue}</span>
 	                                            <span>期</span>
 	                                        </div>
-	                                        <div className="voice_switch m_bottom">
-	                                            <span>音效</span>
+	                                        <div className="m_bottom">
+	                                            <span style={{marginRight:'5px'}}>音效</span>
 	                                            <Switch size="small" defaultChecked={common.getStore('soundswitch') == 'off' ? true : false} onChange={(checked) => this.onChangeSound(checked)} />
 	                                        </div>
 	                                    </li>

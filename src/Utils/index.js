@@ -163,6 +163,8 @@ const gtTransfer= (body) =>  request(http.interFace('GTTRANSFER'),body);
 const complainAndSuggests= (body) =>  request(http.interFace('COMPLAINANDSUGGESTS'),body);
 //返回旧版
 const switchold= (body) =>  request(http.interFace('SWITCHOLD'),body);
+//得到版本号
+const getVersion = (body) =>  request(http.interFace('GETVERSION'),body);
 
 export default {
     getSess,
@@ -244,5 +246,6 @@ export default {
     dailysalaryself,
     complainAndSuggests,
     contractList,
-    switchold
+    switchold,
+    getVersion
 }

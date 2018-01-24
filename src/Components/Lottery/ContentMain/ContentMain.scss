@@ -121,13 +121,14 @@ $c_m_background: #4A4A5F;
                 margin-bottom: 10px;
                 &>span{
                     font-size: 14px;
+                    font-weight: bold;
                 }
             }
             span{
                 display: inline-block;
                 height: 24px;
                 line-height: 24px;
-                margin-right: 15px;
+                margin-right: 5px;
             }
             .c_m_method_details{
                 max-width: 600px;
@@ -158,7 +159,7 @@ $c_m_background: #4A4A5F;
                 margin-right: 14px;
                 .ant-select-arrow{
                     top: 30% !important;
-                    right: -10px !important;
+                    right: 3px !important;
                 }
                 .ant-select-selection--single{
                     @include gradient(0, 18.5, 0, bottom, #fff, rgba(225, 225, 225, 0.8));
@@ -228,7 +229,7 @@ $c_m_background: #4A4A5F;
                         @include borderRadius(2px);
                         line-height: 24px;
                         text-align: center;
-                        background: #8D887B;
+                        background: #4A4A5F;
                         padding: 0;
                         color: #fff;
                         margin-left: 15px;
@@ -618,31 +619,30 @@ $c_m_background: #4A4A5F;
                         margin-right: 1px;
                         display: flex;
                         margin-top: 9px;
-                        border-radius: 5px;
                         overflow: hidden;
-                        -webkit-box-shadow: 2px 1px 1px rgba(0, 0, 0, 0.3);
-                        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
                         .li{
                             float: left;
                             border: none;
                             outline: none;
-                            @include wh(30px, 30px);
-                            line-height: 30px;
+                            @include wh(29px, 27px);
+                            line-height: 25px;
                             text-align: center;
-                            color: #424242;
-                            font-size: 15px;
-                            background: #E0E0E0;
-                            border-right: 1px solid #ccc;
+                            border-radius: 3px;
+                            color: #333;
+                            font-size: 16px;
+                            background: #fff;
+                            margin-right: 5px;
+                            border: 1px solid #c7c7c7;
                             cursor: pointer;
                             &:active{
                                 background: #cb0202;
                                 color: #fff;
-                                border-right: 1px solid #cb0202;
+                                border:none;
                             }
                             &:focus{
                                 background: #cb0202;
                                 color: #fff;
-                                border-right: 1px solid #cb0202;
+                                border: 1px solid #cb0202;
                             }
                         }
                     }
@@ -733,7 +733,11 @@ $c_m_background: #4A4A5F;
                 .c_m_add_btn{
                     display: inline-block;
                     @include wh(156px,52px);
-                    @include bis('./Img/add_btn.png');
+                    line-height: 52px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #fff;
+                    @include bis('./Img/affirm_bet_bg.png');
                     margin-right: 5px;
                     &:hover{
                         cursor: pointer;
@@ -745,8 +749,16 @@ $c_m_background: #4A4A5F;
                     margin: 0;
                     border: none;
                     outline: none;
-                    @include wh(160px,54px);
+                    width: 160px;
+                    height: 50px;
                     background:url('./Img/bet_btn.png') no-repeat; 
+                    font-size:16px;
+                    text-align:center; 
+                    color: #fff;
+                    font-size: 16px;
+                    font-weight: bold;
+                    vertical-align: top;
+                    margin-top: 1px; 
                     &:hover{
                         cursor: pointer;
                     }
@@ -778,6 +790,7 @@ $c_m_background: #4A4A5F;
                         li{
                             text-align: left;
                             margin: 0;
+                            color:#333;
                         }
                         li:nth-child(1){
                             float: left;
@@ -841,11 +854,6 @@ $c_m_background: #4A4A5F;
                     }
                     button:disabled{
                         opacity: .65;
-                    }
-                    .machine_active{
-                        @include bis('./Img/machine_active_bg.png');
-                        @include wh(145px, 40px);
-                        color:#fff;
                     }
                     .c_m_machine_select_1{
                         @extend .machine_defult;
@@ -912,12 +920,14 @@ $c_m_background: #4A4A5F;
                             outline: none;
                             border: none;
                             background: none;
+                            font-size: 16px;
+                            color: #333;
                         }
                     }
                     .c_m_affirm_bet_btn{
                         @include wh(156px, 50px);
                         @include bis('./Img/affirm_bet_bg.png');
-                        @include sc(17px,#fff);
+                        @include sc(16px,#fff);
                         line-height: 49px;
                         text-align: center;
                         font-weight: bold;
