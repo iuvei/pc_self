@@ -9,6 +9,7 @@ import { stateVar } from '../../State';
 import onCanvas from './canvas';
 import './Login.scss';
 
+import loginSrc from './Img/logo.png';
 import warnSrc from './Img/warn.png';
 import speedSrc from './Img/speed.png';
 import dnsSrc from './Img/dns.png';

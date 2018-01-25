@@ -64,7 +64,6 @@ export default class RightPlug extends Component {
         /*添加全局方法，给后台调用*/
         let _this = this;
         window.onShowMsg = function(){
-            alert(4545)
             _this.setState({showMsg: true});
         };
         /*获取当前走势图的相对路径*/
@@ -72,12 +71,17 @@ export default class RightPlug extends Component {
     };
 
     render() {
+        const { modalVisible } = this.state;
         return (
         	<div>
-                <Chat
-                    visible={this.state.modalVisible}
-                    hideChat={this.hideChat}
-                />
+                {
+                    modalVisible ?
+                        <Chat
+                            visible={modalVisible}
+                            hideChat={this.hideChat}
+                        /> :
+                        null
+                }
 	        	<div className="box-shape right_plug" style={{right:stateVar.paused ? 0 : '-140px'}}>
                     <ul className="right_list">
                         <li className={this.state.hover1?"active":""} onMouseLeave={()=>{this.setState({

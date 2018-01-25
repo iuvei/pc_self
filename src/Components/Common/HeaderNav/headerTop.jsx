@@ -62,15 +62,16 @@ export default class HeaderTop extends Component {
             }
         }, 6000)
 
-    }
+    };
     move (destination, duration) { // 实现滚动动画
-        let speed = ((destination - this.state.noticePosition) * 1000) / (duration * 60);
+        const { noticePosition } = this.state;
+        let speed = ((destination - noticePosition) * 1000) / (duration * 60);
         let count = 0;
         let step = () => {
-            this.setState({noticePosition: this.state.noticePosition + speed});
+            this.setState({noticePosition: noticePosition + speed});
             count++;
             this._animationFrame = requestAnimationFrame(() => {
-                if (this.state.noticePosition < destination) {
+                if (noticePosition < destination) {
                     step()
                 } else {
                     this.setState({noticePosition: destination});
@@ -100,11 +101,11 @@ export default class HeaderTop extends Component {
                 if(res.status == 200) {
                     this.setState({
                         noticeList: res.repsoneContent.results,
-                    },()=>this.getDestination());
+                    },()=>{}
+                        // this.getDestination()
+                    );
                 }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                    console.log(res.shortMessage)
                 }
             }
         })
@@ -146,9 +147,9 @@ export default class HeaderTop extends Component {
                         updateMLoading: false,
                     });
                 }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                    // Modal.warning({
+                    //     title: res.shortMessage,
+                    // });
                 }
             }
         })
@@ -194,7 +195,9 @@ export default class HeaderTop extends Component {
     hideModal() {
         this.setState({
             visible: false,
-        },()=>this.getDestination());
+        },()=>{
+            // this.getDestination()
+        });
     };
     onNoticeDetails(item) {
         this.setState({noticeDetails: item});
@@ -211,7 +214,7 @@ export default class HeaderTop extends Component {
     };
     onOutModal() {
         if(!this.state.visible){
-            this.getDestination()
+            // this.getDestination()
         }
     };
     /*站内信未读条数*/
@@ -258,6 +261,7 @@ export default class HeaderTop extends Component {
     }
     render() {
         const { allBalance, userInfo } = stateVar;
+        const { noticePosition } = this.state;
         return (
             <div className="nav_top">
            		<Websocket url='ws://10.63.15.242:9502' onMessage={this.handleData.bind(this)} onOpen={this.openWebsocket.bind(this)}
@@ -268,7 +272,7 @@ export default class HeaderTop extends Component {
                 <div className="nav_top_content">
                     <div className="n_t_lt left">
                         <div className="show-notice">
-                            <ul className="notice-list left" style={{transform: 'translateY(-'+this.state.noticePosition+'px) translateZ(0px)'}}>
+                            <ul className="notice-list left" style={{transform: 'translateY(-'+noticePosition+'px) translateZ(0px)'}}>
                                 {
                                     this.state.noticeList.map((item)=>{
                                         return (

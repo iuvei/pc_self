@@ -48,15 +48,22 @@ export default class Ebank extends Component {
         }).then((res)=>{
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,
+                    loadmin = 0,
+                    loadmax = 0,
                     postData = this.state.postData;
-                postData.payment = data[0].payport_name;
-                postData.bid = data[0].id;
-                postData.rid = data[0].rid;
-                postData.code = data[0].code;
+                if(data[0] !== undefined){
+                    postData.payment = data[0].payport_name;
+                    postData.bid = data[0].id;
+                    postData.rid = data[0].rid;
+                    postData.code = data[0].code;
+                    loadmin = data[0].loadmin;
+                    loadmax = data[0].loadmax;
+                }
+
                 this.setState({
                     backList: data,
-                    loadmin: data[0].loadmin,
-                    loadmax: data[0].loadmax,
+                    loadmin: loadmin,
+                    loadmax: loadmax,
                     postData: postData
                 })
             }
@@ -118,9 +125,15 @@ export default class Ebank extends Component {
             postData: postData,
         });
     };
+    /*enter键提交*/
+    onSubmit(e){
+        if(e.keyCode == 13){
+            this.onRecharge()
+        }
+    }
     render() {
         return (
-            <div className="ali_main">
+            <div className="ali_main" onKeyDown={(e)=>this.onSubmit(e)}>
                 <div className="ali_m_hint">
                     <p>平台填写金额应当与网银汇款金额完全一致，否则将无法即使到账！</p>
                 </div>
@@ -145,7 +158,7 @@ export default class Ebank extends Component {
                     </li>
                     <li>
                         <span className="ali_m_li_w">充值金额：</span>
-                        <InputNumber min={parseFloat(this.state.loadmin)} max={parseFloat(this.state.loadmax)} size="large"
+                        <InputNumber min={0} size="large"
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      onChange={(value)=>{this.onRechargeAmount(value)}}

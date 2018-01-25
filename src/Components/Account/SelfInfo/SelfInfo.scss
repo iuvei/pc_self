@@ -10,59 +10,39 @@
         font-size: 14px;
         background-color: #fff;
         .s_i_user{
-            @include wh(1106px, 202px);
-            background: url(./Img/selfinfo_bg.png) no-repeat center center;
-            text-align: center;
             padding-top: 15px;
         }
-        .s_i_userIcon{
-            @include wh(135px, 135px);
-            border: 2px solid #fff;
-            border-radius: 50%;
-            overflow: hidden;
+        .s_i_content{
+            font-size: 14px;
+            border: 1px solid #C1C0C5;
+            padding: 4px 10px 10px 10px;
         }
-        .s_i_u_p{
-            width: 135px;
-            margin: 0 auto;
+        .s_i_account_money{
+            border: 1px solid #C1C0C5;
+            width: 620px;
+            .s_i_a_top{
+                .s_i_a_top{
+
+                }
+            }
+        }
+        .s_i_info{
+            width: 218px;
+            margin-top: 5px;
+            text-align: left;
+            h3{
+                font-size: 18px;
+                color: #D29B10;
+            }
             p{
-                color: #fff;
-                font-size: 16px;
-                margin-top: 8px;
+                line-height: 32px;
             }
         }
-        .self_i_info{
-            color: $color_363636;
-            padding-top: 10px;
-            width: 1080px;
-            margin: 0 auto;
-            border-bottom: 1px dotted #ccc;
-            li{
-                @include lh(45px);
-                width: 360px;
-                text-align: center;
-                float: left;
-            }
-            li:first-child{
-                text-align: right;
-            }
-            li:last-child{
-                text-align: left;
-            }
-            span{
-                color: $color_363636;
-            }
-            .s_i_text{
-                padding-left: 30px;
-                color: #666;
-            }
-            .icon01{
-                background: url(./Img/selfInfo_icon1.png) no-repeat left center;
-            }
-            .icon02{
-                background: url(./Img/selfInfo_icon2.png) no-repeat left center;
-            }
-            .icon03{
-                background: url(./Img/selfInfo_icon3.png) no-repeat left center;
+        .s_i_logo{
+            width: 218px;
+            margin-left: 10px;
+            img{
+                width: 190px;
             }
         }
 
@@ -74,11 +54,14 @@
         background-color: #fff;
     }
     .self_info_type{
-        @include wh(860px, 50px);
-        margin: 30px auto 15px;
+        width: 449px;
+        margin: 10px auto 3px;
         li{
             float: left;
-            margin-right: 15px;
+            margin-bottom: 12px;
+        }
+        li:nth-child(odd){
+            margin-right: 12px;
         }
         .prompt{
             font-size: 12px;
@@ -91,7 +74,7 @@
             padding-right: 24px;
         }
         .ant-input-group{
-            width: 200px;
+            width: 218px;
         }
         .ant-input-group-addon{
             display: inline-block;

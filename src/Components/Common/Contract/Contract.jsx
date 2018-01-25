@@ -75,6 +75,7 @@ export default class Contract extends Component {
                             <div className="a_c_btn">
                                 <Button loading={this.props.affirmLoading}
                                         onClick={()=>this.onAffirm()}
+                                        type="primary"
                                         className="a_c_cancel_btn"
                                 >
                                     {contract_name}

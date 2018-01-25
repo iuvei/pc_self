@@ -123,12 +123,18 @@ export default class Withdraw extends Component {
             }
         });
     };
+    /*enter键提交*/
+    onSubmit(e){
+        if(e.keyCode == 13){
+            this.onRecharge()
+        }
+    }
     render() {
         const { selectShow, response, spinLoading } = this.state;
         const userInfo = stateVar.userInfo;
 
         return (
-            <div className="withdraw_main">
+            <div className="withdraw_main" onKeyDown={(e)=>this.onSubmit(e)}>
                 <Spin spinning={spinLoading}>
                     {
                         selectShow ?
@@ -172,7 +178,7 @@ export default class Withdraw extends Component {
                                     </li>
                                     <li>
                                         <span className="r_m_li_w">提款金额：</span>
-                                        <InputNumber min={response.iMinMoney} max={response.iMaxMoney}
+                                        <InputNumber min={0}
                                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                                      size="large"

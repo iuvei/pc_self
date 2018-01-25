@@ -39,7 +39,7 @@ export default class Message extends Component {
         this._ismount = false;
     };
     getData() {
-        let postData = this.state.postData;
+        let { postData } = this.state;
         this.setState({ tableLoading: true });
         Fetch.messages({
             method: 'POST',
@@ -50,13 +50,9 @@ export default class Message extends Component {
                 if(res.status == 200) {
                     if(postData.tag != ''){
                         message.success(res.shortMessage);
-                        // this.setState({ data: this.state.data.filter((item, index) => item.entry !== key) });
-                        let postData = this.state.postData;
                         postData.tag = '';
                         postData.msgids = '';
-
                         this.setState({postData: postData}, ()=>this.getData());
-
                     }else{
                         let data = res.repsoneContent;
                         this.setState({
@@ -108,6 +104,12 @@ export default class Message extends Component {
             }
         })
     };
+    /*切换页面时*/
+    onChangePagination(page) {
+        let postData = this.state.postData;
+        postData.p = page;
+        this.setState({postData: postData},()=>this.getData());
+    };
     /*站内信未读条数*/
     onUnread() {
         Fetch.messages({
@@ -118,7 +120,7 @@ export default class Message extends Component {
                 stateVar.unread = res.repsoneContent;
             }
         })
-    }
+    };
     /*关闭模态框*/
     onHideModal() {
         this.setState({
@@ -189,6 +191,7 @@ export default class Message extends Component {
                     <div className="message_m_pageSize right" >
                         <Pagination showSizeChanger
                                     onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}}
+                                    onChange={(page)=>this.onChangePagination(page)}
                                     defaultCurrent={1}
                                     total={total}
                                     pageSizeOptions={stateVar.pageSizeOptions.slice()}

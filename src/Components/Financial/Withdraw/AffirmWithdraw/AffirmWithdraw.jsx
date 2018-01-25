@@ -66,7 +66,7 @@ export default class AffirmWithdraw extends Component {
                         title: res.shortMessage,
                     });
                     validate.secpass = 1;
-                    this.setState({ secpass: '' });
+                    this.setState({ validate });
                 }
             }
         })
@@ -74,7 +74,7 @@ export default class AffirmWithdraw extends Component {
     /*子组件调用关闭模态框*/
     onHideChildModal() {
         this.setState({forgetVisible: false})
-    }
+    };
     /*验证资金密码*/
     onVerifyPw(e) {
         let value = e.target.value,
@@ -85,13 +85,18 @@ export default class AffirmWithdraw extends Component {
             validate.secpass = 0
         }
         this.setState({secpass: e.target.value})
+    };
+    /*enter键提交*/
+    onSubmit(e){
+        if(e.keyCode == 13){
+            this.onRecharge()
+        }
     }
     render() {
-        const userInfo = stateVar.userInfo;
-        const bankWithdrawInfo = stateVar.bankWithdrawInfo;
+        const { userInfo, bankWithdrawInfo } = stateVar;
 
         return (
-            <div className="affirm_withdraw">
+            <div className="affirm_withdraw" onKeyDown={(e)=>this.onSubmit(e)}>
                 <ul className="r_m_list">
                     <li>
                         <span className="r_m_li_w">用户名：</span>

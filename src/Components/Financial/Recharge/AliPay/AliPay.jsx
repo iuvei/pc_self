@@ -50,15 +50,22 @@ export default class AliPay extends Component {
         }).then((res)=>{
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,
+                    loadmin = 0,
+                    loadmax = 0,
                     postData = this.state.postData;
-                postData.payment = data[0].payport_name;
-                postData.bid = data[0].id;
-                postData.rid = data[0].rid;
-                postData.code = data[0].code;
+                if(data[0] !== undefined){
+                    postData.payment = data[0].payport_name;
+                    postData.bid = data[0].id;
+                    postData.rid = data[0].rid;
+                    postData.code = data[0].code;
+                    loadmin = data[0].loadmin;
+                    loadmax = data[0].loadmax;
+                }
+
                 this.setState({
                     backList: data,
-                    loadmin: data[0].loadmin,
-                    loadmax: data[0].loadmax,
+                    loadmin: loadmin,
+                    loadmax: loadmax,
                     postData: postData
                 })
             }
@@ -196,7 +203,7 @@ export default class AliPay extends Component {
                     }
                     <li>
                         <span className="ali_m_li_w">充值金额：</span>
-                        <InputNumber min={parseFloat(this.state.loadmin)} max={parseFloat(this.state.loadmax)} size="large"
+                        <InputNumber min={0} size="large"
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      onChange={(value)=>{this.onRechargeAmount(value)}}

@@ -15,7 +15,7 @@ export default class WeChat extends Component {
         this.state = {
             iconLoadingRecharge: false,
             imgUrlIndex: 0,
-            backList: [], // 可选择银行
+            backList: null, // 可选择银行
             loadmax: 0, //渠道限额最多
             loadmin: 0, //渠道限额最少
 
@@ -47,15 +47,22 @@ export default class WeChat extends Component {
         }).then((res)=>{
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,
+                    loadmin = 0,
+                    loadmax = 0,
                     postData = this.state.postData;
-                postData.payment = data[0].payport_name;
-                postData.bid = data[0].id;
-                postData.rid = data[0].rid;
-                postData.code = data[0].code;
+                if(data[0] !== undefined){
+                    postData.payment = data[0].payport_name;
+                    postData.bid = data[0].id;
+                    postData.rid = data[0].rid;
+                    postData.code = data[0].code;
+                    loadmin = data[0].loadmin;
+                    loadmax = data[0].loadmax;
+                }
+
                 this.setState({
                     backList: data,
-                    loadmin: data[0].loadmin,
-                    loadmax: data[0].loadmax,
+                    loadmin: loadmin,
+                    loadmax: loadmax,
                     postData: postData
                 })
             }
@@ -111,30 +118,38 @@ export default class WeChat extends Component {
             postData: postData,
         });
     };
+    /*enter键提交*/
+    onSubmit(e){
+        if(e.keyCode == 13){
+            this.onRecharge()
+        }
+    }
     render() {
+        const { backList, imgUrlIndex } = this.state;
         return (
-            <div className="qq_wallet">
+            <div className="qq_wallet" onKeyDown={(e)=>this.onSubmit(e)}>
                 <ul className="r_m_list">
                     <li className="clear">
                         <span className="r_m_li_w left">选择充值方式：</span>
                         {
-                            this.state.backList.length == 0 ? <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
-                                <ul className="r_m_select_yhk left">
-                                    {
-                                        this.state.backList.map((item, index)=>{
-                                            return (
-                                                <li className={ this.state.imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
-                                                    <img src={require('./Img/'+item.code+'.jpg')} alt="选择"/>
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                </ul>
+                            backList == null ? <span style={{color: '#CF2027'}}>正在加载...</span> :
+                                backList.length == 0 ? <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
+                                    <ul className="r_m_select_yhk left">
+                                        {
+                                            backList.map((item, index)=>{
+                                                return (
+                                                    <li className={ imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
+                                                        <img src={require('./Img/'+item.code+'.jpg')} alt="选择"/>
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                    </ul>
                         }
                     </li>
                     <li>
                         <span className="r_m_li_w">充值金额：</span>
-                        <InputNumber min={parseFloat(this.state.loadmin)} max={parseFloat(this.state.loadmax)} size="large"
+                        <InputNumber min={0} size="large"
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
@@ -156,7 +171,7 @@ export default class WeChat extends Component {
                         <span className="r_m_li_w"></span>
                         <Button type="primary" size="large" loading={this.state.iconLoadingRecharge}
                                 onClick={()=>{this.onRecharge()}}
-                                disabled={this.state.backList.length == 0}
+                                disabled={backList == null || backList.length == 0}
                         >
                             立即充值
                         </Button>

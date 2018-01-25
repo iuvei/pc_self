@@ -8,6 +8,7 @@ import { onValidate } from '../../../CommonJs/common';
 
 import './SelfInfo.scss'
 import user_icon from './Img/user_icon.png';
+import info_logo from './Img/info_logo.png';
 import qq from './Img/qq.png';
 import wechat from './Img/wechat.png';
 import email from './Img/email.png';
@@ -200,7 +201,7 @@ export default class SelfInfo extends PureComponent {
     };
 
     render() {
-        const userInfo = stateVar.userInfo;
+        const { userInfo, allBalance } = stateVar;
         const { postData, validate, disabled } = this.state;
         const columns = [
             {
@@ -224,75 +225,77 @@ export default class SelfInfo extends PureComponent {
         return (
             <div className="self_i_main">
                 <div className="self_i_top clear">
-                    <div className="s_i_user">
-                        <div className="s_i_u_p">
-                            <div className="s_i_userIcon">
-                                <img src={user_icon} alt=""/>
+                    <div className="s_i_user clear">
+                        <div className="s_i_content left">
+                            <div className="s_i_c_top clear">
+                                <div className="s_i_logo left">
+                                    <img src={info_logo} alt=""/>
+                                    <p>当前IP：{userInfo.lastIp} {userInfo.address}</p>
+                                </div>
+                                <div className="s_i_info right">
+                                    <h3>欢迎您！ {userInfo.userName}</h3>
+                                    <p>用户类型：{userInfo.userType === 0 ? '会员' : '代理'}</p>
+                                    <p>奖金组：{userInfo.accGroup}</p>
+                                </div>
                             </div>
-                            <p>{userInfo.userName}</p>
-                        </div>
-                    </div>
-                    <ul className="self_i_info clear">
-                        <li>
-                            <span className="icon01 s_i_text">用户类型：</span>
-                            <span>{userInfo.userType === 0 ? '会员' : '代理'}</span>
-                        </li>
-                        <li>
-                            <span className="icon02 s_i_text">奖金组：</span>
-                            <span>{userInfo.accGroup}</span>
-                        </li>
-                        <li>
-                            <span className="icon03 s_i_text">当前登录IP：</span>
-                            <span>{userInfo.lastIp} {userInfo.address}</span>
-                        </li>
-                    </ul>
-                    <ul className="self_info_type clear">
-                        <li>
-                            <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={qq} alt=""/>}
-                                   value={postData.tencent}
-                                   className={onValidate('tencent', this.state.validate)}
-                                   onChange={(e)=>this.onChangeTencent(e)}
-                                   placeholder="点击修改按钮填写"
-                                   disabled={this.state.disabled}
-                            />
-                            <p className="prompt" style={{display: validate.tencent == 1 ? '' : 'none'}}>QQ必须为纯数字且5-11位</p>
-                        </li>
-                        <li>
-                            <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={wechat} alt=""/>}
-                                   placeholder="点击修改按钮填写"
-                                   value={postData.wechat}
-                                   className={onValidate('wechat', this.state.validate)}
-                                   onChange={(e)=>this.onChangeWechat(e)}
-                                   disabled={disabled}
-                            />
-                            <p className="prompt" style={{display: validate.wechat == 1 ? '' : 'none'}}>微信号不能有汉字且6-20个字符</p>
-                        </li>
-                        <li>
-                            <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={email} alt=""/>}
-                                   placeholder="点击修改按钮填写"
-                                   value={postData.email}
-                                   className={onValidate('email', this.state.validate)}
-                                   onChange={(e)=>this.onChangeEmail(e)}
-                                   disabled={disabled}
-                            />
-                            <p className="prompt" style={{display: validate.email == 1 ? '' : 'none'}}>请输入正确的邮箱地址</p>
-                        </li>
-                        <li>
-                            <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={phone} alt=""/>}
-                                   placeholder="点击修改按钮填写"
-                                   value={postData.phonenumber}
-                                   className={onValidate('phonenumber', this.state.validate)}
-                                   onChange={(e)=>this.onChangePhone(e)}
-                                   disabled={disabled}
-                            />
-                            <p className="prompt" style={{display: validate.phonenumber == 1 ? '' : 'none'}}>手机号仅为数字且必须为11位</p>
-                        </li>
-                    </ul>
-                    <div className="s_i_btn">
-                        <Button type="primary" onClick={()=>this.onAmend()} style={{display: disabled ? '' : 'none'}}>修改</Button>
-                        <Button type="primary" onClick={()=>this.onAffirm()} style={{display: !disabled ? '' : 'none'}}>确认</Button>
-                        <Button onClick={()=>this.onCancel()} style={{display: !disabled ? '' : 'none'}}>取消</Button>
+                            <ul className="self_info_type clear">
+                                <li>
+                                    <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={qq} alt=""/>}
+                                           value={postData.tencent}
+                                           className={onValidate('tencent', this.state.validate)}
+                                           onChange={(e)=>this.onChangeTencent(e)}
+                                           placeholder="点击修改按钮填写"
+                                           disabled={this.state.disabled}
+                                    />
+                                    <p className="prompt" style={{display: validate.tencent == 1 ? '' : 'none'}}>QQ必须为纯数字且5-11位</p>
+                                </li>
+                                <li>
+                                    <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={wechat} alt=""/>}
+                                           placeholder="点击修改按钮填写"
+                                           value={postData.wechat}
+                                           className={onValidate('wechat', this.state.validate)}
+                                           onChange={(e)=>this.onChangeWechat(e)}
+                                           disabled={disabled}
+                                    />
+                                    <p className="prompt" style={{display: validate.wechat == 1 ? '' : 'none'}}>微信号不能有汉字且6-20个字符</p>
+                                </li>
+                                <li>
+                                    <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={email} alt=""/>}
+                                           placeholder="点击修改按钮填写"
+                                           value={postData.email}
+                                           className={onValidate('email', this.state.validate)}
+                                           onChange={(e)=>this.onChangeEmail(e)}
+                                           disabled={disabled}
+                                    />
+                                    <p className="prompt" style={{display: validate.email == 1 ? '' : 'none'}}>请输入正确的邮箱地址</p>
+                                </li>
+                                <li>
+                                    <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={phone} alt=""/>}
+                                           placeholder="点击修改按钮填写"
+                                           value={postData.phonenumber}
+                                           className={onValidate('phonenumber', this.state.validate)}
+                                           onChange={(e)=>this.onChangePhone(e)}
+                                           disabled={disabled}
+                                    />
+                                    <p className="prompt" style={{display: validate.phonenumber == 1 ? '' : 'none'}}>手机号仅为数字且必须为11位</p>
+                                </li>
+                            </ul>
+                            <div className="s_i_btn">
+                                <Button type="primary" onClick={()=>this.onAmend()} style={{display: disabled ? '' : 'none'}}>修改</Button>
+                                <Button type="primary" onClick={()=>this.onAffirm()} style={{display: !disabled ? '' : 'none'}}>确认</Button>
+                                <Button onClick={()=>this.onCancel()} style={{display: !disabled ? '' : 'none'}}>取消</Button>
 
+                            </div>
+                        </div>
+                        <div className="s_i_account_money right">
+                            <div className="s_i_a_top">
+                                <span className="account_money">
+                                    账户余额：
+                                    <em>￥{allBalance.cpbalance}</em>
+                                </span>
+                                <span>立即充值</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="self_i_bottom">

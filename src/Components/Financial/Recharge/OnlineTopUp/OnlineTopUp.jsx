@@ -47,15 +47,22 @@ export default class OnlineTopUp extends Component {
         }).then((res)=>{
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,
+                    loadmin = 0,
+                    loadmax = 0,
                     postData = this.state.postData;
-                postData.payment = data[0].payport_name;
-                postData.bid = data[0].id;
-                postData.rid = data[0].rid;
-                postData.code = data[0].code;
+                if(data[0] !== undefined){
+                    postData.payment = data[0].payport_name;
+                    postData.bid = data[0].id;
+                    postData.rid = data[0].rid;
+                    postData.code = data[0].code;
+                    loadmin = data[0].loadmin;
+                    loadmax = data[0].loadmax;
+                }
+
                 this.setState({
                     backList: data,
-                    loadmin: data[0].loadmin,
-                    loadmax: data[0].loadmax,
+                    loadmin: loadmin,
+                    loadmax: loadmax,
                     postData: postData
                 })
             }
@@ -111,10 +118,16 @@ export default class OnlineTopUp extends Component {
             postData: postData,
         });
     };
+    /*enter键提交*/
+    onSubmit(e){
+        if(e.keyCode == 13){
+            this.onRecharge()
+        }
+    }
     render() {
-        const { backList } = this.state;
+        const { backList, iconLoadingRecharge, imgUrlIndex } = this.state;
         return (
-            <div className="online_top_up">
+            <div className="online_top_up" onKeyDown={(e)=>this.onSubmit(e)}>
                 <div className="r_m_hint">
                     <p>平台填写金额应当与网银汇款金额完全一致，否则将无法即使到账！</p>
                 </div>
@@ -127,9 +140,9 @@ export default class OnlineTopUp extends Component {
                                     <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
                                     <ul className="r_m_select_yhk left">
                                         {
-                                            this.state.backList.map((item, index)=>{
+                                            backList.map((item, index)=>{
                                                 return (
-                                                    <li className={ this.state.imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
+                                                    <li className={ imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
                                                         <img src={require('../Img/'+item.code+'.jpg')} alt="选择银行"/>
                                                     </li>
                                                 )
@@ -140,7 +153,7 @@ export default class OnlineTopUp extends Component {
                     </li>
                     <li>
                         <span className="r_m_li_w">充值金额：</span>
-                        <InputNumber min={parseFloat(this.state.loadmin)} max={parseFloat(this.state.loadmax)} size="large"
+                        <InputNumber min={0} size="large"
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      className={onValidate('money', this.state.validate)}
@@ -160,7 +173,7 @@ export default class OnlineTopUp extends Component {
                     </li>
                     <li className="r_m_primary_btn">
                         <span className="r_m_li_w"></span>
-                        <Button type="primary" size="large" loading={this.state.iconLoadingRecharge}
+                        <Button type="primary" size="large" loading={iconLoadingRecharge}
                                 onClick={()=>{this.onRecharge()}}
                                 disabled={backList == null || backList.length == 0}
                         >

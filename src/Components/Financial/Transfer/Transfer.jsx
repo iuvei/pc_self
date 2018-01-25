@@ -171,14 +171,20 @@ export default class Transfer extends Component {
         }).then((res)=>{
             if(this._ismount){
                 this.setState({confirmTransferLoading: false});
-                if(res.status == 200){
-                    Modal.success({
-                        title: res.shortMessage,
+                if(res.status == 1003){
+                    Modal.warning({
+                        title: res.data,
                     });
                 }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                    if(res.status == 200){
+                        Modal.success({
+                            title: res.shortMessage,
+                        });
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             }
         })
@@ -270,11 +276,7 @@ export default class Transfer extends Component {
                 tag: 'transfer'
             };
             this.transferBobing(postData);
-        }else{
-
-        }
-
-
+        }else{ }
 
     };
     render() {
@@ -353,7 +355,7 @@ export default class Transfer extends Component {
                             </li>
                             <li>
                                 <span className="tr_m_f_type">转账金额：</span>
-                                <InputNumber min={10}
+                                <InputNumber min={0}
                                              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                              parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                              onChange={(value)=>{this.onTransferAmount(value)}}
