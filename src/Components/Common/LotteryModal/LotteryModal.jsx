@@ -286,6 +286,7 @@ export default class AlterModal extends Component {
 	    			this.setState({tzloding:false});
 	    			if(data.status == 200){
 	    				this.getMenu();
+	    				this.getBetHistory();
 	    				const modal = Modal.success({
 						    title: '温馨提示',
 						    content: data.longMessage,
