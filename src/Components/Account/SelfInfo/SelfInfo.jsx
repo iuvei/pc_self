@@ -3,7 +3,8 @@ import React, {PureComponent} from 'react';
 import {observer} from 'mobx-react';
 import { Button, Table, Input, Modal } from 'antd';
 import Fetch from '../../../Utils';
-import { stateVar } from '../../../State'
+import { stateVar } from '../../../State';
+import { hashHistory } from 'react-router';
 import { onValidate } from '../../../CommonJs/common';
 
 import './SelfInfo.scss'
@@ -200,6 +201,14 @@ export default class SelfInfo extends PureComponent {
         });
     };
 
+    /*转账*/
+    onTransfer() {
+        hashHistory.push({
+            pathname: '/financial/transfer',
+            query: {navIndex: 'financial'}
+        });
+        stateVar.navIndex = 3;
+    }
     render() {
         const { userInfo, allBalance } = stateVar;
         const { postData, validate, disabled } = this.state;
@@ -225,77 +234,112 @@ export default class SelfInfo extends PureComponent {
         return (
             <div className="self_i_main">
                 <div className="self_i_top clear">
-                    <div className="s_i_user clear">
-                        <div className="s_i_content left">
-                            <div className="s_i_c_top clear">
-                                <div className="s_i_logo left">
-                                    <img src={info_logo} alt=""/>
-                                    <p>当前IP：{userInfo.lastIp} {userInfo.address}</p>
-                                </div>
-                                <div className="s_i_info right">
-                                    <h3>欢迎您！ {userInfo.userName}</h3>
-                                    <p>用户类型：{userInfo.userType === 0 ? '会员' : '代理'}</p>
-                                    <p>奖金组：{userInfo.accGroup}</p>
-                                </div>
+                    <div className="s_i_content left">
+                        <div className="s_i_c_top clear">
+                            <div className="s_i_logo left">
+                                <img src={info_logo} alt=""/>
+                                <p>当前IP：{userInfo.lastIp} {userInfo.address}</p>
                             </div>
-                            <ul className="self_info_type clear">
-                                <li>
-                                    <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={qq} alt=""/>}
-                                           value={postData.tencent}
-                                           className={onValidate('tencent', this.state.validate)}
-                                           onChange={(e)=>this.onChangeTencent(e)}
-                                           placeholder="点击修改按钮填写"
-                                           disabled={this.state.disabled}
-                                    />
-                                    <p className="prompt" style={{display: validate.tencent == 1 ? '' : 'none'}}>QQ必须为纯数字且5-11位</p>
-                                </li>
-                                <li>
-                                    <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={wechat} alt=""/>}
-                                           placeholder="点击修改按钮填写"
-                                           value={postData.wechat}
-                                           className={onValidate('wechat', this.state.validate)}
-                                           onChange={(e)=>this.onChangeWechat(e)}
-                                           disabled={disabled}
-                                    />
-                                    <p className="prompt" style={{display: validate.wechat == 1 ? '' : 'none'}}>微信号不能有汉字且6-20个字符</p>
-                                </li>
-                                <li>
-                                    <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={email} alt=""/>}
-                                           placeholder="点击修改按钮填写"
-                                           value={postData.email}
-                                           className={onValidate('email', this.state.validate)}
-                                           onChange={(e)=>this.onChangeEmail(e)}
-                                           disabled={disabled}
-                                    />
-                                    <p className="prompt" style={{display: validate.email == 1 ? '' : 'none'}}>请输入正确的邮箱地址</p>
-                                </li>
-                                <li>
-                                    <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={phone} alt=""/>}
-                                           placeholder="点击修改按钮填写"
-                                           value={postData.phonenumber}
-                                           className={onValidate('phonenumber', this.state.validate)}
-                                           onChange={(e)=>this.onChangePhone(e)}
-                                           disabled={disabled}
-                                    />
-                                    <p className="prompt" style={{display: validate.phonenumber == 1 ? '' : 'none'}}>手机号仅为数字且必须为11位</p>
-                                </li>
-                            </ul>
-                            <div className="s_i_btn">
-                                <Button type="primary" onClick={()=>this.onAmend()} style={{display: disabled ? '' : 'none'}}>修改</Button>
-                                <Button type="primary" onClick={()=>this.onAffirm()} style={{display: !disabled ? '' : 'none'}}>确认</Button>
-                                <Button onClick={()=>this.onCancel()} style={{display: !disabled ? '' : 'none'}}>取消</Button>
+                            <div className="s_i_info right">
+                                <h3>欢迎您！ {userInfo.userName}</h3>
+                                <p>用户类型：{userInfo.userType === 0 ? '会员' : '代理'}</p>
+                                <p>奖金组：{userInfo.accGroup}</p>
+                            </div>
+                        </div>
+                        <ul className="self_info_type clear">
+                            <li>
+                                <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={qq} alt=""/>}
+                                       value={postData.tencent}
+                                       className={onValidate('tencent', this.state.validate)}
+                                       onChange={(e)=>this.onChangeTencent(e)}
+                                       placeholder="点击修改按钮填写"
+                                       disabled={this.state.disabled}
+                                />
+                                <p className="prompt" style={{display: validate.tencent == 1 ? '' : 'none'}}>QQ必须为纯数字且5-11位</p>
+                            </li>
+                            <li>
+                                <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={wechat} alt=""/>}
+                                       placeholder="点击修改按钮填写"
+                                       value={postData.wechat}
+                                       className={onValidate('wechat', this.state.validate)}
+                                       onChange={(e)=>this.onChangeWechat(e)}
+                                       disabled={disabled}
+                                />
+                                <p className="prompt" style={{display: validate.wechat == 1 ? '' : 'none'}}>微信号不能有汉字且6-20个字符</p>
+                            </li>
+                            <li>
+                                <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={email} alt=""/>}
+                                       placeholder="点击修改按钮填写"
+                                       value={postData.email}
+                                       className={onValidate('email', this.state.validate)}
+                                       onChange={(e)=>this.onChangeEmail(e)}
+                                       disabled={disabled}
+                                />
+                                <p className="prompt" style={{display: validate.email == 1 ? '' : 'none'}}>请输入正确的邮箱地址</p>
+                            </li>
+                            <li>
+                                <Input addonBefore={<img style={{verticalAlign: 'middle'}} src={phone} alt=""/>}
+                                       placeholder="点击修改按钮填写"
+                                       value={postData.phonenumber}
+                                       className={onValidate('phonenumber', this.state.validate)}
+                                       onChange={(e)=>this.onChangePhone(e)}
+                                       disabled={disabled}
+                                />
+                                <p className="prompt" style={{display: validate.phonenumber == 1 ? '' : 'none'}}>手机号仅为数字且必须为11位</p>
+                            </li>
+                        </ul>
+                        <div className="s_i_btn">
+                            <Button type="primary" onClick={()=>this.onAmend()} style={{display: disabled ? '' : 'none'}}>修改</Button>
+                            <Button type="primary" onClick={()=>this.onAffirm()} style={{display: !disabled ? '' : 'none'}}>确认</Button>
+                            <Button onClick={()=>this.onCancel()} style={{display: !disabled ? '' : 'none'}}>取消</Button>
 
-                            </div>
                         </div>
-                        <div className="s_i_account_money right">
-                            <div className="s_i_a_top">
-                                <span className="account_money">
-                                    账户余额：
-                                    <em>￥{allBalance.cpbalance}</em>
-                                </span>
-                                <span>立即充值</span>
-                            </div>
+                    </div>
+                    <div className="s_i_account_money right">
+                        <div className="s_i_a_top">
+                            <span className="account_money">
+                                <h3>账户余额：</h3>
+                                <em>￥{allBalance.cpbalance}</em>
+                            </span>
+                            <span>立即充值</span>
                         </div>
+                        <ul className="rests_money clear">
+                            <li>
+                                <div className="left">
+                                    <p>EA余额</p>
+                                    <p>￥{allBalance.eabalance}</p>
+                                </div>
+                                <Button className="transfer_btn right" onClick={()=>this.onTransfer()}>转账</Button>
+                            </li>
+                            <li>
+                                <div className="left">
+                                    <p>PT余额</p>
+                                    <p>￥{allBalance.ptbalance}</p>
+                                </div>
+                                <Button className="transfer_btn right" onClick={()=>this.onTransfer()}>转账</Button>
+                            </li>
+                            <li>
+                                <div className="left">
+                                    <p>GT余额</p>
+                                    <p>￥{allBalance.kgbalance}</p>
+                                </div>
+                                <Button className="transfer_btn right" onClick={()=>this.onTransfer()}>转账</Button>
+                            </li>
+                            <li>
+                                <div className="left">
+                                    <p>博饼余额</p>
+                                    <p>￥{allBalance.bobingBalance}</p>
+                                </div>
+                                <Button className="transfer_btn right" onClick={()=>this.onTransfer()}>转账</Button>
+                            </li>
+                            <li>
+                                <div className="left">
+                                    <p>体育余额</p>
+                                    <p>￥{allBalance.sbbalance}</p>
+                                </div>
+                                <Button className="transfer_btn right" onClick={()=>this.onTransfer()}>转账</Button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div className="self_i_bottom">

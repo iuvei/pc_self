@@ -9,20 +9,51 @@
         border-bottom: 1px solid $border-bottom-color;
         font-size: 14px;
         background-color: #fff;
-        .s_i_user{
-            padding-top: 15px;
-        }
         .s_i_content{
             font-size: 14px;
             border: 1px solid #C1C0C5;
             padding: 4px 10px 10px 10px;
+            height: 242px;
         }
         .s_i_account_money{
             border: 1px solid #C1C0C5;
-            width: 620px;
+            @include wh(620px, 242px);
+            padding: 10px;
             .s_i_a_top{
-                .s_i_a_top{
-
+                padding-left: 40px;
+                margin-left: 25px;
+                height: 56px;
+                line-height: 52px;
+                background: url(./Img/money_icon.png) no-repeat left center;
+                .account_money{
+                    h3{
+                        display: inline-block;
+                        font-size: 18px;
+                    }
+                    em{
+                        font-size: 24px;
+                        color: #D29B10;
+                        font-style: normal;
+                    }
+                }
+            }
+            .rests_money{
+                border: 1px solid #eee;
+                border-left: 0;
+                border-right: 0;
+                li{
+                    float: left;
+                    border: 1px solid #eee;
+                    border-top: 0;
+                    border-left: 0;
+                    @include wh(298px, 52px);
+                    padding: 5px 20px;
+                    .transfer_btn{
+                        margin-top: 7px;
+                    }
+                }
+                li:last-child{
+                    border-bottom: 0;
                 }
             }
         }
