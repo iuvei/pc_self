@@ -131,7 +131,12 @@ const routes = params => (
                 <Route path="/financial/withdraw/affirmWithdraw" getComponent={affirmWithdraw} params={params}/>
             </Route>
             <Route path="/report" getComponent={report} params={params}>
-                <IndexRoute getComponent={teamStatistics} />
+                {
+                    stateVar.userInfo.userType == 0 ?
+                        <IndexRoute getComponent={lotteryReport} /> :
+                        <IndexRoute getComponent={teamStatistics} />
+
+                }
                 <Route path="/report/teamStatistics" getComponent={teamStatistics} params={params}/>
                 <Route path="/report/teamTable" getComponent={teamTable} params={params}/>
                 <Route path="/report/selfTable" getComponent={selfTable} params={params}/>

@@ -43,7 +43,7 @@ export default class Transfer extends Component {
           inAccout: accoutArr, //转入账户
           selectOut: null,
           selectIn: null,
-          money: 0, //转账金额
+          money: '', //转账金额
           validate: {
               money: 2, // 0: 对， 1：错
           }
@@ -116,7 +116,7 @@ export default class Transfer extends Component {
                     Modal.success({
                         title: res.shortMessage,
                     });
-                    emitter.emit('changeMoney');
+                    this.onEmitter();
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -137,7 +137,7 @@ export default class Transfer extends Component {
                     Modal.success({
                         title: res.shortMessage,
                     });
-                    emitter.emit('changeMoney');
+                    this.onEmitter();
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -158,7 +158,7 @@ export default class Transfer extends Component {
                     Modal.success({
                         title: res.shortMessage,
                     });
-                    emitter.emit('changeMoney');
+                    this.onEmitter();
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -184,11 +184,7 @@ export default class Transfer extends Component {
                         Modal.success({
                             title: res.shortMessage,
                         });
-                        emitter.emit('changeMoney');
-                        this.setState({
-                            validate: 2,
-                            money: ''
-                        })
+                        this.onEmitter();
                     }else{
                         Modal.warning({
                             title: res.shortMessage,
@@ -196,6 +192,16 @@ export default class Transfer extends Component {
                     }
                 }
             }
+        })
+    };
+
+    onEmitter(){
+        emitter.emit('changeMoney');
+        let { validate } = this.state;
+        validate.money = 2;
+        this.setState({
+            validate,
+            money: ''
         })
     };
     // 确认转账
@@ -296,7 +302,7 @@ export default class Transfer extends Component {
     };
     render() {
         const allBalance = stateVar.allBalance;
-        const { outAccout, inAccout } = this.state;
+        const { outAccout, inAccout, money } = this.state;
 
         return (
             <div className="transfer_main" onKeyDown={(e)=>this.onSubmit(e)}>
@@ -371,6 +377,7 @@ export default class Transfer extends Component {
                             <li>
                                 <span className="tr_m_f_type">转账金额：</span>
                                 <InputNumber min={0}
+                                             value={money}
                                              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                              parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                              onChange={(value)=>{this.onTransferAmount(value)}}

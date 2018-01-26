@@ -57,6 +57,13 @@ export default class Marketing extends Component {
     };
     componentDidMount() {
         this._ismount = true;
+        this.getData();
+    };
+
+    componentWillUnmount() {
+        this._ismount = false;
+    };
+    getData(){
         Fetch.adduser({
             method:'POST',
         }).then((res)=>{
@@ -85,11 +92,6 @@ export default class Marketing extends Component {
             }
         })
     };
-
-    componentWillUnmount() {
-        this._ismount = false;
-    };
-
     /*注册-用户类型*/
     onRegisterMember(e) {
         let registerPost = this.state.registerPost;
@@ -193,13 +195,14 @@ export default class Marketing extends Component {
     };
     /*注册-提交用户*/
     enterIconLoadingRegister() {
-        if(this.state.validateUserName === 0 &&
-            this.state.validateUserPass === 0 &&
-            this.state.validateNickName === 0) {
+        let {validateUserName, validateUserPass, validateNickName, registerPost, registerAccountNum } = this.state;
+        if(validateUserName === 0 &&
+            validateUserPass === 0 &&
+            validateNickName === 0) {
             this.setState({ iconLoadingRegister: true });
             Fetch.adduser({
                 method:'POST',
-                body: JSON.stringify(this.state.registerPost),
+                body: JSON.stringify(registerPost),
             }).then((res)=>{
                 if(this._ismount){
                     this.setState({
@@ -207,6 +210,10 @@ export default class Marketing extends Component {
                     });
                     if(res.status == 200){
                         let _this = this;
+                        if(registerAccountNum > 0){
+                            this.getData();
+                        }
+
                         Modal.success({
                             title: res.shortMessage,
                             content: res.repsoneContent,

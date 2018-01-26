@@ -21,6 +21,9 @@ import triangle_right from './Img/triangle_right.png'
 
 @observer
 export default class LeftSider extends Component {
+    constructor(props) {
+        super(props);
+    }
     handleClick(e) {
     	if(!stateVar.openLotteryFlag){
     		return;

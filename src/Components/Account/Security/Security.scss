@@ -4,6 +4,16 @@
 $width_110px: 110px;
 $border_color: #C8C8C8;
 .security_main{
+    .w_m_nopassword{
+        font-size: 14px;
+        span{
+            color: rgb(3, 9, 255);
+            text-decoration: underline;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
     .s_m_select_list{
         margin: 15px 0;
         li.s_m_select_list_active:nth-child(1){

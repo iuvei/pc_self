@@ -167,7 +167,7 @@ export default class Message extends Component {
             msgids,
             onChange: this.onSelectChange,
         };
-        const hasSelected = postData.msgids instanceof Array && postData.msgids.length > 0;
+        const hasSelected = postData.msgids.length > 0;
         return (
             <div className="message_main">
                 <Table rowSelection={rowSelection}
