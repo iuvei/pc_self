@@ -128,7 +128,7 @@ export default class Withdraw extends Component {
         if(e.keyCode == 13){
             this.onRecharge()
         }
-    }
+    };
     render() {
         const { selectShow, response, spinLoading } = this.state;
         const userInfo = stateVar.userInfo;

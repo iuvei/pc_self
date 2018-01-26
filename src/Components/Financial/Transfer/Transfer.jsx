@@ -103,7 +103,7 @@ export default class Transfer extends Component {
             validate.money = 0;
         }
         this.setState({validate, money: value});
-    }
+    };
     /*体育转账*/
     transferSport(postData){
         Fetch.sport({
@@ -116,6 +116,7 @@ export default class Transfer extends Component {
                     Modal.success({
                         title: res.shortMessage,
                     });
+                    emitter.emit('changeMoney');
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -136,6 +137,7 @@ export default class Transfer extends Component {
                     Modal.success({
                         title: res.shortMessage,
                     });
+                    emitter.emit('changeMoney');
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -156,6 +158,7 @@ export default class Transfer extends Component {
                     Modal.success({
                         title: res.shortMessage,
                     });
+                    emitter.emit('changeMoney');
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -181,6 +184,11 @@ export default class Transfer extends Component {
                         Modal.success({
                             title: res.shortMessage,
                         });
+                        emitter.emit('changeMoney');
+                        this.setState({
+                            validate: 2,
+                            money: ''
+                        })
                     }else{
                         Modal.warning({
                             title: res.shortMessage,
@@ -240,7 +248,7 @@ export default class Transfer extends Component {
                     target: 'bb',
                     money: this.state.money,
                     tag: 'transfer'
-                }
+                };
                 this.transferBobing(postData);
             }else{
 
@@ -280,12 +288,18 @@ export default class Transfer extends Component {
         }else{ }
 
     };
+    /*enter键提交*/
+    onSubmit(e){
+        if(e.keyCode == 13){
+            this.onConfirmTransfer()
+        }
+    };
     render() {
         const allBalance = stateVar.allBalance;
         const { outAccout, inAccout } = this.state;
 
         return (
-            <div className="transfer_main">
+            <div className="transfer_main" onKeyDown={(e)=>this.onSubmit(e)}>
                 <ul className="tf_m_balance_list clear">
                     <li>
                         <div className="tf_m_account_b">

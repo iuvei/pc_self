@@ -18,10 +18,10 @@ import speedSrc_active from './Img/speed_active.png';
 import dnsSrc_active from './Img/dns_active.png';
 import serviceSrc_active from './Img/service_active.png';
 import valicodeSrc from './Img/valicode.png';
-const validImgSrc= window.location.origin || (window.location.protocol +'//' + window.location.host) +'/pcservice/index.php?useValid=true';
 import {removeStore, setStore,getStore } from "../../CommonJs/common";
+const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
+// const validImgSrc= (window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/pcservice/index.php?useValid=true';
 
-// const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
 @observer
 export default class Login extends Component {
     constructor(props) {
