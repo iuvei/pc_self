@@ -76,7 +76,7 @@ class State {
     @observable issueItem = [];
     @observable kjNumberList = [];
     @observable mmCkjNumberList = [];
-    @observable mmccode = ['-','-','-','-','-']
+    @observable mmccode = ['-','-','-','-','-'];
 	@observable methodIdItem = [];
 	@observable shapeObj = {type:'',content:[]};
 	@observable checkLotteryId = true;

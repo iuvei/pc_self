@@ -6,10 +6,11 @@ import Fetch from '../../../Utils';
 import { Icon, Badge, Modal, Button } from 'antd';
 const confirm = Modal.confirm;
 import { stateVar } from '../../../State';
+import emitter from '../../../Utils/events';
 import './headerTop.scss'
 import common from '../../../CommonJs/common';
 import { removeStore,delCookie } from '../../../CommonJs/common';
-import Notice from '../Notice/Notice'
+import Notice from '../Notice/Notice';
 
 import name_icon from './Img/name_icon.png';
 import email_icon from './Img/email_icon.png';
@@ -35,6 +36,13 @@ export default class HeaderTop extends Component {
     };
     componentDidMount(){
         this._ismount = true;
+
+        // 组件装载完成以后声明一个自定义事件
+        this.eventEmitter = emitter.addListener('changeMessage', (message) => {
+            this.setState({
+                message,
+            });
+        });
         this.getMenu();
         this.getBalance();
         this.getNotice();
@@ -46,6 +54,7 @@ export default class HeaderTop extends Component {
         // 清除定时器与暂停动画
         clearInterval(this._clearInt);
         cancelAnimationFrame(this._animationFrame);
+        emitter.removeListener(this.eventEmitter);
     };
     getDestination() {
         let destination = 40,
@@ -64,14 +73,13 @@ export default class HeaderTop extends Component {
 
     };
     move (destination, duration) { // 实现滚动动画
-        const { noticePosition } = this.state;
-        let speed = ((destination - noticePosition) * 1000) / (duration * 60);
+        let speed = (((destination - this.state.noticePosition) * 1000) / (duration * 60)).toFixed(4);
         let count = 0;
         let step = () => {
-            this.setState({noticePosition: noticePosition + speed});
+            this.setState({noticePosition: this.state.noticePosition + speed});
             count++;
             this._animationFrame = requestAnimationFrame(() => {
-                if (noticePosition < destination) {
+                if (this.state.noticePosition < destination) {
                     step()
                 } else {
                     this.setState({noticePosition: destination});
@@ -101,11 +109,9 @@ export default class HeaderTop extends Component {
                 if(res.status == 200) {
                     this.setState({
                         noticeList: res.repsoneContent.results,
-                    },()=>{}
-                        // this.getDestination()
-                    );
+                    },()=>this.getDestination());
                 }else{
-                    console.log(res.shortMessage)
+
                 }
             }
         })
@@ -196,7 +202,11 @@ export default class HeaderTop extends Component {
         this.setState({
             visible: false,
         },()=>{
-            // this.getDestination()
+            // if(this._clearInt || this._animationFrame){
+            //     clearInterval(this._clearInt);
+            //     cancelAnimationFrame(this._animationFrame);
+            //     this.getDestination()
+            // }
         });
     };
     onNoticeDetails(item) {
@@ -214,7 +224,11 @@ export default class HeaderTop extends Component {
     };
     onOutModal() {
         if(!this.state.visible){
-            // this.getDestination()
+            // if(this._clearInt || this._animationFrame){
+            //     clearInterval(this._clearInt);
+            //     cancelAnimationFrame(this._animationFrame);
+            //     this.getDestination()
+            // }
         }
     };
     /*站内信未读条数*/

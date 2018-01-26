@@ -202,12 +202,12 @@ export default class SelfInfo extends PureComponent {
     };
 
     /*转账*/
-    onTransfer() {
+    onHashHistory(router, nav, childNav) {
         hashHistory.push({
-            pathname: '/financial/transfer',
-            query: {navIndex: 'financial'}
+            pathname: router,
+            query: {navIndex: childNav}
         });
-        stateVar.navIndex = 3;
+        stateVar.navIndex = nav;
     }
     render() {
         const { userInfo, allBalance } = stateVar;
@@ -301,7 +301,7 @@ export default class SelfInfo extends PureComponent {
                                 <h3>账户余额：</h3>
                                 <em>￥{allBalance.cpbalance}</em>
                             </span>
-                            <span>立即充值</span>
+                            <Button className="recharge_btn right" onClick={()=>this.onHashHistory('/financial/transfer', 'financial', 0)}>立即充值</Button>
                         </div>
                         <ul className="rests_money clear">
                             <li>
@@ -309,35 +309,35 @@ export default class SelfInfo extends PureComponent {
                                     <p>EA余额</p>
                                     <p>￥{allBalance.eabalance}</p>
                                 </div>
-                                <Button className="transfer_btn right" onClick={()=>this.onTransfer()}>转账</Button>
+                                <Button className="transfer_btn right" onClick={()=>this.onHashHistory()}>转账</Button>
                             </li>
                             <li>
                                 <div className="left">
                                     <p>PT余额</p>
                                     <p>￥{allBalance.ptbalance}</p>
                                 </div>
-                                <Button className="transfer_btn right" onClick={()=>this.onTransfer()}>转账</Button>
+                                <Button className="transfer_btn right" onClick={()=>this.onHashHistory('/financial/transfer', 'financial',3)}>转账</Button>
                             </li>
                             <li>
                                 <div className="left">
                                     <p>GT余额</p>
                                     <p>￥{allBalance.kgbalance}</p>
                                 </div>
-                                <Button className="transfer_btn right" onClick={()=>this.onTransfer()}>转账</Button>
+                                <Button className="transfer_btn right" onClick={()=>this.onHashHistory('/financial/transfer', 'financial',3)}>转账</Button>
                             </li>
                             <li>
                                 <div className="left">
                                     <p>博饼余额</p>
                                     <p>￥{allBalance.bobingBalance}</p>
                                 </div>
-                                <Button className="transfer_btn right" onClick={()=>this.onTransfer()}>转账</Button>
+                                <Button className="transfer_btn right" onClick={()=>this.onHashHistory('/financial/transfer', 'financial',3)}>转账</Button>
                             </li>
                             <li>
                                 <div className="left">
                                     <p>体育余额</p>
                                     <p>￥{allBalance.sbbalance}</p>
                                 </div>
-                                <Button className="transfer_btn right" onClick={()=>this.onTransfer()}>转账</Button>
+                                <Button className="transfer_btn right" onClick={()=>this.onHashHistory('/financial/transfer', 'financial',3)}>转账</Button>
                             </li>
                         </ul>
                     </div>

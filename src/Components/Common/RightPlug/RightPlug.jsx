@@ -64,7 +64,7 @@ export default class RightPlug extends Component {
         /*添加全局方法，给后台调用*/
         let _this = this;
         window.onShowMsg = function(){
-            _this.setState({showMsg: true});
+            _this.setState({showMsg: !this.state.showMsg});
         };
         /*获取当前走势图的相对路径*/
         curLocation = curLocation.split("#")[0] + "#/tendency";
