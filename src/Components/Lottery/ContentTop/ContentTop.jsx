@@ -406,7 +406,7 @@ export default class ContentTop extends Component {
     			common.removeStore(common.getStore('userId'))
     			this.props.getLotteryData();
     		}else if(tempType == 7){
-    			notification.open(
+				notification.open(
     				{
 					    message: message.data.data.title,
 					    description: message.data.data.content,

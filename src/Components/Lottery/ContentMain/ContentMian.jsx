@@ -523,13 +523,13 @@ export default class ContentMian extends Component {
     		tempFalg = false;
     	}
     	if(tempFalg){
-    		if(obj.target.className == 'number_active'){
+    		if(obj.target.className.indexOf('number_active') > -1){
 	    		this.unSelectNum(obj.target,false);
 	    	}else{
 	    		this.selectNum(obj.target,false);
 	    	}
     	}else{
-    		if(obj.target.parentNode.className == 'number_active'){
+    		if(obj.target.parentNode.className.indexOf('number_active') > -1){
 	    		this.unSelectNum(obj.target.parentNode,false);
 	    	}else{
 	    		this.selectNum(obj.target.parentNode,false);
@@ -849,13 +849,13 @@ export default class ContentMian extends Component {
                 case 'SDRX7' :
                 case 'SDRX8' :
                 case 'SDZU2' :
-                	this.setState({textAreaValue:stateVar.aboutGame.data_sel[0].join(" ")},()=>{
+                	this.setState({textAreaValue:stateVar.aboutGame.data_sel[0].join(",")},()=>{
 	                	this._inptu_deal();
 	                });
                    	alert('已删除以下重复号'+'\r\n'+err.join(";"));
                    	break;
                 default :
-                	this.setState({textAreaValue:stateVar.aboutGame.data_sel[0].join(" ")},()=>{
+                	this.setState({textAreaValue:stateVar.aboutGame.data_sel[0].join(",")},()=>{
 	                	this._inptu_deal();
 	                });
                    	alert('已删除以下重复号'+'\r\n'+err.join(" "));
@@ -1079,6 +1079,7 @@ export default class ContentMian extends Component {
 						    content: data.longMessage,
 						});
 						this.getBetHistory();
+						this.getMenu();
 						setTimeout(() => modal.destroy(), 3000);
 						stateVar.BetContent = {
 					        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
@@ -1137,6 +1138,17 @@ export default class ContentMian extends Component {
         }
         return true;
     }
+    /*获取本平台余额*/
+    getMenu() {
+        Fatch.menu({
+            method: 'POST',
+            body: JSON.stringify({"flag":"getmoney"})
+        }).then((res)=>{
+            if (res.status == 200) {
+                stateVar.allBalance.cpbalance = res.repsoneContent;
+            }
+        })
+    };
     //机选
     setByRandom(a){
     	/**
@@ -2168,7 +2180,7 @@ export default class ContentMian extends Component {
 	                        </div>
 	                        <div className="c_m_select_operate">
 	                            <div className="c_m_select_operate_text">
-	                                <span className="c_m_select_money">您选择了<strong>{this.state.numss}</strong>注，共<strong>{this.state.money}</strong>元</span>
+	                                <span className="c_m_select_money">您选择了<strong>{this.state.numss}</strong>注，共<strong>{this.state.money.toFixed(2)}</strong>元</span>
 	                                <span className="c_m_select_multiple">
 	                                    <span>倍数：</span>
 	                                    <img className="hvr-grow-shadow" onClick={()=>{this.minusMultiple()}} src={minus_multiple} alt="减少倍数"/>

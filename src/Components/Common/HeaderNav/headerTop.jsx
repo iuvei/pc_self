@@ -250,7 +250,7 @@ export default class HeaderTop extends Component {
     			this.getMenu();
     		}else if(tempType == 6){
     			this.getNotice();
-    		}else if(tempType == 7){
+    		}else if(tempType == 10){
     			this.onUnread();
     		}
     	}

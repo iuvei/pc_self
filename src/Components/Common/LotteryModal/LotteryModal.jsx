@@ -57,10 +57,8 @@ export default class AlterModal extends Component {
             method: 'POST',
             body: JSON.stringify({"flag":"getmoney"})
         }).then((res)=>{
-            if(this._ismount) {
-                if (res.status == 200) {
-                    stateVar.allBalance = res.repsoneContent;
-                }
+            if (res.status == 200) {
+                stateVar.allBalance.cpbalance = res.repsoneContent;
             }
         })
     };
