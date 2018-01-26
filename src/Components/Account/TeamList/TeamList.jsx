@@ -118,7 +118,7 @@ export default class TeamList extends Component {
                         }
                     }
                     tableData.dataSource = resData.results;
-                    tableData.accnumall = parseInt(resData.accnumall);
+                    tableData.accnumall = parseInt(resData.self.team_count);
                     tableData.total = parseInt(resData.affects);
                     this.setState({tableData: tableData});
                 }else{

@@ -113,7 +113,7 @@ export default class ARdetails extends Component {
                     method: 'POST',
                     body: JSON.stringify(postData)
                 }).then((res)=>{
-                    if(this._ismount){
+                    if(_this._ismount){
                         _this.setState({stopLoading: false});
                         if(res.status == 200){
                             message.success(res.longMessage);

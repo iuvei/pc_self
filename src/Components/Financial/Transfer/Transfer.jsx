@@ -6,6 +6,7 @@ import { Select, InputNumber, Modal, Button, message } from 'antd';
 const Option = Select.Option;
 import { stateVar } from '../../../State';
 import { onValidate } from '../../../CommonJs/common';
+import emitter from '../../../Utils/events';
 
 import './Transfer.scss'
 import trade_icon from './Img/trade_icon.png'

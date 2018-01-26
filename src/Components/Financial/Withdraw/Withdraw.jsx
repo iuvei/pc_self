@@ -67,7 +67,7 @@ export default class Withdraw extends Component {
                 }
             }
         })
-    }
+    };
 
     onRechargeAmount(value) {
         let { validate, postData, response } = this.state;
@@ -79,7 +79,7 @@ export default class Withdraw extends Component {
         }
         postData.money = value;
         this.setState({postData, validate});
-    }
+    };
     // 提现下一步
     onRecharge() {
         let { validate } = this.state;

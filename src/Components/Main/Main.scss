@@ -8,7 +8,8 @@ footer{
     background: #E6EAE9;
 }
 .berCenter_bg{
-    background: #E6EAE9 url('../../Images/betCenter_bg.jpg') no-repeat fixed;
+    //background: #E6EAE9 url('../../Images/betCenter_bg.jpg') no-repeat fixed;
+    background: $main_bg;
     //background-size: 100% 614px;
     .main{
         width: $nav_width_1200;

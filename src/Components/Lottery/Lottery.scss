@@ -9,7 +9,8 @@
 .main{
     position: relative;
     width: 100%;
-    background: #E6EAE9 url(Img/betCenter_bg.jpg) no-repeat;
+    //background: #E6EAE9 url(Img/betCenter_bg.jpg) no-repeat;
+    background: $main_bg;
     background-size: 100% 614px;
     .b_c_left_sider{
         position: absolute;
