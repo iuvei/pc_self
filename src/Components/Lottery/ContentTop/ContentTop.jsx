@@ -291,7 +291,6 @@ export default class ContentTop extends Component {
     		body:JSON.stringify({"flag":"getcodes","lotteryid":23})
     		}).then((data)=>{
     			$(".monikj span").html('模拟开奖')
-    			data = JSON.parse(data);
     			let tempData = data.repsoneContent;
     			if(this._ismount && data.status == 200){
     				this.setState({mmcmoni:false});
