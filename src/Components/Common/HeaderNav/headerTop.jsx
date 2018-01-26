@@ -38,11 +38,9 @@ export default class HeaderTop extends Component {
         this._ismount = true;
 
         // 组件装载完成以后声明一个自定义事件
-        this.eventEmitter = emitter.addListener('changeMessage', (message) => {
-            this.setState({
-                message,
-            });
-        });
+        // this.eventEmitter = emitter.addListener('changeMessage', (message) => {
+        //
+        // });
         this.getMenu();
         this.getBalance();
         this.getNotice();
@@ -54,7 +52,7 @@ export default class HeaderTop extends Component {
         // 清除定时器与暂停动画
         clearInterval(this._clearInt);
         cancelAnimationFrame(this._animationFrame);
-        emitter.removeListener(this.eventEmitter);
+        // emitter.removeListener(this.eventEmitter);
     };
     getDestination() {
         let destination = 40,

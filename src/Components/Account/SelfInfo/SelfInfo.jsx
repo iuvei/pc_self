@@ -8,7 +8,6 @@ import { hashHistory } from 'react-router';
 import { onValidate } from '../../../CommonJs/common';
 
 import './SelfInfo.scss'
-import user_icon from './Img/user_icon.png';
 import info_logo from './Img/info_logo.png';
 import qq from './Img/qq.png';
 import wechat from './Img/wechat.png';
