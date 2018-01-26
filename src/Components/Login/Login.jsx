@@ -604,7 +604,7 @@ export default class Login extends Component {
                     </div>
                 </div>
                 <div className="login">
-                    <img  className="loginLogo" src={loginSrc} />
+                    <img  className="loginLogo" />
                     <ul className="l_m_select_list clear">
                         {
                             navList.map((value, index)=>{

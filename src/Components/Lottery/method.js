@@ -566,7 +566,7 @@ const checkNum = ()=>{
                     nums = _inputCheck_Num(4, false);
                     nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 4);
 					/*recordPoschoose();*/
-	break;
+				break;
                 //pk10单式
             	case "PK10ZX2":
                 case "PK10ZX3":
@@ -1167,7 +1167,7 @@ const checkNum = ()=>{
 					nums = 54;
 				}
 			break;
-//pk10
+			//pk10
             case "PK10ZX2":                        
             	nums = 0;
                 if( stateVar.aboutGame.data_sel[0].length > 0 && stateVar.aboutGame.data_sel[1].length > 0 ){
@@ -1217,22 +1217,27 @@ const checkNum = ()=>{
             break;
             case "PK10ZX5":                           
             	nums = 0;
-                if( stateVar.aboutGame.data_sel[0].length > 0 && stateVar.aboutGame.data_sel[1].length > 0 && stateVar.aboutGame.data_sel[2].length > 0 && stateVar.aboutGame.data_sel[3].length > 0 && stateVar.aboutGame.data_sel[4].length > 0 ){
-                    for( i=0; i<stateVar.aboutGame.data_sel[0].length; i++ ){
-                        for( let j=0; j<stateVar.aboutGame.data_sel[1].length; j++ ){
-                            for( let k=0; k<stateVar.aboutGame.data_sel[2].length; k++ ){
-                            	for( let x=0; x<stateVar.aboutGame.data_sel[3].length; x++ ){
-                            		for( let y=0; y<stateVar.aboutGame.data_sel[4].length; y++ ){
-                                		if( stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[1][j] &&
-                                		    stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[2][k] &&
-                                		    stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[3][x] &&
-                                		    stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[4][y] &&
-                                		    stateVar.aboutGame.data_sel[1][j] != stateVar.aboutGame.data_sel[2][k] &&
-                                		    stateVar.aboutGame.data_sel[1][j] != stateVar.aboutGame.data_sel[3][x] &&
-                                		    stateVar.aboutGame.data_sel[1][j] != stateVar.aboutGame.data_sel[4][y] &&
-                                		    stateVar.aboutGame.data_sel[2][k] != stateVar.aboutGame.data_sel[3][x] &&
-                                		    stateVar.aboutGame.data_sel[2][k] != stateVar.aboutGame.data_sel[4][y] &&
-                                		    stateVar.aboutGame.data_sel[3][x] != stateVar.aboutGame.data_sel[4][y] ){
+            	var data_sel1 = stateVar.aboutGame.data_sel[0];
+            	var data_sel2 = stateVar.aboutGame.data_sel[1];
+            	var data_sel3 = stateVar.aboutGame.data_sel[2];
+            	var data_sel4 = stateVar.aboutGame.data_sel[3];
+            	var data_sel5 = stateVar.aboutGame.data_sel[4];
+                if( data_sel1.length > 0 && data_sel2.length > 0 && data_sel3.length > 0 && data_sel4.length > 0 && data_sel5.length > 0 ){
+                    for( let i=0; i<data_sel1.length; i++ ){
+                        for( let j=0; j<data_sel2.length; j++ ){
+                            for( let k=0; k<data_sel3.length; k++ ){
+                            	for( let x=0; x<data_sel4.length; x++ ){
+                            		for( let y=0; y<data_sel5.length; y++ ){
+                                		if( data_sel1[i] != data_sel2[j] &&
+                                		    data_sel1[i] != data_sel3[k] &&
+                                		    data_sel1[i] != data_sel4[x] &&
+                                		    data_sel1[i] != data_sel5[y] &&
+                                		    data_sel2[j] != data_sel3[k] &&
+                                		    data_sel2[j] != data_sel4[x] &&
+                                		    data_sel2[j] != data_sel5[y] &&
+                                		    data_sel3[k] != data_sel4[x] &&
+                                		    data_sel3[k] != data_sel5[y] &&
+                                		    data_sel4[x] != data_sel5[y] ){
                                 			nums++;
                                 		}
                             		}	
@@ -1242,31 +1247,37 @@ const checkNum = ()=>{
                     }
                 }
             break;
-            case "PK10ZX6":                           
+            case "PK10ZX6":                          
             	nums = 0;
-                if( stateVar.aboutGame.data_sel[0].length > 0 && stateVar.aboutGame.data_sel[1].length > 0 && stateVar.aboutGame.data_sel[2].length > 0 && stateVar.aboutGame.data_sel[3].length > 0 && stateVar.aboutGame.data_sel[4].length > 0 && stateVar.aboutGame.data_sel[5].length > 0 ){
-                    for( i=0; i<stateVar.aboutGame.data_sel[0].length; i++ ){
-                        for( let j=0; j<stateVar.aboutGame.data_sel[1].length; j++ ){
-                            for( let k=0; k<stateVar.aboutGame.data_sel[2].length; k++ ){
-                            	for( let x=0; x<stateVar.aboutGame.data_sel[3].length; x++ ){
-                            		for( let y=0; y<stateVar.aboutGame.data_sel[4].length; y++ ){
-                            			for( let z=0; z<stateVar.aboutGame.data_sel[5].length; z++ ){
-                                			if( stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[1][j] &&
-                                    		    stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[2][k] &&
-                                    		    stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[3][x] &&
-                                    		    stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[4][y] &&
-                                    		    stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[5][z] &&
-                                    		    stateVar.aboutGame.data_sel[1][j] != stateVar.aboutGame.data_sel[2][k] &&
-                                    		    stateVar.aboutGame.data_sel[1][j] != stateVar.aboutGame.data_sel[3][x] &&
-                                    		    stateVar.aboutGame.data_sel[1][j] != stateVar.aboutGame.data_sel[4][y] &&
-                                    		    stateVar.aboutGame.data_sel[1][j] != stateVar.aboutGame.data_sel[5][z] &&
-                                    		    stateVar.aboutGame.data_sel[2][k] != stateVar.aboutGame.data_sel[3][x] &&
-                                    		    stateVar.aboutGame.data_sel[2][k] != stateVar.aboutGame.data_sel[4][y] &&
-                                    		    stateVar.aboutGame.data_sel[2][k] != stateVar.aboutGame.data_sel[5][z] &&
-                                    		    stateVar.aboutGame.data_sel[3][x] != stateVar.aboutGame.data_sel[4][y] &&
-                                    		    stateVar.aboutGame.data_sel[3][x] != stateVar.aboutGame.data_sel[5][z] &&
-                                    		    stateVar.aboutGame.data_sel[4][y] != stateVar.aboutGame.data_sel[5][z]){
-                                    			nums++;
+            	var data_sel1 = stateVar.aboutGame.data_sel[0];
+            	var data_sel2 = stateVar.aboutGame.data_sel[1];
+            	var data_sel3 = stateVar.aboutGame.data_sel[2];
+            	var data_sel4 = stateVar.aboutGame.data_sel[3];
+            	var data_sel5 = stateVar.aboutGame.data_sel[4];
+            	var data_sel6 = stateVar.aboutGame.data_sel[5];
+                if( data_sel1.length > 0 && data_sel2.length > 0 && data_sel3.length > 0 && data_sel4.length > 0 && data_sel5.length > 0 && data_sel6.length > 0){
+                    for( let i=0; i<data_sel1.length; i++ ){
+                        for( let j=0; j<data_sel2.length; j++ ){
+                            for( let k=0; k<data_sel3.length; k++ ){
+                            	for( let x=0; x<data_sel4.length; x++ ){
+                            		for( let y=0; y<data_sel5.length; y++ ){
+                            			for( let z=0; z<data_sel6.length; z++ ){
+                                			if( data_sel1[i] != data_sel2[j] &&
+                                    		    data_sel1[i] != data_sel3[k] &&
+                                    		    data_sel1[i] != data_sel4[x] &&
+                                    		    data_sel1[i] != data_sel5[y] &&
+                                    		    data_sel1[i] != data_sel6[z] &&
+                                    		    data_sel2[j] != data_sel3[k] &&
+                                    		    data_sel2[j] != data_sel4[x] &&
+                                    		    data_sel2[j] != data_sel5[y] &&
+                                    		    data_sel2[j] != data_sel6[z] &&
+                                    		    data_sel3[k] != data_sel4[x] &&
+                                    		    data_sel3[k] != data_sel5[y] &&
+                                    		    data_sel3[k] != data_sel6[z] &&
+                                    		    data_sel4[x] != data_sel5[y] &&
+                                    		    data_sel4[x] != data_sel6[z] &&
+                                    		    data_sel5[y] != data_sel6[z]){
+                                    				nums++;
                                     		}
                             			}
                             		}	
@@ -1940,6 +1951,8 @@ let getSuiji2 = (length, minchose, t) => {
 		if (length >= 10) {
 			if (i < 9) {
 				list[i] = "0" + (i + 1);
+			}else{
+				list[i] = '1'+ (10-i);
 			}
 		} else {
 			list[i] = i + 1;

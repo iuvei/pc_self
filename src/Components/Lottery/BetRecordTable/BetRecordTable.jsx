@@ -77,13 +77,15 @@ export default class BetRecordTable extends Component {
 					    <div>详细号码</div>
 					</Popover>  : text
 	            },
-	            { title: '开奖号', dataIndex: 'lotteryNumber', key: 'addre2ss',width: 85 },
+	            { title: '开奖号', dataIndex: 'lotteryNumber', key: 'addre2ss',width: 105 },
 	            { title: '投注金额', dataIndex: 'betMoney', key: 'a2ddress',width: 85,render:(text) => <span>{text}</span> },
-	            { title: '奖金', dataIndex: 'bonus', key: 'a2ddres2s',width: 85,render:(text) => <span>{text}</span> },
-	            { title: '状态', dataIndex: 'status', key: 'a2ddres22s',width: 85 },
+	            { title: '奖金', dataIndex: 'bonus', key: 'a2ddres2s',width: 85,render:(text) => <span style={{color:'#F01111'}}>{text}</span> },
+	            { title: '状态', dataIndex: 'status', key: 'a2ddres22s',width: 65 ,render:(text)=>
+	            	text == '已派奖' ? <span style={{color:'#F01111',fontWeight:'bold'}}>{text}</span> : text
+	            },
 	            { title: '操作', dataIndex: 'againBuy', key: 'x', render: (text,objThis) => {
 		            	if(text == 1){
-		            		return <Popconfirm className='canclebet' title='再次购买吗？' placement="topLeft" onConfirm={()=>this.cancelBet(objThis['key'])}><Button className='buyAgain'>撤单</Button></Popconfirm>
+		            		return <Popconfirm className='canclebet' title='确定撤单吗？' placement="topLeft" onConfirm={()=>this.cancelBet(objThis['key'])}><Button className='buyAgain'>撤单</Button></Popconfirm>
 		            	}else{
 		            		return <Popconfirm placement="topLeft" title='再次购买吗？' onConfirm={()=>this.againBuy(objThis['key'])}><Button className='buyAgain'>再次购买</Button></Popconfirm>
 		            	}
