@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Menu, Affix } from 'antd';
+import emitter from '../../../Utils/events';
 import QueueAnim from 'rc-queue-anim';
 import { hashHistory } from 'react-router';
 const SubMenu = Menu.SubMenu;
@@ -35,14 +36,22 @@ export default class LeftSider extends Component {
 	    		for(let val in tempMethod){
 					if(val == tempId){
 						if(tempMethod[val].msg == undefined){
-							stateVar.kjNumberList = [];
+							stateVar.todayAndTomorrow = [];
+						    stateVar.tomorrowIssue = [];
+						    stateVar.issueIndex = '?????';
+							stateVar.BetContent.lt_same_code = [];
+					    	stateVar.BetContent.totalDan = 0;
+					    	stateVar.BetContent.totalNum = 0;
+					       	stateVar.BetContent.totalMoney = 0;
+					       	stateVar.BetContent.lt_trace_base = 0;
+					       	stateVar.kjNumberList = [];
 							clearInterval(window.interval);
 							stateVar.checkLotteryId= false;
 							stateVar.nowlottery.lotteryId = e.key;
 							stateVar.BetContent = {
 						        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
 						    };
-						    this.props.resetInit();
+						    emitter.emit('initData');
 							stateVar.isload = false;
 						}else{
 							alert(tempMethod[val].msg);

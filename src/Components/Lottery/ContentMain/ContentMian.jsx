@@ -7,13 +7,13 @@ import './ContentMain.scss'
 import './Modal/Modal.scss'
 
 import Fatch from '../../../Utils'
+import emitter from '../../../Utils/events';
 import { stateVar } from '../../../State'
 import Method from '../method.js'
 import commone from '../commone.js'
 
 import common from '../../../CommonJs/common';
 
-import LeftSider from './../LeftSider/LeftSider'
 import ContentTop from './../ContentTop/ContentTop'
 import BetRecordTable from '../BetRecordTable/BetRecordTable'
 import ModelView from './../../Common/ChildNav/ChildNav'
@@ -51,10 +51,6 @@ export default class ContentMian extends Component {
             checked: true,
             omodel:'2',
             textAreaValue:'',
-            code : [],//开奖号码
-            animateCode:[],//开奖动画号码
-        	nowIssue:'??????',//上一期前期号
-        	nextIssue:'??????',//当前期号
         	historyBet:[],//投注记录
         	el1: {rotateZ: 0},
         	ifRandom:false,
@@ -215,6 +211,10 @@ export default class ContentMian extends Component {
     //初始化默认调用方法
     componentDidMount() {
     	this._ismount = true;
+    	// 组件装载完成以后声明一个自定义事件
+        this.eventEmitter = emitter.addListener('initData', () => {
+            this.initData();
+        });
     	this.initData();
     };
     //离开页面
@@ -223,8 +223,18 @@ export default class ContentMian extends Component {
     	stateVar.BetContent = {
 	        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
 	    };
+	    stateVar.todayAndTomorrow = [];
+	    stateVar.tomorrowIssue = [];
+	    stateVar.issueIndex = '?????';
+		stateVar.BetContent.lt_same_code = [];
+    	stateVar.BetContent.totalDan = 0;
+    	stateVar.BetContent.totalNum = 0;
+       	stateVar.BetContent.totalMoney = 0;
+       	stateVar.BetContent.lt_trace_base = 0;
+       	stateVar.kjNumberList = [];
 	    stateVar.openLotteryFlag = true;
 	    stateVar.checkLotteryId= true;
+	    emitter.removeListener(this.eventEmitter);
 	}
     initData(){
     	let lotteryData = require('../../../CommonJs/common.json');
@@ -261,15 +271,6 @@ export default class ContentMian extends Component {
             	checked: true,
             	omodel:'2'
         	},()=>{
-        	stateVar.todayAndTomorrow = [];
-		    stateVar.tomorrowIssue = [];
-		    stateVar.issueIndex = '?????';
-    		stateVar.BetContent.lt_same_code = [];
-	    	stateVar.BetContent.totalDan = 0;
-	    	stateVar.BetContent.totalNum = 0;
-	       	stateVar.BetContent.totalMoney = 0;
-	       	stateVar.BetContent.lt_trace_base = 0;
-	       	stateVar.kjNumberList = []
         	$("li.number_active").removeClass('number_active');
         	$(".lh .hover").removeClass('hover');
         	$(".zx span").removeClass('hover');
@@ -910,7 +911,7 @@ export default class ContentMian extends Component {
     addNum(param){
     	let nums  = this.state.numss;//投注注数取整
         let times = this.state.multipleValue;//投注倍数取整
-        let money = Math.round(times * nums * 2 * (this.state.modes[this.state.selectYjf].rate * 1000)) /1000;  //倍数*注数*单价 * 模式
+        let money = Math.round(times * nums * 2 * 1000 * (this.state.modes[this.state.selectYjf].rate )) /1000;  //倍数*注数*单价 * 模式
         let mid   = stateVar.aboutGame.methodID;
 		let current_positionsel = $.lt_position_sel;
         let cur_position = 0;
@@ -938,9 +939,9 @@ export default class ContentMian extends Component {
             //检测重复号，并除去重复号
             edump = this.dumpNum(true);
             if( edump.length >0 ){//有重复号
-                ermsg += '以下号码重复，已自动进行过滤'+'\n'+edump.join(", ");
+                ermsg += '以下号码重复，已自动进行过滤'+'\n'+edump.join(",");
                 nums = Method.checkNum();
-                money = Math.round(times * nums * 2 * (this.state.modes[this.state.selectYjf].rate * 1000)) /1000;  //倍数*注数*单价 * 模式
+                money = Math.round(times * nums * 2 * 1000 * (this.state.modes[this.state.selectYjf].rate)) /1000;  //倍数*注数*单价 * 模式
 
             }
             switch(mname){//根据类型不同做不同检测
@@ -1013,7 +1014,7 @@ export default class ContentMian extends Component {
     	let nos = stateVar.aboutGame.str;
         let temp = [];
         for( let i=0; i<stateVar.aboutGame.data_sel.length; i++ ){
-            nos = nos.replace('X',stateVar.aboutGame.data_sel[i].sort(Method._SortNum).join(stateVar.aboutGame.sp));
+            nos = nos.replace('X',stateVar.aboutGame.data_sel[i].sort(Method._SortNum).join(","));
             temp.push( stateVar.aboutGame.data_sel[i].sort(Method._SortNum).join("&") );
         }
         let nohtml = nos;
@@ -1029,7 +1030,7 @@ export default class ContentMian extends Component {
         if( pc != 1 ){
             pz = 0;
         }
-        pz = Math.round( pz * (this.state.modes[this.state.selectYjf].rate * 1000))/1000;
+        pz = Math.round( pz * 1000 * (this.state.modes[this.state.selectYjf].rate))/1000;
         let tempObj = mobx.toJS(
         	{
 	        	type:otype,
@@ -1117,6 +1118,7 @@ export default class ContentMian extends Component {
         	tempNum += parseInt(stateVar.BetContent.lt_same_code[i].nums);
         	tempMoney += Number(stateVar.BetContent.lt_same_code[i].money);
         }
+        tempMoney = Math.round(tempMoney*1000)/1000;
         stateVar.BetContent.totalNum = tempNum * this.state.multipleMmcValue;//总注数
        	stateVar.BetContent.totalMoney = tempMoney*10000 * this.state.multipleMmcValue/10000;//总钱
     	stateVar.BetContent.lt_trace_base   = tempMoney;//追号的钱
@@ -1328,6 +1330,7 @@ export default class ContentMian extends Component {
     				tempTraceItem[i].money = tempTraceItem[i].times * stateVar.BetContent.totalMoney;
     				tempData[i] = true;
     				tempMoney += tempTraceItem[i].money;
+    				tempMoney = Math.round(tempMoney*1000)/1000;
     				tempTime += 1;
     			}else{
     				tempTraceItem[i].times = 0;
@@ -1348,6 +1351,7 @@ export default class ContentMian extends Component {
     				tempTraceItem[i].money = tempTraceItem[i].times * stateVar.BetContent.totalMoney;
     				tempData[i] = true;
     				tempMoney += tempTraceItem[i].money;
+    				tempMoney = Math.round(tempMoney*1000)/1000;
     				tempTime += 1;
     			}else{
     				tempTraceItem[i].times = 0;
@@ -1409,6 +1413,7 @@ export default class ContentMian extends Component {
     				tempTraceItem[i].money = tempTraceItem[i].times * stateVar.BetContent.totalMoney;
     				tempData[i] = true;
     				tempMoney += tempTraceItem[i].money;
+    				tempMoney = Math.round(tempMoney*1000)/1000;
     				tempTime += 1;
     			}else{
     				tempTraceItem[i].times = 0;
@@ -1711,6 +1716,9 @@ export default class ContentMian extends Component {
     	stateVar.aboutGame.prize = numberObj.prize;
     	stateVar.aboutGame.data_sel = [];
     	stateVar.aboutGame.minchosen = [];
+    	if(numberObj.nfdprize.defaultprize == undefined){
+    		this.setState({omodel:'2'});
+    	}
     	let tempMode = [];
     	numberObj.modes.map((val,index)=>{
     		let modes  = {modeid:val.modeid,name:val.name,rate:val.rate}
@@ -2105,7 +2113,6 @@ export default class ContentMian extends Component {
     	let imgUrl = stateVar.nowlottery.imgUrl;
         return (
         	<div>
-	        	<LeftSider resetInit={()=>this.initData()}></LeftSider>
 	            <div className='content_bet'>
 	                <div className="content_main" key="ContentMian">
 	                	<ContentTop getLotteryData={()=>this.getLotteryData()} getBetHistory={()=>this.getBetHistory()} actionTrace={()=>this.actionTrace()}></ContentTop>
@@ -2255,8 +2262,8 @@ export default class ContentMian extends Component {
 	                                        			<ul className="c_m_select_record_list clear" key={index}>
 	                                        				<li>{value.name}</li>
 			                                                <li>{
-			                                                	value.numberbet.length > 30 ? <Popover content={value.numberbet}>
-																	    <div>{value.numberbet.substr(0,30)+'...'}</div>
+			                                                	value.numberbet.length > 25 ? <Popover content={value.numberbet}>
+																	    <div>{value.numberbet.substr(0,25)+'...'}</div>
 																	</Popover> : value.numberbet
 			                                                }</li>
 

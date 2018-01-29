@@ -65,9 +65,18 @@ export default class AlterModal extends Component {
     onOk(){
     	let tempObj  = this.props.betData;
     	let postData = {};
-    	this.setState({tzloding:true})
+    	this.setState({tzloding:true});
     	$(".btn_group .oktz span").html('投注中...');
     	if(stateVar.nowlottery.lotteryBetId == 23){
+    		if(stateVar.BetContent.totalMoney > stateVar.allBalance.cpbalance){
+    			const modal = Modal.error({
+				    title: '温馨提示',
+				    content: '余额不足',
+				    zIndex:10000
+				});
+				setTimeout(() => modal.destroy(), 3000);
+				return;
+    		}
     		postData = {
 	    		lotteryid : tempObj.lotteryid,
 	    		mid : 311700,
@@ -286,7 +295,7 @@ export default class AlterModal extends Component {
 	    			this.setState({tzloding:false});
 	    			if(data.status == 200){
 	    				this.getMenu();
-	    				this.getBetHistory();
+	    				this.props.historyBet();
 	    				const modal = Modal.success({
 						    title: '温馨提示',
 						    content: data.longMessage,
@@ -347,7 +356,7 @@ export default class AlterModal extends Component {
                             <ul className='l_m_warn'>
                                 <li>单挑警告：该单处于单挑模式，本期最大奖金30000元</li>
                             </ul>
-                            <p>总金额：<span className='l_m_total'>{tempData.lt_trace_if == 'yes' ? tempData.lt_trace_money : tempData.lt_total_money}</span>元</p>
+                            <p>总金额：<span className='l_m_total'>{tempData.lt_trace_if == 'yes' ? Number(tempData.lt_trace_money).toFixed(4) : Number(tempData.lt_total_money).toFixed(4)}</span>元</p>
                         </div>
                     </div>
                     <div className='btn_group'>
