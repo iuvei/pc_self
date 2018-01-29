@@ -212,7 +212,7 @@ export default class ContentMian extends Component {
     componentDidMount() {
     	this._ismount = true;
     	// 组件装载完成以后声明一个自定义事件
-        this.eventEmitter = emitter.addListener('initData', () => {
+        this.eventEmitter = emitter.on('initData', () => {
             this.initData();
         });
     	this.initData();
@@ -234,7 +234,7 @@ export default class ContentMian extends Component {
        	stateVar.kjNumberList = [];
 	    stateVar.openLotteryFlag = true;
 	    stateVar.checkLotteryId= true;
-	    emitter.removeListener(this.eventEmitter);
+	    emitter.off(this.eventEmitter);
 	}
     initData(){
     	let lotteryData = require('../../../CommonJs/common.json');
@@ -340,7 +340,7 @@ export default class ContentMian extends Component {
     				this.getLotteryData();
     			}
     		}else{
-    			
+
     		}
 		});
     };
@@ -488,7 +488,7 @@ export default class ContentMian extends Component {
     		})
      	}
     };
-    
+
     //玩法切换
      check_nav_index( index ){
         return index === this.state.navIndex ? "nav_list_active" : ""
