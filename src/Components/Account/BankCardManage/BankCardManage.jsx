@@ -1,8 +1,9 @@
 /*账户管理 > 银行卡管理*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import { hashHistory } from 'react-router';
 import Fetch from '../../../Utils';
-import { Table, Button, Modal, Select, Input, message } from 'antd';
+import { Table, Button, Modal, Select, Input, message, Spin } from 'antd';
 const Option = Select.Option;
 import { onValidate } from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
@@ -53,7 +54,8 @@ export default class BankCardManage extends Component {
             },
 
             childVisible: false,
-
+            spinLoading: false,
+            selectShow: true,
         }
     };
     componentDidMount() {
@@ -72,17 +74,22 @@ export default class BankCardManage extends Component {
             if(this._ismount) {
                 this.setState({tableLoading: false});
                 if(res.status == 200){
-                    let data = res.repsoneContent,
-                        response = {
+                    let data = res.repsoneContent;
+                    if(data instanceof Array && data.length == 0){
+                        this.setState({
+                            selectShow: true
+                        });
+                    }else{
+                        let response = {
                             bankList: data.bankList,
                             binded: data.binded,
                             num: data.num,
                         };
-                    this.setState({response: response});
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                        this.setState({
+                            response: response,
+                            selectShow: false,
+                        });
+                    }
                 }
             }
 
@@ -361,9 +368,19 @@ export default class BankCardManage extends Component {
     onHideChildModal() {
         this.setState({childVisible: false})
     };
-
+    /*设置资金密码*/
+    onClickCapital(){
+        stateVar.navIndex = 'account';
+        stateVar.securityIndex = 1;
+        hashHistory.push({
+            pathname: '/account/security',
+            query: {
+                navIndex: 5
+            }
+        });
+    };
     render() {
-        const { response, adduserbank, addPostData, ModalTitle } = this.state;
+        const { response, adduserbank, addPostData, selectShow, ModalTitle, spinLoading } = this.state;
         const columns = [
             {
                 title: '姓名',
@@ -394,155 +411,167 @@ export default class BankCardManage extends Component {
         ];
         return (
             <div className="b_cm_main">
-                <div className="b_cm_text_explain">
-                    <p>1、一个账户最多只能绑定5张银行卡，你当前绑定<i> ({response.binded == undefined ? '0' : response.binded}) </i>张，还能绑定<i> ({response.num == undefined ? '5' : response.num - response.binded}) </i>张。</p>
-                    <p>2、如需删除已绑定的银行卡，请点击“申请删除”，之后会有客服人员主动与您连续进行确认。</p>
-                    <p>3、为了您的账户资金安全，银行卡“新增”和“修改”将在操作完成2小时0分后，新卡才能发起“向平台提现”。</p>
-                </div>
-                <div className="b_cm_table">
-                    <Table columns={columns}
-                           rowKey={record => record.id}
-                           dataSource={response.bankList}
-                           loading={this.state.tableLoading}
-                           pagination={false}
-                    />
-                </div>
-                <Button className="b_cm_btn" type="primary" size="large" icon="plus" onClick={()=>{this.showModal('add')}}>
-                    增加绑定
-                </Button>
-                <Modal
-                    width='865px'
-                    visible={this.state.visible}
-                    title={ModalTitle === true ? '新增银行卡' : '修改银行卡'}
-                    onCancel={()=>this.onHideModal()}
-                    maskClosable={false}
-                    footer={null}
-                >
-                    <div className="a_aa_main">
-                        <div className="a_aa_form">
-                            <ul className="a_aa_list">
-                                {
-                                    !ModalTitle ?
-                                        <li>
-                                            <span className="a_aa_left_text">银行卡号：</span>
-                                            <Input value={addPostData.account}
-                                                   onChange={(e)=>this.onAccount(e)}
-                                                   className={onValidate('account', this.state.validate)}
-                                                   size="large" style={{width: 280}} placeholder="请输入银行卡号"
-                                                   disabled={!ModalTitle}
-                                            />
-                                            <span className="a_aa_right_text">卡号错误请联系客服删除</span>
-                                        </li> :
-                                        null
-                                }
-                                <li id="select_p1">
-                                    <span className="a_aa_left_text">开户银行：</span>
-                                    <Select value={addPostData.bank_id} size="large"
-                                            style={{ width: 280 }}
-                                            onChange={(value)=>{this.onSelectBank(value)}} placeholder="请选择开户银行"
-                                            getPopupContainer={() => document.getElementById('select_p1')}
-                                    >
-                                        <Option value='-1'>请选择开户银行</Option>
-                                        {
-                                            adduserbank.banklist.map((item, i)=>{
-                                                return <Option value={item.bank_id} key={item.bank_id}>{item.bank_name}</Option>
-                                            })
-                                        }
-                                    </Select>
-                                </li>
-                                <li id="select_p2">
-                                    <span className="a_aa_left_text">开户银行区域：</span>
-                                    <Select value={addPostData.province_id} className="a_aa_marg" size="large"
-                                            style={{ width: 280 }}
-                                            onChange={(value)=>{this.onProvince(value)}}
-                                            placeholder="请选择省份"
-                                            getPopupContainer={() => document.getElementById('select_p2')}
-                                    >
-                                        <Option value='-1'>请选择省份</Option>
-                                        {
-                                            adduserbank.provincelist.map((item, i)=>{
-                                                return <Option value={item.id} key={item.id}>{item.name}</Option>
-                                            })
-                                        }
-                                    </Select>
-                                    <Select value={addPostData.city_id} size="large" style={{ width: 280 }}
-                                            onChange={(value)=>{this.onCity(value)}} placeholder="请选择城市"
-                                            getPopupContainer={() => document.getElementById('select_p2')}
-                                    >
-                                        <Option value='-1'>请选择城市</Option>
-                                        {
-                                            adduserbank.city.map((item, i)=>{
-                                                return <Option value={item.id} key={item.id}>{item.name}</Option>
-                                            })
-                                        }
-                                    </Select>
-                                </li>
-                                <li>
-                                    <span className="a_aa_left_text">支行名称：</span>
-                                    <Input value={addPostData.branch}
-                                           onChange={(e)=>this.onBranch(e)}
-                                           className={onValidate('branch', this.state.validate)}
-                                           size="large" style={{width: 280}} placeholder="请输入支行名称"
+                <Spin spinning={spinLoading}>
+                    {
+                        selectShow ?
+                            <div className="w_m_nopassword">
+                                您尚未
+                                <span onClick={()=>this.onClickCapital()}>设置资金密码</span>
+                                ，请先设置资金密码
+                            </div> :
+                            <div>
+                                <div className="b_cm_text_explain">
+                                    <p>1、一个账户最多只能绑定5张银行卡，你当前绑定<i> ({response.binded == undefined ? '0' : response.binded}) </i>张，还能绑定<i> ({response.num == undefined ? '5' : response.num - response.binded}) </i>张。</p>
+                                    <p>2、如需删除已绑定的银行卡，请点击“申请删除”，之后会有客服人员主动与您连续进行确认。</p>
+                                    <p>3、为了您的账户资金安全，银行卡“新增”和“修改”将在操作完成2小时0分后，新卡才能发起“向平台提现”。</p>
+                                </div>
+                                <div className="b_cm_table">
+                                    <Table columns={columns}
+                                           rowKey={record => record.id}
+                                           dataSource={response.bankList}
+                                           loading={this.state.tableLoading}
+                                           pagination={false}
                                     />
-                                    <span className="a_aa_right_text">由1至20个字符或汉字组成，不能使用特殊字符</span>
-                                </li>
-                                <li>
-                                    <span className="a_aa_left_text">开户人姓名：</span>
-                                    <Input value={addPostData.account_name}
-                                           onChange={(e)=>this.onAccountName(e)}
-                                           className={onValidate('account_name', this.state.validate)}
-                                           size="large" style={{width: 280}} placeholder="请输入开户人姓名"
-                                    />
-                                    <span className="a_aa_right_text" style={{verticalAlign: 'bottom'}}>请填写您的真实姓名，只能是中文字符，支持以 下姓名分隔符"·"".""。"</span>
-                                </li>
-                                {
-                                    ModalTitle ?
-                                        <li>
-                                            <span className="a_aa_left_text">银行卡号：</span>
-                                            <Input value={addPostData.account}
-                                                   onChange={(e)=>this.onAccount(e)}
-                                                   className={onValidate('account', this.state.validate)}
-                                                   size="large" style={{width: 280}} placeholder="请输入银行卡号"
-                                                   disabled={!ModalTitle}
-                                            />
-                                            <span className="a_aa_right_text">银行卡卡号由16位或19位数字组成</span>
-                                        </li> :
-                                        null
-                                }
-                                {
-                                    ModalTitle ?
-                                    <li className="disabled_copy">
-                                        <span className="a_aa_left_text">确认卡号：</span>
-                                        <Input value={addPostData.account_again}
-                                               onChange={(e)=>this.onAccountAgain(e)}
-                                            // onPressEnter={()=>{alert(789)}}
-                                               className={onValidate('account_again', this.state.validate)}
-                                               size="large" style={{width: 280}} placeholder="请输入确认卡号" />
-                                        <span className="a_aa_right_text">银行账号只能手动输入，不要粘贴</span>
-                                    </li> :
-                                    null
-                                }
-                                <li>
-                                    <span className="a_aa_left_text">验证资金密码：</span>
-                                    <Input value={addPostData.security_pass}
-                                           onChange={(e)=>this.onSecurityPass(e)}
-                                           className={onValidate('security_pass', this.state.validate)}
-                                           type="password" size="large" style={{width: 280}} placeholder="请输入验证资金密码"
-                                    />
-                                    <a onClick={()=>this.setState({childVisible: true})} href="javascript:void(0)" style={{textDecoration:'underline', color:'#0393EF'}}>忘记资金密码？</a>
-                                    {/*, display: this.state.ModalTitle ? 'none' : ''*/}
-                                </li>
-                            </ul>
-                            <Button className="a_aa_btn" type="primary" loading={this.state.loading} onClick={()=>{this.onStep()}}>
-                                下一步
-                            </Button>
-                        </div>
+                                </div>
+                                <Button className="b_cm_btn" type="primary" size="large" icon="plus" onClick={()=>{this.showModal('add')}}>
+                                    增加绑定
+                                </Button>
+                                <Modal
+                                    width='865px'
+                                    visible={this.state.visible}
+                                    title={ModalTitle === true ? '新增银行卡' : '修改银行卡'}
+                                    onCancel={()=>this.onHideModal()}
+                                    maskClosable={false}
+                                    footer={null}
+                                >
+                                    <div className="a_aa_main">
+                                        <div className="a_aa_form">
+                                            <ul className="a_aa_list">
+                                                {
+                                                    !ModalTitle ?
+                                                        <li>
+                                                            <span className="a_aa_left_text">银行卡号：</span>
+                                                            <Input value={addPostData.account}
+                                                                   onChange={(e)=>this.onAccount(e)}
+                                                                   className={onValidate('account', this.state.validate)}
+                                                                   size="large" style={{width: 280}} placeholder="请输入银行卡号"
+                                                                   disabled={!ModalTitle}
+                                                            />
+                                                            <span className="a_aa_right_text">卡号错误请联系客服删除</span>
+                                                        </li> :
+                                                        null
+                                                }
+                                                <li id="select_p1">
+                                                    <span className="a_aa_left_text">开户银行：</span>
+                                                    <Select value={addPostData.bank_id} size="large"
+                                                            style={{ width: 280 }}
+                                                            onChange={(value)=>{this.onSelectBank(value)}} placeholder="请选择开户银行"
+                                                            getPopupContainer={() => document.getElementById('select_p1')}
+                                                    >
+                                                        <Option value='-1'>请选择开户银行</Option>
+                                                        {
+                                                            adduserbank.banklist.map((item, i)=>{
+                                                                return <Option value={item.bank_id} key={item.bank_id}>{item.bank_name}</Option>
+                                                            })
+                                                        }
+                                                    </Select>
+                                                </li>
+                                                <li id="select_p2">
+                                                    <span className="a_aa_left_text">开户银行区域：</span>
+                                                    <Select value={addPostData.province_id} className="a_aa_marg" size="large"
+                                                            style={{ width: 280 }}
+                                                            onChange={(value)=>{this.onProvince(value)}}
+                                                            placeholder="请选择省份"
+                                                            getPopupContainer={() => document.getElementById('select_p2')}
+                                                    >
+                                                        <Option value='-1'>请选择省份</Option>
+                                                        {
+                                                            adduserbank.provincelist.map((item, i)=>{
+                                                                return <Option value={item.id} key={item.id}>{item.name}</Option>
+                                                            })
+                                                        }
+                                                    </Select>
+                                                    <Select value={addPostData.city_id} size="large" style={{ width: 280 }}
+                                                            onChange={(value)=>{this.onCity(value)}} placeholder="请选择城市"
+                                                            getPopupContainer={() => document.getElementById('select_p2')}
+                                                    >
+                                                        <Option value='-1'>请选择城市</Option>
+                                                        {
+                                                            adduserbank.city.map((item, i)=>{
+                                                                return <Option value={item.id} key={item.id}>{item.name}</Option>
+                                                            })
+                                                        }
+                                                    </Select>
+                                                </li>
+                                                <li>
+                                                    <span className="a_aa_left_text">支行名称：</span>
+                                                    <Input value={addPostData.branch}
+                                                           onChange={(e)=>this.onBranch(e)}
+                                                           className={onValidate('branch', this.state.validate)}
+                                                           size="large" style={{width: 280}} placeholder="请输入支行名称"
+                                                    />
+                                                    <span className="a_aa_right_text">由1至20个字符或汉字组成，不能使用特殊字符</span>
+                                                </li>
+                                                <li>
+                                                    <span className="a_aa_left_text">开户人姓名：</span>
+                                                    <Input value={addPostData.account_name}
+                                                           onChange={(e)=>this.onAccountName(e)}
+                                                           className={onValidate('account_name', this.state.validate)}
+                                                           size="large" style={{width: 280}} placeholder="请输入开户人姓名"
+                                                    />
+                                                    <span className="a_aa_right_text" style={{verticalAlign: 'bottom'}}>请填写您的真实姓名，只能是中文字符，支持以 下姓名分隔符"·"".""。"</span>
+                                                </li>
+                                                {
+                                                    ModalTitle ?
+                                                        <li>
+                                                            <span className="a_aa_left_text">银行卡号：</span>
+                                                            <Input value={addPostData.account}
+                                                                   onChange={(e)=>this.onAccount(e)}
+                                                                   className={onValidate('account', this.state.validate)}
+                                                                   size="large" style={{width: 280}} placeholder="请输入银行卡号"
+                                                                   disabled={!ModalTitle}
+                                                            />
+                                                            <span className="a_aa_right_text">银行卡卡号由16位或19位数字组成</span>
+                                                        </li> :
+                                                        null
+                                                }
+                                                {
+                                                    ModalTitle ?
+                                                        <li className="disabled_copy">
+                                                            <span className="a_aa_left_text">确认卡号：</span>
+                                                            <Input value={addPostData.account_again}
+                                                                   onChange={(e)=>this.onAccountAgain(e)}
+                                                                // onPressEnter={()=>{alert(789)}}
+                                                                   className={onValidate('account_again', this.state.validate)}
+                                                                   size="large" style={{width: 280}} placeholder="请输入确认卡号" />
+                                                            <span className="a_aa_right_text">银行账号只能手动输入，不要粘贴</span>
+                                                        </li> :
+                                                        null
+                                                }
+                                                <li>
+                                                    <span className="a_aa_left_text">验证资金密码：</span>
+                                                    <Input value={addPostData.security_pass}
+                                                           onChange={(e)=>this.onSecurityPass(e)}
+                                                           className={onValidate('security_pass', this.state.validate)}
+                                                           type="password" size="large" style={{width: 280}} placeholder="请输入验证资金密码"
+                                                    />
+                                                    <a onClick={()=>this.setState({childVisible: true})} href="javascript:void(0)" style={{textDecoration:'underline', color:'#0393EF'}}>忘记资金密码？</a>
+                                                    {/*, display: this.state.ModalTitle ? 'none' : ''*/}
+                                                </li>
+                                            </ul>
+                                            <Button className="a_aa_btn" type="primary" loading={this.state.loading} onClick={()=>{this.onStep()}}>
+                                                下一步
+                                            </Button>
+                                        </div>
 
-                        <ForgetFundPw visible={this.state.childVisible}
-                                      onHideModal={this.onHideChildModal.bind(this)}
-                        />
-                    </div>
-                </Modal>
+                                        <ForgetFundPw visible={this.state.childVisible}
+                                                      onHideModal={this.onHideChildModal.bind(this)}
+                                        />
+                                    </div>
+                                </Modal>
+                            </div>
+                    }
+                </Spin>
             </div>
         );
     }

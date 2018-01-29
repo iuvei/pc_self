@@ -112,14 +112,13 @@ export default class Withdraw extends Component {
         postData.bankinfo = item.id + '#' + item.bank_id;
         this.setState({postData, defaultBank: item.id})
     };
-    /*设置资金密码*/
+    /*跳转绑定银行卡*/
     onClickCapital(){
         stateVar.navIndex = 'account';
-        stateVar.securityIndex = 1;
         hashHistory.push({
-            pathname: '/account/security',
+            pathname: '/account/bankCardManage',
             query: {
-                navIndex: 5
+                navIndex: 4
             }
         });
     };
@@ -140,8 +139,8 @@ export default class Withdraw extends Component {
                         selectShow ?
                             <div className="w_m_nopassword">
                                 您尚未
-                                <span onClick={()=>this.onClickCapital()}>设置资金密码</span>
-                                ，请先设置资金密码
+                                <span onClick={()=>this.onClickCapital()}>绑定银行卡</span>
+                                ，请先绑定银行卡
                             </div> :
                             <div>
                                 <div className="tr_m_text">

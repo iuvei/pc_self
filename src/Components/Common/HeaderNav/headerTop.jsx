@@ -38,7 +38,7 @@ export default class HeaderTop extends Component {
         this._ismount = true;
 
         // 组件装载完成以后声明一个自定义事件
-        this.eventEmitter = emitter.addListener('changeMoney', () => {
+        this.eventEmitter = emitter.on('changeMoney', () => {
             this.getMenu();
             this.getBalance();
         });
@@ -53,7 +53,7 @@ export default class HeaderTop extends Component {
         // 清除定时器与暂停动画
         clearInterval(this._clearInt);
         cancelAnimationFrame(this._animationFrame);
-        emitter.removeListener(this.eventEmitter);
+        emitter.off(this.eventEmitter);
     };
     getDestination() {
         let destination = 40,
@@ -319,7 +319,7 @@ export default class HeaderTop extends Component {
                                     <ul className="n_t_down_list">
                                         <li>
                                             <span className="left">用户类型</span>
-                                            <span className="right color_DFC674">{userInfo.userType === 0 ? '会员' : '代理'}</span>
+                                            <span className="right color_DFC674">{userInfo.userType == 0 ? '会员' : '代理'}</span>
                                         </li>
                                         <li>
                                             <span className="left">奖金组</span>

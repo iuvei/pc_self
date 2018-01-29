@@ -61,7 +61,12 @@ export default class CapitalPassword extends Component {
                             onOk() {
                                 validate.secpass = 2;
                                 validate.secpass_confirm = 2;
-                                _this.setState({validate: validate},()=>stateVar.userInfo.setsecurity = 'no');
+                                postData.secpass = '';
+                                postData.secpass_confirm = '';
+                                _this.setState({
+                                    validate: validate,
+                                    postData,
+                                },()=>stateVar.userInfo.setsecurity = 'no');
                             },
 
                         });
@@ -95,7 +100,7 @@ export default class CapitalPassword extends Component {
             validate: validate,
             postData: postData,
         });
-    }
+    };
     /*确认设置资金密码*/
     onChangeSecpassConfirm(e){
         let value = e.target.value,
@@ -111,7 +116,7 @@ export default class CapitalPassword extends Component {
             validate: validate,
             postData: postData,
         });
-    }
+    };
     /*修改资金密码*/
     onChangeCapitaPass() {
         let validate = this.state.validate,
@@ -231,9 +236,17 @@ export default class CapitalPassword extends Component {
     /*enter键提交*/
     onSubmit(e){
         if(e.keyCode == 13){
-            this.onChangeCapitaPass()
+            if(stateVar.userInfo.setsecurity == 'yes'){
+                this.onSetCapitalPw()
+            }else{
+                this.onChangeCapitaPass()
+            }
         }
     }
+    /*设置密保*/
+    onClickCapital(){
+        stateVar.securityIndex = 3;
+    };
     render() {
         const postData = this.state.postData;
         const amendPostData = this.state.amendPostData;
@@ -268,13 +281,17 @@ export default class CapitalPassword extends Component {
                             <li>
                                 <span className="sec_k_left"></span>
                                 <Button type="primary" size="large" loading={this.state.setCapitalLoading} onClick={()=>{this.onSetCapitalPw()}}>
-                                    确认修改
+                                    确认
                                 </Button>
                             </li>
                             <li>
                                 <p>备注：</p>
-                                <p>1、尊敬的用户，您暂未设置密保功能，为了您的账户及资金的安全，请<a href="javascript:void(0)">设定密保问题</a></p>
-                                <p>2、请妥善保管好您的资金密码，如遗忘请使用密保功能找回或联系在线客服处理</p>
+                                <p>1、请妥善保管好您的资金密码，如遗忘请使用密保功能找回或联系在线客服处理</p>
+                                <p className="w_m_nopassword">
+                                    2、通过
+                                    <span onClick={()=>this.onClickCapital()}>设定密保问题</span>
+                                    可以用来找回资金密码
+                                </p>
                             </li>
                         </ul> :
                         <ul className="sec_k_list">

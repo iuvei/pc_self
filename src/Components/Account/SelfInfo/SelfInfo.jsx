@@ -241,7 +241,7 @@ export default class SelfInfo extends PureComponent {
                             </div>
                             <div className="s_i_info right">
                                 <h3>欢迎您！ {userInfo.userName}</h3>
-                                <p>用户类型：{userInfo.userType === 0 ? '会员' : '代理'}</p>
+                                <p>用户类型：{userInfo.userType == 0 ? '会员' : '代理'}</p>
                                 <p>奖金组：{userInfo.accGroup}</p>
                             </div>
                         </div>

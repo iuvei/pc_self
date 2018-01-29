@@ -575,32 +575,39 @@ export default class Login extends Component {
                 <div className="l_nav_top">
                     <div className="l_nav_top_content">
                         <ul className="l_n_t_list right">
-                            <a href="http://hengcai88.com/" target="_blank">
-                                <li className='l_speed' onMouseEnter={()=>{
+                            <li className='l_speed' onMouseEnter={()=>{
                                 this.setState({
                                     speedSrc:speedSrc_active,
                                 });}} onMouseLeave={()=>{this.setState({
                                 speedSrc:speedSrc,
                             });}}>
-                                <img  src={this.state.speedSrc}  /><span>域名测速</span></li></a>
-                            <a href="http://hengcai88.com/" target="_blank">
+                                <a href="http://hengcai88.com/" target="_blank">
+                                    <img  src={this.state.speedSrc}/>
+                                    <span>域名测速</span>
+                                </a>
+                            </li>
                             <li className='l_dns' onMouseEnter={()=>{
                                 this.setState({
                                     dnsSrc:dnsSrc_active,
                                 });}} onMouseLeave={()=>{this.setState({
                                 dnsSrc:dnsSrc,
                             });}}>
-                                <img  src={this.state.dnsSrc}  /><span>防劫持教程</span></li>
-                            </a>
-                            <a href="http://hengcai88.com/" target="_blank">
+                                <a href="#/dns" target="_blank">
+                                    <img  src={this.state.dnsSrc}  /><span>防劫持教程</span>
+                                </a>
+                            </li>
+
                             <li className='l_sevice' onMouseEnter={()=>{
                                 this.setState({
                                     serviceSrc:serviceSrc_active,
                                 });}} onMouseLeave={()=>{this.setState({
                                 serviceSrc:serviceSrc,
                             });}}>
-                                <img  src={this.state.serviceSrc} /><span>在线客服</span></li>
-                            </a>
+                                <a href={stateVar.httpService} target="_blank">
+                                    <img src={this.state.serviceSrc} />
+                                    <span>在线客服</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

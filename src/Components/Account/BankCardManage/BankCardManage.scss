@@ -2,6 +2,18 @@
 @import '../../../Style/mixin';
 
 .b_cm_main{
+    .w_m_nopassword{
+        font-size: 14px;
+        text-align: center;
+        margin-top: 200px;
+        span{
+            color: rgb(3, 9, 255);
+            text-decoration: underline;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
     .b_cm_text_explain{
         padding: 15px 25px;
         color: $color_363636;

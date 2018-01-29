@@ -167,7 +167,7 @@ export default class Message extends Component {
             msgids,
             onChange: this.onSelectChange,
         };
-        const hasSelected = postData.msgids instanceof Array && postData.msgids.length > 0;
+        const hasSelected = postData.msgids.length > 0;
         return (
             <div className="message_main">
                 <Table rowSelection={rowSelection}
@@ -208,7 +208,7 @@ export default class Message extends Component {
                     className="message_modal"
                 >
                     <p>{repDetails.sendtime}</p>
-                    <div className="modal_detailes">{repDetails.content}</div>
+                    <div className="modal_detailes" dangerouslySetInnerHTML={{__html: repDetails.content}}></div>
                     <p>
                         <Button type="primary" onClick={()=>this.onHideModal()}>知道了</Button>
                     </p>

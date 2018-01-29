@@ -20,17 +20,20 @@ export default class HeaderNav extends Component {
         this._ismount = true;
         stateVar.navIndex = 'lottery';
         this.onWindowResize();
-        window.addEventListener('resize', this.onWindowResize.bind(this))
+        window.addEventListener('resizeRest', this.onWindowResize.bind(this))
     };
     componentWillUnmount() {
         this._ismount = false;
-        window.removeEventListener('resize', this.onWindowResize.bind(this))
+        window.removeEventListener('resizeRest', this.onWindowResize.bind(this))
     };
     handleClick = (e) => {
         stateVar.navIndex = e.key;
     };
     //窗口改变大小后，使导航栏时刻和窗口宽度保持一致
     onWindowResize(){
+        if(this.lotteryNameType){
+            return
+        }
         this.lotteryNameType.style.width = document.body.clientWidth+'px'; // 给彩票游戏下拉框获取body宽度
         this.lotteryNameType.style.left=-this.refs.menusWrap.offsetLeft-96+'px'; //获取整个menus与浏览器左部的距离-彩票游戏与首页的相对距离并给子菜单left绝对距离
         this.lotteryNameType.style.paddingLeft=this.refs.menusWrap.offsetLeft-271+'px';//获取整个menus与浏览器左部的距离-标题中文字与首页的相对距离给使子菜单与标题文字对齐

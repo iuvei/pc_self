@@ -4,6 +4,12 @@ export const login = (location, callback) => {
         callback(null, require('../Components/Login/Login').default);
     }, 'login');
 };
+// 防劫持教程
+export const dns = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/Dns/Dns').default);
+    }, 'dns');
+};
 //自动登录
 export const autoLogin = (location, callback) => {
     require.ensure([], (require) => {
