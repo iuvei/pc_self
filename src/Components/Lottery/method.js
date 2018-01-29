@@ -1988,5 +1988,7 @@ export default {
     checkNum,
     play,
     _inputCheck_Num,
+    _HHZXcheck,
+    _SDinputCheck,
     random
 }

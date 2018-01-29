@@ -23,7 +23,6 @@ export default class ContentTop extends Component {
             statusClass : true,
             textAreaValue:'',
             timeShow:{hour:'00',second:'00',minute:'00',day:'00'},
-            issueIndex:'请选择期号',
             code : [],//开奖号码
             animateCode:[],//开奖动画号码
         	nowIssue:'??????',//上一期前期号
@@ -63,10 +62,16 @@ export default class ContentTop extends Component {
     	let tempStopFlag = [];
     	for(let i=0;i<tempLotteryLength;i++){
     		tempArrCode.push('-');
-    		tempStopFlag.push(false);
+    		if(stateVar.nowlottery.lotteryBetId == 23){
+    			tempStopFlag.push(true);
+    		}else{
+    			tempStopFlag.push(false);
+    		}
     	}
     	this.setState({code:tempArrCode,kjStopFlag:tempStopFlag,animateCode:tempArrCode,tempLotteryLength:tempLotteryLength},()=>{
-    		this.kjanimate(0);
+    		if(stateVar.nowlottery.lotteryBetId != 23){
+	    		this.kjanimate(0);
+	    	}
     	});
     	this.getlotterycode();
     	this.getFutureIssue();
@@ -83,6 +88,8 @@ export default class ContentTop extends Component {
 		}
     	let param = this.state.tempLotteryLength;
     	if(this.state.kjStopTime >= 5){
+    		this.setState({mmcmoni:false});
+			$(".monikj span").html('模拟开奖');
     		return;
     	}
 		let tempCode = [];
@@ -95,7 +102,7 @@ export default class ContentTop extends Component {
 		}
 		this.setState({animateCode:tempCode},()=>{
 			setTimeout(()=>{
-				if(b < 800){
+				if(b < 600){
 					b = b + 30;
 					this.kjanimate(b);
 				}else{
@@ -117,9 +124,9 @@ export default class ContentTop extends Component {
 	    						});
 	    					});
 	    				},50);
-	    				this.kjanimate(600);
+	    				this.kjanimate(400);
 	    			}else{
-	    				this.kjanimate(800);
+	    				this.kjanimate(600);
 	    			}
 				}
     		},50);
@@ -145,7 +152,7 @@ export default class ContentTop extends Component {
 					stateVar.checkTrace = false;
 					stateVar.todayAndTomorrow = todayData;
 					this.props.actionTrace();
-					this.setState({issueIndex:todayData[0].issue});
+					stateVar.issueIndex = todayData[0].issue;
     			}
     		})
     };
@@ -203,11 +210,13 @@ export default class ContentTop extends Component {
 	    		method:"POST",
 	    		body:JSON.stringify({lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,flag:'getlastcode'})
 	    		}).then((data)=>{
+	    			stateVar.openLotteryFlag = true;
 	    			let tempData = data.repsoneContent;
 	    			if(this._ismount && data.status == 200){
 	    				this.setState({mmcmoni:false});
 	    				if(tempData.length > 0){
 	    					stateVar.mmccode = tempData[0].split(' ');
+	    					setTimeout(()=>{this.setState({code:stateVar.mmccode})},300);
 	    				}
 	    				stateVar.mmCkjNumberList = tempData;
 	    			}else{
@@ -284,19 +293,23 @@ export default class ContentTop extends Component {
     };
     //秒秒彩模拟开号
     monikj(){
-    	this.setState({mmcmoni:true});
+    	this.setState({mmcmoni:true,kjStopallFlag:false,kjStopTime:0,kjStopFlag:[false,false,false,false,false]},()=>{
+			this.kjanimate(0);
+		});
     	$(".monikj span").html('开奖中...')
     	Fatch.aboutMmc({
     		method:"POST",
     		body:JSON.stringify({"flag":"getcodes","lotteryid":23})
     		}).then((data)=>{
-    			$(".monikj span").html('模拟开奖')
     			let tempData = data.repsoneContent;
     			if(this._ismount && data.status == 200){
-    				this.setState({mmcmoni:false});
+    				this.setState({kjStopallFlag:true});
     				stateVar.mmccode = tempData.split('');
-					this.props.getBetHistory();
-					this.getKjHistory();
+	    			this.setState({code:stateVar.mmccode});
+    				setTimeout(()=>{
+						this.props.getBetHistory();
+						this.getKjHistory();
+    				},2500);
     			}else{
     				if(this._ismount){
     					this.setState({mmcmoni:false});
@@ -452,9 +465,12 @@ export default class ContentTop extends Component {
 	                            <li>
 	                            	<ul className="ball_number_mmc">
 						                {
-						                	stateVar.mmccode.map((val,idx)=>{
+						                	this.state.code.map((val,idx)=>{
 						                		return (
-						                			<li key={idx}>{val}</li>
+						                			<li key={idx}>
+							                			<span className='kjCodeClass' style={{display:this.state.kjStopFlag[idx] ? 'block' : 'none'}}>{val}</span>
+			                							<span style={{display:this.state.kjStopFlag[idx] ? 'none' : 'block'}}>{this.state.animateCode[idx]}</span>
+		                							</li>
 						                		)
 						                	})
 						                }

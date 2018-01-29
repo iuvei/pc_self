@@ -30,8 +30,7 @@ export default class Main extends Component {
             hashHistory.getCurrentLocation().pathname == '/pt'||
             hashHistory.getCurrentLocation().pathname == '/gt'||
             hashHistory.getCurrentLocation().pathname == '/sport'||
-            hashHistory.getCurrentLocation().pathname == '/downLoadClient'||
-            hashHistory.getCurrentLocation().pathname == '/lottery'
+            hashHistory.getCurrentLocation().pathname == '/downLoadClient'
         ) {
             return true
         } else {

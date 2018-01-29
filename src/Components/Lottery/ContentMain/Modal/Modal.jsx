@@ -475,7 +475,7 @@ export default class ModalView extends Component {
 	                        </div>
 	                        <div className="periods_input left">
 	                            <span>手动输入</span>
-	                            <InputNumber min={1} max={120} value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
+	                            <InputNumber min={1} max={50} value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
 	                            <span>期</span>
 	                        </div>
 	                        <div className="multiple_input left">
@@ -490,7 +490,7 @@ export default class ModalView extends Component {
                         <div style={{display:this.state.traceTitleIndex ==2 ? 'block':'none'}}>
                         	<div className="periods_input left">
 	                            <span>追号期数</span>
-	                            <InputNumber min={1} max={120} value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
+	                            <InputNumber min={1} max={50} value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
 	                            <span>期</span>
 	                        </div>
 	                        <div className="multiple_input left">
@@ -511,12 +511,12 @@ export default class ModalView extends Component {
 	                    <div style={{display:this.state.traceTitleIndex ==1 ? 'block':'none'}}>
 	                    	<div className="multiple_input left">
 	                            <span>追号期数</span>
-	                            <InputNumber min={1} max={120} value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
+	                            <InputNumber min={1} max={50} value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
 	                            <span>期</span>
 	                        </div>
 	                        <div className="periods_input left">
 	                            <span>隔</span>
-	                            <InputNumber min={1} max={120} value={this.state.traceIssueSpaceNum} onChange={(value)=>{this.onChangeInputSpaceTraceIssue(value)}} />
+	                            <InputNumber min={1} max={50} value={this.state.traceIssueSpaceNum} onChange={(value)=>{this.onChangeInputSpaceTraceIssue(value)}} />
 	                            <span>期</span>
 	                        </div>
 	                        <div className="periods_input periods_inputlv left">
