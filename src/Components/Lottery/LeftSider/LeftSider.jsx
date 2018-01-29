@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Menu, Affix } from 'antd';
+import { Menu, Affix, Icon } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import { hashHistory } from 'react-router';
 const SubMenu = Menu.SubMenu;
@@ -17,12 +17,15 @@ import left_2_active from './Img/left_2_active.png'
 import left_3 from './Img/left_3.png'
 import left_4 from './Img/left_4.png'
 import left_5 from './Img/left_5.png'
-import triangle_right from './Img/triangle_right.png'
 
+const rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
 @observer
 export default class LeftSider extends Component {
     constructor(props) {
         super(props);
+        this.state={
+            openKeys: ['sub1'],
+        }
     }
     handleClick(e) {
     	if(!stateVar.openLotteryFlag){
@@ -71,7 +74,19 @@ export default class LeftSider extends Component {
 				}
 			}
     	}
+    };
+
+    onOpenChange = (openKeys) => {
+        const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
+        if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+            this.setState({ openKeys });
+        } else {
+            this.setState({
+                openKeys: latestOpenKey ? [latestOpenKey] : [],
+            });
+        }
     }
+
     render() {
         return (
             <Affix offsetTop={120}>
@@ -80,39 +95,32 @@ export default class LeftSider extends Component {
                                { opacity: [1, 0], translateX: [0, -100] }
                            ]}>
                     <div className="left_sider" key="LeftSider">
-                        <Menu onClick={(e)=>{this.handleClick(e)}}
-                              mode="vertical"
-                              theme="dark"
+                        <Menu
+                            onClick={this.handleClick}
+                            style={{ width: 120 }}
+                            defaultOpenKeys={['sub1']}
+                            selectedKeys={[this.state.current]}
+                            mode="inline"
                         >
-                            <SubMenu key="sub1"  title={<span className="l_s_bg_01"></span>}>
-                                <MenuItemGroup title="24小时">
-                                    <Menu.Item key="mmc">泰国秒秒彩</Menu.Item>
-                                    <Menu.Item key="24xsc">泰国300秒</Menu.Item>
-                                    <Menu.Item key="ffc">泰国60秒</Menu.Item>
-                                    <Menu.Item key="TG11-5">泰国11选5</Menu.Item>
-                                </MenuItemGroup>
+                            <SubMenu key="sub1" title={<span><Icon type="appstore" /><span>常玩彩种</span></span>}>
+                                <Menu.Item key="1">Option 1</Menu.Item>
+                                <Menu.Item key="2">Option 2</Menu.Item>
+                                <Menu.Item key="3">Option 3</Menu.Item>
+                                <Menu.Item key="4">Option 4</Menu.Item>
                             </SubMenu>
-                            <SubMenu key="sub2" title={<span className="l_s_bg_02"></span>}>
-                                <MenuItemGroup title="时时彩系列">
-                                    <Menu.Item key="ssc">重庆时时彩</Menu.Item>
-                                    <Menu.Item key="XJSSC">新疆时时彩</Menu.Item>
-                                    <Menu.Item key="TJSSC">天津时时彩</Menu.Item>
-                                    <Menu.Item key="txffc">腾讯分分彩</Menu.Item>
-                                </MenuItemGroup>
+                            <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>N Two</span></span>}>
+                                <Menu.Item key="5">Option 5</Menu.Item>
+                                <Menu.Item key="6">Option 6</Menu.Item>
+                                <SubMenu key="sub3" title="Submenu">
+                                    <Menu.Item key="7">Option 7</Menu.Item>
+                                    <Menu.Item key="8">Option 8</Menu.Item>
+                                </SubMenu>
                             </SubMenu>
-                            <SubMenu key="sub3" title={<span className="l_s_bg_03"></span>}>
-                                <MenuItemGroup title="11选5系列">
-                                    <Menu.Item key="JX11-5">江西11选5</Menu.Item>
-                                    <Menu.Item key="SD11Y">山东11选5</Menu.Item>
-                                    <Menu.Item key="GD11-5">广东11选5</Menu.Item>
-                                </MenuItemGroup>
-                            </SubMenu>
-                            <SubMenu key="sub5" title={<span className="l_s_bg_05"></span>}>
-                                <MenuItemGroup title="其他系列">
-                                    <Menu.Item key="ticaip3">排列三</Menu.Item>
-                                    <Menu.Item key="fucaip3">福彩3D</Menu.Item>
-                                    <Menu.Item key="pk10">北京PK10</Menu.Item>
-                                </MenuItemGroup>
+                            <SubMenu key="sub4" title={<span><Icon type="setting" /><span>NThree</span></span>}>
+                                <Menu.Item key="9">Option 9</Menu.Item>
+                                <Menu.Item key="10">Option 10</Menu.Item>
+                                <Menu.Item key="11">Option 11</Menu.Item>
+                                <Menu.Item key="12">Option 12</Menu.Item>
                             </SubMenu>
                         </Menu>
                     </div>

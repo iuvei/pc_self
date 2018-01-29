@@ -208,7 +208,7 @@ export default class Message extends Component {
                     className="message_modal"
                 >
                     <p>{repDetails.sendtime}</p>
-                    <div className="modal_detailes">{repDetails.content}</div>
+                    <div className="modal_detailes" dangerouslySetInnerHTML={{__html: repDetails.content}}></div>
                     <p>
                         <Button type="primary" onClick={()=>this.onHideModal()}>知道了</Button>
                     </p>

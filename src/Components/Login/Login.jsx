@@ -592,8 +592,8 @@ export default class Login extends Component {
                                 });}} onMouseLeave={()=>{this.setState({
                                 dnsSrc:dnsSrc,
                             });}}>
-                                <a href="http://hengcai88.com/" target="_blank">
-                                <img  src={this.state.dnsSrc}  /><span>防劫持教程</span>
+                                <a href="#/dns" target="_blank">
+                                    <img  src={this.state.dnsSrc}  /><span>防劫持教程</span>
                                 </a>
                             </li>
 
@@ -603,7 +603,7 @@ export default class Login extends Component {
                                 });}} onMouseLeave={()=>{this.setState({
                                 serviceSrc:serviceSrc,
                             });}}>
-                                <a href="http://hengcai88.com/" target="_blank">
+                                <a href={stateVar.httpService} target="_blank">
                                     <img src={this.state.serviceSrc} />
                                     <span>在线客服</span>
                                 </a>

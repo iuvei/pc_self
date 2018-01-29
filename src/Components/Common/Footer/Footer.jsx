@@ -36,7 +36,7 @@ export default class Footer extends Component {
                                     <a href="#">PC客户端</a><span>|</span>
                                 </li>
                                 <li>
-                                    <a href="#">放劫持教程</a>
+                                    <a href="#/dns" target="_blank">放劫持教程</a>
                                 </li>
                             </ul>
                             <p>恒彩郑重提示：彩票有风险，投注需谨慎，未满18周岁的青少年禁止购彩</p>

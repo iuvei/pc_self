@@ -326,10 +326,10 @@ const onCanvas01=()=> {
     }, false);
 };
 const onCanvas02=()=> {
-    var canvas = document.getElementById('canvas');
-    var w = canvas.width = window.innerWidth
-        ,h = canvas.height = window.innerHeight
-        ,ctx = canvas.getContext( '2d' )
+    var c = document.getElementById('canvas');
+    var w = c.width = window.innerWidth
+        ,h = c.height = window.innerHeight
+        ,ctx = c.getContext( '2d' )
         ,opts = {
         baseBaseSize: 15,
         addedBaseSize: 5,

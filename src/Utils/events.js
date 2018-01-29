@@ -1,5 +1,3 @@
-// import { EventEmitter } from 'events';
-
 // 发布订阅类
 class EventEmitter {
     _event = {};
@@ -15,6 +13,9 @@ class EventEmitter {
     }
     // off 用于移除
     off(eventName, handle) {
+        if(eventName == undefined){
+            return
+        }
         let listeners = this._event[eventName];
         this._event[eventName] = listeners.filter(l => l !== handle);
     }

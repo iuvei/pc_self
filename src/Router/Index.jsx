@@ -4,6 +4,7 @@ import { stateVar } from '../State';
 import {getCookie,getStore} from "../CommonJs/common";
 import {
     login,
+    dns,
     main,
     home,
     lottery,
@@ -83,6 +84,7 @@ const routes = params => (
         <IndexRedirect to={(getCookie("sess") && (getStore('session') == getCookie("sess")))?"/autoLogin":"/login"} />
         <Route path="/autoLogin" getComponent={autoLogin} params={params}/>
         <Route path="/login" getComponent={login} params={params}/>
+        <Route path="/dns" getComponent={dns} params={params}/>
         <Route path="/main" getComponent={main} params={params} onEnter={requireAuth}  >
            {/* <IndexRedirect to="/home" />*/}
             <IndexRoute getComponent={lottery} />
