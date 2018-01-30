@@ -210,7 +210,7 @@ export default class SelfInfo extends PureComponent {
     }
     render() {
         const { userInfo, allBalance } = stateVar;
-        const { postData, validate, disabled } = this.state;
+        const { postData, validate, disabled, logs } = this.state;
         const columns = [
             {
                 title: '序号',
@@ -237,7 +237,7 @@ export default class SelfInfo extends PureComponent {
                         <div className="s_i_c_top clear">
                             <div className="s_i_logo left">
                                 <img src={info_logo} alt=""/>
-                                <p>当前IP：{userInfo.lastIp} {userInfo.address}</p>
+                                <p>当前IP：{ logs[0] != undefined ? logs[0].clientip + ' ' + logs[0].ip_address : '暂未获取到当前IP' }</p>
                             </div>
                             <div className="s_i_info right">
                                 <h3>欢迎您！ {userInfo.userName}</h3>
@@ -344,7 +344,7 @@ export default class SelfInfo extends PureComponent {
                 <div className="self_i_bottom">
                     <Table rowKey={record => record.times}
                            columns={columns}
-                           dataSource={this.state.logs}
+                           dataSource={logs}
                            loading={this.state.tableLoading}
                            pagination={false}
                            scroll={{ y: 200 }}

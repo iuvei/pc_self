@@ -26,7 +26,7 @@ export default class Dividend extends Component {
 
             postData: {
                 username: '',
-                starttime: null, //返回的divIdEndTotals列表里选一个Id
+                starttime: '0', //返回的divIdEndTotals列表里选一个Id
                 p: 1,
                 pn: 50,
             },
@@ -60,9 +60,10 @@ export default class Dividend extends Component {
     /*获取分红列表*/
     getData(){
         this.setState({ loading: true });
+        let { postData } = this.state;
         Fetch.dividendsalary({
             method: 'POST',
-            body: JSON.stringify(this.state.postData),
+            body: JSON.stringify(postData),
         }).then((res)=>{
             if(this._ismount){
                 this.setState({ searchLoading: false, loading: false });
@@ -86,6 +87,11 @@ export default class Dividend extends Component {
                         };
                         resultsFlag.unshift(team);
                     }
+                    let dividendtotalsFirst = {
+                        id: '0',
+                        growkey: data.begintime + '至' + data.endtime
+                    };
+                    data.dividendtotals.unshift(dividendtotalsFirst);
                     this.setState({
                         data: resultsFlag,
                         divIdEndTotals: data.dividendtotals,
@@ -375,7 +381,6 @@ export default class Dividend extends Component {
                                 }
                             </li>
                         </ul>;
-
         return (
             <div className="report">
                 <div className="team_list_top">
@@ -387,9 +392,9 @@ export default class Dividend extends Component {
                             </li>
                             <li>
                                 <span>日期：</span>
-                                <Select placeholder="请选择日期范围" style={{ width: 180 }} onChange={(value)=>this.onChangeSelect(value)}>
+                                <Select value={postData.starttime} style={{ width: 180 }} onChange={(value)=>this.onChangeSelect(value)}>
                                     {
-                                        divIdEndTotals.map((item,i)=>{
+                                        divIdEndTotals.map((item)=>{
                                             return <Option value={item.id} key={item.id}>{item.growkey}</Option>
                                         })
                                     }
@@ -412,7 +417,7 @@ export default class Dividend extends Component {
                     </div>
                     <div className="t_l_table_list dividend_table">
                         <Table columns={columns}
-                               rowKey={record => record.id}
+                               rowKey={record => record.id || record.userid}
                                dataSource={data}
                                pagination={false}
                                loading={this.state.loading}

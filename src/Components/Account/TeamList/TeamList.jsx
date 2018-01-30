@@ -58,6 +58,7 @@ export default class TeamList extends Component {
                 dividend_radio: null, // 要修改的比例
             },
             prizeGroupPost: {}, // 奖金组请求参数
+            contract_name: '修改协议', //按钮btn
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -247,7 +248,7 @@ export default class TeamList extends Component {
     /*提交协议*/
     onDiviratio(contract_name){
         if(contract_name == '修改契约'){
-            this.setState({disabled: false,});
+            this.setState({disabled: false, contract_name: '签订协议'});
         }else{
             let { typeName, alterData } = this.state;
             this.setState({affirmLoading: true});
@@ -262,7 +263,7 @@ export default class TeamList extends Component {
                         this.setState({affirmLoading: false});
                         if(res.status == 200){
                             message.success(res.repsoneContent);
-                            this.setState({disabled: true});
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
                             this.getAccGroupList(alterData);
                         }else{
                             Modal.warning({
@@ -282,7 +283,7 @@ export default class TeamList extends Component {
                         this.setState({affirmLoading: false});
                         if(res.status == 200){
                             message.success(res.repsoneContent);
-                            this.setState({disabled: true});
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -304,7 +305,7 @@ export default class TeamList extends Component {
                         this.setState({affirmLoading: false});
                         if(res.status == 200){
                             message.success(res.repsoneContent);
-                            this.setState({disabled: true});
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -325,7 +326,7 @@ export default class TeamList extends Component {
                         this.setState({affirmLoading: false});
                         if(res.status == 200){
                             message.success(res.repsoneContent);
-                            this.setState({disabled: true});
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -338,7 +339,7 @@ export default class TeamList extends Component {
     };
     /*关闭模态框*/
     onCancel(){
-        this.setState({alterVisible: false, affirmLoading: false});
+        this.setState({alterVisible: false, affirmLoading: false, contract_name: '修改协议'});
     };
     /*奖金组设置 滑动条*/
     onRegisterSetBonus(value) {
@@ -611,6 +612,7 @@ export default class TeamList extends Component {
                     alterData={this.state.alterData}
                     alterVisible={this.state.alterVisible}
                     affirmLoading={this.state.affirmLoading}
+                    contract_name={this.state.contract_name}
                     disabled={this.state.disabled}
                     onCancel={this.onCancel}
                     onAffirm={this.onDiviratio}

@@ -2,16 +2,16 @@
 @import '../../../Style/mixin';
 
 .c_nav{
-    background-color: #3E3E49;
-    color: #fff;
+    background-color: $background_F5F5F5;
     padding-left: 15px;
     font-size: 14px;
     @include lh(45px);
+    border-bottom: 3px solid #CA2124;
     .nav_list{
         li{
             a{
                 display: inline-block;
-                color: #fff;
+                color: $color_363636;
                 height: 45px;
                 padding: 0 20px;
                 text-align: center;
@@ -19,21 +19,20 @@
             float: left;
             &:hover{
                 cursor: pointer;
-                background-color: #fff;
-                color:#3A2C0F;
+                background-color: $hover_background;
+                color:#fff;
                 a{
-                    color:#3A2C0F;
+                    color:#fff;
                 }
             }
         }
         .nav_active{
             box-sizing: border-box;
-            background-color: #fff;
-            border-top: 2px solid #CB1313;
+            @include gradient(0, 0, 0, bottom, #F92626, #CA2124);
             @include lh(45px);
-            color:#3A2C0F;
+            color:#fff;
             a{
-                color:#3A2C0F;
+                color:#fff;
             }
         }
     }

@@ -23,15 +23,15 @@
 
 /*二级导航栏样式*/
 .a_m_controler{
-        background-color: #F4F4F4;
         margin: 11px 0 30px 5px;
         min-height: 700px;
+        border: 1px solid $border_color;
         .a_m_title{
             @include lh(50px);
             padding-left: 22px;
             font-size: 14px;
             color:$background-color;
-            background-color: #F4F4F4;
+            background-color: #fff;
         }
         .a_m_nav{
             background-color: #3E3E49;
@@ -208,6 +208,10 @@ td.column-right {
     background: #990000 url(../Images/wrong.png) no-repeat 98% center !important;
     background-size: 16px !important;
     transition: all 0s;
+}
+/*表格header，footer背景色*/
+.ant-table-thead > tr > th, .ant-table-footer{
+    background: $background_F5F5F5;
 }
 
 /*-start-;table中可点击列的样式*/

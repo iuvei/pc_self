@@ -55,7 +55,7 @@ export default class LotteryReport extends Component {
         this._ismount = false;
     };
     /*获取彩票报表列表*/
-    getData(type, username) {
+    getData(clickTable, type, username) {
         this.setState({ loading: true });
         let postData = this.state.postData;
         postData.lotteryid = this.state.checkedList.join(',');
@@ -70,6 +70,9 @@ export default class LotteryReport extends Component {
                 });
                 let { table } = this.state;
                 if(res.status == 200){
+                    if(clickTable == 'clickTable'){
+                        this.onClickTable('USERNAME', postData);
+                    }
                     let data = res.repsoneContent;
                     table.tableData = data.results.slice(0, -1);
                     table.sum = data.results.slice(-1)[0];
@@ -117,7 +120,7 @@ export default class LotteryReport extends Component {
     /*搜索*/
     onSearch() {
         this.setState({ searchLoading: true });
-        this.getData();
+        this.getData('clickTable');
     };
     /*切换每页显示条数*/
     onShowSizeChange (current, pageSize) {
@@ -177,7 +180,7 @@ export default class LotteryReport extends Component {
             if (historyFlag) {
                 table.history.push(history);
             }
-            this.getData(type, record.username);
+            this.getData('no', type, record.username);
         });
     };
     /*返回上一层table*/

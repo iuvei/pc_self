@@ -1,12 +1,13 @@
 @import '../../../Style/variables';
 @import '../../../Style/mixin';
 
-.f_partner{
-    background: #1F1D1D;
-    height: 138px;
+.footer{
+    background: $h_f_background;
+    height: 155px;
     padding-top: 35px;
-    color:#D1D1D1;
+    color:$color_363636;
     font-size: 12px;
+    border-top: 2px solid $color_CF2027;
     .f_partner_list{
         width: $nav_width_1200;
         margin: 0 auto;
@@ -22,27 +23,21 @@
                     margin: 0 5px;
                 }
                 a{
-                    color:#D1D1D1;
+                    color:$color_363636;
                     &:hover{
-                        color: #FACE69;
+                        color: $color_CF2027;
                         text-decoration: underline;
                     }
                 }
             }
+        }
+        .copyright_text{
+            color: #999;
+            margin-top: 20px;
         }
     }
     .f_partner_text{
         margin-bottom: 8px;
     }
 }
-.f_bottom{
-    width: $nav_width_1200;
-    @include lh(45px);
-    margin: 0 auto;
-    .footer_bottom{
-        height: 45px;
-        img{
-            margin-top: 7px;
-        }
-    }
-}
+

@@ -28,7 +28,6 @@ export default class Contract extends Component {
     /*取消关闭modal*/
     onCancel(){
         this.props.onCancel();
-        this.setState({contract_name: '修改契约'})
     };
     /*是否已签订*/
     isSign() {
@@ -39,9 +38,56 @@ export default class Contract extends Component {
             return disabled ? 'a_c_name a_c_active' : 'a_c_name';
         }
     };
+
+    /*按钮*/
+    onBtn(){
+      const { alterData } = this.props;
+      if(alterData.buttons == undefined){
+          // return
+      }
+      if(alterData.buttons != undefined && alterData.buttons[1].text == '同意协议'){
+          return (
+              <div className="a_c_btn">
+                  <Button loading={this.props.affirmLoading}
+                          onClick={()=>this.props.onConsent()}
+                          type="primary"
+                          className="a_c_cancel_btn"
+                  >
+                      同意
+                  </Button>
+                  <Button onClick={()=>this.onCancel()}
+                  >
+                      关闭
+                  </Button>
+              </div>
+          )
+      }else if(stateVar.userInfo.userName == alterData.username){
+          return (
+              <div className="a_c_btn_one">
+                  <Button onClick={()=>this.onCancel()}>关闭</Button>
+              </div>
+          )
+      }else{
+          return (
+              <div className="a_c_btn">
+                  <Button loading={this.props.affirmLoading}
+                          onClick={()=>this.onAffirm()}
+                          type="primary"
+                          className="a_c_cancel_btn"
+                  >
+                      {this.props.contract_name}
+                  </Button>
+                  <Button onClick={()=>this.onCancel()}
+                  >
+                      关闭
+                  </Button>
+              </div>
+          )
+      }
+    };
     render() {
         const { alterData, title, alterVisible, textDescribe } = this.props;
-        const { contract_name } = this.state;
+
         return (
             <Modal
                 visible={alterVisible}
@@ -68,23 +114,7 @@ export default class Contract extends Component {
                         <p>{common.setDateTime(0)}</p>
                     </div>
                     {
-                        stateVar.userInfo.userName == alterData.username ?
-                            <div className="a_c_btn_one">
-                                <Button onClick={()=>this.onCancel()}>关闭</Button>
-                            </div> :
-                            <div className="a_c_btn">
-                                <Button loading={this.props.affirmLoading}
-                                        onClick={()=>this.onAffirm()}
-                                        type="primary"
-                                        className="a_c_cancel_btn"
-                                >
-                                    {contract_name}
-                                </Button>
-                                <Button onClick={()=>this.onCancel()}
-                                >
-                                    关闭
-                                </Button>
-                            </div>
+                        this.onBtn()
                     }
                 </div>
             </Modal>

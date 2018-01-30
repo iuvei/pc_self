@@ -1,47 +1,83 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Link, hashHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
-import { Menu, Modal } from 'antd';
+import lotteryTypeList from '../../../CommonJs/common.json';
+import { Modal } from 'antd';
 import HeaderTop from './HeaderTop'
 import './headerNav.scss';
 
-import logoSrc from '../../../Images/logo.png'
+import nav_h from './Img/nav_h.png';
+import nav_n from './Img/nav_n.png';
 
 @observer
 export default class HeaderNav extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            showLottery: false,
+            lotteryType: [],
+        };
     };
 
     componentDidMount() {
         this._ismount = true;
         stateVar.navIndex = 'lottery';
-        this.onWindowResize();
-        window.addEventListener('resizeRest', this.onWindowResize.bind(this))
+        this.onLotteryType();
+    };
+    onLotteryType() {
+        let typeSsc = [], selectFive = [], second = [], rests = [], diping =[];
+        for(let i = 0, lottery = lotteryTypeList.lotteryType; i < lottery.length; i++){
+            if (lottery[i].lotterytype === 1) { // 高频
+                rests.push(lottery[i])
+            }
+            if (lottery[i].lotterytype === 2) { // 时时彩
+                typeSsc.push(lottery[i])
+            }
+            if (lottery[i].lotterytype === 3) { // 11选5
+                selectFive.push(lottery[i])
+            }
+            if (lottery[i].lotterytype === 4) { // 24小时
+                second.push(lottery[i])
+            }
+            if (lottery[i].lotterytype === 5) { // 低频
+                diping.push(lottery[i])
+            }
+        }
+        let lotteryTypeFlag = [
+            {
+                typeName: '24小时',
+                lotteryList: second,
+            },
+            {
+                typeName: '时时彩',
+                lotteryList: typeSsc,
+            },
+            {
+                typeName: '11选5',
+                lotteryList: selectFive,
+            },
+            {
+                typeName: '低频',
+                lotteryList: diping,
+            },
+            // {
+            //     typeName: '高频',
+            //     lotteryList: rests,
+            // },
+        ];
+        this.setState({lotteryType: lotteryTypeFlag});
     };
     componentWillUnmount() {
         this._ismount = false;
-        window.removeEventListener('resizeRest', this.onWindowResize.bind(this))
     };
-    handleClick = (e) => {
-        stateVar.navIndex = e.key;
-    };
-    //窗口改变大小后，使导航栏时刻和窗口宽度保持一致
-    onWindowResize(){
-        if(this.lotteryNameType){
-            return
+    onHashHistory(item) {
+        if(item.id == 'gameRecord'){
+            stateVar.afterDetails = false;
         }
-        this.lotteryNameType.style.width = document.body.clientWidth+'px'; // 给彩票游戏下拉框获取body宽度
-        this.lotteryNameType.style.left=-this.refs.menusWrap.offsetLeft-96+'px'; //获取整个menus与浏览器左部的距离-彩票游戏与首页的相对距离并给子菜单left绝对距离
-        this.lotteryNameType.style.paddingLeft=this.refs.menusWrap.offsetLeft-271+'px';//获取整个menus与浏览器左部的距离-标题中文字与首页的相对距离给使子菜单与标题文字对齐
-    }
-    /*点击游戏记录*/
-    onGameRecord() {
-        stateVar.afterDetails = false;
-        hashHistory.push('/gameRecord');
+        stateVar.navIndex = item.id;
+        hashHistory.push(item.link);
     };
     /*是否有权限进入Ea*/
     onEa() {
@@ -124,167 +160,128 @@ export default class HeaderNav extends Component {
             }
         })
     };
+
+    onLotteryOver(){
+        if(!this.state.showLottery){
+            this.setState({showLottery: true})
+        }
+    };
+    onLotteryOut(){
+        this.setState({showLottery: false})
+    };
+    /*切换彩种*/
+    handleClick(){
+        alert('选择彩种')
+    };
     render() {
-        const SubMenu = Menu.SubMenu;
+        const navList = [
+            {
+                name: '首页',
+                link: '/home',
+                id: 'home',
+            },
+            {
+                name: '彩票大厅',
+                link: '/lottery',
+                id: 'lottery',
+            },
+            {
+                name: '综合游戏',
+                link: '/home1',
+                id: 'home1',
+            },
+            {
+                name: '优惠活动',
+                link: '/activity',
+                id: 'activity',
+            },
+            {
+                name: '投注记录',
+                link: '/gameRecord',
+                id: 'gameRecord',
+            },
+            {
+                name: '报表管理',
+                link: '/report',
+                id: 'report',
+            },
+            {
+                name: '财务中心',
+                link: '/financial/recharge',
+                id: 'financial',
+            },
+            {
+                name: '个人信息',
+                link: '/home3',
+                id: 'home3',
+            },
+            {
+                name: '团队管理',
+                link: '/home4',
+                id: 'home4',
+            },
+        ];
+        const { navIndex } = stateVar;
+        const { showLottery, lotteryType } = this.state;
 
         return (
             <div className="header_main">
                 <HeaderTop/>
                 <nav className="nav">
-                    <div className="nav-content">
-                        <img className="logo" src={logoSrc} alt="logo"/>
-                        <div className="menus" ref="menusWrap">
-                            <Menu
-                                onClick={this.handleClick}
-                                selectedKeys={[stateVar.navIndex]}
-                                mode="horizontal"
-                            >
-                                <Menu.Item key="home">
-                                    <div className="nav-text">
-                                        <Link to={`/home`}>
-                                            <p>首页</p>
-                                            <p>Home</p>
-                                        </Link>
-                                    </div>
-                                </Menu.Item>
-                                <Menu.Item key="lottery" className="lottery_name" >
-                                    <div className="nav-text" >
-                                        <Link to={`/lottery`}>
-                                            <p>彩票游戏</p>
-                                            <p>Lottery</p>
-                                        </Link>
-                                    </div>
-                                    <div className="lottery_name_type" /*ref="lotteryNameType"*/ ref={(ref) => this.lotteryNameType = ref}>
-                                        <div className="l_n_t_p clear">
-                                            <ul className="l_n_list">
-                                                <li>44556</li>
-                                                <li>44556</li>
-                                                <li>44556</li>
-                                                <li>44556</li>
-                                            </ul>
-                                            <ul className="l_n_list">
-                                                <li>44556</li>
-                                                <li>44556</li>
-                                                <li className='l_list_h'>44556</li>
-                                                <li>44556</li>
-                                            </ul>
-                                            <ul className="l_n_list">
-                                                <li>44556</li>
-                                                <li>44556</li>
-                                                <li className='l_list_n'>44556</li>
-                                                <li>44556</li>
-                                            </ul>
-                                            <ul className="l_n_list">
-                                                <li>44556</li>
-                                                <li>44556</li>
-                                                <li className='l_list_opa'>44556</li>
-                                                <li>44556</li>
-                                            </ul>
-                                            <ul className="l_n_list">
-                                                <li>44556</li>
-                                                <li className='l_list_opa'>44556</li>
-                                                <li >44556</li>
-                                                <li>44556</li>
-                                            </ul>
-                                            <ul className="l_n_list">
-                                                <li>44556</li>
-                                                <li>44556</li>
-                                                <li >44556</li>
-                                                <li className='l_list_opa'>44556</li>
-                                            </ul>
-                                            <ul className="l_n_list">
-                                                <li>44556</li>
-                                                <li className='l_list_h'>44556</li>
-                                                <li className='l_list_h'>44556</li>
-                                                <li className='l_list_h'>44556</li>
-                                            </ul>
-                                            <ul className="l_n_list">
-                                                <li></li>
-                                                <li>44556</li>
-                                                <li className='l_list_opa'>44556</li>
-                                                <li >44556</li>
-                                                <li>44556</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </Menu.Item>
-                                <SubMenu
-                                    title={
-                                    <div className="nav-text">
-                                        <a href="javascript:void(0)">
-                                            <p>综合游戏</p>
-                                            <p>Other Games</p>
-                                        </a>
-                                    </div>
-                                }>
-                                    <Menu.Item key="solution:1">
-                                        <a href="javascript:void(0)" onClick={()=>this.onPt()}>PT游戏</a>
-                                    </Menu.Item>
-                                    <Menu.Item key="solution:2">
-                                        <a href="javascript:void(0)" onClick={()=>this.onSport()}>体育竞技</a>
-                                    </Menu.Item>
-                                    <Menu.Item key="solution:3">
-                                        <a href="javascript:void(0)" onClick={()=>this.onEa()}>EA娱乐城</a>
-                                    </Menu.Item>
-                                    <Menu.Item key="solution:4">
-                                        <a href="javascript:void(0)" onClick={()=>this.onGt()}>GT娱乐</a>
-                                    </Menu.Item>
-                                    <Menu.Item key="solution:5">
-                                        <a href="javascript:void(0)" onClick={()=>this.onBobing()}>博饼</a>
-                                    </Menu.Item>
-                                </SubMenu>
-                                <Menu.Item key="activity">
-                                    <div className="nav-text">
-                                        <Link to={`/activity`}>
-                                            <p>优惠活动</p>
-                                            <p>Activity</p>
-                                        </Link>
-                                    </div>
-                                </Menu.Item>
-                                <Menu.Item key="gameRecord">
-                                    <div className="nav-text">
-                                        <a href="javascript:void(0)" onClick={()=>this.onGameRecord()}>
-                                            <p>游戏记录</p>
-                                            <p>Game Records</p>
-                                        </a>
-                                    </div>
-                                </Menu.Item>
-                                <Menu.Item key="financial">
-                                    <div className="nav-text">
-                                        <Link to={
-                                            {
-                                                pathname: '/financial/recharge',
-                                                query: {navIndex: 0}
-                                            }
-                                        }>
-                                            <p>财务中心</p>
-                                            <p>Financial</p>
-                                        </Link>
-                                    </div>
-                                </Menu.Item>
-                                <Menu.Item key="report">
-                                    <div className="nav-text">
-                                        <Link to={`/report`}>
-                                            <p>报表管理</p>
-                                            <p>Report</p>
-                                        </Link>
-                                    </div>
-                                </Menu.Item>
-                                <Menu.Item key="account">
-                                    <div className="nav-text">
-                                        <Link to={
-                                            {
-                                                pathname : '/account',
-                                                query: {navIndex: 0}
-                                            }
-                                        }>
-                                            <p>账户管理</p>
-                                            <p>Account</p>
-                                        </Link>
-                                    </div>
-                                </Menu.Item>
-                            </Menu>
+                    <div className="nav-content clear">
+                        <div className="menus">
+                            <ul className="nav_list clear">
+                                {
+                                    navList.map((item)=>{
+                                        return (
+                                            <li
+                                                className={(navIndex == item.id ? 'nav_active' : '') +' '+ (item.id == 'lottery' && showLottery ? 'hover_lottery' : '')}
+                                                onClick={()=>this.onHashHistory(item)}
+                                                onMouseOver={item.id == 'lottery' ? ()=>this.onLotteryOver() : ''}
+                                                onMouseOut={item.id == 'lottery' ? ()=>this.onLotteryOut() : ''}
+                                                key={item.id}
+                                            >
+                                                <p>{item.name}</p>
+                                                {/*<i className="border_style"></i>*/}
+                                            </li>
+                                        )
+                                    })
+                                }
+                            </ul>
                         </div>
+                    </div>
+                    <div className={showLottery ? 't_m_select_lottery t_m_select_lottery_show' : 't_m_select_lottery'}
+                         onMouseOver={()=>this.onLotteryOver()}
+                         onMouseOut={()=>this.onLotteryOut()}
+                    >
+                        <ul className="lottery_type_list clear">
+                            {
+                                lotteryType.map((items)=>{
+                                        return (
+                                            <li className="lottery_type" key={items.typeName}>
+                                                <p>{items.typeName}</p>
+                                                <ul className="lottery_list">
+                                                    {
+                                                        items.lotteryList.map((item)=>{
+                                                            return (
+                                                                <li className={item.disabled ? 'disabled_style' : ''} onClick={item.disabled ? ()=>{} : ()=>this.handleClick()} key={item.nav}>
+                                                                    {item.cnname}
+                                                                    {
+                                                                        item.imgSrc ?
+                                                                            <img className="h_n_icon" src={item.imgSrc == 'nav_h' ? nav_h : item.imgSrc == 'nav_n' ? nav_n : ''}/> :
+                                                                            null
+                                                                    }
+                                                                </li>
+                                                            )
+                                                        })
+                                                    }
+                                                </ul>
+                                            </li>
+                                        )
+                                    }
+                                )
+                            }
+                        </ul>
                     </div>
                 </nav>
             </div>

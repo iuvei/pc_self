@@ -19,9 +19,9 @@ export default class ChildNav extends PureComponent {
     /*选中项*/
     onSelectClass(index) {
         if(this.props.defaultIndex != undefined){
-            return index == this.props.defaultIndex ? 'nav_active' : 'hvr-overline-from-left hvr-fade';
+            return index == this.props.defaultIndex ? 'nav_active' : '';
         }else{
-            return index == this.state.NavIndex ? 'nav_active' : 'hvr-overline-from-left hvr-fade';
+            return index == this.state.NavIndex ? 'nav_active' : '';
         }
     }
 

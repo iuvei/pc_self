@@ -597,7 +597,7 @@ export default class TeamTable extends Component {
                                 <span>游戏种类：</span>
                                 {
                                     this.state.classify == 0 ?
-                                        <span className={0 === variety ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({variety: 1})}}>全彩种</span> :
+                                        <span className="t_l_border t_l_active">全彩种</span> :
                                         <span>
                                             {
                                                 otherGArr.map((item)=>{

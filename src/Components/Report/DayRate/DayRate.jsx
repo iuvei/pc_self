@@ -47,9 +47,11 @@ export default class DayRate extends Component {
             disabled: true,
             pros: [], // 日工资契约协议
             salary_ratio: [], //修改协议
+            contract_name: '修改协议', //按钮btn
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
+        this.onConsent = this.onConsent.bind(this);
     };
     componentDidMount() {
         this._ismount = true;
@@ -119,6 +121,28 @@ export default class DayRate extends Component {
             table: table,
         }, ()=>this.getData())
     };
+    /*同意协议*/
+    onConsent(){
+        let { alterData } = this.state;
+        this.setState({affirmLoading: true});
+        Fetch.dailysalaryself({
+            method: 'POST',
+            body: JSON.stringify({status: 1, userid: alterData.userid})
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({affirmLoading: false});
+                if(res.status == 200){
+                    message.success(res.shortMessage);
+                    this.setState({alterVisible: false});
+                    this.getData();
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    }
     /*点击用户名*/
     onClickUserName(name) {
         let table = this.state.table,
@@ -179,7 +203,7 @@ export default class DayRate extends Component {
                     }
                 }
             })
-        }else if(type == '修改协议' || type == '已签订过' || type == '等待同意' || type == '自身协议'){
+        }else if(type == '修改协议' || type == '已签订过' || type == '等待同意' || type == '自身协议' || type == '同意协议'){
             this.setState({
                 alterData: record,
                 alterVisible: true,
@@ -215,7 +239,7 @@ export default class DayRate extends Component {
     /*修改协议*/
     onDiviratio(contract_name){
         if(contract_name == '修改契约'){
-            this.setState({disabled: false})
+            this.setState({disabled: false, contract_name: '签订协议'});
         }else{
             this.setState({affirmLoading: true});
             let alterData = this.state.alterData;
@@ -234,7 +258,7 @@ export default class DayRate extends Component {
                     this.setState({affirmLoading: false});
                     if(res.status == 200){
                         message.success(res.repsoneContent);
-                        this.setState({alterVisible: false, disabled: true});
+                        this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
                         this.getData();
                     }else{
                         Modal.warning({
@@ -248,13 +272,13 @@ export default class DayRate extends Component {
     };
     /*关闭修改日工资模态框*/
     onCancel(){
-        this.setState({alterVisible: false});
+        this.setState({alterVisible: false, contract_name: '修改契约'});
     };
     /*某页*/
     onChangePage(page){
         let postData = this.state.postData;
         postData.p = page;
-        this.setState({postData: postData},()=>this.getData())
+        this.setState({postData: postData},()=>this.getData());
     };
     render() {
         const { postData, table, historyData, disabled, pros } = this.state;
@@ -311,14 +335,18 @@ export default class DayRate extends Component {
                 ),
             }
         ];
-        const footer = <ul className="tfoot_list clear">
-            <li>合计</li>
-            <li>{table.sum.total_sale == null ? '-' : table.sum.total_sale}</li>
-            <li>{table.sum.total_effective_sale == null ? '-' : table.sum.total_effective_sale}</li>
-            <li>-</li>
-            <li>-</li>
-            <li>{table.sum.total_salary == null ? '-' : table.sum.total_salary}</li>
-        </ul>;
+        let footer = '';
+        if(table.sum != undefined){
+            footer = <ul className="tfoot_list clear">
+                <li>合计</li>
+                <li>{table.sum.total_sale == null ? '-' : table.sum.total_sale}</li>
+                <li>{table.sum.total_effective_sale == null ? '-' : table.sum.total_effective_sale}</li>
+                <li>-</li>
+                <li>-</li>
+                <li>{table.sum.total_salary == null ? '-' : table.sum.total_salary}</li>
+            </ul>;
+        }
+
         const columnsModal = [
             {
                 title: '时间',
@@ -326,7 +354,7 @@ export default class DayRate extends Component {
                 width: 275,
             }, {
                 title: '日工资',
-                dataIndex: 'allsalary',
+                dataIndex: 'salary',
                 width: 275,
             }
         ];
@@ -442,8 +470,10 @@ export default class DayRate extends Component {
                     alterVisible={this.state.alterVisible}
                     affirmLoading={this.state.affirmLoading}
                     disabled={this.state.disabled}
+                    contract_name={this.state.contract_name}
                     onCancel={this.onCancel}
                     onAffirm={this.onDiviratio}
+                    onConsent={this.onConsent}
                 />
             </div>
         );

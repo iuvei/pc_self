@@ -1,39 +1,24 @@
 @import '../../../Style/variables';
 @import '../../../Style/mixin';
 
-$width_100: 100%;
 .nav_top{
-    @include wh($width_100, 40px);
-    line-height: 40px;
-    background: #A30404;
+    background: $h_f_background;
     .nav_top_content{
         width: $nav_width_1200;
         margin: 0 auto;
-        color: #fff;
+        color: #666;
         a{
-            color: #fff;
+            color: #666;
+        }
+        .logo{
+            margin: 10px 0 0 53px;
         }
     }
     .n_t_lt{
-        padding-left: 25px;
-        background: url(./Img/notice_icon.png) no-repeat center left;
-        a{
-            height: 40px;
-            display: inline-block;
-        }
-    }
-    .n_t_list>li{
-        padding: 0 15px;
-        float: left;
-        border-left: 1px solid #770000;
-        &:hover{
-            background: #770000;
-        }
-        &:last-child{
-            border-right: 1px solid #770000;
-        }
+        text-align: right;
     }
     .n_t_list{
+        @include lh(40px);
         .n_t_position{
             position: relative;
             &:hover .n_t_controler{
@@ -53,12 +38,11 @@ $width_100: 100%;
             padding-top: 10px;
             .n_t_down_list{
                 @include wh(300px, 168px);
-                border: 1px solid #FFDB70;
-                background-color: #1D1D26;
-                color: #D0D0D0;
+                border: 1px solid $color_CF2027;
+                background-color: #fff;
                 padding: 8px 12px 0;
                 &:before{
-                    @include icon_arrows_bg(5px,140px,#FFDB70,10px,#1D1D26,-45deg);
+                    @include icon_arrows_bg(5px,140px,$color_CF2027,10px,#fff,-45deg);
                 }
                 li{
                     @include lh(31px);
@@ -71,8 +55,8 @@ $width_100: 100%;
                         cursor: pointer;
                     }
                 }
-                .color_DFC674{
-                    color: #DFC674;
+                .out_logo_btn{
+                    text-align: center;
                 }
             }
         }
@@ -81,25 +65,18 @@ $width_100: 100%;
         }
         .n_t_cursor_color{
             padding: 0;
-            a{
+            span, a{
                 display: inline-block;
                 @include wh(55px, 40px);
                 text-align: center;
             }
             &:hover{
                 cursor: pointer;
-                color: #FFDB70;
             }
         }
         .n_t_message{
-            padding: 0;
-            a{
-                display: inline-block;
-                width: 79px;
-                height: 40px;
-                padding-right: 8px;
-                text-align: center;
-            }
+            padding: 0 0 0 15px;
+            width: 65px;
         }
         .n_t_balance_p{
             position: relative;
@@ -110,7 +87,7 @@ $width_100: 100%;
             .n_t_down_list{
                 @include wh(200px, 230px);
                 &:before{
-                    @include icon_arrows_bg(5px,100px,#FFDB70,10px,#1D1D26,-45deg);
+                    @include icon_arrows_bg(5px,100px,$color_CF2027,10px,#fff,-45deg);
                 }
             }
             .n_t_controler{
@@ -120,18 +97,11 @@ $width_100: 100%;
         .ant-badge-count{
             @include lh(17px);
             padding: 0 4px;
-            background:#1E1E1E;
+            background: $color_CF2027;
             box-shadow: none;
             -webkit-transform: translateX(-10%);
             -ms-transform: translateX(-10%);
             transform: translateX(-10%);
-        }
-        .n_t_balance{
-            color: #FFDB70;
-            i{
-                font-style: normal;
-            }
-
         }
         .n_t_hide_balance{
             padding: 0 5px;
@@ -140,31 +110,56 @@ $width_100: 100%;
             }
         }
     }
+    .color_CF2027{
+        color: $color_CF2027;
+        i{
+            font-style: normal;
+        }
+    }
+    .n_t_list>li{
+        padding: 0 15px;
+        float: left;
+        border-left: 1px solid #EAEAEA;
+        &:hover{
+            background: #ddd;
+        }
+        &:last-child{
+            border-right: 1px solid #EAEAEA;
+        }
+    }
+
     .show-notice{
         display: inline-block;
         height: 40px;
         overflow: hidden;
         vertical-align: top;
+        padding-left: 25px;
+        background: url(./Img/notice_icon.png) no-repeat center left;
+        text-align: left;
+        li{
+            @include lh(40px);
+            color: $color_CF2027;
+        }
         li:hover{
             cursor: pointer;
         }
     }
     .anticon-caret-down{
         font-size: 12px;
-        color: #610000;
+        color: #666;
     }
     .ant-btn, .ant-btn-primary{
         width: 100%;
         background-color: transparent;
         border-color: transparent;
-        color: #D0D0D0;
+        color: $color_363636;
     }
     .ant-btn:before{
         background: transparent;
     }
     .ant-btn-primary:hover,
     .ant-btn-primary:focus {
-        color: #fff;
+        color: #5D5D5D;
         background-color: transparent;
         border-color: transparent;
     }

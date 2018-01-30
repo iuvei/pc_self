@@ -30,19 +30,17 @@ $fc:#fff;
 }
 
 // 渐变
-@mixin gradientsss($start, $end, $sColor, $endR, $endG, $endB, $endA){
-    background: #ccc;
-    background: -moz-linear-gradient(top,  #000000 0%, #ffffff 100%);
-    background: -webkit-gradient(linear, 0 18.5, 0 bottom, from(#ffffff), to(rgba(225, 225, 225, 0.8)));
-    background: -webkit-linear-gradient(top,  #000000 0%,#ffffff 100%);
-    background: -o-linear-gradient(top,  #000000 0%,#ffffff 100%);
-    background: -ms-linear-gradient(top,  #000000 0%,#ffffff 100%);
-    background: linear-gradient(to bottom,  #000000 0%,#ffffff 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#ffffff',GradientType=0 );
+
+@mixin borderGradient($color_1, $color_2, $color_3){
+    background: -webkit-linear-gradient(top, $color_1, $color_2, $color_3); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(top, $color_1, $color_2, $color_3); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(top, $color_1, $color_2, $color_3); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom, $color_1, $color_2, $color_3); /* 标准的语法（必须放在最后） */
 }
 
 @mixin gradient($startX, $startY, $endX, $endY, $startColor, $endColor){
     background: -webkit-gradient(linear, $startX $startY, $endX $endY, from($startColor), to($endColor));
+    //background:linear-gradient(to $endColor, $startColor, $endColor);
 }
 
 //倒三角形

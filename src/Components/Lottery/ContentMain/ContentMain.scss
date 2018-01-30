@@ -167,7 +167,7 @@ $c_m_background: #4A4A5F;
             }
         }
         .c_m_select_number{
-            background-color: #F5F5F5;
+            background-color: $background_F5F5F5;
             border-bottom: 1px solid #D6D6D6;
             padding: 15px 15px 20px 15px;
             .c_m_select_title{
@@ -751,14 +751,14 @@ $c_m_background: #4A4A5F;
                     outline: none;
                     width: 160px;
                     height: 50px;
-                    background:url('./Img/bet_btn.png') no-repeat; 
+                    background:url('./Img/bet_btn.png') no-repeat;
                     font-size:16px;
-                    text-align:center; 
+                    text-align:center;
                     color: #fff;
                     font-size: 16px;
                     font-weight: bold;
                     vertical-align: top;
-                    margin-top: 1px; 
+                    margin-top: 1px;
                     &:hover{
                         cursor: pointer;
                     }
@@ -768,7 +768,7 @@ $c_m_background: #4A4A5F;
                         border: none;
                         opacity: .9;
                         cursor: not-allowed;
-                        
+
                     }
                 }
             }
@@ -850,7 +850,7 @@ $c_m_background: #4A4A5F;
                         line-height: 35px;
                         @include sc(14px,#1B1B21);
                         outline:none;
-                        border:none; 
+                        border:none;
                     }
                     button:disabled{
                         opacity: .65;

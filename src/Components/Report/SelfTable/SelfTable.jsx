@@ -374,170 +374,172 @@ export default class SelfTable extends Component {
             <li>{sum.sum_allsalary}</li>
             <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
         </ul>;
-        if(variety == 0){
-            columnsRests = [
-                {
-                    title: '日期',
-                    dataIndex: 'date',
-                    width: 180,
-                }, {
-                    title: '用户名',
-                    dataIndex: 'userName',
-                    render: text => userInfo.userName,
-                    width: 180,
-                }, {
-                    title: '投注',
-                    dataIndex: 'stake_amount',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '有效投注',
-                    dataIndex: 'valid_amount',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '中奖金额',
-                    dataIndex: 'back_amount',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '累计盈利',
-                    dataIndex: 'win_lose',
-                    className: 'column-right',
-                    render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
-                        <span className="col_color_ying">{text}</span>,
-                    width: 180,
-                }
-            ];
-            otherGamesFooter = <ul className="o_g_footer clear">
-                <li>总计</li>
-                <li>{otherGamesSum.total_stake}</li>
-                <li>{otherGamesSum.total_valid}</li>
-                <li>{otherGamesSum.total_back}</li>
-                <li className={parseFloat(otherGamesSum.win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_lose}</li>
-            </ul>;
-        }else if(variety == 1){
-            columnsRests = [
-                {
-                    title: '日期',
-                    dataIndex: 'date',
-                    width: 180,
-                }, {
-                    title: '用户名',
-                    dataIndex: 'userName',
-                    render: text => userInfo.userName,
-                    width: 180,
-                }, {
-                    title: '投注',
-                    dataIndex: 'total_bet',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '有效投注',
-                    dataIndex: 'total_valid_bet',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '中奖金额',
-                    dataIndex: 'total_valid_win',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '累计盈利',
-                    dataIndex: 'total_win_loss',
-                    className: 'column-right',
-                    render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
-                        <span className="col_color_ying">{text}</span>,
-                    width: 180,
-                }
-            ];
-            otherGamesFooter = <ul className="o_g_footer clear">
-                <li>总计</li>
-                <li>{otherGamesSum.bet}</li>
-                <li>{otherGamesSum.valid_bet}</li>
-                <li>{otherGamesSum.valid_win}</li>
-                <li className={parseFloat(otherGamesSum.win_loss) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_loss}</li>
-            </ul>;
-        }else if(variety == 2){
-            columnsRests = [
-                {
-                    title: '日期',
-                    dataIndex: 'date',
-                    width: 180,
-                }, {
-                    title: '用户名',
-                    dataIndex: 'userName',
-                    render: text => userInfo.userName,
-                    width: 180,
-                }, {
-                    title: '投注',
-                    dataIndex: 'stake_amount',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '有效投注',
-                    dataIndex: 'valid_amount',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '累计盈利',
-                    dataIndex: 'back_amount',
-                    className: 'column-right',
-                    render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
-                        <span className="col_color_ying">{text}</span>,
-                    width: 180,
-                }
-            ];
-            otherGamesFooter = <ul className="o_g_tl_footer clear">
-                <li>总计</li>
-                <li>{otherGamesSum.total_stake}</li>
-                <li>{otherGamesSum.total_valid}</li>
-                <li className={parseFloat(otherGamesSum.win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_lose}</li>
-            </ul>;
-        }else if(variety == 3){
-            columnsRests = [
-                {
-                    title: '日期',
-                    dataIndex: 'date',
-                    width: 180,
-                }, {
-                    title: '总投注金额',
-                    dataIndex: 'total_bet',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '返点总额',
-                    dataIndex: 'total_point',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '中奖总额',
-                    dataIndex: 'total_win',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '奖池奖金总额',
-                    dataIndex: 'total_win_pool',
-                    className: 'column-right',
-                    width: 180,
-                }, {
-                    title: '累计盈利',
-                    dataIndex: 'total_winloss',
-                    className: 'column-right',
-                    render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
-                        <span className="col_color_ying">{text}</span>,
-                    width: 180,
-                }
-            ];
-            otherGamesFooter = <ul className="o_g_bobing_footer clear">
-                <li>总计</li>
-                <li>{otherGamesSum.total_bet}</li>
-                <li>{otherGamesSum.total_point}</li>
-                <li>{otherGamesSum.total_win}</li>
-                <li>{otherGamesSum.total_win_pool}</li>
-                <li className={parseFloat(otherGamesSum.total_winloss) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.total_winloss}</li>
-            </ul>;
-        }else{}
+        if(otherGamesSum != undefined){
+            if(variety == 0){
+                columnsRests = [
+                    {
+                        title: '日期',
+                        dataIndex: 'date',
+                        width: 180,
+                    }, {
+                        title: '用户名',
+                        dataIndex: 'userName',
+                        render: text => userInfo.userName,
+                        width: 180,
+                    }, {
+                        title: '投注',
+                        dataIndex: 'stake_amount',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '有效投注',
+                        dataIndex: 'valid_amount',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '中奖金额',
+                        dataIndex: 'back_amount',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '累计盈利',
+                        dataIndex: 'win_lose',
+                        className: 'column-right',
+                        render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                            <span className="col_color_ying">{text}</span>,
+                        width: 180,
+                    }
+                ];
+                otherGamesFooter = <ul className="o_g_footer clear">
+                    <li>总计</li>
+                    <li>{otherGamesSum.total_stake}</li>
+                    <li>{otherGamesSum.total_valid}</li>
+                    <li>{otherGamesSum.total_back}</li>
+                    <li className={parseFloat(otherGamesSum.win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_lose}</li>
+                </ul>;
+            }else if(variety == 1){
+                columnsRests = [
+                    {
+                        title: '日期',
+                        dataIndex: 'date',
+                        width: 180,
+                    }, {
+                        title: '用户名',
+                        dataIndex: 'userName',
+                        render: text => userInfo.userName,
+                        width: 180,
+                    }, {
+                        title: '投注',
+                        dataIndex: 'total_bet',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '有效投注',
+                        dataIndex: 'total_valid_bet',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '中奖金额',
+                        dataIndex: 'total_valid_win',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '累计盈利',
+                        dataIndex: 'total_win_loss',
+                        className: 'column-right',
+                        render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                            <span className="col_color_ying">{text}</span>,
+                        width: 180,
+                    }
+                ];
+                otherGamesFooter = <ul className="o_g_footer clear">
+                    <li>总计</li>
+                    <li>{otherGamesSum.bet}</li>
+                    <li>{otherGamesSum.valid_bet}</li>
+                    <li>{otherGamesSum.valid_win}</li>
+                    <li className={parseFloat(otherGamesSum.win_loss) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_loss}</li>
+                </ul>;
+            }else if(variety == 2){
+                columnsRests = [
+                    {
+                        title: '日期',
+                        dataIndex: 'date',
+                        width: 180,
+                    }, {
+                        title: '用户名',
+                        dataIndex: 'userName',
+                        render: text => userInfo.userName,
+                        width: 180,
+                    }, {
+                        title: '投注',
+                        dataIndex: 'stake_amount',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '有效投注',
+                        dataIndex: 'valid_amount',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '累计盈利',
+                        dataIndex: 'back_amount',
+                        className: 'column-right',
+                        render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                            <span className="col_color_ying">{text}</span>,
+                        width: 180,
+                    }
+                ];
+                otherGamesFooter = <ul className="o_g_tl_footer clear">
+                    <li>总计</li>
+                    <li>{otherGamesSum.total_stake}</li>
+                    <li>{otherGamesSum.total_valid}</li>
+                    <li className={parseFloat(otherGamesSum.win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.win_lose}</li>
+                </ul>;
+            }else if(variety == 3){
+                columnsRests = [
+                    {
+                        title: '日期',
+                        dataIndex: 'date',
+                        width: 180,
+                    }, {
+                        title: '总投注金额',
+                        dataIndex: 'total_bet',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '返点总额',
+                        dataIndex: 'total_point',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '中奖总额',
+                        dataIndex: 'total_win',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '奖池奖金总额',
+                        dataIndex: 'total_win_pool',
+                        className: 'column-right',
+                        width: 180,
+                    }, {
+                        title: '累计盈利',
+                        dataIndex: 'total_winloss',
+                        className: 'column-right',
+                        render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                            <span className="col_color_ying">{text}</span>,
+                        width: 180,
+                    }
+                ];
+                otherGamesFooter = <ul className="o_g_bobing_footer clear">
+                    <li>总计</li>
+                    <li>{otherGamesSum.total_bet}</li>
+                    <li>{otherGamesSum.total_point}</li>
+                    <li>{otherGamesSum.total_win}</li>
+                    <li>{otherGamesSum.total_win_pool}</li>
+                    <li className={parseFloat(otherGamesSum.total_winloss) < 0 ? 'col_color_shu' : 'col_color_ying'}>{otherGamesSum.total_winloss}</li>
+                </ul>;
+            }else{}
+        }
 
         return (
             <div className="report">
@@ -585,7 +587,7 @@ export default class SelfTable extends Component {
                                 <span>游戏种类：</span>
                                 {
                                     this.state.classify == 0 ?
-                                        <span className={0 === variety ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>{this.setState({variety: 1})}}>全彩种</span> :
+                                        <span className="t_l_border t_l_active">全彩种</span> :
                                         <span>
                                             {
                                                 otherGArr.map((item)=>{

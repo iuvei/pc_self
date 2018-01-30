@@ -1,4 +1,4 @@
-{	
+{
 	"lotteryType": [
     {
       "cnname": "重庆时时彩",
@@ -10,7 +10,9 @@
       "lastupdate": 0,
       "lotterytype": 2,
       "curmid": 50,
-      "imgUrl":"cqssc"
+      "imgUrl":"cqssc",
+        "imgSrc": "nav_h",
+        "disabled": false
     },
     {
       "cnname": "泰国秒秒彩",
@@ -20,9 +22,11 @@
       "lotteryDesc": "即时开奖",
       "methodid": 1010475,
       "lastupdate": 0,
-      "lotterytype": 1,
+      "lotterytype": 4,
       "curmid": 311700,
-      "imgUrl":"mmc"
+      "imgUrl":"mmc",
+        "imgSrc": "nav_n",
+        "disabled": false
     },
     {
       "cnname": "泰国300秒",
@@ -32,9 +36,11 @@
       "lotteryDesc": "24小时全天开奖",
       "methodid": 2370,
       "lastupdate": 0,
-      "lotterytype": 1,
+      "lotterytype": 4,
       "curmid": 2325,
-      "imgUrl":"tg300"
+      "imgUrl":"tg300",
+        "imgSrc": false,
+        "disabled": false
     },
     {
       "cnname": "泰国60秒",
@@ -44,9 +50,11 @@
       "lotteryDesc": "24小时全天开奖",
       "methodid": 190201,
       "lastupdate": 0,
-      "lotterytype": 1,
+      "lotterytype": 4,
       "curmid": 19000,
-      "imgUrl":"ffc"
+      "imgUrl":"ffc",
+        "imgSrc": "nav_h",
+        "disabled": false
     },
     {
       "cnname": "新疆时时彩",
@@ -58,7 +66,9 @@
       "lastupdate": 0,
       "lotterytype": 2,
       "curmid": 220,
-      "imgUrl":"xjssc"
+      "imgUrl":"xjssc",
+        "imgSrc": false,
+        "disabled": false
     },
     {
       "cnname": "天津时时彩",
@@ -70,7 +80,9 @@
       "lastupdate": "044e884475a2166f6b7525a80f53c82c",
       "lotterytype": 2,
       "curmid": 2265,
-      "imgUrl":"tjssc"
+      "imgUrl":"tjssc",
+        "imgSrc": false,
+        "disabled": false
     },
     {
       "cnname": "北京pk10",
@@ -83,7 +95,9 @@
       "lotterytype": 2,
       "curmid": 313051,
       "imgUrl":"pk10",
-      "lotterLength":10
+      "lotterLength":10,
+        "imgSrc": false,
+        "disabled": false
     },
     {
       "cnname": "山东11选5",
@@ -95,7 +109,9 @@
       "lastupdate": 0,
       "lotterytype": 3,
       "curmid": 174,
-      "imgUrl":"sd11y"
+      "imgUrl":"sd11y",
+        "imgSrc": false,
+        "disabled": false
     },
     {
       "cnname": "广东11选5",
@@ -107,7 +123,9 @@
       "lastupdate": 0,
       "lotterytype": 3,
       "curmid": 302,
-      "imgUrl":"gd11y"
+      "imgUrl":"gd11y",
+        "imgSrc": false,
+        "disabled": false
     },
     {
       "cnname": "江西11选5",
@@ -119,7 +137,9 @@
       "lastupdate": 0,
       "lotterytype": 3,
       "curmid": 256,
-      "imgUrl":"jx11y"
+      "imgUrl":"jx11y",
+        "imgSrc": false,
+        "disabled": false
     },
     {
       "cnname": "泰国11选5",
@@ -129,9 +149,11 @@
       "lotteryDesc": "24小时全天开奖",
       "methodid": 1010439,
       "lastupdate": 0,
-      "lotterytype": 1,
+      "lotterytype": 4,
       "curmid": 25024,
-      "imgUrl":"tg11"
+      "imgUrl":"tg11",
+        "imgSrc": false,
+        "disabled": false
     },
     {
       "cnname": "3D福彩",
@@ -144,7 +166,9 @@
       "lotterytype": 5,
       "curmid": 614,
       "imgUrl":"3d",
-      "lotterLength":3
+      "lotterLength":3,
+        "imgSrc": false,
+        "disabled": false
     },
     {
       "cnname": "排列3",
@@ -157,7 +181,9 @@
       "lotterytype": 5,
       "curmid": 615,
       "imgUrl":"pl3",
-      "lotterLength":3
+      "lotterLength":3,
+        "imgSrc": false,
+        "disabled": false
     },
     {
       "cnname": "腾讯分分彩",
@@ -167,8 +193,10 @@
       "lotteryDesc": "24小时全天开奖",
       "methodid": 3111577,
       "lastupdate": 0,
-      "lotterytype": 1,
+      "lotterytype": 4,
       "curmid": 313550,
-      "imgUrl":"txffc"
+      "imgUrl":"txffc",
+        "imgSrc": "nav_h",
+        "disabled": false
     }]
 }

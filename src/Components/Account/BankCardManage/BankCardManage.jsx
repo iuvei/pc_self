@@ -55,7 +55,6 @@ export default class BankCardManage extends Component {
 
             childVisible: false,
             spinLoading: false,
-            selectShow: true,
         }
     };
     componentDidMount() {
@@ -75,21 +74,14 @@ export default class BankCardManage extends Component {
                 this.setState({tableLoading: false});
                 if(res.status == 200){
                     let data = res.repsoneContent;
-                    if(data instanceof Array && data.length == 0){
-                        this.setState({
-                            selectShow: true
-                        });
-                    }else{
-                        let response = {
-                            bankList: data.bankList,
-                            binded: data.binded,
-                            num: data.num,
-                        };
-                        this.setState({
-                            response: response,
-                            selectShow: false,
-                        });
-                    }
+                    let response = {
+                        bankList: data.bankList,
+                        binded: data.binded,
+                        num: data.num,
+                    };
+                    this.setState({
+                        response: response,
+                    });
                 }
             }
 
@@ -380,7 +372,8 @@ export default class BankCardManage extends Component {
         });
     };
     render() {
-        const { response, adduserbank, addPostData, selectShow, ModalTitle, spinLoading } = this.state;
+        const { response, adduserbank, addPostData, ModalTitle, spinLoading } = this.state;
+        const { userInfo } = stateVar;
         const columns = [
             {
                 title: '姓名',
@@ -413,7 +406,7 @@ export default class BankCardManage extends Component {
             <div className="b_cm_main">
                 <Spin spinning={spinLoading}>
                     {
-                        selectShow ?
+                        userInfo.setsecurity == 'yes' ?
                             <div className="w_m_nopassword">
                                 您尚未
                                 <span onClick={()=>this.onClickCapital()}>设置资金密码</span>

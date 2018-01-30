@@ -12,6 +12,7 @@ import common from '../../../CommonJs/common';
 import { removeStore,delCookie } from '../../../CommonJs/common';
 import Notice from '../Notice/Notice';
 
+import logoSrc from '../../../Images/logo.png';
 import name_icon from './Img/name_icon.png';
 import email_icon from './Img/email_icon.png';
 import off_icon from './Img/off_icon.png';
@@ -282,150 +283,153 @@ export default class HeaderTop extends Component {
                   	this.refWebSocket = Websocket;
                 }}
         		/>
-                <div className="nav_top_content">
-                    <div className="n_t_lt left">
-                        <div className="show-notice">
-                            <ul className="notice-list left" style={{transform: 'translateY(-'+noticePosition+'px) translateZ(0px)'}}>
-                                {
-                                    this.state.noticeList.map((item)=>{
-                                        return (
-                                            <li key={item.id} onClick={()=>this.showModal(item)}
-                                                onMouseOver={()=>{
-                                                    clearInterval(this._clearInt);
-                                                    cancelAnimationFrame(this._animationFrame)
-                                                }}
-                                                onMouseOut={()=>this.onOutModal()}>{item.subject}&nbsp;&nbsp;[点击查看]</li>
-                                        )
-                                    })
-                                }
-                            </ul>
-                        </div>
-                        <Notice
-                            visible={this.state.visible}
-                            noticeList={this.state.noticeList}
-                            noticeDetails={this.state.noticeDetails}
-                            onNoticeDetails={this.onNoticeDetails}
-                            onNoticeList={this.onNoticeList}
-                            hideModal={this.hideModal}
-                        />
-                    </div>
-                    <ul className="n_t_list right">
-                        <li className="n_t_cursor n_t_position">
-                            <img src={name_icon} style={{verticalAlign: 'middle',marginRight: 5}}/>
-                            { userInfo.sType == 'demo' ? '试玩用户' : userInfo.userName }
-                            <Icon type="caret-down" style={{marginLeft: '5px'}}/>
-                            <div className="n_t_controler">
-                                <div className="n_t_drop_down">
-                                    <ul className="n_t_down_list">
-                                        <li>
-                                            <span className="left">用户类型</span>
-                                            <span className="right color_DFC674">{userInfo.userType == 0 ? '会员' : '代理'}</span>
-                                        </li>
-                                        <li>
-                                            <span className="left">奖金组</span>
-                                            <span className="right color_DFC674">{userInfo.accGroup}</span>
-                                        </li>
-                                        <li>
-                                            <span className="left">上次登录地点</span>
-                                            <span className="right color_DFC674">{userInfo.lastIp} {userInfo.address}</span>
-                                        </li>
-                                        <li>
-                                            <span className="left">上次登录时间</span>
-                                            <span className="right">{userInfo.lastTime}</span>
-                                        </li>
-                                        <li style={{textAlign: 'center'}}>
-                                            <Button type="primary" icon="logout" onClick={()=>this.onLogout()}>
-                                                退出登录
-                                            </Button>
-                                        </li>
-                                    </ul>
-                                </div>
+                <div className="nav_top_content clear">
+                    <img className="logo" src={logoSrc} alt="logo"/>
+                    <div className="right">
+                        <div className="n_t_lt">
+                            <div className="show-notice">
+                                <ul className="notice-list left" style={{transform: 'translateY(-'+noticePosition+'px) translateZ(0px)'}}>
+                                    {
+                                        this.state.noticeList.map((item)=>{
+                                            return (
+                                                <li key={item.id} onClick={()=>this.showModal(item)}
+                                                    onMouseOver={()=>{
+                                                        // clearInterval(this._clearInt);
+                                                        // cancelAnimationFrame(this._animationFrame)
+                                                    }}
+                                                    onMouseOut={()=>this.onOutModal()}>{item.subject}&nbsp;&nbsp;[点击查看]</li>
+                                            )
+                                        })
+                                    }
+                                </ul>
                             </div>
-                        </li>
-                        <li className="n_t_message n_t_cursor">
-                            <a href="javascript:void(0)" onClick={()=>this.onHashHistory('/account/message', 'account', 6)}>
+                            <Notice
+                                visible={this.state.visible}
+                                noticeList={this.state.noticeList}
+                                noticeDetails={this.state.noticeDetails}
+                                onNoticeDetails={this.onNoticeDetails}
+                                onNoticeList={this.onNoticeList}
+                                hideModal={this.hideModal}
+                            />
+                        </div>
+                        <ul className="n_t_list">
+                            <li className="n_t_cursor n_t_position">
+                                <img src={name_icon} style={{verticalAlign: 'middle',marginRight: 5}}/>
+                                { userInfo.sType == 'demo' ? '试玩用户' : userInfo.userName }
+                                <Icon type="caret-down" style={{marginLeft: '5px'}}/>
+                                <div className="n_t_controler">
+                                    <div className="n_t_drop_down">
+                                        <ul className="n_t_down_list">
+                                            <li>
+                                                <span className="left">用户类型</span>
+                                                <span className="right color_CF2027">{userInfo.userType == 0 ? '会员' : '代理'}</span>
+                                            </li>
+                                            <li>
+                                                <span className="left">奖金组</span>
+                                                <span className="right color_CF2027">{userInfo.accGroup}</span>
+                                            </li>
+                                            <li>
+                                                <span className="left">上次登录地点</span>
+                                                <span className="right color_CF2027">{userInfo.lastIp} {userInfo.address}</span>
+                                            </li>
+                                            <li>
+                                                <span className="left">上次登录时间</span>
+                                                <span className="right">{userInfo.lastTime}</span>
+                                            </li>
+                                            <li className="out_logo_btn">
+                                                <Button type="primary" icon="logout" onClick={()=>this.onLogout()}>
+                                                    退出登录
+                                                </Button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li className="n_t_message n_t_cursor">
+                            <span onClick={()=>this.onHashHistory('/account/message', 'account', 6)}>
                                 <Badge count={stateVar.unread} overflowCount={99} showZero>
                                     <img src={email_icon} alt="站内信"/>
                                 </Badge>
-                            </a>
-                        </li>
-                        <li className="n_t_balance_p">
-                            <span>余额：</span>
-                            <span className="n_t_balance">
+                            </span>
+                            </li>
+                            <li className="n_t_balance_p">
+                                <span className="color_CF2027">余额：</span>
+                                <span className="color_CF2027">
                                     <i>￥</i>
                                     <i>{this.state.hideBalance ? allBalance.cpbalance : '******'}</i>
                                     <img src={this.state.hideBalance ? on_icon : off_icon} onClick={()=>{this.setState({hideBalance: this.state.hideBalance ? false : true})}} className="n_t_hide_balance"/>
                                 </span>
-                            <div className="n_t_controler">
-                                <div className="n_t_drop_down">
-                                    <ul className="n_t_down_list">
-                                        <li>
-                                            <span className="left">彩票余额：</span>
-                                            <span className="right color_DFC674">￥
-                                                {allBalance.cpbalance}
+                                <div className="n_t_controler">
+                                    <div className="n_t_drop_down">
+                                        <ul className="n_t_down_list">
+                                            <li>
+                                                <span className="left">彩票余额：</span>
+                                                <span className="right">￥
+                                                    {allBalance.cpbalance}
                                             </span>
-                                        </li>
-                                        <li>
-                                            <span className="left">EA余额：</span>
-                                            <span className="right color_DFC674">
+                                            </li>
+                                            <li>
+                                                <span className="left">EA余额：</span>
+                                                <span className="right">
                                                 {allBalance.eabalance}
                                             </span>
-                                        </li>
-                                        <li>
-                                            <span className="left">PT余额：</span>
-                                            <span className="right color_DFC674">
+                                            </li>
+                                            <li>
+                                                <span className="left">PT余额：</span>
+                                                <span className="right">
                                                 {allBalance.ptbalance}
                                             </span>
-                                        </li>
-                                        <li>
-                                            <span className="left">GT余额：</span>
-                                            <span className="right color_DFC674">
+                                            </li>
+                                            <li>
+                                                <span className="left">GT余额：</span>
+                                                <span className="right">
                                                 {allBalance.kgbalance}
                                             </span>
-                                        </li>
-                                        <li>
-                                            <span className="left">博饼余额：</span>
-                                            <span className="right color_DFC674">
+                                            </li>
+                                            <li>
+                                                <span className="left">博饼余额：</span>
+                                                <span className="right">
                                                 {allBalance.bobingBalance}
                                             </span>
-                                        </li>
-                                        <li>
-                                            <span className="left">体育余额：</span>
-                                            <span className="right color_DFC674">
+                                            </li>
+                                            <li>
+                                                <span className="left">体育余额：</span>
+                                                <span className="right">
                                                 {allBalance.sbbalance}
                                             </span>
-                                        </li>
-                                        <li style={{textAlign: 'center'}}>
-                                            <Button type="primary" icon="sync" loading={this.state.updateMLoading} onClick={()=>this.onUpdateMondy()}>
-                                                刷新余额
-                                            </Button>
-                                        </li>
-                                    </ul>
+                                            </li>
+                                            <li style={{textAlign: 'center'}}>
+                                                <Button type="primary" icon="sync" loading={this.state.updateMLoading} onClick={()=>this.onUpdateMondy()}>
+                                                    刷新余额
+                                                </Button>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li className="n_t_cursor_color">
-                            <a href="javascript:void(0)" onClick={()=>this.onHashHistory('/financial/recharge', 'financial', 0)}>
+                            </li>
+                            <li className="n_t_cursor_color color_CF2027">
+                            <span onClick={()=>this.onHashHistory('/financial/recharge', 'financial', 0)}>
                                 充值
-                            </a>
-                        </li>
-                        <li className="n_t_cursor_color">
-                            <a href="javascript:void(0)" onClick={()=>this.onHashHistory('/financial/withdraw', 'financial', 1)}>
+                            </span>
+                            </li>
+                            <li className="n_t_cursor_color">
+                            <span onClick={()=>this.onHashHistory('/financial/withdraw', 'financial', 1)}>
                                 提款
-                            </a>
-                        </li>
-                        <li className="n_t_cursor_color">
-                            <a href="javascript:void(0)" onClick={()=>this.onHashHistory('/financial/transfer', 'financial',3)}>
+                            </span>
+                            </li>
+                            <li className="n_t_cursor_color">
+                            <span onClick={()=>this.onHashHistory('/financial/transfer', 'financial',3)}>
                                 转账
-                            </a>
-                        </li>
-                        <li>
-                            <img src={service_icon} style={{verticalAlign: 'middle',marginRight: 5}}/>
-                            <a href={stateVar.httpService} target="_blank">
-                                在线客服
-                            </a>
-                        </li>
-                    </ul>
+                            </span>
+                            </li>
+                            <li>
+                                <img src={service_icon} style={{verticalAlign: 'middle',marginRight: 5}}/>
+                                <a href={stateVar.httpService} style={{display: 'inline-block'}} target="_blank">
+                                    在线客服
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         )
