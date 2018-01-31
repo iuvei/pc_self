@@ -18,6 +18,7 @@ import email_icon from './Img/email_icon.png';
 import off_icon from './Img/off_icon.png';
 import on_icon from './Img/on_icon.png';
 import service_icon from './Img/service_icon.png';
+import notice_icon from './Img/notice_icon.png';
 
 @observer
 export default class HeaderTop extends Component {
@@ -340,6 +341,7 @@ export default class HeaderTop extends Component {
                                             return (
                                                 <li key={item.id}
                                                     onClick={()=>this.showModal(item)}>
+                                                    <img src={notice_icon}/>
                                                     {item.subject}&nbsp;&nbsp;[点击查看]
                                                 </li>
                                             )

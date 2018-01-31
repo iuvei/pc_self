@@ -287,6 +287,12 @@ export const accountChange = (location, callback) => {
         callback(null, require('../Components/Financial/AccountChange/AccountChange').default);
     }, 'accountChange');
 };
+// 综合游戏
+export const otherGames = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/OtherGames/OtherGames').default);
+    }, 'otherGames');
+};
 // 综合游戏/博饼
 export const bobing = (location, callback) => {
     require.ensure([], (require) => {

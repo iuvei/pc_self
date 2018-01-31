@@ -344,6 +344,9 @@ export default class SelfInfo extends PureComponent {
                         </ul>
                     </div>
                 </div>
+                <div className="log_text">
+                    最近{logs.length}条登录日志
+                </div>
                 <div className="self_i_bottom">
                     <Table rowKey={record => record.times}
                            columns={columns}

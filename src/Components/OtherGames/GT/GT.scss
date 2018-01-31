@@ -2,21 +2,22 @@
 @import '../../../Style/mixin';
 
 .gt{
-    height: 779px;
     @include bis('./Img/gt_bg.png');
     text-align: center;
     .gt_content{
         position: relative;
+        width: 1252px;
+        margin: 0 auto;
         .gt_img{
-            position: absolute;
-            top:6px;
-            left:200px;
+            //position: absolute;
+            //top:6px;
+            //left:200px;
         }
         ul{
             width: 500px;
             position: absolute;
-            top:611px;
-            left:890px;
+            top: 611px;
+            right: 30px;
         }
         li{
             cursor: pointer;

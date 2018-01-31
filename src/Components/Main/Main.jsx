@@ -24,12 +24,12 @@ export default class Main extends Component {
         if (hashHistory.getCurrentLocation().pathname == '/home' ||
             hashHistory.getCurrentLocation().pathname == '/activity' ||
             hashHistory.getCurrentLocation().pathname == '/activity/activityDetails' ||
-            hashHistory.getCurrentLocation().pathname == '/bobing' ||
+            hashHistory.getCurrentLocation().pathname == '/otherGames/bobing' ||
             hashHistory.getCurrentLocation().pathname == '/tendency' ||
-            hashHistory.getCurrentLocation().pathname == '/ea' ||
-            hashHistory.getCurrentLocation().pathname == '/pt'||
-            hashHistory.getCurrentLocation().pathname == '/gt'||
-            hashHistory.getCurrentLocation().pathname == '/sport'||
+            hashHistory.getCurrentLocation().pathname == '/otherGames/ea' ||
+            hashHistory.getCurrentLocation().pathname == '/otherGames/pt'||
+            hashHistory.getCurrentLocation().pathname == '/otherGames/gt'||
+            hashHistory.getCurrentLocation().pathname == '/otherGames/sport'||
             hashHistory.getCurrentLocation().pathname == '/downLoadClient'
         ) {
             return true

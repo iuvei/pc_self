@@ -2,7 +2,6 @@
 @import '../../../Style/mixin';
 
 .nav_top{
-    background: $h_f_background;
     .nav_top_content{
         width: $nav_width_1200;
         margin: 0 auto;
@@ -92,7 +91,7 @@
                 left: -1px;
             }
             .cpbalance{
-                width: 85px;
+                width: 90px;
                 display: inline-block;
             }
         }
@@ -133,15 +132,21 @@
 
     .show-notice{
         display: inline-block;
-        height: 40px;
+        height: 30px;
         overflow: hidden;
         vertical-align: top;
-        padding-left: 25px;
-        background: url(./Img/notice_icon.png) no-repeat center left;
-        text-align: left;
+        //padding-left: 25px;
+        //background: url(./Img/notice_icon.png) no-repeat center left;
+        //text-align: left;
         li{
             @include lh(40px);
             color: $color_CF2027;
+            text-align: right;
+            img{
+                width: 19px;
+                vertical-align: text-bottom;
+                margin-right: 10px;
+            }
         }
         li:hover{
             cursor: pointer;

@@ -39,6 +39,7 @@ import {
     transferRecord,
     accountChange,
     dividend,
+    otherGames,
     bobing,
     tendency,
     ea,
@@ -136,11 +137,6 @@ const routes = params => (
                 <Route path="/financial/withdraw/affirmWithdraw" getComponent={affirmWithdraw} params={params}/>
             </Route>
             <Route path="/report" getComponent={report} params={params}>
-                {/*{*/}
-                    {/*stateVar.userInfo.userType == 0 ?*/}
-                        {/*<IndexRoute getComponent={lotteryReport} /> :*/}
-                        {/*<IndexRoute getComponent={teamStatistics} />*/}
-                {/*}*/}
                 <Route path="/report/teamStatistics" getComponent={teamStatistics} params={params}/>
                 <Route path="/report/teamTable" getComponent={teamTable} params={params}/>
                 <Route path="/report/selfTable" getComponent={selfTable} params={params}/>
@@ -158,11 +154,13 @@ const routes = params => (
                 <Route path="/helpInfo/aboutHengCai" getComponent={aboutHengCai} params={params}/>
             </Route>
             <Route path="/downLoadClient" getComponent={downLoadClient} params={params}/>
-            <Route path="/bobing" getComponent={bobing} params={params}/>
-            <Route path="/ea" getComponent={ea} params={params}/>
-            <Route path="/gt" getComponent={gt} params={params}/>
-            <Route path="/sport" getComponent={sport} params={params}/>
-            <Route path="/pt" getComponent={pt} params={params}/>
+
+            <Route path="/otherGames" getComponent={otherGames} params={params}/>
+            <Route path="/otherGames/bobing" getComponent={bobing} params={params}/>
+            <Route path="/otherGames/ea" getComponent={ea} params={params}/>
+            <Route path="/otherGames/gt" getComponent={gt} params={params}/>
+            <Route path="/otherGames/sport" getComponent={sport} params={params}/>
+            <Route path="/otherGames/pt" getComponent={pt} params={params}/>
         </Route>
     </Route>
 

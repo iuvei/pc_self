@@ -72,7 +72,7 @@ export default class Activity extends Component {
             <div className="activity_main">
                 <Row type="flex" justify="center" align="top" className="main_width" >
                     <Col span={22}>
-                        <ul className="activity_list">
+                        <ul className="activity_list clear">
                             {activityRender}
                         </ul>
                         <div className="active_pagination">

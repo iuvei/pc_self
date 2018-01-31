@@ -776,26 +776,16 @@ $c_m_background: #4A4A5F;
                     outline: none;
                     width: 160px;
                     height: 50px;
-<<<<<<< HEAD
-                    background:url('./Img/bet_btn.png') no-repeat;
-=======
                     border:1px solid #c72023;
                     background: -webkit-linear-gradient(#fb2222,#c72023); /* Safari 5.1 - 6.0 */
                     background: -o-linear-gradient(#fb2222,#c72023); /* Opera 11.1 - 12.0 */
                     background: -moz-linear-gradient(#fb2222,#c72023); /* Firefox 3.6 - 15 */
                     background: linear-gradient(#fb2222,#c72023); /* 标准的语法 */
->>>>>>> moore66
                     font-size:16px;
                     text-align:center;
                     color: #fff;
-                    font-size: 16px;
                     font-weight: bold;
                     vertical-align: top;
-<<<<<<< HEAD
-                    margin-top: 1px;
-=======
-                    margin-top: 0; 
->>>>>>> moore66
                     &:hover{
                         cursor: pointer;
                     }

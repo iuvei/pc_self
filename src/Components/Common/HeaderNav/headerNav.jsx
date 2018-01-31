@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
-import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import emitter from '../../../Utils/events';
 import lotteryTypeList from '../../../CommonJs/common.json';
@@ -78,88 +77,6 @@ export default class HeaderNav extends Component {
         stateVar.navIndex = item.id;
         hashHistory.push(item.link);
     };
-    /*是否有权限进入Ea*/
-    onEa() {
-        Fetch.eagame({
-            method: 'POST'
-        }).then((res)=>{
-            if(this._ismount){
-                if(res.status == 200){
-                    hashHistory.push('/ea');
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
-                }
-            }
-        })
-    };
-    /*是否有权限进入pt*/
-    onPt() {
-        Fetch.ptindex({
-            method: 'POST',
-        }).then((res)=>{
-            if(this._ismount){
-                if(res.status == 200){
-                    hashHistory.push('/pt');
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
-                }
-            }
-        })
-    };
-    /*是否有权限进入体育竞技*/
-    onSport(){
-        Fetch.sport({
-            method: 'POST',
-            body: JSON.stringify({"do":"login"})
-        }).then((res)=>{
-            if(this._ismount){
-                if(res.status == 200){
-                    hashHistory.push('/sport');
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
-                }
-            }
-        })
-    };
-    /*是否有权限进入GT娱乐*/
-    onGt(){
-        Fetch.gtLogin({
-            method: 'POST'
-        }).then((res)=>{
-            if(this._ismount){
-                if(res.status == 200){
-                    hashHistory.push('/gt');
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
-                }
-            }
-        })
-    };
-    /*是否有权限进入博饼*/
-    onBobing() {
-        Fetch.newGetprizepool({
-            method: 'POST'
-        }).then((res)=>{
-            if(this._ismount){
-                if(res.status == 200){
-                    hashHistory.push('/bobing');
-                }else{
-                    Modal.warning({
-                        title: res.data,
-                    });
-                }
-            }
-        })
-    };
-
     onLotteryOver(){
         if(!this.state.showLottery){
             this.setState({showLottery: true})
@@ -189,8 +106,8 @@ export default class HeaderNav extends Component {
             },
             {
                 name: '综合游戏',
-                link: '/home',
-                id: 'home1',
+                link: '/otherGames',
+                id: '/otherGames',
             },
             {
                 name: '优惠活动',

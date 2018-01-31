@@ -2,7 +2,7 @@
 @import '../../../Style/mixin';
 
 
-$nav-height: 60px;
+$nav-height: 40px;
 $menus-top: 25px;
 $hover-color: #FFDB70;
 $width_100: 100%;
@@ -14,7 +14,7 @@ $width_100: 100%;
     z-index: 999;
     .nav{
         position: relative;
-        @include wh($width_100, $nav-height);
+        width: $width_100;
         //@include boxS(0, 2px, 5px, 0, #666, null);
         background: #CA2124;
         @include gradient(0, 0, 0, bottom, #F92626, #CA2124);
@@ -26,18 +26,17 @@ $width_100: 100%;
                 float: right;
                 font-size: 14px;
                 .nav_list{
-
                     li{
                         float: left;
                         color: #fff;
-                        @include lh(60px);
+                        @include lh(40px);
                     }
                     p{
                         display: inline-block;
                         padding: 0 20px;
                         height: 30px;
                         line-height: 30px;
-                        margin-top: 15px;
+                        //margin-top: 15px;
                     }
                     .border_style{
                         display: inline-block;
