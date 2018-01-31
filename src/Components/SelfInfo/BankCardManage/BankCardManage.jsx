@@ -365,7 +365,7 @@ export default class BankCardManage extends Component {
         stateVar.navIndex = 'account';
         stateVar.securityIndex = 1;
         hashHistory.push({
-            pathname: '/account/security',
+            pathname: '/selfInfo/security',
             query: {
                 navIndex: 5
             }

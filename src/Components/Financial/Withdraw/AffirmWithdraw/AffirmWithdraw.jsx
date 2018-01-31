@@ -5,7 +5,7 @@ import { hashHistory } from 'react-router';
 import { Button, Input, Modal } from 'antd';
 import Fetch from '../../../../Utils';
 import { stateVar } from '../../../../State';
-import ForgetFundPw from '../../../Account/Security/ForgetFundPw/ForgetFundPw';
+import ForgetFundPw from '../../../SelfInfo/Security/ForgetFundPw/ForgetFundPw';
 import { onValidate } from '../../../../CommonJs/common';
 import md5 from 'md5';
 

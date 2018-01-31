@@ -135,11 +135,11 @@ $border-color: #B2B2B2;
                     text-align: right;
                 }
                 li:first-child{
-                    width: 189px;
+                    width: 188px;
                     text-align: center;
                 }
                 li:nth-child(2){
-                    width: 109px;
+                    width: 108px;
                 }
                 li:nth-child(3),li:nth-child(4),li:nth-child(5){
                     width: 116px;
@@ -316,6 +316,7 @@ $border-color: #B2B2B2;
             @include lh(45px);
             width: 378px;
             text-align: center;
+            padding-right: 19px;
         }
     }
     /*日亏损佣金-查看详情footer*/

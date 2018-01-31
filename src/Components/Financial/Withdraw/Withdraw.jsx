@@ -114,9 +114,9 @@ export default class Withdraw extends Component {
     };
     /*跳转绑定银行卡*/
     onClickCapital(){
-        stateVar.navIndex = 'account';
+        stateVar.navIndex = 'selfInfo';
         hashHistory.push({
-            pathname: '/account/bankCardManage',
+            pathname: '/selfInfo/bankCardManage',
             query: {
                 navIndex: 4
             }

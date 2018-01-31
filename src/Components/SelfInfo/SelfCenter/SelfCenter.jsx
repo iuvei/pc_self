@@ -1,4 +1,4 @@
-/*个人信息*/
+/*个人中心*/
 import React, {PureComponent} from 'react';
 import {observer} from 'mobx-react';
 import { Button, Table, Input, Modal } from 'antd';
@@ -7,7 +7,7 @@ import { stateVar } from '../../../State';
 import { hashHistory } from 'react-router';
 import { onValidate } from '../../../CommonJs/common';
 
-import './SelfInfo.scss'
+import './SelfCenter.scss'
 import info_logo from './Img/info_logo.png';
 import qq from './Img/qq.png';
 import wechat from './Img/wechat.png';
@@ -199,7 +199,6 @@ export default class SelfInfo extends PureComponent {
             postData: postData,
         });
     };
-
     /*转账*/
     onHashHistory(router, nav, childNav) {
         hashHistory.push({
@@ -300,7 +299,11 @@ export default class SelfInfo extends PureComponent {
                                 <h3>账户余额：</h3>
                                 <em>￥{allBalance.cpbalance}</em>
                             </span>
-                            <Button className="recharge_btn right" onClick={()=>this.onHashHistory('/financial/transfer', 'financial', 0)}>立即充值</Button>
+                            <Button className="recharge_btn right" type="primary"
+                                    icon="pay-circle-o"
+                                    onClick={()=>this.onHashHistory('/financial/transfer', 'financial', 0)}>
+                                立即充值
+                            </Button>
                         </div>
                         <ul className="rests_money clear">
                             <li>
@@ -308,7 +311,7 @@ export default class SelfInfo extends PureComponent {
                                     <p>EA余额</p>
                                     <p>￥{allBalance.eabalance}</p>
                                 </div>
-                                <Button className="transfer_btn right" onClick={()=>this.onHashHistory()}>转账</Button>
+                                <Button className="transfer_btn right" onClick={()=>this.onHashHistory('/financial/transfer', 'financial',3)}>转账</Button>
                             </li>
                             <li>
                                 <div className="left">

@@ -209,11 +209,19 @@ td.column-right {
     background-size: 16px !important;
     transition: all 0s;
 }
-/*表格header，footer背景色*/
-.ant-table-thead > tr > th, .ant-table-footer{
+/*表格header，footer, 模态框head背景色*/
+.ant-table-thead > tr > th, .ant-table-footer, .ant-modal-header{
     background: $background_F5F5F5;
 }
-
+.ant-modal-header{
+    border-bottom: 2px solid $color_CF2027;
+}
+.ant-modal-title, .ant-modal-close{
+    color: #333;
+}
+.ant-modal-close:focus, .ant-modal-close:hover{
+    color: #171717;
+}
 /*-start-;table中可点击列的样式*/
 .hover_a{
     color: #0088DE;

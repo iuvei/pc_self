@@ -32,7 +32,7 @@
                     }
                     em{
                         font-size: 24px;
-                        color: #D29B10;
+                        color: $color_CF2027;
                         font-style: normal;
                     }
                 }
@@ -66,7 +66,7 @@
             text-align: left;
             h3{
                 font-size: 18px;
-                color: #D29B10;
+                color: $color_CF2027;
             }
             p{
                 line-height: 32px;
@@ -75,6 +75,7 @@
         .s_i_logo{
             width: 218px;
             margin: 10px 0 0 10px;
+            color: $color_CF2027;
             img{
                 width: 190px;
             }

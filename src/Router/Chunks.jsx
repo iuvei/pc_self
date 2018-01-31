@@ -45,57 +45,60 @@ export const activityDetails = (location, callback) => {
         callback(null, require('../Components/Activity/ActivityDetails/ActivityDetails').default);
     }, 'activityDetails');
 };
-// 账户管理
-export const account = (location, callback) => {
-    require.ensure([], (require) => {
-        callback(null, require('../Components/Account/Account').default);
-    }, 'account');
-};
-// 账户管理/个人信息
+// 个人信息
 export const selfInfo = (location, callback) => {
     require.ensure([], (require) => {
-        callback(null, require('../Components/Account/SelfInfo/SelfInfo').default);
+        callback(null, require('../Components/SelfInfo/SelfInfo').default);
     }, 'selfInfo');
 };
-// 账户管理/团队列表
-export const teamList = (location, callback) => {
+// 个人信息/个人中心
+export const selfCenter = (location, callback) => {
     require.ensure([], (require) => {
-        callback(null, require('../Components/Account/TeamList/TeamList').default);
-    }, 'teamList');
+        callback(null, require('../Components/SelfInfo/SelfCenter/SelfCenter').default);
+    }, 'selfCenter');
 };
-// 账户管理/市场推广
-export const marketing = (location, callback) => {
-    require.ensure([], (require) => {
-        callback(null, require('../Components/Account/Marketing/Marketing').default);
-    }, 'marketing');
-};
-// 账户管理/契约系统
-export const contract = (location, callback) => {
-    require.ensure([], (require) => {
-        callback(null, require('../Components/Account/Contract/Contract').default);
-    }, 'contract');
-};
-// 账户管理/银行卡管理
+// 个人信息/银行卡管理
 export const bankCardManage = (location, callback) => {
     require.ensure([], (require) => {
-        callback(null, require('../Components/Account/BankCardManage/BankCardManage').default);
+        callback(null, require('../Components/SelfInfo/BankCardManage/BankCardManage').default);
     }, 'bankCardManage');
 };
-
-// 账户管理/安全中心
+// 个人信息/安全中心
 export const security = (location, callback) => {
     require.ensure([], (require) => {
-        callback(null, require('../Components/Account/Security/Security').default);
+        callback(null, require('../Components/SelfInfo/Security/Security').default);
     }, 'security');
 };
-// 账户管理/站内信
+// 个人信息/站内信
 export const message = (location, callback) => {
     require.ensure([], (require) => {
-        callback(null, require('../Components/Account/Message/Message').default);
+        callback(null, require('../Components/SelfInfo/Message/Message').default);
     }, 'message');
 };
-
-
+// 团队管理
+export const teamManage = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/TeamManage/TeamManage').default);
+    }, 'teamManage');
+};
+// 团队管理/团队列表
+export const teamList = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/TeamManage/TeamList/TeamList').default);
+    }, 'teamList');
+};
+// 团队管理/市场推广
+export const marketing = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/TeamManage/Marketing/Marketing').default);
+    }, 'marketing');
+};
+// 团队管理/契约系统
+export const contract = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/TeamManage/Contract/Contract').default);
+    }, 'contract');
+};
 // 游戏记录
 export const gameRecord = (location, callback) => {
     require.ensure([], (require) => {

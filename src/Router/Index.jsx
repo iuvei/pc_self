@@ -10,7 +10,7 @@ import {
     lottery,
     activity,
     activityDetails,
-    account,
+    teamManage,
     gameRecord,
     report,
     teamStatistics,
@@ -62,6 +62,7 @@ import {
     aboutHengCai,
     lotteryReport,
     downLoadClient,
+    selfCenter,
 } from './Chunks';
 /*
 *通过判断是否登录过来控制导航条是否可以直接输入页面而进入相应页面
@@ -86,22 +87,24 @@ const routes = params => (
         <Route path="/login" getComponent={login} params={params}/>
         <Route path="/dns" getComponent={dns} params={params}/>
         <Route path="/main" getComponent={main} params={params} onEnter={requireAuth}  >
-           {/* <IndexRedirect to="/home" />*/}
             <IndexRoute getComponent={lottery} />
             <Route path="/home" getComponent={home} params={params}/>
             <Route path="/lottery" getComponent={lottery} params={params}/>
             <Route path="/activity" getComponent={activity} params={params}/>
             <Route path="/activity/activityDetails" getComponent={activityDetails} params={params}/>
             <Route path="/tendency" getComponent={tendency} params={params}/>
-            <Route path="/account" getComponent={account} params={params}>
-                <IndexRoute getComponent={selfInfo} />
-                <Route path="/account/selfInfo" getComponent={selfInfo} params={params}/>
-                <Route path="/account/teamList" getComponent={teamList} params={params}/>
-                <Route path="/account/marketing" getComponent={marketing} params={params}/>
-                <Route path="/account/contract" getComponent={contract} params={params}/>
-                <Route path="/account/bankCardManage" getComponent={bankCardManage} params={params}/>
-                <Route path="/account/security" getComponent={security} params={params}/>
-                <Route path="/account/message" getComponent={message} params={params}/>
+            <Route path="/teamManage" getComponent={teamManage} params={params}>
+                <IndexRoute getComponent={teamList} />
+                <Route path="/teamManage/teamList" getComponent={teamList} params={params}/>
+                <Route path="/teamManage/marketing" getComponent={marketing} params={params}/>
+                <Route path="/teamManage/contract" getComponent={contract} params={params}/>
+            </Route>
+            <Route path="/selfInfo" getComponent={selfInfo} params={params}>
+                <IndexRoute getComponent={selfCenter} />
+                <Route path="/selfInfo/selfCenter" getComponent={selfCenter} params={params}/>
+                <Route path="/selfInfo/bankCardManage" getComponent={bankCardManage} params={params}/>
+                <Route path="/selfInfo/security" getComponent={security} params={params}/>
+                <Route path="/selfInfo/message" getComponent={message} params={params}/>
             </Route>
             <Route path="/gameRecord" getComponent={gameRecord} params={params}>
                 <IndexRoute getComponent={lotteryBet} />
@@ -133,12 +136,11 @@ const routes = params => (
                 <Route path="/financial/withdraw/affirmWithdraw" getComponent={affirmWithdraw} params={params}/>
             </Route>
             <Route path="/report" getComponent={report} params={params}>
-                {
-                    stateVar.userInfo.userType == 0 ?
-                        <IndexRoute getComponent={lotteryReport} /> :
-                        <IndexRoute getComponent={teamStatistics} />
-
-                }
+                {/*{*/}
+                    {/*stateVar.userInfo.userType == 0 ?*/}
+                        {/*<IndexRoute getComponent={lotteryReport} /> :*/}
+                        {/*<IndexRoute getComponent={teamStatistics} />*/}
+                {/*}*/}
                 <Route path="/report/teamStatistics" getComponent={teamStatistics} params={params}/>
                 <Route path="/report/teamTable" getComponent={teamTable} params={params}/>
                 <Route path="/report/selfTable" getComponent={selfTable} params={params}/>

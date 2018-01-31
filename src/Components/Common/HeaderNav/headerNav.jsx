@@ -3,9 +3,10 @@ import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
+import emitter from '../../../Utils/events';
 import lotteryTypeList from '../../../CommonJs/common.json';
 import { Modal } from 'antd';
-import HeaderTop from './HeaderTop'
+import HeaderTop from './HeaderTop';
 import './headerNav.scss';
 
 import nav_h from './Img/nav_h.png';
@@ -17,10 +18,8 @@ export default class HeaderNav extends Component {
         super(props);
         this.state = {
             showLottery: false,
-            lotteryType: [],
         };
     };
-
     componentDidMount() {
         this._ismount = true;
         stateVar.navIndex = 'lottery';
@@ -62,12 +61,12 @@ export default class HeaderNav extends Component {
                 typeName: '低频',
                 lotteryList: diping,
             },
-            // {
-            //     typeName: '高频',
-            //     lotteryList: rests,
-            // },
+            {
+                typeName: '高频',
+                lotteryList: rests,
+            },
         ];
-        this.setState({lotteryType: lotteryTypeFlag});
+        stateVar.lotteryType = lotteryTypeFlag;
     };
     componentWillUnmount() {
         this._ismount = false;
@@ -170,8 +169,11 @@ export default class HeaderNav extends Component {
         this.setState({showLottery: false})
     };
     /*切换彩种*/
-    handleClick(){
-        alert('选择彩种')
+    onChangeLottery(nav){
+        let key = {
+            key: nav
+        };
+        emitter.emit('changeLottery', key);
     };
     render() {
         const navList = [
@@ -187,7 +189,7 @@ export default class HeaderNav extends Component {
             },
             {
                 name: '综合游戏',
-                link: '/home1',
+                link: '/home',
                 id: 'home1',
             },
             {
@@ -202,7 +204,7 @@ export default class HeaderNav extends Component {
             },
             {
                 name: '报表管理',
-                link: '/report',
+                link: stateVar.userInfo.userType == 0 ? '/report/lotteryReport' : '/report/teamStatistics',
                 id: 'report',
             },
             {
@@ -212,17 +214,17 @@ export default class HeaderNav extends Component {
             },
             {
                 name: '个人信息',
-                link: '/home3',
-                id: 'home3',
+                link: '/selfInfo',
+                id: 'selfInfo',
             },
             {
                 name: '团队管理',
-                link: '/home4',
-                id: 'home4',
+                link: '/teamManage',
+                id: 'teamManage',
             },
         ];
-        const { navIndex } = stateVar;
-        const { showLottery, lotteryType } = this.state;
+        const { navIndex, lotteryType } = stateVar;
+        const { showLottery } = this.state;
 
         return (
             <div className="header_main">
@@ -264,7 +266,7 @@ export default class HeaderNav extends Component {
                                                     {
                                                         items.lotteryList.map((item)=>{
                                                             return (
-                                                                <li className={item.disabled ? 'disabled_style' : ''} onClick={item.disabled ? ()=>{} : ()=>this.handleClick()} key={item.nav}>
+                                                                <li className={item.disabled ? 'disabled_style' : ''} onClick={item.disabled ? ()=>{} : ()=>this.onChangeLottery(item.nav)} key={item.nav}>
                                                                     {item.cnname}
                                                                     {
                                                                         item.imgSrc ?

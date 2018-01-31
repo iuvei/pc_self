@@ -30,6 +30,8 @@ export default class HeaderTop extends Component {
             noticeDetails: {}, // 点击查看公告
             noticePosition: 0, // 列表位置
             updateMLoading: false, //刷新余额
+            iconArrowsName: false,
+            iconArrowsMoney: false,
         };
         this.onNoticeDetails = this.onNoticeDetails.bind(this);
         this.onNoticeList = this.onNoticeList.bind(this);
@@ -122,43 +124,102 @@ export default class HeaderTop extends Component {
             method: 'POST',
             body: JSON.stringify({"flag":"getmoney"})
         }).then((res)=>{
-            if(this._ismount) {
-                if (res.status == 200) {
-                    stateVar.allBalance.cpbalance = res.repsoneContent;
+            if(this._ismount && res.status == 200) {
+                if(res.repsoneContent < 0){
+                    res.repsoneContent = 0.00
                 }
+                stateVar.allBalance.cpbalance = res.repsoneContent;
             }
         })
     };
     /*获取各平台余额*/
     getBalance(){
-        Fetch.balance({method: 'POST'}).then((res)=>{
+        let allBalance = stateVar.allBalance;
+        //ea余额
+        Fetch.balance({
+            method: 'POST',
+            body: JSON.stringify({type: 'ea'})
+        }).then((res)=>{
             if(this._ismount){
-                if(res.status == 200) {
-                    let repsoneContent = res.repsoneContent,
-                        allBalance = stateVar.allBalance;
-                        allBalance.eabalance = repsoneContent.eabalance;
-                        allBalance.ptbalance = repsoneContent.ptbalance;
-                        allBalance.kgbalance = repsoneContent.kgbalance;
-                        allBalance.bobingBalance = repsoneContent.bobingBalance;
-                        allBalance.sbbalance = repsoneContent.sbbalance;
-                        for(var key in allBalance){
-                            if(typeof allBalance[key] == 'String'){
-                                parseFloat(allBalance[key])
-                            }
-                            if(allBalance[key] < 0){
-                                allBalance[key] = '0.00'
-                            }
-                        }
-                    this.setState({
-                        updateMLoading: false,
-                    });
-                }else{
-                    // Modal.warning({
-                    //     title: res.shortMessage,
-                    // });
+                if(!this.state.updateMLoading){
+                    this.setState({updateMLoading: false});
+                }
+                if(res.status == 200){
+                    if(res.repsoneContent <= 0){
+                        res.repsoneContent = 0.00
+                    }
+                    allBalance.eabalance = res.repsoneContent;
                 }
             }
-        })
+        });
+        //pt余额
+        Fetch.balance({
+            method: 'POST',
+            body: JSON.stringify({type: 'pt'})
+        }).then((res)=>{
+            if(this._ismount){
+                if(!this.state.updateMLoading){
+                    this.setState({updateMLoading: false});
+                }
+                if(res.status == 200){
+                    if(res.repsoneContent <= 0){
+                        res.repsoneContent = 0.00
+                    }
+                    allBalance.ptbalance = res.repsoneContent;
+                }
+            }
+        });
+        //gt余额
+        Fetch.balance({
+            method: 'POST',
+            body: JSON.stringify({type: 'gt'})
+        }).then((res)=>{
+            if(this._ismount){
+                if(!this.state.updateMLoading){
+                    this.setState({updateMLoading: false});
+                }
+                if(res.status == 200){
+                    if(res.repsoneContent <= 0){
+                        res.repsoneContent = 0.00
+                    }
+                    allBalance.kgbalance = res.repsoneContent;
+                }
+            }
+        });
+        //体育余额
+        Fetch.balance({
+            method: 'POST',
+            body: JSON.stringify({type: 'sb'})
+        }).then((res)=>{
+            if(this._ismount){
+                if(!this.state.updateMLoading){
+                    this.setState({updateMLoading: false});
+                }
+                if(res.status == 200){
+                    if(res.repsoneContent <= 0){
+                        res.repsoneContent = 0.00
+                    }
+                    allBalance.sbbalance = res.repsoneContent;
+                }
+            }
+        });
+        //博饼余额
+        Fetch.balance({
+            method: 'POST',
+            body: JSON.stringify({type: 'bb'})
+        }).then((res)=>{
+            if(this._ismount){
+                if(!this.state.updateMLoading){
+                    this.setState({updateMLoading: false});
+                }
+                if(res.status == 200){
+                    if(res.repsoneContent <= 0){
+                        res.repsoneContent = 0.00
+                    }
+                    allBalance.bobingBalance = res.repsoneContent;
+                }
+            }
+        });
     };
     /*退出登录*/
     onLogout() {
@@ -201,12 +262,6 @@ export default class HeaderTop extends Component {
     hideModal() {
         this.setState({
             visible: false,
-        },()=>{
-            // if(this._clearInt || this._animationFrame){
-            //     clearInterval(this._clearInt);
-            //     cancelAnimationFrame(this._animationFrame);
-            //     this.getDestination()
-            // }
         });
     };
     onNoticeDetails(item) {
@@ -221,15 +276,6 @@ export default class HeaderTop extends Component {
               break;
           }
       }
-    };
-    onOutModal() {
-        if(!this.state.visible){
-            // if(this._clearInt || this._animationFrame){
-            //     clearInterval(this._clearInt);
-            //     cancelAnimationFrame(this._animationFrame);
-            //     this.getDestination()
-            // }
-        }
     };
     /*站内信未读条数*/
     onUnread() {
@@ -275,7 +321,7 @@ export default class HeaderTop extends Component {
     }
     render() {
         const { allBalance, userInfo } = stateVar;
-        const { noticePosition } = this.state;
+        const { noticePosition, iconArrowsName, iconArrowsMoney } = this.state;
         return (
             <div className="nav_top">
            		<Websocket url='ws://10.63.15.242:9502' onMessage={this.handleData.bind(this)} onOpen={this.openWebsocket.bind(this)}
@@ -292,12 +338,10 @@ export default class HeaderTop extends Component {
                                     {
                                         this.state.noticeList.map((item)=>{
                                             return (
-                                                <li key={item.id} onClick={()=>this.showModal(item)}
-                                                    onMouseOver={()=>{
-                                                        // clearInterval(this._clearInt);
-                                                        // cancelAnimationFrame(this._animationFrame)
-                                                    }}
-                                                    onMouseOut={()=>this.onOutModal()}>{item.subject}&nbsp;&nbsp;[点击查看]</li>
+                                                <li key={item.id}
+                                                    onClick={()=>this.showModal(item)}>
+                                                    {item.subject}&nbsp;&nbsp;[点击查看]
+                                                </li>
                                             )
                                         })
                                     }
@@ -313,98 +357,100 @@ export default class HeaderTop extends Component {
                             />
                         </div>
                         <ul className="n_t_list">
-                            <li className="n_t_cursor n_t_position">
+                            <li className={iconArrowsName ? 'n_t_cursor n_t_position icon_arrows_bg' : 'n_t_cursor n_t_position'}
+                                onMouseOver={()=>this.setState({iconArrowsName: true})}
+                                onMouseOut={()=>this.setState({iconArrowsName: false})}
+                            >
                                 <img src={name_icon} style={{verticalAlign: 'middle',marginRight: 5}}/>
                                 { userInfo.sType == 'demo' ? '试玩用户' : userInfo.userName }
                                 <Icon type="caret-down" style={{marginLeft: '5px'}}/>
                                 <div className="n_t_controler">
-                                    <div className="n_t_drop_down">
-                                        <ul className="n_t_down_list">
-                                            <li>
-                                                <span className="left">用户类型</span>
-                                                <span className="right color_CF2027">{userInfo.userType == 0 ? '会员' : '代理'}</span>
-                                            </li>
-                                            <li>
-                                                <span className="left">奖金组</span>
-                                                <span className="right color_CF2027">{userInfo.accGroup}</span>
-                                            </li>
-                                            <li>
-                                                <span className="left">上次登录地点</span>
-                                                <span className="right color_CF2027">{userInfo.lastIp} {userInfo.address}</span>
-                                            </li>
-                                            <li>
-                                                <span className="left">上次登录时间</span>
-                                                <span className="right">{userInfo.lastTime}</span>
-                                            </li>
-                                            <li className="out_logo_btn">
-                                                <Button type="primary" icon="logout" onClick={()=>this.onLogout()}>
-                                                    退出登录
-                                                </Button>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <ul className="n_t_down_list">
+                                        <li>
+                                            <span className="left">用户类型</span>
+                                            <span className="right color_CF2027">{userInfo.userType == 0 ? '会员' : '代理'}</span>
+                                        </li>
+                                        <li>
+                                            <span className="left">奖金组</span>
+                                            <span className="right color_CF2027">{userInfo.accGroup}</span>
+                                        </li>
+                                        <li>
+                                            <span className="left">上次登录地点</span>
+                                            <span className="right color_CF2027">{userInfo.lastIp} {userInfo.address}</span>
+                                        </li>
+                                        <li>
+                                            <span className="left">上次登录时间</span>
+                                            <span className="right">{userInfo.lastTime}</span>
+                                        </li>
+                                        <li className="out_logo_btn">
+                                            <Button type="primary" icon="logout" onClick={()=>this.onLogout()}>
+                                                退出登录
+                                            </Button>
+                                        </li>
+                                    </ul>
                                 </div>
                             </li>
                             <li className="n_t_message n_t_cursor">
-                            <span onClick={()=>this.onHashHistory('/account/message', 'account', 6)}>
+                            <span onClick={()=>this.onHashHistory('/selfInfo/message', 'account', 6)}>
                                 <Badge count={stateVar.unread} overflowCount={99} showZero>
                                     <img src={email_icon} alt="站内信"/>
                                 </Badge>
                             </span>
                             </li>
-                            <li className="n_t_balance_p">
+                            <li className={iconArrowsMoney ? 'n_t_cursor n_t_balance_p icon_arrows_bg' : 'n_t_cursor n_t_balance_p'}
+                                onMouseOver={()=>this.setState({iconArrowsMoney: true})}
+                                onMouseOut={()=>this.setState({iconArrowsMoney: false})}
+                            >
                                 <span className="color_CF2027">余额：</span>
                                 <span className="color_CF2027">
                                     <i>￥</i>
-                                    <i>{this.state.hideBalance ? allBalance.cpbalance : '******'}</i>
+                                    <i className="cpbalance ellipsis">{this.state.hideBalance ? allBalance.cpbalance : '******'}</i>
                                     <img src={this.state.hideBalance ? on_icon : off_icon} onClick={()=>{this.setState({hideBalance: this.state.hideBalance ? false : true})}} className="n_t_hide_balance"/>
                                 </span>
                                 <div className="n_t_controler">
-                                    <div className="n_t_drop_down">
-                                        <ul className="n_t_down_list">
-                                            <li>
-                                                <span className="left">彩票余额：</span>
-                                                <span className="right">￥
-                                                    {allBalance.cpbalance}
-                                            </span>
-                                            </li>
-                                            <li>
-                                                <span className="left">EA余额：</span>
-                                                <span className="right">
-                                                {allBalance.eabalance}
-                                            </span>
-                                            </li>
-                                            <li>
-                                                <span className="left">PT余额：</span>
-                                                <span className="right">
-                                                {allBalance.ptbalance}
-                                            </span>
-                                            </li>
-                                            <li>
-                                                <span className="left">GT余额：</span>
-                                                <span className="right">
-                                                {allBalance.kgbalance}
-                                            </span>
-                                            </li>
-                                            <li>
-                                                <span className="left">博饼余额：</span>
-                                                <span className="right">
-                                                {allBalance.bobingBalance}
-                                            </span>
-                                            </li>
-                                            <li>
-                                                <span className="left">体育余额：</span>
-                                                <span className="right">
-                                                {allBalance.sbbalance}
-                                            </span>
-                                            </li>
-                                            <li style={{textAlign: 'center'}}>
-                                                <Button type="primary" icon="sync" loading={this.state.updateMLoading} onClick={()=>this.onUpdateMondy()}>
-                                                    刷新余额
-                                                </Button>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <ul className="n_t_down_list">
+                                        <li>
+                                            <span className="left">彩票余额：</span>
+                                            <span className="right">￥
+                                                {allBalance.cpbalance}
+                                        </span>
+                                        </li>
+                                        <li>
+                                            <span className="left">EA余额：</span>
+                                            <span className="right">￥
+                                            {allBalance.eabalance}
+                                        </span>
+                                        </li>
+                                        <li>
+                                            <span className="left">PT余额：</span>
+                                            <span className="right">￥
+                                            {allBalance.ptbalance}
+                                        </span>
+                                        </li>
+                                        <li>
+                                            <span className="left">GT余额：</span>
+                                            <span className="right">￥
+                                            {allBalance.kgbalance}
+                                        </span>
+                                        </li>
+                                        <li>
+                                            <span className="left">博饼余额：</span>
+                                            <span className="right">￥
+                                            {allBalance.bobingBalance}
+                                        </span>
+                                        </li>
+                                        <li>
+                                            <span className="left">体育余额：</span>
+                                            <span className="right">￥
+                                            {allBalance.sbbalance}
+                                        </span>
+                                        </li>
+                                        <li style={{textAlign: 'center'}}>
+                                            <Button type="primary" icon="sync" loading={this.state.updateMLoading} onClick={()=>this.onUpdateMondy()}>
+                                                刷新余额
+                                            </Button>
+                                        </li>
+                                    </ul>
                                 </div>
                             </li>
                             <li className="n_t_cursor_color color_CF2027">

@@ -26,38 +26,38 @@
                 @include transform(height, 0.3s);
             }
         }
+        .icon_arrows_bg{
+            &:before{
+                @include icon_arrows_bg(35px,45%,$color_CF2027,10px,#fff,-45deg);
+                z-index: 1000;
+            }
+        }
         .n_t_controler{
             position: absolute;
             top: 40px;
-            left: -77px;
-            z-index: 99999;
+            left: -90px;
+            z-index: 999;
             height: 0;
             overflow: hidden;
         }
-        .n_t_drop_down{
-            padding-top: 10px;
-            .n_t_down_list{
-                @include wh(300px, 168px);
-                border: 1px solid $color_CF2027;
-                background-color: #fff;
-                padding: 8px 12px 0;
-                &:before{
-                    @include icon_arrows_bg(5px,140px,$color_CF2027,10px,#fff,-45deg);
+        .n_t_down_list{
+            @include wh(300px, 168px);
+            border: 1px solid $color_CF2027;
+            background-color: #fff;
+            padding: 8px 12px 0;
+            li{
+                @include lh(31px);
+                border-bottom: 1px dotted #7A7A7E;
+                &:hover{
+                    cursor: auto;
                 }
-                li{
-                    @include lh(31px);
-                    border-bottom: 1px dotted #7A7A7E;
-                    &:hover{
-                        cursor: auto;
-                    }
-                    &:last-child{
-                        border-bottom: 0;
-                        cursor: pointer;
-                    }
+                &:last-child{
+                    border-bottom: 0;
+                    cursor: pointer;
                 }
-                .out_logo_btn{
-                    text-align: center;
-                }
+            }
+            .out_logo_btn{
+                text-align: center;
             }
         }
         .n_t_cursor:hover{
@@ -80,18 +80,20 @@
         }
         .n_t_balance_p{
             position: relative;
+            width: 198px;
             &:hover .n_t_controler{
                 height: 240px;
                 @include transform(height, 0.3s);
             }
             .n_t_down_list{
                 @include wh(200px, 230px);
-                &:before{
-                    @include icon_arrows_bg(5px,100px,$color_CF2027,10px,#fff,-45deg);
-                }
             }
             .n_t_controler{
-                left: -6px;
+                left: -1px;
+            }
+            .cpbalance{
+                width: 85px;
+                display: inline-block;
             }
         }
         .ant-badge-count{
@@ -104,7 +106,8 @@
             transform: translateX(-10%);
         }
         .n_t_hide_balance{
-            padding: 0 5px;
+            padding: 14px 5px 10px;
+            float: right;
             &:hover{
                 cursor: pointer;
             }
@@ -121,7 +124,7 @@
         float: left;
         border-left: 1px solid #EAEAEA;
         &:hover{
-            background: #ddd;
+            background: #e8e8e8;
         }
         &:last-child{
             border-right: 1px solid #EAEAEA;

@@ -74,7 +74,7 @@ $fc:#fff;
     border-left: 0;
     width: $wh;
     height: $wh;
-    background-color: $bg;
+    background: $bg;
     transform: rotate($deg);
     -webkit-transform: rotate($deg);
 }

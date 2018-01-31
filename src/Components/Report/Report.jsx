@@ -6,7 +6,7 @@ import { stateVar } from '../../State';
 import { Row, Col  } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import ChildNav from '../Common/ChildNav/ChildNav'
-import './Report.scss'
+import './Report.scss';
 
 const navListAgency = [
     {

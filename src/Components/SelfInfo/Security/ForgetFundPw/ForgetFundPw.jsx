@@ -239,7 +239,7 @@ export default class ForgetFundPw extends Component {
     /*设置密保*/
     onSetEncrypted() {
         hashHistory.push({
-            pathname: '/account/security',
+            pathname: '/selfInfo/security',
             query: {
                 navIndex: 5
             }

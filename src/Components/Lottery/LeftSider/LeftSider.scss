@@ -17,7 +17,7 @@
         position: relative;
         .icon_new_lottery{
             position: absolute;
-            top: 0;
+            top: 3px;
             right: 0;
         }
     }
@@ -25,7 +25,8 @@
         border: 1px solid $color_CF2027;
     }
     .ant-menu-item:hover, .ant-menu-submenu-active, .ant-menu-submenu-title:hover{
-        color: $color_CF2027
+        color: $color_363636;
+        background: #e8e8e8;
     }
     .ant-menu{
         background: $background_F5F5F5;
@@ -40,5 +41,21 @@
     }
     .ant-menu-submenu-inline > .ant-menu-submenu-title:after{
         right: 8px;
+    }
+    .ant-menu-item-selected{
+        color: #fff !important;
+    }
+    .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
+        background: $color_CF2027;
+    }
+    .ant-menu-inline .ant-menu-item-selected{
+        border-right-color: transparent;
+    }
+    .ant-menu-inline .ant-menu-item{
+        margin-left: 0;
+        left: 0;
+    }
+    .ant-menu-submenu{
+        border-bottom: 1px solid #ddd;
     }
 }

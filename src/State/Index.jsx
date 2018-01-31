@@ -37,6 +37,7 @@ class State {
     @observable navIndex = 'lottery'; // 顶部导航选择状态
     @observable aliPayInfo = {}; // 支付宝充值相关信息
     @observable navListIndex = 0; // 充值页面下的充值方式
+    @observable lotteryType = []; // 彩种分类
 
 
     @observable auth = false;
