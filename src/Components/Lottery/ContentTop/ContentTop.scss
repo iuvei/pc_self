@@ -1,16 +1,17 @@
 @import '../../../Style/variables';
 @import '../../../Style/mixin';
 .bet_content{
-    margin: 0 10px 10px 0;
+    margin: 10px 10px 10px 0;
 }
 .content_title{
     overflow: hidden;
-    @include wh(925px, 127px);
-    @include bis('./Img/content_title.jpg');
+    @include wh(925px, 114px);
+    background: $backgourn-color;
+    border:1px solid $color_CF2027;
     .content_cz_logo{
-        margin-top: $content-top;
-        @include wh(130px, 116px);
-        line-height: 116px;
+        margin:0;
+        @include wh(130px, 114px);
+        line-height: 114px;
         text-align: center;
         img{
             vertical-align: middle;
@@ -50,8 +51,8 @@
     }
 }
 .content_center{
-    width: 450px;
-    padding-top: ($content-top)+17px;
+    width: 440px;
+    padding-top: 14px;
     li{
         float: left;
     }
@@ -68,7 +69,7 @@
     margin-top: 38px;
     li{
         float: left;
-        @include bis('./Img/number-bg.png');
+        @include bis('./Img/number_bg.png');
         @include wh(62px, 64px);
         line-height: 57px;
         text-align: center;
@@ -80,13 +81,18 @@
 }
 .m_bottom{
     margin-bottom: 6px;
-    color: #fff;
+    color: #333;
+    font-size: 16px;
+    .ant-switch:after{
+        background:#d0cece;
+    }
 }
 .content_cz_text{
-    width: 160px;
+    width: 152px;
     padding-left: 15px;
     .cz_name{
-        font-size: 20px;
+        font-size: 16px;
+        font-weight: bold;
         span{
             margin-right:10px;
         }
@@ -109,21 +115,32 @@
     text-align: center;
     margin-left: 15px;
     .abort_time_text{
-        color: #fff;
+        color: #333;
         font-size: 14px;
         margin-bottom: 5px;
     }
     .item_text{
-        @include bis('./Img/time_bg.png');
-        @include lh(62px);
-        font-size: 32px;
-        color:#363636;
+        float: left;
+        @include lh(56px);
+        font-size: 48px;
+        color:#333;
         text-align: center;
         font-weight: bold;
         font-family: myFirstFont;
+        position: relative;
+    }
+    .maohao:after{
+        position: absolute;
+        content: ':';
+        color:#333;
+        right: -24px;
+        top:-5px;
+        font-size: 38px;
     }
     .item_type{
-        color: #fff;
+        float: left;
+        margin: 45px 23px 0 0;
+        color: #333;
         font-size: 12px;
         margin-bottom: 3px;
     }
@@ -141,21 +158,25 @@
     }
 }
 .praise_mark{
-    margin: ($content-top)+17px 0 0 20px;
+    padding: 14px 0 0 0;
     position: relative;
     overflow: hidden;
     .praise_mark_text{
-        color: #fff;
+        img{
+            vertical-align: middle;
+            margin-top: -3px;
+        }
+        .issueName{
+            margin-right: 28px;
+        }
+        color: $color_CF2027;
         font-size: 14px;
-        margin: 0 6px 10px 10px;
+        margin: 0 6px 7px 10px;
         .method_introduce{
             @include wh(auto, 18px);
-            @include borderRadius(2px);
-            background-color: #D6D6D7;
-            color: #4C4C4C;
+            color: #333;
             padding: 0 4px;
             margin-right: 3px;
-            text-align: center;
             font-size: 12px;
             &:hover{
                 cursor: pointer
@@ -182,11 +203,12 @@
         min-width: 320px;
         li{
             float: left;
-            @include bis('./Img/number-bg.png');
-            @include wh(62px, 64px);
-            line-height: 57px;
+            @include bis('./Img/number_bg.png');
+            @include wh(58px, 58px);
+            line-height: 58px;
             text-align: center;
-            font-size: 30px;
+            font-size: 40px;
+            margin-left: 10px;
             color: #fff;
             font-weight: bold;
             font-family: myFirstFont;

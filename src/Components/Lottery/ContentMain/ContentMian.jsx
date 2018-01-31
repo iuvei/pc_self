@@ -81,6 +81,84 @@ export default class ContentMian extends Component {
         this.onChangeNavIndex = this.onChangeNavIndex.bind(this);
         this.actionTrace = this.actionTrace.bind(this);
     };
+    //初始化默认调用方法
+    componentDidMount() {
+    	this._ismount = true;
+    	// 组件装载完成以后声明一个自定义事件
+        this.eventEmitter = emitter.on('initData', () => {
+            this.initData();
+        });
+    	this.initData();
+    };
+    //离开页面
+    componentWillUnmount() {
+    	this._ismount = false;
+    	stateVar.BetContent = {
+	        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
+	    };
+	    stateVar.todayAndTomorrow = [];
+	    stateVar.tomorrowIssue = [];
+	    stateVar.issueIndex = '?????';
+		stateVar.BetContent.lt_same_code = [];
+    	stateVar.BetContent.totalDan = 0;
+    	stateVar.BetContent.totalNum = 0;
+       	stateVar.BetContent.totalMoney = 0;
+       	stateVar.BetContent.lt_trace_base = 0;
+       	stateVar.kjNumberList = [];
+	    stateVar.openLotteryFlag = true;
+	    stateVar.checkLotteryId= true;
+	    emitter.off(this.eventEmitter);
+	}
+    initData(){
+    	let lotteryData = require('../../../CommonJs/common.json');
+    	let tempLotteryType = {};
+    	let tempLotteryLength;
+    	for(let i = 0,lotteryDt=lotteryData.lotteryType;i<lotteryDt.length;i++){
+    		if(lotteryDt[i]['nav'] == stateVar.nowlottery.lotteryId){
+				stateVar.nowlottery.cuimId = lotteryDt[i]['curmid'];
+				stateVar.nowlottery.defaultMethodId = lotteryDt[i]['methodid'];
+				stateVar.nowlottery.lotteryBetId = lotteryDt[i]['lotteryid'];
+				stateVar.nowlottery.cnname = lotteryDt[i]['cnname'];
+				stateVar.nowlottery.imgUrl =  lotteryDt[i]['imgUrl'];
+    		}
+    		if(lotteryDt[i]['lotteryid'] != 23){
+				tempLotteryType[lotteryDt[i]['nav']] = lotteryDt[i]['curmid']
+			}
+    	}
+    	stateVar.alllotteryType = tempLotteryType;//所有彩种类型
+    	stateVar.openLotteryFlag = false;//控制彩种是否可以点击
+    	this.setState({
+	        	navIndex:0,
+	        	navTwoIndex: 0,
+	        	navThreeIndex:0,
+	        	navFourIndex:0,
+	        	renIndex:0,
+	        	textAreaValue:'',
+	        	historyBet:[],
+	        	modes:[],
+            	selectYjf: 0,
+            	defaultposition:[],
+            	lotteryMethod:[],
+            	numss:0,
+            	money:0,
+            	checked: true,
+            	omodel:'2'
+        	},()=>{
+        	$("li.number_active").removeClass('number_active');
+        	$(".lh .hover").removeClass('hover');
+        	$(".zx span").removeClass('hover');
+        	//判断玩法是否有缓存，没有则重新获取所有玩法
+        	let commonData = common.getStore(common.getStore('userId'));
+	    	let ifMehtod = commonData == (null || undefined) ? false : true;
+	    	if(ifMehtod){
+				this.setOneMethod(commonData);
+	    	}else{
+	    		this.getLotteryData();
+	    	}
+	    	this.getBetHistory();
+	    	this.getVersion();//得到版本号
+    	});
+    };
     //确定投注页面
     lotteryOkBet(param){
     	if(param){
@@ -208,83 +286,7 @@ export default class ContentMian extends Component {
     onChangeStop(e){
     	this.setState({isPrizeStop:e.target.checked});
     }
-    //初始化默认调用方法
-    componentDidMount() {
-    	this._ismount = true;
-    	// 组件装载完成以后声明一个自定义事件
-        this.eventEmitter = emitter.on('initData', () => {
-            this.initData();
-        });
-    	this.initData();
-    };
-    //离开页面
-    componentWillUnmount() {
-    	this._ismount = false;
-    	stateVar.BetContent = {
-	        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
-	    };
-	    stateVar.todayAndTomorrow = [];
-	    stateVar.tomorrowIssue = [];
-	    stateVar.issueIndex = '?????';
-		stateVar.BetContent.lt_same_code = [];
-    	stateVar.BetContent.totalDan = 0;
-    	stateVar.BetContent.totalNum = 0;
-       	stateVar.BetContent.totalMoney = 0;
-       	stateVar.BetContent.lt_trace_base = 0;
-       	stateVar.kjNumberList = [];
-	    stateVar.openLotteryFlag = true;
-	    stateVar.checkLotteryId= true;
-	    emitter.off(this.eventEmitter);
-	}
-    initData(){
-    	let lotteryData = require('../../../CommonJs/common.json');
-    	let tempLotteryType = {};
-    	let tempLotteryLength;
-    	for(let i = 0,lotteryDt=lotteryData.lotteryType;i<lotteryDt.length;i++){
-    		if(lotteryDt[i]['nav'] == stateVar.nowlottery.lotteryId){
-				stateVar.nowlottery.cuimId = lotteryDt[i]['curmid'];
-				stateVar.nowlottery.defaultMethodId = lotteryDt[i]['methodid'];
-				stateVar.nowlottery.lotteryBetId = lotteryDt[i]['lotteryid'];
-				stateVar.nowlottery.cnname = lotteryDt[i]['cnname'];
-				stateVar.nowlottery.imgUrl =  lotteryDt[i]['imgUrl'];
-    		}
-    		if(lotteryDt[i]['lotteryid'] != 23){
-				tempLotteryType[lotteryDt[i]['nav']] = lotteryDt[i]['curmid']
-			}
-    	}
-    	stateVar.alllotteryType = tempLotteryType;//所有彩种类型
-    	stateVar.openLotteryFlag = false;//控制彩种是否可以点击
-    	this.setState({
-	        	navIndex:0,
-	        	navTwoIndex: 0,
-	        	navThreeIndex:0,
-	        	navFourIndex:0,
-	        	renIndex:0,
-	        	textAreaValue:'',
-	        	historyBet:[],
-	        	modes:[],
-            	selectYjf: 0,
-            	defaultposition:[],
-            	lotteryMethod:[],
-            	numss:0,
-            	money:0,
-            	checked: true,
-            	omodel:'2'
-        	},()=>{
-        	$("li.number_active").removeClass('number_active');
-        	$(".lh .hover").removeClass('hover');
-        	$(".zx span").removeClass('hover');
-        	//判断玩法是否有缓存，没有则重新获取所有玩法
-	    	let ifMehtod = common.getStore(common.getStore('userId')) == (null || undefined) ? false : true;
-	    	if(ifMehtod){
-				this.setOneMethod(common.getStore(common.getStore('userId')));
-	    	}else{
-	    		this.getLotteryData();
-	    	}
-	    	this.getBetHistory();
-	    	this.getVersion();//得到版本号
-    	});
-    };
+    
     getVersion(){
     	let tempObj = {version:'push'};
     	Fatch.getVersion({method:'post',body:JSON.stringify(tempObj)}).then((data)=>{
@@ -2320,7 +2322,7 @@ export default class ContentMian extends Component {
 	                                    			)
 	                                    		}else{
 	                                    			return(
-	                                    				<li className="c_m_superaddition"><Button disabled={stateVar.BetContent.lt_same_code == 0 ? true : false} onClick={()=>this.openTrace()}>追号</Button></li>
+	                                    				<li className="c_m_superaddition"><Button disabled={stateVar.BetContent.lt_same_code == 0 ? true : false} onClick={()=>this.openTrace()}>我要追号</Button></li>
 	                                    			)
 	                                    		}
 	                                    	})()

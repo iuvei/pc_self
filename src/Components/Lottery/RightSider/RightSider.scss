@@ -7,12 +7,14 @@
 }
 .user_info{
     width:210px;
-    background-color: #434350;
-    padding: 15px 15px 9px 15px;
+    border: 1px solid $color_CF2027;
+    background-color: #fff;
+    color:#333;
+    padding: 15px 15px 4px 15px;
     margin-bottom: 10px;
     .user_info_list{
-        color: #fff;
-        font-size: 12px;
+        color: #333;
+        font-size: 14px;
         li{
             margin-bottom: 7px;
         }
@@ -37,6 +39,7 @@
             @include wh(179px, 35px);
             line-height: 35px;
             text-align: center;
+            color:#fff;
             &:hover{
                 cursor: pointer;
             }
@@ -62,12 +65,13 @@
 .history_period{
     background-color: #fff;
     padding-bottom: 24px;
+    border: 1px solid #dddddd;
     width: 210px;
-    @include boxS(0, 4px, 18px, 0, #c3c3c3, null);
     .thead_title{
-        background-color: #4A4A5F;
+        background-color: #f5f5f5;
+        border-bottom: 1px solid #dddddd;
         font-size: 14px;
-        color: #fff;
+        color: #333;
         @include lh(35px);
         li{
             float:left;
@@ -94,6 +98,9 @@
             float:left;
             text-align: center;
         }
+        li:last-child{
+            color:$color_CF2027;
+        }
         .banker,.player,.tie{
             width: 20px;
             height: 20px;
@@ -113,8 +120,7 @@
         .right_ball_number{
             margin-top: 8px;
             li.selected{
-                background-color: #CD242F;
-                color:#fff;
+                color:$color_CF2027;
                 @extend .right_ball_number_style;
                 margin-right: 1px;
             }
@@ -133,8 +139,7 @@
             }
             li{
                 @extend .right_ball_number_style;
-                color:#000;
-                background: #E6E6E6;
+                color:#333;
             }
         }
     }

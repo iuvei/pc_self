@@ -3,15 +3,17 @@ import {observer} from 'mobx-react';
 import Websocket from 'react-websocket';
 import 'whatwg-fetch'
 import { Row, Col, Switch,message,Button,notification,Icon} from 'antd';
+import {Link} from 'react-router';
 import QueueAnim from 'rc-queue-anim';
 import './ContentTop.scss'
-import cz_logo_11_5 from './Img/cz_logo_11_5.png'
+import zoushi from './Img/zoushi.png'
+import introduce from './Img/introduce.png'
 import Fatch from '../../../Utils'
 import { stateVar } from '../../../State'
 import commone from './../commone.js'
 import common from '../../../CommonJs/common';
 
-
+let curLocation = location.href;  /*当前浏览器url地址*/
 @observer
 export default class ContentTop extends Component {
     constructor(props) {
@@ -68,6 +70,7 @@ export default class ContentTop extends Component {
     			tempStopFlag.push(false);
     		}
     	}
+    	curLocation = curLocation.split("#")[0] + "#/tendency";
     	this.setState({code:tempArrCode,kjStopFlag:tempStopFlag,animateCode:tempArrCode,tempLotteryLength:tempLotteryLength},()=>{
     		if(stateVar.nowlottery.lotteryBetId != 23){
 	    		this.kjanimate(0);
@@ -119,8 +122,8 @@ export default class ContentTop extends Component {
 	    					}
 	    					tempI += 1;
 	    					this.setState({kjStopFlag:tempArr,kjStopTime:tempI},()=>{
-	    						$(".kjCodeClass").eq(tempI-1).animate({fontSize:"36px"},50,()=>{
-	    							$(".kjCodeClass").animate({fontSize:"30px"},200);
+	    						$(".kjCodeClass").eq(tempI-1).animate({fontSize:"46px"},50,()=>{
+	    							$(".kjCodeClass").animate({fontSize:"40px"},200);
 	    						});
 	    					});
 	    				},50);
@@ -323,11 +326,14 @@ export default class ContentTop extends Component {
     		return(
     			<div className="praise_mark">
 		    		<div className="praise_mark_text_pk10">
-		                <div>第&nbsp;<span style={{color:'#FFE38E'}}>{this.state.nowIssue}</span>&nbsp;期</div>
+		                <div>第&nbsp;<span style={{color:'#CF2027'}}>{this.state.nowIssue}</span>&nbsp;期</div>
 		                <div>开奖号码</div>
 		                <div>
-			                <span className="method_introduce">走势图</span>&nbsp;
-			                <span className="method_introduce">玩法介绍</span>
+			                <a href={curLocation} target="_blank" style={{marginRight:'20px'}}>
+				                <img src={zoushi} />
+				                <span className="method_introduce">走势</span>
+			                </a>
+			                <img src={introduce} /><span className="method_introduce">玩法</span>
 		                </div>
 		            </div>
 		            <ul className="ball_number_pk10">
@@ -345,9 +351,12 @@ export default class ContentTop extends Component {
     		return(
     			<div className="praise_mark">
 		    		<div className="praise_mark_text">
-		                <span>第<span style={{color:'#FFE38E'}}>{this.state.nowIssue}</span>期&nbsp;开奖号码</span>
-		                <span className="method_introduce right">玩法介绍</span>
-		                <span className="method_introduce right">走势图</span>
+		                <span className='issueName'>第{this.state.nowIssue}期&nbsp;开奖号码</span>
+		                <a href={curLocation} target="_blank" style={{marginRight:'20px'}}>
+			                <img src={zoushi} />
+			                <span className="method_introduce">走势</span>
+		                </a>
+		                <Link to='/helpInfo/playMethodIntroduce?navIndex=1'><img src={introduce} /><span className="method_introduce">玩法</span></Link>
 		            </div>
 		            <ul className="ball_number clear">
 		                {
@@ -494,37 +503,24 @@ export default class ContentTop extends Component {
 	                                            <span>{stateVar.nowlottery.cnname}</span>
 	                                        </div>
 	                                        <div className="cz_periods m_bottom">
-	                                            <span style={{color:'#FFE38E'}}>{stateVar.nextIssue}</span>
-	                                            <span>期</span>
+	                                            <span style={{color:'#CF2027'}}>{stateVar.nextIssue}期</span>
 	                                        </div>
 	                                        <div className="m_bottom">
-	                                            <span style={{marginRight:'5px'}}>音效</span>
+	                                            <span style={{fontSize:'12px',marginRight:'5px'}}>音效</span>
 	                                            <Switch size="small" defaultChecked={common.getStore('soundswitch') == 'off' ? true : false} onChange={(checked) => this.onChangeSound(checked)} />
 	                                        </div>
 	                                    </li>
 	                                    <li className="abort_time">
 	                                        <p className="abort_time_text">投注截止还有</p>
 	                                        <div className="c_m_count_down">
-	                                            <Row type="flex" align="bottom">
-	                                                <Col span={6}>
-	                                                    <div className="item_text">{this.state.timeShow.hour}</div>
-	                                                </Col>
-	                                                <Col span={2}>
-	                                                    <div className="item_type">时</div>
-	                                                </Col>
-	                                                <Col span={6}>
-	                                                    <div className="item_text">{this.state.timeShow.minute}</div>
-	                                                </Col>
-	                                                <Col span={2}>
-	                                                    <div className="item_type">分</div>
-	                                                </Col>
-	                                                <Col span={6}>
-	                                                    <div className="item_text">{this.state.timeShow.second}</div>
-	                                                </Col>
-	                                                <Col span={2}>
-	                                                    <div className="item_type">秒</div>
-	                                                </Col>
-	                                            </Row>
+	                                            <div type="flex">
+                                                    <div className="item_text maohao">{this.state.timeShow.hour}</div>
+                                                    <div className="item_type">时</div>
+                                                    <div className="item_text maohao">{this.state.timeShow.minute}</div>
+                                                    <div className="item_type">分</div>
+                                                    <div className="item_text">{this.state.timeShow.second}</div>
+                                                    <div className="item_type" style={{marginRight:0}}>秒</div>
+	                                            </div>
 	                                        </div>
 	                                    </li>
 	                                </ul>

@@ -84,7 +84,7 @@ export default class PlayMethodIntroduce extends Component {
                 <ul className="p_select_list">
                     {
                         navList.map((value, index)=>{
-                            return <li className={this.state.navListIndex === index ? 'p_select_list_active' : ''}
+                            return <li className={this.state.navListIndex == index ? 'p_select_list_active' : ''}
                                        onClick={() => {this.setState({navListIndex: index})}} key={index}>{value}</li>
                         })
                     }
