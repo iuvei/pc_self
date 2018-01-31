@@ -18,11 +18,8 @@ export default class HelpInfo extends Component {
         this.setState({navIndex: index});
     };
     componentDidMount() {
-        var loc = window.location.hash;
-        loc=parseInt(loc.split("=")[1]);
-        if(loc){
-            this.setState({navIndex: loc});
-        }
+        let tempUrl = window.location.href.split("navIndex=")[1];
+        this.setState({navIndex : tempUrl||0});
 
 
     };
