@@ -56,6 +56,7 @@ export default class LeftSider extends Component {
 	    		for(let val in tempMethod){
 					if(val == tempId){
 						if(tempMethod[val].msg == undefined){
+							this._ismount = false;
 							stateVar.todayAndTomorrow = [];
 						    stateVar.tomorrowIssue = [];
 						    stateVar.issueIndex = '?????';
@@ -105,10 +106,6 @@ export default class LeftSider extends Component {
     render() {
         const { lotteryType } = stateVar;
         return (
-                <QueueAnim duration={1000}
-                           animConfig={[
-                               { opacity: [1, 0], translateX: [0, -100] }
-                           ]}>
                     <div className="left_sider" key="LeftSider">
                         <Menu
                             onClick={(e)=>this.handleClick(e)}
@@ -167,7 +164,6 @@ export default class LeftSider extends Component {
                             }
                         </Menu>
                     </div>
-                </QueueAnim>
         );
     }
 }

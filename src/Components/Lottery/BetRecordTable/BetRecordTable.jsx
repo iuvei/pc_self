@@ -22,7 +22,6 @@ export default class BetRecordTable extends Component {
     		method : "POST",
     		body : JSON.stringify({flag:'againsave',lotteryid:tempObj.lotteryid,projectid:tempObj.projectid})}
     		).then((data)=>{
-    			console.log(data)
     			if(data.status == 200){
     				this.props.histoeryBet();
     				alert(data.longMessage);
@@ -69,19 +68,19 @@ export default class BetRecordTable extends Component {
 	        ];
     	}else{
     		columns = [
-	            { title: '订单号', dataIndex: 'name', key: 'name',width: 150 ,render: (a,b) => <a href="javascript:;" onClick={()=>this.openModal(a,b)}>{a.length > 15 ? a.substr(0,15)+'...' : text}</a>},
-	            { title: '期号', dataIndex: 'age', key: 'age',width: 110 },
-	            { title: '玩法', dataIndex: 'address', key: 'addr2ess',width: 110 },
-	            { title: '投注内容', dataIndex: 'betContent', key: 'add2ress',width: 110 ,render: (text) => 
+	            { title: '订单号', dataIndex: 'name', key: 'name',width: 140 ,render: (a,b) => <a href="javascript:;" onClick={()=>this.openModal(a,b)}>{a.length > 15 ? a.substr(0,15)+'...' : text}</a>},
+	            { title: '期号', dataIndex: 'age', key: 'age',width: 100 },
+	            { title: '玩法', dataIndex: 'address', key: 'addr2ess',width: 100 },
+	            { title: '投注内容', dataIndex: 'betContent', key: 'add2ress',width: 100 ,render: (text) => 
 	            	text.length > 10 ? <Popover content={text}>
 					    <div>详细号码</div>
 					</Popover>  : text
 	            },
-	            { title: '开奖号', dataIndex: 'lotteryNumber', key: 'addre2ss',width: 105 },
-	            { title: '投注金额', dataIndex: 'betMoney', key: 'a2ddress',width: 85,render:(text) => <span>{text}</span> },
-	            { title: '奖金', dataIndex: 'bonus', key: 'a2ddres2s',width: 85,render:(text) => <span style={{color:'#F01111'}}>{text}</span> },
-	            { title: '状态', dataIndex: 'status', key: 'a2ddres22s',width: 65 ,render:(text)=>
-	            	text == '已派奖' ? <span style={{color:'#F01111',fontWeight:'bold'}}>{text}</span> : text
+	            { title: '开奖号', dataIndex: 'lotteryNumber', key: 'addre2ss',width: 95 },
+	            { title: '投注金额', dataIndex: 'betMoney', key: 'a2ddress',width: 75,render:(text) => <span>{text}</span> },
+	            { title: '奖金', dataIndex: 'bonus', key: 'a2ddres2s',width: 75,render:(text) => <span style={{color:'#CF2027'}}>{text}</span> },
+	            { title: '状态', dataIndex: 'status', key: 'a2ddres22s',width: 55 ,render:(text)=>
+	            	text == '已派奖' ? <span style={{color:'#CF2027',fontWeight:'bold'}}>{text}</span> : text
 	            },
 	            { title: '操作', dataIndex: 'againBuy', key: 'x', render: (text,objThis) => {
 		            	if(text == 1){

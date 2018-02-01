@@ -2,13 +2,15 @@
 @import '../../Style/mixin';
 
 .all_bet{
-    width: $nav_width_1200;
+    width: $nav_width_1040;
     margin:  0 auto;
     overflow: hidden;
 }
 .main{
     position: relative;
-    width: 100%;
+    width: 1040px !important;
+    margin: 0 !important;
+    margin-left: 111px !important;
     background: $main_bg;
     .b_c_left_sider{
         position: absolute;
