@@ -123,8 +123,8 @@ export default class ContentTop extends Component {
 	    					}
 	    					tempI += 1;
 	    					this.setState({kjStopFlag:tempArr,kjStopTime:tempI},()=>{
-	    						$(".kjCodeClass").eq(tempI-1).animate({fontSize:"46px"},50,()=>{
-	    							$(".kjCodeClass").animate({fontSize:"40px"},200);
+	    						$(".kjCodeClass").eq(tempI-1).animate({fontSize:"40px"},50,()=>{
+	    							$(".kjCodeClass").animate({fontSize:"36px"},200);
 	    						});
 	    					});
 	    				},50);
