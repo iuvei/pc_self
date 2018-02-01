@@ -221,6 +221,7 @@ export default class Login extends Component {
                 };
 
                 setStore("userName",result.username);
+                setStore("pushDomain",result.push_domain);
                 setStore("userId",result.userid);
                 setStore("userType",result.usertype);
                 setStore("accGroup",result.accGroup);
