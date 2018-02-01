@@ -16,7 +16,8 @@
     margin: 0 auto;
 }
 .ant-col-2{
-    width: 130px;
+    width: 120px;
+    margin-right: 10px;
 }
 .ant-col-22{
     width: $nav_width_1200 - 130px;
@@ -29,7 +30,7 @@
 
 /*二级导航栏样式*/
 .a_m_controler{
-        margin: 11px 0 30px 5px;
+        margin: 11px 0 30px 0;
         min-height: 700px;
         border: 1px solid $border_color;
         .a_m_title{
