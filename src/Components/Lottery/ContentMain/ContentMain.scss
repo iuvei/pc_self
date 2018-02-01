@@ -4,7 +4,6 @@
 $c_m_background: #4A4A5F;
 .content_bet{
     float: left;
-    padding-left: 50px;
 }
 .loadingbet{
     text-align: center;
@@ -16,9 +15,8 @@ $c_m_background: #4A4A5F;
     }
 }
 .content_main{
-    width: 925px;
+    width: 820px;
     margin-left: 5px;
-    @include boxS(0, 4px, 18px, 0, #c3c3c3, null);
     .c_m_nav{
         position: relative;
         background:#f5f5f5;
@@ -118,6 +116,8 @@ $c_m_background: #4A4A5F;
         }
     }
     .c_m_controler{
+        border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;
         .c_m_controler_method{
             position: relative;
             padding: 20px 15px 10px 20px;
@@ -217,11 +217,11 @@ $c_m_background: #4A4A5F;
                 }
                 .c_m_select_name{
                     position: relative;
-                    @extend .c_m_select_method;
-                    @include boxS(0, 0, 18px, 0, #14171F, inset);
-                    &:after{
-                        @include sj(23px, 34%, 6px, $c_m_background);
-                    }
+                    border:1px solid $color_CF2027;
+                    color:$color_CF2027;
+                    display: inline-block;
+                    padding:3px 8px;
+                    border-radius:3px; 
                 }
                 .c_m_btn{
                     line-height: 16px;
@@ -573,8 +573,8 @@ $c_m_background: #4A4A5F;
                     overflow: hidden;
                     .c_m_select_places{
                         float:left;
-                        @include wh(48px, 48px);
-                        line-height: 48px;
+                        @include wh(36px, 36px);
+                        line-height: 36px;
                         text-align: center;
                         color:$c_m_background;
                         font-weight: bold;
@@ -586,12 +586,12 @@ $c_m_background: #4A4A5F;
                         max-width: 800px;
                         li{
                             float:left;
-                            @include wh(40px, 40px);
-                            line-height: 40px;
+                            @include wh(36px, 36px);
+                            line-height: 36px;
                             text-align: center;
                             @include bis('./Img/ball_dafult_bg.png');
                             font-weight: bold;
-                            font-size: 22px;
+                            font-size: 24px;
                             margin-right: 13px;
                             font-family: myFirstFont;
                             &:hover{
@@ -627,7 +627,7 @@ $c_m_background: #4A4A5F;
                         float: right;
                         margin-right: 1px;
                         display: flex;
-                        margin-top: 9px;
+                        margin-top: 4px;
                         border: 1px solid #ccc;
                         border-radius: 3px;
                         overflow: hidden;
@@ -639,28 +639,21 @@ $c_m_background: #4A4A5F;
                             text-align: center;
                             color: #333;
                             font-size: 16px;
+                            @include gray_gradient;
                             border:none;
-                            border-right: 1px solid #bababa;
-                            background: -webkit-linear-gradient(#fffeff, #dddcdc); /* Safari 5.1 - 6.0 */
-                            background: -o-linear-gradient(#fffeff, #dddcdc); /* Opera 11.1 - 12.0 */
-                            background: -moz-linear-gradient(#fffeff, #dddcdc); /* Firefox 3.6 - 15 */
-                            background: linear-gradient(#fffeff, #dddcdc); /* 标准的语法 */
+                            border-right: 1px solid #ccc;
+                            border-radius: 0;
                             cursor: pointer;
                             &:active{
-                                background: -webkit-linear-gradient(#fb2222,#c72023); /* Safari 5.1 - 6.0 */
-                                background: -o-linear-gradient(#fb2222,#c72023); /* Opera 11.1 - 12.0 */
-                                background: -moz-linear-gradient(#fb2222,#c72023); /* Firefox 3.6 - 15 */
-                                background: linear-gradient(#fb2222,#c72023); /* 标准的语法 */
+                                @include red_gradient;
                                 color: #fff;
                                 border:none;
+                                border-radius: 0;
                             }
                             &:focus{
-                                background: -webkit-linear-gradient(#fb2222,#c72023); /* Safari 5.1 - 6.0 */
-                                background: -o-linear-gradient(#fb2222,#c72023); /* Opera 11.1 - 12.0 */
-                                background: -moz-linear-gradient(#fb2222,#c72023); /* Firefox 3.6 - 15 */
-                                background: linear-gradient(#fb2222,#c72023); /* 标准的语法 */
+                                @include red_gradient;
                                 color: #fff;
-                                border: 1px solid #cb0202;
+                                border-radius: 0;
                             }
                         }
                         .li:last-child{
@@ -683,7 +676,7 @@ $c_m_background: #4A4A5F;
                 .c_m_select_money{
                     margin-right: 30px;
                     strong{
-                        color:#B88932;
+                        color:$color_CF2027;
                         font-weight: normal;
                         margin: 0 5px;
                     }
@@ -719,25 +712,41 @@ $c_m_background: #4A4A5F;
                     .c_m_select_yjf{
                         margin-top: 5px;
                         @include wh(99px, 30px);
-                        @include borderRadius(3px);
-                        background: $c_m_background;
-                        color:#fff;
+                        background: #fff;
+                        color:#333;
                         padding: 3px;
-                        @include boxS(0, 0, 12px, 0, #14171F, inset);
+                        border-radius:3px;
+                        overflow: hidden;
                         li{
                             float: left;
                             line-height: 24px;
+                            border: 1px solid #dddddd;
                             width: 31px;
+                            background: #fff;
                             &:hover{
                                 cursor: pointer;
                             }
                         }
+                        li:first-child{
+                            border-bottom-left-radius: 3px;
+                            border-top-left-radius: 3px;
+                        }
+                        li:last-child{
+                          border-bottom-right-radius: 3px;
+                            border-top-right-radius: 3px;
+                        }
+                        li:nth-child(2){
+                            border: none;
+                            border-top: 1px solid #dddddd;
+                            border-bottom: 1px solid #dddddd;
+                        }
                         .yjf_active{
-                            @include wh(31px,24px);
-                            @include borderRadius(2px);
-                            background: #F1F4F3;
-                            color: #000;
-                            @include gradient(0, 10.5, 0, bottom, #fff, #E6EBEA);
+                            @include wh(31px,26px);
+                            border: 1px solid $color_CF2027;
+                            color: $color_CF2027;
+                        }
+                        li.yjf_active:nth-child(2){
+                            border:1px solid $color_CF2027;
                         }
                     }
                 }
@@ -758,12 +767,7 @@ $c_m_background: #4A4A5F;
                     font-size: 16px;
                     font-weight: bold;
                     color: #333;
-                    border:1px solid #bababa;
-                    border-radius: 3px;
-                    background: -webkit-linear-gradient(#fffeff, #dddcdc); /* Safari 5.1 - 6.0 */
-                    background: -o-linear-gradient(#fffeff, #dddcdc); /* Opera 11.1 - 12.0 */
-                    background: -moz-linear-gradient(#fffeff, #dddcdc); /* Firefox 3.6 - 15 */
-                    background: linear-gradient(#fffeff, #dddcdc); /* 标准的语法 */
+                    @include gray_gradient;
                     margin-right: 5px;
                     &:hover{
                         cursor: pointer;
@@ -776,26 +780,13 @@ $c_m_background: #4A4A5F;
                     outline: none;
                     width: 160px;
                     height: 50px;
-<<<<<<< HEAD
-                    background:url('./Img/bet_btn.png') no-repeat;
-=======
-                    border:1px solid #c72023;
-                    background: -webkit-linear-gradient(#fb2222,#c72023); /* Safari 5.1 - 6.0 */
-                    background: -o-linear-gradient(#fb2222,#c72023); /* Opera 11.1 - 12.0 */
-                    background: -moz-linear-gradient(#fb2222,#c72023); /* Firefox 3.6 - 15 */
-                    background: linear-gradient(#fb2222,#c72023); /* 标准的语法 */
->>>>>>> moore66
                     font-size:16px;
+                    @include red_gradient;
                     text-align:center;
                     color: #fff;
-                    font-size: 16px;
                     font-weight: bold;
                     vertical-align: top;
-<<<<<<< HEAD
-                    margin-top: 1px;
-=======
                     margin-top: 0; 
->>>>>>> moore66
                     &:hover{
                         cursor: pointer;
                     }
@@ -814,10 +805,9 @@ $c_m_background: #4A4A5F;
             padding: 10px;
             background: #fff;
             .c_m_select_record_content{
-                border: 1px solid #E0E0E0;
                 .c_m_select_record_table{
-                    border-right: 1px solid #E0E0E0;
-                    height: 150px;
+                    border: 1px solid #bababa;
+                    height: 152px;
                     line-height: 150px;
                     text-align: center;
                     overflow-y: scroll;
@@ -877,17 +867,16 @@ $c_m_background: #4A4A5F;
                 }
                 .c_m_machine_select{
                     height: 150px;
-                    background: #F4F4F4;
+                    background: #fff;
                     text-align: center;
                     padding-top: 10px;
                     .machine_defult{
-                        @include bis('./Img/machine_select_bg.png');
+                        @include gray_gradient;
                         @include wh(145px, 40px);
                         margin: 0 auto 5px auto;
                         line-height: 35px;
                         @include sc(14px,#1B1B21);
                         outline:none;
-                        border:none;
                     }
                     button:disabled{
                         opacity: .65;
@@ -943,14 +932,9 @@ $c_m_background: #4A4A5F;
                     }
                     .c_m_superaddition{
                         @include wh(156px, 50px);
-                        border:1px solid #bababa;
-                        background: -webkit-linear-gradient(#fffeff, #dddcdc); /* Safari 5.1 - 6.0 */
-                        background: -o-linear-gradient(#fffeff, #dddcdc); /* Opera 11.1 - 12.0 */
-                        background: -moz-linear-gradient(#fffeff, #dddcdc); /* Firefox 3.6 - 15 */
-                        background: linear-gradient(#fffeff, #dddcdc); /* 标准的语法 */
+                        @include gray_gradient;
                         @include sc(17px,#505050);
                         text-align: center;
-                        border-radius: 3px;
                         margin-right: 10px;
                         float: right;
                         &:hover{
@@ -968,12 +952,7 @@ $c_m_background: #4A4A5F;
                     }
                     .c_m_affirm_bet_btn{
                         @include wh(156px, 50px);
-                        background: -webkit-linear-gradient(#fb2222,#c72023); /* Safari 5.1 - 6.0 */
-                        background: -o-linear-gradient(#fb2222,#c72023); /* Opera 11.1 - 12.0 */
-                        background: -moz-linear-gradient(#fb2222,#c72023); /* Firefox 3.6 - 15 */
-                        background: linear-gradient(#fb2222,#c72023); /* 标准的语法 */
-                        border:1px solid #c72023;
-                        border-radius: 3px;
+                        @include red_gradient;
                         @include sc(16px,#fff);
                         line-height: 50px;
                         text-align: center;

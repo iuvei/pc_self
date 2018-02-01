@@ -14,7 +14,24 @@ $fc:#fff;
     height:$lh;
     line-height: $lh;
 }
-
+/*全局灰色色渐变*/
+@mixin gray_gradient{
+    border:1px solid #bababa;
+    border-radius: 3px;
+    background: -webkit-linear-gradient(#fffeff, #dddcdc); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#fffeff, #dddcdc); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#fffeff, #dddcdc); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#fffeff, #dddcdc); /* 标准的语法 */
+}
+/*全局灰色色渐变*/
+@mixin red_gradient{
+    border:1px solid #c72023;
+    background: -webkit-linear-gradient(#fb2222,#c72023); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#fb2222,#c72023); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#fb2222,#c72023); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#fb2222,#c72023); /* 标准的语法 */
+    border-radius: 3px;
+}
 @mixin els{
     overflow: hidden;
     white-space: nowrap;

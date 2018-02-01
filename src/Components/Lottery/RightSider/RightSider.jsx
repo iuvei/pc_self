@@ -102,7 +102,7 @@ export default class RightSider extends Component {
 				                                <ul className="right_ball_number clear">{
 				                                	value.split(' ').map((val,idx)=>{
 				                                		return (
-						                                    <li className='selected' key={idx}>{val}</li>
+						                                    <li key={idx}>{val}</li>
 				                                		)
 				                                	})
 				                                }
@@ -259,7 +259,7 @@ export default class RightSider extends Component {
 							                                {
 							                                	value.shapeType.map((value,index)=>{
 							                                		return(
-							                                			<li style={{width:(40/tempObj.type.length)+'%'}} key={index}>{value}</li>
+							                                			<li style={{width:(40/tempObj.type.length)+'%',color:'#CF2027'}} key={index}>{value}</li>
 							                                		)
 							                                	})
 							                                }
@@ -351,7 +351,7 @@ export default class RightSider extends Component {
 							                                			)
 						                                			}else{
 						                                				return (
-						                                					<li style={{width:'23%'}}>{value.shapeType}</li>
+						                                					<li style={{width:'23%',color:'#CF2027'}}>{value.shapeType}</li>
 							                                			)
 						                                			}
 							                                	})()

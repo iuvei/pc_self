@@ -48,6 +48,7 @@ export default class ContentTop extends Component {
 	    clearInterval(this.interval);
 	}
     initData(){
+    	this._ismount = true;
     	let lotteryData = require('../../../CommonJs/common.json');
     	let tempLotteryLength;
     	for(let i = 0,lotteryDt=lotteryData.lotteryType;i<lotteryDt.length;i++){
@@ -423,7 +424,7 @@ export default class ContentTop extends Component {
     			}
     		}else if(tempType == 4 || tempType == 3){
     			this.props.getBetHistory();
-    		}else if(tempType == 8){
+    		}else if(tempType == 8 || tempType == 2){
     			common.removeStore(common.getStore('userId'))
     			this.props.getLotteryData();
     		}else if(tempType == 7){
@@ -446,7 +447,7 @@ export default class ContentTop extends Component {
     render() {
         return (
             <div className="bet_content" key="ContentTop">
-	            <Websocket url='ws://10.63.15.242:9502' onMessage={this.handleData.bind(this)} onOpen={this.openWebsocket.bind(this)}
+	            <Websocket url={'ws://'+common.getStore("pushDomain")+''} onMessage={this.handleData.bind(this)} onOpen={this.openWebsocket.bind(this)}
         			ref = {Websocket => {
                   this.refWebSocket = Websocket;
                 }}

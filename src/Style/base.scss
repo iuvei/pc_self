@@ -14,13 +14,13 @@
 .main_width{
     width: $nav_width_1200;
     margin: 0 auto;
+    position: relative;
 }
 /* 禁止页面选中复制 */
 .content_main, .disabled_copy{
     -moz-user-select:none !important;
     -webkit-user-select:none !important;
 }
-
 /*二级导航栏样式*/
 .a_m_controler{
         margin: 11px 0 30px 5px;
