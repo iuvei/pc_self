@@ -49,7 +49,6 @@ export default class ComplainAndSuggests extends Component {
                     title:this.state.complainTitle,
                     content:this.state.complainContent,
                 })}).then((data)=> {
-                console.log("complainAndSuggests",data);
                 this.setState({
                     loading:false,
                 });
@@ -70,7 +69,6 @@ export default class ComplainAndSuggests extends Component {
     };
     /*通过文本框的默认事件获取输入内容的长度*/
     onChangeTxt(e){
-        console.log("value",e.target.value.length)
         this.setState({
             complainContent:e.target.value,
             txtLength:e.target.value.length,
@@ -92,7 +90,6 @@ export default class ComplainAndSuggests extends Component {
     }
     /*监听input的键盘按下事件，当文字数>15,只可以删除，不能输入*/
     onLimitTitleLen(e){
-        console.log("e.keyCode",e.keyCode);
         if(this.state.titleLength>=15){
             if(!(e.keyCode==8||e.keyCode==46))
                 e.preventDefault();

@@ -12,6 +12,15 @@
         height: 40px;
         top: 0;
         right: 0;
+        &:before{
+            content: "\E633";
+            display: block;
+            font-family: "anticon" !important;
+            height: 40px;
+            line-height: 40px;
+            font-size: 20px;
+            padding-left: 12px;
+        }
         &:hover{
             cursor: pointer;
         }

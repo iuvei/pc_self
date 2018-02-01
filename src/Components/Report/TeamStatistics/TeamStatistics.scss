@@ -6,7 +6,7 @@
     .t_st_people_num{
         li{
             float:left;
-            @include wh(215px, 94px);
+            @include wh(193px, 94px);
             margin-right: 8px;
             color: #fff;
             font-size: 14px;
@@ -52,7 +52,6 @@
     }
     .t_st_broken_line{
         position: relative;
-        width: 1108px;
         border: 1px solid #ccc;
         background-color: #fff;
         margin-top: 20px;

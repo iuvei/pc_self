@@ -393,7 +393,7 @@ export default class HeaderTop extends Component {
                                 </div>
                             </li>
                             <li className="n_t_message n_t_cursor">
-                            <span onClick={()=>this.onHashHistory('/selfInfo/message', 'account', 6)}>
+                            <span onClick={()=>this.onHashHistory('/selfInfo/message', 'selfInfo', 3)}>
                                 <Badge count={stateVar.unread} overflowCount={99} showZero>
                                     <img src={email_icon} alt="站内信"/>
                                 </Badge>

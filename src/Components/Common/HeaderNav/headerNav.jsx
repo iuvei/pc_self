@@ -148,7 +148,6 @@ export default class HeaderNav extends Component {
                 <HeaderTop/>
                 <nav className="nav">
                     <div className="nav-content clear">
-                        <div className="menus">
                             <ul className="nav_list clear">
                                 {
                                     navList.map((item)=>{
@@ -167,42 +166,41 @@ export default class HeaderNav extends Component {
                                     })
                                 }
                             </ul>
-                        </div>
-                    </div>
-                    <div className={showLottery ? 't_m_select_lottery t_m_select_lottery_show' : 't_m_select_lottery'}
-                         onMouseOver={()=>this.onLotteryOver()}
-                         onMouseOut={()=>this.onLotteryOut()}
-                    >
-                        <ul className="lottery_type_list clear">
-                            {
-                                lotteryType.map((items)=>{
-                                        return (
-                                            <li className="lottery_type" key={items.typeName}>
-                                                <p>{items.typeName}</p>
-                                                <ul className="lottery_list">
-                                                    {
-                                                        items.lotteryList.map((item)=>{
-                                                            return (
-                                                                <li className={item.disabled ? 'disabled_style' : ''} onClick={item.disabled ? ()=>{} : ()=>this.onChangeLottery(item.nav)} key={item.nav}>
-                                                                    {item.cnname}
-                                                                    {
-                                                                        item.imgSrc ?
-                                                                            <img className="h_n_icon" src={item.imgSrc == 'nav_h' ? nav_h : item.imgSrc == 'nav_n' ? nav_n : ''}/> :
-                                                                            null
-                                                                    }
-                                                                </li>
-                                                            )
-                                                        })
-                                                    }
-                                                </ul>
-                                            </li>
-                                        )
-                                    }
-                                )
-                            }
-                        </ul>
                     </div>
                 </nav>
+                <div className={showLottery ? 't_m_select_lottery t_m_select_lottery_show' : 't_m_select_lottery'}
+                     onMouseOver={()=>this.onLotteryOver()}
+                     onMouseOut={()=>this.onLotteryOut()}
+                >
+                    <ul className="lottery_type_list clear">
+                        {
+                            lotteryType.map((items)=>{
+                                    return (
+                                        <li className="lottery_type" key={items.typeName}>
+                                            <p>{items.typeName}</p>
+                                            <ul className="lottery_list">
+                                                {
+                                                    items.lotteryList.map((item)=>{
+                                                        return (
+                                                            <li className={item.disabled ? 'disabled_style' : ''} onClick={item.disabled ? ()=>{} : ()=>this.onChangeLottery(item.nav)} key={item.nav}>
+                                                                {item.cnname}
+                                                                {
+                                                                    item.imgSrc ?
+                                                                        <img className="h_n_icon" src={item.imgSrc == 'nav_h' ? nav_h : item.imgSrc == 'nav_n' ? nav_n : ''}/> :
+                                                                        null
+                                                                }
+                                                            </li>
+                                                        )
+                                                    })
+                                                }
+                                            </ul>
+                                        </li>
+                                    )
+                                }
+                            )
+                        }
+                    </ul>
+                </div>
             </div>
         );
     }

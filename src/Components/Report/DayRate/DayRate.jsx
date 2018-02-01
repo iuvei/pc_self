@@ -21,7 +21,7 @@ export default class DayRate extends Component {
             postData: {
                 // username: stateVar.userInfo.userName,// 查询用户名
                 username: '',// 查询用户名
-                starttime: setDateTime(0),// 查询日期
+                starttime: setDateTime(-1),// 查询日期
                 p: 1,
                 pn: 10,
             },

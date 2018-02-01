@@ -46,9 +46,7 @@ export default class LeftSider extends Component {
     	if(!stateVar.openLotteryFlag){
     		return;
     	}
-
     	let tempId = e.key;
-        this.setState({current: tempId});
     	let tempMethod = common.getStore(common.getStore('userId'));
     	let thisUrl = window.location.href.indexOf('lottery') > -1 ? true : false;
     	if(thisUrl){
@@ -75,6 +73,7 @@ export default class LeftSider extends Component {
 						    };
 						    emitter.emit('initData');
 							stateVar.isload = false;
+                            this.setState({current: tempId});
 						}else{
 							alert(tempMethod[val].msg);
 							return;
@@ -90,9 +89,11 @@ export default class LeftSider extends Component {
 					if(tempMethod[val].msg == undefined){
 						stateVar.nowlottery.lotteryId = e.key;
 						hashHistory.push('/lottery');
+                        this.setState({current: tempId});
 					}else{
 						alert(tempMethod[val].msg);
 						stateVar.nowlottery.lotteryId = 'ssc';
+                        this.setState({current: 'ssc'});
 						hashHistory.push('/lottery');
 						return;
 					}

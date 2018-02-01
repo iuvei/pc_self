@@ -7,20 +7,14 @@
         li{
             position: relative;
             float: left;
-            margin-top: 11px;
+            margin: 10px 0 5px;
             border: 1px solid #ddd;
             img{
-                width: 540px;
+                width: 576px;
                 vertical-align: middle;
             }
             &:nth-child(2n+1){
                 margin-right: 15px;
-            }
-            .activity_apply{
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 87px;
             }
         }
         .activity_participation{
@@ -30,20 +24,10 @@
                 color: $color_363636;
                 font-size: 18px;
             }
-            i{
-                font-style: normal;
-                color: #999999;
-                font-size: 12px;
-            }
             .active_bonus{
                 font-size: 12px;
-                color:#FF0000;
-                margin-left: 15px;
+                color:$color_CF2027;
             }
         }
-    }
-    .active_pagination{
-        margin-top: 15px;
-        float: right;
     }
 }

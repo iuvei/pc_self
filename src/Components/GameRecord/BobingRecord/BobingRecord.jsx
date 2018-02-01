@@ -27,6 +27,15 @@ export default class BobingRecord extends PureComponent {
             },
             searchLoading: false,
             total: 0, // 总条数
+            doubleVisible: false, // 加倍详情modal
+            doubleData: {
+                data: [],
+                capital: 0, //初始本金
+                finning: 0, //游戏局数
+                total_double:{}, //总计
+            },
+            doubleName: '',
+            doubleLoading: false,
         }
     };
     componentDidMount() {
@@ -126,6 +135,34 @@ export default class BobingRecord extends PureComponent {
     onColor() {
         return parseFloat(this.state.totalInfo.sum_prizepool) < 0 ? 'col_color_shu' : 'col_color_ying';
     };
+    /*加倍详情*/
+    onDoubledetails(record){
+        this.setState({doubleVisible: true, doubleLoading: true});
+        let { postData } = this.state;
+        Fetch.doubledetails({
+            method: 'POST',
+            body: JSON.stringify({
+                starttime: postData.star_date,
+                endtime: postData.end_date,
+                packageid: record.packageid,
+                userid: record.userid,
+                username: record.username,
+            })
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({doubleLoading: false});
+                if(res.status == 200){
+                    let data = res.repsoneContent,
+                        { doubleData } = this.state;
+                    doubleData.data = data.aDoubleDetails;
+                    doubleData.capital = data.capital;
+                    doubleData.finning = data.finning;
+                    doubleData.total_double = data.total_double;
+                    this.setState({doubleData, doubleName: record.username})
+                }
+            }
+        })
+    }
 
     render() {
         let columns = [
@@ -136,7 +173,7 @@ export default class BobingRecord extends PureComponent {
             }, {
                 title: '游戏时间',
                 dataIndex: 'writetime',
-                width: 140,
+                width: 90,
             }, {
                 title: '投注内容',
                 dataIndex: 'code',
@@ -213,13 +250,85 @@ export default class BobingRecord extends PureComponent {
             }, {
                 title: '加倍详情',
                 dataIndex: 'isfivezero',
-                render: text => (
-                    text == 0 ? '-' : <a href="#">查看</a>
+                render: (text, record) => (
+                    text == 0 ? '-' : <a href="javascript:void(0)" onClick={()=>this.onDoubledetails(record)}>查看</a>
                 ),
                 width: 100,
             }];
-        const totalInfo = this.state.totalInfo;
-        const total = this.state.total;
+        let columnsDouble = [
+            {
+                title: '游戏时间',
+                dataIndex: 'writetime',
+                width: 120,
+            },
+            {
+                title: '局数',
+                dataIndex: 'wininning',
+                render: (text)=> '第'+text+'局',
+                width: 50,
+            },
+            {
+                title: '次数',
+                dataIndex: 'ci',
+                width: 50,
+            },
+            {
+                title: '倍数',
+                dataIndex: 'multiple',
+                width: 50,
+            },
+            {
+                title: '投注内容',
+                dataIndex: 'userbet',
+                width: 110,
+            },
+            {
+                title: '投注本金',
+                dataIndex: 'bet',
+                render: (text)=> -text,
+                width: 110,
+            },
+            {
+                title: '加倍补注',
+                dataIndex: 'addrecharge',
+                width: 110,
+            },
+            {
+                title: '失败补注',
+                dataIndex: 'failrecharge',
+                width: 110,
+            },
+            {
+                title: '返点金额',
+                dataIndex: 'userpoint',
+                width: 110,
+            },
+            {
+                title: '开奖结果',
+                dataIndex: 'game_result',
+                width: 110,
+            },
+            {
+                title: '中奖金额',
+                dataIndex: 'bonus',
+                width: 110,
+            },
+            {
+                title: '奖池奖金',
+                dataIndex: 'prizepool',
+                width: 110,
+            },
+            {
+                title: '盈亏',
+                dataIndex: 'singleprice',
+                render: (text)=>parseFloat(text) < 0 ?
+                    <span className="col_color_shu">{text}</span> :
+                    <span className="col_color_ying">{text}</span>,
+                width: 110,
+            }
+        ];
+        const { totalInfo, doubleData, total, doubleName } = this.state;
+        const total_double = doubleData.total_double;
         const footer = <ul className="tabel_footer clear" style={{display: total <= 0 ? 'none' : ''}}>
                             <li>总计</li>
                             <li>{totalInfo.sum_totalprice}</li>
@@ -294,6 +403,43 @@ export default class BobingRecord extends PureComponent {
                         />
                     </div>
                 </div>
+
+                <Modal
+                    title="加倍详情"
+                    visible={this.state.doubleVisible}
+                    width={1100}
+                    bodyStyle={{height: 500}}
+                    footer={null}
+                    maskClosable={false}
+                    onCancel={()=>this.setState({doubleVisible: false})}
+                    className="double_table_modal"
+                >
+                    <div className="modal_username">
+                        <span>查询用户：{doubleName}</span>
+                        <span>初始本金：{doubleData.capital}元</span>
+                        <span>游戏局数：{doubleData.finning}</span>
+                    </div>
+                    <div className="modal_table">
+                        <Table columns={columnsDouble}
+                               rowKey={record => record.projectid}
+                               dataSource={doubleData.data}
+                               pagination={false}
+                               loading={this.state.doubleLoading}
+                               scroll={{y: 345}}
+                        />
+                        <ul className="historyTfoot_list clear">
+                            <li>合计</li>
+                            <li>-{total_double.sum_bet}</li>
+                            <li>{total_double.sum_addrecharge}</li>
+                            <li>{total_double.sum_failrecharge}</li>
+                            <li>{total_double.sum_point}</li>
+                            <li>-</li>
+                            <li>{total_double.sum_bonus}</li>
+                            <li>{total_double.sum_prizepool}</li>
+                            <li className={total_double.sum_total_account < 0 ? 'col_color_ying' : 'col_color_ying'}>{total_double.sum_total_account}</li>
+                        </ul>
+                    </div>
+                </Modal>
             </div>
 
         );

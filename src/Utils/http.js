@@ -7,28 +7,28 @@ const interFace = (key) => {
     // 获取sess
     INTERFACE['SESS'] = 'sessValid=true';
     // 登录,找回密码
-    
+
     INTERFACE['LOGIN'] = 'controller=default&action=login';
-    
+
     //重置密码
     INTERFACE['RESETPWD'] = 'controller=user&action=ChangeLoginPass';
-    
+
     //返回旧版
     INTERFACE['SWITCHOLD'] = 'controller=default&action=switch&_v=3.0';
-    
+
     // 退出登录
     INTERFACE['LOGINOUT'] = 'controller=default&action=logout';
-    
+
     // 投注中心
     INTERFACE['PLAY'] = 'controller=game&action=play';
-    
+
     INTERFACE['GETVERSION'] = 'controller=default&action=kefu';
-    
+
     INTERFACE['KJHISTOERY'] = 'controller=game&action=CodeShape';
 
     //获取投注玩法
     INTERFACE['LOTTERYBET'] = 'controller=game&action=PlayMethods';
-    
+
     INTERFACE['MMCLOTERYBET'] = 'controller=mmcgamenewapi&action=play';
 
     INTERFACE['ABOUTBET'] = 'controller=game&action=play';
@@ -72,6 +72,8 @@ const interFace = (key) => {
     INTERFACE['WAGAMERECORDSEARCH'] = 'controller=gameinfo&action=EagameRecordSearch';
     // 博饼投注
     INTERFACE['BBBETTING'] = 'controller=gameinfo&action=bbbetting';
+    // 博饼投注详情
+    INTERFACE['DOUBLEDETAILS'] = 'controller=report&action=doubledetails';
     // PT投注
     INTERFACE['PTBETS'] = 'controller=gameinfo&action=Ptbets';
     // 修改用户信息

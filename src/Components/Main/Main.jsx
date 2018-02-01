@@ -30,7 +30,8 @@ export default class Main extends Component {
             hashHistory.getCurrentLocation().pathname == '/otherGames/pt'||
             hashHistory.getCurrentLocation().pathname == '/otherGames/gt'||
             hashHistory.getCurrentLocation().pathname == '/otherGames/sport'||
-            hashHistory.getCurrentLocation().pathname == '/downLoadClient'
+            hashHistory.getCurrentLocation().pathname == '/downLoadClient'||
+            hashHistory.getCurrentLocation().pathname == '/otherGames'
         ) {
             return true
         } else {
@@ -75,10 +76,10 @@ export default class Main extends Component {
         const contain = <div>
             <div className="berCenter_bg">
                 <Row type="flex" justify="center" align="top" className="main_width" >
-                    <Col span={1} style={{zIndex: '1',display: this.hideLeft() ? 'none' : ''}}>
+                    <Col span={2} style={{zIndex: '1',display: this.hideLeft() ? 'none' : ''}}>
                         <LeftSider />
                     </Col>
-                    <Col span={23}>
+                    <Col span={22}>
                         {this.props.children}
                     </Col>
                 </Row>

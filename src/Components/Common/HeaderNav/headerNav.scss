@@ -21,98 +21,94 @@ $width_100: 100%;
         .nav-content{
             width: $nav_width_1200;
             margin: 0 auto;
-            .menus {
+            .nav_list{
                 position: relative;
                 float: right;
                 font-size: 14px;
-                .nav_list{
-                    li{
-                        float: left;
-                        color: #fff;
-                        @include lh(40px);
-                    }
-                    p{
-                        display: inline-block;
-                        padding: 0 20px;
-                        height: 30px;
-                        line-height: 30px;
-                        //margin-top: 15px;
-                    }
-                    .border_style{
-                        display: inline-block;
-                        @include wh(1px, 30px);
-                        @include borderGradient(#EC2324, #fff, #CC2024);
-                        margin-top: 15px;
-                    }
-                    .hover_lottery{
-                        position: relative;
-                        //border-bottom: 1px solid $color_CF2027;
-                        &:before{
-                            @include icon_arrows_bg(55px,42px,$color_CF2027,10px,rgba(255,255,255, .95),-45deg);
-                        }
-                    }
-                    li:hover{
-                        cursor: pointer;
-                        color: $color_CF2027;
-                        background: $hover_background;
-                    }
-                    .nav_active{
-                        color: $color_CF2027;
-                        background: #fff;
-                    }
-                }
-            }
-        }
-
-        .t_m_select_lottery{
-            height: 0;
-            overflow: hidden;
-            background: rgba(255,255,255, .95);
-            @include transform(height, 0.3s);
-        }
-        .t_m_select_lottery_show{
-            height: 230px;
-            border-top: 1px solid $color_CF2027;
-            @include boxS(0, 3px, 2px, 0, #C19C9C, null);
-        }
-        .lottery_type_list{
-            width: 730px;
-            margin: 15px auto;
-        }
-        .lottery_type{
-            float: left;
-            margin-right: 25px;
-            font-size: 14px;
-            p{
-                @include lh(30px);
-                color: $color_CF2027;
-                text-align: left;
-            }
-            .lottery_list{
-                float: left;
                 li{
+                    float: left;
+                    color: #fff;
+                    @include lh(40px);
+                }
+                p{
+                    display: inline-block;
+                    padding: 0 20px;
+                    @include lh(25px);
+                    border-left: 1px solid #e4c1c1;
+                    //margin-top: 15px;
+                }
+                .border_style{
+                    display: inline-block;
+                    @include wh(1px, 30px);
+                    @include borderGradient(#EC2324, #fff, #CC2024);
+                    margin-top: 15px;
+                }
+                .hover_lottery{
                     position: relative;
-                    @include lh(30px);
-                    width: 120px;
-                    padding-right: 20px;
-                    color: $color_363636;
+                    &:before{
+                        @include icon_arrows_bg(35px,42px,$color_CF2027,10px,rgba(255,255,255, .95),-45deg);
+                    }
                 }
                 li:hover{
                     cursor: pointer;
                     color: $color_CF2027;
+                    background: $hover_background;
                 }
-                .h_n_icon{
-                    margin-left: 8px;
-                }
-                .disabled_style{
-                    color: #999;
-                    &:hover{
-                        color: #999;
-                    }
+                .nav_active{
+                    color: $color_CF2027;
+                    background: #fff;
                 }
             }
-
         }
+    }
+    .t_m_select_lottery{
+        height: 0;
+        overflow: hidden;
+        background: rgba(255,255,255, .95);
+        @include transform(height, 0.3s);
+    }
+    .t_m_select_lottery_show{
+        height: 230px;
+        border-top: 1px solid $color_CF2027;
+        @include boxS(0, 3px, 2px, 0, #C19C9C, null);
+    }
+    .lottery_type_list{
+        width: 730px;
+        margin: 15px auto;
+    }
+    .lottery_type{
+        float: left;
+        margin-right: 25px;
+        font-size: 14px;
+        p{
+            @include lh(30px);
+            color: $color_CF2027;
+            text-align: left;
+        }
+        .lottery_list{
+            float: left;
+            li{
+                position: relative;
+                @include lh(30px);
+                width: 120px;
+                padding-right: 20px;
+                color: $color_363636;
+            }
+            li:hover{
+                cursor: pointer;
+                color: $color_CF2027;
+            }
+            .h_n_icon{
+                margin-left: 8px;
+            }
+            .disabled_style{
+                color: #999;
+                &:hover{
+                    color: #999;
+                }
+            }
+        }
+
     }
 }
 

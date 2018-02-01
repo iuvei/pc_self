@@ -2,6 +2,7 @@
 @import '../../../Style/mixin';
 
 .nav_top{
+    background: #fff;
     .nav_top_content{
         width: $nav_width_1200;
         margin: 0 auto;
@@ -10,7 +11,7 @@
             color: #666;
         }
         .logo{
-            margin: 10px 0 0 53px;
+            margin-top: 12px;
         }
     }
     .n_t_lt{

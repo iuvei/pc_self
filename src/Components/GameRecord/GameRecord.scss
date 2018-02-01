@@ -129,20 +129,23 @@ $border-color: #B2B2B2;
             text-align: right;
         }
         li:nth-child(1){
-            width: 335px;
+            width: 298px;
             text-align: center;
         }
-        li:nth-child(2),li:nth-child(3){
-            width: 121px;
+        li:nth-child(2){
+            width: 110px;
+        }
+        li:nth-child(3){
+            width: 110px;
         }
         li:nth-child(4){
-            width: 90px;
+            width: 80px;
         }
         li:nth-child(5),li:nth-child(6){
-             width: 110px;
+             width: 101px;
         }
         li:nth-child(7){
-            width: 106px;
+            width: 91px;
         }
     }
     // pt
@@ -189,5 +192,69 @@ $border-color: #B2B2B2;
     }
     .ant-select-selection__rendered{
         line-height: 28px;
+    }
+}
+
+.double_table_modal{
+    .modal_username{
+        @include lh(40px);
+        font-size: 14px;
+        span{
+            margin-right: 100px;
+        }
+    }
+    .ant-modal-body{
+        padding: 0 16px 16px;
+    }
+    .ant-modal-title{
+        text-align: center;
+    }
+    .modal_table{
+        position: relative;
+        border: 1px solid #ccc;
+        height: 445px;
+        padding: 8px 5px;
+    }
+    .historyTfoot_list{
+        position: absolute;
+        bottom: 0;
+        background-color: #f7f7f7;
+        color: $color_363636;
+        li{
+            float: left;
+            @include lh(45px);
+            width: 117px;
+            text-align: center;
+            padding-right: 19px;
+        }
+    }
+    /*日亏损佣金-查看详情footer*/
+    .modalFooter{
+        position: absolute;
+        bottom: 0;
+        background-color: #f7f7f7;
+        li{
+            float: left;
+            text-align: right;
+            width: 107px;
+            padding: 0 8px;
+            @include lh(45px);
+        }
+        li:first-child{
+            width: 220px;
+            text-align: center;
+        }
+    }
+    /*分红-历史分红footer*/
+    .dividend_modal_Footer{
+        position: absolute;
+        bottom: 0;
+        background-color: #f7f7f7;
+        li{
+            float: left;
+            @include lh(45px);
+            text-align: center;
+            width: 378px;
+        }
     }
 }

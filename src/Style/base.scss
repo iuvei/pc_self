@@ -15,6 +15,12 @@
     width: $nav_width_1200;
     margin: 0 auto;
 }
+.ant-col-2{
+    width: 130px;
+}
+.ant-col-22{
+    width: $nav_width_1200 - 130px;
+}
 /* 禁止页面选中复制 */
 .content_main, .disabled_copy{
     -moz-user-select:none !important;

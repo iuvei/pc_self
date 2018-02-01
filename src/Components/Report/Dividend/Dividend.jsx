@@ -207,7 +207,7 @@ export default class Dividend extends Component {
                         method: 'POST',
                         body: JSON.stringify({total_id: parseInt(_this.state.postData.starttime)})
                     }).then((res)=>{
-                        if(this._ismount){
+                        if(_this._ismount){
                             if(res.status == 200){
                                 message.success(res.shortMessage);
                                 _this.getData();

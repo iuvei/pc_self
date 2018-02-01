@@ -9,35 +9,28 @@
     z-index: 98;
     .openRight{
         text-align: center;
-        width: 15px;
+        width: 20px;
         border: 0;
-        height: 50px;
-        line-height: 50px;
-        background-color: #3C3C3C;
+        @include lh(80px);
+        background: #ddd;
         position: absolute;
         right: 0;
         top:0;
         cursor: pointer;
         z-index: 99;
         i{
-            color: #878787;
-
+            color: #A1A1A1;
         }
         &:hover i{
             color: #fff;
-
         }
     }
 }
 .right_plug{
     position: fixed;
     right: 0;
-    top: 50%;
-    margin-top: -165px;
+    top: 20%;
     z-index: 99;
-    &:hover{
-        width: 140px;
-    }
     .right_list{
         .r_p_common_extent {
             position: absolute;
@@ -51,147 +44,87 @@
             background: $color_CF2027;
         }
         li{
-            margin-top: 0;
+            width: 80px;
+            @include lh(75px);
+            color: #999;
+            text-align: center;
+            background: $background_F5F5F5;
+            border-top: 1px solid #ddd;
+            border-left: 1px solid #ddd;
+            padding-top: 13px;
             &:hover{
-                width: 140px;
-            }
-            color:#fff;
-            text-align: end;
-            height: 47px;
-            line-height: 47px;
-            label{
-                color: #fff;
-            }
-            i{
-                position: relative;
-            }
-            i::before{
-                width: 100%;
-                display: block;
-                content: '';
-                position: absolute;
-                height: 1px;
-                bottom: 0;
-                left: 0;
-                background: #3C3C3C;
-            }
-
-            .r_p_common{
-                @include wh(50px, 47px);
-                display: inline-block;
-                &:hover{
-                   /* transform: scale(1.2);
-                    @include transform(transform, 0.3s);*/
-                }
-            }
-            .r_p_goOld{
-                background:#282828 url(./Img/fanhui1.png) no-repeat center center;
-                &:hover{
-                    background:$rodio-check-color url(./Img/fanhui2.png) no-repeat center center;
-                }
-            }
-            .r_p_chongzhi{
-                background:#282828 url(./Img/chongzhi1.png) no-repeat center center;
-                &:hover{
-                    background:$rodio-check-color url(./Img/chongzhi2.png) no-repeat center center;
-                }
-            }
-            .r_p_kefu{
-                background:#282828 url(./Img/kefu1.png) no-repeat center center;
-                &:hover{
-                    background:$rodio-check-color url(./Img/kefu2.png) no-repeat center center;
-                }
-            }
-            .r_p_kehuduan{
-                background:#282828 url(./Img/kehuduan1.png) no-repeat center center;
-                &:hover{
-                    background:$rodio-check-color url(./Img/kehuduan2.png) no-repeat center center;
-                }
-            }
-            .r_p_app{
-                background:#282828 url(./Img/shoujiapp1.png) no-repeat center center;
-                &:hover{
-                    background:$rodio-check-color url(./Img/shoujiapp2.png) no-repeat center center;
-                }
-            }
-            .r_p_zoushi{
-                background:#282828 url(./Img/zoushi1.png) no-repeat center center;
-                &:hover{
-                    background:$rodio-check-color url(./Img/zoushi2.png) no-repeat center center;
-                }
-            }
-            .r_p_tousu{
-                background:#282828 url(./Img/tousu1.png) no-repeat center center;
-                &:hover{
-                    background:$rodio-check-color url(./Img/tousu2.png) no-repeat center center;
-                }
-            }
-        }
-
-        li.active{
-            cursor: pointer;
-            position: relative;
-            background: $rodio-check-color;
-            label{
                 cursor: pointer;
-                position: absolute;
-                width: 90px;
-                top: 0;
-                left: 0;
-                text-align: center;
-                padding: 0;
-                margin: 0;
+                background: $color_CF2027;
                 color: #fff;
             }
-            .r_p_goOld{
-                    background:$rodio-check-color url(./Img/fanhui2.png) no-repeat center center;
-
+            &:hover .r_p_common{
+                transform: scale(1.1);
+                @include transform(transform, 0.3s);
             }
-            .r_p_chongzhi{
-                    background:$rodio-check-color url(./Img/chongzhi2.png) no-repeat center center;
-
+            a{
+                color:#999;
+                display: inline-block;
+                @include wh(100%, 60px);
+            }
+            .r_p_common{
+                @include wh(80px, 60px);
+                display: inline-block;
+                &:hover a{
+                    color: #fff;
+                }
+            }
+            .r_p_goOld{
+                background: url(./Img/fanhui1.png) no-repeat center top;
+                &:hover{
+                    background: url(./Img/fanhui2.png) no-repeat center top;
+                }
             }
             .r_p_kefu{
-                    background:$rodio-check-color url(./Img/kefu2.png) no-repeat center center;
+                background: url(./Img/kefu1.png) no-repeat center top;
+                &:hover{
+                    background: url(./Img/kefu2.png) no-repeat center top;
+                }
             }
             .r_p_kehuduan{
-                    background:$rodio-check-color url(./Img/kehuduan2.png) no-repeat center center;
-
+                background: url(./Img/kehuduan1.png) no-repeat center top;
+                &:hover{
+                    background: url(./Img/kehuduan2.png) no-repeat center top;
+                }
             }
             .r_p_app{
-                    background:$rodio-check-color url(./Img/shoujiapp2.png) no-repeat center center;
-
+                background: url(./Img/shoujiapp1.png) no-repeat center top;
+                &:hover{
+                    background: url(./Img/shoujiapp2.png) no-repeat center top;
+                }
             }
             .r_p_zoushi{
-
-                    background:$rodio-check-color url(./Img/zoushi2.png) no-repeat center center;
-
+                background: url(./Img/zoushi1.png) no-repeat center top;
+                &:hover{
+                    background: url(./Img/zoushi2.png) no-repeat center top;
+                }
             }
             .r_p_tousu{
-
-                    background:$rodio-check-color url(./Img/tousu2.png) no-repeat center center;
-
+                background: url(./Img/tousu1.png) no-repeat center top;
+                &:hover{
+                    background: url(./Img/tousu2.png) no-repeat center top;
+                }
+            }
+            .r_p_kehuzx{
+                background: url(./Img/zx1.png) no-repeat center top;
+                &:hover{
+                    background: url(./Img/zx2.png) no-repeat center top;
+                }
             }
         }
-        li:nth-child(5).active{
-            background:transparent;
-        }
     }
-    .p_QR{
-        position: absolute;
-        top: -75px;
-        left: -75px;
-    }
-
 }
 
 .r_caret-right{
     text-align: center;
-    width: 50px;
+    width: 80px;
     border: 0;
-    height: 16px;
-    line-height: 16px;
-    background-color: #3C3C3C;
+    @include lh(20px);
+    background: #ddd;
     position: absolute;
     right: 0;
     bottom: -16px;
@@ -199,11 +132,9 @@
     z-index: 99;
     margin-top: -5px;
     i{
-        color: #878787;
-
+        color: #A1A1A1;
     }
     &:hover i{
         color: #fff;
-
     }
 }

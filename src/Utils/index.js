@@ -59,6 +59,8 @@ const cancelTaskAjax = (body) =>  request(http.interFace('CANCELTASKAJAX'),body)
 const EagameRecordSearch = (body) =>  request(http.interFace('WAGAMERECORDSEARCH'),body);
 /* 博饼投注*/
 const bbbetting = (body) =>  request(http.interFace('BBBETTING'),body);
+/* 博饼投注*/
+const doubledetails = (body) =>  request(http.interFace('DOUBLEDETAILS'),body);
 /* pt投注*/
 const ptbets = (body) =>  request(http.interFace('PTBETS'),body);
 /* 修改用户信息*/
@@ -190,6 +192,7 @@ export default {
     newtaskdetail,
     EagameRecordSearch,
     bbbetting,
+    doubledetails,
     ptbets,
     changename,
     UpUserTeam,
