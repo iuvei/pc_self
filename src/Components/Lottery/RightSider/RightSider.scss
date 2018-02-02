@@ -2,19 +2,19 @@
 @import '../../../Style/mixin';
 
 .right_sider{
-    margin: $content-top 0 10px 5px;
-    float: left;
+    margin: $content-top 0 10px 0;
+    float: right;
 }
 .user_info{
     width:210px;
     border: 1px solid $color_CF2027;
     background-color: #fff;
     color:#333;
-    padding: 15px 15px 5px 15px;
+    padding: 8px 15px 7px 15px;
     margin-bottom: 10px;
     .user_info_list{
         color: #333;
-        font-size: 14px;
+        font-size: 12px;
         li{
             margin-bottom: 5px;
         }
@@ -35,10 +35,11 @@
             }
         }
         .user_recharge{
-            @include wh(179px, 35px);
+            @include wh(172px, 30px);
             @include red_gradient;
-            line-height: 35px;
+            line-height: 30px;
             text-align: center;
+            margin:0 auto;
             color:#fff;
             &:hover{
                 cursor: pointer;
@@ -101,18 +102,24 @@
         .banker,.player,.tie{
             width: 20px;
             height: 20px;
-            line-height: 20px;
-            background: #e7250f;
+            line-height: 18px;
+            background: #fff;
             border-radius: 50%;
-            color:#fff;
             margin-top: 7px;
             margin-left: 16px;
+            
+        }
+        .banker{
+            border:1px solid $color_CF2027;
+            color:$color_CF2027;
         }
         .player{
-            background: #154cb0;
+            border:1px solid #154cb0;
+            color:#154cb0;
         }
         .tie{
-            background: #4db923;
+            border: 1px solid #4db923;
+            color: #4db923;
         }
         .right_ball_number{
             margin-top: 8px;

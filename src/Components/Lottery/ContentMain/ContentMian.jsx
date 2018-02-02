@@ -1146,7 +1146,7 @@ export default class ContentMian extends Component {
             method: 'POST',
             body: JSON.stringify({"flag":"getmoney"})
         }).then((res)=>{
-            if (res.status == 200) {
+            if (this._ismount && res.status == 200) {
                 stateVar.allBalance.cpbalance = res.repsoneContent;
             }
         })
@@ -2301,7 +2301,7 @@ export default class ContentMian extends Component {
 	                                        <span>总金额：</span>
 	                                        <span><strong>{stateVar.BetContent.totalMoney}</strong>&nbsp;元</span>
 	                                    </li>
-	                                    <li className="c_m_affirm_bet_btn" onClick={()=>this.actionBet()}>确认投注</li>
+	                                    <li style={{marginTop:'5px'}} className="c_m_affirm_bet_btn" onClick={()=>this.actionBet()}>确认投注</li>
 	                                    {
 	                                    	(()=>{
 	                                    		if(stateVar.nowlottery.lotteryBetId == 23){
@@ -2320,7 +2320,7 @@ export default class ContentMian extends Component {
 	                                    			)
 	                                    		}else{
 	                                    			return(
-	                                    				<li className="c_m_superaddition"><Button disabled={stateVar.BetContent.lt_same_code == 0 ? true : false} onClick={()=>this.openTrace()}>我要追号</Button></li>
+	                                    				<li style={{marginTop:'5px'}} className="c_m_superaddition"><Button disabled={stateVar.BetContent.lt_same_code == 0 ? true : false} onClick={()=>this.openTrace()}>我要追号</Button></li>
 	                                    			)
 	                                    		}
 	                                    	})()
