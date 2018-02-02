@@ -23,8 +23,6 @@ import minus_multiple from './Img/minus_multiple.png';
 import add_multiple from './Img/add_multiple.png';
 import close from './Img/close.png';
 
-import Transform from '../../../CommonJs/transform.react.js';
-
 const Option = Select.Option;
 @observer
 export default class ContentMian extends Component {
@@ -286,7 +284,7 @@ export default class ContentMian extends Component {
     onChangeStop(e){
     	this.setState({isPrizeStop:e.target.checked});
     }
-    
+
     getVersion(){
     	let tempObj = {version:'push'};
     	Fatch.getVersion({method:'post',body:JSON.stringify(tempObj)}).then((data)=>{

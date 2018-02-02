@@ -17,17 +17,20 @@ export default class Withdraw extends Component {
             selectShow: true,
             spinLoading: true,
             iconLoadingRecharge: false,
+            moneyFlag: 0,
             response: {
                 plattimes: 0,
                 todaytimes: 0,
                 fAvailableBalance: 0,
                 iMinMoney: 0,
-                iMaxMoney: 0
+                iMaxMoney: 0,
+                fee_max: 0, // 手续费封顶
+                fee_rate: 0, //费率
             },
             defaultBank: null, // 默认选中
             postData: {
                 type: 'wstep2', //流程步骤
-                money: 1,
+                money: 0,
                 bankinfo: '', //银行卡id#银行id 例: 122#10
                 wstep1Code: '' //传入wstep1的密钥
             },
@@ -71,14 +74,19 @@ export default class Withdraw extends Component {
 
     onRechargeAmount(value) {
         let { validate, postData, response } = this.state;
-        postData.money = value;
         if(value == '' || value == undefined || value < response.iMinMoney || value > response.iMaxMoney){
             validate.money = 1;
         }else{
             validate.money = 0;
         }
-        postData.money = value;
-        this.setState({postData, validate});
+        this.setState({moneyFlag: value, validate},()=>{
+            if(value == '' || value == undefined){
+                postData.money = 0
+            }else{
+                postData.money = value - this.onCountMoney();
+            }
+            this.setState({postData})
+        });
     };
     // 提现下一步
     onRecharge() {
@@ -128,8 +136,24 @@ export default class Withdraw extends Component {
             this.onRecharge()
         }
     };
+    /*计算提款手续费*/
+    onCountMoney(){
+        let { response, moneyFlag } = this.state;
+        if(moneyFlag == '' || moneyFlag == undefined){
+            return 0
+        }
+        if((response.plattimes - response.todaytimes) <= 0){
+            if((moneyFlag * response.fee_rate / 100) >= response.fee_max){
+                return response.fee_max
+            }else{
+                return (moneyFlag * response.fee_rate / 100).toFixed(2)
+            }
+        }else{
+            return 0
+        }
+    }
     render() {
-        const { selectShow, response, spinLoading } = this.state;
+        const { selectShow, response, spinLoading, postData } = this.state;
         const userInfo = stateVar.userInfo;
 
         return (
@@ -143,11 +167,6 @@ export default class Withdraw extends Component {
                                 ，请先绑定银行卡
                             </div> :
                             <div>
-                                <div className="tr_m_text">
-                                    <h4>
-                                        提款时间00：00：00至23：59：59，全天候为您服务！每天限提&nbsp;<i>{response.plattimes}</i>&nbsp;次，今天您已经成功发起了&nbsp;<em>{response.todaytimes}</em>&nbsp;次提现申请
-                                    </h4>
-                                </div>
                                 <ul className="r_m_list">
                                     <li>
                                         <span className="r_m_li_w">用户名：</span>
@@ -186,19 +205,40 @@ export default class Withdraw extends Component {
                                         />
                                         <span className="span_margin">元</span>
                                         <p className="r_m_dx">
-                                <span className="r_m_recharge_text">
-                                单笔充值限额：最低：
-                                <strong>{response.iMinMoney} 元</strong>
-                                ，最高：
-                                <strong>{response.iMaxMoney} 元</strong>
-                            </span>
+                                            <span className="r_m_recharge_text">
+                                            单笔充值限额：最低：
+                                            <strong>{response.iMinMoney} 元</strong>
+                                            ，最高：
+                                            <strong>{response.iMaxMoney} 元</strong>
+                                        </span>
                                         </p>
+                                    </li>
+                                    <li>
+                                        <span className="r_m_li_w">提款手续费：</span>
+                                        <span className="r_m_qq fAvailableBalance">{this.onCountMoney()}元</span>
+                                    </li>
+                                    <li>
+                                        <span className="r_m_li_w">实际到账金额：</span>
+                                        <span className="r_m_qq fAvailableBalance">{postData.money}元</span>
+                                        <div className="tr_m_text">
+                                            <h4>
+                                                平台每日可免费提现&nbsp;<i>{response.plattimes}</i>&nbsp;次，今日剩余&nbsp;<em>{response.plattimes - response.todaytimes}</em>&nbsp;次
+                                            </h4>
+                                        </div>
                                     </li>
                                     <li className="r_m_primary_btn">
                                         <span className="r_m_li_w"></span>
                                         <Button type="primary" size="large" loading={this.state.iconLoadingRecharge} onClick={()=>{this.onRecharge()}}>
                                             下一步
                                         </Button>
+                                    </li>
+                                    <li>
+                                        <div className="r_m_dx">
+                                            <p>注意事项：</p>
+                                            <p>1.单笔取款最高{response.iMaxMoney}元</p>
+                                            <p>2.通常你的提款申请只需3分钟即可到账，最高峰可能需要15分钟左右，如超过30分钟未到账，请及时联系在线客服。</p>
+                                            <p>3.本平台每日可免费提款{response.plattimes}次，超过{response.plattimes}后每笔收取1%手续费，每笔上限50元，请您合理安排取款事宜。</p>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>

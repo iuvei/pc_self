@@ -147,7 +147,6 @@ export default class Login extends Component {
             this.setState({ loading: false });
             if(this._ismount){
                 let result = data.repsoneContent;
-                console.log("trygameLogin.data",data);
                 if(data.status==200) {
                     stateVar.auth=true;
                     stateVar.userInfo = {
@@ -191,19 +190,19 @@ export default class Login extends Component {
     * 并存储登录后所需用的数据
     * */
     login() {
+        let { aptchac, password, account } = this.state;
         //登录
         Fetch.login({
             method: "POST",
             body: JSON.stringify({
                 "sType": 'formal',
-                "username": this.state.account,
-                "loginpass": md5((md5(this.state.aptchac) + md5('123qwe'))),
-                "validcode": this.state.aptchac
+                "username": account,
+                "loginpass": md5((md5(aptchac) + md5(password))),
+                "validcode": aptchac
             })
         }).then((data)=>{
             this.setState({ loading: false });
             let result = data.repsoneContent;
-            console.log("login.data",data);
             if(data.status===200){
                 stateVar.auth=true;
                 stateVar.userInfo = {
@@ -252,8 +251,6 @@ export default class Login extends Component {
 
     onCheckedPw(e) {
         this.setState({checkPw:e.target.checked});
-        console.log("checkPw",e.target.checked)
-
     }
     onAccount(e) {
         this.setState({account:e.target.value});

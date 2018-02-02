@@ -116,7 +116,7 @@ export default class MentionFillingRecord extends Component {
             {
                 title: '账变编号',
                 dataIndex: 'orderNo',
-                width: 160,
+                width: 170,
             }, {
                 title: '用户名',
                 dataIndex: 'username',
@@ -128,7 +128,7 @@ export default class MentionFillingRecord extends Component {
             }, {
                 title: '类型',
                 dataIndex: 'cntitle',
-                width: 100,
+                width: 90,
             }, {
                 title: '收入',
                 dataIndex: 'amount',
@@ -153,7 +153,7 @@ export default class MentionFillingRecord extends Component {
             }, {
                 title: '备注',
                 dataIndex: 'description',
-                width: 100,
+                width: 80,
             }
         ];
         const footer = <div className="mention_filling_record_footer clear">

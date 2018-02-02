@@ -415,7 +415,7 @@ const onCanvas02=()=> {
 
         particles.map( function( particle ){ particle.step(); } );
     }
-    ctx.fillStyle = '#222';
+    ctx.fillStyle = '#040404';
     ctx.fillRect( 0, 0, w, h );
     anim();
 
@@ -424,7 +424,7 @@ const onCanvas02=()=> {
         w = c.width = window.innerWidth;
         h = c.height = window.innerHeight;
 
-        ctx.fillStyle = '#222';
+        ctx.fillStyle = '#040404';
         ctx.fillRect( 0, 0, w, h );
     })
 };

@@ -17,15 +17,13 @@ $width_110px: 110px;
         }
     }
     .tr_m_text{
-        width: 1096px;
+        width: 300px;
         border: 1px dotted #C7C6C4;
         background-color: #FEFCF2;
-        margin: 24px auto 0;
-        padding: 17px 20px;
+        margin: 10px 0 0 128px;
+        padding: 2px 9px;
         color:#474646;
         h4{
-            padding-left: 28px;
-            background: url(./Img/plaint_sj.png) no-repeat center left;
             font-size: 14px;
             color: #474646;
         }
@@ -42,11 +40,11 @@ $width_110px: 110px;
     }
 
     .r_m_list{
-        margin:64px 0 0 50px;
+        margin: 20px 0 0 50px;
         color: #1B1B21;
         .back_list{
             display: inline-block;
-            width: 945px;
+            width: 860px;
             li{
                 float: left;
                 margin: 0 8px 8px 0;
@@ -101,7 +99,7 @@ $width_110px: 110px;
             width: 294px;
         }
         &>li{
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .r_m_primary_btn{
             padding-top: 10px;

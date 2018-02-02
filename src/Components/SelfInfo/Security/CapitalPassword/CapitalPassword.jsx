@@ -275,7 +275,7 @@ export default class CapitalPassword extends Component {
                                        className={onValidate('secpass_confirm', this.state.validate)}
                                 />
                             </li>
-                            <li className='s_advice'>
+                            <li className='s_advice' style={{textAlign: 'center'}}>
                                 由字母和数字组成6-16个字符,资金密码不能与登录密码相同
                             </li>
                             <li>
@@ -323,7 +323,7 @@ export default class CapitalPassword extends Component {
                                        className={onValidate('secpass_confirm', this.state.validate)}
                                 />
                             </li>
-                            <li className='s_advice' style={{color:'#85888D'}}>
+                            <li className='s_advice' style={{color:'#85888D', textAlign: 'center'}}>
                                 由字母和数字组成6-16个字符,资金密码不能与登录密码相同
                             </li>
                             <li className="s_m_primary_btn">

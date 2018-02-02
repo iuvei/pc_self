@@ -8,12 +8,12 @@
     .home_m_active{
         width: $nav_width_1200;
         margin: 0 auto;
-        .home_favourable_active{
-            padding-top: 40px;
-            background: url(../Img/home_favourable_active.png) no-repeat top center;
-            text-align: center;
-
-        }
+        //.home_favourable_active{
+        //    padding-top: 40px;
+        //    background: url(../Img/home_favourable_active.png) no-repeat top center;
+        //    text-align: center;
+        //
+        //}
         p{
             font-size: 24px;
             color: $color_363636;
@@ -30,14 +30,14 @@
             margin-top: 25px;
             li{
                 float:left;
-                margin-right: 20px;
+                margin-right: 17px;
                 @include transform(transform, 0.3s);
                 &:last-child{
                     margin-right: 0;
                 }
                 img{
                     vertical-align: middle;
-                    width: 285px;
+                    width: 280px;
                 }
                 &:hover .home_m_active_type{
                     background-color: #BC0000;

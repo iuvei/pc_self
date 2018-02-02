@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
-import common from '../../../CommonJs/common';
+import { disabledDate, setDateTime } from '../../../CommonJs/common';
 import { DatePicker,  Button, Select, Table, Pagination } from 'antd';
 import moment from 'moment';
 const Option = Select.Option;
@@ -47,8 +47,8 @@ export default class TransferRecord extends Component {
             outMoney: OptionArr,
             inMoney: OptionArr,
             postData: {
-                starttime: common.setDateTime(0), // 开始时间 2017-12-27
-                endtime: common.setDateTime(1), // 结束时间 2017-12-27
+                starttime: setDateTime(0), // 开始时间 2017-12-27
+                endtime: setDateTime(1), // 结束时间 2017-12-27
                 out_money: 'all', //出款方all 是所有 0是彩票账户 1是体育2是ea  3是pt  4是博饼
                 in_money: 'all', //收款方 all 是所有
                 status: 2, //2是所有 1成功 0失败
@@ -187,8 +187,9 @@ export default class TransferRecord extends Component {
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     placeholder="请选择查询开始日期"
-                                    defaultValue={moment(common.setDateTime(0))}
+                                    defaultValue={moment(setDateTime(0))}
                                     onChange={(date, dateString)=>{this.onChangeStartDate(date, dateString)}}
+                                    disabledDate={(current)=>disabledDate(current, -18, 1)}
                                 />
                             </li>
                             <li>
@@ -196,8 +197,9 @@ export default class TransferRecord extends Component {
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     placeholder="请选择查询结束日期"
-                                    defaultValue={moment(common.setDateTime(1))}
+                                    defaultValue={moment(setDateTime(1))}
                                     onChange={(date, dateString)=>{this.onChangeEndDate(date, dateString)}}
+                                    disabledDate={(current)=>disabledDate(current, -18, 1)}
                                 />
                             </li>
                             <li className="t_m_date_mar">

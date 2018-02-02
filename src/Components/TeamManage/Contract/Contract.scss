@@ -1,23 +1,64 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
 $border_color: #C8C8C8;
 .contract_main{
-    margin:20px 34px 0;
-    padding-bottom: 34px;
+    margin:12px 10px;
+    .day_table{
+        padding: 5px 8px;
+    }
+    .ant-table-body .ant-table-thead th > span{
+        border: 0;
+    }
     .c_top{
-        height: 251px;
-    }
-    .c_top>li{
-        margin-right: 10px;
-        border: 1px solid $border_color;
-        float: left;
-        background: #fff;
-        text-align: center;
-    }
-    .c_top>li:last-child{
-        margin-right: 0px;
-        background: #ffeeee;
-        color: #a30404;
-        border: 1px solid #f7cccc;
-        font-size: 15px;
+        &>li{
+            margin-right: 10px;
+            float: left;
+            &:last-child{
+                margin: 0;
+            }
+        }
+        .border_content{
+            border: 1px solid $border_color;
+            background: #fff;
+            text-align: center;
+            margin-bottom: 11px;
+        }
+        .c_table_wrap{
+            text-align: center;
+            padding-top: 25px;
+        }
+        .c_portion{
+            width: 240px;
+            height: 152px;
+        }
+        .c_quota{
+            width: 240px;
+            height: 315px;
+        }
+        .quota_list{
+            li{
+                height: 42px;
+                line-height: 42px;
+                font-size: 14px;
+                color: #393939;
+            }
+        }
+        .c_setContract{
+            width: 226px;
+            height: 316px;
+            background: url(./Img/create_c.png) center center;
+            text-align: center;
+            padding-top: 100px;
+            color: $color_CF2027;
+            &:hover{
+                cursor: pointer;
+            }
+            p{
+                margin-top: 10px;
+                font-size: 24px;
+            }
+        }
     }
 
     .c_title{
@@ -32,90 +73,20 @@ $border_color: #C8C8C8;
             margin-right: 5px;
         }
     }
-
     .c_salary{
-        width: 550px;
-        height: 250px;
-        ul{
-            height: 65px;
-            border-bottom: 1px solid $border_color;
-            text-align: start;
-        }
-        ul:last-child{
-            border-bottom:none;
-        }
-        li{
-            height: 65px;
-            line-height: 65px;
-            width: 274px;
-            padding-left: 5px;
-            display: inline-block;
-            font-size: 14px;
-        }
-        .c_no{
-            font-size: 22px;
-            color: #dedede;
-        }
-        .c_number{
-            font-size: 22px;
-            padding: 0 5px;
-        }
-        .c_percent{
-            font-weight: 600;
-        }
+        width: 283px;
+        height: 315px;
+    }
 
-    }
-    .c_table1{
-        li:nth-child(1){
-            border-right: 1px solid $border_color;
-        }
-        li:nth-child(2){
-        }
-    }
-    .c_table2{
-        li:nth-child(1){
-            border-right: 1px solid $border_color;
-        }
-        li:nth-child(2){
-        }
-    }
-    .c_table3{
-        li:nth-child(1){
-            border-right: 1px solid $border_color;
-        }
-        li:nth-child(2){
-        }
-    }
-    .c_table_wrap{
-        display: table;
-        width: 100%;
-        height: 197px;
-        div{
-            display: table-cell;
-            vertical-align: middle;
-        }
-    }
     .c_txt{
         font-size: 20px;
     }
-    .c_portion{
-        width: 180px;
-        height: 250px;
-    }
+
     .c_award{
         width: 180px;
         height: 250px;
     }
-    .c_setContract{
-        width: 113px;
-        height: 250px;
-        display: table;
-        cursor: pointer;
-        div{
-            display: table-cell;
-            vertical-align: middle;
-        }
-    }
+
 
     .c-info{
         float: right;
@@ -124,7 +95,6 @@ $border_color: #C8C8C8;
     }
     .c_table{
         clear: both;
-        padding-top: 22px;
         .ant-table-thead{
             th{
                 background: #fff;

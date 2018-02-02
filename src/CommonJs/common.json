@@ -229,6 +229,13 @@
             "disabled": true
         },
         {
+            "cnname": "上海11选5",
+            "nav": "SH11-5",
+            "lotterytype": 3,
+            "imgSrc": false,
+            "disabled": true
+        },
+        {
             "cnname": "河南481",
             "nav": "HN481",
             "lotterytype": 2,

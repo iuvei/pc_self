@@ -189,11 +189,11 @@ export default class AfterRecord extends Component {
                 title: '追号编号',
                 dataIndex: 'taskid',
                 classNam:'ellipsis_2',
-                width: 150,
+                width: 130,
             }, {
                 title: '追号时间',
                 dataIndex: 'begintime',
-                width: 90,
+                width: 100,
             }, {
                 title: '彩种与玩法',
                 dataIndex: 'cnname',

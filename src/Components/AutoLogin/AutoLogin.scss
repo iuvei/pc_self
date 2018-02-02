@@ -96,21 +96,21 @@ $width_100: 100%;
         position: absolute;
         width: 0;
         height: 2px;
-        background: #ffd34e;
+        background: $color_CF2027;
     }
     .al_text{
         position: absolute;
         width: 240px;
         height: 60px;
         left: 50%;
-        top: 40%;
+        top: 45%;
         margin-left: -120px;
         text-align: center;
         line-height: 60px;
-        color: #ffd34e;
+        color:  #fff;
         font-size: 14px;
         background-color: rgba(0,0,0,0.3);
-        border: 1px solid #ffd34e;
+        border: 1px solid  #fff;
         border-radius: 5px;
     }
 }

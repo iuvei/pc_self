@@ -5,7 +5,7 @@ import { stateVar } from '../../State';
 import onCanvas from '../Login/canvas';
 import {getStore } from "../../CommonJs/common";
 import './AutoLogin.scss';
-import loginlogoSrc from './Img/logologin.png'
+import logoAuto from './Img/logoAuto.png';
 import speedSrc from './Img/speed.png'
 import dnsSrc from './Img/dns.png'
 import serviceSrc from './Img/service.png'
@@ -35,8 +35,6 @@ export default class AutoLogin extends Component {
 
     }
     componentDidMount() {
-      //  let indx = Math.floor(Math.random()*(onCanvas.length-1));
-       // onCanvas[indx]();
         onCanvas[1]();
         /*将本地存储变量获取到全局*/
         stateVar.userInfo = {
@@ -63,7 +61,7 @@ export default class AutoLogin extends Component {
             <div className="l_nav_top">
                 <div className="l_nav_top_content">
                     <div className="l_n_t_lt left">
-                        <img className="logo" src={loginlogoSrc} style={{width:180}} />
+                        <img className="logo" src={logoAuto} />
                     </div>
                     <ul className="l_n_t_list right">
                         <li className='l_speed'>
@@ -76,7 +74,7 @@ export default class AutoLogin extends Component {
                 </div>
             </div>
             <div className='al_progress' ref="progress"></div>
-            <p className='al_text'>自动登录中</p>
+            <p className='al_text'>自动登录中...</p>
         </div>);
     }
 }

@@ -16,7 +16,7 @@
         }
         .s_i_account_money{
             border: 1px solid #C1C0C5;
-            @include wh(620px, 242px);
+            @include wh(515px, 242px);
             padding: 10px;
             .s_i_a_top{
                 padding-left: 40px;
@@ -48,7 +48,7 @@
                     border: 1px solid #eee;
                     border-top: 0;
                     border-left: 0;
-                    @include wh(298px, 52px);
+                    @include wh(246px, 52px);
                     padding: 5px 20px;
                     .transfer_btn{
                         margin-top: 7px;

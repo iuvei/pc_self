@@ -2,11 +2,8 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Row, Col  } from 'antd';
-import { stateVar } from '../../State';
 import QueueAnim from 'rc-queue-anim';
 import ChildNav from '../Common/ChildNav/ChildNav';
-
-import './SelfInfo.scss'
 
 const navList = [
     {

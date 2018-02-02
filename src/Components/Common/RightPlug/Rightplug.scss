@@ -35,13 +35,16 @@
         .r_p_common_extent {
             position: absolute;
             top: 10px;
-            right: 10px;
+            right: 20px;
             z-index: 9;
             display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 4px;
-            background: $color_CF2027;
+            width: 10px;
+            height: 10px;
+            @include borderRadius(5px);
+            background: #DE2124;
+        }
+        .lianxi_p{
+            position: relative;
         }
         li{
             width: 80px;
@@ -51,7 +54,6 @@
             background: $background_F5F5F5;
             border-top: 1px solid #ddd;
             border-left: 1px solid #ddd;
-            padding-top: 13px;
             &:hover{
                 cursor: pointer;
                 background: $color_CF2027;
@@ -67,52 +69,53 @@
                 @include wh(100%, 60px);
             }
             .r_p_common{
-                @include wh(80px, 60px);
+                @include wh(80px, 75px);
+                padding-top: 13px;
                 display: inline-block;
                 &:hover a{
                     color: #fff;
                 }
             }
             .r_p_goOld{
-                background: url(./Img/fanhui1.png) no-repeat center top;
+                background: url(./Img/fanhui1.png) no-repeat center 12px;
                 &:hover{
-                    background: url(./Img/fanhui2.png) no-repeat center top;
+                    background: url(./Img/fanhui2.png) no-repeat center 12px;
                 }
             }
             .r_p_kefu{
-                background: url(./Img/kefu1.png) no-repeat center top;
+                background: url(./Img/kefu1.png) no-repeat center 12px;
                 &:hover{
-                    background: url(./Img/kefu2.png) no-repeat center top;
+                    background: url(./Img/kefu2.png) no-repeat center 12px;
                 }
             }
             .r_p_kehuduan{
-                background: url(./Img/kehuduan1.png) no-repeat center top;
+                background: url(./Img/kehuduan1.png) no-repeat center 12px;
                 &:hover{
-                    background: url(./Img/kehuduan2.png) no-repeat center top;
+                    background: url(./Img/kehuduan2.png) no-repeat center 12px;
                 }
             }
             .r_p_app{
-                background: url(./Img/shoujiapp1.png) no-repeat center top;
+                background: url(./Img/shoujiapp1.png) no-repeat center 12px;
                 &:hover{
-                    background: url(./Img/shoujiapp2.png) no-repeat center top;
+                    background: url(./Img/shoujiapp2.png) no-repeat center 12px;
                 }
             }
             .r_p_zoushi{
-                background: url(./Img/zoushi1.png) no-repeat center top;
+                background: url(./Img/zoushi1.png) no-repeat center 12px;
                 &:hover{
-                    background: url(./Img/zoushi2.png) no-repeat center top;
+                    background: url(./Img/zoushi2.png) no-repeat center 12px;
                 }
             }
             .r_p_tousu{
-                background: url(./Img/tousu1.png) no-repeat center top;
+                background: url(./Img/tousu1.png) no-repeat center 12px;
                 &:hover{
-                    background: url(./Img/tousu2.png) no-repeat center top;
+                    background: url(./Img/tousu2.png) no-repeat center 12px;
                 }
             }
             .r_p_kehuzx{
-                background: url(./Img/zx1.png) no-repeat center top;
+                background: url(./Img/zx1.png) no-repeat center 12px;
                 &:hover{
-                    background: url(./Img/zx2.png) no-repeat center top;
+                    background: url(./Img/zx2.png) no-repeat center 12px;
                 }
             }
         }

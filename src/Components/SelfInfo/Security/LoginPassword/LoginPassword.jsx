@@ -175,7 +175,8 @@ export default class LoginPassword extends Component {
                                className={onValidate('confirm_newpass', this.state.validate)}
                         />
                     </li>
-                    <li className='s_advice' style={{color:'#85888D'}}>
+                    <li className='s_advice'>
+                        <span className="sec_k_left"></span>
                         由字母和数字组成6-16个字符
                     </li>
                     <li className="s_m_primary_btn">

@@ -259,13 +259,13 @@ export default class BobingRecord extends PureComponent {
             {
                 title: '游戏时间',
                 dataIndex: 'writetime',
-                width: 120,
+                width: 110,
             },
             {
                 title: '局数',
                 dataIndex: 'wininning',
                 render: (text)=> '第'+text+'局',
-                width: 50,
+                width: 80,
             },
             {
                 title: '次数',
@@ -280,47 +280,54 @@ export default class BobingRecord extends PureComponent {
             {
                 title: '投注内容',
                 dataIndex: 'userbet',
-                width: 110,
+                width: 90,
             },
             {
                 title: '投注本金',
                 dataIndex: 'bet',
+                className:'column-right',
                 render: (text)=> -text,
                 width: 110,
             },
             {
                 title: '加倍补注',
                 dataIndex: 'addrecharge',
+                className:'column-right',
                 width: 110,
             },
             {
                 title: '失败补注',
                 dataIndex: 'failrecharge',
+                className:'column-right',
                 width: 110,
             },
             {
                 title: '返点金额',
                 dataIndex: 'userpoint',
+                className:'column-right',
                 width: 110,
             },
             {
                 title: '开奖结果',
                 dataIndex: 'game_result',
-                width: 110,
+                width: 120,
             },
             {
                 title: '中奖金额',
                 dataIndex: 'bonus',
+                className:'column-right',
                 width: 110,
             },
             {
                 title: '奖池奖金',
                 dataIndex: 'prizepool',
+                className:'column-right',
                 width: 110,
             },
             {
                 title: '盈亏',
                 dataIndex: 'singleprice',
+                className:'column-right',
                 render: (text)=>parseFloat(text) < 0 ?
                     <span className="col_color_shu">{text}</span> :
                     <span className="col_color_ying">{text}</span>,
@@ -352,7 +359,7 @@ export default class BobingRecord extends PureComponent {
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(common.setDateTime(0) + ' 00:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -16, 0)}
+                                    // disabledDate={(current)=>common.disabledDate(current, -16, 0)}
                                 />
                             </li>
                             <li style={{margin: '0 8px'}}>至</li>

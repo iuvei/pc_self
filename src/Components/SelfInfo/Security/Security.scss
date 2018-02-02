@@ -35,7 +35,7 @@ $border_color: #C8C8C8;
 
         li{
             float:left;
-            width:260px;
+            width:237px;
             padding-top: 55px;
             padding-bottom: 15px;
             color: $color_363636;
@@ -51,22 +51,20 @@ $border_color: #C8C8C8;
             }
         }
         li:nth-child(1){
-            background:#ebeaea url(./Img/lock.png) no-repeat center 24%;
-            margin-left: 30px;
+            background: url(./Img/lock.png) no-repeat center 24%;
         }
         li:nth-child(2){
-            background:#ebeaea url(./Img/setting.png) no-repeat center 24%;
+            background: url(./Img/setting.png) no-repeat center 24%;
         }
         li:nth-child(3){
-            background:#ebeaea url(./Img/mail.png) no-repeat center 24%;
+            background: url(./Img/mail.png) no-repeat center 24%;
         }
         li:nth-child(4){
-            background:#ebeaea url(./Img/security.png) no-repeat center 24%;
+            background: url(./Img/security.png) no-repeat center 24%;
         }
     }
     .sec_k_main{
         color: $color_363636;
-        background-color: #ebeaea;
         border-top: solid 1px #C8C8C8;
         height: 481px;
         .sec_k_list{
@@ -87,7 +85,6 @@ $border_color: #C8C8C8;
             .s_advice{
                 color:$dotted-color;
                 margin: 30px 0;
-                text-align: center;
             }
             .inputText{
                 color:#333333;
@@ -118,7 +115,6 @@ $border_color: #C8C8C8;
     }
     .ant-select-selection--single{
         height: 34px;
-        background-color: #f1f1f1;
         color: #333333;
     }
     .ant-select-selection__rendered{

@@ -278,7 +278,7 @@ export default class SelfTable extends Component {
                 title: '日期',
                 dataIndex: 'date',
                 render: text => text.slice(5),
-                width: 50,
+                width: 60,
             }, {
                 title: '用户名',
                 dataIndex: 'username',

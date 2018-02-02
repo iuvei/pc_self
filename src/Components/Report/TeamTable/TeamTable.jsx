@@ -321,7 +321,7 @@ export default class TeamTable extends Component {
                 title: '日期',
                 dataIndex: 'rdate',
                 render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
-                width: 110,
+                width: 80,
                 // filterIcon: <Icon type="smile-o" style={{ color: 'red' }} />,
             }, {
                 title: '用户名',

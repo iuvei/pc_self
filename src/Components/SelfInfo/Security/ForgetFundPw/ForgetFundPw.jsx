@@ -241,16 +241,16 @@ export default class ForgetFundPw extends Component {
         hashHistory.push({
             pathname: '/selfInfo/security',
             query: {
-                navIndex: 5
+                navIndex: 2
             }
         });
+        stateVar.securityIndex = 3;
     };
 
     render() {
-        const userInfo = stateVar.userInfo;
-        const visible = this.props.visible;
-        const resetPostData = this.state.resetPostData;
-        const modalIssue = this.state.modalIssue;
+        const { userInfo } = stateVar;
+        const { visible } = this.props;
+        const { resetPostData, modalIssue } = this.state;
 
         return (
             <Modal

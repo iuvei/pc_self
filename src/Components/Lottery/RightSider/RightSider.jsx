@@ -1,15 +1,9 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Affix } from 'antd';
 import { hashHistory } from 'react-router';
-import QueueAnim from 'rc-queue-anim';
-import Transform from '../../../CommonJs/transform.react.js';
-
-import './RightSider.scss'
-import Fetch from '../../../Utils'
-import { stateVar } from '../../../State'
-import commone from '../commone.js'
-import common from './../../../CommonJs/common.js'
+import './RightSider.scss';
+import { stateVar } from '../../../State';
+import common from './../../../CommonJs/common.js';
 
 @observer
 export default class RightSider extends Component {

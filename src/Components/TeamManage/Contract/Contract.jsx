@@ -1,16 +1,15 @@
 /*契约系统*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Table, Icon,Select,Tooltip,Spin } from 'antd';
+import { Table, Icon,Tooltip,Spin,Button } from 'antd';
 import ContractModal from './ContractModal/ContractModal'
-import 'whatwg-fetch'
 import Fetch from '../../../Utils';
-const Option=Select.Option
 
 import addSrc from './Img/add.png';
 import moneySrc from './Img/money.png';
 import dollarSrc from './Img/dollar.png';
 import yuanSrc from './Img/yuan.png';
+import quota from './Img/quota.png';
 
 import './Contract.scss'
 
@@ -250,63 +249,102 @@ export default class Contract extends Component {
             <p>五星必须小于69999注。如发现违规投注情况，均视作放弃日工资；恒彩娱乐保</p>
             <p>留最终解释权，并持有终止、修改等权利</p>
         </div>;
+        const columnsDay = [
+            {
+                title: '日有销量',
+                dataIndex: '1',
+                // width: '25%',
+            },
+            {
+                title: '活跃人数',
+                dataIndex: '2',
+                // width: '25%',
+            },
+            {
+                title: '日工资',
+                dataIndex: '3',
+                // width: '25%',
+            }
+        ];
 
         return (
            <div className='contract_main'>
              <Spin tip="加载中..." spinning={this.state.loading}  size="large"/>
                {
-                   !this.state.loading?
+                   !this.state.loading ?
                    <div>
-                       <ul className='c_top'>
-                           {daily_salary_status ==1 ? <li className='c_salary' >
-                               <p className='c_title'><img src={moneySrc}/>我的日工资比例
-                                   <Tooltip placement="bottom" title={text}  overlayClassName='contract_helpinfo'>
-                                       <Icon className='c-info' type="info-circle" />
-                                   </Tooltip>
-                               </p>
-                               <ul className='c_table1'>
-                                   <li><span className='c_no'>1、</span>日有效量<span className='c_number'>1</span>万<span className='c_no'> , </span>日工资<span className='c_number'>{cur_daily_salary[0].salary_ratio}</span><span className='c_percent'>%</span></li>
-                                   <li><span className='c_no'>2、</span>日有效量<span className='c_number'>10</span>万<span className='c_no'> , </span>日工资<span className='c_number'>{cur_daily_salary[1].salary_ratio}</span><span className='c_percent'>%</span></li>
-                               </ul>
-                               <ul className='c_table2'>
-                                   <li><span className='c_no'>3、</span>日有效量<span className='c_number'>30</span>万<span className='c_no'> , </span>日工资<span className='c_number'>{cur_daily_salary[2].salary_ratio}</span><span className='c_percent'>%</span></li>
-                                   <li><span className='c_no'>4、</span>日有效量<span className='c_number'>50</span>万<span className='c_no'> , </span>日工资<span className='c_number'>{cur_daily_salary[3].salary_ratio}</span><span className='c_percent'>%</span></li>
-                               </ul>
-                               <ul className='c_table3'>
-                                   <li><span className='c_no'>5、</span>日有效量<span className='c_number'>70</span>万<span className='c_no'> , </span>日工资<span className='c_number'>{cur_daily_salary[4].salary_ratio}</span><span className='c_percent'>%</span></li>
-                                   <li><span className='c_no'>6、</span>日有效量<span className='c_number'>100</span>万<span className='c_no'> , </span>日工资<span className='c_number'>{cur_daily_salary[5].salary_ratio}</span><span className='c_percent'>%</span></li>
-                               </ul>
-                           </li>:''}
-                           {dividend_ratio_status==1 ?<li className='c_portion' >
-                               <p className='c_title'><img src={yuanSrc}/>我的分红比例</p>
-                               <div className='c_table_wrap'>
-                                   <div >
-                                       <p>分红</p>
-                                       <p className='c_txt'>{cur_dividend_radio}%</p>
+                       <ul className='c_top clear'>
+                           <li>
+                               {
+                                   daily_salary_status ==1 ?
+                                       <div className='c_salary border_content' >
+                                           <p className='c_title'><img src={moneySrc}/>我的日工资比例
+                                               <Tooltip placement="bottom" title={text}  overlayClassName='contract_helpinfo'>
+                                                   <Icon className='c-info' type="info-circle" />
+                                               </Tooltip>
+                                           </p>
+                                           <div className="day_table">
+                                               <Table bordered={true}
+                                                      dataSource={this.state.data}
+                                                      columns={columnsDay}
+                                               />
+                                           </div>
+                                       </div> : null
+                               }
+                           </li>
+                           <li>
+                               {
+                                   dividend_ratio_status==1 ?
+                                       <div className='c_portion border_content' >
+                                           <p className='c_title'><img src={yuanSrc}/>我的分红比例</p>
+                                           <div className='c_table_wrap'>
+                                               <p>分红</p>
+                                               <p className='c_txt'>{cur_dividend_radio}%</p>
+                                           </div>
+                                       </div> :
+                                       ""
+                               }
+                               <div className="c_portion border_content">
+                                   <p className='c_title'><img src={dollarSrc}/>我的奖金组</p>
+                                   <div className='c_table_wrap'>
+                                       <div >
+                                           <p>奖金组</p>
+                                           <p className='c_txt'>{cur_prize}</p>
+                                       </div>
                                    </div>
                                </div>
-                           </li>:""}
-                           <li className='c_award' >
-                               <p className='c_title'><img src={dollarSrc}/>我的奖金组</p>
-                               <div className='c_table_wrap'>
-                                   <div >
-                                       <p>奖金组</p>
-                                       <p className='c_txt'>{cur_prize}</p>
-                                   </div>
+                           </li>
+                           <li>
+                               <div className="c_quota border_content">
+                                   <p className='c_title'>
+                                       <img src={quota}/>
+                                       我的配额
+                                   </p>
+                                   <ul className="quota_list">
+                                       <li>1956奖金组：555个</li>
+                                       <li>1956奖金组：555个</li>
+                                       <li>1956奖金组：555个</li>
+                                       <li>1956奖金组：555个</li>
+                                       <li>剩余奖金组：无限制</li>
+                                       <li>
+                                           <Button>申请补充奖金组</Button>
+                                       </li>
+                                   </ul>
                                </div>
                            </li>
                            <li className='c_setContract' onClick={()=>{this.showModal()}}>
-                               <div>
-                                   <img src={addSrc}/>
-                                   <p>创建契约</p>
-                               </div>
+                               <img src={addSrc}/>
+                               <p>创建契约</p>
                            </li>
                        </ul>
-                       { this.state.visible ?   <ContractModal visible={this.state.visible}  transferMsg = {visible => this.transferMsg(visible)}/>:""}
+                       {
+                           this.state.visible ?
+                               <ContractModal visible={this.state.visible}  transferMsg = {visible => this.transferMsg(visible)}/> : null
+                       }
                        <div className="c_table">
                            <Table columns={columns} dataSource={tableData} bordered={true} loading={this.state.loading} pagination={true}/>
                        </div>
-                   </div>:""
+                   </div> : null
                }
             </div>
         );

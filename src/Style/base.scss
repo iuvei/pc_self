@@ -3,7 +3,6 @@
 @import './mixin.scss';
 @import './vender/antd.css';
 @import './vender/nprogress.css';
-@import './hover/hover-min.css';
 
 /* 浮动公共样式 */
 .left{ float:left; _display:inline; }
@@ -219,6 +218,9 @@ td.column-right {
 /*表格header，footer, 模态框head背景色*/
 .ant-table-thead > tr > th, .ant-table-footer, .ant-modal-header{
     background: $background_F5F5F5;
+}
+.ant-modal-header{
+    border-bottom: 2px solid $color_CF2027;
 }
 .ant-modal-title, .ant-modal-close{
     color: #333;

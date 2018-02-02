@@ -40,13 +40,13 @@ export default class HomeMainActive extends Component {
                 <div className="home_main_active">
                     <div className="home_m_active" key="home_active_op">
                         <OverPack playScale={0.3}>
-                            <TweenOne
-                                key="icon"
-                                animation={oneAnim}
-                                className="home_favourable_active"
-                                reverseDelay={300} //开始倒放时的延时
-                            >
-                            </TweenOne>
+                            {/*<TweenOne*/}
+                                {/*key="icon"*/}
+                                {/*animation={oneAnim}*/}
+                                {/*className="home_favourable_active"*/}
+                                {/*reverseDelay={300} //开始倒放时的延时*/}
+                            {/*>*/}
+                            {/*</TweenOne>*/}
                             <TweenOne
                                 key="p"
                                 animation={oneAnim}

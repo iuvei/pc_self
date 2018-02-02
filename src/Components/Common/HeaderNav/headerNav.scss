@@ -29,13 +29,15 @@ $width_100: 100%;
                     float: left;
                     color: #fff;
                     @include lh(40px);
+                    //border-left: 1px solid #EAEAEA;
+                }
+                li:last-child{
+                    border-right: 1px solid #EAEAEA;
                 }
                 p{
                     display: inline-block;
                     padding: 0 20px;
                     @include lh(25px);
-                    border-left: 1px solid #e4c1c1;
-                    //margin-top: 15px;
                 }
                 .border_style{
                     display: inline-block;

@@ -21,6 +21,24 @@ export default class RightPlug extends Component {
         };
         this.hideChat = this.hideChat.bind(this);
     };
+    componentDidMount() {
+        let cw = document.body.clientWidth;
+        if(cw < 1340){
+            this.hideRight()
+        }
+        /*添加全局方法，给后台调用*/
+        let _this = this;
+        window.onShowMsg = function(type){
+            if(type == 1){
+                _this.setState({showMsg: true});
+            }else{
+                _this.setState({showMsg: false});
+            }
+
+        };
+        /*获取当前走势图的相对路径*/
+        curLocation = curLocation.split("#")[0] + "#/tendency";
+    };
     transferMsg(visible) {
         this.setState({
             visible
@@ -45,20 +63,6 @@ export default class RightPlug extends Component {
     hideChat() {
         this.setState({modalVisible: false})
     }
-    componentDidMount() {
-        /*添加全局方法，给后台调用*/
-        let _this = this;
-        window.onShowMsg = function(type){
-            if(type == 1){
-                _this.setState({showMsg: true});
-            }else{
-                _this.setState({showMsg: false});
-            }
-
-        };
-        /*获取当前走势图的相对路径*/
-        curLocation = curLocation.split("#")[0] + "#/tendency";
-    };
 
     render() {
         const { modalVisible } = this.state;
@@ -100,7 +104,7 @@ export default class RightPlug extends Component {
                                 </a>
                             </p>
                         </li>
-                        <li>
+                        <li className="lianxi_p">
                             {
                                 this.state.showMsg ? <b className="r_p_common_extent"></b> : null
                             }

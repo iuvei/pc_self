@@ -291,7 +291,7 @@ export default class Dividend extends Component {
                         return text
                     }
                 },
-                width: 80,
+                width: 70,
             },
             {
                 title: '有效投注量',
@@ -332,7 +332,7 @@ export default class Dividend extends Component {
             {
                 title: '操作',
                 dataIndex: 'buttons',
-                width: 230,
+                width: 240,
                 render: (text, record) => {
                     if(record.username == '团队数据'){
                         return text
