@@ -25,30 +25,24 @@
 }
 .title_list .monikj{
     float: left;
-    margin-top: 41px;
-    margin-left: 60px;
+    margin-top: 20px;
+    margin-left: 54px;
     cursor: pointer;
-    width: 166px;
+    width: 165px;
     height: 55px;
     border: none;
     outline: none;
-    background: url('./../ContentMain/Img/moni.png') no-repeat;
-    line-height: 47px;
-    color: #ffdb70;
+    @include red_gradient;
+    line-height: 55px;
+    color: #fff;
     font-size: 20px;
-    text-indent: 34px;
+    text-align: center;
     font-weight: bold;
-    &:hover{
-        background: url('./../ContentMain/Img/moni.png') no-repeat;
-        color: #ffdb70;
-    }
-    &:active{
-        outline: none;
-        border: none;
-    }
+    padding: 0;  
     &:disabled{
         outline: none;
-        border: none;
+        color: #fff;
+        border:1px solid #ddd;
         cursor:not-allowed;
     }
 }
@@ -67,13 +61,15 @@
 .ball_number_mmc{
     min-width: 320px;
     float: left;
-    margin-top: 38px;
+    margin-top: 21px;
+    margin-left: 34px;
     li{
         float: left;
         @include bis('./Img/number_bg.png');
-        @include wh(62px, 64px);
-        line-height: 57px;
+        @include wh(52px, 52px);
+        line-height: 52px;
         text-align: center;
+        margin-right:10px;
         font-size: 30px;
         color: #fff;
         font-weight: bold;
@@ -89,6 +85,7 @@
     }
 }
 .content_cz_text{
+    width: 120px;
     .cz_name{
         font-size: 16px;
         font-weight: bold;
@@ -111,10 +108,9 @@
 .abort_time{
     width: 225px;
     text-align: center;
-    margin-left: 32px;
     .abort_time_text{
         color: #333;
-        font-size: 14px;
+        font-size: 12px;
     }
     .item_text{
         float: left;
@@ -155,7 +151,7 @@
     }
 }
 .praise_mark{
-    padding: 8px 0 0 12px;
+    padding: 8px 0 0 23px;
     position: relative;
     overflow: hidden;
     .praise_mark_text{
@@ -164,11 +160,12 @@
             margin-top: -3px;
         }
         .issueName{
-            margin-right: 28px;
+            width: 200px;
+            display: inline-block;
         }
         color: $color_CF2027;
-        font-size: 14px;
-        margin: 0 6px 7px 5px;
+        font-size: 12px;
+        margin: 0 0 7px 5px;
         .method_introduce{
             @include wh(auto, 18px);
             color: #333;
@@ -182,17 +179,15 @@
     }
     .praise_mark_text_pk10{
         float: left;
-        color: #fff;
-        font-size: 14px;
+        color: $color_CF2027;
+        font-size: 12px;
         margin: 8px 10px 0 3px;
-        .method_introduce{
-            color: #e7dbdb;
-            text-align: left;
-            font-size: 12px;
-            text-decoration: underline;
-            &:hover{
-                cursor: pointer
-            }
+        a{
+            color:#333;
+        }
+        img{
+            vertical-align: middle;
+            margin-top: -3px;
         }
     }
     .ball_number{
@@ -205,7 +200,7 @@
             line-height: 50px;
             text-align: center;
             font-size: 36px;
-            margin-left: 10px;
+            margin-left: 11px;
             color: #fff;
             font-weight: bold;
             font-family: myFirstFont;
@@ -216,16 +211,16 @@
     }
     .ball_number_pk10{
         float: left;
-        width: 215px;
-        margin-top: 2px;
+        width: 258px;
         li{
             float: left;
-            @include bis('./../ContentMain/Img/pk10ball.png');
+            @include bis('./Img/number_bg.png');
             @include wh(41px, 41px);
             line-height: 37px;
             text-align: center;
             font-size: 22px;
             color: #fff;
+            margin-left: 8px;
             font-weight: bold;
             font-family: myFirstFont;
         }

@@ -330,11 +330,13 @@ export default class ContentTop extends Component {
 		                <div>第&nbsp;<span style={{color:'#CF2027'}}>{this.state.nowIssue}</span>&nbsp;期</div>
 		                <div>开奖号码</div>
 		                <div>
-			                <a href={curLocation} target="_blank" style={{marginRight:'20px'}}>
+			                <a href={curLocation} target="_blank" style={{marginRight:'5px'}}>
 				                <img src={zoushi} />
-				                <span className="method_introduce">走势</span>
+				                <span style={{marginLeft:'3px'}} className="method_introduce">走势</span>
 			                </a>
-			                <img src={introduce} /><span className="method_introduce">玩法</span>
+			                <div>
+			               	 	<Link to='/helpInfo/playMethodIntroduce?navIndex=1'><img src={introduce} /><span style={{marginLeft:'5px'}} className="method_introduce">玩法</span></Link>
+			                </div>
 		                </div>
 		            </div>
 		            <ul className="ball_number_pk10">
@@ -353,7 +355,7 @@ export default class ContentTop extends Component {
     			<div className="praise_mark">
 		    		<div className="praise_mark_text">
 		                <span className='issueName'>第{this.state.nowIssue}期&nbsp;开奖号码</span>
-		                <a href={curLocation} target="_blank" style={{marginRight:'20px'}}>
+		                <a href={curLocation} target="_blank" style={{marginRight:'14px'}}>
 			                <img src={zoushi} />
 			                <span className="method_introduce">走势</span>
 		                </a>

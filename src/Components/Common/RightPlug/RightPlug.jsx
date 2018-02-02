@@ -33,7 +33,7 @@ export default class RightPlug extends Component {
     	});
     };
     openRight(){
-    	$(".right_plug_open").animate({right:'-15px'},200,()=>{
+    	$(".right_plug_open").animate({right:'-20px'},200,()=>{
     		$(".right_plug").animate({right:'0'},500);
     		stateVar.paused = true;
     	});
@@ -129,7 +129,7 @@ export default class RightPlug extends Component {
 	                    <Icon type="double-right" />
 	                </div>
 	            </div>
-	            <div className="box-shape right_plug_open" style={{right:stateVar.paused ? '-15px' : '0'}}>
+	            <div className="box-shape right_plug_open" style={{right:stateVar.paused ? '-20px' : '0'}}>
 		            <div className='openRight' onClick={()=>{this.openRight()}}>
 		           	 	<Icon type="double-left" />
 		           	</div>

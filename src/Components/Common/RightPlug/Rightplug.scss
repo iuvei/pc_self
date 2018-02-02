@@ -3,7 +3,7 @@
 
 .right_plug_open{
     position: fixed;
-    right: -15px;
+    right: -20px;
     top: 50%;
     margin-top: -25px;
     z-index: 98;
@@ -13,9 +13,6 @@
         border: 0;
         @include lh(80px);
         background: #ddd;
-        position: absolute;
-        right: 0;
-        top:0;
         cursor: pointer;
         z-index: 99;
         i{
