@@ -5,6 +5,7 @@
     background-color: $background_F5F5F5;
     padding-left: 15px;
     font-size: 14px;
+    border-bottom: 2px solid $color_CF2027;
     @include lh(45px);
     .nav_list{
         li{
