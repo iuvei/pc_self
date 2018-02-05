@@ -246,9 +246,7 @@ export default class HeaderTop extends Component {
                         }
                     }
                 })
-            },
-            onCancel() {
-            },
+            }
         });
 
     }

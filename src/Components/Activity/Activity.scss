@@ -7,14 +7,14 @@
         li{
             position: relative;
             float: left;
-            margin: 10px 0 5px;
+            margin-top: 10px;
             border: 1px solid #ddd;
             img{
-                width: 576px;
+                width: 580px;
                 vertical-align: middle;
             }
             &:nth-child(2n+1){
-                margin-right: 15px;
+                margin-right: 8px;
             }
             .activity_apply{
                 position: absolute;
