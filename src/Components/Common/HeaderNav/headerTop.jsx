@@ -323,7 +323,7 @@ export default class HeaderTop extends Component {
         const { noticePosition, iconArrowsName, iconArrowsMoney } = this.state;
         return (
             <div className="nav_top">
-           		<Websocket url='ws://10.63.15.242:9502' onMessage={this.handleData.bind(this)} onOpen={this.openWebsocket.bind(this)}
+           		<Websocket url={'ws://'+common.getStore("pushDomain")+''} onMessage={this.handleData.bind(this)} onOpen={this.openWebsocket.bind(this)}
         			ref = {Websocket => {
                   	this.refWebSocket = Websocket;
                 }}

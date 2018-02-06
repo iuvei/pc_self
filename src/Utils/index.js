@@ -125,6 +125,8 @@ const contractList= (body) =>  request(http.interFace('CONTRACTLIST'),body);
 const quota= (body) =>  request(http.interFace('QUOTA'),body);
 /*奖金组契约*/
 const awardTeam= (body) =>  request(http.interFace('AWARDTEAM'),body);
+/*配额管理*/
+const applyPrizeQuota= (body) =>  request(http.interFace('APPLYPRIZEQUOTA'),body);
 /*如何存款*/
 const howDeposit= (body) =>  request(http.interFace('HOWDEPOSIT'),body);
 /*常见问题*/
@@ -227,6 +229,7 @@ export default {
     childrenList,
     quota,
     awardTeam,
+    applyPrizeQuota,
     howDeposit,
     commonProblems,
     playMethod,

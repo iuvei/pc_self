@@ -1,3 +1,6 @@
+@import '../../Style/variables';
+@import '../../Style/mixin';
+
 .helpInfo_main{
     .a_m_controler{
         margin: 11px 0 30px 5px;
@@ -21,6 +24,7 @@
         text-align: center;
         background-color: #3e3e49;
         padding-left: 0;
+        border: 0;
     }
     .hvr-overline-from-left:before{
         background:none;
@@ -29,8 +33,14 @@
         border-bottom: 1px solid #2c2c31;
         float: none;
         &:hover{
-            border-left: 2px solid #CB1313;
+            border-left: 2px solid $color_CF2027;
             cursor: pointer;
+        }
+        &:hover a{
+            color: $color_363636;
+        }
+        a{
+            color: #fff;
         }
         &:nth-child(1) a{
             background: url(./Img/deposit.png) no-repeat left center;
@@ -63,6 +73,9 @@
     .c_nav .nav_list .nav_active{
         background: #fff;
         border-top: none;
-        border-left: 2px solid #CB1313;
+        border-left: 2px solid $color_CF2027;
+        a{
+            color: $color_363636;
+        }
     }
 }

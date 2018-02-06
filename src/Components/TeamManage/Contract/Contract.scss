@@ -141,5 +141,47 @@ $border_color: #C8C8C8;
         }
     }
 }
+.quota_modal{
+    .quota_list{
+        color: $color_363636;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 10px;
+        li{
+            @include lh(45px);
+            .ant-btn{
+                padding: 6px 20px;
+            }
+            .ant-btn:first-child{
+                margin-right: 10px;
+            }
+        }
+    }
+    .current_quota{
+        color: $color_CF2027;
+    }
+    .ant-input-number-handler-wrap{
+        display: none;
+    }
+    .ant-input-number{
+        @include borderRadius(0);
+        background-color: #fff;
+        border: 0;
+        border-bottom: 1px solid $color_363636;
+    }
+    .ant-input-number:hover{
+        border-color: #cf2027;
+    }
+    .ant-input-number-focused{
+        box-shadow: 0 0 0 0;
+        border-color: #cf2027;
+    }
+    .ant-input-number-input[disabled]{
+        color: rgb(109, 109, 109);
+    }
+    .ant-input-number-disabled .ant-input-number-input{
+        background-color: #fbfaf5;
+    }
+}
 
 

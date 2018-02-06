@@ -165,10 +165,9 @@ body,
         }
     }
 }
-.ant-table-thead{
+.ant-table-thead, .ant-btn{
     font-size: 14px;
 }
-
 /*超过宽度以...现在*/
 .ellipsis{
     overflow: hidden;

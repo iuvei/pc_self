@@ -2,17 +2,14 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import {Button,Modal,Popover} from 'antd';
-import mobx,{computed, autorun} from "mobx";
-import Fatch from '../../../Utils'
-import './LotteryModal.scss'
-import { stateVar } from '../../../State'
-
-import rectangle from './Img/rectangle.png'
+import Fatch from '../../../Utils';
+import './LotteryModal.scss';
+import { stateVar } from '../../../State';
 
 @observer
 export default class AlterModal extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
         	tzloding:false,
         	mmcvisible:false,

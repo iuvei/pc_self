@@ -74,7 +74,14 @@ export default class DayRate extends Component {
                 });
                 let table = this.state.table;
                 if(res.status == 200){
-                    let data = res.repsoneContent;
+                    let data = res.repsoneContent,
+                        userName = stateVar.userInfo.userName;
+                    for(let i = 0, results = data.results; i < results.length; i++){
+                        if(userName == results[i].username){
+                            results[i].buttons[1].text = '自身协议';
+                            break;
+                        }
+                    }
                     table.dayRateList = data.results;
                     table.sum = data.sum;
                     table.total = parseInt(data.affects);

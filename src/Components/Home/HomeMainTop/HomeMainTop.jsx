@@ -22,7 +22,7 @@ export default class HomeMainTop extends Component {
     };
 
     render() {
-        const oneAnim = { y: '+=30', opacity: 0, type: 'from', ease: 'easeOutQuad' };
+        const oneAnim = { y: '+=0', opacity: 0, type: 'from', ease: 'easeOutQuad' };
         return (
             <OverPack
                 replay
@@ -67,12 +67,12 @@ export default class HomeMainTop extends Component {
                         </TweenOne>
                     </div>
                 </QueueAnim>
-                <TweenOne
-                    animation={{ y: '-=20', yoyo: true, repeat: -1, duration: 1000 }}
-                    className="home_m_top_down_icon"
-                    key="icon"
-                >
-                </TweenOne>
+                {/*<TweenOne*/}
+                    {/*animation={{ y: '-=20', yoyo: true, repeat: -1, duration: 1000 }}*/}
+                    {/*className="home_m_top_down_icon"*/}
+                    {/*key="icon"*/}
+                {/*>*/}
+                {/*</TweenOne>*/}
             </OverPack>
         )
     }

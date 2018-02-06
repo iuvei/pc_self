@@ -1,7 +1,9 @@
 import { observer } from 'mobx-react';
 import React, { Component } from 'react';
+import Fetch from '../../Utils';
 import { hashHistory } from 'react-router';
 import { Row, Col } from 'antd';
+import { stateVar } from '../../State';
 import HeaderNav from '../Common/HeaderNav/headerNav';
 import Footer from '../Common/Footer/Footer';
 import LeftSider from '../Lottery/LeftSider/LeftSider';
@@ -12,6 +14,16 @@ import './Main.scss';
 window.onbeforeunload = function(){
     return "真的离开?";
 };
+window.onunload = function() {
+        if(stateVar.userInfo.sType == 'demo'){
+        Fetch.logout({
+            method: 'POST',
+            body: JSON.stringify({sType: stateVar.userInfo.sType})
+        }).then((res)=>{
+
+        });
+    }
+}
 
 @observer
 export default class Main extends Component {

@@ -440,12 +440,12 @@ export default class TeamList extends Component {
             }, {
                 title: '最后登录时间',
                 dataIndex: 'lasttime',
-                width: 85,
+                width: 90,
             }, {
                 title: '操作',
                 dataIndex: 'action',
                 render: (text, record) => <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>,
-                width: 130,
+                width: 110,
             }];
         const footer = <div className="tabel_footer">
                             <span>总计</span>

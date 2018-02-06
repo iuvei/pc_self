@@ -126,14 +126,14 @@ export default class Losesalary extends Component {
                 width: 275,
             }, {
                 title: '个人日亏损佣金',
-                dataIndex: 'self_sale',
+                dataIndex: 'salary',
                 className: 'column-right',
                 render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                                                         <span className="col_color_ying">{text}</span>,
                 width: 275,
             }, {
                 title: '团队日亏损佣金',
-                dataIndex: 'salary',
+                dataIndex: 'self_sale',
                 className: 'column-right',
                 render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                                                         <span className="col_color_ying">{text}</span>,

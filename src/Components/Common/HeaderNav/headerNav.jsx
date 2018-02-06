@@ -159,8 +159,7 @@ export default class HeaderNav extends Component {
                                                 onMouseOut={item.id == 'lottery' ? ()=>this.onLotteryOut() : ''}
                                                 key={item.id}
                                             >
-                                                <p>{item.name}</p>
-                                                {/*<i className="border_style"></i>*/}
+                                                {item.name}
                                             </li>
                                         )
                                     })

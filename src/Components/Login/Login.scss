@@ -25,12 +25,12 @@ $width_100: 100%;
             color: #fff;
             a{
                 color: #fff;
+                display: inline-block;
+                padding: 0 15px;
             }
         }
         .l_n_t_list li{
-            padding: 0 15px;
             float: left;
-            cursor: pointer;
             color:#888888;
             img{
                 transition:All 0.4s ease-in-out;
@@ -218,9 +218,6 @@ $width_100: 100%;
     }
     .ant-modal-header{
         padding: 10px 16px;
-        text-align: center;
-        background: #fff;
-        border-bottom: none;
     }
     .ant-modal-title{
         color: #333333;

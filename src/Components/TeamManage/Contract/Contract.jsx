@@ -1,8 +1,9 @@
 /*契约系统*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Table, Icon,Tooltip,Spin,Button } from 'antd';
-import ContractModal from './ContractModal/ContractModal'
+import { Table, Icon,Tooltip,Spin,Button,Modal,InputNumber } from 'antd';
+import { stateVar } from '../../../State';
+import ContractModal from './ContractModal/ContractModal';
 import Fetch from '../../../Utils';
 
 import addSrc from './Img/add.png';
@@ -32,8 +33,10 @@ export default class Contract extends Component {
             tableLength:null,/*实际获取到的下级用户数目*/
             columns:[],/*下级用户信息表格表头*/
             tableData:[],/*下级用户信息表格内容*/
-
-
+            quotaVisible: false, //配额
+            quotaList: [], //配额列表
+            quotaPost:{}, //申请配额请求参数
+            quotaLoding: false,
         }
     };
     transferMsg(visible) {
@@ -46,9 +49,7 @@ export default class Contract extends Component {
         this.setState({pagination: current})
     };
     showModal(){
-        this.setState({
-            visible:true,
-        });
+        this.setState({visible:true});
     };
     /*
     * 获取当前登录用户的契约信息
@@ -57,33 +58,33 @@ export default class Contract extends Component {
         Fetch.contractList({method: "POST",
             body: JSON.stringify({
                 "pn": 100,
-            })}).then((data)=>{
+            })}).then((res)=>{
             if(this._ismount ){
-                if(data.status==200){
-                    this.setState({
-                        loading:false,
-                    })
-                    let columns=[],
+                this.setState({loading:false});
+                if(res.status==200){
+                    let data = res.repsoneContent,
+                        columns=[],
                         tableData=[];
                     /*获取当前用户各种契约签订状态
                     *获取当期用户的日工资，分红，奖金组
                     * 下级用户实际数目
                     * */
                     let curUserSignStatus=this.state.curUserSignStatus;
-                    if(data.repsoneContent.protocol instanceof Array){
+                    if(data.protocol instanceof Array){
                         curUserSignStatus.daily_salary_status = 1;
                     }
-                    curUserSignStatus.dividend_ratio_status = data.repsoneContent.dividend_ratio.status;
-                    if(data.repsoneContent.self_acc_group.length>0){
+                    curUserSignStatus.dividend_ratio_status = data.dividend_ratio.status;
+                    if(data.self_acc_group.length>0){
                         curUserSignStatus.quota_status = 1;
                     }
                     this.setState({
                         curUserSignStatus:curUserSignStatus,
-                        cur_daily_salary:data.repsoneContent.protocol,
-                        cur_dividend_radio:data.repsoneContent.dividend_ratio.dividend_radio,
-                        cur_prize:data.repsoneContent.prize,
-                        tableLength:data.repsoneContent.results.length,
-                    })
+                        cur_daily_salary:data.protocol,
+                        cur_dividend_radio:data.dividend_ratio.dividend_radio,
+                        cur_prize:data.prize,
+                        tableLength:data.results.length,
+                        quotaList: data.prizeaccount,
+                    });
                     /*下级用户信息表格渲染  begin*/
                     /*表头 begin*/
                     /*添加下级用户的用户名，奖金组表头*/
@@ -100,7 +101,7 @@ export default class Contract extends Component {
                     /*添加分红比例表头
                     * 当上级用户签订了分红比例时，下级才有分红比例表头
                     * */
-                    if(data.repsoneContent.dividend_ratio.status==1){
+                    if(data.dividend_ratio.status==1){
                         columns.push({
                             title: '分红比例',
                             dataIndex: "divendRatio",
@@ -109,7 +110,7 @@ export default class Contract extends Component {
                     }
                     /*添加日工资表头
                     * 当上级用户签订了日工资时，下级才有日工资表头*/
-                    if(data.repsoneContent.protocol instanceof Array){
+                    if(data.protocol instanceof Array){
                         columns.push({
                             title: '日工资协议',
                             key: 'dailySalary',
@@ -150,9 +151,9 @@ export default class Contract extends Component {
                     * 当上级用户签订了配额管理时，下级才有配额管理表头
                     * 配额管理下的组别必须小于当前用户奖金组级别表头
                     * */
-                    if(data.repsoneContent.self_acc_group.length>0){
+                    if(data.self_acc_group.length>0){
                         let columnChildren=[];
-                        for(let i=1950;i<=parseInt(data.repsoneContent.prize);i++){
+                        for(let i=1950;i<=parseInt(data.prize);i++){
                             columnChildren.push({
                                 title: i,
                                 dataIndex: `quotaManage${i}`,
@@ -170,32 +171,32 @@ export default class Contract extends Component {
 
                     /*表格内容 begin*/
                     /*添加用户名，奖金组*/
-                    for(let j=0;j<data.repsoneContent.results.length;j++){
+                    for(let j=0;j<data.results.length;j++){
 
                         tableData.push({
-                            name: data.repsoneContent.results[j].username,
-                            awardGroup: data.repsoneContent.results[j].prize_group,
+                            name: data.results[j].username,
+                            awardGroup: data.results[j].prize_group,
                             key:`tableData${j}`,
                         });
 
                         /*添加分红比例,当上级用户签订了分红比例，才添加数据
                         * 当此下级用户签订了分红比例时，显示分红比例，否则显示“-”*/
-                        if(data.repsoneContent.dividend_ratio.status==1){
-                            if(data.repsoneContent.results[j].dividend_salary_status==1){
+                        if(data.dividend_ratio.status==1){
+                            if(data.results[j].dividend_salary_status==1){
 
-                                    tableData[j][ "divendRatio"] = data.repsoneContent.results[j].dividend_radio+"%";
+                                    tableData[j][ "divendRatio"] = data.results[j].dividend_radio+"%";
 
                             }else{
-                                tableData[j][ "divendRatio"] = data.repsoneContent.results[j].dividend_radio+"%";
+                                tableData[j][ "divendRatio"] = data.results[j].dividend_radio+"%";
 
                             }
                         }
                         /*添加日工资,当上级用户签订了日工资，才添加数据
                         * 当此下级用户签订了日工资时，显示日工资，否则显示“-”*/
-                        if(data.repsoneContent.protocol instanceof Array){
+                        if(data.protocol instanceof Array){
                             for(let k=0;k<6;k++){
-                                if(data.repsoneContent.results[j].daily_salary_status==1){
-                                    tableData[j][`dailySalary${k}`] = data.repsoneContent.results[j].daily_protocol[k].salary_ratio+"%";
+                                if(data.results[j].daily_salary_status==1){
+                                    tableData[j][`dailySalary${k}`] = data.results[j].daily_protocol[k].salary_ratio+"%";
                                 }else{
                                     tableData[j][`dailySalary${k}`]="-";
                                 }
@@ -203,9 +204,9 @@ export default class Contract extends Component {
                         }
                         /*当上级用户签订了配额管理时，下级才有配额管理
                         * 只显示小于当前用户奖金组级别的配额数据*/
-                        if(data.repsoneContent.self_acc_group.length>0){
-                            for(let z=1950 ;z<=parseInt(data.repsoneContent.prize);z++) {
-                                tableData[j][`quotaManage${z}`] = data.repsoneContent.results[j].group_level[z].accnum;
+                        if(data.self_acc_group.length>0){
+                            for(let z=1950 ;z<=parseInt(data.prize);z++) {
+                                tableData[j][`quotaManage${z}`] = data.results[j].group_level[z].accnum;
                                 z++;
                             }
                         }
@@ -232,9 +233,43 @@ export default class Contract extends Component {
         this._ismount = true;
         this.getContractList();
     };
+    /*配额管理*/
+    onApplyPrizeQuota(){
+        this.setState({quotaLoding: true});
+        Fetch.applyPrizeQuota({
+            method: 'POST',
+            body: JSON.stringify(this.state.quotaPost)
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({quotaLoding: false, quotaVisible: false, quotaPost: {}});
+                if(res.status == 200){
+                    Modal.success({
+                        title: '亲爱的用户：',
+                        content: res.shortMessage,
+                        okText: '确认关闭'
+                    });
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    };
+    /*申请配额*/
+    onChangeQuota(val, item){
+        let { quotaPost } = this.state;
+        if(val != '' && val != undefined){
+            quotaPost[item.prizeGroup] = val;
+        }else{
+            quotaPost[item.prizeGroup] = 0;
+        }
+        console.log(quotaPost);
+        this.setState({quotaPost});
+    }
     render() {
         const { dividend_ratio_status ,daily_salary_status,quota_status } = this.state.curUserSignStatus;
-        const { cur_daily_salary,cur_dividend_radio,cur_prize,tableLength,tableData,columns} = this.state;
+        const { cur_daily_salary,cur_dividend_radio,cur_prize,tableLength,tableData,columns, quotaList, quotaPost} = this.state;
 
 
         const text=<div className='c_info_wrap'>
@@ -275,8 +310,7 @@ export default class Contract extends Component {
                    <div>
                        <ul className='c_top clear'>
                            <li>
-                               {
-                                   daily_salary_status ==1 ?
+                                   {/*daily_salary_status ==1 ?*/}
                                        <div className='c_salary border_content' >
                                            <p className='c_title'><img src={moneySrc}/>我的日工资比例
                                                <Tooltip placement="bottom" title={text}  overlayClassName='contract_helpinfo'>
@@ -289,27 +323,29 @@ export default class Contract extends Component {
                                                       columns={columnsDay}
                                                />
                                            </div>
-                                       </div> : null
-                               }
+                                       </div>
                            </li>
                            <li>
-                               {
-                                   dividend_ratio_status==1 ?
-                                       <div className='c_portion border_content' >
-                                           <p className='c_title'><img src={yuanSrc}/>我的分红比例</p>
-                                           <div className='c_table_wrap'>
-                                               <p>分红</p>
-                                               <p className='c_txt'>{cur_dividend_radio}%</p>
-                                           </div>
-                                       </div> :
-                                       ""
-                               }
+                               <div className='c_portion border_content' >
+                                   <p className='c_title'><img src={yuanSrc}/>我的分红比例</p>
+                                   <div className='c_table_wrap'>
+                                       <p>分红</p>
+                                       {
+                                           dividend_ratio_status==1 ?
+                                               <p className='c_txt'>{cur_dividend_radio}%</p> :
+                                               <p className='c_txt'>无</p>
+                                       }
+                                   </div>
+                               </div>
                                <div className="c_portion border_content">
                                    <p className='c_title'><img src={dollarSrc}/>我的奖金组</p>
                                    <div className='c_table_wrap'>
                                        <div >
                                            <p>奖金组</p>
-                                           <p className='c_txt'>{cur_prize}</p>
+                                           <p className='c_txt'>
+                                               {/*{cur_prize}*/}
+                                               {stateVar.userInfo.accGroup}
+                                               </p>
                                        </div>
                                    </div>
                                </div>
@@ -321,13 +357,14 @@ export default class Contract extends Component {
                                        我的配额
                                    </p>
                                    <ul className="quota_list">
-                                       <li>1956奖金组：555个</li>
-                                       <li>1956奖金组：555个</li>
-                                       <li>1956奖金组：555个</li>
-                                       <li>1956奖金组：555个</li>
+                                       {
+                                           quotaList.map((item)=>{
+                                               return <li key={item.uagid}>{item.prizeGroup}奖金组：{item.accnum}个</li>
+                                           })
+                                       }
                                        <li>剩余奖金组：无限制</li>
                                        <li>
-                                           <Button>申请补充奖金组</Button>
+                                           <Button onClick={()=>this.setState({quotaVisible: true})}>申请补充奖金组</Button>
                                        </li>
                                    </ul>
                                </div>
@@ -346,6 +383,37 @@ export default class Contract extends Component {
                        </div>
                    </div> : null
                }
+               <Modal
+                   title="配额申请"
+                   visible={this.state.quotaVisible}
+                   width={440}
+                   footer={null}
+                   maskClosable={false}
+                   onCancel={()=>this.setState({quotaVisible: false, quotaPost: {}})}
+                   className="quota_modal"
+               >
+                   <ul className="quota_list">
+                       {
+                           quotaList.map((item)=>{
+                               return (
+                                   <li key={item.uagid}>
+                                       申请奖金组{item.prizeGroup}的配额
+                                       <InputNumber min={0}
+                                           value={quotaPost[item.prizeGroup]}
+                                           onChange={(value)=>this.onChangeQuota(value, item)}
+                                       />
+                                       个（当前有<span className="current_quota">{item.accnum}</span>个）
+                                   </li>
+                               )
+                           })
+                       }
+                       <li>剩余奖金组配额：无限制</li>
+                       <li>
+                           <Button onClick={()=>this.onApplyPrizeQuota()} loading={this.state.quotaLoding} type="primary">申请</Button>
+                           <Button onClick={()=>this.setState({quotaVisible: false, quotaPost: {}})}>取消</Button>
+                       </li>
+                   </ul>
+               </Modal>
             </div>
         );
     }

@@ -2,7 +2,7 @@
 @import '../../../Style/mixin';
 
 .playMethod_main{
-    padding: 0 15px 0 197px;
+    padding-left: 197px;
     .p_select_list{
         padding: 25px 0;
         border-bottom: 1px dotted #C8C8C8;
@@ -23,9 +23,8 @@
         color: #fff;
     }
     .shishicai,.fucai,.pailie,.shiyixuanwu,.beijingkuaile,.bobing{
-        height: 590px;
+        height: 614px;
         overflow-y: scroll;
-        overflow-x: hidden;
         &::-webkit-scrollbar-track-piece{
             background-color:#F4F4F4;
         }

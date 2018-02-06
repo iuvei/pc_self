@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import { Input,Button,Icon,Checkbox,Modal  } from 'antd';
-import 'whatwg-fetch'
 import Fetch from '../../Utils';
 import md5 from 'md5';
 import { stateVar } from '../../State';
@@ -21,7 +20,6 @@ import valicodeSrc from './Img/valicode.png';
 import {removeStore, setStore,getStore } from "../../CommonJs/common";
 const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
 // const validImgSrc= (window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/pcservice/index.php?useValid=true';
-
 @observer
 export default class Login extends Component {
     constructor(props) {
@@ -67,7 +65,7 @@ export default class Login extends Component {
             this.setState({
                 session: parseData.repsoneContent,
             });
-            setStore("session",parseData.repsoneContent)
+            setStore("session",parseData.repsoneContent);
             document.cookie = 'sess='+ parseData.repsoneContent + ';path=/';
         })
 
@@ -95,7 +93,6 @@ export default class Login extends Component {
     * 4.验证成功后进入主界面
     * 5.根据后台返回数据显示错误信息
     */
-    // @debounce(500)
     enterLogin() {
         this.setState({ loading: true });
         if(!this.state.account||!this.state.password){
@@ -104,7 +101,7 @@ export default class Login extends Component {
                 displayWarn:true,
                 loading: false,
             },()=>this.refreshImg());
-        }else if(this.state.aptchac===''){
+        }else if(this.state.aptchac==''){
             this.setState({
                 warn:"验证码为空",
                 displayWarn:true,
@@ -122,7 +119,7 @@ export default class Login extends Component {
     * 根据后台返回数据显示错误信息
     * */
     enterTryGameLogin(){
-        if(this.state.aptchac===''){
+        if(this.state.aptchac==''){
             this.setState({
                 warn:"验证码为空",
                 displayWarn:true,
@@ -144,8 +141,8 @@ export default class Login extends Component {
                 "validcode": this.state.aptchac
             })
         }).then((data)=>{
-            this.setState({ loading: false });
             if(this._ismount){
+                this.setState({ loading: false });
                 let result = data.repsoneContent;
                 if(data.status==200) {
                     stateVar.auth=true;
@@ -201,50 +198,52 @@ export default class Login extends Component {
                 "validcode": aptchac
             })
         }).then((data)=>{
-            this.setState({ loading: false });
-            let result = data.repsoneContent;
-            if(data.status===200){
-                stateVar.auth=true;
-                stateVar.userInfo = {
-                    userId:result.userid,
-                    userName: result.username,
-                    userType: result.usertype,
-                    accGroup: result.accGroup,
-                    lastIp: result.lastip,
-                    sType: result.sType,
-                    lastTime: result.lasttime,
-                    issetbank: result.issetbank,
-                    setquestion: result.setquestion,
-                    setsecurity: result.setsecurity,
-                    email: result.email,
-                };
+            if(this._ismount){
+                this.setState({ loading: false });
+                let result = data.repsoneContent;
+                if(data.status==200){
+                    stateVar.auth=true;
+                    stateVar.userInfo = {
+                        userId:result.userid,
+                        userName: result.username,
+                        userType: result.usertype,
+                        accGroup: result.accGroup,
+                        lastIp: result.lastip,
+                        sType: result.sType,
+                        lastTime: result.lasttime,
+                        issetbank: result.issetbank,
+                        setquestion: result.setquestion,
+                        setsecurity: result.setsecurity,
+                        email: result.email,
+                    };
 
-                setStore("userName",result.username);
-                setStore("pushDomain",result.push_domain);
-                setStore("userId",result.userid);
-                setStore("userType",result.usertype);
-                setStore("accGroup",result.accGroup);
-                setStore("lastIp",result.lastip);
-                setStore("sType",result.sType);
-                setStore("lastTime",result.lasttime);
-                setStore("issetbank",result.issetbank);
-                setStore("setquestion",result.setquestion);
-                setStore("setsecurity",result.setsecurity);
-                setStore("email",result.email);
+                    setStore("userName",result.username);
+                    setStore("pushDomain",result.push_domain);
+                    setStore("userId",result.userid);
+                    setStore("userType",result.usertype);
+                    setStore("accGroup",result.accGroup);
+                    setStore("lastIp",result.lastip);
+                    setStore("sType",result.sType);
+                    setStore("lastTime",result.lasttime);
+                    setStore("issetbank",result.issetbank);
+                    setStore("setquestion",result.setquestion);
+                    setStore("setsecurity",result.setsecurity);
+                    setStore("email",result.email);
 
-                if(this.state.checkPw){
-                    setStore("loginPwd",this.state.password);
-                    setStore("checkFlag",this.state.checkPw);
+                    if(this.state.checkPw){
+                        setStore("loginPwd",this.state.password);
+                        setStore("checkFlag",this.state.checkPw);
+                    }else{
+                        removeStore("loginPwd");
+                        removeStore("checkFlag");
+                    }
+                    hashHistory.push('/lottery');
                 }else{
-                    removeStore("loginPwd");
-                    removeStore("checkFlag");
+                    this.setState({
+                        warn:data.shortMessage,
+                        displayWarn:true,
+                    },()=>this.refreshImg());
                 }
-                hashHistory.push('/lottery');
-            }else{
-                this.setState({
-                    warn:data.shortMessage,
-                    displayWarn:true,
-                },()=>this.refreshImg());
             }
         })
     };

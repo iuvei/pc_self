@@ -136,6 +136,8 @@ const interFace = (key) => {
     INTERFACE['QUOTA'] = 'controller=user&action=useraccnum';
     //奖金组契约
     INTERFACE['AWARDTEAM'] = 'controller=user&action=upedituser';
+    //配额管理
+    INTERFACE['APPLYPRIZEQUOTA'] = 'controller=user&action=ApplyPrizeQuota';
     //如何存款
     INTERFACE['HOWDEPOSIT'] = 'controller=help&action=Howtosaving';
     //常见问题
