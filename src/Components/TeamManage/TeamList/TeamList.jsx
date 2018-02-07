@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
-import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, message, Spin } from 'antd';
+import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, message, Badge } from 'antd';
 import Fetch from '../../../Utils';
 import Crumbs from '../../Common/Crumbs/Crumbs'
 import { stateVar } from '../../../State';
@@ -59,6 +59,11 @@ export default class TeamList extends Component {
             },
             prizeGroupPost: {}, // 奖金组请求参数
             contract_name: '修改协议', //按钮btn
+            quotaVisible: false, //配额
+            quotaList: [], //配额列表
+            quotaPost:{}, //申请配额请求参数
+            quotaLoding: false,
+            num: 0, //配额申请成功数
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -66,10 +71,21 @@ export default class TeamList extends Component {
     componentDidMount() {
         this._ismount = true;
         this.getData();
+        this.getNum();
     };
     componentWillUnmount() {
         this._ismount = false;
     };
+    getNum(){
+        Fetch.quota({
+            method: 'POST',
+            body: JSON.stringify({flag: 'list'})
+        }).then((res)=>{
+            if(this._ismount && res.status == 200){
+                this.setState({num: res.repsoneContent.num})
+            }
+        })
+    }
     handleTableChange = (pagination, filters, sorter) => {
         let selectInfo = this.state.selectInfo;
         if(sorter.columnKey == undefined){
@@ -171,57 +187,65 @@ export default class TeamList extends Component {
     };
     /*修改契约*/
     onClickColBtn(type, record) {
-        this.setState({
-            alterData: record,
-            alterVisible: true,
-            disabled: true,
-            prizeGroupFlag: record.prize_group,
-        });
-        if(type == '配额'){
-            this.getAccGroupList(record);
-        }else if(type == '日工资'){
-            let postDataSelf = {
-                userid: record.userid,
-                parentid: record.parentid,
-            };
-            Fetch.dailysalaryself({
-                method: 'POST',
-                body: JSON.stringify(postDataSelf)
-            }).then((res)=>{
-                if(this._ismount && res.status == 200){
-                    let pros = res.repsoneContent.pros;
-                    this.setState({
-                        typeName: '日工资契约',
-                        contentArr: pros[pros.length - 1],
-                    })
-                }
-            });
-        }else if(type == '分红'){
-            let { diviPost } = this.state;
-            diviPost.dividend_radio = record.dividend_radio;
+        if(record.useraccgroup_status == 3){//新申请
             this.setState({
-                typeName: '分红契约',
-                diviPost,
-            })
+                quotaVisible: true,
+                alterData: record,
+            });
+            this.getAccGroupList(record);
         }else{
-            //获取可设置的奖金组列表
-            Fetch.awardTeam({
-                method: 'POST',
-                body: JSON.stringify({uid: record.userid})
-            }).then((res)=>{
-                if(this._ismount && res.status == 200){
-                    let { prizeGroupPost } = this.state,
-                        data = res.repsoneContent;
-                    prizeGroupPost.uid = data.uid;
-                    prizeGroupPost.flag = 'rapid';
-                    prizeGroupPost.selfPoint = data.selfPoint;
-                    this.setState({
-                        typeName: '奖金组契约',
-                        prizeGroupList: data.list,
-                        prizeGroupPost,
-                    })
-                }
-            })
+            this.setState({
+                alterData: record,
+                alterVisible: true,
+                disabled: true,
+                prizeGroupFlag: record.prize_group,
+            });
+            if(type == '配额'){
+                this.getAccGroupList(record);
+            }else if(type == '日工资'){
+                let postDataSelf = {
+                    userid: record.userid,
+                    parentid: record.parentid,
+                };
+                Fetch.dailysalaryself({
+                    method: 'POST',
+                    body: JSON.stringify(postDataSelf)
+                }).then((res)=>{
+                    if(this._ismount && res.status == 200){
+                        let pros = res.repsoneContent.pros;
+                        this.setState({
+                            typeName: '日工资契约',
+                            contentArr: pros[pros.length - 1],
+                        })
+                    }
+                });
+            }else if(type == '分红'){
+                let { diviPost } = this.state;
+                diviPost.dividend_radio = record.dividend_radio;
+                this.setState({
+                    typeName: '分红契约',
+                    diviPost,
+                })
+            }else{
+                //获取可设置的奖金组列表
+                Fetch.awardTeam({
+                    method: 'POST',
+                    body: JSON.stringify({uid: record.userid})
+                }).then((res)=>{
+                    if(this._ismount && res.status == 200){
+                        let { prizeGroupPost } = this.state,
+                            data = res.repsoneContent;
+                        prizeGroupPost.uid = data.uid;
+                        prizeGroupPost.flag = 'rapid';
+                        prizeGroupPost.selfPoint = data.selfPoint;
+                        this.setState({
+                            typeName: '奖金组契约',
+                            prizeGroupList: data.list,
+                            prizeGroupPost,
+                        })
+                    }
+                })
+            }
         }
     };
     /*游戏记录*/
@@ -253,17 +277,29 @@ export default class TeamList extends Component {
             let { typeName, alterData } = this.state;
             this.setState({affirmLoading: true});
             if(typeName == '配额契约'){
+                this.setState({quotaLoding: true});
                 let { agPost } = this.state;
+                if(contract_name == '新申请'){
+                    agPost.SH = 1;
+                }else{
+                    agPost.SH != undefined && delete agPost.SH;
+                }
                 agPost.uid = alterData.userid;
                 Fetch.quota({
                     method: 'POST',
                     body: JSON.stringify(agPost)
                 }).then((res)=>{
                     if(this._ismount){
-                        this.setState({affirmLoading: false});
+                        this.setState({affirmLoading: false, quotaLoding: false});
                         if(res.status == 200){
                             message.success(res.repsoneContent);
-                            this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
+                            if(contract_name == '新申请'){
+                                this.setState({quotaVisible: false});
+                                this.getData();
+                                this.getNum();
+                            }else{
+                                this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
+                            }
                             this.getAccGroupList(alterData);
                         }else{
                             Modal.warning({
@@ -385,7 +421,11 @@ export default class TeamList extends Component {
                 agPost.accnum = [];
                 aAllUserTypeAccNum.forEach((item)=>{
                     agPost.accgroup.push(item.agid);
-                    agPost.accnum.push(0);
+                    if(item.quotanum != undefined){
+                        agPost.accnum.push(item.quotanum);
+                    }else{
+                        agPost.accnum.push(0);
+                    }
                 });
                 this.setState({
                     typeName: '配额契约',
@@ -393,6 +433,11 @@ export default class TeamList extends Component {
                 })
             }
         })
+    }
+    onCancelQuota(){
+        this.setState({quotaVisible: false, quotaPost: {}});
+        this.getData();
+        this.getNum();
     }
     render() {
         const { tableData, typeName, contentArr, prizeGroupList, agPost, diviPost } = this.state;
@@ -425,17 +470,25 @@ export default class TeamList extends Component {
             }, {
                 title: '日工资',
                 dataIndex: 'daily_salary_status',
-                render: (text, record) => <Button type={text == 1 ? 'primary' : ''} onClick={()=>this.onClickColBtn('日工资', record)}>{text==1 ? '已签订' : '未签订'}</Button>,
+                render: (text, record) => <Button type={text == 1 ? 'primary' : ''} ghost onClick={()=>this.onClickColBtn('日工资', record)}>{text==1 ? '已签订' : '未签订'}</Button>,
                 width: 100,
             }, {
                 title: '分红',
                 dataIndex: 'dividend_salary_status',
-                render: (text, record) => <Button type={text == 1 ? 'primary' : ''} onClick={()=>this.onClickColBtn('分红', record)}>{text==1 ? '已签订' : '未签订'}</Button>,
+                render: (text, record) => <Button type={text == 1 ? 'primary' : ''} ghost onClick={()=>this.onClickColBtn('分红', record)}>{text==1 ? '已签订' : '未签订'}</Button>,
                 width: 100,
             }, {
                 title: '配额',
                 dataIndex: 'useraccgroup_status',
-                render: (text, record) => <Button type={text == 1 ? 'primary' : ''} onClick={()=>this.onClickColBtn('配额', record)}>{text == 1 ? '已签订' : '未签订'}</Button>,
+                render: (text, record) => <Button className={text == 3 ? 'new_application' : ''} type={text == 1 ? 'primary' : ''} ghost onClick={()=>this.onClickColBtn('配额', record)}>
+                    {
+                        text == 0 ?
+                            '未分配' :
+                            text == 1 ?
+                                '已分配' :
+                                '新申请'
+                    }
+                </Button>,
                 width: 100,
             }, {
                 title: '最后登录时间',
@@ -595,6 +648,9 @@ export default class TeamList extends Component {
                                footer={tableData.total <= 0 ? null : ()=>footer}
                                onChange={this.handleTableChange}
                         />
+                        <div className="num">
+                            <Badge count={this.state.num} style={{ backgroundColor: '#369900' }} />
+                        </div>
                     </div>
                     <div className="page right"  style={{display: tableData.total <= 0 ? 'none' : ''}}>
                         <Pagination showSizeChanger
@@ -617,6 +673,41 @@ export default class TeamList extends Component {
                     onCancel={this.onCancel}
                     onAffirm={this.onDiviratio}
                 />
+                <Modal
+                    title="配额申请"
+                    visible={this.state.quotaVisible}
+                    width={440}
+                    footer={null}
+                    maskClosable={false}
+                    onCancel={()=>this.onCancelQuota()}
+                    className="quota_modal"
+                >
+                    <p className="quota_name">
+                        <span className="current_quota">{this.state.alterData.username}</span>
+                        申请配额：
+                    </p>
+                    <ul className="quota_list">
+                        {
+                            contentArr.map((item, i)=>{
+                                return (
+                                    <li key={item.uagid}>
+                                        申请奖金组{item.accGroup}的配额
+                                        <InputNumber min={0}
+                                                     value={agPost.accnum[i]}
+                                                     onChange={(value)=>this.onChangeAccGroup(value, item)}
+                                        />
+                                        个（该下级剩余<span className="current_quota">{item.subaccnum}</span>个）
+                                    </li>
+                                )
+                            })
+                        }
+                        <li>剩余奖金组配额：无限制</li>
+                        <li>
+                            <Button onClick={()=>this.onDiviratio('新申请')} loading={this.state.quotaLoding} type="primary">确认</Button>
+                            <Button onClick={()=>this.onCancelQuota()}>取消</Button>
+                        </li>
+                    </ul>
+                </Modal>
             </div>
         );
     }

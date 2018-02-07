@@ -236,7 +236,7 @@ export default class SelfInfo extends PureComponent {
                         <div className="s_i_c_top clear">
                             <div className="s_i_logo left">
                                 <img src={info_logo} alt=""/>
-                                <p>当前IP：{ logs[0] != undefined ? logs[0].clientip + ' ' + logs[0].ip_address : '暂未获取到当前IP' }</p>
+                                <p>当前IP：{ logs[0] != undefined ? logs[0].proxyip + ' ' + logs[0].ip_address : '暂未获取到当前IP' }</p>
                             </div>
                             <div className="s_i_info right">
                                 <h3>欢迎您！ {userInfo.userName}</h3>

@@ -29,7 +29,6 @@ export default class Contract extends Component {
             },
             cur_daily_salary:[],               //当前用户的日工资比例
             cur_dividend_radio:null,/*当前用户的日工资比例*/
-            cur_prize:null,/*当前用户的奖金组级别*/
             tableLength:null,/*实际获取到的下级用户数目*/
             columns:[],/*下级用户信息表格表头*/
             tableData:[],/*下级用户信息表格内容*/
@@ -81,7 +80,6 @@ export default class Contract extends Component {
                         curUserSignStatus:curUserSignStatus,
                         cur_daily_salary:data.protocol,
                         cur_dividend_radio:data.dividend_ratio.dividend_radio,
-                        cur_prize:data.prize,
                         tableLength:data.results.length,
                         quotaList: data.prizeaccount,
                     });
@@ -264,12 +262,11 @@ export default class Contract extends Component {
         }else{
             quotaPost[item.prizeGroup] = 0;
         }
-        console.log(quotaPost);
         this.setState({quotaPost});
     }
     render() {
         const { dividend_ratio_status ,daily_salary_status,quota_status } = this.state.curUserSignStatus;
-        const { cur_daily_salary,cur_dividend_radio,cur_prize,tableLength,tableData,columns, quotaList, quotaPost} = this.state;
+        const { cur_daily_salary,cur_dividend_radio,tableLength,tableData,columns, quotaList, quotaPost} = this.state;
 
 
         const text=<div className='c_info_wrap'>
@@ -342,10 +339,7 @@ export default class Contract extends Component {
                                    <div className='c_table_wrap'>
                                        <div >
                                            <p>奖金组</p>
-                                           <p className='c_txt'>
-                                               {/*{cur_prize}*/}
-                                               {stateVar.userInfo.accGroup}
-                                               </p>
+                                           <p className='c_txt'>{stateVar.userInfo.accGroup}</p>
                                        </div>
                                    </div>
                                </div>
@@ -356,17 +350,21 @@ export default class Contract extends Component {
                                        <img src={quota}/>
                                        我的配额
                                    </p>
-                                   <ul className="quota_list">
-                                       {
-                                           quotaList.map((item)=>{
-                                               return <li key={item.uagid}>{item.prizeGroup}奖金组：{item.accnum}个</li>
-                                           })
-                                       }
-                                       <li>剩余奖金组：无限制</li>
-                                       <li>
-                                           <Button onClick={()=>this.setState({quotaVisible: true})}>申请补充奖金组</Button>
-                                       </li>
-                                   </ul>
+                                   {
+                                       quotaList.length == 0 ?
+                                           <div style={{fontSize: 14, marginTop: 110}}>无限制</div> :
+                                           <ul className="quota_list">
+                                               {
+                                                   quotaList.map((item)=>{
+                                                       return <li key={item.uagid}>{item.prizeGroup}奖金组：{item.accnum}个</li>
+                                                   })
+                                               }
+                                               <li>剩余奖金组：无限制</li>
+                                               <li>
+                                                   <Button onClick={()=>this.setState({quotaVisible: true})}>申请补充奖金组</Button>
+                                               </li>
+                                           </ul>
+                                   }
                                </div>
                            </li>
                            <li className='c_setContract' onClick={()=>{this.showModal()}}>

@@ -159,6 +159,8 @@ $border_color: #C8C8C8;
     }
     .current_quota{
         color: $color_CF2027;
+        display: inline-block;
+        width: 50px;
     }
     .ant-input-number-handler-wrap{
         display: none;

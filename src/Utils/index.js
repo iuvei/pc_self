@@ -169,6 +169,8 @@ const complainAndSuggests= (body) =>  request(http.interFace('COMPLAINANDSUGGEST
 const switchold= (body) =>  request(http.interFace('SWITCHOLD'),body);
 //得到版本号
 const getVersion = (body) =>  request(http.interFace('GETVERSION'),body);
+//活动列表
+const acitveLists = (body) =>  request(http.interFace('ACTIVELISTS'),body);
 
 export default {
     getSess,
@@ -253,5 +255,6 @@ export default {
     complainAndSuggests,
     contractList,
     switchold,
-    getVersion
+    getVersion,
+    acitveLists,
 }

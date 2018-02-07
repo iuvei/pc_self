@@ -1,42 +1,44 @@
+/*综合游戏*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Row, Col, Button  } from 'antd';
+import { Row, Col, Button, Modal } from 'antd';
 import { stateVar } from '../../State';
 import { hashHistory } from 'react-router';
 import Fetch from '../../Utils';
 import './OtherGames.scss'
 
+const allBalance = stateVar.allBalance;
 const otherGamesArr = [
     {
         name: '博饼',
         link: '/otherGames/bobing',
         id: 'bb',
         disabled: true,
-        money: '0.00',
+        money: allBalance.bobingBalance,
     },{
         name: 'EA娱乐城',
         link: '/otherGames/ea',
         id: 'ea',
         disabled: true,
-        money: '0.00',
+        money: allBalance.eabalance,
     },{
         name: 'PT游戏',
         link: '/otherGames/pt',
         id: 'pt',
         disabled: true,
-        money: '0.00',
+        money: allBalance.ptbalance,
     },{
         name: 'GT娱乐城',
         link: '/otherGames/gt',
         id: 'gt',
         disabled: true,
-        money: '0.00',
+        money: allBalance.kgbalance,
     },{
         name: '体育竞技',
         link: '/otherGames/sport',
         id: 'sport',
         disabled: true,
-        money: '0.00',
+        money: allBalance.sbbalance,
     }
 ];
 @observer
@@ -49,115 +51,100 @@ export default class OtherGames extends Component {
     };
     componentDidMount(){
         this._ismount = true;
-        this.onGt();
-        this.onEa();
-        this.onPt();
-        this.onSport();
-        this.onBobing();
     };
     componentWillUnmount() {
         this._ismount = false;
     };
     onHashHistory(item) {
-        hashHistory.push(item.link);
+        if(item.id == 'bb'){
+            this.onBobing(item.link);
+        }else if(item.id == 'ea'){
+            this.onEa(item.link);
+        }else if(item.id == 'pt'){
+            this.onPt(item.link);
+        }else if(item.id == 'gt'){
+            this.onGt(item.link);
+        }else if(item.id == 'sport'){
+            this.onSport(item.link);
+        }else{}
     };
     /*是否有权限进入Ea*/
-    onEa() {
+    onEa(link) {
         Fetch.eagame({
             method: 'POST'
         }).then((res)=>{
             if(this._ismount){
                 if(res.status == 200){
-                    let { otherGamesArr } = this.state;
-                    for(let i = 0; i < otherGamesArr.length; i++){
-                        if(otherGamesArr[i].id == 'ea'){
-                            otherGamesArr[i].money = stateVar.allBalance.eabalance;
-                            otherGamesArr[i].disabled = false;
-                            break;
-                        }
-                    }
-                    this.setState({otherGamesArr})
+                    hashHistory.push(link);
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
                 }
             }
         })
     };
     /*是否有权限进入pt*/
-    onPt() {
+    onPt(link) {
         Fetch.ptindex({
             method: 'POST',
         }).then((res)=>{
             if(this._ismount){
                 if(res.status == 200){
-                    let { otherGamesArr } = this.state;
-                    for(let i = 0; i < otherGamesArr.length; i++){
-                        if(otherGamesArr[i].id == 'pt'){
-                            otherGamesArr[i].money = stateVar.allBalance.ptbalance;
-                            otherGamesArr[i].disabled = false;
-                            break;
-                        }
-                    }
-                    this.setState({otherGamesArr})
+                    hashHistory.push(link);
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
                 }
             }
         })
     };
     /*是否有权限进入体育竞技*/
-    onSport(){
+    onSport(link){
         Fetch.sport({
             method: 'POST',
             body: JSON.stringify({"do":"login"})
         }).then((res)=>{
             if(this._ismount){
                 if(res.status == 200){
-                    let { otherGamesArr } = this.state;
-                    for(let i = 0; i < otherGamesArr.length; i++){
-                        if(otherGamesArr[i].id == 'sport'){
-                            otherGamesArr[i].money = stateVar.allBalance.sbbalance;
-                            otherGamesArr[i].disabled = false;
-                            break;
-                        }
-                    }
-                    this.setState({otherGamesArr})
+                    hashHistory.push(link);
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
                 }
             }
         })
     };
     /*是否有权限进入GT娱乐*/
-    onGt(){
+    onGt(link){
         Fetch.gtLogin({
             method: 'POST'
         }).then((res)=>{
             if(this._ismount){
                 if(res.status == 200){
-                    let { otherGamesArr } = this.state;
-                    for(let i = 0; i < otherGamesArr.length; i++){
-                        if(otherGamesArr[i].id == 'gt'){
-                            otherGamesArr[i].money = stateVar.allBalance.kgbalance;
-                            otherGamesArr[i].disabled = false;
-                            break;
-                        }
-                    }
-                    this.setState({otherGamesArr})
+                    hashHistory.push(link);
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
                 }
             }
         })
     };
     /*是否有权限进入博饼*/
-    onBobing() {
+    onBobing(link) {
         Fetch.newGetprizepool({
             method: 'POST'
         }).then((res)=>{
             if(this._ismount){
                 if(res.status == 200){
-                    let { otherGamesArr } = this.state;
-                    for(let i = 0; i < otherGamesArr.length; i++){
-                        if(otherGamesArr[i].id == 'bb'){
-                            otherGamesArr[i].money = stateVar.allBalance.bobingBalance;
-                            otherGamesArr[i].disabled = false;
-                            break;
-                        }
-                    }
-                    this.setState({otherGamesArr})
+                    hashHistory.push(link);
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
                 }
             }
         })
@@ -181,7 +168,6 @@ export default class OtherGames extends Component {
                                                 </div>
                                                 <Button className="right"
                                                         onClick={()=>this.onHashHistory(item)} type="primary" size="large"
-                                                        disabled={item.disabled}
                                                 >
                                                     立即游戏
                                                 </Button>

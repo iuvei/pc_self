@@ -49,9 +49,15 @@ $border-color: #B2B2B2;
             @include lh(50px);
         }
         .t_l_table_list{
+            position: relative;
             border: 1px solid #ccc;
             background-color: #fff;
             padding: 8px 5px;
+            .num{
+                position: absolute;
+                top: 10px;
+                left: 770px;
+            }
             .ant-btn{
                 padding: 2px 9px;
             }
@@ -84,6 +90,20 @@ $border-color: #B2B2B2;
     .page{
         margin-top: 10px;
     }
+    .ant-btn-background-ghost {
+        border-color: #B2B2B2;
+        color: #666;
+    }
+    .ant-btn-background-ghost.ant-btn-primary {
+        color: $color_CF2027;
+        background-color: transparent;
+        border-color: $color_CF2027;
+    }
+    .new_application{
+        border-color: #369900 !important;
+        color: #369900 !important;
+    }
+
 }
 .t_l_prompt{
     background-color: #bbb;
@@ -93,7 +113,55 @@ $border-color: #B2B2B2;
 .t_l_active{
     box-sizing: border-box;
     height: 28px;
-    border:1px solid #CB1313 !important;
-    color:#CB1313;
+    border:1px solid $rodio-check-color !important;
+    color:$rodio-check-color;
     background: #FFF5F5 url('./Img/time_active.png') no-repeat right bottom;
+}
+.quota_modal{
+    .quota_name{
+        text-align: center;
+        font-size: 14px;
+    }
+    .quota_list{
+        color: $color_363636;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 10px;
+        li{
+            @include lh(45px);
+            .ant-btn{
+                padding: 6px 20px;
+            }
+            .ant-btn:first-child{
+                margin-right: 10px;
+            }
+        }
+    }
+    .current_quota{
+        color: $color_CF2027;
+        display: inline-block;
+        width: 50px;
+    }
+    .ant-input-number-handler-wrap{
+        display: none;
+    }
+    .ant-input-number{
+        @include borderRadius(0);
+        background-color: #fff;
+        border: 0;
+        border-bottom: 1px solid $color_363636;
+    }
+    .ant-input-number:hover{
+        border-color: #cf2027;
+    }
+    .ant-input-number-focused{
+        box-shadow: 0 0 0 0;
+        border-color: #cf2027;
+    }
+    .ant-input-number-input[disabled]{
+        color: rgb(109, 109, 109);
+    }
+    .ant-input-number-disabled .ant-input-number-input{
+        background-color: #fbfaf5;
+    }
 }

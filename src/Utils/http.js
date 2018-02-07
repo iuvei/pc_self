@@ -178,6 +178,8 @@ const interFace = (key) => {
     INTERFACE['GTTRANSFER'] = 'controller=kgame&action=Transfer';
     //投诉建议
     INTERFACE['COMPLAINANDSUGGESTS'] = 'controller=help&action=AddComplain';
+    //活动列表
+    INTERFACE['ACTIVELISTS'] = 'controller=onlineactivities&goaction=Lists&absecs=True';
 
     let httpUrl = stateVar.httpUrl;
     if(key == 'PTLOGINNEW') {

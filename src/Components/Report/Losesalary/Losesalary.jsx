@@ -20,8 +20,8 @@ export default class Losesalary extends Component {
             loading: false,
             searchLoading: false,
             postData: {
-                begintime: setDateTime(0), //历史工资起时间
-                eatime: setDateTime(1), // 历史工资结束时间
+                begintime: setDateTime(-1), //历史工资起时间
+                eatime: setDateTime(0), // 历史工资结束时间
                 p: 1,
                 pn: 10,
             },
@@ -198,14 +198,14 @@ export default class Losesalary extends Component {
                             <li>
                                 <span>查询日期：</span>
                                 <DatePicker placeholder="查询开始日期"
-                                            defaultValue={moment(setDateTime(0))}
+                                            defaultValue={moment(setDateTime(-1))}
                                             onChange={(date, dateString)=>{this.onChangeStartDate(date, dateString)}}
                                             disabledDate={(current)=>disabledDate(current, -35, 1)}
 
                                 />
                                 <span style={{margin: '0 5px'}}>至</span>
                                 <DatePicker placeholder="查询结束日期"
-                                            defaultValue={moment(setDateTime(1))}
+                                            defaultValue={moment(setDateTime(0))}
                                             onChange={(date, dateString)=>{this.onChangeEndDate(date, dateString)}}
                                             disabledDate={(current)=>disabledDate(current, -35, 1)}
                                 />
