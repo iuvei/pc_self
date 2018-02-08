@@ -2,20 +2,20 @@
 @import '../../../Style/mixin';
 
 
-.activity_details{
-    @include bis('./Img/details_bg.png');
-}
 .a_d_main{
     @include boxS(0, 4px, 18px, 0, #DCDCDC, null);
     .a_d_activeImg{
         vertical-align: middle;
+        width: 1172px;
     }
     .a_d_activeName{
         @include lh(45px);
-        background-color: $background-color;
-        color: #fff;
+        box-sizing: border-box;
+        background-color: $background_F5F5F5;
+        color: #333;
         padding-left: 40px;
         font-size: 18px;
+        border-bottom: 2px solid $color_CF2027;
     }
     .a_d_active_introduce{
         padding: 15px 35px;
@@ -26,6 +26,7 @@
         .a_d_list{
             margin-left: 10px;
             color: #000;
+            font-size: 14px;
             li{
                 @include lh(25px);
             }
@@ -34,33 +35,8 @@
             }
         }
         .a_d_apply{
-            margin-right: 8px;
-            .ant-btn-primary{
-                background-color: $color_0088DE;
-                border-color: $color_0088DE;
-            }
-            .ant-btn-primary:hover,
-            .ant-btn-primary:focus {
-                color: #fff;
-                background-color: #0396de;
-                border-color: #0396de;
-            }
-            .ant-btn-clicked:after {
-                border: 0 solid $color_0088DE;
-            }
-            .ant-btn-danger.ant-btn-clicked:after {
-                border-color: $color_0088DE;
-            }
-            .a_d_apply_btn{
-                @include wh(160px, 45px);
-                margin-top: 10px;
-                font-size: 16px;
-                display: block;
-            }
-            .a_d_residue_number{
-                text-align: center;
-                color: $color_363636;
-                margin-top: 3px;
+            .ant-btn{
+                padding: 6px 20px;
             }
         }
         .a_d_explain{
@@ -98,12 +74,17 @@
         color: $color_363636;
         margin: 5px 0 18px;
         padding-bottom: 10px;
+        .dissertation{
+            margin: 30px 0;
+            text-align: center;
+        }
         .schedule_title{
             @include lh(35px);
             font-size: 14px;
-            color: #fff;
-            background-color: $background-color;
+            color: #333;
+            background-color: $background_F5F5F5;
             padding-left: 20px;
+            border-bottom: 2px solid $color_CF2027;
         }
         .schedule_list{
             margin:15px 0 0 20px;
@@ -120,6 +101,17 @@
             li{
                 width: 98px;
             }
+        }
+    }
+    .dissertation_active{
+        color: $color_363636;
+        padding-left: 10px;
+        a{
+            text-decoration: underline;
+            color: #0088DE;
+        }
+        li{
+            @include lh(25px);
         }
     }
 }

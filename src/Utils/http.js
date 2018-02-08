@@ -180,6 +180,12 @@ const interFace = (key) => {
     INTERFACE['COMPLAINANDSUGGESTS'] = 'controller=help&action=AddComplain';
     //活动列表
     INTERFACE['ACTIVELISTS'] = 'controller=onlineactivities&goaction=Lists&absecs=True';
+    //活动详情
+    INTERFACE['ACTIVITYDATA'] = 'controller=onlineactivities&goaction=ActivityData&absecs=True';
+    //个人进度
+    INTERFACE['USERSIGNDATAS'] = 'controller=onlineactivities&goaction=UserSignDatas&absecs=True';
+    //活动报名
+    INTERFACE['POSTENROLLS'] = 'controller=onlineactivities&action=PostEnrolls&absecs=True';
 
     let httpUrl = stateVar.httpUrl;
     if(key == 'PTLOGINNEW') {

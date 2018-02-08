@@ -49,11 +49,12 @@ export default class ComplainAndSuggests extends Component {
                     title:this.state.complainTitle,
                     content:this.state.complainContent,
                 })}).then((data)=> {
-                this.setState({
-                    loading:false,
-                });
                 if (this._ismount) {
+                    this.setState({
+                        loading:false,
+                    });
                     if (data.status == 200) {
+                        this.props.hideTousuModal();
                         success(data.shortMessage);
                     }else{
                         error(data.shortMessage);

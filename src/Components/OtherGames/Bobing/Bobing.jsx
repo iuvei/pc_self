@@ -5,6 +5,7 @@ import { Button, Modal } from 'antd';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import { getStore } from "../../../CommonJs/common";
+import emitter from '../../../Utils/events';
 import CM_transfer from '../CM_transfer/CM_transfer';
 
 import bobing_01 from './Img/bobing_01.png'
@@ -59,6 +60,8 @@ export default class Bobing extends Component {
                         Modal.success({
                             title: res.shortMessage,
                         });
+                        this.setState({visible: false});
+                        emitter.emit('changeMoney');
                     }else{
                         Modal.warning({
                             title: res.shortMessage,

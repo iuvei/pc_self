@@ -63,16 +63,16 @@ export default class HomeMainTop extends Component {
                             key="download"
                             animation={{ ...oneAnim, delay: 300 }}
                         >
-                            <a href="javascript:void(0)" className="home_m_top_download">立即下载</a>
+                            <a href="https://m.h88c05.com/" className="home_m_top_download" target="_blank">立即下载</a>
                         </TweenOne>
                     </div>
                 </QueueAnim>
-                {/*<TweenOne*/}
-                    {/*animation={{ y: '-=20', yoyo: true, repeat: -1, duration: 1000 }}*/}
-                    {/*className="home_m_top_down_icon"*/}
-                    {/*key="icon"*/}
-                {/*>*/}
-                {/*</TweenOne>*/}
+                <TweenOne
+                    animation={{ y: '-=20', yoyo: true, repeat: -1, duration: 1000 }}
+                    className="home_m_top_down_icon"
+                    key="icon"
+                >
+                </TweenOne>
             </OverPack>
         )
     }

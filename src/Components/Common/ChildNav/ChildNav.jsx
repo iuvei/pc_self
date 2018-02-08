@@ -2,18 +2,23 @@
 import React, {PureComponent} from 'react';
 import {observer} from 'mobx-react';
 import {Link} from 'react-router';
-import './ChildNav.scss'
+import { stateVar } from '../../../State';
+import './ChildNav.scss';
 
 @observer
 export default class ChildNav extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            NavIndex: this.props.defaultIndex == undefined ? 0 : this.props.defaultIndex,
+            // NavIndex: this.props.defaultIndex == undefined ? 0 : this.props.defaultIndex,
         };
     };
+    componentDidMount(){
+        stateVar.childNavIndex = this.props.defaultIndex == undefined ? 0 : this.props.defaultIndex;
+    }
     handClick(index, item) {
-        this.setState({NavIndex: index});
+        // this.setState({NavIndex: index});
+        stateVar.childNavIndex = index;
         this.props.onChangeNavIndex(index, item);
     };
     /*选中项*/
@@ -21,7 +26,7 @@ export default class ChildNav extends PureComponent {
         if(this.props.defaultIndex != undefined){
             return index == this.props.defaultIndex ? 'nav_active' : '';
         }else{
-            return index == this.state.NavIndex ? 'nav_active' : '';
+            return index == stateVar.childNavIndex ? 'nav_active' : '';
         }
     }
 

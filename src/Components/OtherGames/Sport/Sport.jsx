@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Button} from 'antd';
-import 'whatwg-fetch'
+import emitter from '../../../Utils/events';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import CM_transfer from '../CM_transfer/CM_transfer';
 import './Sport.scss';
 import { Modal  } from 'antd';
 
-import sport_top from './Img/sport_top.png';
 let MONEY_FLAG = true;
 @observer
 export default class Sport extends Component {
@@ -21,24 +20,24 @@ export default class Sport extends Component {
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
     };
-
-
-
+    componentDidMount() {
+        this._ismount = true;
+        this.getThirdAddress();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
     /*获取第三方网址*/
     getThirdAddress(){
         Fetch.sport({
             method: "POST",
             body: JSON.stringify({"do":"login"}),
         }).then((data)=> {
-            console.log("login",data);
-            if(data.status==200){
+            if(this._ismount && data.status==200){
                 this.setState({
                     thirdAddress:data.repsoneContent[0],
                 })
-
             }
-            console.log("thirdAddress",this.state.thirdAddress);
-
         })
     }
     /*转账*/
@@ -65,15 +64,19 @@ export default class Sport extends Component {
                 method: 'POST',
                 body: JSON.stringify(postData),
             }).then((res)=>{
-                MONEY_FLAG = true;
-                if(res.status == 200){
-                    Modal.success({
-                        title: res.shortMessage,
-                    });
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                if(this._ismount){
+                    MONEY_FLAG = true;
+                    if(res.status == 200){
+                        Modal.success({
+                            title: res.shortMessage,
+                        });
+                        this.setState({visible: false});
+                        emitter.emit('changeMoney');
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             })
         }
@@ -83,13 +86,8 @@ export default class Sport extends Component {
     hideModal() {
         this.setState({visible: false})
     };
-    componentDidMount() {
-        this.getThirdAddress();
-
-    };
 
     render() {
-
         return (
             <div className="sport">
                 <div className="sport_content">

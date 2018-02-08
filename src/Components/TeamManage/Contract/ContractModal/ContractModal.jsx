@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Button, Icon,Modal,Select,Slider,InputNumber ,message } from 'antd';
-import 'whatwg-fetch';
 import Fetch from '../../../../Utils';
+import { setDateTime } from '../../../../CommonJs/common';
 import './ContractModal.scss';
 import guanbi  from  './Img/guanbi.png'
 
-const Option=Select.Option
+const Option=Select.Option;
 /*数据提交成功显示信息*/
 const success = (value) => {
     message.success(value);
@@ -26,14 +26,14 @@ export default class ContractModal extends Component {
             navListIndex:4,               //控制当前契约类型
             modalClass:"center-modal-c", //控制模态框不同类型的
             contactType:"请选择需要创建契约的系统" ,                          //当前被选中契约类型
-            today:null,//当天日期
+            today: setDateTime(0),//当天日期
             value:'',
             sliderValue: null,     //设置当前下级用户的奖金组级别
             userList:[], //下级用户列表（代理）
             contractInfo:[],//契约类型
             userid:null, //下级用户userid
-            username:null,//下级用户username
-            parentid:null,//当前用户id
+            username: '',//下级用户username
+            parentid: {},//当前用户id
             currentUserInfo:{   //当前用户信息
                 salary_ratio_1:null,  //当前用户日销量>=1万时的日工资比例
                 salary_ratio_10:null, //当前用户日销量>=10万时的日工资比例
@@ -41,7 +41,7 @@ export default class ContractModal extends Component {
                 salary_ratio_50:null, //当前用户日销量>=50万时的日工资比例
                 salary_ratio_70:null, //当前用户日销量>=70万时的日工资比例
                 salary_ratio_100:null, //当前用户日销量>=100万时的日工资比例
-                prize_group:null,      //当前用户奖金组级别
+                prize_group: {},      //当前用户奖金组级别
 
             },
             childrenQuotaStatus:null,        //下级用户配额契约签订状态
@@ -97,103 +97,87 @@ export default class ContractModal extends Component {
 
         };
     };
-
-
+    componentDidMount() {
+        this._ismount = true;
+        this.getUserInfo();
+    };
+    componentWillUnmount(){
+        this._ismount = false;
+    }
     /*获取用户信息
     *当前用户的奖金组级别，userid，分红比例签订状态，日工资签订状态，调用当前用户获取日工资6挡比例的请求
     *获取下级用户列表，包括userid，username，奖金组级别，分红比例签订状态，日工资契约签订状态
     * */
     getUserInfo(){
-        let userlist = [];
-        let id=null,
-            contractInfo=[];         //当前登录用户拥有的契约类型
-            Fetch.childrenList({method: "POST",
-                body: JSON.stringify({
-                    pn: 100,
-                })}).then((data)=> {
-            if(this._ismount){
-                if(data.status==200){
-                    let currentUserInfo=this.state.currentUserInfo;
-                    currentUserInfo.prize_group=data.repsoneContent.self.prize_group;
-                    this.setState({
-                        parentid:data.repsoneContent.users[0].userid,
-                        currentUserInfo:currentUserInfo,
-                    })
-                    for(let i=0 ;i<data.repsoneContent.results.length;i++){
-                        if(parseInt(data.repsoneContent.results[i].usertype)){
-                            id = data.repsoneContent.results[i].userid;
-                            userlist[id]={
-                                name:data.repsoneContent.results[i].username,
-                                prize_group:data.repsoneContent.results[i].prize_group,
-                                daily_salary_status:data.repsoneContent.results[i].daily_salary_status,
-                                dividend_salary_status:data.repsoneContent.results[i].dividend_salary_status,
-                                useraccgroup_status:data.repsoneContent.results[i].useraccgroup_status,
-                            };
+        Fetch.childrenList({
+            method: "POST",
+            body: JSON.stringify({pn: 100})
+        }).then((res)=> {
+                if(this._ismount){
+                    if(res.status == 200){
+                        let { currentUserInfo, contractInfo } =this.state,
+                            data = res.repsoneContent,
+                            self = data.self;
+                        currentUserInfo.prize_group=data.self.prize_group;
+                        if(self.daily_salary_status == '1'){
+                            contractInfo.push({
+                                id:0,
+                                contract:"日工资契约",
+                            });
+                            this.getCurrentUserSalaryData(data.users[0].userid);
                         }
-                    }
-                    if(parseInt(data.repsoneContent.self.daily_salary_status)){
+                        if(self.dividend_salary_status == '1'){
+                            contractInfo.push({
+                                id:1,
+                                contract:"分红契约",
+                            })
+                        }
                         contractInfo.push({
-                            id:0,
-                            contract:"日工资契约",
-                        })
-                        this.getCurrentUserSalaryData();
+                            id:2,
+                            contract:"奖金组契约",
+                        });
+                        if(self.useraccgroup_status == '1'){
+                            contractInfo.push({
+                                id:3,
+                                contract:"配额契约",
+                            })
+                        }
+                        this.setState({
+                            parentid:data.users[0].userid,
+                            currentUserInfo,
+                            userList: data.results.filter(item => item.usertype == '1'),
+                            contractInfo,
+                        });
                     }
-                    if(parseInt(data.repsoneContent.self.dividend_salary_status)){
-                        contractInfo.push({
-                            id:1,
-                            contract:"分红契约",
-                        })
-
-                    }
-                    contractInfo.push({
-                        id:2,
-                        contract:"奖金组契约",
-                    })
-
-                    if(parseInt(data.repsoneContent.self.useraccgroup_status)){
-                        contractInfo.push({
-                            id:3,
-                            contract:"配额契约",
-                        })
-                    }
-
-                    this.setState({
-                        userList:userlist,
-                        contractInfo:contractInfo,
-
-                    })
-
                 }
-            }
 
         })
-
     }
     /*获取当前用户日工资契约*/
-    getCurrentUserSalaryData(){
+    getCurrentUserSalaryData(parentid){
+        let { today } = this.state;
         Fetch.dailysalaryself({
             method: "POST",
             body: JSON.stringify({
-                gmt_sale:this.state.today,
-                userid:this.state.parentid,
+                gmt_sale: today,
+                userid: parentid,
             })
-        }).then((data)=> {
+        }).then((res)=> {
             if(this._ismount){
-                if(data.status==200){
-                    let currentUserInfo=this.state.currentUserInfo;
-                    currentUserInfo.salary_ratio_1=data.repsoneContent.pros[0][0].salary_ratio;
-                    currentUserInfo.salary_ratio_10=data.repsoneContent.pros[0][1].salary_ratio;
-                    currentUserInfo.salary_ratio_30=data.repsoneContent.pros[0][2].salary_ratio;
-                    currentUserInfo.salary_ratio_50=data.repsoneContent.pros[0][3].salary_ratio;
-                    currentUserInfo.salary_ratio_70=data.repsoneContent.pros[0][4].salary_ratio;
-                    currentUserInfo.salary_ratio_100=data.repsoneContent.pros[0][5].salary_ratio;
+                if(res.status == 200){
+                    let { currentUserInfo }=this.state,
+                        data = res.repsoneContent;
+                    currentUserInfo.salary_ratio_1=data.pros[0][0].salary_ratio;
+                    currentUserInfo.salary_ratio_10=data.pros[0][1].salary_ratio;
+                    currentUserInfo.salary_ratio_30=data.pros[0][2].salary_ratio;
+                    currentUserInfo.salary_ratio_50=data.pros[0][3].salary_ratio;
+                    currentUserInfo.salary_ratio_70=data.pros[0][4].salary_ratio;
+                    currentUserInfo.salary_ratio_100=data.pros[0][5].salary_ratio;
                     this.setState({
-                        currentUserInfo:currentUserInfo,
+                        currentUserInfo,
                     })
                 }
             }
-
-
         })
     }
     /*获取日工资契约数据*/
@@ -286,13 +270,13 @@ export default class ContractModal extends Component {
                         salary_ratio:this.state.setSalary.salary_ratio,
                     })
                 }).then((data)=> {
-                    let setSalary=this.state.setSalary;
-                    setSalary.salary_ratio=[];
-                    this.setState({
-                        loading:false,
-                        setSalary:setSalary,
-                    });
                     if(this._ismount){
+                        let setSalary=this.state.setSalary;
+                        setSalary.salary_ratio=[];
+                        this.setState({
+                            loading:false,
+                            setSalary:setSalary,
+                        });
                         if(data.status=200){
                             success(data.shortMessage);
                             let userInfo=this.state.userList;
@@ -391,6 +375,7 @@ export default class ContractModal extends Component {
                 uid:userid,
             })
         }).then((data)=> {
+            console.log(data)
             if(this._ismount){
                 if(data.status==200){
                     let getAwardTeam=this.state.getAwardTeam;
@@ -657,7 +642,6 @@ export default class ContractModal extends Component {
             })
         }
     }
-
     /*获取日工资二档设置数据*/
     onChangeSalary10(value){
         let setSalary=this.state.setSalary;
@@ -722,7 +706,6 @@ export default class ContractModal extends Component {
         const getSalary=this.state.getSalary;
         const currentUserInfo=this.state.currentUserInfo;
         const ul_0 =<div>
-
             <ul  className='c_speci_contract0'>
                 <li>
                     契约内容：
@@ -730,43 +713,97 @@ export default class ContractModal extends Component {
                 <li>
                     <span>第一档：日销量≥1万元时，日工资比例为</span>
                     <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>{getSalary.salary_ratio_1}</span>
-                    <InputNumber min={getSalary.salary_ratio_1?getSalary.salary_ratio_1:0} max={currentUserInfo.salary_ratio_1} style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small" placeholder={getSalary.salary_ratio_1?getSalary.salary_ratio_1:0} onChange={(value)=>this.onChangeSalary1(value)}  />
-                    <span>%；</span><span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>({getSalary.salary_ratio_1?getSalary.salary_ratio_1:0}-{currentUserInfo.salary_ratio_1}之间)</span>
+                    <InputNumber min={getSalary.salary_ratio_1?getSalary.salary_ratio_1:0}
+                                 max={parseInt(currentUserInfo.salary_ratio_1)}
+                                 style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
+                                 placeholder={getSalary.salary_ratio_1?getSalary.salary_ratio_1:0}
+                                 onChange={(value)=>this.onChangeSalary1(value)}
+                    />
+                    <span>%；</span>
+                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
+                        ({getSalary.salary_ratio_1?getSalary.salary_ratio_1:0}-{currentUserInfo.salary_ratio_1}之间)
+                    </span>
                 </li>
                 <li>
                     <span>第二档：日销量≥10万元时，日工资比例为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>{getSalary.salary_ratio_10}</span>
-                    <InputNumber min={getSalary.salary_ratio_10?getSalary.salary_ratio_10:0} max={currentUserInfo.salary_ratio_10} style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small" placeholder={getSalary.salary_ratio_10?getSalary.salary_ratio_10:0} onChange={(value)=>this.onChangeSalary10(value)} />
+                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>
+                        {getSalary.salary_ratio_10}
+                        </span>
+                    <InputNumber min={getSalary.salary_ratio_10?getSalary.salary_ratio_10:0}
+                                 max={parseInt(currentUserInfo.salary_ratio_10)}
+                                 style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
+                                 placeholder={getSalary.salary_ratio_10?getSalary.salary_ratio_10:0}
+                                 onChange={(value)=>this.onChangeSalary10(value)}
+                    />
                     <span>%；</span>
-                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>({getSalary.salary_ratio_10?getSalary.salary_ratio_10:0}-{currentUserInfo.salary_ratio_10}之间)</span>
+                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
+                        ({getSalary.salary_ratio_10?getSalary.salary_ratio_10:0}-{currentUserInfo.salary_ratio_10}之间)
+                    </span>
                 </li>
                 <li>
                     <span>第三档：日销量≥30万元时，日工资比例为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>{getSalary.salary_ratio_30}</span>
-                    <InputNumber min={getSalary.salary_ratio_30?getSalary.salary_ratio_30:0} max={currentUserInfo.salary_ratio_30} style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small" placeholder={getSalary.salary_ratio_30?getSalary.salary_ratio_30:0} onChange={(value)=>this.onChangeSalary30(value)} />
+                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>
+                        {getSalary.salary_ratio_30}
+                        </span>
+                    <InputNumber min={getSalary.salary_ratio_30?getSalary.salary_ratio_30:0}
+                                 max={parseInt(currentUserInfo.salary_ratio_30)}
+                                 style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
+                                 placeholder={getSalary.salary_ratio_30?getSalary.salary_ratio_30:0}
+                                 onChange={(value)=>this.onChangeSalary30(value)}
+                    />
                     <span>%；</span>
-                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>({getSalary.salary_ratio_30?getSalary.salary_ratio_30:0}-{currentUserInfo.salary_ratio_30}之间)</span>
+                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
+                        ({getSalary.salary_ratio_30?getSalary.salary_ratio_30:0}-{currentUserInfo.salary_ratio_30}之间)
+                    </span>
                 </li>
                 <li>
                     <span>第四档：日销量≥50万元时，日工资比例为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>{getSalary.salary_ratio_50}</span>
-                    <InputNumber min={getSalary.salary_ratio_50?getSalary.salary_ratio_50:0} max={currentUserInfo.salary_ratio_50} style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small" placeholder={getSalary.salary_ratio_50?getSalary.salary_ratio_50:0} onChange={(value)=>this.onChangeSalary50(value)}/>
+                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>
+                        {getSalary.salary_ratio_50}
+                        </span>
+                    <InputNumber min={getSalary.salary_ratio_50?getSalary.salary_ratio_50:0}
+                                 max={parseInt(currentUserInfo.salary_ratio_50)}
+                                 style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
+                                 placeholder={getSalary.salary_ratio_50?getSalary.salary_ratio_50:0}
+                                 onChange={(value)=>this.onChangeSalary50(value)}
+                    />
                     <span>%；</span>
-                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>({getSalary.salary_ratio_50?getSalary.salary_ratio_50:0}-{currentUserInfo.salary_ratio_50}之间)</span>
+                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
+                        ({getSalary.salary_ratio_50?getSalary.salary_ratio_50:0}-{currentUserInfo.salary_ratio_50}之间)
+                    </span>
                 </li>
                 <li>
                     <span>第五档：日销量≥70万元时，日工资比例为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>{getSalary.salary_ratio_70}</span>
-                    <InputNumber min={getSalary.salary_ratio_70?getSalary.salary_ratio_70:0} max={currentUserInfo.salary_ratio_70} style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small" placeholder={getSalary.salary_ratio_70?getSalary.salary_ratio_70:0}  onChange={(value)=>this.onChangeSalary70(value)}/>
+                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>
+                        {getSalary.salary_ratio_70}
+                        </span>
+                    <InputNumber
+                        min={getSalary.salary_ratio_70?getSalary.salary_ratio_70:0}
+                        max={parseInt(currentUserInfo.salary_ratio_70)}
+                        style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
+                        placeholder={getSalary.salary_ratio_70?getSalary.salary_ratio_70:0}
+                        onChange={(value)=>this.onChangeSalary70(value)}
+                    />
                     <span>%；</span>
-                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>({getSalary.salary_ratio_70?getSalary.salary_ratio_70:0}-{currentUserInfo.salary_ratio_70}之间)</span>
+                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
+                        ({getSalary.salary_ratio_70?getSalary.salary_ratio_70:0}-{currentUserInfo.salary_ratio_70}之间)
+                    </span>
                 </li>
                 <li>
                     <span>第六档：日销量≥100万元时，日工资比例为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>{getSalary.salary_ratio_100}</span>
-                    <InputNumber min={getSalary.salary_ratio_100?getSalary.salary_ratio_100:0} max={currentUserInfo.salary_ratio_100} style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small" placeholder={getSalary.salary_ratio_100?getSalary.salary_ratio_100:0}  onChange={(value)=>this.onChangeSalary100(value)}/>
+                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>
+                        {getSalary.salary_ratio_100}
+                        </span>
+                    <InputNumber min={getSalary.salary_ratio_100?getSalary.salary_ratio_100:0}
+                                 max={parseInt(currentUserInfo.salary_ratio_100)}
+                                 style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
+                                 placeholder={getSalary.salary_ratio_100?getSalary.salary_ratio_100:0}
+                                 onChange={(value)=>this.onChangeSalary100(value)}
+                    />
                     <span>%；</span>
-                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>({getSalary.salary_ratio_100?getSalary.salary_ratio_100:0}-{currentUserInfo.salary_ratio_100}之间)</span>
+                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
+                        ({getSalary.salary_ratio_100?getSalary.salary_ratio_100:0}-{currentUserInfo.salary_ratio_100}之间)
+                    </span>
                 </li>
             </ul>
             <div  className={this.state.checkStatus? 'c_b_user0 active' : 'c_b_user0'}>
@@ -925,6 +962,8 @@ export default class ContractModal extends Component {
             case 3:
                 return ul_3;
                 break;
+            default:
+                break;
         }
     }
     showModal() {
@@ -939,12 +978,12 @@ export default class ContractModal extends Component {
     * @uid,当前用户id的userid
     * */
     getCurUserCurContractData(index,uid){
-        let userInfo = this.state.userList;
+        let { userList } = this.state;
         let curIndex = index||this.state.navListIndex;
         let userid = uid||this.state.userid;
         switch (parseInt(curIndex)){
             case 0:
-                if(parseInt(userInfo[userid].daily_salary_status)){
+                if(userList.filter(item => item.userid == uid)[0].daily_salary_status == '1'){
                     this.setState({
                         checkStatus:true,
                         contractTxt:"修改契约",
@@ -958,7 +997,7 @@ export default class ContractModal extends Component {
                 this.getSalaryData(userid);
                 break;
             case 1:
-                if(parseInt(userInfo[userid].dividend_salary_status)){
+                if(parseInt(userList.filter(item => item.userid == uid)[0].dividend_salary_status)){
                     this.setState({
                         checkStatus:true,
                         contractTxt:"修改契约",
@@ -979,7 +1018,7 @@ export default class ContractModal extends Component {
                 this.getAwardTeamData(userid);
                 break;
             case 3:
-                if(parseInt(userInfo[userid].useraccgroup_status)){
+                if(parseInt(userList.filter(item => item.userid == uid)[0].useraccgroup_status)){
                     this.setState({
                         checkStatus:true,
                         contractTxt:"修改契约",
@@ -997,13 +1036,9 @@ export default class ContractModal extends Component {
     }
     /*选择下级用户*/
     onSelectUser(value){
-        let userInfo=this.state.userList;
-        let contractInfo=this.state.contractInfo;
-        this.setState({
-            userid:value.key,
-            username:value.label,
-        })
-        if(parseInt(userInfo[value.key].prize_group)<1950) {
+        console.log(value)
+        let { userList, contractInfo} = this.state;
+        if(parseInt(userList.filter(item => item.userid == value.key).prize_group)<1950) {
             if(contractInfo[contractInfo.length-1].id==3){
                 contractInfo.pop();
             }
@@ -1012,8 +1047,6 @@ export default class ContractModal extends Component {
                 $(".ant-select-selection-selected-value").text("日工资契约");
 
             }
-
-
         }else{
             if(contractInfo[contractInfo.length-1].id!=3){
                 contractInfo.push({
@@ -1024,10 +1057,10 @@ export default class ContractModal extends Component {
         }
         this.setState({
             contractInfo:contractInfo,
-        })
+            userid:value.key,
+            username:value.label,
+        });
         this.getCurUserCurContractData('',value.key);
-
-
     }
     /*选择特定类型的契约
     * 从而更改不同的样式背景
@@ -1050,8 +1083,6 @@ export default class ContractModal extends Component {
     };
     onCancel(){
         this.props.transferMsg(false);
-
-
     };
     // 滑动条,数字输入框更改数据
     onChangeSlider(value) {
@@ -1070,29 +1101,10 @@ export default class ContractModal extends Component {
         }
 
     };
-    componentDidMount() {
-        this._ismount = true;
-        var myDate=new Date();
-        let today=null; //显示当天日期
-        let month=null; //当前月
-        if(parseInt(myDate.getMonth()+1)<10){
-            month = "0"+ parseInt(myDate.getMonth()+1);
-        }else{
-            month = parseInt(myDate.getMonth()+1);
-        }
-        today=myDate.getFullYear()+'-'+month+'-'+myDate.getDate();
-        this.setState({
-            today:today,
-        })
-        this.getUserInfo();
 
-    };
-    componentWillUnmount(){
-        this._ismount = false;
-    }
     render() {
-        const userInfo=this.state.userList;
-        const contractInfo= this.state.contractInfo;
+        const {userList, contractInfo } = this.state;
+
         return (
             <Modal ref="myModal"
                    title=""
@@ -1107,12 +1119,17 @@ export default class ContractModal extends Component {
                     <ul className="c_aa_list">
                         <li className="c_user">
                             <span className="c_aa_left_text">用户名：</span>
-                            <Select size="large" style={{ width: 280 }} labelInValue onChange={(value)=>{this.onSelectUser(value)}} getPopupContainer={() => document.getElementsByClassName('c_user')[0]} placeholder="请选择需要创建契约的用户">
-                                {userInfo.map((item, index) => {
-                                    return (
-                                        <Option value={index} key={index}>{item.name}</Option>
-                                    )
-                                })
+                            <Select size="large" style={{ width: 280 }} labelInValue
+                                    onChange={(value)=>{this.onSelectUser(value)}}
+                                    getPopupContainer={() => document.getElementsByClassName('c_user')[0]}
+                                    placeholder="请选择需要创建契约的用户"
+                            >
+                                {
+                                    userList.map((item, index) => {
+                                        return (
+                                            <Option value={item.userid} key={item.userid}>{item.username}</Option>
+                                        )
+                                    })
                                 }
                             </Select>
                         </li>

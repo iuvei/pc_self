@@ -3,16 +3,16 @@ import {observer} from 'mobx-react';
 import Fetch from '../../Utils';
 import { Row, Col, Button, Pagination  } from 'antd';
 import { timestampToTime } from '../../CommonJs/common';
+import { stateVar } from '../../State';
 import { hashHistory, Link } from 'react-router';
 
 import './Activity.scss'
 
-import activity01 from './Img/activity01.png';
-import activity02 from './Img/activity02.png';
-import activity03 from './Img/activity03.png';
-import activity04 from './Img/activity04.png';
-import activity_apply from './Img/activity_apply.png';
-import activity_conduct from './Img/activity_conduct.png';
+import litimg from './Img/litimg.png';
+import activity1 from './Img/active1.png';
+import activity200 from './Img/active200.png';
+import activity400 from './Img/active400.png';
+import activity401 from './Img/active401.png';
 
 @observer
 export default class Activity extends Component {
@@ -22,6 +22,7 @@ export default class Activity extends Component {
             activityArr: [], //活动列表
             postData: {
                 p: 1,
+                pn: 10,
             }
         };
     };
@@ -34,7 +35,7 @@ export default class Activity extends Component {
     };
     getData(){
         Fetch.acitveLists({
-            method: 'GET',
+            method: 'POST',
             body: JSON.stringify(this.state.postData)
         }).then((res)=>{
             if(this._ismount && res.status == 200){
@@ -45,39 +46,27 @@ export default class Activity extends Component {
     }
     /*切换页面时*/
     onChangePagination(page) {
-        console.log(page);
         let postData = this.state.postData;
         postData.p = page;
         this.setState({postData: postData},()=>this.getData());
     };
-    activityDetails() {
-        hashHistory.push('/activity/activityDetails');
+    /*切换每页条数*/
+    onShowSizeChange(current, pageSize) {
+        let postData = this.state.postData;
+        postData.p = current;
+        postData.pn = pageSize;
+        this.setState({postData: postData},()=>this.getData())
+    };
+    activityDetails(item) {
+        hashHistory.push({
+            pathname: '/activity/activityDetails',
+            query: {
+                id: item.activity_id
+            }
+        });
     };
 
     render() {
-        const activityArrs = [
-            {
-                name: '日本圣诞奢恋游',
-                imgUrl: activity01,
-                activityTime: '活动时间：2017年11月01日02:00:00 - 12月01日02:00:00',
-                activeBonus: '最高奖金：10000元',
-            },{
-                name: '日本圣诞奢恋游',
-                imgUrl: activity02,
-                activityTime: '活动时间：2017年11月01日02:00:00 - 12月01日02:00:00',
-                activeBonus: '最高奖金：10000元',
-            },{
-                name: '日本圣诞奢恋游',
-                imgUrl: activity03,
-                activityTime: '活动时间：2017年11月01日02:00:00 - 12月01日02:00:00',
-                activeBonus: '最高奖金：10000元',
-            },{
-                name: '日本圣诞奢恋游',
-                imgUrl: activity04,
-                activityTime: '活动时间：2017年11月01日02:00:00 - 12月01日02:00:00',
-                activeBonus: '最高奖金：10000元',
-            }
-        ];
         const { activityArr } = this.state;
         return (
             <div className="activity_main">
@@ -88,21 +77,33 @@ export default class Activity extends Component {
                                 activityArr.map((item)=>{
                                     return (
                                         <li key={item.activity_id}>
-                                            <img src={activity01} alt="活动"/>
-                                            {/*<img className="activity_apply" src={ activity_apply } alt=""/>*/}
+                                            <div className="activity_img">
+                                                {
+                                                    item.activity_pics == undefined ?
+                                                        <img src={litimg} alt="活动"/> :
+                                                        <img src={stateVar.httpUrl+item.activity_pics} alt="活动"/>
+                                                }
+                                            </div>
+                                            {
+                                                item.status == '1' ||
+                                                item.status == '200' ||
+                                                item.status == '400' ||
+                                                item.status == '401' ?
+                                                    <img className="activity_apply" src={require('./Img/active'+item.status+'.png')}/> :
+                                                    null
+                                            }
+
                                             <div className="activity_participation clear">
                                                 <div className="left">
                                                     <p>
                                                         {item.activity_title}
-                                                        <span className="active_bonus">最高奖金: {item.plan_award_amount == undefined ? '0' : item.plan_award_amount} 元</span>
+                                                        <span className="active_bonus">最高奖金: {item.plan_award_amount == undefined || item.plan_award_amount == '' ? '0' : item.plan_award_amount} 元</span>
                                                     </p>
-                                                    <i>活动时间：{timestampToTime(item.add_time)}-{timestampToTime(item.end_time)}</i>
+                                                    <i>活动时间：{timestampToTime(item.start_time)} 至 {timestampToTime(item.end_time)}</i>
                                                 </div>
-                                                <a href="#/activity/activityDetails">
-                                                    <Button className="right" type="primary" size="large">
-                                                        立即参与
-                                                    </Button>
-                                                </a>
+                                                <Button className="right" onClick={()=>this.activityDetails(item)} type="primary" size="large">
+                                                    立即参与
+                                                </Button>
                                             </div>
                                         </li>
                                     )
@@ -110,7 +111,13 @@ export default class Activity extends Component {
                             }
                         </ul>
                         <div className="active_pagination">
-                            <Pagination defaultCurrent={1} pageSize={4} total={8} onChange={(page)=>this.onChangePagination(page)}/>
+                            <Pagination showSizeChanger
+                                        onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}}
+                                        onChange={(page)=>this.onChangePagination(page)}
+                                        defaultCurrent={1}
+                                        total={20}
+                                        pageSizeOptions={stateVar.pageSizeOptions.slice()}
+                            />
                         </div>
                     </Col>
                 </Row>

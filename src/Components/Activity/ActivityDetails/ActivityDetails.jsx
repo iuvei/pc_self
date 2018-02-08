@@ -1,22 +1,189 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import Fetch from '../../../Utils';
 import { Row, Col, Button, Table  } from 'antd';
+import { timestampToTime } from '../../../CommonJs/common';
+import { stateVar } from '../../../State';
+import lotteryTypeList from '../../../CommonJs/common.json';
 
-import active_detaile from './Img/active_detaile.png';
-import './ActivityDetails.scss'
+import litimg_details from './Img/litimg_details.png';
+import './ActivityDetails.scss';
+
 @observer
 export default class ActivityDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
+            btnLoading: false,
             tableLoading: false,
+            response:{
+                activity_mechanism_type: 0, //活动奖金机制 （0,1 专题、2 拉新、3 签到、4 充值流水）
+                activity_pics: '',//活动图片
+                activity_title: '', //活动标题
+                start_time: '', //活动开始时间戳
+                end_time: '',
+                pull_new_fans_number: 0, //人数限制
+                radio_activity_type_url: '', //活动链接
+                platform: {}, //参与来源平台
+                lotterys: [], //活动范围，彩种列表
+                games: {}, //活动范围，游戏列表
+                activity_introduce: '',//规则说明
+                status: '', //状态状态。1 正常，200 已完成，400 已满员，401 已结束
+                reg_add_time_last_of: '0', //直属下线注册时间晚于时间戳值
+                is_regnew_pay_amount_val: '0',//直属下线充值限额条件值
+                newadd_reward_amount: '0', //上级奖励金额 x 元
+                newadd_reward_extract_amount: '0', //上级奖励金额 x 元
+                reward_amount : '0', //新人奖励金额 x 元
+                reward_extract_amount : '0', //新人奖励金额,且流水达提现限定值
+            }
         };
     };
+    componentDidMount(){
+        this._ismount = true;
+        this.getData();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
+    getData() {
+        Fetch.activityData({
+            method: 'GET',
+            // body: JSON.stringify({id: this.props.location.query.id})
+        }, '&id='+this.props.location.query.id).then((res)=>{
+            if(this._ismount && res.status == 200){
+                let data= res.repsoneContent;
+                if(data.activity_mechanism_type != 1){
+                    this.getUserSignDatas();
+                }
+                this.setState({response: data});
+            }
+        })
+    }
+    getUserSignDatas() {
+        Fetch.userSignDatas({
+            method: 'GET',
+        }, '&id='+this.props.location.query.id).then((res)=>{
+            if(this._ismount && res.status == 200){
+                // let data= res.repsoneContent;
+                // this.setState({response: data})
+            }
+        })
+    }
     enterLoading() {
-        this.setState({ loading: true });
+        this.setState({ btnLoading: true });
+        Fetch.postEnrolls({
+            method: 'POST',
+            body: JSON.stringify({activityid: this.props.location.query.id})
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({btnLoading: false})
+            }
+        })
+    };
+    onActivityType(){
+        let { response } = this.state,
+            activityType = response.activity_mechanism_type;
+        if(activityType == 1){
+            return (
+                <div className="dissertation_active">
+                    <span>专题活动链接地址：</span>
+                    <a href={response.radio_activity_type_url} target="_blank">{response.radio_activity_type_url}</a>
+                </div>
+            )
+        }else if(activityType == 2){
+            return (
+                <ul className="dissertation_active">
+                    <li>1. 直属下线注册时间晚于
+                        <span className="col_color_ying">{timestampToTime(response.reg_add_time_last_of)}</span>
+                        （包含），且充值金额大于等于
+                        <span className="col_color_ying">{response.is_regnew_pay_amount_val}</span>
+                        元
+                    </li>
+                    <li>
+                        2. 上级奖励金额
+                        <span className="col_color_ying">{response.newadd_reward_amount}</span>
+                        元，流水达到
+                        <span className="col_color_ying">{response.newadd_reward_extract_amount}</span>
+                        元可提现
+                    </li>
+                    <li>
+                        3. 新人奖励金额
+                        <span className="col_color_ying">{response.reward_amount}</span>
+                        元，流水达到
+                        <span className="col_color_ying">{response.reward_extract_amount}</span>
+                        元可提现
+                    </li>
+                    <li>
+                        4. 人数限额：
+                        <span className="col_color_ying">{response.max_online_num_num}</span>
+                        人
+                    </li>
+                </ul>
+            )
+        }else if(activityType == 3){
+            return (
+                <div>
+
+                </div>
+            )
+        }else if(activityType == 4){
+            return (
+                <div>
+                    <p className="a_d_explain_text">总计可领取奖金次数：1次</p>
+                    <div className="a_d_table">
+                        <Table columns={columns}
+                               rowKey={record => record.userid}
+                               dataSource={data}
+                               pagination={false}
+                               loading={this.state.tableLoading}
+                               onChange={this.handleTableChange}
+                               scroll={{y: 300}}
+                               size="middle"
+                        />
+                    </div>
+                </div>
+            )
+        }else{
+            return
+        }
+    };
+    /*参与平台*/
+    onPlatform(){
+        let { response } = this.state,
+            platform = response.platform,
+            text = '';
+        if(platform.read_rang_android != undefined && platform.read_rang_android == 1){
+            text += 'Android客户端，'
+        }
+        if(platform.read_rang_ios != undefined && platform.read_rang_ios == 1){
+            text += 'IOS客户端，'
+        }
+        if(platform.read_rang_web != undefined && platform.read_rang_web == 1){
+            text += 'wap版，'
+        }
+        if(platform.read_rang_other != undefined && platform.read_rang_other == 1){
+            text += '其他'
+        }
+        return text;
+    };
+    /*报名状态*/
+    onStatus(){
+        let { response } = this.state,
+            status = response.status;
+        if(status == 1){
+            return '立刻报名'
+        }else if(status == 200){
+            return '已完成'
+        }else if(status == 400){
+            return '已满员'
+        }else if(status == 401){
+            return '已结束'
+        }else{
+            return '无状态'
+        }
     };
     render() {
+        const { response } = this.state;
         const columns = [
             { title: '序号', dataIndex: 'key', width: 50 },
             { title: '充值金额', dataIndex: 'age', width: 80 },
@@ -92,129 +259,105 @@ export default class ActivityDetails extends Component {
             'GT娱乐城',
         ];
         return (
-            <div className="activity_details">
-                <Row type="flex" justify="center" align="top" className="a_d_main main_width" >
-                    <Col span={24}>
-                        <img className="a_d_activeImg" src={active_detaile} alt=""/>
-                        <h3 className="a_d_activeName">泰国幸运金</h3>
-                        <div className="a_d_active_introduce clear">
-                            <div className="a_d_active left">
-                                <div className="clear">
-                                    <ul className="a_d_list left">
-                                        <li>
-                                            <span>活动时间：</span>
-                                            <span>2017年11月01日02:00至2017年11月11日02:00</span>
-                                        </li>
-                                        <li>
-                                            <span>活动限额：</span>
-                                            <span>每日限额500名</span>
-                                        </li>
-                                        <li>
-                                            <span>参与平台：</span>
-                                            <span>
-                                                PC客户端
-                                                （<a className="hover_a" href="#">平台说明</a>）
-                                            </span>
-                                        </li>
-                                        <li></li>
-                                        <li>
-                                            <span>奖金说明：</span>
-                                            <span></span>
-                                        </li>
-                                        <li>
-                                            <span>总计可领取奖金次数：</span>
-                                            <span>1次</span>
-                                        </li>
-                                    </ul>
-                                    <div className="a_d_apply right">
-                                        <Button type="primary" className="a_d_apply_btn" loading={this.state.loading} onClick={()=>this.enterLoading()}>
-                                            立刻报名
-                                        </Button>
-                                        <p className="a_d_residue_number">（限额剩余20人）</p>
-                                    </div>
-                                    <div className="a_d_apply right">
-                                        <Button type="primary" className="a_d_apply_btn" loading={this.state.loading} onClick={()=>this.enterLoading()}>
-                                            进行中
-                                        </Button>
-                                        <Button type="primary" className="a_d_apply_btn" loading={this.state.loading} onClick={()=>this.enterLoading()}>
-                                            点击签到
-                                        </Button>
-                                        <Button type="primary" className="a_d_apply_btn" loading={this.state.loading} onClick={()=>this.enterLoading()}>
-                                            已签到
-                                        </Button>
-                                    </div>
-                                </div>
-                                <div className="a_d_explain">
-                                    {/*<p className="a_d_explain_text">奖金说明：</p>*/}
-                                    {/*<p className="a_d_explain_text">总计可领取奖金次数：1次</p>*/}
-                                    <div className="a_d_table">
-                                        <Table columns={columns}
-                                               rowKey={record => record.userid}
-                                               dataSource={data}
-                                               pagination={false}
-                                               loading={this.state.tableLoading}
-                                               onChange={this.handleTableChange}
-                                               scroll={{y: 300}}
-                                               size="middle"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="a_d_explain">
-                                    <p className="a_d_explain_text">规则说明：</p>
-                                    <ul className="a_d_explain_list">
+            <Row type="flex" justify="center" align="top" className="a_d_main main_width" >
+                <Col span={24}>
+                    {
+                        response.activity_pics ?
+                            <img className="a_d_activeImg" src={stateVar.httpUrl+response.activity_pics} alt="活动"/> :
+                            <img className="a_d_activeImg" src={litimg_details} alt=""/>
+                    }
+                    <h3 className="a_d_activeName">{response.activity_title}</h3>
+                    <div className="a_d_active_introduce clear">
+                        <div className="a_d_active left">
+                            <div className="clear">
+                                <ul className="a_d_list left">
+                                    <li>
+                                        <span>活动时间：</span>
+                                        <span>
+                                            {timestampToTime(response.start_time)} 至 {timestampToTime(response.end_time)}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>活动限额：</span>
+                                        <span>每日限额 {response.pull_new_fans_number} 名</span>
+                                    </li>
+                                    <li>
+                                        <span>参与平台：</span>
+                                        <span>
+                                            {
+                                                this.onPlatform()
+                                            }
+                                            （<a className="hover_a" href="javascript:void(0)">平台说明</a>）
+                                        </span>
+                                    </li>
+                                </ul>
+                                <div className="a_d_apply right">
+                                    <Button type="primary" loading={this.state.btnLoading}
+                                            onClick={()=>this.enterLoading()}
+                                            disabled = {response.status != 1}
+                                    >
                                         {
-                                            ruleText.map((item, index)=>{
-                                                return (
-                                                    <li key={index}>
-                                                        <span style={{color: '#CC0000', marginRight: 10}}>{item.key}</span>
-                                                        <span dangerouslySetInnerHTML={{__html: item.text}}></span>
-                                                    </li>
-                                                )
-                                            })
+                                            this.onStatus()
                                         }
-                                    </ul>
+                                    </Button>
+                                    <p className="a_d_residue_number">（限额剩余20人）</p>
                                 </div>
                             </div>
-                            <div className="right">
-                                <div className="a_d_schedule clear">
-                                    <p className="schedule_title">个人进度</p>
-                                    <ul className="schedule_list">
-                                        <li>有效充值金额：10000000.00元</li>
-                                        <li>有效流水金额：10000000.00元</li>
-                                        <li>待审核奖金：10000000.00元</li>
-                                        <li>已领取奖金：10次</li>
-                                        <li>剩余抽奖次数：10次</li>
-                                    </ul>
-                                    <a className="lucky_draw right" href="#">前往抽奖</a>
-                                </div>
-                                <div className="a_d_schedule clear">
-                                    <p className="schedule_title">活动范围</p>
-                                    <ul className="schedule_list lottery_name clear">
-                                        <li style={{color:'#CC0000', fontSize:14}}>彩票</li>
-                                        {
-                                            lotteryName.map((item, index)=>{
-                                                return (
-                                                    <li className="left" key={index}>{item}</li>
-                                                )
-                                            })
-                                        }
-                                    </ul>
-                                    <ul className="schedule_list lottery_name clear">
-                                        <li style={{color:'#CC0000', fontSize:14}}>综合游戏</li>
-                                        {
-                                            gameName.map((item, index)=>{
-                                                return (
-                                                    <li className="left" key={index}>{item}</li>
-                                                )
-                                            })
-                                        }
-                                    </ul>
-                                </div>
+                            <div className="a_d_explain">
+                                <p className="a_d_explain_text">奖金说明：</p>
+                                {
+                                    this.onActivityType()
+                                }
+                            </div>
+                            <div className="a_d_explain">
+                                <p className="a_d_explain_text">规则说明：</p>
+                                <div className="a_d_explain_list" dangerouslySetInnerHTML={{__html: response.activity_introduce}}></div>
                             </div>
                         </div>
-                    </Col>
-                </Row>
-            </div>
+                        <div className="right">
+                            <div className="a_d_schedule clear">
+                                <p className="schedule_title">个人进度</p>
+                                {
+                                    response.activity_mechanism_type == 1 ?
+                                        <p className="dissertation">请前往专题页查看个人进度</p> :
+                                        <ul className="schedule_list">
+                                            <li>有效充值金额：10000000.00元</li>
+                                            <li>有效流水金额：10000000.00元</li>
+                                            <li>待审核奖金：10000000.00元</li>
+                                            <li>已领取奖金：10次</li>
+                                            <li>剩余抽奖次数：10次</li>
+                                        </ul>
+                                }
+
+                                {/*<a className="lucky_draw right" href="javascript:void(0)">前往抽奖</a>*/}
+                            </div>
+                            <div className="a_d_schedule clear">
+                                <p className="schedule_title">活动范围</p>
+                                <ul className="schedule_list lottery_name clear">
+                                    <li style={{color:'#CC0000', fontSize:14}}>彩票</li>
+                                    {
+                                        response.lotterys.map((item, index)=>{
+                                            return (
+                                                <li className="left" key={index}>{item}</li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                                <ul className="schedule_list lottery_name clear">
+                                    <li style={{color:'#CC0000', fontSize:14}}>综合游戏</li>
+                                    {/*{*/}
+                                        {/*response.games.map((item, index)=>{*/}
+                                            {/*return (*/}
+                                                {/*<li className="left" key={index}>{item}</li>*/}
+                                            {/*)*/}
+                                        {/*})*/}
+                                    {/*}*/}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </Col>
+            </Row>
         )
     }
 }

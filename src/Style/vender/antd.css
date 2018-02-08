@@ -489,11 +489,11 @@ input::-ms-reveal {
   display: none;
 }
 ::-moz-selection {
-  background: #CF2027;
+  background: #338FFC;
   color: #fff;
 }
 ::selection {
-  background: #CF2027;
+  background: #338FFC;
   color: #fff;
 }
 a {

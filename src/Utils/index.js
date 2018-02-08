@@ -171,6 +171,12 @@ const switchold= (body) =>  request(http.interFace('SWITCHOLD'),body);
 const getVersion = (body) =>  request(http.interFace('GETVERSION'),body);
 //活动列表
 const acitveLists = (body) =>  request(http.interFace('ACTIVELISTS'),body);
+//活动详情
+const activityData = (body, get) =>  request(http.interFace('ACTIVITYDATA')+get,body);
+//个人进度
+const userSignDatas = (body, get) =>  request(http.interFace('USERSIGNDATAS')+get,body);
+//活动报名
+const postEnrolls = (body) =>  request(http.interFace('POSTENROLLS'),body);
 
 export default {
     getSess,
@@ -257,4 +263,7 @@ export default {
     switchold,
     getVersion,
     acitveLists,
+    activityData,
+    userSignDatas,
+    postEnrolls,
 }

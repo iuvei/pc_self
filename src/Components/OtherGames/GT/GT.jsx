@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import 'whatwg-fetch'
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import CM_transfer from '../CM_transfer/CM_transfer';
 import { Modal  } from 'antd';
+import emitter from '../../../Utils/events';
 
 import './GT.scss';
 
@@ -18,12 +18,21 @@ export default class GT extends Component {
         this.state = {
             visible: false,
             thirdAddress:null,
+            spinLoading: false,
         };
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
     };
+    componentDidMount() {
+        this._ismount = true;
+        this.getThirdAddress();
+    }
+    componentWillUnmount() {
+        this._ismount = false;
+    };
     /*转账*/
     onTransfer(type, intoMoney, outMoney) {
+        this.setState({spinLoading: true});
         if(MONEY_FLAG){
             MONEY_FLAG = false;
             let postData = {};
@@ -47,14 +56,19 @@ export default class GT extends Component {
                 body: JSON.stringify(postData),
             }).then((res)=>{
                 MONEY_FLAG = true;
-                if(res.status == 200){
-                    Modal.success({
-                        title: res.shortMessage,
-                    });
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                if(this._ismount){
+                    this.setState({spinLoading: false});
+                    if(res.status == 200){
+                        Modal.success({
+                            title: res.shortMessage,
+                        });
+                        this.setState({visible: false});
+                        emitter.emit('changeMoney');
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             })
         }
@@ -80,9 +94,6 @@ export default class GT extends Component {
     hideModal() {
         this.setState({visible: false})
     };
-    componentDidMount() {
-        this.getThirdAddress();
-    };
 
     render() {
         return (
@@ -100,6 +111,7 @@ export default class GT extends Component {
                 </div>
                 <CM_transfer title="GT娱乐"
                              visible={this.state.visible}
+                             spinLoading = {this.state.spinLoading}
                              hideModal={this.hideModal}
                              onTransfer={this.onTransfer}
                 />

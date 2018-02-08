@@ -134,6 +134,7 @@ export default class CM_transfer extends Component {
                         <em>至彩票账户</em>
                     </li>
                 </ul>
+                <p className="hint_text">转账金额至少10元以上</p>
                 <p className="transferPw_btn">
                     <img src={into_btn} onClick={()=>this.onTransfer('into')} alt="转入"/>
                     <img src={out_btn} onClick={()=>this.onTransfer('out')} alt="转出"/>

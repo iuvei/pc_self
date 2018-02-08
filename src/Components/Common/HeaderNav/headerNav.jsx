@@ -4,7 +4,6 @@ import { hashHistory } from 'react-router';
 import { stateVar } from '../../../State';
 import emitter from '../../../Utils/events';
 import lotteryTypeList from '../../../CommonJs/common.json';
-import { Modal } from 'antd';
 import HeaderTop from './HeaderTop';
 import './headerNav.scss';
 
@@ -76,6 +75,7 @@ export default class HeaderNav extends Component {
         }
         stateVar.navIndex = item.id;
         hashHistory.push(item.link);
+        stateVar.childNavIndex = 0;
     };
     onLotteryOver(){
         if(!this.state.showLottery){

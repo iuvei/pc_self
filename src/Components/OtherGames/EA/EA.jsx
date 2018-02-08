@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
+import emitter from '../../../Utils/events';
 import { Modal } from 'antd';
 import { stateVar } from '../../../State';
 import CM_transfer from '../CM_transfer/CM_transfer';
@@ -57,6 +58,8 @@ export default class EA extends Component {
                         Modal.success({
                             title: res.shortMessage,
                         });
+                        this.setState({visible: false});
+                        emitter.emit('changeMoney');
                     }else{
                         Modal.warning({
                             title: res.shortMessage,

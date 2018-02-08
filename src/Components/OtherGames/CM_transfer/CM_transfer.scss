@@ -28,7 +28,7 @@
         width: 395px;
         li{
             @include lh(36px);
-            margin-bottom: 15px;
+            margin: 7px 0;
         }
         span{
             color: #fff;
@@ -53,9 +53,13 @@
             color:#FF9999;
         }
     }
+    .hint_text{
+        text-align: center;
+        color: #fff;
+    }
     .transferPw_btn{
         text-align: center;
-        margin-top: 25px;
+        margin-top: 12px;
         img{
             &:hover{
                 cursor: pointer;

@@ -4,6 +4,7 @@ import { stateVar } from '../../../State';
 import Fetch from '../../../Utils';
 import { Button, Input, Modal, Pagination, message, Spin, Icon } from 'antd';
 const Search = Input.Search;
+import emitter from '../../../Utils/events';
 import TweenOne from 'rc-tween-one';
 import ChildNav from '../../Common/ChildNav/ChildNav';
 import CM_transfer from '../CM_transfer/CM_transfer';
@@ -261,6 +262,8 @@ export default class PT extends Component {
                     Modal.success({
                         title: res.shortMessage,
                     });
+                    this.setState({visible: false});
+                    emitter.emit('changeMoney');
                 }else{
                     Modal.warning({
                         title: res.shortMessage,

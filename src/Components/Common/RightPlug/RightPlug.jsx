@@ -20,6 +20,7 @@ export default class RightPlug extends Component {
             showMsg: false,
         };
         this.hideChat = this.hideChat.bind(this);
+        this.hideTousuModal = this.hideTousuModal.bind(this);
     };
     componentDidMount() {
         let cw = document.body.clientWidth;
@@ -62,7 +63,11 @@ export default class RightPlug extends Component {
     /*关闭上下级聊天*/
     hideChat() {
         this.setState({modalVisible: false})
-    }
+    };
+    /*关闭投诉模态框*/
+    hideTousuModal(){
+        this.setState({visible: false})
+    };
 
     render() {
         const { modalVisible } = this.state;
@@ -123,7 +128,11 @@ export default class RightPlug extends Component {
                             </p>
 	                            {
 	                                this.state.visible ?
-                                        <ComplainAndSuggests visible={this.state.visible} title="投诉建议" transferMsg = {visible => this.transferMsg(visible)}/>:
+                                        <ComplainAndSuggests visible={this.state.visible}
+                                                             title="投诉建议"
+                                                             transferMsg = {visible => this.transferMsg(visible)}
+                                                             hideTousuModal = {()=>this.hideTousuModal()}
+                                        />:
                                         null
 	                            }
                         </li>
