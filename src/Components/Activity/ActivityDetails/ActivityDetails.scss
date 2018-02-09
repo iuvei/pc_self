@@ -35,8 +35,12 @@
             }
         }
         .a_d_apply{
+            margin-top: 20px;
             .ant-btn{
                 padding: 6px 20px;
+            }
+            .a_d_residue_number{
+                @include lh(28px);
             }
         }
         .a_d_explain{

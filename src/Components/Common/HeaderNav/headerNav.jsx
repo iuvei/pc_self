@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
+import { Modal } from 'antd';
 import { stateVar } from '../../../State';
 import emitter from '../../../Utils/events';
 import lotteryTypeList from '../../../CommonJs/common.json';
@@ -70,6 +71,14 @@ export default class HeaderNav extends Component {
         this._ismount = false;
     };
     onHashHistory(item) {
+        if(stateVar.userInfo.sType == 'demo' &&
+            (item.id == 'financial' || item.id == 'teamManage')
+        ){
+            Modal.warning({
+                title: '试玩用户，没有访问权限',
+            });
+            return
+        }
         if(item.id == 'gameRecord'){
             stateVar.afterDetails = false;
         }

@@ -20,6 +20,7 @@ export default class Activity extends Component {
         super(props);
         this.state = {
             activityArr: [], //活动列表
+            total: 0, //总条数
             postData: {
                 p: 1,
                 pn: 10,
@@ -40,7 +41,10 @@ export default class Activity extends Component {
         }).then((res)=>{
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent;
-                this.setState({activityArr: data.datas})
+                this.setState({
+                    activityArr: data.datas,
+                    total: data.datacount,
+                })
             }
         })
     }
@@ -65,6 +69,26 @@ export default class Activity extends Component {
             }
         });
     };
+    /*按钮状态*/
+    onBtnType(item){
+        switch (parseInt(item.status)) {
+            case 1:
+                return '立即参与';
+                break;
+            case 200:
+                return '已完成';
+                break;
+            case 400:
+                return '已满员';
+                break;
+            case 401:
+                return '已结束';
+                break;
+            default:
+                return '加载中';
+                break;
+        }
+    };
 
     render() {
         const { activityArr } = this.state;
@@ -79,7 +103,7 @@ export default class Activity extends Component {
                                         <li key={item.activity_id}>
                                             <div className="activity_img">
                                                 {
-                                                    item.activity_pics == undefined ?
+                                                    item.activity_pics == undefined || item.activity_pics == '' ?
                                                         <img src={litimg} alt="活动"/> :
                                                         <img src={stateVar.httpUrl+item.activity_pics} alt="活动"/>
                                                 }
@@ -101,8 +125,13 @@ export default class Activity extends Component {
                                                     </p>
                                                     <i>活动时间：{timestampToTime(item.start_time)} 至 {timestampToTime(item.end_time)}</i>
                                                 </div>
-                                                <Button className="right" onClick={()=>this.activityDetails(item)} type="primary" size="large">
-                                                    立即参与
+                                                <Button className={item.status != 1 ? 'endBtn right' : 'right'}
+                                                        type="primary" size="large"
+                                                        onClick={()=>this.activityDetails(item)}
+                                                >
+                                                    {
+                                                        this.onBtnType(item)
+                                                    }
                                                 </Button>
                                             </div>
                                         </li>
@@ -115,7 +144,7 @@ export default class Activity extends Component {
                                         onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}}
                                         onChange={(page)=>this.onChangePagination(page)}
                                         defaultCurrent={1}
-                                        total={20}
+                                        total={parseInt(this.state.total)}
                                         pageSizeOptions={stateVar.pageSizeOptions.slice()}
                             />
                         </div>

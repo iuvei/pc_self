@@ -186,6 +186,14 @@ const interFace = (key) => {
     INTERFACE['USERSIGNDATAS'] = 'controller=onlineactivities&goaction=UserSignDatas&absecs=True';
     //活动报名
     INTERFACE['POSTENROLLS'] = 'controller=onlineactivities&action=PostEnrolls&absecs=True';
+    //活动签到领奖
+    INTERFACE['SIGNTHEAWARD'] = 'controller=onlineactivities&goaction=SignTheAward&absecs=True';
+    //充值达标领奖
+    INTERFACE['RECHARGEAMOUNTAWARD'] = 'controller=onlineactivities&goaction=RechargeAmountAward&absecs=True';
+    //流水达标领奖
+    INTERFACE['WATEAMOUNAWARD'] = 'controller=onlineactivities&goaction=WateAmountAward&absecs=True';
+    //拉新领奖
+    INTERFACE['PULLNEWAWARD'] = 'controller=onlineactivities&goaction=PullNewAward&absecs=True';
 
     let httpUrl = stateVar.httpUrl;
     if(key == 'PTLOGINNEW') {

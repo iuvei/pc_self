@@ -177,6 +177,14 @@ const activityData = (body, get) =>  request(http.interFace('ACTIVITYDATA')+get,
 const userSignDatas = (body, get) =>  request(http.interFace('USERSIGNDATAS')+get,body);
 //活动报名
 const postEnrolls = (body) =>  request(http.interFace('POSTENROLLS'),body);
+//活动签到领奖
+const signTheAward = (body) =>  request(http.interFace('SIGNTHEAWARD'),body);
+//充值达标领奖
+const rechargeAmountAward = (body) =>  request(http.interFace('RECHARGEAMOUNTAWARD'),body);
+//流水达标领奖
+const wateAmountAward = (body) =>  request(http.interFace('WATEAMOUNAWARD'),body);
+//拉新领奖
+const pullNewAward = (body) =>  request(http.interFace('PULLNEWAWARD'),body);
 
 export default {
     getSess,
@@ -266,4 +274,8 @@ export default {
     activityData,
     userSignDatas,
     postEnrolls,
+    signTheAward,
+    rechargeAmountAward,
+    wateAmountAward,
+    pullNewAward,
 }
