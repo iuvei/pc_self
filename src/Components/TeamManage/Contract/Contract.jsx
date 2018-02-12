@@ -113,32 +113,32 @@ export default class Contract extends Component {
                             title: '日工资协议',
                             key: 'dailySalary',
                             children: [{
-                                title: '日销量1万',
+                                title: '第一档',
                                 dataIndex: 'dailySalary0',
                                 key: 'dailySalary0',
 
                             }, {
-                                title: '日销量10万',
+                                title: '第二档',
                                 dataIndex: 'dailySalary1',
                                 key: 'dailySalary1',
 
                             }, {
-                                title: '日销量30万',
+                                title: '第三档',
                                 dataIndex: 'dailySalary2',
                                 key: 'dailySalary2',
 
                             }, {
-                                title: '日销量50万',
+                                title: '第四档',
                                 dataIndex: 'dailySalary3',
                                 key: 'dailySalary3',
 
                             }, {
-                                title: '日销量70万',
+                                title: '第五档',
                                 dataIndex: 'dailySalary4',
                                 key: 'dailySalary4',
 
                             }, {
-                                title: '日销量100万',
+                                title: '第六档',
                                 dataIndex: 'dailySalary5',
                                 key: 'dailySalary5',
 

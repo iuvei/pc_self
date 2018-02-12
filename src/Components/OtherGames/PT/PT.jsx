@@ -41,7 +41,6 @@ export default class PT extends Component {
             ptName: '', // 重置密码 获取的用户名
             resetPw: '',
 
-            noticePosition: 0,
             startVisible: false,
             ptUrl: '',
             ptLoading: false,
@@ -60,8 +59,6 @@ export default class PT extends Component {
     componentWillUnmount() {
         this._ismount = false;
         // 清除定时器与暂停动画
-        clearInterval(this._clearInt);
-        cancelAnimationFrame(this._animationFrame);
     };
     /*获取游戏列表*/
     listGetData() {
@@ -93,38 +90,7 @@ export default class PT extends Component {
         listPostData.p = 1;
         this.setState({listPostData: listPostData},()=>this.listGetData());
     };
-    getDestination() {
-        let destination = 93,
-            noticeListFlag = JSON.parse(JSON.stringify(this.state.topRanking));
-        this._clearInt = setInterval(() => {
-            if (destination / 93 < noticeListFlag.length) {
-                this.move(destination, 1000);
-                destination += 93;
-            } else { // 列表到底
-                this.setState({noticePosition: 0});// 设置列表为开始位置
-                destination = 93;
-                this.move(destination, 2000);
-                destination += 93;
-            }
-        }, 4000)
 
-    }
-    move (destination, duration) { // 实现滚动动画
-        let speed = ((destination - this.state.noticePosition) * 1000) / (duration * 60);
-        let count = 0;
-        let step = () => {
-            this.setState({noticePosition: this.state.noticePosition + speed});
-            count++;
-            this._animationFrame = requestAnimationFrame(() => {
-                if (this.state.noticePosition < destination) {
-                    step()
-                } else {
-                    this.setState({noticePosition: destination});
-                }
-            })
-        };
-        step()
-    };
     /*切换页面时*/
     onChangePagination(page) {
         let listPostData = this.state.listPostData;
@@ -145,7 +111,6 @@ export default class PT extends Component {
         }).then((res)=>{
             if(this._ismount && res.status == 200){
                 this.setState({topRanking: res.repsoneContent.aList},
-                    // ()=>this.getDestination()
                 )
             }
         })
@@ -358,7 +323,7 @@ export default class PT extends Component {
                                     <b>TOP游戏排行榜</b>
                                 </p>
                                 <div className="pt_top_content">
-                                    <ul className="ranking_list" style={{transform: 'translateY(-'+this.state.noticePosition+'px) translateZ(0px)'}}>
+                                    <ul className="ranking_list">
                                         {
                                             topRanking.slice(0, 3).map((item, i)=>{
                                                 return (

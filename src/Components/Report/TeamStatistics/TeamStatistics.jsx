@@ -343,7 +343,7 @@ export default class TeamStatistics extends Component {
                                 })
                             }
                         </ul>
-                        <div id="main" style={{ width: 957, height: 400 }}></div>
+                        <div id="main" style={{ width: 1040, height: 450 }}></div>
                     </div>
                 </Spin>
             </div>

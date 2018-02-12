@@ -72,6 +72,9 @@ $c_color:#7f6b37;
         right: 0;
         margin-top: 10px;
         margin-right: 10px;
+        &:hover{
+            cursor: pointer;
+        }
     }
     .c_aa_form{
         margin-top: 160px;

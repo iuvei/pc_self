@@ -205,9 +205,6 @@ export default class ContractModal extends Component {
                     })
                 }
             }
-
-
-
         })
     }
     /*设置日工资契约数据
@@ -222,7 +219,7 @@ export default class ContractModal extends Component {
                 contractTxt:"签订契约"
             })
         }else{
-            let setSalary=this.state.setSalary;
+            let { setSalary }=this.state;
             this.setState({
                 loading:true,
             });
@@ -233,34 +230,35 @@ export default class ContractModal extends Component {
                     loading:false,
                 });
             }else{
-                setSalary.salary_ratio.push({
+                let salary_ratio = setSalary.salary_ratio;
+                salary_ratio.push({
                     sale:10000,
                     salary_ratio:setSalary.salary_ratio_1,
-                })
-                setSalary.salary_ratio.push({
+                });
+                salary_ratio.push({
                     sale:100000,
                     salary_ratio:setSalary.salary_ratio_10,
-                })
-                setSalary.salary_ratio.push({
+                });
+                salary_ratio.push({
                     sale:300000,
                     salary_ratio:setSalary.salary_ratio_30,
-                })
-                setSalary.salary_ratio.push({
+                });
+                salary_ratio.push({
                     sale:500000,
                     salary_ratio:setSalary.salary_ratio_50,
-                })
-                setSalary.salary_ratio.push({
+                });
+                salary_ratio.push({
                     sale:700000,
                     salary_ratio:setSalary.salary_ratio_70,
-                })
-                setSalary.salary_ratio.push({
+                });
+                salary_ratio.push({
                     sale:1000000,
                     salary_ratio:setSalary.salary_ratio_100,
-                })
+                });
 
                 this.setState({
                     setSalary:setSalary,
-                })
+                });
                 Fetch.dailysalaryupdate({
                     method: "POST",
                     body: JSON.stringify({
@@ -277,8 +275,9 @@ export default class ContractModal extends Component {
                             loading:false,
                             setSalary:setSalary,
                         });
-                        if(data.status=200){
+                        if(data.status==200){
                             success(data.shortMessage);
+                            this.props.transferMsg(false);
                             let userInfo=this.state.userList;
                             userInfo[this.state.userid].daily_salary_status=1;
                             this.setState({
@@ -343,13 +342,14 @@ export default class ContractModal extends Component {
                         dividend_radio:this.state.setdividend_radio,
                     })
                 }).then((data)=> {
-                    this.setState({
-                        loading:false,
-                        setdividend_radio:null,
-                    });
                     if(this._ismount){
-                        if(data.status=200){
+                        this.setState({
+                            loading:false,
+                            setdividend_radio:null,
+                        });
+                        if(data.status==200){
                             success(data.shortMessage);
+                            this.props.transferMsg(false);
                             let userInfo=this.state.userList;
                             userInfo[this.state.userid].dividend_salary_status=1;
                             this.setState({
@@ -374,16 +374,16 @@ export default class ContractModal extends Component {
             body: JSON.stringify({
                 uid:userid,
             })
-        }).then((data)=> {
-            console.log(data)
+        }).then((res)=> {
             if(this._ismount){
-                if(data.status==200){
-                    let getAwardTeam=this.state.getAwardTeam;
-                    getAwardTeam.groupLevel=data.repsoneContent.groupLevel;
-                    getAwardTeam.selfPoint=data.repsoneContent.selfPoint;
+                if(res.status==200){
+                    let { getAwardTeam }=this.state,
+                        data = res.repsoneContent;
+                    getAwardTeam.groupLevel=data.groupLevel;
+                    getAwardTeam.selfPoint=data.selfPoint;
                     this.setState({
                         getAwardTeam:getAwardTeam,
-                        sliderValue:data.repsoneContent.groupLevel,
+                        sliderValue:data.groupLevel,
 
                     })
                 }
@@ -419,12 +419,13 @@ export default class ContractModal extends Component {
 
                 })
             }).then((data)=> {
-                this.setState({
-                    loading:false,
-                });
                 if(this._ismount){
-                    if(data.status=200){
+                    this.setState({
+                        loading:false,
+                    });
+                    if(data.status==200){
                         success(data.shortMessage);
+                        this.props.transferMsg(false);
                     }else{
                         error(data.shortMessage);
                     }
@@ -522,7 +523,6 @@ export default class ContractModal extends Component {
         }else{
             this.setState({
                 loading:true,
-
             });
             if(!(this.state.setQuota.setSubaccnum1956||this.state.setQuota.setSubaccnum1954
                     ||this.state.setQuota.setSubaccnum1952||this.state.setQuota.setSubaccnum1950)){
@@ -559,16 +559,17 @@ export default class ContractModal extends Component {
                         uid:this.state.userid,
                     })
                 }).then((data)=> {
-                    let setQuota=this.state.setQuota;
-                    setQuota.accnum=[];
-                    setQuota.accgroup=[];
-                    this.setState({
-                        loading:false,
-                        setQuota:setQuota,
-                    });
                     if(this._ismount){
-                        if(data.status=200){
+                        let setQuota=this.state.setQuota;
+                        setQuota.accnum=[];
+                        setQuota.accgroup=[];
+                        this.setState({
+                            loading:false,
+                            setQuota:setQuota,
+                        });
+                        if(data.status==200){
                             success(data.shortMessage);
+                            this.props.transferMsg(false);
                             let userInfo=this.state.userList;
                             userInfo[this.state.userid].useraccgroup_status=1;
                             this.setState({
@@ -844,7 +845,7 @@ export default class ContractModal extends Component {
                     <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>{this.state.getAwardTeam.groupLevel}</span>
                     <InputNumber
                         min={this.state.getAwardTeam.groupLevel}
-                        max={this.state.currentUserInfo.prize_group}
+                        max={parseInt(currentUserInfo.prize_group)}
                         step={2}
                         style={{ marginLeft: 16,display: this.state.checkStatus ? 'none' : 'inline-block' }}
                         value={this.state.sliderValue}
@@ -966,11 +967,6 @@ export default class ContractModal extends Component {
                 break;
         }
     }
-    showModal() {
-        this.setState({
-            visible: true,
-        });
-    };
     /*在切换不同用户
     * 或者切换不同契约类型时，
     * 请求对应用户下的特定契约类型的数据
@@ -978,12 +974,12 @@ export default class ContractModal extends Component {
     * @uid,当前用户id的userid
     * */
     getCurUserCurContractData(index,uid){
-        let { userList } = this.state;
+        let userInfo = this.state.userList;
         let curIndex = index||this.state.navListIndex;
         let userid = uid||this.state.userid;
         switch (parseInt(curIndex)){
             case 0:
-                if(userList.filter(item => item.userid == uid)[0].daily_salary_status == '1'){
+                if(parseInt(userInfo[userid].daily_salary_status)){
                     this.setState({
                         checkStatus:true,
                         contractTxt:"修改契约",
@@ -997,7 +993,7 @@ export default class ContractModal extends Component {
                 this.getSalaryData(userid);
                 break;
             case 1:
-                if(parseInt(userList.filter(item => item.userid == uid)[0].dividend_salary_status)){
+                if(parseInt(userInfo[userid].dividend_salary_status)){
                     this.setState({
                         checkStatus:true,
                         contractTxt:"修改契约",
@@ -1018,7 +1014,7 @@ export default class ContractModal extends Component {
                 this.getAwardTeamData(userid);
                 break;
             case 3:
-                if(parseInt(userList.filter(item => item.userid == uid)[0].useraccgroup_status)){
+                if(parseInt(userInfo[userid].useraccgroup_status)){
                     this.setState({
                         checkStatus:true,
                         contractTxt:"修改契约",
@@ -1036,9 +1032,9 @@ export default class ContractModal extends Component {
     }
     /*选择下级用户*/
     onSelectUser(value){
-        console.log(value)
-        let { userList, contractInfo} = this.state;
-        if(parseInt(userList.filter(item => item.userid == value.key).prize_group)<1950) {
+        let { userList, contractInfo} = this.state,
+            key =  parseInt(value.key);
+        if(parseInt(userList[key].prize_group)<1950) {
             if(contractInfo[contractInfo.length-1].id==3){
                 contractInfo.pop();
             }
@@ -1067,7 +1063,6 @@ export default class ContractModal extends Component {
     * 获取当前用户在特定契约下是否已经签订过契约，从而决定是查看状态，还是修改状态
     * */
     onSelectSys(value){
-        console.log("fakdjfladfj",value)
         let index=value;
         if(value==3){
             index=2;
@@ -1127,7 +1122,7 @@ export default class ContractModal extends Component {
                                 {
                                     userList.map((item, index) => {
                                         return (
-                                            <Option value={item.userid} key={item.userid}>{item.username}</Option>
+                                            <Option value={''+index} key={item.userid}>{item.username}</Option>
                                         )
                                     })
                                 }
@@ -1138,7 +1133,7 @@ export default class ContractModal extends Component {
                             <Select className="c_aa_marg" size="large"   style={{ width: 280 }}  onChange={(value)=>{this.onSelectSys(value)}} git={() => document.getElementsByClassName('c_contractType')[0]} placeholder="请选择需要创建契约的系统">
                                 {this.state.userid?contractInfo.map((item,index) => {
                                     return (
-                                        <Option value={item.id} key={item.id}>{item.contract}</Option>
+                                        <Option value={''+item.id} key={item.id}>{item.contract}</Option>
                                     )
                                 }):''
                                 }

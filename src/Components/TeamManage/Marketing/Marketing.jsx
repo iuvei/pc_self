@@ -401,7 +401,7 @@ export default class Marketing extends Component {
                 title: '链接地址',
                 dataIndex: 'linkaddress',
                 render: (text, record, index)=><div className="clear">
-                                                    <a className="ellipsis" href={text} style={{display: 'inline-block',width: 138}} target="_blank">{text}</a>
+                                                    <a className="url_style ellipsis" href={text} target="_blank">{text}</a>
                                                     <span className="qrcode right">
                                                         <Popover content={
                                                                             <QRCode value={text}
@@ -426,11 +426,11 @@ export default class Marketing extends Component {
                 title: '用户类型',
                 dataIndex: 'user_type',
                 render: (text) => text == 1 ? '代理' : '会员',
-                width: 100,
+                width: 90,
             }, {
                 title: '返点级别',
                 dataIndex: 'group_level',
-                width: 100,
+                width: 90,
             }, {
                 title: '时间',
                 dataIndex: 'gmt_create',
@@ -438,7 +438,7 @@ export default class Marketing extends Component {
             }, {
                 title: '注册数',
                 dataIndex: 'register_count',
-                width: 100,
+                width: 80,
             }, {
                 title: '备注',
                 dataIndex: 'remark',
@@ -459,7 +459,7 @@ export default class Marketing extends Component {
                 render: (text, record)=> <Popconfirm title="确定要删除?" onConfirm={() => this.onDelete(record)}>
                                 <a href="javascript:void(0)" style={{color: '#3C77CB'}}>删除</a>
                             </Popconfirm>,
-                width: 130,
+                width: 80,
             }];
         const RadioGroup = Radio.Group;
         const { registerPost, generalizePost, registerSlider, generalizeSlider, list } = this.state;

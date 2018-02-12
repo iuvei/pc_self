@@ -62,6 +62,11 @@
             //}
         }
     }
+    .url_style{
+        display: inline-block;
+        @include lh(25px);
+        width: 140px;
+    }
     .marke_k_left{
         display: inline-block;
         width: 110px;
@@ -93,6 +98,7 @@
         background-color: #A9A9A9;
     }
     .qrcode{
+        margin-right: 10px;
         .ant-btn-primary{
             background-color: #37C800;
             border-color: #37C800;

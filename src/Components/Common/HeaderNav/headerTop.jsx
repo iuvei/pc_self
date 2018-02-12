@@ -76,7 +76,7 @@ export default class HeaderTop extends Component {
 
     };
     move (destination, duration) { // 实现滚动动画
-        let speed = (((destination - this.state.noticePosition) * 1000) / (duration * 60)).toFixed(4);
+        let speed = (((destination - this.state.noticePosition) * 1000) / (duration * 60));
         let count = 0;
         let step = () => {
             this.setState({noticePosition: this.state.noticePosition + speed});
@@ -113,8 +113,6 @@ export default class HeaderTop extends Component {
                     this.setState({
                         noticeList: res.repsoneContent.results,
                     },()=>this.getDestination());
-                }else{
-
                 }
             }
         })
@@ -255,7 +253,7 @@ export default class HeaderTop extends Component {
         this.setState({
             noticeDetails: item,
             visible: true,
-        },()=>clearInterval(this._clearInt));
+        });
     }
     /*隐藏公告模态框*/
     hideModal() {
@@ -302,7 +300,7 @@ export default class HeaderTop extends Component {
         this.getBalance();
     };
     handleData(data){
-    	var message = eval('('+ data +')');
+    	let message = eval('('+ data +')');
     	if(message.status == 1){
     		let tempType = message.data.type;
     		if(tempType == 5){
@@ -320,7 +318,7 @@ export default class HeaderTop extends Component {
     }
     render() {
         const { allBalance, userInfo } = stateVar;
-        const { noticePosition, iconArrowsName, iconArrowsMoney } = this.state;
+        const { iconArrowsName, iconArrowsMoney } = this.state;
         return (
             <div className="nav_top">
            		<Websocket url={'ws://'+common.getStore("pushDomain")+''} onMessage={this.handleData.bind(this)} onOpen={this.openWebsocket.bind(this)}
@@ -333,7 +331,7 @@ export default class HeaderTop extends Component {
                     <div className="right">
                         <div className="n_t_lt">
                             <div className="show-notice">
-                                <ul className="notice-list left" style={{transform: 'translateY(-'+noticePosition+'px) translateZ(0px)'}}>
+                                <ul className="notice-list left" style={{transform: 'translateY(-'+this.state.noticePosition+'px) translateZ(0px)'}}>
                                     {
                                         this.state.noticeList.map((item)=>{
                                             return (

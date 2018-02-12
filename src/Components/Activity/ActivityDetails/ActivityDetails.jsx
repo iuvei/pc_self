@@ -45,6 +45,7 @@ export default class ActivityDetails extends Component {
 
                 user_get_bonus_number_val: '0', //总计可领取奖金次数
                 water_bills_stes: {}, //充值流水
+                user_is_enrolls: '1', //当前用户是否已经报名。0 否，1 是。当未登录时，永远显示 0
             },
             userSign: {}, //个人进度
         };
@@ -110,7 +111,7 @@ export default class ActivityDetails extends Component {
             })
         }).then((res)=>{
             if(this._ismount){
-                if(res.status == 1){
+                if(res.status == 200){
                     Modal.success({
                         title: '领取成功',
                         content: res.shortMessage,
@@ -140,7 +141,7 @@ export default class ActivityDetails extends Component {
             })
         }).then((res)=>{
             if(this._ismount){
-                if(res.status == 1){
+                if(res.status == 200){
                     Modal.success({
                         title: '领取成功',
                         content: res.shortMessage,
@@ -170,7 +171,7 @@ export default class ActivityDetails extends Component {
             })
         }).then((res)=> {
             if(this._ismount){
-                if(res.status == 1){
+                if(res.status == 200){
                     Modal.success({
                         title: '领取成功',
                         content: res.shortMessage,
@@ -232,123 +233,132 @@ export default class ActivityDetails extends Component {
                 </ul>
             )
         }else if(activityType == 3){
-            let columns = [
-                { title: '达到天数', dataIndex: 'aw_days' ,width: 80},
-                { title: '奖金', dataIndex: 'aw_pay_awards' ,width: 80},
-                { title: '剩余奖品份数', dataIndex: 'aw_surplus_prizes' ,width: 80},
-                { title: '可领取次数', dataIndex: 'user_aw_get_numbers',
-                    render: (text, record) =>
-                        <Button
-                            onClick={()=>this.onSignTheAward(record)} type="primary"
-                            disabled={parseInt(text) > 0 ? false : true}
-                        >
-                            领取
-                        </Button>,
-                    width: 80
-                }
-            ];
-            let activity_award_sign_sets = response.activity_award_sign_sets[0];
-            if(activity_award_sign_sets.aw_days == undefined){
-                columns = columns.filter(item => item.dataIndex != 'aw_days')
-            }
-            if(activity_award_sign_sets.aw_pay_awards == undefined){
-                columns = columns.filter(item => item.dataIndex != 'aw_pay_awards')
-            }
-            if(activity_award_sign_sets.aw_surplus_prizes == undefined){
-                columns = columns.filter(item => item.dataIndex != 'aw_surplus_prizes')
-            }
-            return (
-                <div>
-                    <p className="a_d_explain_text">1. {response.sign_day_count_type == 0 ? '流水按天累计计算' : '流水按天连续计算'}</p>
-                    <p className="a_d_explain_text">
-                        2. 流水达到
-                        <span className="col_color_ying"> {response.sign_conditions_water_amount} </span>
-                        元，自动签到
-                    </p>
-                    <div className="a_d_table">
-                        <Table columns={columns}
-                               rowKey={record => record.userid}
-                               dataSource={response.activity_award_sign_sets}
-                               pagination={false}
-                               loading={this.state.tableLoading}
-                               scroll={{y: 300}}
-                               size="middle"
-                        />
-                    </div>
-                </div>
-            )
-        }else if(activityType == 4){
-            let water_bills_stes = response.water_bills_stes[0];
-            let columns = [
-                { title: '序号', dataIndex: 'key', width: 50,
-                    render: (text, record, index)=> index+1
-                },
-                { title: '充值金额', dataIndex: 'wa_pay_amount', width: 80 },
-                { title: '充值奖金', dataIndex: 'wa_pay_awards', width: 80 },
-                { title: '剩余奖金份数', dataIndex: 'wa_surplus_prizes', width: 111 },
-                { title: '可领次数', dataIndex: 'wa_get_awards',
-                    render: (text, record) =>
-                        <Button type="primary"
-                                disabled={parseInt(text) > 0 ? false : true}
-                                onClick={()=>this.onRechargeAmountAward(record)}
-                        >
-                            领取
-                        </Button>,
-                    width: 80
-                },
-                { title: '流水金额', dataIndex: 'wa_water_account', width: 80 },
-                { title: '流水奖金', dataIndex: 'wa_water_award', width: 80 },
-                { title: '剩余奖金份数', dataIndex: 'wa_surplus_award', width: 111 },
-                { title: '可领次数', dataIndex: 'wa_get_award_numbers', width: 80,
-                    render: (text) =>
-                        <Button type="primary"
-                                disabled={parseInt(text) > 0 ? false : true}
-                                onClick={()=>this.onWateAmountAward()}
-                        >
-                            领取
-                        </Button>
-                },
-            ];
-            if(water_bills_stes.wa_pay_amount == undefined){
-                columns = columns.filter(item => item.dataIndex != 'wa_pay_amount')
-            }
-            if(water_bills_stes.wa_pay_awards == undefined){
-                columns = columns.filter(item => item.dataIndex != 'wa_pay_awards')
-            }
-            if(water_bills_stes.wa_surplus_prizes == undefined){
-                columns = columns.filter(item => item.dataIndex != 'wa_surplus_prizes')
-            }
-            if(water_bills_stes.wa_water_account == undefined){
-                columns = columns.filter(item => item.dataIndex != 'wa_water_account')
-            }
-            if(water_bills_stes.wa_water_award == undefined){
-                columns = columns.filter(item => item.dataIndex != 'wa_water_award')
-            }
-            if(water_bills_stes.wa_surplus_award == undefined){
-                columns = columns.filter(item => item.dataIndex != 'wa_surplus_award')
-            }
+            let activity_award_sign_sets = response.activity_award_sign_sets instanceof Array && response.activity_award_sign_sets[0];
+            if(activity_award_sign_sets != undefined){
+                let columns = [
+                    { title: '达到天数', dataIndex: 'aw_days' ,width: 80},
+                    { title: '奖金', dataIndex: 'aw_pay_awards' ,width: 80},
+                    { title: '剩余奖品份数', dataIndex: 'aw_surplus_prizes' ,width: 80},
+                    { title: '可领取次数', dataIndex: 'user_aw_get_numbers',
+                        render: (text, record) =>
+                            <Button
+                                onClick={()=>this.onSignTheAward(record)} type="primary"
+                                disabled={response.status == 1 && parseInt(text) > 0 ? false : true}
+                            >
+                                领取
+                            </Button>,
+                        width: 80
+                    }
+                ];
 
-            return (
-                <div>
-                    <p className="a_d_explain_text">
-                        总计可领取奖金次数：
-                        <span className="col_color_ying">{response.user_get_bonus_number_val}</span>
-                        次
-                    </p>
-                    <div className="a_d_table">
-                        <Table columns={columns}
-                               rowKey={record => record.userid}
-                               dataSource={response.water_bills_stes}
-                               pagination={false}
-                               loading={this.state.tableLoading}
-                               scroll={{y: 300}}
-                               size="middle"
-                        />
+                if(activity_award_sign_sets.aw_days == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'aw_days')
+                }
+                if(activity_award_sign_sets.aw_pay_awards == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'aw_pay_awards')
+                }
+                if(activity_award_sign_sets.aw_surplus_prizes == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'aw_surplus_prizes')
+                }
+                return (
+                    <div>
+                        <p className="a_d_explain_text">1. {response.sign_day_count_type == 0 ? '流水按天累计计算' : '流水按天连续计算'}</p>
+                        <p className="a_d_explain_text">
+                            2. 流水达到
+                            <span className="col_color_ying"> {response.sign_conditions_water_amount == '' ? 0 : response.sign_conditions_water_amount} </span>
+                            元，自动签到
+                        </p>
+                        <div className="a_d_table">
+                            <Table columns={columns}
+                                   rowKey={record => record.userid}
+                                   dataSource={response.activity_award_sign_sets}
+                                   pagination={false}
+                                   loading={this.state.tableLoading}
+                                   scroll={{y: 300}}
+                                   size="middle"
+                            />
+                        </div>
                     </div>
-                </div>
-            )
+                )
+            }else{
+                return <p className="no_data">暂无数据</p>;
+            }
+        }else if(activityType == 4){
+            let water_bills_stes = response.water_bills_stes instanceof Array && response.water_bills_stes[0];
+            if(water_bills_stes != undefined){
+                let columns = [
+                    { title: '序号', dataIndex: 'key', width: 50,
+                        render: (text, record, index)=> index+1
+                    },
+                    { title: '充值金额', dataIndex: 'wa_pay_amount', width: 80 },
+                    { title: '充值奖金', dataIndex: 'wa_pay_awards', width: 80 },
+                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_prizes', width: 111 },
+                    { title: '可领次数', dataIndex: 'wa_get_awards',
+                        render: (text, record) =>
+                            <Button type="primary"
+                                    disabled={response.status == 1 && parseInt(text) > 0 ? false : true}
+                                    onClick={()=>this.onRechargeAmountAward(record)}
+                            >
+                                领取
+                            </Button>,
+                        width: 80
+                    },
+                    { title: '流水金额', dataIndex: 'wa_water_account', width: 80 },
+                    { title: '流水奖金', dataIndex: 'wa_water_award', width: 80 },
+                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_award', width: 111 },
+                    { title: '可领次数', dataIndex: 'wa_get_award_numbers', width: 80,
+                        render: (text) =>
+                            <Button type="primary"
+                                    disabled={response.status == 1 && parseInt(text) > 0 ? false : true}
+                                    onClick={()=>this.onWateAmountAward()}
+                            >
+                                领取
+                            </Button>
+                    },
+                ];
+                if(water_bills_stes.wa_pay_amount == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'wa_pay_amount')
+                }
+                if(water_bills_stes.wa_pay_awards == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'wa_pay_awards')
+                }
+                if(water_bills_stes.wa_surplus_prizes == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'wa_surplus_prizes')
+                }
+                if(water_bills_stes.wa_water_account == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'wa_water_account')
+                }
+                if(water_bills_stes.wa_water_award == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'wa_water_award')
+                }
+                if(water_bills_stes.wa_surplus_award == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'wa_surplus_award')
+                }
+
+                return (
+                    <div>
+                        <p className="a_d_explain_text">
+                            总计可领取奖金次数：
+                            <span className="col_color_ying">{response.user_get_bonus_number_val}</span>
+                            次
+                        </p>
+                        <div className="a_d_table">
+                            <Table columns={columns}
+                                   rowKey={() => {let i = 0; 'key' + ++i}}
+                                   dataSource={response.water_bills_stes}
+                                   pagination={false}
+                                   loading={this.state.tableLoading}
+                                   scroll={{y: 300}}
+                                   size="middle"
+                            />
+                        </div>
+                    </div>
+                )
+            }else{
+                return <p className="no_data">暂无数据</p>;
+            }
         }else{
-            return
+            return <p className="no_data">暂无数据</p>;
         }
     };
     /*参与平台*/
@@ -363,7 +373,7 @@ export default class ActivityDetails extends Component {
             text += 'IOS客户端，'
         }
         if(platform.read_rang_web != undefined && platform.read_rang_web == 1){
-            text += 'wap版，'
+            text += 'web端，'
         }
         if(platform.read_rang_air != undefined && platform.read_rang_air == 1){
             text += 'Air客户端，'
@@ -464,7 +474,7 @@ export default class ActivityDetails extends Component {
                                 <div className="a_d_apply right">
                                     <Button type="primary" loading={this.state.btnLoading}
                                             onClick={()=>this.enterApply()}
-                                            disabled = {response.status != 1}
+                                            disabled = {response.status != 1 || response.user_is_enrolls != 0}
                                     >
                                         {
                                             this.onStatus()
@@ -498,29 +508,30 @@ export default class ActivityDetails extends Component {
                             </div>
                             <div className="a_d_schedule clear">
                                 <p className="schedule_title">活动范围</p>
-                                <ul className="schedule_list lottery_name clear">
-                                    <li style={{color:'#CC0000', fontSize:14}}>彩票</li>
-                                    {
-                                        response.lotterys.map((item, index)=>{
-                                            return (
-                                                <li className="left" key={index}>{item}</li>
-                                            )
-                                        })
-                                    }
-                                </ul>
-                                {
-                                    response.games instanceof Array && response.games.length == 0 ? null :
-                                        <ul className="schedule_list lottery_name clear">
-                                            <li style={{color:'#CC0000', fontSize:14}}>综合游戏</li>
-                                            {
+                                    <ul className="schedule_list lottery_name clear">
+                                        <li style={{color:'#CC0000', fontSize:14}}>彩票</li>
+                                        {
+                                            response.lotterys instanceof Array && response.lotterys == 0 ?
+                                                <p className="no_data">暂无数据</p> :
+                                                response.lotterys.map((item, index)=>{
+                                                    return (
+                                                        <li className="left" key={index}>{item}</li>
+                                                    )
+                                                })
+                                        }
+                                    </ul>
+                                    <ul className="schedule_list lottery_name clear">
+                                        <li style={{color:'#CC0000', fontSize:14}}>综合游戏</li>
+                                        {
+                                            response.games instanceof Array && response.games.length == 0 ?
+                                                <p className="no_data">暂无数据</p> :
                                                 response.games.map((item, index)=>{
                                                     return (
                                                         <li className="left" key={index}>{item}</li>
                                                     )
                                                 })
-                                            }
-                                        </ul>
-                                }
+                                        }
+                                    </ul>
                             </div>
                         </div>
                     </div>
