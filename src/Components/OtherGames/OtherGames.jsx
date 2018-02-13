@@ -143,7 +143,7 @@ export default class OtherGames extends Component {
                     hashHistory.push(link);
                 }else{
                     Modal.warning({
-                        title: res.shortMessage,
+                        title: res.data,
                     });
                 }
             }

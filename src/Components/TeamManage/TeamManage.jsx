@@ -5,8 +5,6 @@ import { Row, Col  } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import ChildNav from '../Common/ChildNav/ChildNav';
 
-import './TeamManage.scss'
-
 const navList = [
     {
         link: '/TeamManage/teamList',

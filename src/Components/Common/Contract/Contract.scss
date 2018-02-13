@@ -10,10 +10,12 @@
     .alter_content{
         font-size: 14px;
         color: #7F6B37;
-        width: 350px;
+        width: 545px;
         margin: 0 auto;
     }
     .a_c_list{
+        width: 350px;
+        margin: 0 auto;
         li{
             @include lh(30px);
             margin-bottom: 25px;
@@ -89,7 +91,7 @@
         right: 40%;
     }
     .text_content_list{
-        width: 460px;
+        width: 545px;
         li{
             @include lh(28px);
         }

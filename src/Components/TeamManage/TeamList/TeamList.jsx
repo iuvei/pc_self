@@ -540,7 +540,7 @@ export default class TeamList extends Component {
                         contentArr.map((item, i)=>{
                             return (
                                 <li key={item.sale}>
-                                    第{i+1}档：日销量≥{item.sale.slice(0, -4)}{i != 5 &&<i>&nbsp;&nbsp;</i>}{i == 0 && <i>&nbsp;&nbsp;</i>}万元时，日工资比例为
+                                    第{i+1}档：日销量≥{item.sale.slice(0, -4)}{i != 5 &&<i>&nbsp;&nbsp;</i>}{i == 0 && <i>&nbsp;&nbsp;</i>}万元，且活跃用户≥000人，日工资比例为
                                     <InputNumber min={0} value={item.salary_ratio}
                                                  onChange={(value)=>this.onChangeAlterContract(value, item)}
                                                  disabled={this.state.disabled}

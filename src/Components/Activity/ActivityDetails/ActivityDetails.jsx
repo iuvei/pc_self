@@ -243,7 +243,7 @@ export default class ActivityDetails extends Component {
                         render: (text, record) =>
                             <Button
                                 onClick={()=>this.onSignTheAward(record)} type="primary"
-                                disabled={response.status == 1 && parseInt(text) > 0 ? false : true}
+                                disabled={response.user_is_enrolls == 0 || (parseInt(text) > 0 ? false : true)}
                             >
                                 领取
                             </Button>,
@@ -259,6 +259,9 @@ export default class ActivityDetails extends Component {
                 }
                 if(activity_award_sign_sets.aw_surplus_prizes == undefined){
                     columns = columns.filter(item => item.dataIndex != 'aw_surplus_prizes')
+                }
+                if(activity_award_sign_sets.user_aw_get_numbers == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'user_aw_get_numbers')
                 }
                 return (
                     <div>
@@ -296,7 +299,7 @@ export default class ActivityDetails extends Component {
                     { title: '可领次数', dataIndex: 'wa_get_awards',
                         render: (text, record) =>
                             <Button type="primary"
-                                    disabled={response.status == 1 && parseInt(text) > 0 ? false : true}
+                                    disabled={response.user_is_enrolls == 0 || (parseInt(text) > 0 ? false : true)}
                                     onClick={()=>this.onRechargeAmountAward(record)}
                             >
                                 领取
@@ -309,13 +312,14 @@ export default class ActivityDetails extends Component {
                     { title: '可领次数', dataIndex: 'wa_get_award_numbers', width: 80,
                         render: (text) =>
                             <Button type="primary"
-                                    disabled={response.status == 1 && parseInt(text) > 0 ? false : true}
+                                    disabled={response.user_is_enrolls == 0 || (parseInt(text) > 0 ? false : true)}
                                     onClick={()=>this.onWateAmountAward()}
                             >
                                 领取
                             </Button>
                     },
                 ];
+
                 if(water_bills_stes.wa_pay_amount == undefined){
                     columns = columns.filter(item => item.dataIndex != 'wa_pay_amount')
                 }
@@ -325,6 +329,9 @@ export default class ActivityDetails extends Component {
                 if(water_bills_stes.wa_surplus_prizes == undefined){
                     columns = columns.filter(item => item.dataIndex != 'wa_surplus_prizes')
                 }
+                if(water_bills_stes.wa_get_awards == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'wa_get_awards')
+                }
                 if(water_bills_stes.wa_water_account == undefined){
                     columns = columns.filter(item => item.dataIndex != 'wa_water_account')
                 }
@@ -333,6 +340,9 @@ export default class ActivityDetails extends Component {
                 }
                 if(water_bills_stes.wa_surplus_award == undefined){
                     columns = columns.filter(item => item.dataIndex != 'wa_surplus_award')
+                }
+                if(water_bills_stes.wa_get_award_numbers == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'wa_get_award_numbers')
                 }
 
                 return (
