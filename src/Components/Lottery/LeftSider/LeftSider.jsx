@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Menu, Affix, Icon } from 'antd';
+import { Menu, Affix, Icon,Modal } from 'antd';
 import emitter from '../../../Utils/events';
 import QueueAnim from 'rc-queue-anim';
 import { hashHistory } from 'react-router';
@@ -76,7 +76,11 @@ export default class LeftSider extends Component {
 							stateVar.isload = false;
                             this.setState({current: tempId});
 						}else{
-							alert(tempMethod[val].msg);
+							const modal = Modal.error({
+							    title: '温馨提示',
+							    content: tempMethod[val].msg,
+							});
+							setTimeout(() => modal.destroy(), 3000);
 							return;
 						}
 					}
@@ -92,7 +96,11 @@ export default class LeftSider extends Component {
 						hashHistory.push('/lottery');
                         this.setState({current: tempId});
 					}else{
-						alert(tempMethod[val].msg);
+						const modal = Modal.error({
+						    title: '温馨提示',
+						    content: tempMethod[val].msg,
+						});
+						setTimeout(() => modal.destroy(), 3000);
 						stateVar.nowlottery.lotteryId = 'ssc';
                         this.setState({current: 'ssc'});
 						hashHistory.push('/lottery');

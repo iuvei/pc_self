@@ -211,7 +211,8 @@
     }
     .ball_number_pk10{
         float: left;
-        width: 258px;
+        width: 245px;
+        margin-left: 4px;
         li{
             float: left;
             @include bis('./Img/number_bg.png');
@@ -220,7 +221,7 @@
             text-align: center;
             font-size: 22px;
             color: #fff;
-            margin-left: 8px;
+            margin-right: 8px;
             font-weight: bold;
             font-family: myFirstFont;
         }

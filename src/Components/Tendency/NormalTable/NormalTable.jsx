@@ -349,7 +349,6 @@ export default class NormalTable extends Component {
         /*表格内容 begin*/
 
 
-
         /*将表格内容用data.repsoneContent.bonuscode进行遍历，依据表格表头的dataindex*/
         for (let i = 0; i < data.repsoneContent.bonuscode.length; i++) {
             tableData.push({
@@ -506,19 +505,13 @@ export default class NormalTable extends Component {
         * 表格底部显示，同表格头部第一行内容一样*/
         for (let j = 0; j < data.repsoneContent.lcodegroup.length; j++){
             tableData[data.repsoneContent.bonuscode.length+3][`children${j}0`] = data.repsoneContent.lcodegroup[j];
-
         }
-
-
         /*表格内容 end*/
-
-
         this.setState({
             columns:columns,
             tableData:tableData,
             awardNoLength:headAwardNo.length,
         })
-
     }
     /*
       * 走势图折线
@@ -596,18 +589,17 @@ export default class NormalTable extends Component {
 
     }
     render() {
-
         const columns = this.state.columns;
         const tableData = this.state.tableData;
         return ( <Table  columns={columns}
-                          key="trend"
-                          dataSource={tableData}
-                          pagination={false}
-                          bordered={true}
-                          onChange={this.handleTableChange}
-                          className="trend_table_wrap"
+                      key="trend"
+                      dataSource={tableData}
+                      pagination={false}
+                      bordered={true}
+                      onChange={this.handleTableChange}
+                      className="trend_table_wrap"
 
-                    />
+                />
         );
     }
 }

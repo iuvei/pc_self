@@ -303,10 +303,21 @@ export default class AlterModal extends Component {
 					    };
 						this.props.historyBet();
 	    			}else{
-	    				const modal = Modal.error({
-						    title: '温馨提示',
-						    content: data.longMessage,
-						});
+	    				$(".btn_group .oktz span").html('确定');
+	    				this.setState({tzloding:false});
+	    				let modal;
+	    				if(data.longMessage.fail > 0){
+	    					let msg = data.longMessage.content[0];
+	    					modal = Modal.error({
+							    title: '温馨提示',
+							    content: msg,
+							});
+	    				}else{
+	    					modal = Modal.error({
+							    title: '温馨提示',
+							    content: data.longMessage,
+							});
+	    				}
 						setTimeout(() => modal.destroy(), 3000);
 	    			}
     		})
