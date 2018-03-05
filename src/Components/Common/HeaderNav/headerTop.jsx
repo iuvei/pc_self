@@ -140,9 +140,7 @@ export default class HeaderTop extends Component {
             body: JSON.stringify({type: 'ea'})
         }).then((res)=>{
             if(this._ismount){
-                if(!this.state.updateMLoading){
-                    this.setState({updateMLoading: false});
-                }
+                this.setState({updateMLoading: false});
                 if(res.status == 200){
                     if(res.repsoneContent <= 0){
                         res.repsoneContent = 0.00
@@ -157,9 +155,7 @@ export default class HeaderTop extends Component {
             body: JSON.stringify({type: 'pt'})
         }).then((res)=>{
             if(this._ismount){
-                if(!this.state.updateMLoading){
-                    this.setState({updateMLoading: false});
-                }
+                this.setState({updateMLoading: false});
                 if(res.status == 200){
                     if(res.repsoneContent <= 0){
                         res.repsoneContent = 0.00
@@ -174,9 +170,7 @@ export default class HeaderTop extends Component {
             body: JSON.stringify({type: 'gt'})
         }).then((res)=>{
             if(this._ismount){
-                if(!this.state.updateMLoading){
-                    this.setState({updateMLoading: false});
-                }
+                this.setState({updateMLoading: false});
                 if(res.status == 200){
                     if(res.repsoneContent <= 0){
                         res.repsoneContent = 0.00
@@ -191,9 +185,7 @@ export default class HeaderTop extends Component {
             body: JSON.stringify({type: 'sb'})
         }).then((res)=>{
             if(this._ismount){
-                if(!this.state.updateMLoading){
-                    this.setState({updateMLoading: false});
-                }
+                this.setState({updateMLoading: false});
                 if(res.status == 200){
                     if(res.repsoneContent <= 0){
                         res.repsoneContent = 0.00
@@ -208,9 +200,7 @@ export default class HeaderTop extends Component {
             body: JSON.stringify({type: 'bb'})
         }).then((res)=>{
             if(this._ismount){
-                if(!this.state.updateMLoading){
-                    this.setState({updateMLoading: false});
-                }
+                this.setState({updateMLoading: false});
                 if(res.status == 200){
                     if(res.repsoneContent <= 0){
                         res.repsoneContent = 0.00

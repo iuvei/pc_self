@@ -29,13 +29,17 @@ $border_color: #C8C8C8;
             color: #fff;
         }
         li.s_m_select_list_active:nth-child(4){
+            background:$color_CF2027 url(./Img/watch_active.png) no-repeat center 24%;
+            color: #fff;
+        }
+        li.s_m_select_list_active:nth-child(5){
             background:$color_CF2027 url(./Img/security_active.png) no-repeat center 24%;
             color: #fff;
         }
 
         li{
             float:left;
-            width:237px;
+            width:194px;
             padding-top: 55px;
             padding-bottom: 15px;
             color: $color_363636;
@@ -43,7 +47,7 @@ $border_color: #C8C8C8;
             text-align: center;
             border-radius: 4px;
             font-size:15px;
-            margin-left: 18px;
+            margin-left: 11px;
             border:1px solid #C8C8C8;
             &:hover{
                 cursor: pointer;
@@ -60,6 +64,9 @@ $border_color: #C8C8C8;
             background: url(./Img/mail.png) no-repeat center 24%;
         }
         li:nth-child(4){
+            background: url(./Img/watch.png) no-repeat center 24%;
+        }
+        li:nth-child(5){
             background: url(./Img/security.png) no-repeat center 24%;
         }
     }

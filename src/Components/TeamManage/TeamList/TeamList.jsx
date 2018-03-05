@@ -546,11 +546,14 @@ export default class TeamList extends Component {
                                                  disabled={this.state.disabled}
                                     />
                                     %。
+                                    <span className="hover col_color_ying">删除</span>
                                 </li>
                             )
                         })
                     }
+                    <li className="brisk_user">当日投注金额≥1000元，计为一个活跃用户</li>
                 </ul>
+                <span className="hover col_color_ying">添加档位</span>
             </div>;
         }else if(typeName == '分红契约'){
             typeContent = <div className="a_c_text">

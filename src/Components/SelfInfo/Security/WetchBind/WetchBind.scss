@@ -1,0 +1,12 @@
+@import '../../../../Style/variables';
+@import '../../../../Style/mixin';
+
+.wetch_bind{
+    text-align: center;
+    border-top: solid 1px #C8C8C8;
+    padding-top: 30px;
+    p{
+        font-size: 14px;
+        margin-top: 20px;
+    }
+}

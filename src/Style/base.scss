@@ -9,6 +9,7 @@
 .right{ float:right; _display:inline; }
 .clear:after{ display:block; content:''; clear:both;}
 .clear{ zoom:1;}
+.hover{ cursor: pointer; }
 
 .main_width{
     width: $nav_width_1200;

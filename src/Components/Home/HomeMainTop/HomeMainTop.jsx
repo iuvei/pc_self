@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom'
 import {observer} from 'mobx-react';
+import { hashHistory } from 'react-router';
+import { stateVar } from '../../../State';
 import TweenOne from 'rc-tween-one';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import QueueAnim from 'rc-queue-anim';
@@ -19,6 +21,15 @@ export default class HomeMainTop extends Component {
             let homeBanner = ReactDOM.findDOMNode(_this.refs.homeBanner);
             homeBanner.style.height = document.documentElement.clientHeight - 120 + 'px';
         }
+    };
+    onHashHistory() {
+        hashHistory.push({
+            pathname: '/downLoadClient',
+            query: {
+                id: 1
+            }
+        });
+        stateVar.navIndex = null;
     };
 
     render() {
@@ -63,7 +74,8 @@ export default class HomeMainTop extends Component {
                             key="download"
                             animation={{ ...oneAnim, delay: 300 }}
                         >
-                            <a href="https://m.h88c05.com/" className="home_m_top_download" target="_blank">立即下载</a>
+                            {/*<a href="https://m.h88c05.com/" className="home_m_top_download" target="_blank">立即下载</a>*/}
+                            <span onClick={()=>this.onHashHistory()} className="home_m_top_download">立即下载</span>
                         </TweenOne>
                     </div>
                 </QueueAnim>

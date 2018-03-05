@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import { hashHistory } from 'react-router';
+import { stateVar } from '../../../State';
 import TweenOne from 'rc-tween-one';
 import QueueAnim from 'rc-queue-anim';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
@@ -17,36 +19,22 @@ export default class HomeMainActive extends Component {
         super(props);
         this.state = {}
     };
-    getChildrenToRender(item, i) {
-        return (
-            <li key={i}>
-                <a href="javascript:void(0)">
-                    <img src={item.img} alt=""/>
-                    <p className="home_m_active_type">{item.content}</p>
-                </a>
-            </li>
-        );
+    onHashHistorys() {
+        hashHistory.push('/activity');
+        stateVar.navIndex = 'activity';
     };
     render() {
         const oneAnim = { y: '+=30', opacity: 0, type: 'from', ease: 'easeOutQuad' };
         const dataArray = [
             { img: home_active01, content: '每日签到' },
-            { img: home_active02, content: '周反水' },
-            { img: home_active03, content: '天天领红包' },
-            { img: home_active04, content: '投注有礼' },
+            { img: home_active02, content: '千金一掷好运到' },
+            { img: home_active03, content: '好彩旺旺来' },
+            { img: home_active04, content: '欢乐「泰」平年' },
         ];
-        const childrenToRender = dataArray.map(this.getChildrenToRender);
         return (
                 <div className="home_main_active">
                     <div className="home_m_active" key="home_active_op">
                         <OverPack playScale={0.3}>
-                            {/*<TweenOne*/}
-                                {/*key="icon"*/}
-                                {/*animation={oneAnim}*/}
-                                {/*className="home_favourable_active"*/}
-                                {/*reverseDelay={300} //开始倒放时的延时*/}
-                            {/*>*/}
-                            {/*</TweenOne>*/}
                             <TweenOne
                                 key="p"
                                 animation={oneAnim}
@@ -69,7 +57,16 @@ export default class HomeMainActive extends Component {
                                     key="ul"
                                     leaveReverse
                             >
-                                {childrenToRender}
+                                {
+                                    dataArray.map((item, i)=>{
+                                        return (
+                                            <li key={i} onClick={()=>this.onHashHistorys()}>
+                                                <img src={item.img} alt=""/>
+                                                <p className="home_m_active_type">{item.content}</p>
+                                            </li>
+                                        )
+                                    })
+                                }
                             </QueueAnim>
                         </OverPack>
                     </div>

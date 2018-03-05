@@ -11,18 +11,23 @@ import './headerNav.scss';
 import nav_h from './Img/nav_h.png';
 import nav_n from './Img/nav_n.png';
 
+
 @observer
 export default class HeaderNav extends Component {
     constructor(props) {
         super(props);
         this.state = {
             showLottery: false,
+            navList: [],
         };
     };
     componentDidMount() {
         this._ismount = true;
         stateVar.navIndex = 'lottery';
         this.onLotteryType();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     onLotteryType() {
         let typeSsc = [], selectFive = [], second = [], rests = [], diping =[];
@@ -67,9 +72,6 @@ export default class HeaderNav extends Component {
         ];
         stateVar.lotteryType = lotteryTypeFlag;
     };
-    componentWillUnmount() {
-        this._ismount = false;
-    };
     onHashHistory(item) {
         if(stateVar.userInfo.sType == 'demo' &&
             (item.id == 'financial' || item.id == 'teamManage')
@@ -101,56 +103,104 @@ export default class HeaderNav extends Component {
         };
         emitter.emit('changeLottery', key);
     };
+
     render() {
-        const navList = [
-            {
-                name: '首页',
-                link: '/home',
-                id: 'home',
-            },
-            {
-                name: '彩票大厅',
-                link: '/lottery',
-                id: 'lottery',
-            },
-            {
-                name: '综合游戏',
-                link: '/otherGames',
-                id: '/otherGames',
-            },
-            {
-                name: '优惠活动',
-                link: '/activity',
-                id: 'activity',
-            },
-            {
-                name: '投注记录',
-                link: '/gameRecord',
-                id: 'gameRecord',
-            },
-            {
-                name: '报表管理',
-                link: stateVar.userInfo.userType == 0 ? '/report/lotteryReport' : '/report/teamStatistics',
-                id: 'report',
-            },
-            {
-                name: '财务中心',
-                link: '/financial/recharge',
-                id: 'financial',
-            },
-            {
-                name: '个人信息',
-                link: '/selfInfo',
-                id: 'selfInfo',
-            },
-            {
-                name: '团队管理',
-                link: '/teamManage',
-                id: 'teamManage',
-            },
-        ];
         const { navIndex, lotteryType } = stateVar;
         const { showLottery } = this.state;
+        let navList = [];
+        /*判断代理会员*/
+        if(stateVar.userInfo.userType == 0){ //是会员
+            navList = [
+                {
+                    name: '首页',
+                    link: '/home',
+                    id: 'home',
+                },
+                {
+                    name: '彩票大厅',
+                    link: '/lottery',
+                    id: 'lottery',
+                },
+                {
+                    name: '综合游戏',
+                    link: '/otherGames',
+                    id: '/otherGames',
+                },
+                {
+                    name: '优惠活动',
+                    link: '/activity',
+                    id: 'activity',
+                },
+                {
+                    name: '投注记录',
+                    link: '/gameRecord',
+                    id: 'gameRecord',
+                },
+                {
+                    name: '报表管理',
+                    link: stateVar.userInfo.userType == 0 ? '/report/lotteryReport' : '/report/teamStatistics',
+                    id: 'report',
+                },
+                {
+                    name: '财务中心',
+                    link: '/financial/recharge',
+                    id: 'financial',
+                },
+                {
+                    name: '个人信息',
+                    link: '/selfInfo',
+                    id: 'selfInfo',
+                },
+                {
+                    name: '团队管理',
+                    link: '/teamManage',
+                    id: 'teamManage',
+                },
+            ];
+        }else{
+            navList = [
+                {
+                    name: '首页',
+                    link: '/home',
+                    id: 'home',
+                },
+                {
+                    name: '彩票大厅',
+                    link: '/lottery',
+                    id: 'lottery',
+                },
+                {
+                    name: '综合游戏',
+                    link: '/otherGames',
+                    id: '/otherGames',
+                },
+                {
+                    name: '优惠活动',
+                    link: '/activity',
+                    id: 'activity',
+                },
+                {
+                    name: '投注记录',
+                    link: '/gameRecord',
+                    id: 'gameRecord',
+                },
+                {
+                    name: '报表管理',
+                    link: stateVar.userInfo.userType == 0 ? '/report/lotteryReport' : '/report/teamStatistics',
+                    id: 'report',
+                },
+                {
+                    name: '财务中心',
+                    link: '/financial/recharge',
+                    id: 'financial',
+                },
+                {
+                    name: '个人信息',
+                    link: '/selfInfo',
+                    id: 'selfInfo',
+                },
+            ];
+        }
 
         return (
             <div className="header_main">

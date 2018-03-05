@@ -2,14 +2,13 @@
 @import '../../../Style/mixin';
 
 .home_m_bottom{
-    background: url('../Img/home_bottom.png') no-repeat center center;
-    height: 296px;
-    padding-top: 70px;
+    height: 170px;
+    background: #fff;
     .home_m_bottom_list{
         width: 1200px;
         margin: 0 auto;
         padding: 0 20px;
-        color: #fff;
+        color: #363636;
         li{
             float: left;
             width: 240px;

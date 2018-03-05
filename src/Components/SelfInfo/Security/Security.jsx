@@ -7,6 +7,7 @@ import Setsecurity from './Setsecurity/Setsecurity';
 import CapitalPassword from './CapitalPassword/CapitalPassword';
 import BindingEmail from './BindingEmail/BindingEmail';
 import LoginPassword from './LoginPassword/LoginPassword';
+import WetchBind from './WetchBind/WetchBind';
 
 import   './Security.scss'
 
@@ -39,6 +40,9 @@ export default class Security extends Component {
                     text: '绑定邮箱',
                     id: 2,
                 }, {
+                    text: '绑定微信',
+                    id: 4,
+                }, {
                     text: userInfo.setquestion == 'no' ? '修改密保问题' : '设置密保问题',
                     id: 3,
                 }
@@ -48,6 +52,7 @@ export default class Security extends Component {
             <CapitalPassword/>,
             <BindingEmail/>,
             <Setsecurity onChangeIndex = {this.onChangeIndex}/>,
+            <WetchBind/>
         ];
         return (
             <div className="security_main">

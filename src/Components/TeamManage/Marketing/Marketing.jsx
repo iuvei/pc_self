@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { InputNumber,Input, Slider, Button, Table, Radio, Modal, Switch, Popconfirm, message, Popover } from 'antd';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
-var QRCode = require('qrcode.react');
+let QRCode = require('qrcode.react');
 
 import Fetch from '../../../Utils';
 import AlterModal from '../../Common/AlertModal/AlertModal';

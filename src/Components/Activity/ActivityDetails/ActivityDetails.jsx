@@ -32,10 +32,10 @@ export default class ActivityDetails extends Component {
                 status: '', //状态状态。1 正常，200 已完成，400 已满员，401 已结束
                 reg_add_time_last_of: '0', //直属下线注册时间晚于时间戳值
                 is_regnew_pay_amount_val: '0',//直属下线充值限额条件值
-                newadd_reward_amount: '0', //上级奖励金额 x 元
-                newadd_reward_extract_amount: '0', //上级奖励金额 x 元
-                reward_amount : '0', //新人奖励金额 x 元
-                reward_extract_amount : '0', //新人奖励金额,且流水达提现限定值
+                // newadd_reward_amount: '0', //上级奖励金额 x 元
+                // newadd_reward_extract_amount: '0', //上级奖励金额 x 元
+                // reward_amount : '0', //新人奖励金额 x 元
+                // reward_extract_amount : '0', //新人奖励金额,且流水达提现限定值
                 max_online_num_num: '0', //最大参与人数
                 remain_online_num: '0', //剩余可参加人数
 
@@ -191,6 +191,35 @@ export default class ActivityDetails extends Component {
             }
         })
     };
+    /*拉新领奖*/
+    onPullNewAward(){
+        Fetch.pullNewAward({
+            method: 'POST',
+            body: JSON.stringify({
+                activityid: this.state.id,
+            })
+        }).then((res)=>{
+            if(this._ismount){
+                if(res.status == 200){
+                    Modal.success({
+                        title: '领取成功',
+                        content: res.shortMessage,
+                    });
+                    this.getData();
+                }else if(res.status == 400){
+                    Modal.success({
+                        title: '领取成功',
+                        content: res.shortMessage,
+                    });
+                    this.getData();
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    };
     /*奖金说明*/
     onActivityType(){
         let { response } = this.state,
@@ -203,34 +232,56 @@ export default class ActivityDetails extends Component {
                 </div>
             )
         }else if(activityType == 2){
+            let columns = [
+                { title: '已推广人数（人）', dataIndex: 'pull_new_num' ,width: 80},
+                { title: '有效推广人数（人）', dataIndex: 'used_recharge_count' ,width: 80},
+                { title: '可领奖金', dataIndex: 'used_user_award_amount' ,width: 80},
+                { title: '操作', dataIndex: 'used_user_award_amount_2',
+                    render: (text) =>
+                        <Button
+                            onClick={()=>this.onPullNewAward()} type="primary"
+                            disabled={response.user_is_enrolls == 0 ? true : false}
+                        >
+                            领取
+                        </Button>,
+                    width: 80
+                }
+            ];
+            let { userSign } = this.state;
+            let data = [
+                {
+                    pull_new_num: userSign.pull_new_num,
+                    used_recharge_count: userSign.used_recharge_count,
+                    used_user_award_amount: userSign.used_user_award_amount,
+                    userid: '1',
+                }
+            ];
             return (
-                <ul className="dissertation_active">
-                    <li>1. 直属下线注册时间晚于
-                        <span className="col_color_ying">{timestampToTime(response.reg_add_time_last_of)}</span>
-                        （包含），且充值金额大于等于
-                        <span className="col_color_ying">{response.is_regnew_pay_amount_val}</span>
-                        元
-                    </li>
-                    <li>
-                        2. 上级奖励金额
-                        <span className="col_color_ying">{response.newadd_reward_amount}</span>
-                        元，流水达到
-                        <span className="col_color_ying">{response.newadd_reward_extract_amount}</span>
-                        元可提现
-                    </li>
-                    <li>
-                        3. 新人奖励金额
-                        <span className="col_color_ying">{response.reward_amount}</span>
-                        元，流水达到
-                        <span className="col_color_ying">{response.reward_extract_amount}</span>
-                        元可提现
-                    </li>
-                    <li>
-                        4. 人数限额：
-                        <span className="col_color_ying">{response.max_online_num_num}</span>
-                        人
-                    </li>
-                </ul>
+                <div className="dissertation_active">
+                    <ul>
+                        <li>1. 直属下线注册时间晚于
+                            <span className="col_color_ying">{timestampToTime(response.reg_add_time_last_of)}</span>
+                            （包含），且充值金额大于等于
+                            <span className="col_color_ying">{response.is_regnew_pay_amount_val}</span>
+                            元
+                        </li>
+                        <li>
+                            2. 人数限额：
+                            <span className="col_color_ying">{response.max_online_num_num}</span>
+                            人
+                        </li>
+                    </ul>
+                    <div className="a_d_table">
+                        <Table columns={columns}
+                               rowKey={record => record.userid}
+                               dataSource={data}
+                               pagination={false}
+                               loading={this.state.tableLoading}
+                               scroll={{y: 300}}
+                               size="middle"
+                        />
+                    </div>
+                </div>
             )
         }else if(activityType == 3){
             let activity_award_sign_sets = response.activity_award_sign_sets instanceof Array && response.activity_award_sign_sets[0];
@@ -239,11 +290,12 @@ export default class ActivityDetails extends Component {
                     { title: '达到天数', dataIndex: 'aw_days' ,width: 80},
                     { title: '奖金', dataIndex: 'aw_pay_awards' ,width: 80},
                     { title: '剩余奖品份数', dataIndex: 'aw_surplus_prizes' ,width: 80},
-                    { title: '可领取次数', dataIndex: 'user_aw_get_numbers',
+                    { title: '可领取次数', dataIndex: 'user_aw_get_numbers' ,width: 80},
+                    { title: '操作', dataIndex: 'user_aw_get_numbers_2',
                         render: (text, record) =>
                             <Button
                                 onClick={()=>this.onSignTheAward(record)} type="primary"
-                                disabled={response.user_is_enrolls == 0 || (parseInt(text) > 0 ? false : true)}
+                                disabled={response.user_is_enrolls == 0 || (parseInt(record.user_aw_get_numbers) > 0 ? false : true)}
                             >
                                 领取
                             </Button>,
@@ -295,11 +347,12 @@ export default class ActivityDetails extends Component {
                     },
                     { title: '充值金额', dataIndex: 'wa_pay_amount', width: 80 },
                     { title: '充值奖金', dataIndex: 'wa_pay_awards', width: 80 },
-                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_prizes', width: 111 },
-                    { title: '可领次数', dataIndex: 'wa_get_awards',
+                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_prizes', width: 80 },
+                    { title: '可领次数', dataIndex: 'wa_get_awards', width: 80 },
+                    { title: '操作', dataIndex: 'wa_get_awards_2',
                         render: (text, record) =>
                             <Button type="primary"
-                                    disabled={response.user_is_enrolls == 0 || (parseInt(text) > 0 ? false : true)}
+                                    disabled={response.user_is_enrolls == 0 || (parseInt(record.wa_get_awards) > 0 ? false : true)}
                                     onClick={()=>this.onRechargeAmountAward(record)}
                             >
                                 领取
@@ -308,11 +361,12 @@ export default class ActivityDetails extends Component {
                     },
                     { title: '流水金额', dataIndex: 'wa_water_account', width: 80 },
                     { title: '流水奖金', dataIndex: 'wa_water_award', width: 80 },
-                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_award', width: 111 },
-                    { title: '可领次数', dataIndex: 'wa_get_award_numbers', width: 80,
-                        render: (text) =>
+                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_award', width: 80 },
+                    { title: '可领次数', dataIndex: 'wa_get_award_numbers', width: 80 },
+                    { title: '操作', dataIndex: 'wa_get_award_numbers_2', width: 80,
+                        render: (text, record) =>
                             <Button type="primary"
-                                    disabled={response.user_is_enrolls == 0 || (parseInt(text) > 0 ? false : true)}
+                                    disabled={response.user_is_enrolls == 0 || (parseInt(record.wa_get_award_numbers) > 0 ? false : true)}
                                     onClick={()=>this.onWateAmountAward()}
                             >
                                 领取
@@ -330,7 +384,8 @@ export default class ActivityDetails extends Component {
                     columns = columns.filter(item => item.dataIndex != 'wa_surplus_prizes')
                 }
                 if(water_bills_stes.wa_get_awards == undefined){
-                    columns = columns.filter(item => item.dataIndex != 'wa_get_awards')
+                    columns = columns.filter(item => item.dataIndex != 'wa_get_awards');
+                    columns = columns.filter(item => item.dataIndex != 'wa_get_awards_2')
                 }
                 if(water_bills_stes.wa_water_account == undefined){
                     columns = columns.filter(item => item.dataIndex != 'wa_water_account')
@@ -342,7 +397,8 @@ export default class ActivityDetails extends Component {
                     columns = columns.filter(item => item.dataIndex != 'wa_surplus_award')
                 }
                 if(water_bills_stes.wa_get_award_numbers == undefined){
-                    columns = columns.filter(item => item.dataIndex != 'wa_get_award_numbers')
+                    columns = columns.filter(item => item.dataIndex != 'wa_get_award_numbers');
+                    columns = columns.filter(item => item.dataIndex != 'wa_get_award_numbers_2');
                 }
 
                 return (
@@ -418,10 +474,9 @@ export default class ActivityDetails extends Component {
         }else if(type == 2){
             return (
                 <ul className="schedule_list">
-                    <li>有效推广人数：{userSign.pull_new_num == undefined ? '0' : userSign.pull_new_num} 人</li>
-                    <li>奖金（需流水）：{userSign.user_award_amount == undefined ? '0' : userSign.user_award_amount} 元</li>
-                    <li>流水金额：{userSign.user_loss_amount == undefined ? '0' : userSign.user_loss_amount} 元</li>
-                    <li>可提现奖金：{userSign.used_user_award_amount == undefined ? '0' : userSign.used_user_award_amount}元</li>
+                    <li>已推广人数：{userSign.pull_new_num == undefined ? '0' : userSign.pull_new_num} 人</li>
+                    <li>有效推广人数：{userSign.used_recharge_count == undefined ? '0' : userSign.used_recharge_count} 元</li>
+                    <li>可领取奖金：{userSign.used_user_award_amount == undefined ? '0' : userSign.used_user_award_amount}元</li>
                 </ul>
             )
         }else if(type == 3){
@@ -429,16 +484,32 @@ export default class ActivityDetails extends Component {
                 <ul className="schedule_list">
                     <li>累计签到天数：{userSign.count_sign_days == undefined ? '0' : userSign.count_sign_days} 天</li>
                     <li>连续最大签到天数：{userSign.max_continuity_sign_days == undefined ? '0' : userSign.max_continuity_sign_days} 天</li>
-                    <li>可提现奖金：{userSign.availablebalance == undefined ? '0' : userSign.availablebalance} 元</li>
+                    <li>可领取奖金：{userSign.user_award_amount == undefined ? '0' : userSign.user_award_amount} 元</li>
+                    <li>已领取奖金：{userSign.use_award_amount == undefined ? '0' : userSign.use_award_amount} 元</li>
                 </ul>
             )
         }else if(type == 4){
+            let water_bills_stes = response.water_bills_stes instanceof Array && response.water_bills_stes[0];
             return (
                 <ul className="schedule_list">
-                    <li>充值金额：{userSign.recharge_amount == undefined ? '0' : userSign.recharge_amount} 元</li>
-                    <li>奖金金额（需流水）：{userSign.user_award_amount == undefined ? '0' : userSign.user_award_amount} 元</li>
-                    <li>流水金额：{userSign.user_loss_amount == undefined ? '0' : userSign.user_loss_amount} 元</li>
-                    <li>可提现奖金：{userSign.used_user_award_amount == undefined ? '0' : userSign.used_user_award_amount} 元</li>
+                    {
+                        water_bills_stes.wa_pay_amount != undefined ?
+                            <li>充值金额：{userSign.recharge_amount == undefined ? '0' : userSign.recharge_amount} 元</li> : null
+                    }
+                    {
+                        water_bills_stes.wa_pay_amount != undefined ?
+                            <li>充值奖金金额：{userSign.user_award_amount == undefined ? '0' : userSign.user_award_amount} 元</li> : null
+                    }
+                    {
+                        water_bills_stes.wa_water_account != undefined ?
+                            <li>流水金额：{userSign.user_loss_amount == undefined ? '0' : userSign.user_loss_amount} 元</li> : null
+                    }
+                    {
+                        water_bills_stes.wa_water_account != undefined ?
+                            <li>流水奖金金额：{userSign.loss_award_amount == undefined ? '0' : userSign.loss_award_amount} 元</li> : null
+                    }
+                    <li>已领取奖金金额：{userSign.use_award_amount == undefined ? '0' : userSign.use_award_amount} 元</li>
+                    <li>剩余奖金金额：{userSign.used_user_award_amount == undefined ? '0' : userSign.used_user_award_amount} 元</li>
                 </ul>
             )
         }else{
@@ -477,7 +548,7 @@ export default class ActivityDetails extends Component {
                                             {
                                                 this.onPlatform()
                                             }
-                                            （<a className="hover_a" href="javascript:void(0)">平台说明</a>）
+                                            {/*（<a className="hover_a" href="javascript:void(0)">平台说明</a>）*/}
                                         </span>
                                     </li>
                                 </ul>

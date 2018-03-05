@@ -3,17 +3,11 @@
 
 .home_main_active{
     background: #fff;
-    padding: 35px 0 85px;
-    height: 563px;
+    padding: 35px 0 60px;
+    height: 500px;
     .home_m_active{
         width: $nav_width_1200;
         margin: 0 auto;
-        //.home_favourable_active{
-        //    padding-top: 40px;
-        //    background: url(../Img/home_favourable_active.png) no-repeat top center;
-        //    text-align: center;
-        //
-        //}
         p{
             font-size: 24px;
             color: $color_363636;
@@ -46,6 +40,7 @@
                 }
                 &:hover{
                     transform: scale(1.05) !important;
+                    cursor: pointer;
                 }
             }
             .home_m_active_type{
