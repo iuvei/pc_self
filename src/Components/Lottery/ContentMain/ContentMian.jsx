@@ -226,7 +226,11 @@ export default class ContentMian extends Component {
     // 减少连续开奖次数
     minusMmcMultiple() {
     	if(stateVar.BetContent.lt_same_code.length == 0){
-    		alert('请先选择号码');
+    		const modal = Modal.error({
+			    title: '温馨提示',
+			    content: '请先选择号码',
+			});
+			setTimeout(() => modal.destroy(), 3000);
     		return;
     	}
         this.state.multipleMmcValue <= 1 ? this.setState({multipleMmcValue: 1}) : this.setState({multipleMmcValue: (this.state.multipleMmcValue - 1)},()=>{
@@ -244,7 +248,11 @@ export default class ContentMian extends Component {
     // 增加连续开奖次数
     addMmcMultiple() {
     	if(stateVar.BetContent.lt_same_code.length == 0){
-    		alert('请先选择号码');
+    		const modal = Modal.error({
+			    title: '温馨提示',
+			    content: '请先选择号码',
+			});
+			setTimeout(() => modal.destroy(), 3000);
     		return;
     	}
         this.setState({multipleMmcValue: this.state.multipleMmcValue + 1},()=>{
@@ -277,7 +285,11 @@ export default class ContentMian extends Component {
 	       	stateVar.BetContent.lt_trace_base = tempMoney * this.state.multipleMmcValue;
         });
         if(stateVar.BetContent.lt_same_code.length == 0){
-    		alert('请先选择号码');
+    		const modal = Modal.error({
+			    title: '温馨提示',
+			    content: '请先选择号码',
+			});
+			setTimeout(() => modal.destroy(), 3000);
     	}
     };
     //中奖追停选中框
@@ -459,7 +471,11 @@ export default class ContentMian extends Component {
 			}
     	}
     	if(tempMsg){
-    		alert(tempMsg);
+    		const modal = Modal.error({
+			    title: '温馨提示',
+			    content: tempMsg,
+			});
+			setTimeout(() => modal.destroy(), 3000);
     	}
     };
     //得到投注记录
@@ -748,9 +764,13 @@ export default class ContentMian extends Component {
         }
         let size = fileSize / 1024;
         if(size>2000){
-        	alert("附件不能大于2M");
+        	const modal = Modal.error({
+			    title: '温馨提示',
+			    content: '附件不能大于2M',
+			});
+			setTimeout(() => modal.destroy(), 3000);
         	target.value="";
-        	return
+        	return;
         }
         let name=target.value;
         let _this = this;
@@ -770,7 +790,11 @@ export default class ContentMian extends Component {
 	            }
         	}
         }else{
-        	alert("请选择正确格式文件上传(txt,svg格式)！");
+        	const modal = Modal.error({
+			    title: '温馨提示',
+			    content: '请选择正确格式文件上传(txt,svg格式)！',
+			});
+			setTimeout(() => modal.destroy(), 3000);
             target.value="";
             return
         }
@@ -828,9 +852,17 @@ export default class ContentMian extends Component {
 	                this.setState({textAreaValue:err.join(',')},()=>{
 	                	this._inptu_deal();//重新统计
 	                })
-	                alert('已删除以下重复号'+'\r\n'+err.join(";"));
+	                const modal = Modal.success({
+					    title: '温馨提示',
+					    content: '已删除以下重复号'+'\r\n'+err.join(";"),
+					});
+					setTimeout(() => modal.destroy(), 3000);
 	            } else {
-	                alert("没有重复及错误号码！");
+	            	const modal = Modal.success({
+					    title: '温馨提示',
+					    content: '没有重复及错误号码！',
+					});
+					setTimeout(() => modal.destroy(), 3000);
 	            }
 	        	return false;
         	}
@@ -853,17 +885,24 @@ export default class ContentMian extends Component {
                 	this.setState({textAreaValue:stateVar.aboutGame.data_sel[0].join(",")},()=>{
 	                	this._inptu_deal();
 	                });
-                   	alert('已删除以下重复号'+'\r\n'+err.join(";"));
                    	break;
                 default :
                 	this.setState({textAreaValue:stateVar.aboutGame.data_sel[0].join(",")},()=>{
 	                	this._inptu_deal();
 	                });
-                   	alert('已删除以下重复号'+'\r\n'+err.join(" "));
                   	break;
             }
+            const modal = Modal.success({
+			    title: '温馨提示',
+			    content: '已删除以下重复号'+'\r\n'+err.join(";")
+			});
+			setTimeout(() => modal.destroy(), 3000);
         }else{
-            alert('没有重复号码');
+        	const modal = Modal.success({
+			    title: '温馨提示',
+			    content: '没有重复号码'
+			});
+			setTimeout(() => modal.destroy(), 3000);
         }
     };
 	//重复号处理
@@ -924,11 +963,19 @@ export default class ContentMian extends Component {
             poschoose = poschoose.slice(0,-1);
         }
         if( isNaN(nums) || isNaN(times) || isNaN(money) || money <= 0 ){//如果没有任何投注内容
+        	let modal;
         	if(param){
-        		alert(otype == 'input' ? '请先输入号码' : '请先选择号码');
+        		 modal = Modal.error({
+				    title: '温馨提示',
+				    content: (otype == 'input' ? '请先输入号码' : '请先选择号码')
+				});
         	}else{
-        		alert(otype == 'input' ? '请输入正确的号码' : '请选择完整的号码');
+        		modal = Modal.error({
+				    title: '温馨提示',
+				    content: (otype == 'input' ? '请输入正确的号码' : '请选择完整的号码')
+				});
         	}
+        	setTimeout(() => modal.destroy(), 3000);
             return false;
         }
         if( otype == 'input' ){//如果是输入型，则检测号码合法性，以及是否存在重复号
@@ -1007,7 +1054,11 @@ export default class ContentMian extends Component {
 
             if( ermsg.length > 1 ){
             	if(!param){
-            		alert(ermsg);
+            		const modal = Modal.error({
+					    title: '温馨提示',
+					    content: ermsg,
+					});
+					setTimeout(() => modal.destroy(), 3000);
             	}
             }
         }
@@ -1179,7 +1230,11 @@ export default class ContentMian extends Component {
     //确认投注
     actionBet(){
     	if(stateVar.BetContent.lt_same_code.length == 0){
-    		alert('请先选号');
+    		const modal = Modal.error({
+			    title: '温馨提示',
+			    content: '请先选号',
+			});
+			setTimeout(() => modal.destroy(), 3000);
     		return;
     	}
     	let tempObj = {
@@ -1385,24 +1440,44 @@ export default class ContentMian extends Component {
                 }
             });
             if( martype == 1 ){
-                alert('该玩法不支持利润率追号');
+            	const modal = Modal.success({
+				    title: '温馨提示',
+				    content: '该玩法不支持利润率追号',
+				});
+				setTimeout(() => modal.destroy(), 3000);
                 return false;
             }else if( martype == 2 ){
-                alert('多玩法不支持利润率追号，请选择单一玩法进行投注');
+            	const modal = Modal.error({
+				    title: '温馨提示',
+				    content: '多玩法不支持利润率追号，请选择单一玩法进行投注',
+				});
+				setTimeout(() => modal.destroy(), 3000);
                 return false;
             }else if( martype == 3 ){
-                alert('多圆角模式不支持利润率追号，请选择单一圆角模式');
+            	const modal = Modal.error({
+				    title: '温馨提示',
+				    content: '多圆角模式不支持利润率追号，请选择单一圆角模式',
+				});
+				setTimeout(() => modal.destroy(), 3000);
                 return false;
             }
             let e = tempLowTraceMoney//最低利润率
             e = isNaN(e) ? 0 : e;
             if( e <= 0 ){
-                alert('利润率错误');
+            	const modal = Modal.error({
+				    title: '温馨提示',
+				    content: '利润率错误',
+				});
+				setTimeout(() => modal.destroy(), 3000);
                 return false;
             }
             let m = stateVar.BetContent.lt_trace_base;//每期金额的初始值
             if( e >= ((p*100/m)-100) ){
-                $.alert('利润率错误');
+            	const modal = Modal.error({
+				    title: '温馨提示',
+				    content: '利润率错误',
+				});
+				setTimeout(() => modal.destroy(), 3000);
                 return false;
             }
             let t = 0;//返回的倍数
@@ -1427,7 +1502,11 @@ export default class ContentMian extends Component {
     //确定追号投注
     enterChaseLoading(){
     	if(this.state.traceTotalMoney <= 0 || this.state.traceTotalIssue <= 0){
-    		alert('请先选择追号投注内容');
+    		const modal = Modal.error({
+			    title: '温馨提示',
+			    content: '请先选择追号投注内容',
+			});
+			setTimeout(() => modal.destroy(), 3000);
     		return;
     	}
     	let tempIssue = this.state.traceItem;

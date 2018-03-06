@@ -467,8 +467,6 @@ export default class ReverseTable extends Component {
 
     }
     render() {
-
-
         const columns = this.state.columns;
         const tableData = this.state.tableData;
         return ( <Table  columns={columns}

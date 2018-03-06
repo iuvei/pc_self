@@ -19,7 +19,6 @@ import serviceSrc_active from './Img/service_active.png';
 import valicodeSrc from './Img/valicode.png';
 import {removeStore, setStore,getStore } from "../../CommonJs/common";
 const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
-// const validImgSrc= (window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/pcservice/index.php?useValid=true';
 @observer
 export default class Login extends Component {
     constructor(props) {

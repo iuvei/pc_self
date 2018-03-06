@@ -24,7 +24,11 @@ export default class BetRecordTable extends Component {
     		).then((data)=>{
     			if(data.status == 200){
     				this.props.histoeryBet();
-    				alert(data.longMessage);
+    				const modal = Modal.success({
+					    title: '温馨提示',
+					    content: data.longMessage,
+					});
+					setTimeout(() => modal.destroy(), 3000);
     			}
     		})
 		
@@ -39,7 +43,11 @@ export default class BetRecordTable extends Component {
     			console.log(data)
     			if(data.status == 200){
     				this.props.histoeryBet();
-    				alert(data.longMessage);
+    				const modal = Modal.success({
+					    title: '温馨提示',
+					    content: data.longMessage,
+					});
+					setTimeout(() => modal.destroy(), 3000);
     			}
     		})
 	}
