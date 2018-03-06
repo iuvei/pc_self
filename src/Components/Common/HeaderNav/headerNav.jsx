@@ -3,6 +3,7 @@ import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import { Modal } from 'antd';
 import { stateVar } from '../../../State';
+import common from '../../../CommonJs/common';
 import emitter from '../../../Utils/events';
 import lotteryTypeList from '../../../CommonJs/common.json';
 import HeaderTop from './HeaderTop';
@@ -98,10 +99,66 @@ export default class HeaderNav extends Component {
     };
     /*切换彩种*/
     onChangeLottery(nav){
-        let key = {
-            key: nav
-        };
-        emitter.emit('changeLottery', key);
+        let tempId = nav;
+    	let tempMethod = common.getStore(common.getStore('userId'));
+    	let thisUrl = window.location.href.indexOf('lottery') > -1 ? true : false;
+    	if(thisUrl){
+    		if(tempMethod == undefined || stateVar.nowlottery.lotteryId == tempId){
+	    		return;
+	    	}else{
+	    		for(let val in tempMethod){
+					if(val == tempId){
+						if(tempMethod[val].msg == undefined){
+							this._ismount = false;
+							stateVar.todayAndTomorrow = [];
+						    stateVar.tomorrowIssue = [];
+						    stateVar.issueIndex = '?????';
+							stateVar.BetContent.lt_same_code = [];
+					    	stateVar.BetContent.totalDan = 0;
+					    	stateVar.BetContent.totalNum = 0;
+					       	stateVar.BetContent.totalMoney = 0;
+					       	stateVar.BetContent.lt_trace_base = 0;
+					       	stateVar.kjNumberList = [];
+							clearInterval(window.interval);
+							stateVar.checkLotteryId= false;
+							stateVar.nowlottery.lotteryId = tempId;
+							stateVar.BetContent = {
+						        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
+						    };
+						    emitter.emit('initData');
+							stateVar.isload = false;
+						}else{
+							const modal = Modal.error({
+							    title: '温馨提示',
+							    content: tempMethod[val].msg,
+							});
+							setTimeout(() => modal.destroy(), 3000);
+							return;
+						}
+					}
+				}
+	    	}
+    	}else{
+    		stateVar.navIndex = 'lottery';
+    		stateVar.kjNumberList = [];
+    		for(let val in tempMethod){
+				if(val == tempId){
+					if(tempMethod[val].msg == undefined){
+						stateVar.nowlottery.lotteryId = e.key;
+						hashHistory.push('/lottery');
+					}else{
+						const modal = Modal.error({
+						    title: '温馨提示',
+						    content: tempMethod[val].msg,
+						});
+						setTimeout(() => modal.destroy(), 3000);
+						stateVar.nowlottery.lotteryId = 'ssc';
+						hashHistory.push('/lottery');
+						return;
+					}
+				}
+			}
+    	}
     };
 
     render() {

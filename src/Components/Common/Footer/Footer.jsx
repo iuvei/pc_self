@@ -23,18 +23,22 @@ export default class Footer extends Component {
                                 </Link>
                             </li>
                             <li>
-                                <Link to={`/helpInfo`}>
+                                <Link to={`/helpInfo/howDeposit?navIndex=0`}>
                                     <span>帮助中心</span><span>|</span>
                                 </Link>
                             </li>
                             <li>
-                                <a href="#">手机客户端</a><span>|</span>
+                            	<Link to={`/downLoadClient`}>
+                                    <span>手机客户端</span><span>|</span>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#">PC客户端</a><span>|</span>
+                            	<Link to={`/downLoadClient`}>
+                                    <span>PC客户端</span><span>|</span>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#/dns" target="_blank">放劫持教程</a>
+                                <a href="#/dns" target="_blank">防劫持教程</a>
                             </li>
                         </ul>
                         <p>恒彩郑重提示：彩票有风险，投注需谨慎，未满18周岁的青少年禁止购彩</p>
