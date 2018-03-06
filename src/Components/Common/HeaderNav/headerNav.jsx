@@ -150,12 +150,7 @@ export default class HeaderNav extends Component {
                     name: '个人信息',
                     link: '/selfInfo',
                     id: 'selfInfo',
-                },
-                {
-                    name: '团队管理',
-                    link: '/teamManage',
-                    id: 'teamManage',
-                },
+                }
             ];
         }else{
             navList = [
@@ -198,6 +193,11 @@ export default class HeaderNav extends Component {
                     name: '个人信息',
                     link: '/selfInfo',
                     id: 'selfInfo',
+                },
+                {
+                    name: '团队管理',
+                    link: '/teamManage',
+                    id: 'teamManage',
                 },
             ];
         }

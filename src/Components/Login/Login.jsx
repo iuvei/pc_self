@@ -564,7 +564,7 @@ export default class Login extends Component {
 
     render() {
 
-        const navList = ['账号登录', '试玩模式'];
+        const navList = ['账号登录', '试玩模式','微信登录手机版'];
         return (
             <div className='login_main'>
                 <canvas id="canvas"></canvas>

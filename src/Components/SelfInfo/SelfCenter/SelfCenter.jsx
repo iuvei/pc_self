@@ -201,6 +201,12 @@ export default class SelfInfo extends PureComponent {
     };
     /*转账*/
     onHashHistory(router, nav, childNav) {
+        if(stateVar.userInfo.sType == 'demo'){
+            Modal.warning({
+                title: '试玩用户，没有访问权限',
+            });
+            return
+        }
         hashHistory.push({
             pathname: router,
             query: {navIndex: childNav}

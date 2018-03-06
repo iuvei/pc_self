@@ -275,8 +275,16 @@ export default class HeaderTop extends Component {
             }
         })
     };
+
     /*跳站内信, 充值，提款，转账*/
     onHashHistory(router, nav, childNav) {
+        if(stateVar.userInfo.sType == 'demo'){
+            Modal.warning({
+                title: '试玩用户，没有访问权限',
+            });
+            return
+        }
+
         hashHistory.push({
             pathname: router,
             query: {navIndex: childNav}
