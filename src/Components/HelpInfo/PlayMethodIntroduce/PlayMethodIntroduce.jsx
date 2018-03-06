@@ -28,11 +28,11 @@ export default class PlayMethodIntroduce extends Component {
             if (data.status == 200) {
                 this.setState({
                     shishicaiTable: data.repsoneContent[0].content,
-                    fucaiTable: data.repsoneContent[2].content,
-                    pailieTable: data.repsoneContent[3].content,
-                    shiyixuanwuTable: data.repsoneContent[1].content,
-                    beijingkuaileTable: data.repsoneContent[5].content,
-                    bobingTable: data.repsoneContent[6].content
+                    fucaiTable: data.repsoneContent[1].content,
+                    pailieTable: data.repsoneContent[2].content,
+                    shiyixuanwuTable: data.repsoneContent[3].content,
+                    beijingkuaileTable: data.repsoneContent[4].content,
+                    bobingTable: data.repsoneContent[5].content
                 });
             }
         });

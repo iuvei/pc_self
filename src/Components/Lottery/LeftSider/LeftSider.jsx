@@ -29,10 +29,6 @@ import new_lottery from './Img/new_lottery.png';
 export default class LeftSider extends Component {
     constructor(props) {
         super(props);
-        this.state={
-            openKeys: ['sub1'],
-            current: 'ssc',
-        }
     }
     componentDidMount(){
         this.eventEmitter = emitter.on('changeLottery', (e) => {
@@ -74,7 +70,6 @@ export default class LeftSider extends Component {
 						    };
 						    emitter.emit('initData');
 							stateVar.isload = false;
-                            this.setState({current: tempId});
 						}else{
 							const modal = Modal.error({
 							    title: '温馨提示',
@@ -94,7 +89,6 @@ export default class LeftSider extends Component {
 					if(tempMethod[val].msg == undefined){
 						stateVar.nowlottery.lotteryId = e.key;
 						hashHistory.push('/lottery');
-                        this.setState({current: tempId});
 					}else{
 						const modal = Modal.error({
 						    title: '温馨提示',
@@ -102,7 +96,6 @@ export default class LeftSider extends Component {
 						});
 						setTimeout(() => modal.destroy(), 3000);
 						stateVar.nowlottery.lotteryId = 'ssc';
-                        this.setState({current: 'ssc'});
 						hashHistory.push('/lottery');
 						return;
 					}
@@ -110,7 +103,30 @@ export default class LeftSider extends Component {
 			}
     	}
     };
-
+	openKey(){
+		let tempOpen = stateVar.nowlottery.lotteryId;
+		if(tempOpen == 'mmc' || tempOpen == 'ffc'){
+			return ['sub1','24小时'];
+		}
+		if(tempOpen == 'ssc'){
+			return ['sub1','时时彩'];
+		}
+		if(tempOpen == 'mmc' || tempOpen == '24xsc' || tempOpen == 'ffc' || tempOpen == 'TG11-5' || tempOpen == 'txffc'){
+			return ['24小时'];
+		}
+		if(tempOpen == 'ssc' || tempOpen == 'XJSSC' || tempOpen == 'TJSSC' || tempOpen == 'pk10' || tempOpen == 'HN481'){
+			return ['时时彩'];
+		}
+		if(tempOpen == 'SD11Y' || tempOpen == 'GD11-5' || tempOpen == 'JX11-5' || tempOpen == 'CQ11-5' || tempOpen == 'SH11-5'){
+			return ['11选5'];
+		}
+		if(tempOpen == 'fucaip3' || tempOpen == 'ticaip3'){
+			return ['低频'];
+		}
+		if(tempOpen == 'BJKL8' || tempOpen == 'JSK3' || tempOpen == 'hnffc'){
+			return ['高频'];
+		}
+	};
     render() {
         const { lotteryType } = stateVar;
         return (
@@ -118,8 +134,8 @@ export default class LeftSider extends Component {
                         <Menu
                             onClick={(e)=>this.handleClick(e)}
                             style={{ width: 120 }}
-                            defaultOpenKeys={['sub1']}
-                            selectedKeys={[this.state.current]}
+                            defaultOpenKeys={this.openKey()}
+                            selectedKeys={[stateVar.nowlottery.lotteryId]}
                             mode="inline"
                         >
                             <SubMenu key="sub1" title={<span><img className="icon_img" src={left_1}/><span>常玩彩种</span></span>}>

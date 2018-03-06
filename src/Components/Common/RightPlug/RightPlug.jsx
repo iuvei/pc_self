@@ -37,8 +37,6 @@ export default class RightPlug extends Component {
             }
 
         };
-        /*获取当前走势图的相对路径*/
-        curLocation = curLocation.split("#")[0] + "#/tendency";
     };
     transferMsg(visible) {
         this.setState({
@@ -117,7 +115,7 @@ export default class RightPlug extends Component {
                         </li>
                         <li>
                             <p className="r_p_zoushi r_p_common">
-                                <a href={curLocation} target="_blank">
+                                <a href={curLocation.split("#")[0] + "#/tendency"} target="_blank">
                                     走势图
                                 </a>
                             </p>

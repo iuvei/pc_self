@@ -5,8 +5,8 @@
 .download_title{
     padding-top: 20px;
     width: 830px;
+    margin:0 auto;
     height: 65px;
-    margin-left: 300px;
     li{
         width: 146px;
         height: 30px;
@@ -177,10 +177,10 @@
     @include bis('./Img/phone_contain.png');
 }
 .download_contain2{
-    width: 1696px;
-    height: 774px;
+    width: 1190px;
+    height: 770px;
     margin: 0 auto;
-    @include bis('./Img/people_contain.png');
+    background:url('./Img/people_contain.png') no-repeat top center;
 
 }
 .download_contain3{

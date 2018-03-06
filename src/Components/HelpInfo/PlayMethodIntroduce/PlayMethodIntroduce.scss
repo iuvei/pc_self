@@ -24,9 +24,13 @@
     }
     .shishicai,.fucai,.pailie,.shiyixuanwu,.beijingkuaile,.bobing{
         height: 614px;
+        padding-top: 20px;
         overflow-y: scroll;
         &::-webkit-scrollbar-track-piece{
             background-color:#F4F4F4;
+        }
+        td{
+            text-align: center;
         }
     }
 }
