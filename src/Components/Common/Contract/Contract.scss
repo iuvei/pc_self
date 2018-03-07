@@ -10,8 +10,6 @@
     .alter_content{
         font-size: 14px;
         color: #7F6B37;
-        width: 545px;
-        margin: 0 auto;
     }
     .a_c_list{
         width: 350px;
@@ -34,7 +32,15 @@
         }
     }
     .a_c_text{
-        margin: 20px 0;
+        margin: 20px auto;
+        width: 450px;
+        .add_sale{
+            padding-left: 15px;
+            background: url(./img/add.png) no-repeat left center;
+        }
+    }
+    .a_c_text_sale{
+        width: 567px !important;
     }
     .prize_group_slider{
         position: relative;
@@ -91,9 +97,13 @@
         right: 40%;
     }
     .text_content_list{
-        width: 545px;
+        //width: 545px;
         li{
             @include lh(28px);
+        }
+        .delete_sale{
+            padding-left: 15px;
+            background: url(./img/delete.png) no-repeat left center;
         }
         .subaccnum{
             display: inline-block;
@@ -102,6 +112,8 @@
         }
         .brisk_user{
             color: #6C6C6C;
+            padding-left: 15px;
+            background: url(./img/hint.png) no-repeat left center;
         }
     }
     .ant-btn{
@@ -116,6 +128,7 @@
         background-color: #fbfaf5;
         border: 0;
         border-bottom: 1px solid #C8C8C8;
+        width: 60px;
     }
     .ant-input-number:hover{
         border-color: #cf2027;

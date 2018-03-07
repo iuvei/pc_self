@@ -51,7 +51,7 @@ export default class Message extends Component {
                     if(postData.tag != ''){
                         message.success(res.shortMessage);
                         postData.tag = '';
-                        postData.msgids = '';
+                        postData.msgids = [];
                         this.setState({postData: postData}, ()=>this.getData());
                     }else{
                         let data = res.repsoneContent;
@@ -70,6 +70,7 @@ export default class Message extends Component {
         this.getData();
     };
     onSelectChange = (msgids) => {
+        console.log(msgids)
         let postData = this.state.postData;
         postData.msgids = msgids.join();
         postData.tag = 'deleteChoices';
@@ -138,7 +139,7 @@ export default class Message extends Component {
                     title: '发送人',
                     dataIndex: 'sender_name',
                     render: ()=> '平台',
-                    width: 200,
+                    width: 150,
                 }, {
                     title: '消息标题',
                     dataIndex: 'subject',

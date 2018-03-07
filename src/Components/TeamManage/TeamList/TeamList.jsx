@@ -2,13 +2,13 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
-import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, message, Badge } from 'antd';
+import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, message, Badge, Popconfirm } from 'antd';
 import Fetch from '../../../Utils';
 import Crumbs from '../../Common/Crumbs/Crumbs'
 import { stateVar } from '../../../State';
 import Contract from '../../Common/Contract/Contract';
 
-import './TeamList.scss'
+import './TeamList.scss';
 
 let typeContent = '';
 @observer
@@ -258,7 +258,7 @@ export default class TeamList extends Component {
         });
         stateVar.navIndex = 'gameRecord';
     };
-    /*日工资修改值处理*/
+    /*修改日工资比例*/
     onChangeAlterContract(val, item){
         item.salary_ratio = val;
         let salary_ratioFlag = this.state.contentArr;
@@ -268,6 +268,42 @@ export default class TeamList extends Component {
             }
         });
         this.setState({salary_ratio: salary_ratioFlag});
+    };
+    /*修改活跃人数*/
+    onChangeActiveNumber(val, item, index){
+        item.active_member = val;
+        let { contentArr } = this.state;
+        contentArr[index].active_member = ''+val;
+        this.setState({salary_ratio: contentArr});
+    };
+    /*修改日销量*/
+    onChangeDailySales(val, item, index){
+        item.sale = val;
+        let { contentArr } = this.state;
+        contentArr[index].sale = ''+val;
+        this.setState({salary_ratio: contentArr});
+    };
+    /*日销量排序从小到大*/
+    compare(property){
+        return function(a,b){
+            let value1 = a[property];
+            let value2 = b[property];
+            return value1 - value2;
+        }
+    }
+    /*日销量失去焦点事件*/
+    onBlurSale(item, index){
+        let { contentArr } = this.state;
+        let contentArrFlag = contentArr.sort(this.compare('sale'));
+        for(let i=0;i<contentArr.length;i++){
+            if (contentArrFlag[i+1] != undefined && contentArrFlag[i].sale == contentArrFlag[i+1].sale){
+                Modal.warning({
+                    title: '不同档位日销量不能相同，请重新输入！',
+                });
+                contentArrFlag[i].sale = '0'
+            }
+        }
+        this.setState({contentArr: contentArrFlag})
     };
     /*提交协议*/
     onDiviratio(contract_name){
@@ -375,7 +411,7 @@ export default class TeamList extends Component {
     };
     /*关闭模态框*/
     onCancel(){
-        this.setState({alterVisible: false, affirmLoading: false, contract_name: '修改协议'});
+        this.setState({contract_name: '修改协议', alterVisible: false, affirmLoading: false})
     };
     /*奖金组设置 滑动条*/
     onRegisterSetBonus(value) {
@@ -438,9 +474,35 @@ export default class TeamList extends Component {
         this.setState({quotaVisible: false, quotaPost: {}});
         this.getData();
         this.getNum();
-    }
+    };
+    /*删除档位*/
+    onDelete(i){
+        let { contentArr } = this.state;
+        if(contentArr.length <= 4){
+            Modal.warning({
+                title: '日工资契约最低保留四个挡位',
+            });
+            return
+        }
+        let contentArrFlag = contentArr.filter((item, index)=> index != i);
+        this.setState({
+            contentArr: contentArrFlag,
+            salary_ratio: contentArrFlag
+        })
+    };
+    /*添加档位*/
+    onAddSale(){
+        let { contentArr } = this.state;
+        let contentObj = {
+            sale: "0",
+            salary_ratio: "0",
+            active_member: "0"
+        };
+        contentArr.push(contentObj);
+        this.setState({contentArr});
+    };
     render() {
-        const { tableData, typeName, contentArr, prizeGroupList, agPost, diviPost } = this.state;
+        const { disabled, tableData, typeName, contentArr, prizeGroupList, agPost, diviPost } = this.state;
         const columns = [
             {
                 title: '用户名',
@@ -455,13 +517,13 @@ export default class TeamList extends Component {
                 title: '团队人数',
                 dataIndex: 'team_count',
                 sorter: () => {},
-                width: 100,
+                width: 90,
             }, {
                 title: '奖金组',
                 dataIndex: 'prize_group',
                 render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
                 sorter: () => {},
-                width: 100,
+                width: 90,
             }, {
                 title: '注册时间',
                 dataIndex: 'register_time',
@@ -533,27 +595,48 @@ export default class TeamList extends Component {
                 </ul>
             </div>;
         }else if(typeName == '日工资契约'){
-            typeContent = <div className="a_c_text">
+            typeContent = <div className="a_c_text a_c_text_sale">
                 <p>契约内容：</p>
                 <ul className="text_content_list">
                     {
                         contentArr.map((item, i)=>{
                             return (
-                                <li key={item.sale}>
-                                    第{i+1}档：日销量≥{item.sale.slice(0, -4)}{i != 5 &&<i>&nbsp;&nbsp;</i>}{i == 0 && <i>&nbsp;&nbsp;</i>}万元，且活跃用户≥000人，日工资比例为
+                                <li key={i}>
+                                    {i+1}档：
+                                    日销量≥
+                                    <InputNumber min={0} value={item.sale}
+                                                 onChange={(value)=>this.onChangeDailySales(value, item, i)}
+                                                 onBlur={()=>this.onBlurSale(item, i)}
+                                                 disabled={disabled}
+                                    />
+                                    元，
+                                    且活跃用户≥
+                                    <InputNumber min={0} value={item.active_member}
+                                                 onChange={(value)=>this.onChangeActiveNumber(value, item, i)}
+                                                 disabled={disabled}
+                                    />
+                                    人，日工资比例为
                                     <InputNumber min={0} value={item.salary_ratio}
                                                  onChange={(value)=>this.onChangeAlterContract(value, item)}
-                                                 disabled={this.state.disabled}
+                                                 disabled={disabled}
                                     />
                                     %。
-                                    <span className="hover col_color_ying">删除</span>
+                                    <Popconfirm title="确定删除吗?"
+                                                onConfirm={() => this.onDelete(i)}
+                                    >
+                                        <span className="hover col_color_ying delete_sale" style={{display: disabled ? 'none' : ''}}>删除</span>
+                                    </Popconfirm>
                                 </li>
                             )
                         })
                     }
                     <li className="brisk_user">当日投注金额≥1000元，计为一个活跃用户</li>
                 </ul>
-                <span className="hover col_color_ying">添加档位</span>
+                <span className="hover col_color_ying add_sale"
+                      onClick={()=>this.onAddSale()}
+                      style={{display: disabled || contentArr.length >= 6 ? 'none' : ''}}>
+                    添加档位
+                </span>
             </div>;
         }else if(typeName == '分红契约'){
             typeContent = <div className="a_c_text">
@@ -583,8 +666,8 @@ export default class TeamList extends Component {
                     <div className="prize_group_slider">
                         <Icon className="slider_left" onClick={()=>this.onMinus()} type="left"/>
                         <Slider
-                                min={prizeGroupList.length !== 0 && prizeGroupList[0].prizeGroup}
-                                max={prizeGroupList.length !== 0 && prizeGroupList[prizeGroupList.length-1].prizeGroup}
+                                min={prizeGroupList.length !== 0 && parseInt(prizeGroupList[0].prizeGroup)}
+                                max={prizeGroupList.length !== 0 && parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup)}
                                 step={2}
                                 onChange={(value)=>{this.onRegisterSetBonus(value)}}
                                 value={parseInt(this.state.prizeGroupFlag)}

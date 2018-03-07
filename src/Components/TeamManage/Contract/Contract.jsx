@@ -27,7 +27,7 @@ export default class Contract extends Component {
                 daily_salary_status:0,     //日工资签订状态
                 quota_status:0,             //配额契约签订状态
             },
-            cur_daily_salary:[],               //当前用户的日工资比例
+            protocol:[],               //当前用户的日工资比例
             cur_dividend_radio:null,/*当前用户的日工资比例*/
             tableLength:null,/*实际获取到的下级用户数目*/
             columns:[],/*下级用户信息表格表头*/
@@ -37,6 +37,13 @@ export default class Contract extends Component {
             quotaPost:{}, //申请配额请求参数
             quotaLoding: false,
         }
+    };
+    componentDidMount() {
+        this._ismount = true;
+        this.getContractList();
+    };
+    componentWillUnmount() {
+        this._ismount = false;
     };
     transferMsg(visible) {
         this.setState({
@@ -78,7 +85,7 @@ export default class Contract extends Component {
                     }
                     this.setState({
                         curUserSignStatus:curUserSignStatus,
-                        cur_daily_salary:data.protocol,
+                        protocol:data.protocol,
                         cur_dividend_radio:data.dividend_ratio.dividend_radio,
                         tableLength:data.results.length,
                         quotaList: data.prizeaccount,
@@ -224,13 +231,6 @@ export default class Contract extends Component {
 
         });
     }
-    componentWillUnmount() {
-        this._ismount = false;
-    };
-    componentDidMount() {
-        this._ismount = true;
-        this.getContractList();
-    };
     /*配额管理*/
     onApplyPrizeQuota(){
         this.setState({quotaLoding: true});
@@ -266,7 +266,7 @@ export default class Contract extends Component {
     }
     render() {
         const { dividend_ratio_status ,daily_salary_status,quota_status } = this.state.curUserSignStatus;
-        const { cur_daily_salary,cur_dividend_radio,tableLength,tableData,columns, quotaList, quotaPost} = this.state;
+        const { protocol,cur_dividend_radio,tableLength,tableData,columns, quotaList, quotaPost} = this.state;
 
 
         const text=<div className='c_info_wrap'>
@@ -284,18 +284,18 @@ export default class Contract extends Component {
         const columnsDay = [
             {
                 title: '日有销量',
-                dataIndex: '1',
-                // width: '25%',
+                dataIndex: 'sale',
+                render: (text)=> '≥'+ text
             },
             {
                 title: '活跃人数',
-                dataIndex: '2',
-                // width: '25%',
+                dataIndex: 'active_member',
+                render: (text)=> '≥'+ text + '人'
             },
             {
                 title: '日工资',
-                dataIndex: '3',
-                // width: '25%',
+                dataIndex: 'salary_ratio',
+                render: (text)=> '≥'+ text + '%'
             }
         ];
 
@@ -316,8 +316,10 @@ export default class Contract extends Component {
                                            </p>
                                            <div className="day_table">
                                                <Table bordered={true}
-                                                      dataSource={this.state.data}
+                                                      rowKey={(record, index)=> index}
+                                                      dataSource={protocol}
                                                       columns={columnsDay}
+                                                      pagination={false}
                                                />
                                            </div>
                                        </div>
