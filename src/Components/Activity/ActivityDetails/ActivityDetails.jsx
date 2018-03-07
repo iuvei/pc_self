@@ -23,7 +23,6 @@ export default class ActivityDetails extends Component {
                 activity_title: '', //活动标题
                 start_time: '', //活动开始时间戳
                 end_time: '',
-                pull_new_fans_number: 0, //人数限制
                 radio_activity_type_url: '', //活动链接
                 platform: {}, //参与来源平台
                 lotterys: [], //活动范围，彩种列表
@@ -46,6 +45,7 @@ export default class ActivityDetails extends Component {
                 user_get_bonus_number_val: '0', //总计可领取奖金次数
                 water_bills_stes: {}, //充值流水
                 user_is_enrolls: '1', //当前用户是否已经报名。0 否，1 是。当未登录时，永远显示 0
+                max_online_num_type: 0,
             },
             userSign: {}, //个人进度
         };
@@ -540,7 +540,7 @@ export default class ActivityDetails extends Component {
                                     </li>
                                     <li>
                                         <span>活动限额：</span>
-                                        <span>每日限额 {response.pull_new_fans_number} 名</span>
+                                        <span>{response.max_online_num_type == 0 ? '总共限额' : '每日限额'} {response.max_online_num_num} 名</span>
                                     </li>
                                     <li>
                                         <span>参与平台：</span>
@@ -548,7 +548,6 @@ export default class ActivityDetails extends Component {
                                             {
                                                 this.onPlatform()
                                             }
-                                            {/*（<a className="hover_a" href="javascript:void(0)">平台说明</a>）*/}
                                         </span>
                                     </li>
                                 </ul>

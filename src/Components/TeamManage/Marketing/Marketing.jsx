@@ -426,11 +426,11 @@ export default class Marketing extends Component {
                 title: '用户类型',
                 dataIndex: 'user_type',
                 render: (text) => text == 1 ? '代理' : '会员',
-                width: 90,
+                width: 80,
             }, {
                 title: '返点级别',
                 dataIndex: 'group_level',
-                width: 90,
+                width: 80,
             }, {
                 title: '时间',
                 dataIndex: 'gmt_create',
@@ -438,11 +438,11 @@ export default class Marketing extends Component {
             }, {
                 title: '注册数',
                 dataIndex: 'register_count',
-                width: 80,
+                width: 70,
             }, {
                 title: '备注',
                 dataIndex: 'remark',
-                width: 180,
+                width: 100,
             }, {
                 title: '启用/禁止',
                 dataIndex: 'status',

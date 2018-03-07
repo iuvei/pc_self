@@ -27,7 +27,8 @@ export default class Contract extends Component {
     };
     /*取消关闭modal*/
     onCancel(){
-        this.props.onCancel();
+        this.props.onCancel(this.state.contract_name);
+        this.setState({contract_name: '修改契约'})
     };
     /*是否已签订*/
     isSign() {

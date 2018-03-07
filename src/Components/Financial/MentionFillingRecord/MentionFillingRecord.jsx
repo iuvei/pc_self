@@ -116,7 +116,7 @@ export default class MentionFillingRecord extends Component {
             {
                 title: '账变编号',
                 dataIndex: 'orderNo',
-                width: 170,
+                width: 150,
             }, {
                 title: '用户名',
                 dataIndex: 'username',
@@ -124,11 +124,11 @@ export default class MentionFillingRecord extends Component {
             }, {
                 title: '时间',
                 dataIndex: 'times',
-                width: 150,
+                width: 140,
             }, {
                 title: '类型',
                 dataIndex: 'cntitle',
-                width: 90,
+                width: 80,
             }, {
                 title: '收入',
                 dataIndex: 'amount',
@@ -149,7 +149,7 @@ export default class MentionFillingRecord extends Component {
                 title: '状态',
                 dataIndex: 'transferstatus',
                 render: text => text == 1 || text == 3 ? '失败' : '成功',
-                width: 90,
+                width: 60,
             }, {
                 title: '备注',
                 dataIndex: 'description',

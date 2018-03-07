@@ -141,7 +141,7 @@ export default class TransferRecord extends Component {
             {
                 title: '时间',
                 dataIndex: 'time',
-                width: 150,
+                width: 140,
             }, {
                 title: '单号',
                 dataIndex: 'trans_id',
@@ -149,31 +149,31 @@ export default class TransferRecord extends Component {
             }, {
                 title: '转出账户',
                 dataIndex: 'out',
-                width: 136,
+                width: 130,
             }, {
                 title: '转入账户',
                 dataIndex: 'in',
-                width: 136,
+                width: 130,
             }, {
                 title: '转账金额',
                 dataIndex: 'tranfsAmout',
                 className: 'column-right',
-                width: 136,
+                width: 130,
             }, {
                 title: '转出账户金额',
                 dataIndex: 'before_blance',
                 className: 'column-right',
-                width: 136,
+                width: 110,
             },{
                 title: '转入账户金额',
                 dataIndex: 'new_blance',
                 className: 'column-right',
-                width: 136,
+                width: 110,
             }, {
                 title: '状态',
                 dataIndex: 'status',
                 render: text => text == '成功' ? <span className="col_color_ying">{text}</span> : text,
-                width: 100,
+                width: 70,
             }
         ];
 
