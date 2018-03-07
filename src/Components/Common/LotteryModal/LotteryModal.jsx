@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import {Button,Modal,Popover} from 'antd';
+import emitter from '../../../Utils/events';
 import Fatch from '../../../Utils';
 import './LotteryModal.scss';
 import { stateVar } from '../../../State';
@@ -100,6 +101,7 @@ export default class AlterModal extends Component {
 	    		method:"POST",
 	    		body:JSON.stringify(postData)
 	    		}).then((data)=>{
+	    			emitter.emit('kjhistory');
 	    			if(defaultTime == 1){
 	    				if(this.state.time < tempObj.lt_trace_count_input){
 				    		$(".btn_group .oktz span").html('确定');

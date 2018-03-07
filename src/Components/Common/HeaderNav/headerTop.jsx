@@ -51,6 +51,7 @@ export default class HeaderTop extends Component {
         this.getNotice();
         this.onUnread();
         this.getress();
+        this.getAccGroup();
     };
     componentWillUnmount() {
         this._ismount = false;
@@ -297,6 +298,25 @@ export default class HeaderTop extends Component {
         this.getMenu();
         this.getBalance();
     };
+    //获取奖金组
+    getAccGroup() {
+        //登录
+        Fetch.login({
+            method: "POST",
+            body: JSON.stringify({
+                "sType": 'message',
+            })
+        }).then((data)=>{
+            if(this._ismount){
+                let result = data.repsoneContent;
+                if(data.status==200){
+                    stateVar.auth=true;
+                    stateVar.userInfo.accGroup = result.accGroup;
+                    common.setStore("accGroup",result.accGroup);
+                }
+            }
+        })
+    };
     handleData(data){
     	let message = eval('('+ data +')');
     	if(message.status == 1){
@@ -305,6 +325,8 @@ export default class HeaderTop extends Component {
     			this.getMenu();
     		}else if(tempType == 6){
     			this.getNotice();
+    		}else if(tempType == 8){
+    			this.getAccGroup();
     		}else if(tempType == 10){
     			this.onUnread();
     		}

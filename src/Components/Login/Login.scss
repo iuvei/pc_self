@@ -128,7 +128,7 @@ $width_100: 100%;
     left: 50%;
     margin-left: -410px;
     top: 50%;
-    margin-top: -318px;
+    margin-top: -300px;
 
     .login_wrap{
         .l_input{
@@ -161,31 +161,61 @@ $width_100: 100%;
         }
 
     }
-    .l_m_select_list{
-       li{
+    .l_m_content{
+        position: relative;
+        .l_m_select_list{
+           li{
+                width: 131px;
+                height: 34px;
+               font-size: 14px;
+                margin-left: 10px;
+               margin-right: -20px;
+               text-align: center;
+               line-height: 34px;
+                position: relative;
+                display: inline-block;
+                background: url(./Img/bg1.png) no-repeat bottom right;
+                cursor: pointer;
+                color: #fff;
+            }
+    
+            li.l_m_select_list_active {
+                width: 131px;
+                height: 34px;
+                margin-right: -20px;
+                background: url(./Img/bg2.png) no-repeat bottom right;
+                z-index: 2;
+                color:#333333;
+            }
+    
+        }
+        div.l_m_select_list_active{
             width: 131px;
             height: 34px;
-           font-size: 14px;
-            margin-left: 10px;
-           margin-right: -20px;
-           text-align: center;
-           line-height: 34px;
-            position: relative;
+            font-size: 14px;
+            position: absolute;
+            left: 252px;
+            top: 0;
+            text-align: center;
+            line-height: 34px;
             display: inline-block;
             background: url(./Img/bg1.png) no-repeat bottom right;
             cursor: pointer;
             color: #fff;
         }
-
-        li.l_m_select_list_active {
-            width: 131px;
-            height: 34px;
-            margin-right: -20px;
-            background: url(./Img/bg2.png) no-repeat bottom right;
-            z-index: 2;
-            color:#333333;
+        .wechatQrcode{
+            position: absolute;
+            background: #fff;
+            left: 316px;
+            width: 190px;
+            height: 190px;
+            z-index: 20;
+            top: 100px;
+            canvas{
+                left: 5px;
+                top: 5px;
+            }
         }
-
     }
     .ant-input{
         @include wh(210px,40px);

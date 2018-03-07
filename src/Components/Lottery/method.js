@@ -1946,13 +1946,12 @@ let getSuiji2 = (length, minchose, t) => {
 		results[i] = [];
 		size += minchose[i];
 	}
-
 	for (var i = 0; i < length; i++) {
 		if (length >= 10) {
 			if (i < 9) {
 				list[i] = "0" + (i + 1);
 			}else{
-				list[i] = '1'+ (10-i);
+				list[i] = (1+i).toString();
 			}
 		} else {
 			list[i] = i + 1;

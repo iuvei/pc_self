@@ -19,6 +19,7 @@ import serviceSrc_active from './Img/service_active.png';
 import valicodeSrc from './Img/valicode.png';
 import {removeStore, setStore,getStore } from "../../CommonJs/common";
 const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
+let QRCode = require('qrcode.react');
 @observer
 export default class Login extends Component {
     constructor(props) {
@@ -51,7 +52,8 @@ export default class Login extends Component {
             speedSrc:speedSrc,
             serviceSrc:serviceSrc,
             dnsSrc:dnsSrc,
-
+			wechatLink:'',
+			showWechat:'none'
         }
     };
     /*
@@ -66,6 +68,18 @@ export default class Login extends Component {
             });
             setStore("session",parseData.repsoneContent);
             document.cookie = 'sess='+ parseData.repsoneContent + ';path=/';
+        })
+
+    }
+    /*
+     * 获取微信登录地址
+     */
+    getWechat(){
+        Fetch.login({
+        	method: "POST",
+        	body:JSON.stringify({sType:"wechat"})
+        }).then((data)=>{
+            this.setState({wechatLink:data.repsoneContent.url});
         })
 
     }
@@ -383,6 +397,7 @@ export default class Login extends Component {
             navListIndex: index,
             displayWarn:false,
             validImg:valicodeSrc,
+            showWechat:'none'
         })
     }
 
@@ -391,7 +406,7 @@ export default class Login extends Component {
         this._ismount = true;
         onCanvas[1]();
         this.getSession();
-
+		this.getWechat();
     };
     componentWillUnmount(){
         this._ismount = false;
@@ -550,7 +565,7 @@ export default class Login extends Component {
                 立即登录
             </Button>
         </div>;
-
+        
         switch (this.state.navListIndex) {
 
             case 0:
@@ -559,12 +574,26 @@ export default class Login extends Component {
             case 1:
                 return ul_1;
                 break;
+            case 2:
+            	return ul_2;
+            	break;
         }
     }
-
+    /*
+     * 点击微信切换
+     */
+	tigger(){
+		let tempWechat;
+		if(this.state.showWechat == 'none'){
+			tempWechat = 'block';
+		}else{
+			tempWechat = 'none';
+		}
+		this.setState({showWechat:tempWechat});
+	}
     render() {
 
-        const navList = ['账号登录', '试玩模式','微信登录手机版'];
+        const navList = ['账号登录', '试玩模式'];
         return (
             <div className='login_main'>
                 <canvas id="canvas"></canvas>
@@ -609,15 +638,25 @@ export default class Login extends Component {
                 </div>
                 <div className="login">
                     <img  className="loginLogo" src={loginSrc} />
-                    <ul className="l_m_select_list clear">
-                        {
-                            navList.map((value, index)=>{
-                                return <li className={this.state.navListIndex === index ? 'l_m_select_list_active' : ''}
-                                           onClick={()=> {this.onChangLoginMode(index)}} key={index}>{value}</li>
-                            })
-                        }
-
-                    </ul>
+                    
+                    <div className='l_m_content'>
+	                    <ul className="l_m_select_list clear">
+	                        {
+	                            navList.map((value, index)=>{
+	                                return <li className={this.state.navListIndex === index ? 'l_m_select_list_active' : ''}
+	                                           onClick={()=> {this.onChangLoginMode(index)}} key={index}>{value}</li>
+	                            })
+	                        }
+	                    </ul>
+	                    <div className='l_m_select_list_active' onClick={()=>this.tigger()}>微信登录手机版</div>
+	                    <div className='wechatQrcode' style={{display:this.state.showWechat}}>
+				        	<QRCode value={this.state.wechatLink}
+				                    size={180}
+				                    bgColor="#FFFFFF"
+				                    fgColor="#000000"
+				            />
+				        </div>
+                    </div>
                     { this.loginMain() }
                     <div  className='l-warn' style={{display: this.state.displayWarn ? 'block' : 'none'}}>
                         <img  src={warnSrc}  /><span className=''>操作失败:<span>{this.state.warn}</span></span>

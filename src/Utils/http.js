@@ -33,6 +33,7 @@ const interFace = (key) => {
 
     INTERFACE['ABOUTBET'] = 'controller=game&action=play';
     INTERFACE['GAMEINFO'] = 'controller=gameinfo&action=CancelgameAjax';
+    INTERFACE['WECHATBIND'] = 'controller=user&action=main'
 
     // 上次登录地点ip=>地址
     INTERFACE['IPADDRESS'] = 'controller=default&action=Ipaddress';

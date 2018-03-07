@@ -449,6 +449,7 @@ export default class ContentMian extends Component {
 				let tempVal = val[i];
 				if(tempVal.msg != undefined){
 					tempMsg = tempVal.msg;
+					stateVar.openLotteryFlag = true;
 					break;
 				}else{
 					for(let j=0;j<tempVal.length;j++){
@@ -475,6 +476,7 @@ export default class ContentMian extends Component {
 			    title: '温馨提示',
 			    content: tempMsg,
 			});
+			stateVar.openLotteryFlag = true;
 			setTimeout(() => modal.destroy(), 3000);
     	}
     };
@@ -2166,7 +2168,6 @@ export default class ContentMian extends Component {
     	return tempHtml;
     };
     render() {
-    	console.log(1111)
         const navList = [
             {
                 link: '',

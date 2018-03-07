@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Websocket from 'react-websocket';
-import 'whatwg-fetch'
+import emitter from '../../../Utils/events';
 import { Row, Col, Switch,message,Button,notification,Icon} from 'antd';
 import {Link} from 'react-router';
 import QueueAnim from 'rc-queue-anim';
@@ -41,10 +41,14 @@ export default class ContentTop extends Component {
     componentDidMount() {
     	this._ismount = true;
     	clearInterval(this.interval);
+    	this.eventEmitter = emitter.on('kjhistory', () => {
+            this.getKjHistory();
+        });
     	this.initData();
     };
     componentWillUnmount() {
     	this._ismount = false;
+    	emitter.off(this.eventEmitter);
 	    clearInterval(this.interval);
 	}
     initData(){

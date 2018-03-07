@@ -185,6 +185,8 @@ const rechargeAmountAward = (body) =>  request(http.interFace('RECHARGEAMOUNTAWA
 const wateAmountAward = (body) =>  request(http.interFace('WATEAMOUNAWARD'),body);
 //拉新领奖
 const pullNewAward = (body) =>  request(http.interFace('PULLNEWAWARD'),body);
+//微信绑定
+const wechatbind = (body) =>  request(http.interFace('WECHATBIND'),body);
 
 export default {
     getSess,
@@ -278,4 +280,5 @@ export default {
     rechargeAmountAward,
     wateAmountAward,
     pullNewAward,
+    wechatbind
 }

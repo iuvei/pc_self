@@ -48,8 +48,8 @@ export default class Marketing extends Component {
             generalizeData: [], // 推广注册地址列表
             generalizePost: {// 推广链接
                 flag: 'onekey', // grow表示生成推广链接
-                keeppoint: 0, //自身保留返点
-                groupLevel: 1850, // 奖金组级别
+                keeppoint: 7.8, //自身保留返点
+                groupLevel: 1800, // 奖金组级别
                 usertype: 1, //1：为代理 0:为普通用户
                 remark: '', //有备注或者为空
             },
@@ -412,7 +412,18 @@ export default class Marketing extends Component {
                                                                         }
                                                                  title="手机扫描二维码"
                                                                  trigger="click">
-                                                            <Button type="primary" size="small">生成二维码</Button>
+                                                            <Button type="primary" size="small" style={{marginRight:'3px'}}>手机二维码</Button>
+                                                        </Popover>
+                                                        <Popover content={
+                                                                            <QRCode value={record.qrLink}
+                                                                                    size={200}
+                                                                                    bgColor="#FFFFFF"
+                                                                                    fgColor="#000000"
+                                                                            />
+                                                                        }
+                                                                 title="微信注册二维码"
+                                                                 trigger="click">
+                                                            <Button type="primary" size="small">微信二维码</Button>
                                                         </Popover>
                                                     </span>
                                                     <section className="copy right">
