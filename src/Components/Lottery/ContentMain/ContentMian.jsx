@@ -300,56 +300,45 @@ export default class ContentMian extends Component {
     getVersion(){
     	let tempObj = {version:'push'};
     	Fatch.getVersion({method:'post',body:JSON.stringify(tempObj)}).then((data)=>{
-    		if(data.status == 200){
+    		if(this._ismount && data.status == 200){
     			let tempData = data.repsoneContent || {};
     			let oneFlag = true;
-    			let allFlag = true;
-    			for(let vl in tempData){
-    				let tempVl = vl;
-    				let dataStatus = tempData[vl];
-    				if(tempVl != 'userall'){
-    					if(!common.getStore('version')){
-    						let pushTemp = {};
-    						pushTemp[tempVl] = dataStatus;
-	    					common.setStore('version',pushTemp);
-	    				}else{
-	    					let objData = common.getStore('version');
-	    					let pushObj  = {};
-	    					let tempFlag = true;
-	    					for(let value in objData){
-	    						if(tempVl == value){
-	    							tempFlag = false;
-	    							if(objData[value] != dataStatus){
-	    								oneFlag = false;
-	    								pushObj[value] = objData[value];
-	    							}else{
-	    								pushObj[value] = dataStatus;
-	    							}
-	    						}else{
-	    							pushObj[value] = dataStatus;
-	    						}
-	    					}
-	    					if(tempFlag){
-	    						pushObj[tempVl] = dataStatus;
-	    					}
-	    					common.setStore('version',pushObj);
-	    				}
-    				}else{
-    					if(!common.getStore('versionAll')){
-	    					common.setStore('versionAll',dataStatus);
-	    				}else{
-	    					let objData = common.getStore('versionAll');
-	    					let pushObj;
-	    					if(objData != dataStatus){
-								allFlag = false;
+    			let version = common.getStore('version');
+    			if(version){
+    				let tempFlag = true;
+    				for(let i=0;i<version.length;i++){
+    					if(version[i].userId == tempData.userid){
+    						tempFlag = false;
+    						if(version[i].oneVersion != tempData.userone || version[i].allVersion != tempData.userall){
+    							oneFlag = false;
+    							version[i].oneVersion = tempData.userone;
+    							version[i].allVersion = tempData.userall;
     						}
-    						pushObj = objData;
-	    					common.setStore('versionAll',dataStatus);
-	    				}
+    					}
     				}
-    			}
-    			if(!oneFlag || !allFlag){
-    				this.getLotteryData();
+    				if(tempFlag){
+    					let tempObj = {};
+	    				tempObj.userId = tempData.userid;
+	    				tempObj.oneVersion = tempData.userone;
+	    				tempObj.allVersion = tempData.userall;
+	    				version.push(tempObj);
+	    				common.setStore('version',version);
+    				}else{
+    					if(!oneFlag){
+    						this.setState({lotteryMethod:[]});
+    						common.removeStore(common.getStore('userId'))
+    						common.setStore('version',version);
+    						this.getLotteryData();
+    					}
+    				}
+    			}else{
+    				version = [];
+    				let tempObj = {};
+    				tempObj.userId = tempData.userid;
+    				tempObj.oneVersion = tempData.userone;
+    				tempObj.allVersion = tempData.userall;
+    				version.push(tempObj);
+    				common.setStore('version',version);
     			}
     		}else{
 
@@ -472,12 +461,19 @@ export default class ContentMian extends Component {
 			}
     	}
     	if(tempMsg){
-    		const modal = Modal.error({
-			    title: '温馨提示',
-			    content: tempMsg,
-			});
-			stateVar.openLotteryFlag = true;
-			setTimeout(() => modal.destroy(), 3000);
+    		this.setState({lotteryMethod:[]},()=>{
+				if(val['ffc'].msg == undefined){
+					stateVar.nowlottery.lotteryId = 'ffc';
+				}else{
+					if(val['ffc'].msg == undefined){
+    					stateVar.nowlottery.lotteryId = '24xsc';
+    				}else{
+    					stateVar.nowlottery.lotteryId = 'txffc';
+    				}
+				}
+	    		this.initData();
+	    		stateVar.openLotteryFlag = true;
+    		});
     	}
     };
     //得到投注记录
@@ -1155,10 +1151,19 @@ export default class ContentMian extends Component {
 				        	$(".zx span").removeClass('hover');
 				        }
 	    			}else{
-	    				const modal = Modal.error({
-						    title: '温馨提示',
-						    content: data.longMessage,
-						});
+	    				let modal;
+	    				if(data.longMessage.fail > 0){
+	    					let msg = data.longMessage.content[0];
+	    					modal = Modal.error({
+							    title: '温馨提示',
+							    content: msg,
+							});
+	    				}else{
+	    					modal = Modal.error({
+							    title: '温馨提示',
+							    content: data.longMessage,
+							});
+	    				}
 						setTimeout(() => modal.destroy(), 3000);
 	    			}
     		})

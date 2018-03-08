@@ -219,7 +219,7 @@ export default class AlterModal extends Component {
 				    						</div>
 			    						})
 				    				}
-		    						formmc();
+				    				setTimeout(()=>{formmc()},1000);
 		    					},1000);
 	    					}else{
 	    						if(totalBonus > 0){
