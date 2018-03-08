@@ -129,11 +129,12 @@ export default class BankCardManage extends Component {
     };
 
     /*选择开户银行*/
-    onSelectBank(val) {
+    onSelectBank(items) {
         let addPostData = this.state.addPostData,
             adduserbank = this.state.adduserbank;
-        addPostData.bank_id = val;
-        addPostData.bank = val != '-1' && adduserbank.provincelist.length != 0 ? adduserbank.provincelist.filter(item => item.id == val)[0].bank_name : '';
+        addPostData.bank_id = items.key;
+        // addPostData.bank = val != '-1' && adduserbank.provincelist.length != 0 ? adduserbank.provincelist.filter(item => item.id == val)[0].bank_name : '';
+        addPostData.bank = items.key != '-1' && adduserbank.provincelist.length != 0 ? items.label : '';
         this.setState({
             addPostData: addPostData,
         });
@@ -336,9 +337,9 @@ export default class BankCardManage extends Component {
                         this.setState({
                             addPostData: {},
                             validate: {},
+                            visible: false,
                         });
                         this.getData();
-
                     }else{
                         Modal.warning({
                             title: res.shortMessage,
@@ -456,7 +457,7 @@ export default class BankCardManage extends Component {
                                                 }
                                                 <li id="select_p1">
                                                     <span className="a_aa_left_text">开户银行：</span>
-                                                    <Select value={addPostData.bank_id} size="large"
+                                                    <Select value={{key: addPostData.bank_id}} size="large" labelInValue
                                                             style={{ width: 280 }}
                                                             onChange={(value)=>{this.onSelectBank(value)}} placeholder="请选择开户银行"
                                                             getPopupContainer={() => document.getElementById('select_p1')}
@@ -537,7 +538,7 @@ export default class BankCardManage extends Component {
                                                                 // onPressEnter={()=>{alert(789)}}
                                                                    className={onValidate('account_again', this.state.validate)}
                                                                    size="large" style={{width: 280}} placeholder="请输入确认卡号" />
-                                                            <span className="a_aa_right_text">银行账号只能手动输入，不要粘贴</span>
+                                                            <span className="a_aa_right_text">银行账号请手动输入，不要粘贴</span>
                                                         </li> :
                                                         null
                                                 }

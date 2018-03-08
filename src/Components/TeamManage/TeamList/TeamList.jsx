@@ -82,6 +82,7 @@ export default class TeamList extends Component {
                     contract:"配额契约",
                 }
             ],
+            protocol: [],//自身协议
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -237,6 +238,14 @@ export default class TeamList extends Component {
                         })
                     }
                 });
+                Fetch.dailysalaryself({
+                    method: 'POST',
+                    body: JSON.stringify({userid: stateVar.userInfo.userId})
+                }).then((res)=>{
+                    if(this._ismount && res.status == 200){
+                        this.setState({protocol: res.repsoneContent.pros[0]})
+                    }
+                })
             }else if(type == '分红'){
                 let { diviPost } = this.state;
                 diviPost.dividend_radio = record.dividend_radio;
@@ -501,6 +510,28 @@ export default class TeamList extends Component {
         this.getData();
         this.getNum();
     };
+    /*删除档位*/
+    onDelete(i){
+        let { contentArr } = this.state;
+        if(contentArr.length <= 3){
+            Modal.warning({
+                title: '日工资契约最低保留三个挡位',
+            });
+            return
+        }
+        let contentArrFlag = contentArr.filter((item, index)=> index != i);
+        this.setState({
+            contentArr: contentArrFlag,
+            salary_ratio: contentArrFlag
+        })
+    };
+    /*添加档位*/
+    onAddSale(){
+        let { contentArr, protocol } = this.state;
+        let contentObj = protocol[contentArr.length];
+        contentArr.push(contentObj);
+        this.setState({contentArr});
+    };
 
     render() {
         const { disabled, tableData, typeName, contentArr, prizeGroupList, agPost, diviPost } = this.state;
@@ -605,11 +636,12 @@ export default class TeamList extends Component {
                                 <li key={i}>
                                     {i+1}档：
                                     日销量≥
-                                    <InputNumber min={0} value={item.sale}
-                                                 onChange={(value)=>this.onChangeDailySales(value, item, i)}
-                                                 onBlur={()=>this.onBlurSale()}
-                                                 disabled={disabled}
-                                    />
+                                    <span style={{width: 58, display: 'inline-block'}}>{item.sale}</span>
+                                    {/*<InputNumber min={0} value={item.sale}*/}
+                                                 {/*onChange={(value)=>this.onChangeDailySales(value, item, i)}*/}
+                                                 {/*onBlur={()=>this.onBlurSale()}*/}
+                                                 {/*disabled={disabled}*/}
+                                    {/*/>*/}
                                     元，
                                     且活跃用户≥
                                     <InputNumber min={0} value={item.active_member}
@@ -622,11 +654,15 @@ export default class TeamList extends Component {
                                                  disabled={disabled}
                                     />
                                     %。
-                                    <Popconfirm title="确定删除吗?"
-                                                onConfirm={() => this.onDelete(i)}
-                                    >
-                                        <span className="hover col_color_ying delete_sale" style={{display: disabled ? 'none' : ''}}>删除</span>
-                                    </Popconfirm>
+                                    {
+                                        contentArr.length-1 == i ?
+                                            <Popconfirm title="确定删除吗?"
+                                                        onConfirm={() => this.onDelete(i)}
+                                            >
+                                                <span className="hover col_color_ying delete_sale" style={{display: disabled ? 'none' : ''}}>删除</span>
+                                            </Popconfirm> :
+                                            null
+                                    }
                                 </li>
                             )
                         })

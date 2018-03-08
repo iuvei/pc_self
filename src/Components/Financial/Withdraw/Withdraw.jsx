@@ -126,7 +126,7 @@ export default class Withdraw extends Component {
         hashHistory.push({
             pathname: '/selfInfo/bankCardManage',
             query: {
-                navIndex: 4
+                navIndex: 1
             }
         });
     };

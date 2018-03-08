@@ -66,6 +66,7 @@ export default class DayRate extends Component {
                     contract:"配额契约",
                 }
             ],
+            protocol: [],// 自身协议
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -231,6 +232,14 @@ export default class DayRate extends Component {
                 }
             })
         }else if(type == '修改协议' || type == '已签订过' || type == '等待同意' || type == '自身协议' || type == '同意协议'){
+            Fetch.dailysalaryself({
+                method: 'POST',
+                body: JSON.stringify({userid: stateVar.userInfo.userId})
+            }).then((res)=>{
+                if(this._ismount && res.status == 200){
+                    this.setState({protocol: res.repsoneContent.pros[0]})
+                }
+            });
             this.setState({
                 alterData: record,
                 alterVisible: true,
@@ -302,9 +311,9 @@ export default class DayRate extends Component {
     /*删除档位*/
     onDelete(i){
         let { contentArr } = this.state;
-        if(contentArr.length <= 4){
+        if(contentArr.length <= 3){
             Modal.warning({
-                title: '日工资契约最低保留四个挡位',
+                title: '日工资契约最低保留三个挡位',
             });
             return
         }
@@ -316,12 +325,8 @@ export default class DayRate extends Component {
     };
     /*添加档位*/
     onAddSale(){
-        let { contentArr } = this.state;
-        let contentObj = {
-            sale: "0",
-            salary_ratio: "0",
-            active_member: "0"
-        };
+        let { contentArr, protocol } = this.state;
+        let contentObj = protocol[contentArr.length];
         contentArr.push(contentObj);
         this.setState({contentArr});
     };
@@ -547,11 +552,12 @@ export default class DayRate extends Component {
                                                 <li key={i}>
                                                     {i+1}档：
                                                     日销量≥
-                                                    <InputNumber min={0} value={item.sale}
-                                                                 onChange={(value)=>this.onChangeDailySales(value, item, i)}
-                                                                 onBlur={()=>this.onBlurSale()}
-                                                                 disabled={disabled}
-                                                    />
+                                                    <span style={{width: 58, display: 'inline-block'}}>{item.sale}</span>
+                                                    {/*<InputNumber min={0} value={item.sale}*/}
+                                                                 {/*onChange={(value)=>this.onChangeDailySales(value, item, i)}*/}
+                                                                 {/*onBlur={()=>this.onBlurSale()}*/}
+                                                                 {/*disabled={disabled}*/}
+                                                    {/*/>*/}
                                                     元，
                                                     且活跃用户≥
                                                     <InputNumber min={0} value={item.active_member}
@@ -564,11 +570,15 @@ export default class DayRate extends Component {
                                                                  disabled={disabled}
                                                     />
                                                     %。
-                                                    <Popconfirm title="确定删除吗?"
-                                                                onConfirm={() => this.onDelete(i)}
-                                                    >
-                                                        <span className="hover col_color_ying delete_sale" style={{display: disabled ? 'none' : ''}}>删除</span>
-                                                    </Popconfirm>
+                                                    {
+                                                        contentArr.length-1 == i ?
+                                                            <Popconfirm title="确定删除吗?"
+                                                                        onConfirm={() => this.onDelete(i)}
+                                                            >
+                                                                <span className="hover col_color_ying delete_sale" style={{display: disabled ? 'none' : ''}}>删除</span>
+                                                            </Popconfirm> :
+                                                            null
+                                                    }
                                                 </li>
                                             )
                                         })

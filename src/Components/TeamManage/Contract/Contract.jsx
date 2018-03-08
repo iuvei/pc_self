@@ -375,6 +375,7 @@ export default class Contract extends Component {
                            visible={this.state.visible}
                            transferMsg = {visible => this.transferMsg(visible)}
                            getContractList = {this.getContractList}
+                           protocol = {protocol}
                        />
                        <div className="c_table">
                            <Table columns={columns} dataSource={tableData} bordered={true} loading={this.state.loading} pagination={true}/>
