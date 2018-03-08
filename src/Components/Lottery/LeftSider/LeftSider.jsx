@@ -62,6 +62,7 @@ export default class LeftSider extends Component {
 					       	stateVar.BetContent.totalMoney = 0;
 					       	stateVar.BetContent.lt_trace_base = 0;
 					       	stateVar.kjNumberList = [];
+					       	stateVar.mmCkjNumberList=[];
 							clearInterval(window.interval);
 							stateVar.checkLotteryId= false;
 							stateVar.nowlottery.lotteryId = e.key;
