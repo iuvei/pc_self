@@ -29,7 +29,7 @@ export default class Message extends Component {
                 sendtime: '加载中...',
                 content: '加载中...',
             },
-            isview: 0, //本来是否已读，用来判断关闭后是否重新更新列表
+            isview: 0, //是否已读，用来判断关闭后是否重新更新列表
         }
     };
     componentDidMount() {
@@ -43,7 +43,7 @@ export default class Message extends Component {
         this._ismount = false;
         emitter.off(this.eventEmitter);
     };
-    getData() {
+    getData(isview) {
         let { postData } = this.state;
         this.setState({ tableLoading: true });
         Fetch.messages({
@@ -53,6 +53,9 @@ export default class Message extends Component {
             if(this._ismount){
                 this.setState({ loading: false, tableLoading: false });
                 if(res.status == 200) {
+                    if(isview == 0){
+                        this.onUnread();
+                    }
                     if(postData.tag != ''){
                         message.success(res.shortMessage);
                         postData.tag = '';
@@ -72,21 +75,21 @@ export default class Message extends Component {
     /*删除选中*/
     onDeleteAll() {
         this.setState({ loading: true });
-        this.getData();
+        let {postData} = this.state;
+        this.getData(0);
     };
     onSelectChange = (msgids) => {
-        console.log(msgids)
-        let postData = this.state.postData;
+        let {postData} = this.state;
         postData.msgids = msgids.join();
         postData.tag = 'deleteChoices';
         this.setState({ postData });
     };
     /*删除某条*/
-    onDeleteOne(key) {
+    onDeleteOne(record) {
         let postData = this.state.postData;
-        postData.msgids = key;
+        postData.msgids = record.entry;
         postData.tag = 'deleteChoices';
-        this.setState({postData}, ()=>this.getData());
+        this.setState({postData}, ()=>this.getData(record.isview));
     };
     /*切换每页条数*/
     onShowSizeChange(current, pageSize) {
@@ -161,7 +164,7 @@ export default class Message extends Component {
                     width: 200,
                     render: (text, record) => {
                         return (
-                                    <Popconfirm title="确定要删除?" onConfirm={() => this.onDeleteOne(record.entry)}>
+                                    <Popconfirm title="确定要删除?" onConfirm={() => this.onDeleteOne(record)}>
                                         <a href="javascript:void(0)" style={{textDecoration: 'underline'}}>删除</a>
                                     </Popconfirm>
                                 )

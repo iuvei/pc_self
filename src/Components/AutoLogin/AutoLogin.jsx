@@ -5,7 +5,7 @@ import { stateVar } from '../../State';
 import onCanvas from '../Login/canvas';
 import {getStore } from "../../CommonJs/common";
 import './AutoLogin.scss';
-import logoAuto from './Img/logoAuto.png';
+import logoAuto from '../../Images/logo.png';
 import speedSrc from './Img/speed.png'
 import dnsSrc from './Img/dns.png'
 import serviceSrc from './Img/service.png'

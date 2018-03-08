@@ -114,6 +114,7 @@ export default class ContractModal extends Component {
             userid:item.key,
             username:item.label,
             alterData: alterData,
+            contract_name: '修改契约',
         }, ()=>{
             if(origin == 'child'){
                 this.onSelectSys(this.state.type)
@@ -128,6 +129,7 @@ export default class ContractModal extends Component {
             disabled: true,
             prizeGroupFlag: alterData.prize_group,
             type: type,
+            contract_name: '修改契约',
         },()=>{
             this.props.transferMsg(false);
         });
@@ -208,14 +210,15 @@ export default class ContractModal extends Component {
     };
     /*选择不同类型对应不同显示类容*/
     onTypeContent(type){
-        let { contentArr, agPost, diviPost, prizeGroupList, disabled } = this.state;
+        let { contentArr, agPost, diviPost, prizeGroupList, disabled, alterData } = this.state;
         if(type == 3 || type == '配额契约'){ //配额契约
+            let contentArrFlag = contentArr.filter(item => item.accGroup <= alterData.prize_group);
             typeContent = <div className="a_c_text">
                 <p>契约内容：</p>
                 <p>该用户可继续推广下级，其中可分配奖金组：</p>
                 <ul className="text_content_list">
                     {
-                        contentArr.map((item, i)=>{
+                        contentArrFlag.map((item, i)=>{
                             return (
                                 <li key={item.uagid}>
                                     {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个

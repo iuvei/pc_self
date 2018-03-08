@@ -351,7 +351,7 @@ export default class ActivityDetails extends Component {
                     { title: '操作', dataIndex: 'wa_get_awards_2',
                         render: (text, record) =>
                             <Button type="primary"
-                                    disabled={response.user_is_enrolls == 0 || (parseInt(record.wa_get_awards) > 0 ? false : true)}
+                                    disabled={response.status != 1|| response.user_is_enrolls == 0 || (parseInt(record.wa_get_awards) <= 0 ? true : false)}
                                     onClick={()=>this.onRechargeAmountAward(record)}
                             >
                                 领取
@@ -365,7 +365,7 @@ export default class ActivityDetails extends Component {
                     { title: '操作', dataIndex: 'wa_get_award_numbers_2', width: 80,
                         render: (text, record) =>
                             <Button type="primary"
-                                    disabled={response.user_is_enrolls == 0 || (parseInt(record.wa_get_award_numbers) > 0 ? false : true)}
+                                    disabled={response.status != 1|| response.user_is_enrolls == 0 || (parseInt(record.wa_get_award_numbers) <= 0 ? true : false)}
                                     onClick={()=>this.onWateAmountAward(record)}
                             >
                                 领取
@@ -451,9 +451,12 @@ export default class ActivityDetails extends Component {
     /*报名状态*/
     onStatus(){
         let { response } = this.state,
-            status = response.status;
-        if(status == 1){
+            status = response.status,
+            user_is_enrolls = response.user_is_enrolls;
+        if(user_is_enrolls == 0 && status == 1){
             return '立刻报名'
+        }else if(user_is_enrolls == 1 && status == 1){
+            return '已报名'
         }else if(status == 200){
             return '已完成'
         }else if(status == 400){
