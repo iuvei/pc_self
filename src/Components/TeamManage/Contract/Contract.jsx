@@ -47,7 +47,7 @@ export default class Contract extends Component {
     };
     transferMsg(visible) {
         this.setState({
-            visible
+            visible: visible
         });
     };
 
@@ -79,14 +79,14 @@ export default class Contract extends Component {
                     if(data.protocol instanceof Array){
                         curUserSignStatus.daily_salary_status = 1;
                     }
-                    curUserSignStatus.dividend_ratio_status = data.dividend_ratio.status;
+                    curUserSignStatus.dividend_ratio_status = data.dividend_ratio != null && data.dividend_ratio.status;
                     if(data.self_acc_group.length>0){
                         curUserSignStatus.quota_status = 1;
                     }
                     this.setState({
                         curUserSignStatus:curUserSignStatus,
                         protocol:data.protocol,
-                        cur_dividend_radio:data.dividend_ratio.dividend_radio,
+                        cur_dividend_radio: data.dividend_ratio != null && data.dividend_ratio.dividend_radio,
                         tableLength:data.results.length,
                         quotaList: data.prizeaccount,
                     });
@@ -106,11 +106,10 @@ export default class Contract extends Component {
                     /*添加分红比例表头
                     * 当上级用户签订了分红比例时，下级才有分红比例表头
                     * */
-                    if(data.dividend_ratio.status==1){
+                    if(curUserSignStatus.dividend_ratio_status == 1){
                         columns.push({
                             title: '分红比例',
                             dataIndex: "divendRatio",
-                            key: 'divendRatio',
                         });
                     }
                     /*添加日工资表头
@@ -186,11 +185,9 @@ export default class Contract extends Component {
 
                         /*添加分红比例,当上级用户签订了分红比例，才添加数据
                         * 当此下级用户签订了分红比例时，显示分红比例，否则显示“-”*/
-                        if(data.dividend_ratio.status==1){
+                        if(curUserSignStatus.dividend_ratio_status==1){
                             if(data.results[j].dividend_salary_status==1){
-
-                                    tableData[j][ "divendRatio"] = data.results[j].dividend_radio+"%";
-
+                                tableData[j][ "divendRatio"] = data.results[j].dividend_radio+"%";
                             }else{
                                 tableData[j][ "divendRatio"] = data.results[j].dividend_radio+"%";
 
@@ -201,7 +198,7 @@ export default class Contract extends Component {
                         if(data.protocol instanceof Array){
                             for(let k=0;k<6;k++){
                                 if(data.results[j].daily_salary_status==1){
-                                    tableData[j][`dailySalary${k}`] = data.results[j].daily_protocol[k].salary_ratio+"%";
+                                    tableData[j][`dailySalary${k}`] = data.results[j].daily_protocol[k] != undefined && data.results[j].daily_protocol[k].salary_ratio+"%";
                                 }else{
                                     tableData[j][`dailySalary${k}`]="-";
                                 }
@@ -242,7 +239,7 @@ export default class Contract extends Component {
                 this.setState({quotaLoding: false, quotaVisible: false, quotaPost: {}});
                 if(res.status == 200){
                     Modal.success({
-                        title: '亲爱的用户：',
+                        title: '尊敬的用户：',
                         content: res.shortMessage,
                         okText: '确认关闭'
                     });
@@ -307,22 +304,21 @@ export default class Contract extends Component {
                    <div>
                        <ul className='c_top clear'>
                            <li>
-                                   {/*daily_salary_status ==1 ?*/}
-                                       <div className='c_salary border_content' >
-                                           <p className='c_title'><img src={moneySrc}/>我的日工资比例
-                                               <Tooltip placement="bottom" title={text}  overlayClassName='contract_helpinfo'>
-                                                   <Icon className='c-info' type="info-circle" />
-                                               </Tooltip>
-                                           </p>
-                                           <div className="day_table">
-                                               <Table bordered={true}
-                                                      rowKey={(record, index)=> index}
-                                                      dataSource={protocol}
-                                                      columns={columnsDay}
-                                                      pagination={false}
-                                               />
-                                           </div>
-                                       </div>
+                               <div className='c_salary border_content' >
+                                   <p className='c_title'><img src={moneySrc}/>我的日工资比例
+                                       <Tooltip placement="bottom" title={text}  overlayClassName='contract_helpinfo'>
+                                           <Icon className='c-info' type="info-circle" />
+                                       </Tooltip>
+                                   </p>
+                                   <div className="day_table">
+                                       <Table bordered={true}
+                                              rowKey={(record, index)=> index}
+                                              dataSource={protocol}
+                                              columns={columnsDay}
+                                              pagination={false}
+                                       />
+                                   </div>
+                               </div>
                            </li>
                            <li>
                                <div className='c_portion border_content' >
@@ -374,10 +370,11 @@ export default class Contract extends Component {
                                <p>创建契约</p>
                            </li>
                        </ul>
-                       {
-                           this.state.visible ?
-                               <ContractModal visible={this.state.visible}  transferMsg = {visible => this.transferMsg(visible)}/> : null
-                       }
+                       {/*{*/}
+                           {/*this.state.visible ?*/}
+                               {/*<ContractModal visible={this.state.visible}  transferMsg = {visible => this.transferMsg(visible)}/> : null*/}
+                       {/*}*/}
+                       <ContractModal visible={this.state.visible}  transferMsg = {visible => this.transferMsg(visible)}/>
                        <div className="c_table">
                            <Table columns={columns} dataSource={tableData} bordered={true} loading={this.state.loading} pagination={true}/>
                        </div>
