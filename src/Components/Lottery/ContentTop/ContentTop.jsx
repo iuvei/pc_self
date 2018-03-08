@@ -217,9 +217,6 @@ export default class ContentTop extends Component {
      getKjHistory(flag){
      	if(stateVar.nowlottery.lotteryBetId == 23){
      		if(this._ismount){
-     			this.setState({mmcmoni:true,kjStopallFlag:false,kjStopTime:0,kjStopFlag:[false,false,false,false,false]},()=>{
-					this.kjanimate(0);
-				});
      		}
      		Fatch.aboutMmc({
 	    		method:"POST",
@@ -230,10 +227,18 @@ export default class ContentTop extends Component {
 	    			if(this._ismount && data.status == 200){
 	    				if(tempData.length > 0){
 	    					stateVar.mmccode = tempData[0].split(' ');
-	    					setTimeout(()=>{this.setState({code:stateVar.mmccode})},300);
+	    					stateVar.mmCkjNumberList = tempData;
+	    					this.setState({mmcmoni:true,kjStopallFlag:false,kjStopTime:0,kjStopFlag:[false,false,false,false,false]},()=>{
+								this.kjanimate(0);
+							});
+	    					setTimeout(()=>{
+	    						this.setState({code:stateVar.mmccode});
+	    						this.setState({mmcmoni:false,kjStopallFlag:true});
+	    					},300);
+	    				}else{
+	    					stateVar.mmCkjNumberList = [];
+	    					this.setState({mmcmoni:false});
 	    				}
-	    				stateVar.mmCkjNumberList = tempData;
-	    				this.setState({mmcmoni:false,kjStopallFlag:true});
 	    			}else{
 	    				if(this._ismount){
 	    					this.setState({mmcmoni:false,kjStopallFlag:true});

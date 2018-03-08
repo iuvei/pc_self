@@ -105,6 +105,7 @@ export default class ContentMian extends Component {
        	stateVar.kjNumberList = [];
 	    stateVar.openLotteryFlag = true;
 	    stateVar.checkLotteryId= true;
+	    stateVar.mmCkjNumberList=[];
 	    emitter.off(this.eventEmitter);
 	}
     initData(){
@@ -1220,11 +1221,11 @@ export default class ContentMian extends Component {
         }
     	let tempArr = mobx.toJS(stateVar.aboutGame.data_sel);
     	for(let i=0; i<tempArr.length; i++ ){//清空已选择数据
-            let l = [];
+            let tmepL = [];
             for(let j=0;j<tempBet[i].length;j++){
-            	l.push(String(tempBet[i][j]));
+            	tmepL.push(String(tempBet[i][j]));
             }
-			stateVar.aboutGame.data_sel[i] = l;
+			stateVar.aboutGame.data_sel[i] = tmepL;
         }
     	let tpNum = mobx.toJS(Method.checkNum());
     	this.setState({numss:tpNum},()=>{
