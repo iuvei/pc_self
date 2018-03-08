@@ -98,14 +98,14 @@ export default class Report extends Component {
                         }
                     }
                 }
-                if(data.isLose != 1){
+                if(data.isSalary != 1){
                     for(let i = 0; i < navList.length; i++){
                         if(navList[i].link == '/report/dayRate') {
                             navList.splice(i, 1);
                         }
                     }
                 }
-                if(data.isSalary != 1){
+                if(data.isLose != 1){
                     for(let i = 0; i < navList.length; i++){
                         if(navList[i].link == '/report/losesalary') {
                             navList.splice(i, 1);

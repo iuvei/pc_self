@@ -4,7 +4,6 @@ import Fetch from '../../../Utils';
 import { Row, Col, Button, Table, message, Modal  } from 'antd';
 import { timestampToTime } from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
-import lotteryTypeList from '../../../CommonJs/common.json';
 
 import litimg_details from './Img/litimg_details.png';
 import './ActivityDetails.scss';
@@ -367,7 +366,7 @@ export default class ActivityDetails extends Component {
                         render: (text, record) =>
                             <Button type="primary"
                                     disabled={response.user_is_enrolls == 0 || (parseInt(record.wa_get_award_numbers) > 0 ? false : true)}
-                                    onClick={()=>this.onWateAmountAward()}
+                                    onClick={()=>this.onWateAmountAward(record)}
                             >
                                 领取
                             </Button>
@@ -475,7 +474,7 @@ export default class ActivityDetails extends Component {
             return (
                 <ul className="schedule_list">
                     <li>已推广人数：{userSign.pull_new_num == undefined ? '0' : userSign.pull_new_num} 人</li>
-                    <li>有效推广人数：{userSign.used_recharge_count == undefined ? '0' : userSign.used_recharge_count} 元</li>
+                    <li>有效推广人数：{userSign.used_recharge_count == undefined ? '0' : userSign.used_recharge_count} 人</li>
                     <li>可领取奖金：{userSign.used_user_award_amount == undefined ? '0' : userSign.used_user_award_amount}元</li>
                 </ul>
             )
@@ -515,7 +514,7 @@ export default class ActivityDetails extends Component {
         }else{
             return <p className="dissertation">无</p>
         }
-    }
+    };
     render() {
         const { response } = this.state;
         return (
@@ -584,7 +583,6 @@ export default class ActivityDetails extends Component {
                                 {
                                     this.onMechanismType()
                                 }
-                                {/*<a className="lucky_draw right" href="javascript:void(0)">前往抽奖</a>*/}
                             </div>
                             <div className="a_d_schedule clear">
                                 <p className="schedule_title">活动范围</p>

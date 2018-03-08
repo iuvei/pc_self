@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
-import { Select, Table, Input, Button, Modal, message, InputNumber } from 'antd';
+import { Select, Table, Input, Button, Modal, InputNumber } from 'antd';
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
@@ -46,6 +46,25 @@ export default class Dividend extends Component {
             alterData: {},
             affirmLoading: false,
             disabled: true,
+            contractInfo: [
+                {
+                    id:0,
+                    contract:"日工资契约",
+                },
+                {
+                    id:1,
+                    contract:"分红契约",
+                },
+                {
+                    id:2,
+                    contract:"奖金组契约",
+                },
+                {
+                    id:3,
+                    contract:"配额契约",
+                }
+            ],
+            contract_name: '修改契约', //按钮btn
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -131,7 +150,10 @@ export default class Dividend extends Component {
 
     /*关闭修改分红模态框*/
     onCancel(){
-        this.setState({alterVisible: false});
+        this.setState({
+            alterVisible: false,
+            contract_name: '修改契约',
+        });
         this.getData();
     };
     /*操作按钮*/
@@ -184,7 +206,9 @@ export default class Dividend extends Component {
                     }).then((res)=>{
                         if(_this._ismount){
                             if(res.status == 200){
-                                message.success(res.shortMessage);
+                                Modal.success({
+                                    title: res.shortMessage,
+                                });
                                 _this.getData();
                             }else{
                                 Modal.warning({
@@ -209,7 +233,9 @@ export default class Dividend extends Component {
                     }).then((res)=>{
                         if(_this._ismount){
                             if(res.status == 200){
-                                message.success(res.shortMessage);
+                                Modal.success({
+                                    title: res.shortMessage,
+                                });
                                 _this.getData();
                             }else{
                                 Modal.warning({
@@ -226,7 +252,7 @@ export default class Dividend extends Component {
     /*修改分红比例*/
     onDiviratio(contract_name){
         if(contract_name == '修改契约'){
-            this.setState({disabled: false})
+            this.setState({disabled: false, contract_name: '签订契约'})
         }else{
             this.setState({affirmLoading: true});
             let alterData = this.state.alterData;
@@ -242,9 +268,15 @@ export default class Dividend extends Component {
                 if(this._ismount){
                     this.setState({affirmLoading: false});
                     if(res.status == 200){
-                        message.success(res.repsoneContent);
+                        Modal.success({
+                            title: res.repsoneContent,
+                        });
                         this.setState({alterVisible: false, disabled: true});
                         this.getData();
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
                     }
                 }
             })
@@ -452,6 +484,7 @@ export default class Dividend extends Component {
                     </Modal>
                     <Contract
                         title="分红契约"
+                        userid={this.state.alterData.userid}
                         textDescribe={
                             <div className="a_c_text">
                                 <p>契约内容：</p>
@@ -469,6 +502,10 @@ export default class Dividend extends Component {
                         alterVisible={this.state.alterVisible}
                         affirmLoading={this.state.affirmLoading}
                         disabled={this.state.disabled}
+                        contract_name={this.state.contract_name}
+                        userList={this.state.data}
+                        contractInfo={this.state.contractInfo}
+                        disabledSelect={true}
                         onCancel={this.onCancel}
                         onAffirm={this.onDiviratio}
                     />
