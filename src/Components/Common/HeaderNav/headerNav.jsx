@@ -144,7 +144,7 @@ export default class HeaderNav extends Component {
     		for(let val in tempMethod){
 				if(val == tempId){
 					if(tempMethod[val].msg == undefined){
-						stateVar.nowlottery.lotteryId = e.key;
+						stateVar.nowlottery.lotteryId = tempId;
 						hashHistory.push('/lottery');
 					}else{
 						const modal = Modal.error({

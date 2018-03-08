@@ -329,6 +329,7 @@ export default class HeaderTop extends Component {
     			this.getAccGroup();
     		}else if(tempType == 10){
     			this.onUnread();
+    			emitter.emit('zhanneixin');
     		}
     	}
     }

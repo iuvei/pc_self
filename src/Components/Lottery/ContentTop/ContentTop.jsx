@@ -76,11 +76,13 @@ export default class ContentTop extends Component {
     		}
     	}
     	curLocation = curLocation.split("#")[0] + "#/tendency";
-    	this.setState({code:tempArrCode,kjStopFlag:tempStopFlag,animateCode:tempArrCode,tempLotteryLength:tempLotteryLength},()=>{
-    		if(stateVar.nowlottery.lotteryBetId != 23){
-	    		this.kjanimate(0);
-	    	}
-    	});
+    	if(this._ismount){
+    		this.setState({code:tempArrCode,kjStopFlag:tempStopFlag,animateCode:tempArrCode,tempLotteryLength:tempLotteryLength},()=>{
+	    		if(stateVar.nowlottery.lotteryBetId != 23){
+		    		this.kjanimate(0);
+		    	}
+	    	});
+    	}
     	this.getlotterycode();
     	this.getFutureIssue();
     	this.getFutureIssue();
@@ -111,7 +113,7 @@ export default class ContentTop extends Component {
 		this.setState({animateCode:tempCode},()=>{
 			setTimeout(()=>{
 				if(b < 600){
-					b = b + 30;
+					b = b + 50;
 					this.kjanimate(b);
 				}else{
 					if(this.state.kjStopallFlag){
@@ -214,6 +216,11 @@ export default class ContentTop extends Component {
     //得到最近历史开奖号码
      getKjHistory(flag){
      	if(stateVar.nowlottery.lotteryBetId == 23){
+     		if(this._ismount){
+     			this.setState({mmcmoni:true,kjStopallFlag:false,kjStopTime:0,kjStopFlag:[false,false,false,false,false]},()=>{
+					this.kjanimate(0);
+				});
+     		}
      		Fatch.aboutMmc({
 	    		method:"POST",
 	    		body:JSON.stringify({lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,flag:'getlastcode'})
@@ -221,15 +228,15 @@ export default class ContentTop extends Component {
 	    			stateVar.openLotteryFlag = true;
 	    			let tempData = data.repsoneContent;
 	    			if(this._ismount && data.status == 200){
-	    				this.setState({mmcmoni:false});
 	    				if(tempData.length > 0){
 	    					stateVar.mmccode = tempData[0].split(' ');
 	    					setTimeout(()=>{this.setState({code:stateVar.mmccode})},300);
 	    				}
 	    				stateVar.mmCkjNumberList = tempData;
+	    				this.setState({mmcmoni:false,kjStopallFlag:true});
 	    			}else{
 	    				if(this._ismount){
-	    					this.setState({mmcmoni:false});
+	    					this.setState({mmcmoni:false,kjStopallFlag:true});
 	    				}
 	    			}
     			})

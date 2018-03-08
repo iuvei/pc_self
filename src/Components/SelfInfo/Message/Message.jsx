@@ -1,6 +1,7 @@
 /*站内信*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import emitter from '../../../Utils/events';
 import Fetch from '../../../Utils';
 import { Table, Button, Popconfirm, Pagination, message, Modal } from 'antd';
 import { stateVar } from '../../../State';
@@ -33,10 +34,14 @@ export default class Message extends Component {
     };
     componentDidMount() {
         this._ismount = true;
-        this.getData()
+        this.eventEmitter = emitter.on('zhanneixin', (e) => {
+            this.getData();
+        });
+        this.getData();
     };
     componentWillUnmount() {
         this._ismount = false;
+        emitter.off(this.eventEmitter);
     };
     getData() {
         let { postData } = this.state;
