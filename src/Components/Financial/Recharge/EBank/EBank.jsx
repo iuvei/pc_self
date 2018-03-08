@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import Fetch from '../../../../Utils';
 import { stateVar } from '../../../../State';
-import { InputNumber, Button } from 'antd';
+import { InputNumber, Button, Modal } from 'antd';
 import { changeMoneyToChinese, onValidate } from '../../../../CommonJs/common';
 
 import '../AliPay/AliPay.scss'
@@ -92,6 +92,10 @@ export default class Ebank extends Component {
                         query: {
                             name: 'eBank'
                         }
+                    });
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
                     });
                 }
             }

@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
-import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, message, Badge, Popconfirm } from 'antd';
+import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, Badge, Popconfirm } from 'antd';
 import Fetch from '../../../Utils';
 import Crumbs from '../../Common/Crumbs/Crumbs'
 import { stateVar } from '../../../State';
@@ -58,12 +58,30 @@ export default class TeamList extends Component {
                 dividend_radio: null, // 要修改的比例
             },
             prizeGroupPost: {}, // 奖金组请求参数
-            contract_name: '修改协议', //按钮btn
+            contract_name: '修改契约', //按钮btn
             quotaVisible: false, //配额
             quotaList: [], //配额列表
             quotaPost:{}, //申请配额请求参数
             quotaLoding: false,
             num: 0, //配额申请成功数
+            contractInfo: [
+                {
+                    id:0,
+                    contract:"日工资契约",
+                },
+                {
+                    id:1,
+                    contract:"分红契约",
+                },
+                {
+                    id:2,
+                    contract:"奖金组契约",
+                },
+                {
+                    id:3,
+                    contract:"配额契约",
+                }
+            ],
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -292,7 +310,7 @@ export default class TeamList extends Component {
         }
     }
     /*日销量失去焦点事件*/
-    onBlurSale(item, index){
+    onBlurSale(){
         let { contentArr } = this.state;
         let contentArrFlag = contentArr.sort(this.compare('sale'));
         for(let i=0;i<contentArr.length;i++){
@@ -308,7 +326,7 @@ export default class TeamList extends Component {
     /*提交协议*/
     onDiviratio(contract_name){
         if(contract_name == '修改契约'){
-            this.setState({disabled: false, contract_name: '签订协议'});
+            this.setState({disabled: false, contract_name: '签订契约'});
         }else{
             let { typeName, alterData } = this.state;
             this.setState({affirmLoading: true});
@@ -328,13 +346,15 @@ export default class TeamList extends Component {
                     if(this._ismount){
                         this.setState({affirmLoading: false, quotaLoding: false});
                         if(res.status == 200){
-                            message.success(res.repsoneContent);
+                            Modal.success({
+                                title: res.repsoneContent,
+                            });
                             if(contract_name == '新申请'){
                                 this.setState({quotaVisible: false});
                                 this.getData();
                                 this.getNum();
                             }else{
-                                this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
+                                this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
                             }
                             this.getAccGroupList(alterData);
                         }else{
@@ -354,8 +374,10 @@ export default class TeamList extends Component {
                     if(this._ismount) {
                         this.setState({affirmLoading: false});
                         if(res.status == 200){
-                            message.success(res.repsoneContent);
-                            this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
+                            Modal.success({
+                                title: res.repsoneContent,
+                            });
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -376,8 +398,10 @@ export default class TeamList extends Component {
                     if(this._ismount){
                         this.setState({affirmLoading: false});
                         if(res.status == 200){
-                            message.success(res.repsoneContent);
-                            this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
+                            Modal.success({
+                                title: res.repsoneContent,
+                            });
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -397,8 +421,10 @@ export default class TeamList extends Component {
                     if(this._ismount){
                         this.setState({affirmLoading: false});
                         if(res.status == 200){
-                            message.success(res.repsoneContent);
-                            this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
+                            Modal.success({
+                                title: res.repsoneContent,
+                            });
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -411,7 +437,7 @@ export default class TeamList extends Component {
     };
     /*关闭模态框*/
     onCancel(){
-        this.setState({contract_name: '修改协议', alterVisible: false, affirmLoading: false})
+        this.setState({contract_name: '修改契约', alterVisible: false, affirmLoading: false})
     };
     /*奖金组设置 滑动条*/
     onRegisterSetBonus(value) {
@@ -475,32 +501,7 @@ export default class TeamList extends Component {
         this.getData();
         this.getNum();
     };
-    /*删除档位*/
-    onDelete(i){
-        let { contentArr } = this.state;
-        if(contentArr.length <= 4){
-            Modal.warning({
-                title: '日工资契约最低保留四个挡位',
-            });
-            return
-        }
-        let contentArrFlag = contentArr.filter((item, index)=> index != i);
-        this.setState({
-            contentArr: contentArrFlag,
-            salary_ratio: contentArrFlag
-        })
-    };
-    /*添加档位*/
-    onAddSale(){
-        let { contentArr } = this.state;
-        let contentObj = {
-            sale: "0",
-            salary_ratio: "0",
-            active_member: "0"
-        };
-        contentArr.push(contentObj);
-        this.setState({contentArr});
-    };
+
     render() {
         const { disabled, tableData, typeName, contentArr, prizeGroupList, agPost, diviPost } = this.state;
         const columns = [
@@ -606,7 +607,7 @@ export default class TeamList extends Component {
                                     日销量≥
                                     <InputNumber min={0} value={item.sale}
                                                  onChange={(value)=>this.onChangeDailySales(value, item, i)}
-                                                 onBlur={()=>this.onBlurSale(item, i)}
+                                                 onBlur={()=>this.onBlurSale()}
                                                  disabled={disabled}
                                     />
                                     元，
@@ -750,12 +751,16 @@ export default class TeamList extends Component {
                 </div>
                 <Contract
                     title={this.state.typeName}
+                    userid={this.state.alterData.userid}
                     textDescribe={typeContent}
                     alterData={this.state.alterData}
                     alterVisible={this.state.alterVisible}
                     affirmLoading={this.state.affirmLoading}
                     contract_name={this.state.contract_name}
                     disabled={this.state.disabled}
+                    userList={this.state.tableData.dataSource}
+                    contractInfo={this.state.contractInfo}
+                    disabledSelect={true}
                     onCancel={this.onCancel}
                     onAffirm={this.onDiviratio}
                 />

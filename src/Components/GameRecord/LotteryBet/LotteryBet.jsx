@@ -234,7 +234,9 @@ export default class LotteryBet extends Component {
                     if(_this._ismount){
                         _this.setState({iscancancelLoading: false});
                         if(res.status == 200){
-                            message.success(res.longMessage);
+                            Modal.success({
+                                title: res.longMessage,
+                            });
                             let seatModal = _this.state.seatModal;
                             seatModal.iscancancel = 11; // 随意设置一个值来判断关闭和撤单成功后是否重新刷新列表
                             _this.setState({seatModal: seatModal});

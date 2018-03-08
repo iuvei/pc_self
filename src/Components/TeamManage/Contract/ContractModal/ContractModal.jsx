@@ -1,101 +1,51 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Button, Icon,Modal,Select,Slider,InputNumber ,message } from 'antd';
+import {  Icon,Modal,Select,Slider,InputNumber , Popconfirm } from 'antd';
 import Fetch from '../../../../Utils';
-import { setDateTime } from '../../../../CommonJs/common';
+import Contract from '../../../Common/Contract/Contract';
+let typeContent = '';
+
 import './ContractModal.scss';
 import guanbi  from  './Img/guanbi.png'
-
 const Option=Select.Option;
-/*数据提交成功显示信息*/
-const success = (value) => {
-    message.success(value);
-};
-/*数据提交失败显示信息*/
-const error = (value) => {
-    message.error(value);
-};
+
 @observer
 export default class ContractModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,               //控制提交按钮的加载状态
-            ModalTitle: false,
-            visible:false,                //控制契约模态框的显示
-            navListIndex:4,               //控制当前契约类型
-            modalClass:"center-modal-c", //控制模态框不同类型的
-            contactType:"请选择需要创建契约的系统" ,                          //当前被选中契约类型
-            today: setDateTime(0),//当天日期
-            value:'',
-            sliderValue: null,     //设置当前下级用户的奖金组级别
+            alterVisible: false,
+            alterData: {},
+            type: -1, //契约类型
+            affirmLoading: false,
+            contract_name: '修改契约', //按钮btn
+            disabled: true,
+            typeName: '', // 要修改类型的名字：日工资，分红，配额，奖金组
+            contentArr: [],
+            diviPost:{// 分红请求参数
+                userid: null,
+                dividend_radio: null, // 要修改的比例
+            },
+            prizeGroupPost: {}, // 奖金组请求参数
+            prizeGroupList: [], //可设置的奖金组列表
+            agPost: {// 配额请求参数
+                flag: 'post', //修改配额的时候必须传这个值
+                accgroup: [], //返回的奖金组agid
+                accnum: [], // 与accgroup顺序一致, 增加的配额个数
+                uid: null, //要修改的用户id
+            },
+            prizeGroupFlag: 0, // 需要修改的奖金组
+            salary_ratio: [], //修改协议
+
             userList:[], //下级用户列表（代理）
             contractInfo:[],//契约类型
-            userid:null, //下级用户userid
+            userid:null, // 下级用户userid
             username: '',//下级用户username
-            parentid: {},//当前用户id
-            currentUserInfo:{   //当前用户信息
-                salary_ratio_1:null,  //当前用户日销量>=1万时的日工资比例
-                salary_ratio_10:null, //当前用户日销量>=10万时的日工资比例
-                salary_ratio_30:null, //当前用户日销量>=30万时的日工资比例
-                salary_ratio_50:null, //当前用户日销量>=50万时的日工资比例
-                salary_ratio_70:null, //当前用户日销量>=70万时的日工资比例
-                salary_ratio_100:null, //当前用户日销量>=100万时的日工资比例
-                prize_group: {},      //当前用户奖金组级别
-
-            },
-            childrenQuotaStatus:null,        //下级用户配额契约签订状态
-            checkStatus:false,               //控制当前界面是查看页（true），还是修改页面(false)
-            contractTxt:'提交契约',                  //控制契约按钮显示文字内容
-            getSalary:{                      //获取日工资契约数据
-                salary_ratio_1:null,  //下级用户日销量>=1万时的日工资比例
-                salary_ratio_10:null, //下级用户日销量>=10万时的日工资比例
-                salary_ratio_30:null, //下级用户日销量>=30万时的日工资比例
-                salary_ratio_50:null, //下级用户日销量>=50万时的日工资比例
-                salary_ratio_70:null, //下级用户日销量>=70万时的日工资比例
-                salary_ratio_100:null, //下级用户日销量>=100万时的日工资比例
-            },
-            setSalary:{                 //设置日工资契约数据
-                salary_ratio:[],        //提交的日工资设置数组
-                salary_ratio_1:null,
-                salary_ratio_10:null,
-                salary_ratio_30:null,
-                salary_ratio_50:null,
-                salary_ratio_70:null,
-                salary_ratio_100:null,
-            } ,
-            dividend_radio:null,             //获取分红契约数据（分红比例）
-            setdividend_radio:null,         //设置分红契约数据
-            getAwardTeam:{                   //获取的当前下级用户的奖金组信息
-                groupLevel:null,             //当前下级用户的奖金组级别
-                selfPoint:null,                //当前用户的自身返点
-                childrenPoint:null,              //当前下级用户返点
-            },
-            getQuota:{                       //获取配额契约
-                point:null,               //当前下级用户利益点
-                quota1956display:true,    //由当前用户利益点决定是否显示对应奖金组配置内容
-                quota1954display:true,
-                quota1952display:true,
-                quota1950display:true,
-                accnum1956:null,        //对应奖金组的剩余配额
-                accnum1954:null,
-                accnum1952:null,
-                accnum1950:null,
-                subaccnum1956:null,   //对应奖金组已经配置的配额
-                subaccnum1954:null,
-                subaccnum1952:null,
-                subaccnum1950:null,
-            },
-            setQuota:{
-                accgroup:[],              //修改的对应的奖金组，用agid代替
-                accnum:[],                //修改的相对应的配额数据，与accgroup顺序一致
-                setSubaccnum1956:"",   //设置对应奖金组的配额
-                setSubaccnum1954:"",
-                setSubaccnum1952:"",
-                setSubaccnum1950:"",
-            }
-
         };
+        this.onCancel = this.onCancel.bind(this);
+        this.onDiviratio = this.onDiviratio.bind(this);
+        this.onSelectUser = this.onSelectUser.bind(this);
+        this.onSelectSys = this.onSelectSys.bind(this);
     };
     componentDidMount() {
         this._ismount = true;
@@ -104,1046 +54,575 @@ export default class ContractModal extends Component {
     componentWillUnmount(){
         this._ismount = false;
     }
-    /*获取用户信息
-    *当前用户的奖金组级别，userid，分红比例签订状态，日工资签订状态，调用当前用户获取日工资6挡比例的请求
-    *获取下级用户列表，包括userid，username，奖金组级别，分红比例签订状态，日工资契约签订状态
-    * */
+    /*关闭模态框*/
+    onCancel(){
+        this.setState({contract_name: '修改契约', alterVisible: false, affirmLoading: false})
+    };
+    /*获取用户信息 */
     getUserInfo(){
         Fetch.childrenList({
             method: "POST",
             body: JSON.stringify({pn: 100})
         }).then((res)=> {
-                if(this._ismount){
-                    if(res.status == 200){
-                        let { currentUserInfo, contractInfo } =this.state,
-                            data = res.repsoneContent,
-                            self = data.self;
-                        currentUserInfo.prize_group=data.self.prize_group;
-                        if(self.daily_salary_status == '1'){
-                            contractInfo.push({
-                                id:0,
-                                contract:"日工资契约",
-                            });
-                            this.getCurrentUserSalaryData(data.users[0].userid);
-                        }
-                        if(self.dividend_salary_status == '1'){
-                            contractInfo.push({
-                                id:1,
-                                contract:"分红契约",
-                            })
-                        }
-                        contractInfo.push({
-                            id:2,
-                            contract:"奖金组契约",
-                        });
-                        if(self.useraccgroup_status == '1'){
-                            contractInfo.push({
-                                id:3,
-                                contract:"配额契约",
-                            })
-                        }
-                        this.setState({
-                            parentid:data.users[0].userid,
-                            currentUserInfo,
-                            userList: data.results.filter(item => item.usertype == '1'),
-                            contractInfo,
-                        });
-                    }
-                }
-
-        })
-    }
-    /*获取当前用户日工资契约*/
-    getCurrentUserSalaryData(parentid){
-        let { today } = this.state;
-        Fetch.dailysalaryself({
-            method: "POST",
-            body: JSON.stringify({
-                gmt_sale: today,
-                userid: parentid,
-            })
-        }).then((res)=> {
             if(this._ismount){
                 if(res.status == 200){
-                    let { currentUserInfo }=this.state,
-                        data = res.repsoneContent;
-                    currentUserInfo.salary_ratio_1=data.pros[0][0].salary_ratio;
-                    currentUserInfo.salary_ratio_10=data.pros[0][1].salary_ratio;
-                    currentUserInfo.salary_ratio_30=data.pros[0][2].salary_ratio;
-                    currentUserInfo.salary_ratio_50=data.pros[0][3].salary_ratio;
-                    currentUserInfo.salary_ratio_70=data.pros[0][4].salary_ratio;
-                    currentUserInfo.salary_ratio_100=data.pros[0][5].salary_ratio;
-                    this.setState({
-                        currentUserInfo,
-                    })
-                }
-            }
-        })
-    }
-    /*获取日工资契约数据*/
-    getSalaryData(uid){
-        let userid = uid||this.state.userid;
-        Fetch.dailysalaryupdate({
-            method: "POST",
-            body: JSON.stringify({
-                userid:userid,
-                gmt_sale:this.state.today,
-                parentid:this.state.parentid,
-            })
-        }).then((data)=> {
-            if(this._ismount){
-                if(data.status==200){
-                    let getSalary=this.state.getSalary;
-                    getSalary.salary_ratio_1 = data.repsoneContent.pros[0].salary_ratio;
-                    getSalary.salary_ratio_10 = data.repsoneContent.pros[1].salary_ratio;
-                    getSalary.salary_ratio_30 = data.repsoneContent.pros[2].salary_ratio;
-                    getSalary.salary_ratio_50 = data.repsoneContent.pros[3].salary_ratio;
-                    getSalary.salary_ratio_70 = data.repsoneContent.pros[4].salary_ratio;
-                    getSalary.salary_ratio_100 = data.repsoneContent.pros[5].salary_ratio;
-                    this.setState({
-                        getSalary:getSalary,
-                    })
-                }
-            }
-        })
-    }
-    /*设置日工资契约数据
-    * 切换查看状态和修改契约状态
-    * 对提交数据是否为空进行验证
-    * 对操作成功和失败进行提醒
-    * */
-    setSalaryData(){
-        if(this.state.checkStatus){
-            this.setState({
-                checkStatus:false,
-                contractTxt:"签订契约"
-            })
-        }else{
-            let { setSalary }=this.state;
-            this.setState({
-                loading:true,
-            });
-            if(!(setSalary.salary_ratio_1&&setSalary.salary_ratio_10&&setSalary.salary_ratio_30&&
-                setSalary.salary_ratio_50&&setSalary.salary_ratio_70&&setSalary.salary_ratio_100)){
-                error("不能为空！");
-                this.setState({
-                    loading:false,
-                });
-            }else{
-                let salary_ratio = setSalary.salary_ratio;
-                salary_ratio.push({
-                    sale:10000,
-                    salary_ratio:setSalary.salary_ratio_1,
-                });
-                salary_ratio.push({
-                    sale:100000,
-                    salary_ratio:setSalary.salary_ratio_10,
-                });
-                salary_ratio.push({
-                    sale:300000,
-                    salary_ratio:setSalary.salary_ratio_30,
-                });
-                salary_ratio.push({
-                    sale:500000,
-                    salary_ratio:setSalary.salary_ratio_50,
-                });
-                salary_ratio.push({
-                    sale:700000,
-                    salary_ratio:setSalary.salary_ratio_70,
-                });
-                salary_ratio.push({
-                    sale:1000000,
-                    salary_ratio:setSalary.salary_ratio_100,
-                });
-
-                this.setState({
-                    setSalary:setSalary,
-                });
-                Fetch.dailysalaryupdate({
-                    method: "POST",
-                    body: JSON.stringify({
-                        userid:this.state.userid,
-                        gmt_sale:this.state.today,
-                        parentid:this.state.parentid,
-                        salary_ratio:this.state.setSalary.salary_ratio,
-                    })
-                }).then((data)=> {
-                    if(this._ismount){
-                        let setSalary=this.state.setSalary;
-                        setSalary.salary_ratio=[];
-                        this.setState({
-                            loading:false,
-                            setSalary:setSalary,
+                    let { contractInfo } =this.state,
+                        data = res.repsoneContent,
+                        self = data.self;
+                    if(self.daily_salary_status == '1'){
+                        contractInfo.push({
+                            id:0,
+                            contract:"日工资契约",
                         });
-                        if(data.status==200){
-                            success(data.shortMessage);
-                            this.props.transferMsg(false);
-                            let userInfo=this.state.userList;
-                            userInfo[this.state.userid].daily_salary_status=1;
-                            this.setState({
-                                userInfo:userInfo,
-                            });
-                        }else{
-                            error(data.shortMessage);
-                        }
                     }
-
-                });
-
-            }
-
-        }
-    }
-    /*获取分红契约数据(分红比例)*/
-    getPortionData(uid){
-        let userid = uid||this.state.userid;
-        Fetch.diviratio({
-            method: "POST",
-            body: JSON.stringify({
-                userid:userid,
-                tag:"getdividend",
-            })
-        }).then((data)=> {
-            if(this._ismount){
-                if(data.status==200){
-                    this.setState({
-                        dividend_radio:data.repsoneContent.dividend_radio,
-                    })
-                }
-            }
-
-        })
-    }
-    /*设置分红契约数据
-    * 切换查看状态和修改契约状态
-    * 对提交数据是否为空进行验证
-    * 对操作成功和失败进行提醒
-    * */
-    setPortionData(){
-        if(this.state.checkStatus){
-            this.setState({
-                checkStatus:false,
-                contractTxt:"签订契约"
-            })
-        }else{
-            this.setState({
-                loading:true,
-            });
-            if(!this.state.setdividend_radio){
-                error("不能为空！");
-                this.setState({
-                    loading:false,
-                });
-            }else{
-                Fetch.diviratio({
-                    method: "POST",
-                    body: JSON.stringify({
-                        userid:this.state.userid,
-                        dividend_radio:this.state.setdividend_radio,
-                    })
-                }).then((data)=> {
-                    if(this._ismount){
-                        this.setState({
-                            loading:false,
-                            setdividend_radio:null,
-                        });
-                        if(data.status==200){
-                            success(data.shortMessage);
-                            this.props.transferMsg(false);
-                            let userInfo=this.state.userList;
-                            userInfo[this.state.userid].dividend_salary_status=1;
-                            this.setState({
-                                userInfo:userInfo,
-                            });
-                        }else{
-                            error(data.shortMessage);
-                        }
+                    if(self.dividend_salary_status == '1'){
+                        contractInfo.push({
+                            id:1,
+                            contract:"分红契约",
+                        })
                     }
-
-                });
-
-            }
-
-        }
-    }
-    /*获取奖金组契约数据*/
-    getAwardTeamData(uid){
-        let userid = uid||this.state.userid;
-        Fetch.awardTeam({
-            method: "POST",
-            body: JSON.stringify({
-                uid:userid,
-            })
-        }).then((res)=> {
-            if(this._ismount){
-                if(res.status==200){
-                    let { getAwardTeam }=this.state,
-                        data = res.repsoneContent;
-                    getAwardTeam.groupLevel=data.groupLevel;
-                    getAwardTeam.selfPoint=data.selfPoint;
-                    this.setState({
-                        getAwardTeam:getAwardTeam,
-                        sliderValue:data.groupLevel,
-
-                    })
-                }
-            }
-
-        })
-    }
-    /*设置奖金组契约数据
-    * 切换查看状态和修改契约状态
-    * 对操作成功和失败进行提醒
-    * */
-    setAwardTeamData(){
-        if(this.state.checkStatus){
-            this.setState({
-                checkStatus:false,
-                contractTxt:"签订契约"
-            })
-        }else{
-            this.setState({
-                loading:true,
-            });
-            let groupLevel=this.state.sliderValue;
-            let high=0.0780-((1956-parseInt(groupLevel))/2)*0.001;
-            let keeppoint=((parseFloat(this.state.getAwardTeam.selfPoint)-high)*100).toFixed(3);
-            Fetch.awardTeam({
-                method: "POST",
-                body: JSON.stringify({
-                    uid:this.state.userid,
-                    flag:"rapid",
-                    groupLevel:this.state.sliderValue,
-                    selfPoint:this.state.getAwardTeam.selfPoint,
-                    keeppoint:keeppoint,
-
-                })
-            }).then((data)=> {
-                if(this._ismount){
-                    this.setState({
-                        loading:false,
+                    contractInfo.push({
+                        id:2,
+                        contract:"奖金组契约",
                     });
-                    if(data.status==200){
-                        success(data.shortMessage);
-                        this.props.transferMsg(false);
-                    }else{
-                        error(data.shortMessage);
-                    }
-                }
-
-            });
-
-
-
-        }
-    }
-    /*获取配额契约数据*/
-    getQuotaData(uid){
-        let userid=uid||this.state.userid;
-        Fetch.quota({method: "POST",
-            body: JSON.stringify({
-                uid:userid,
-            })
-        }).then((data)=> {
-            if(this._ismount){
-                if(data.status==200){
-                    let getQuota = this.state.getQuota;
-                    getQuota.point = data.repsoneContent.point;
-                    switch (getQuota.point){
-                        case 0.078:
-                            getQuota.quota1956display=true;
-                            getQuota.quota1954display=true;
-                            getQuota.quota1952display=true;
-                            getQuota.quota1950display=true;
-                            getQuota.accnum1956 = data.repsoneContent.aAllUserTypeAccNum[0].accnum;
-                            getQuota.accnum1954 = data.repsoneContent.aAllUserTypeAccNum[1].accnum;
-                            getQuota.accnum1952 = data.repsoneContent.aAllUserTypeAccNum[2].accnum;
-                            getQuota.accnum1950 = data.repsoneContent.aAllUserTypeAccNum[3].accnum;
-                            getQuota.subaccnum1956 = data.repsoneContent.aAllUserTypeAccNum[0].subaccnum;
-                            getQuota.subaccnum1954 = data.repsoneContent.aAllUserTypeAccNum[1].subaccnum;
-                            getQuota.subaccnum1952 = data.repsoneContent.aAllUserTypeAccNum[2].subaccnum;
-                            getQuota.subaccnum1950 = data.repsoneContent.aAllUserTypeAccNum[3].subaccnum;
-                            break;
-                        case 0.077:
-                            getQuota.quota1956display=false;
-                            getQuota.quota1954display=true;
-                            getQuota.quota1952display=true;
-                            getQuota.quota1950display=true;
-                            getQuota.accnum1954 = data.repsoneContent.aAllUserTypeAccNum[1].accnum;
-                            getQuota.accnum1952 = data.repsoneContent.aAllUserTypeAccNum[2].accnum;
-                            getQuota.accnum1950 = data.repsoneContent.aAllUserTypeAccNum[3].accnum;
-                            getQuota.subaccnum1954 = data.repsoneContent.aAllUserTypeAccNum[1].subaccnum;
-                            getQuota.subaccnum1952 = data.repsoneContent.aAllUserTypeAccNum[2].subaccnum;
-                            getQuota.subaccnum1950 = data.repsoneContent.aAllUserTypeAccNum[3].subaccnum;
-                            getQuota.subaccnum1956 = null;
-                            break;
-                        case 0.076:
-                            getQuota.quota1956display=false;
-                            getQuota.quota1954display=false;
-                            getQuota.quota1952display=true;
-                            getQuota.quota1950display=true;
-                            getQuota.accnum1952 = data.repsoneContent.aAllUserTypeAccNum[2].accnum;
-                            getQuota.accnum1950 = data.repsoneContent.aAllUserTypeAccNum[3].accnum;
-                            getQuota.subaccnum1952 = data.repsoneContent.aAllUserTypeAccNum[2].subaccnum;
-                            getQuota.subaccnum1950 = data.repsoneContent.aAllUserTypeAccNum[3].subaccnum;
-                            getQuota.subaccnum1956 = null;
-                            getQuota.subaccnum1954 = null;
-                            break;
-                        case 0.075:
-                            getQuota.quota1956display=false;
-                            getQuota.quota1954display=false;
-                            getQuota.quota1952display=false;
-                            getQuota.quota1950display=true;
-                            getQuota.accnum1950 = data.repsoneContent.aAllUserTypeAccNum[3].accnum;
-                            getQuota.subaccnum1950 = data.repsoneContent.aAllUserTypeAccNum[3].subaccnum;
-                            getQuota.subaccnum1956 = null;
-                            getQuota.subaccnum1954 = null;
-                            getQuota.subaccnum1952 = null;
-                            break;
+                    if(self.useraccgroup_status == '1'){
+                        contractInfo.push({
+                            id:3,
+                            contract:"配额契约",
+                        })
                     }
                     this.setState({
-                        getQuota:getQuota,
-                    })
+                        userList: data.results.filter(item => item.usertype == '1'),
+                        contractInfo,
+                    });
                 }
             }
-
+        })
+    };
+    /*选择下级用户*/
+    onSelectUser(item, origin){
+        let { userList, contractInfo} = this.state,
+            contractInfoFlag = [],
+            alterData = userList.filter(items => items.userid == item.key)[0]; //选择的当前用户信息
+        if(alterData.prize_group < 1950){
+            contractInfoFlag = contractInfo.filter(items => items.id != 2);
+        }else{
+            contractInfoFlag = contractInfo;
+        }
+        this.setState({
+            contractInfo: contractInfoFlag,
+            userid:item.key,
+            username:item.label,
+            alterData: alterData,
+        }, ()=>{
+            if(origin == 'child'){
+                this.onSelectSys(this.state.type)
+            }
         });
     }
-    /*
-    *切换配额契约查看状态和修改状态
-    *当为查看状态时，仅处理将查看状态改为修改状态
-    * 当为修改状态时，设置配额契约数据
-    * */
-    setQuotaData(){
-        if(this.state.checkStatus){
-            this.setState({
-                checkStatus:false,
-                contractTxt:"签订契约",
-            })
-        }else{
-            this.setState({
-                loading:true,
-            });
-            if(!(this.state.setQuota.setSubaccnum1956||this.state.setQuota.setSubaccnum1954
-                    ||this.state.setQuota.setSubaccnum1952||this.state.setQuota.setSubaccnum1950)){
-                error("不能为空！");
-                this.setState({
-                    loading:false,
-                });
-            }else{
-                let setQuota=this.state.setQuota;
-                if(this.state.setQuota.setSubaccnum1956){
-                    setQuota.accnum.push(this.state.setQuota.setSubaccnum1956);
-                    setQuota.accgroup.push(25);
-                }
-                if(this.state.setQuota.setSubaccnum1954){
-                    setQuota.accnum.push(this.state.setQuota.setSubaccnum1954);
-                    setQuota.accgroup.push(24);
-                }
-                if(this.state.setQuota.setSubaccnum1952){
-                    setQuota.accnum.push(this.state.setQuota.setSubaccnum1952);
-                    setQuota.accgroup.push(23);
-                }
-                if(this.state.setQuota.setSubaccnum1950){
-                    setQuota.accnum.push(this.state.setQuota.setSubaccnum1950);
-                    setQuota.accgroup.push(8);
-                }
-                this.setState({
-                    setQuota:setQuota,
-                })
-                Fetch.quota({method: "POST",
-                    body: JSON.stringify({
-                        accgroup:this.state.setQuota.accgroup,
-                        accnum:this.state.setQuota.accnum,
-                        "flag":"post",
-                        uid:this.state.userid,
-                    })
-                }).then((data)=> {
-                    if(this._ismount){
-                        let setQuota=this.state.setQuota;
-                        setQuota.accnum=[];
-                        setQuota.accgroup=[];
+    /*选择契约类型获取相应信息*/
+    onSelectSys(type) {
+        let { alterData } = this.state;
+        this.setState({
+            alterVisible: true,
+            disabled: true,
+            prizeGroupFlag: alterData.prize_group,
+            type: type,
+        },()=>{
+            this.props.transferMsg(false);
+        });
+        if(type == 3 || type == '配额契约'){ //配额
+            this.getAccGroupList(alterData);
+        }else if(type == 0 || type == '日工资契约'){//日工资
+            let postDataSelf = {
+                userid: alterData.userid,
+                parentid: alterData.parentid,
+            };
+            Fetch.dailysalaryself({
+                method: 'POST',
+                body: JSON.stringify(postDataSelf)
+            }).then((res)=>{
+                if(this._ismount){
+                    if(res.status == 200){
+                        let pros = res.repsoneContent.pros;
                         this.setState({
-                            loading:false,
-                            setQuota:setQuota,
-                        });
-                        if(data.status==200){
-                            success(data.shortMessage);
-                            this.props.transferMsg(false);
-                            let userInfo=this.state.userList;
-                            userInfo[this.state.userid].useraccgroup_status=1;
-                            this.setState({
-                                userInfo:userInfo,
+                            typeName: '日工资契约',
+                            contentArr: pros[pros.length - 1],
+                        })
+                    }
+                }
+            });
+        }else if(type == 1 || type == '分红契约'){//分红
+            let { diviPost } = this.state;
+            diviPost.dividend_radio = alterData.dividend_radio;
+            this.setState({
+                typeName: '分红契约',
+                diviPost,
+            })
+        }else if(type == 2 || type == '奖金组契约'){ //奖金组
+            //获取可设置的奖金组列表
+            Fetch.awardTeam({
+                method: 'POST',
+                body: JSON.stringify({uid: alterData.userid})
+            }).then((res)=>{
+                if(this._ismount && res.status == 200){
+                    let { prizeGroupPost } = this.state,
+                        data = res.repsoneContent;
+                    prizeGroupPost.uid = data.uid;
+                    prizeGroupPost.flag = 'rapid';
+                    prizeGroupPost.selfPoint = data.selfPoint;
+                    this.setState({
+                        typeName: '奖金组契约',
+                        prizeGroupList: data.list,
+                        prizeGroupPost,
+                    })
+                }
+            })
+        }else{}
+    };
+    /*获取对应用户配额列表*/
+    getAccGroupList(record){
+        Fetch.quota({
+            method: 'POST',
+            body: JSON.stringify({uid: record.userid})
+        }).then((res)=>{
+            if(this._ismount && res.status == 200){
+                let aAllUserTypeAccNum = res.repsoneContent.aAllUserTypeAccNum,
+                    { agPost } = this.state;
+                agPost.accgroup = [];
+                agPost.accnum = [];
+                aAllUserTypeAccNum.forEach((item)=>{
+                    agPost.accgroup.push(item.agid);
+                    if(item.quotanum != undefined){
+                        agPost.accnum.push(item.quotanum);
+                    }else{
+                        agPost.accnum.push(0);
+                    }
+                });
+                this.setState({
+                    typeName: '配额契约',
+                    contentArr: aAllUserTypeAccNum,
+                })
+            }
+        })
+    };
+    /*选择不同类型对应不同显示类容*/
+    onTypeContent(type){
+        let { contentArr, agPost, diviPost, prizeGroupList, disabled } = this.state;
+        if(type == 3 || type == '配额契约'){ //配额契约
+            typeContent = <div className="a_c_text">
+                <p>契约内容：</p>
+                <p>该用户可继续推广下级，其中可分配奖金组：</p>
+                <ul className="text_content_list">
+                    {
+                        contentArr.map((item, i)=>{
+                            return (
+                                <li key={item.uagid}>
+                                    {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个
+                                    <span style={{display: this.state.disabled ? 'none' : ''}}>
+                                            ，再增加
+                                            <InputNumber min={0}
+                                                         value={agPost.accnum[i]}
+                                                         onChange={(value)=>this.onChangeAccGroup(value, item)}
+                                            />
+                                            个 （剩余可分配{item.accnum}个）
+                                        </span>
+                                </li>
+                            )
+                        })
+                    }
+                    <li>1948&nbsp;及以下剩余配额：无限；</li>
+                </ul>
+            </div>;
+        }else if(type == 0 || type == '日工资契约'){//日工资契约
+            typeContent = <div className="a_c_text a_c_text_sale">
+                <p>契约内容：</p>
+                <ul className="text_content_list">
+                    {
+                        contentArr.map((item, i)=>{
+                            return (
+                                <li key={i}>
+                                    {i+1}档：
+                                    日销量≥
+                                    <InputNumber min={0} value={item.sale}
+                                                 onChange={(value)=>this.onChangeDailySales(value, item, i)}
+                                                 onBlur={()=>this.onBlurSale(item, i)}
+                                                 disabled={disabled}
+                                    />
+                                    元，
+                                    且活跃用户≥
+                                    <InputNumber min={0} value={item.active_member}
+                                                 onChange={(value)=>this.onChangeActiveNumber(value, item, i)}
+                                                 disabled={disabled}
+                                    />
+                                    人，日工资比例为
+                                    <InputNumber min={0} value={item.salary_ratio}
+                                                 onChange={(value)=>this.onChangeAlterContract(value, item)}
+                                                 disabled={disabled}
+                                    />
+                                    %。
+                                    <Popconfirm title="确定删除吗?"
+                                                onConfirm={() => this.onDelete(i)}
+                                    >
+                                        <span className="hover col_color_ying delete_sale" style={{display: disabled ? 'none' : ''}}>删除</span>
+                                    </Popconfirm>
+                                </li>
+                            )
+                        })
+                    }
+                    <li className="brisk_user">当日投注金额≥1000元，计为一个活跃用户</li>
+                </ul>
+                <span className="hover col_color_ying add_sale"
+                      onClick={()=>this.onAddSale()}
+                      style={{display: disabled || contentArr.length >= 6 ? 'none' : ''}}>
+                    添加档位
+                </span>
+            </div>;
+        }else if(type == 1 || type == '分红契约'){//分红契约
+            typeContent = <div className="a_c_text">
+                <p>契约内容：</p>
+                <div>
+                    如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
+                    <InputNumber min={0} value={diviPost.dividend_radio}
+                                 onChange={(value)=>{
+                                     diviPost.dividend_radio = value;
+                                     this.setState({diviPost});
+                                 }}
+                                 disabled={this.state.disabled}
+                    />
+                    %。
+                </div>
+            </div>;
+        }else if(type == 2 || type == '奖金组契约'){ //奖金组契约
+            typeContent = <div className="a_c_text">
+                <p>契约内容：</p>
+                <div>
+                    该用户的奖金组级别为
+                    <InputNumber min={0} value={this.state.prizeGroupFlag}
+                                 step={2}
+                                 onChange={(value)=>this.onRegisterSetBonus(value)}
+                                 disabled={this.state.disabled}
+                    />。
+                    <div className="prize_group_slider">
+                        <Icon className="slider_left" onClick={()=>this.onMinus()} type="left"/>
+                        <Slider
+                            min={prizeGroupList.length !== 0 && parseInt(prizeGroupList[0].prizeGroup)}
+                            max={prizeGroupList.length !== 0 && parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup)}
+                            step={2}
+                            onChange={(value)=>{this.onRegisterSetBonus(value)}}
+                            value={parseInt(this.state.prizeGroupFlag)}
+                            disabled={this.state.disabled}
+                        />
+                        <Icon className="slider_right" onClick={()=>this.onAdd()} type="right" />
+                    </div>
+                    {
+                        prizeGroupList.length !== 0 && <p style={{textAlign: 'center'}}>{prizeGroupList[0].prizeGroup} - {prizeGroupList[prizeGroupList.length-1].prizeGroup}</p>
+                    }
+                </div>
+            </div>;
+        }else{
+            typeContent = ''
+        }
+    };
+    /*设置配额契约*/
+    onChangeAccGroup(value, item){
+        let { agPost } = this.state,
+            accgroup = agPost.accgroup;
+        for(let i = 0; i < accgroup.length; i++){
+            if(accgroup[i] == item.agid){
+                agPost.accnum[i] = value;
+                break;
+            }
+        }
+        this.setState({agPost});
+    };
+    /*修改日工资比例*/
+    onChangeAlterContract(val, item){
+        item.salary_ratio = val;
+        let salary_ratioFlag = this.state.contentArr;
+        salary_ratioFlag.forEach((data, i)=>{
+            if(data.sale == item.sale){
+                data.salary_ratio = val
+            }
+        });
+        this.setState({salary_ratio: salary_ratioFlag});
+    };
+    /*修改活跃人数*/
+    onChangeActiveNumber(val, item, index){
+        item.active_member = val;
+        let { contentArr } = this.state;
+        contentArr[index].active_member = ''+val;
+        this.setState({salary_ratio: contentArr});
+    };
+    /*修改日销量*/
+    onChangeDailySales(val, item, index){
+        item.sale = val;
+        let { contentArr } = this.state;
+        contentArr[index].sale = ''+val;
+        this.setState({salary_ratio: contentArr});
+    };
+    /*删除档位*/
+    onDelete(i){
+        let { contentArr } = this.state;
+        if(contentArr.length <= 4){
+            Modal.warning({
+                title: '日工资契约最低保留四个挡位',
+            });
+            return
+        }
+        let contentArrFlag = contentArr.filter((item, index)=> index != i);
+        this.setState({
+            contentArr: contentArrFlag,
+            salary_ratio: contentArrFlag
+        })
+    };
+    /*添加档位*/
+    onAddSale(){
+        let { contentArr } = this.state;
+        let contentObj = {
+            sale: "0",
+            salary_ratio: "0",
+            active_member: "0"
+        };
+        contentArr.push(contentObj);
+        this.setState({contentArr});
+    };
+    /*日销量排序从小到大*/
+    compare(property){
+        return function(a,b){
+            let value1 = a[property];
+            let value2 = b[property];
+            return value1 - value2;
+        }
+    };
+    /*日销量失去焦点事件*/
+    onBlurSale(){
+        let { contentArr } = this.state;
+        let contentArrFlag = contentArr.sort(this.compare('sale'));
+        for(let i=0;i<contentArr.length;i++){
+            if (contentArrFlag[i+1] != undefined && contentArrFlag[i].sale == contentArrFlag[i+1].sale){
+                Modal.warning({
+                    title: '不同档位日销量不能相同，请重新输入！',
+                });
+                contentArrFlag[i].sale = '0'
+            }
+        }
+        this.setState({contentArr: contentArrFlag})
+    };
+    /*奖金组设置 滑动条*/
+    onRegisterSetBonus(value) {
+        this.setState({prizeGroupFlag: value});
+    };
+    /*奖金组*/
+    onMinus() {
+        let { disabled, prizeGroupFlag, prizeGroupList } = this.state;
+        if(disabled || prizeGroupFlag <= prizeGroupList[0].prizeGroup){
+            return
+        }
+        this.setState({prizeGroupFlag: this.state.prizeGroupFlag - 2});
+    };
+    onAdd(){
+        let { disabled, prizeGroupFlag, prizeGroupList } = this.state;
+        if(disabled || prizeGroupFlag >= prizeGroupList[prizeGroupList.length - 1].prizeGroup){
+            return
+        }
+        this.setState({prizeGroupFlag: this.state.prizeGroupFlag + 2});
+    };
+    /*提交协议*/
+    onDiviratio(contract_name){
+        if(contract_name == '修改契约'){
+            this.setState({disabled: false, contract_name: '签订契约'});
+        }else{
+            let { type, alterData } = this.state;
+            this.setState({affirmLoading: true});
+            if(type == 3){//配额契约
+                this.setState({quotaLoding: true});
+                let { agPost } = this.state;
+                if(contract_name == '新申请'){
+                    agPost.SH = 1;
+                }else{
+                    agPost.SH != undefined && delete agPost.SH;
+                }
+                agPost.uid = alterData.userid;
+                Fetch.quota({
+                    method: 'POST',
+                    body: JSON.stringify(agPost)
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({affirmLoading: false, quotaLoding: false});
+                        if(res.status == 200){
+                            Modal.success({
+                                title: res.repsoneContent,
                             });
+                            this.props.getContractList(); //更新列表
+                            if(contract_name == '新申请'){
+                                this.setState({quotaVisible: false});
+                                this.getData();
+                                this.getNum();
+                            }else{
+                                this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                            }
+                            this.getAccGroupList(alterData);
                         }else{
-                            error(data.shortMessage);
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
                         }
                     }
-
-                });
-            }
-
-        }
-        }
-    /*配额1956inputnumber内容更改事件
-    * 并对输入数字限定为向下取整的整数*/
-    onChange1956(value){
-        let setQuota=this.state.setQuota;
-        if(value){
-            setQuota.setSubaccnum1956 = Math.floor(value);
-            this.setState({
-                setQuota:setQuota,
-            })
-        }
-
-    }
-    /*配额1954inputnumber内容更改事件
-    * 并对输入数字限定为向下取整的整数*/
-    onChange1954(value){
-        let setQuota=this.state.setQuota;
-        if(value){
-            setQuota.setSubaccnum1954 = Math.floor(value);
-            this.setState({
-                setQuota:setQuota,
-            })
-        }
-
-    }
-    /*配额1956inputnumber内容更改事件
-    * 并对输入数字限定为向下取整的整数*/
-    onChange1952(value){
-        let setQuota=this.state.setQuota;
-        if(value){
-            setQuota.setSubaccnum1952 =Math.floor(value);
-            this.setState({
-                setQuota:setQuota,
-            })
-        }
-
-    }
-    /*配额1956inputnumber内容更改事件
-    * 并对输入数字限定为向下取整的整数*/
-    onChange1950(value){
-        let setQuota=this.state.setQuota;
-        if(value){
-            setQuota.setSubaccnum1950 =Math.floor(value);
-            this.setState({
-                setQuota:setQuota,
-            })
-        }
-
-    }
-    /*获取日工资一档设置数据*/
-    onChangeSalary1(value){
-        let setSalary=this.state.setSalary;
-        if(value){
-            setSalary.salary_ratio_1=value;
-            this.setState({
-                setSalary:setSalary,
-            })
-        }
-    }
-    /*获取日工资二档设置数据*/
-    onChangeSalary10(value){
-        let setSalary=this.state.setSalary;
-        if(value){
-            setSalary.salary_ratio_10=value;
-            this.setState({
-                setSalary:setSalary,
-            })
-        }
-    }
-    /*获取日工资三档设置数据*/
-    onChangeSalary30(value){
-        let setSalary=this.state.setSalary;
-        if(value){
-            setSalary.salary_ratio_30=value;
-            this.setState({
-                setSalary:setSalary,
-            })
-        }
-    }
-    /*获取日工资四档设置数据*/
-    onChangeSalary50(value){
-        let setSalary=this.state.setSalary;
-        if(value){
-            setSalary.salary_ratio_50=value;
-            this.setState({
-                setSalary:setSalary,
-            })
-        }
-    }
-    /*获取日工资五档设置数据*/
-    onChangeSalary70(value){
-        let setSalary=this.state.setSalary;
-        if(value){
-            setSalary.salary_ratio_70=value;
-            this.setState({
-                setSalary:setSalary,
-            })
-        }
-    }
-    /*获取日工资六档设置数据*/
-    onChangeSalary100(value){
-        let setSalary=this.state.setSalary;
-        if(value){
-            setSalary.salary_ratio_100=value;
-            this.setState({
-                setSalary:setSalary,
-            })
-        }
-    }
-    /*获取分红契约数字输入框中的值*/
-    onChangeDividenSalary(value){
-        if(value){
-            this.setState({
-                setdividend_radio:value,
-            })
-        }
-    }
-    /*选择不同的契约类型显示不同的契约html内容*/
-    contractType() {
-        const setQuota=this.state.setQuota;
-        const getSalary=this.state.getSalary;
-        const currentUserInfo=this.state.currentUserInfo;
-        const ul_0 =<div>
-            <ul  className='c_speci_contract0'>
-                <li>
-                    契约内容：
-                </li>
-                <li>
-                    <span>第一档：日销量≥1万元时，日工资比例为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>{getSalary.salary_ratio_1}</span>
-                    <InputNumber min={getSalary.salary_ratio_1?getSalary.salary_ratio_1:0}
-                                 max={parseInt(currentUserInfo.salary_ratio_1)}
-                                 style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
-                                 placeholder={getSalary.salary_ratio_1?getSalary.salary_ratio_1:0}
-                                 onChange={(value)=>this.onChangeSalary1(value)}
-                    />
-                    <span>%；</span>
-                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
-                        ({getSalary.salary_ratio_1?getSalary.salary_ratio_1:0}-{currentUserInfo.salary_ratio_1}之间)
-                    </span>
-                </li>
-                <li>
-                    <span>第二档：日销量≥10万元时，日工资比例为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>
-                        {getSalary.salary_ratio_10}
-                        </span>
-                    <InputNumber min={getSalary.salary_ratio_10?getSalary.salary_ratio_10:0}
-                                 max={parseInt(currentUserInfo.salary_ratio_10)}
-                                 style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
-                                 placeholder={getSalary.salary_ratio_10?getSalary.salary_ratio_10:0}
-                                 onChange={(value)=>this.onChangeSalary10(value)}
-                    />
-                    <span>%；</span>
-                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
-                        ({getSalary.salary_ratio_10?getSalary.salary_ratio_10:0}-{currentUserInfo.salary_ratio_10}之间)
-                    </span>
-                </li>
-                <li>
-                    <span>第三档：日销量≥30万元时，日工资比例为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>
-                        {getSalary.salary_ratio_30}
-                        </span>
-                    <InputNumber min={getSalary.salary_ratio_30?getSalary.salary_ratio_30:0}
-                                 max={parseInt(currentUserInfo.salary_ratio_30)}
-                                 style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
-                                 placeholder={getSalary.salary_ratio_30?getSalary.salary_ratio_30:0}
-                                 onChange={(value)=>this.onChangeSalary30(value)}
-                    />
-                    <span>%；</span>
-                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
-                        ({getSalary.salary_ratio_30?getSalary.salary_ratio_30:0}-{currentUserInfo.salary_ratio_30}之间)
-                    </span>
-                </li>
-                <li>
-                    <span>第四档：日销量≥50万元时，日工资比例为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>
-                        {getSalary.salary_ratio_50}
-                        </span>
-                    <InputNumber min={getSalary.salary_ratio_50?getSalary.salary_ratio_50:0}
-                                 max={parseInt(currentUserInfo.salary_ratio_50)}
-                                 style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
-                                 placeholder={getSalary.salary_ratio_50?getSalary.salary_ratio_50:0}
-                                 onChange={(value)=>this.onChangeSalary50(value)}
-                    />
-                    <span>%；</span>
-                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
-                        ({getSalary.salary_ratio_50?getSalary.salary_ratio_50:0}-{currentUserInfo.salary_ratio_50}之间)
-                    </span>
-                </li>
-                <li>
-                    <span>第五档：日销量≥70万元时，日工资比例为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>
-                        {getSalary.salary_ratio_70}
-                        </span>
-                    <InputNumber
-                        min={getSalary.salary_ratio_70?getSalary.salary_ratio_70:0}
-                        max={parseInt(currentUserInfo.salary_ratio_70)}
-                        style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
-                        placeholder={getSalary.salary_ratio_70?getSalary.salary_ratio_70:0}
-                        onChange={(value)=>this.onChangeSalary70(value)}
-                    />
-                    <span>%；</span>
-                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
-                        ({getSalary.salary_ratio_70?getSalary.salary_ratio_70:0}-{currentUserInfo.salary_ratio_70}之间)
-                    </span>
-                </li>
-                <li>
-                    <span>第六档：日销量≥100万元时，日工资比例为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>
-                        {getSalary.salary_ratio_100}
-                        </span>
-                    <InputNumber min={getSalary.salary_ratio_100?getSalary.salary_ratio_100:0}
-                                 max={parseInt(currentUserInfo.salary_ratio_100)}
-                                 style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} size="small"
-                                 placeholder={getSalary.salary_ratio_100?getSalary.salary_ratio_100:0}
-                                 onChange={(value)=>this.onChangeSalary100(value)}
-                    />
-                    <span>%；</span>
-                    <span style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>
-                        ({getSalary.salary_ratio_100?getSalary.salary_ratio_100:0}-{currentUserInfo.salary_ratio_100}之间)
-                    </span>
-                </li>
-            </ul>
-            <div  className={this.state.checkStatus? 'c_b_user0 active' : 'c_b_user0'}>
-                <p>{this.state.username}</p>
-                <p>{this.state.today}</p>
-            </div>
-            <div className='c_btn0'>
-                <Button type="primary" onClick={()=>this.setSalaryData()}  loading={this.state.loading}>{this.state.contractTxt}</Button>
-                <Button type="primary" className='c_btn_cancel0'onClick={()=>this.onCancel()}>取消</Button>
-            </div>
-
-        </div>;
-        const ul_1 =<div>
-            <ul className= 'c_speci_contract1'>
-                <li>契约内容：</li>
-                <li>如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏</li>
-                <li>
-                    <span>损值的</span><span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>{this.state.dividend_radio}</span>
-                    <InputNumber size="small" placeholder="" min={0} max={100} style={{display: this.state.checkStatus ? 'none' : 'inline-block'}} onChange={(value)=>this.onChangeDividenSalary(value)}/>
-                    <span>%。</span>
-                </li>
-            </ul>
-            <div  className={this.state.checkStatus? 'c_b_user1 active' : 'c_b_user1'}>
-                <p>{this.state.username}</p>
-                <p>{this.state.today}</p>
-            </div>
-            <div className='c_btn1'>
-                <Button type="primary" loading={this.state.loading} onClick={()=>this.setPortionData()}>{this.state.contractTxt}</Button>
-                <Button type="primary" className='c_btn_cancel1' onClick={()=>this.onCancel()}>取消</Button>
-            </div>
-
-        </div>;
-        const ul_2 =<div>
-            <ul  className= 'c_speci_contract2'>
-                <li className='c-title'>契约内容：</li>
-                <li>
-                    <span>该用户的奖金组级别为</span>
-                    <span style={{display: this.state.checkStatus ? 'inline-block' : 'none'}}>{this.state.getAwardTeam.groupLevel}</span>
-                    <InputNumber
-                        min={this.state.getAwardTeam.groupLevel}
-                        max={parseInt(currentUserInfo.prize_group)}
-                        step={2}
-                        style={{ marginLeft: 16,display: this.state.checkStatus ? 'none' : 'inline-block' }}
-                        value={this.state.sliderValue}
-                        onChange={(value)=>this.onChangeSlider(value)}
-                    />
-                </li>
-                <li style={{display: this.state.checkStatus ? 'none' : 'block'}}>
-                    <ul className="c_k_slider">
-                        <li>
-                            <Icon type="left" className='c_slider_icon' onClick={()=>{
-                                let sliderValue=this.state.sliderValue;
-                                sliderValue=sliderValue-2;
-                                this.setState({
-                                    sliderValue:sliderValue,
-                                })
-                                }}/>
-                        </li>
-                        <li style={{width: '290px'}}>
-                            <Slider min={this.state.getAwardTeam.groupLevel} tipFormatter={null}
-                                    max={this.state.currentUserInfo.prize_group}
-                                    onChange={(value)=>{this.onChangeSlider(value)}}
-                                    value={this.state.sliderValue}
-                                    step={2}
-                            />
-
-                        </li>
-                        <li>
-                            <Icon type="right" className='c_slider_icon' onClick={()=>{
-                                let sliderValue=this.state.sliderValue;
-                                sliderValue=sliderValue+2;
-                                this.setState({
-                                    sliderValue:sliderValue,
-                                })
-                            }}/>
-                        </li>
-                    </ul>
-                </li>
-                <li style={{marginLeft:142,display: this.state.checkStatus ? 'none' : 'block'}}>{this.state.getAwardTeam.groupLevel}-{this.state.currentUserInfo.prize_group}</li>
-            </ul>
-            <div  className={this.state.checkStatus? 'c_b_user2 active' : 'c_b_user2'}>
-                <p>{this.state.username}</p>
-                <p>{this.state.today}</p>
-            </div>
-            <div className='c_btn2'>
-                <Button type="primary" loading={this.state.loading} onClick={()=>this.setAwardTeamData()}>{this.state.contractTxt}</Button>
-                <Button type="primary" className='c_btn_cancel2' onClick={()=>this.onCancel()}>取消</Button>
-            </div>
-        </div>;
-        const ul_3 =<div>
-
-            <ul className='c_speci_contract0'>
-                <li>
-                    契约内容：
-                </li>
-                <li>
-                    该用户可继续推广下级，其中可推广
-                </li>
-                <li style={{display: this.state.getQuota.quota1956display ? 'block' : 'none'}}>
-                    <span>奖金组1956的配额为 {this.state.getQuota.subaccnum1956?this.state.getQuota.subaccnum1956:0} 个，</span>
-                    <div style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>再增加
-                        <InputNumber min={0} max={this.state.getQuota.accnum1956} step={1} size="small" value={setQuota.setSubaccnum1956} placeholder="" onChange={(value)=>this.onChange1956(value)}/>
-                        <span>个（剩余可分配{this.state.getQuota.accnum1956}个）</span>
-                    </div>
-
-                </li>
-                <li style={{display: this.state.getQuota.quota1954display ? 'block' : 'none'}}>
-                    <span>奖金组1954的配额为 {this.state.getQuota.subaccnum1954?this.state.getQuota.subaccnum1954:0} 个，</span>
-                    <div style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>再增加
-                        <InputNumber min={0} max={this.state.getQuota.accnum1954} step={1} size="small" value={setQuota.setSubaccnum1954} placeholder="" onChange={(value)=>this.onChange1954(value)}/>
-                        <span>个（剩余可分配{this.state.getQuota.accnum1954}个）</span>
-                    </div>
-
-                </li>
-                <li style={{display: this.state.getQuota.quota1952display ? 'block' : 'none'}}>
-                    <span>奖金组1952的配额为 {this.state.getQuota.subaccnum1952?this.state.getQuota.subaccnum1952:0} 个，</span>
-                    <div style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>再增加
-                        <InputNumber min={0} max={this.state.getQuota.accnum1952} step={1} size="small" value={setQuota.setSubaccnum1952} placeholder=""  onChange={(value)=>this.onChange1952(value)}/>
-                        <span>个（剩余可分配{this.state.getQuota.accnum1952}个）</span>
-                    </div>
-
-                </li>
-                <li style={{display: this.state.getQuota.quota1950display ? 'block' : 'none'}}>
-                    <span>奖金组1950的配额为 {this.state.getQuota.subaccnum1950?this.state.getQuota.subaccnum1950:0} 个，</span>
-                    <div style={{display: this.state.checkStatus ? 'none' : 'inline-block'}}>再增加
-                        <InputNumber min={0} max={this.state.getQuota.accnum1950} step={1} size="small" value={setQuota.setSubaccnum1950} placeholder="" onChange={(value)=>this.onChange1950(value)}/>
-                        <span>个（剩余可分配{this.state.getQuota.accnum1950}个）</span>
-                    </div>
-
-                </li>
-                <li>
-                    奖金组为1948及以下剩余配额：无限。
-                </li>
-
-            </ul>
-            <div  className={this.state.checkStatus? 'c_b_user2 active' : 'c_b_user2'}>
-                <p>{this.state.username}</p>
-                <p>{this.state.today}</p>
-            </div>
-            <div className='c_btn0'>
-                <Button type="primary" onClick={()=>this.setQuotaData()} loading={this.state.loading}>{this.state.contractTxt}</Button>
-                <Button type="primary" className='c_btn_cancel0'onClick={()=>this.onCancel()}>取消</Button>
-            </div>
-
-        </div>;
-        switch (parseInt(this.state.navListIndex)) {
-            case 0:
-                return ul_0;
-                break;
-            case 1:
-                return ul_1;
-                break;
-            case 2:
-                return ul_2;
-                break;
-            case 3:
-                return ul_3;
-                break;
-            default:
-                break;
-        }
-    }
-    /*在切换不同用户
-    * 或者切换不同契约类型时，
-    * 请求对应用户下的特定契约类型的数据
-    * 传入参数，@index,此时的契约类型索引
-    * @uid,当前用户id的userid
-    * */
-    getCurUserCurContractData(index,uid){
-        let userInfo = this.state.userList;
-        let curIndex = index||this.state.navListIndex;
-        let userid = uid||this.state.userid;
-        switch (parseInt(curIndex)){
-            case 0:
-                if(parseInt(userInfo[userid].daily_salary_status)){
-                    this.setState({
-                        checkStatus:true,
-                        contractTxt:"修改契约",
-                    })
-                }else{
-                    this.setState({
-                        checkStatus:false,
-                        contractTxt:"签订契约",
-                    })
-                }
-                this.getSalaryData(userid);
-                break;
-            case 1:
-                if(parseInt(userInfo[userid].dividend_salary_status)){
-                    this.setState({
-                        checkStatus:true,
-                        contractTxt:"修改契约",
-                    })
-                }else{
-                    this.setState({
-                        checkStatus:false,
-                        contractTxt:"签订契约",
-                    })
-                }
-                this.getPortionData(userid);
-                break;
-            case 2:
-                this.setState({
-                    checkStatus:true,     //奖金组契约一进入必定是查看状态
-                    contractTxt:"修改契约",
                 })
-                this.getAwardTeamData(userid);
-                break;
-            case 3:
-                if(parseInt(userInfo[userid].useraccgroup_status)){
-                    this.setState({
-                        checkStatus:true,
-                        contractTxt:"修改契约",
-                    })
-                }else{
-                    this.setState({
-                        checkStatus:false,
-                        contractTxt:"签订契约",
-                    })
-                }
-                this.getQuotaData(userid);
-                break;
-
-        }
-    }
-    /*选择下级用户*/
-    onSelectUser(value){
-        let { userList, contractInfo} = this.state,
-            key =  parseInt(value.key);
-        if(parseInt(userList[key].prize_group)<1950) {
-            if(contractInfo[contractInfo.length-1].id==3){
-                contractInfo.pop();
-            }
-            if(this.state.navListIndex==3){
-                this.onSelectSys(0);
-                $(".ant-select-selection-selected-value").text("日工资契约");
-
-            }
-        }else{
-            if(contractInfo[contractInfo.length-1].id!=3){
-                contractInfo.push({
-                    id:3,
-                    contract:"配额契约",
-                });
-            }
-        }
-        this.setState({
-            contractInfo:contractInfo,
-            userid:value.key,
-            username:value.label,
-        });
-        this.getCurUserCurContractData('',value.key);
-    }
-    /*选择特定类型的契约
-    * 从而更改不同的样式背景
-    * 获取当前用户在特定契约下是否已经签订过契约，从而决定是查看状态，还是修改状态
-    * */
-    onSelectSys(value){
-        let index=value;
-        if(value==3){
-            index=2;
-        }
-        this.setState({
-            navListIndex: value,
-            modalClass:"center-modal-c"+index,
-
-
-        })
-        this.getCurUserCurContractData(value,'');
-
-    };
-    onCancel(){
-        this.props.transferMsg(false);
-    };
-    // 滑动条,数字输入框更改数据
-    onChangeSlider(value) {
-        if(value){
-
-                this.setState({
-                    sliderValue:Math.floor(value),
+            }else if(type == 1){//分红契约
+                let diviPost = this.state.diviPost;
+                diviPost.userid = alterData.userid;
+                Fetch.diviratio({
+                    method: 'POST',
+                    body: JSON.stringify(diviPost)
+                }).then((res)=>{
+                    if(this._ismount) {
+                        this.setState({affirmLoading: false});
+                        if(res.status == 200){
+                            Modal.success({
+                                title: res.repsoneContent,
+                            });
+                            this.props.getContractList(); //更新列表
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
+                    }
                 })
-
-
-        }else{
-            this.setState({
-                sliderValue:this.state.getAwardTeam.groupLevel,
-            })
-
+            }else if(type == 0){//日工资契约
+                let postData = {
+                    userid: alterData.userid,
+                    parentid: alterData.parentid,
+                    salary_ratio: this.state.salary_ratio,
+                };
+                Fetch.dailysalaryupdate({
+                    method: 'POST',
+                    body: JSON.stringify(postData)
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({affirmLoading: false});
+                        if(res.status == 200){
+                            Modal.success({
+                                title: res.repsoneContent,
+                            });
+                            this.props.getContractList(); //更新列表
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                        }else{
+                            Modal.warning({
+                                title: res.longMessage,
+                                content: res.shortMessage
+                            });
+                        }
+                    }
+                })
+            }else if(type == 2){//奖金组契约
+                let { prizeGroupFlag, prizeGroupPost, prizeGroupList } = this.state;
+                let selectPrizeGroup = prizeGroupList.filter((item, index) => item.prizeGroup == prizeGroupFlag)[0];
+                prizeGroupPost.groupLevel = prizeGroupFlag;
+                prizeGroupPost.keeppoint = ((prizeGroupPost.selfPoint - selectPrizeGroup.high) * 100).toFixed(2);
+                Fetch.awardTeam({
+                    method: 'POST',
+                    body: JSON.stringify(prizeGroupPost)
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({affirmLoading: false});
+                        if(res.status == 200){
+                            Modal.success({
+                                title: res.repsoneContent,
+                            });
+                            this.props.getContractList(); //更新列表
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
+                    }
+                })
+            }
         }
-
     };
 
     render() {
-        const {userList, contractInfo } = this.state;
-
+        const {userList, contractInfo, type } = this.state;
+        this.onTypeContent(type);
         return (
-            <Modal ref="myModal"
-                   title=""
-                   wrapClassName={this.state.modalClass}
-                   visible={this.props.visible}
-                   footer={null}
-                   closable={false}
-            >
-               <img className='c_m_guanbi' src={guanbi}  style={{display: this.state.navListIndex==4 ? 'block' : 'none'}} onClick={()=>this.onCancel()}/>
-                <div className="c_aa_form">
+            <div>
+                {
+                    this.props.visible ?
+                        <Modal ref="myModal"
+                               wrapClassName= 'center-modal-c'
+                               visible={this.props.visible}
+                               footer={null}
+                               closable={false}
+                        >
+                            <img className='c_m_guanbi' src={guanbi} onClick={()=>this.props.transferMsg(false)}/>
+                            <div className="c_aa_form">
+                                <ul className="c_aa_list">
+                                    <li className="c_user">
+                                        <span className="c_aa_left_text">用户名：</span>
+                                        <Select size="large" style={{ width: 280 }} labelInValue
+                                                onChange={(value)=>{this.onSelectUser(value)}}
+                                                getPopupContainer={() => document.getElementsByClassName('c_user')[0]}
+                                                placeholder="请选择需要创建契约的用户"
+                                        >
+                                            {
+                                                userList.map((item) => {
+                                                    return (
+                                                        <Option value={item.userid} key={item.userid}>{item.username}</Option>
+                                                    )
+                                                })
+                                            }
+                                        </Select>
+                                    </li>
+                                    <li className="c_contractType">
+                                        <span className="c_aa_left_text">契约类型：</span>
+                                        <Select className="c_aa_marg" size="large"
+                                                style={{ width: 280 }}
+                                                onChange={(value)=>{this.onSelectSys(value)}}
+                                                git={() => document.getElementsByClassName('c_contractType')[0]}
+                                                placeholder="请选择需要创建契约的系统"
+                                        >
+                                            {
+                                                this.state.userid ?
+                                                    contractInfo.map((item) => {
+                                                        return (
+                                                            <Option value={''+item.id} key={item.id}>{item.contract}</Option>
+                                                        )
+                                                    }):''
+                                            }
+                                        </Select>
+                                    </li>
+                                </ul>
+                            </div>
+                        </Modal> :
+                        null
+                }
+                {
+                    this.state.alterVisible ?
+                        <Contract
+                            title={this.state.typeName}
+                            userid={this.state.userid}
+                            textDescribe={typeContent}
+                            alterData={this.state.alterData}
+                            alterVisible={this.state.alterVisible}
+                            affirmLoading={this.state.affirmLoading}
+                            contract_name={this.state.contract_name}
+                            disabled={this.state.disabled}
+                            userList={this.state.userList}
+                            contractInfo={this.state.contractInfo}
+                            onCancel={this.onCancel}
+                            onAffirm={this.onDiviratio}
+                            onSelectUser={this.onSelectUser}
+                            onSelectSys={this.onSelectSys}
+                        /> : null
+                }
 
-                    <ul className="c_aa_list">
-                        <li className="c_user">
-                            <span className="c_aa_left_text">用户名：</span>
-                            <Select size="large" style={{ width: 280 }} labelInValue
-                                    onChange={(value)=>{this.onSelectUser(value)}}
-                                    getPopupContainer={() => document.getElementsByClassName('c_user')[0]}
-                                    placeholder="请选择需要创建契约的用户"
-                            >
-                                {
-                                    userList.map((item, index) => {
-                                        return (
-                                            <Option value={''+index} key={item.userid}>{item.username}</Option>
-                                        )
-                                    })
-                                }
-                            </Select>
-                        </li>
-                        <li className="c_contractType">
-                            <span className="c_aa_left_text">契约类型：</span>
-                            <Select className="c_aa_marg" size="large"   style={{ width: 280 }}  onChange={(value)=>{this.onSelectSys(value)}} git={() => document.getElementsByClassName('c_contractType')[0]} placeholder="请选择需要创建契约的系统">
-                                {this.state.userid?contractInfo.map((item,index) => {
-                                    return (
-                                        <Option value={''+item.id} key={item.id}>{item.contract}</Option>
-                                    )
-                                }):''
-                                }
-                            </Select>
-                        </li>
+            </div>
 
-                    </ul>
-                    {this.contractType()}
-                </div>
-            </Modal>
         )
     }
 }

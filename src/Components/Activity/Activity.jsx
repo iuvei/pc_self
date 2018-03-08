@@ -13,6 +13,7 @@ import activity1 from './Img/active1.png';
 import activity200 from './Img/active200.png';
 import activity400 from './Img/active400.png';
 import activity401 from './Img/active401.png';
+import fanshui from './Img/fanshui.png';
 
 @observer
 export default class Activity extends Component {
@@ -41,6 +42,21 @@ export default class Activity extends Component {
         }).then((res)=>{
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent;
+                let fanshui = {
+                    activity_id: "-1",
+                    activity_title: "周返水",
+                    status: "1",
+                    add_time: "1520408759",
+                    start_time: "1520408759",
+                    end_time: "1546271999",
+                    enroll_num_type_val: "2:00:00",
+                    enroll_max_number: "50",
+                    menus_name: "专题",
+                    activity_pics: "./Img/fanshui.png",
+                    enroll_already_number: 1,
+                    plan_award_amount: "0"
+                };
+                data.datas.unshift(fanshui);
                 this.setState({
                     activityArr: data.datas,
                     total: data.datacount,
@@ -62,12 +78,16 @@ export default class Activity extends Component {
         this.setState({postData: postData},()=>this.getData())
     };
     activityDetails(item) {
-        hashHistory.push({
-            pathname: '/activity/activityDetails',
-            query: {
-                id: item.activity_id
-            }
-        });
+        if(item.activity_id == '-1'){
+            hashHistory.push('/activity/fanshui');
+        }else{
+            hashHistory.push({
+                pathname: '/activity/activityDetails',
+                query: {
+                    id: item.activity_id
+                }
+            });
+        }
     };
     /*按钮状态*/
     onBtnType(item){
@@ -103,9 +123,11 @@ export default class Activity extends Component {
                                         <li key={item.activity_id}>
                                             <div className="activity_img">
                                                 {
-                                                    item.activity_pics == undefined || item.activity_pics == '' ?
-                                                        <img src={litimg} alt="活动"/> :
-                                                        <img src={stateVar.httpUrl+item.activity_pics} alt="活动"/>
+                                                    item.activity_id == '-1' ?
+                                                        <img src={fanshui} alt=""/> :
+                                                        item.activity_pics == undefined || item.activity_pics == '' ?
+                                                            <img src={litimg} alt="活动"/> :
+                                                            <img src={stateVar.httpUrl+item.activity_pics} alt="活动"/>
                                                 }
                                             </div>
                                             {
@@ -121,7 +143,16 @@ export default class Activity extends Component {
                                                 <div className="left">
                                                     <p>
                                                         {item.activity_title}
-                                                        <span className="active_bonus">最高奖金: {item.plan_award_amount == undefined || item.plan_award_amount == '' ? '0' : item.plan_award_amount} 元</span>
+                                                        {
+                                                            item.activity_id == '-1' ? '' :
+                                                                <span className="active_bonus">
+                                                                    最高奖金:
+                                                                    {item.plan_award_amount == undefined ||
+                                                                    item.plan_award_amount == '' ?
+                                                                        '0' :
+                                                                        item.plan_award_amount} 元
+                                                                </span>
+                                                        }
                                                     </p>
                                                     <i>活动时间：{timestampToTime(item.start_time)} 至 {timestampToTime(item.end_time)}</i>
                                                 </div>
@@ -130,7 +161,9 @@ export default class Activity extends Component {
                                                         onClick={()=>this.activityDetails(item)}
                                                 >
                                                     {
-                                                        this.onBtnType(item)
+                                                        item.activity_id == '-1' ?
+                                                            '查看详情' :
+                                                            this.onBtnType(item)
                                                     }
                                                 </Button>
                                             </div>

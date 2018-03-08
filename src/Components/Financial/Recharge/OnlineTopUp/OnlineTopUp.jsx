@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../../Utils';
 import { stateVar } from '../../../../State';
-import { InputNumber, Button } from 'antd';
+import { InputNumber, Button, Modal } from 'antd';
 import { changeMoneyToChinese, onValidate, getStore } from '../../../../CommonJs/common';
 
 import './OnlineTopUp.scss'
@@ -86,6 +86,10 @@ export default class OnlineTopUp extends Component {
                 this.setState({ iconLoadingRecharge: false });
                 if(res.status == 200){
                     window.open(stateVar.httpUrl + res.repsoneContent.payUrl + '&sess=' + getStore('session'))
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
                 }
             }
         })

@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
-import { DatePicker, Table, Pagination, Input, Button, Icon, Modal, InputNumber, message } from 'antd';
+import { DatePicker, Table, Pagination, Input, Button, Icon, Modal, InputNumber, Popconfirm } from 'antd';
 import moment from 'moment';
 const ButtonGroup = Button.Group;
 import { stateVar } from '../../../State';
@@ -45,9 +45,27 @@ export default class DayRate extends Component {
             alterData: {},
             affirmLoading: false,
             disabled: true,
-            pros: [], // 日工资契约协议
+            contentArr: [], // 日工资契约协议
             salary_ratio: [], //修改协议
-            contract_name: '修改协议', //按钮btn
+            contract_name: '修改契约', //按钮btn
+            contractInfo: [
+                {
+                    id:0,
+                    contract:"日工资契约",
+                },
+                {
+                    id:1,
+                    contract:"分红契约",
+                },
+                {
+                    id:2,
+                    contract:"奖金组契约",
+                },
+                {
+                    id:3,
+                    contract:"配额契约",
+                }
+            ],
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -139,7 +157,9 @@ export default class DayRate extends Component {
             if(this._ismount){
                 this.setState({affirmLoading: false});
                 if(res.status == 200){
-                    message.success(res.shortMessage);
+                    Modal.success({
+                        title: res.shortMessage,
+                    });
                     this.setState({alterVisible: false});
                     this.getData();
                 }else{
@@ -227,7 +247,7 @@ export default class DayRate extends Component {
                 body: JSON.stringify(postDataSelf)
             }).then((res)=>{
                 if(this._ismount && res.status == 200){
-                    this.setState({pros: res.repsoneContent.pros[0], salary_ratio: res.repsoneContent.pros[0]})
+                    this.setState({contentArr: res.repsoneContent.pros[0], salary_ratio: res.repsoneContent.pros[0]})
                 }
             })
         }else{}
@@ -235,7 +255,7 @@ export default class DayRate extends Component {
     /*修改值*/
     onChangeAlterContract(val, item){
         item.salary_ratio = val;
-        let salary_ratioFlag = this.state.pros;
+        let salary_ratioFlag = this.state.contentArr;
         salary_ratioFlag.forEach((data)=>{
             if(data.sale == item.sale){
                 data.salary_ratio = val
@@ -243,10 +263,73 @@ export default class DayRate extends Component {
         });
         this.setState({salary_ratio: salary_ratioFlag});
     };
+    /*修改活跃人数*/
+    onChangeActiveNumber(val, item, index){
+        item.active_member = val;
+        let { contentArr } = this.state;
+        contentArr[index].active_member = ''+val;
+        this.setState({salary_ratio: contentArr});
+    };
+    /*修改日销量*/
+    onChangeDailySales(val, item, index){
+        item.sale = val;
+        let { contentArr } = this.state;
+        contentArr[index].sale = ''+val;
+        this.setState({salary_ratio: contentArr});
+    };
+    /*日销量排序从小到大*/
+    compare(property){
+        return function(a,b){
+            let value1 = a[property];
+            let value2 = b[property];
+            return value1 - value2;
+        }
+    }
+    /*日销量失去焦点事件*/
+    onBlurSale(){
+        let { contentArr } = this.state;
+        let contentArrFlag = contentArr.sort(this.compare('sale'));
+        for(let i=0;i<contentArr.length;i++){
+            if (contentArrFlag[i+1] != undefined && contentArrFlag[i].sale == contentArrFlag[i+1].sale){
+                Modal.warning({
+                    title: '不同档位日销量不能相同，请重新输入！',
+                });
+                contentArrFlag[i].sale = '0'
+            }
+        }
+        this.setState({contentArr: contentArrFlag})
+    };
+    /*删除档位*/
+    onDelete(i){
+        let { contentArr } = this.state;
+        if(contentArr.length <= 4){
+            Modal.warning({
+                title: '日工资契约最低保留四个挡位',
+            });
+            return
+        }
+        let contentArrFlag = contentArr.filter((item, index)=> index != i);
+        this.setState({
+            contentArr: contentArrFlag,
+            salary_ratio: contentArrFlag
+        })
+    };
+    /*添加档位*/
+    onAddSale(){
+        let { contentArr } = this.state;
+        let contentObj = {
+            sale: "0",
+            salary_ratio: "0",
+            active_member: "0"
+        };
+        contentArr.push(contentObj);
+        this.setState({contentArr});
+    };
     /*修改协议*/
     onDiviratio(contract_name){
+        console.log(contract_name)
         if(contract_name == '修改契约'){
-            this.setState({disabled: false, contract_name: '签订协议'});
+            this.setState({disabled: false, contract_name: '签订契约'});
         }else{
             this.setState({affirmLoading: true});
             let alterData = this.state.alterData;
@@ -264,8 +347,10 @@ export default class DayRate extends Component {
                 if(this._ismount){
                     this.setState({affirmLoading: false});
                     if(res.status == 200){
-                        message.success(res.repsoneContent);
-                        this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
+                        Modal.success({
+                            title: res.repsoneContent,
+                        });
+                        this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
                         this.getData();
                     }else{
                         Modal.warning({
@@ -288,7 +373,7 @@ export default class DayRate extends Component {
         this.setState({postData: postData},()=>this.getData());
     };
     render() {
-        const { postData, table, historyData, disabled, pros } = this.state;
+        const { postData, table, historyData, disabled, contentArr } = this.state;
         const columns = [
             {
                 title: '用户名',
@@ -450,26 +535,51 @@ export default class DayRate extends Component {
                 </Modal>
                 <Contract
                     title="日工资契约"
+                    userid={this.state.alterData.userid}
                     textDescribe={
-                        <div className="a_c_text">
+                        <div className="a_c_text a_c_text_sale">
                             <p>契约内容：</p>
                             <div>
                                 <ul className="text_content_list">
                                     {
-                                        pros.map((item, i)=>{
+                                        contentArr.map((item, i)=>{
                                             return (
-                                                <li key={item.sale}>
-                                                    第{i+1}档：日销量≥{item.sale.slice(0, -4)}{i != 5 &&<i>&nbsp;&nbsp;</i>}{i == 0 && <i>&nbsp;&nbsp;</i>}万元时，日工资比例为
+                                                <li key={i}>
+                                                    {i+1}档：
+                                                    日销量≥
+                                                    <InputNumber min={0} value={item.sale}
+                                                                 onChange={(value)=>this.onChangeDailySales(value, item, i)}
+                                                                 onBlur={()=>this.onBlurSale()}
+                                                                 disabled={disabled}
+                                                    />
+                                                    元，
+                                                    且活跃用户≥
+                                                    <InputNumber min={0} value={item.active_member}
+                                                                 onChange={(value)=>this.onChangeActiveNumber(value, item, i)}
+                                                                 disabled={disabled}
+                                                    />
+                                                    人，日工资比例为
                                                     <InputNumber min={0} value={item.salary_ratio}
                                                                  onChange={(value)=>this.onChangeAlterContract(value, item)}
                                                                  disabled={disabled}
                                                     />
                                                     %。
+                                                    <Popconfirm title="确定删除吗?"
+                                                                onConfirm={() => this.onDelete(i)}
+                                                    >
+                                                        <span className="hover col_color_ying delete_sale" style={{display: disabled ? 'none' : ''}}>删除</span>
+                                                    </Popconfirm>
                                                 </li>
                                             )
                                         })
                                     }
+                                    <li className="brisk_user">当日投注金额≥1000元，计为一个活跃用户</li>
                                 </ul>
+                                <span className="hover col_color_ying add_sale"
+                                      onClick={()=>this.onAddSale()}
+                                      style={{display: disabled || contentArr.length >= 6 ? 'none' : ''}}>
+                                    添加档位
+                                </span>
                             </div>
                         </div>
                     }
@@ -478,6 +588,9 @@ export default class DayRate extends Component {
                     affirmLoading={this.state.affirmLoading}
                     disabled={this.state.disabled}
                     contract_name={this.state.contract_name}
+                    userList={table.dayRateList}
+                    contractInfo={this.state.contractInfo}
+                    disabledSelect={true}
                     onCancel={this.onCancel}
                     onAffirm={this.onDiviratio}
                     onConsent={this.onConsent}

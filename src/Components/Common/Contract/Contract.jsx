@@ -1,7 +1,8 @@
 /*契约*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Select } from 'antd';
+const Option = Select.Option;
 import common from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
 
@@ -11,24 +12,16 @@ import './Contract.scss';
 export default class Contract extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            contract_name: '修改契约',
-        };
+        this.state = {};
     };
     /*修改契约*/
     onAffirm() {
-        let contract_name = this.state.contract_name;
-        if(contract_name == '修改契约'){
-            this.setState({contract_name:  '签订契约'});
-        }else{
-            this.setState({contract_name: '修改契约'})
-        }
+        let contract_name = this.props.contract_name;
         this.props.onAffirm(contract_name);
     };
     /*取消关闭modal*/
     onCancel(){
-        this.props.onCancel(this.state.contract_name);
-        this.setState({contract_name: '修改契约'})
+        this.props.onCancel(this.props.contract_name);
     };
     /*是否已签订*/
     isSign() {
@@ -39,7 +32,6 @@ export default class Contract extends Component {
             return disabled ? 'a_c_name a_c_active' : 'a_c_name';
         }
     };
-
     /*按钮*/
     onBtn(){
       const { alterData } = this.props;
@@ -86,8 +78,16 @@ export default class Contract extends Component {
           )
       }
     };
+
+    onSelectUser(item){
+        this.props.onSelectUser(item, 'child')
+        // this.forceUpdate();
+    };
+    onSelectSys(value){
+        this.props.onSelectSys(value)
+    };
     render() {
-        const { alterData, title, alterVisible, textDescribe } = this.props;
+        const { alterData, title, alterVisible, textDescribe, userList, contractInfo, disabledSelect, userid } = this.props;
 
         return (
             <Modal
@@ -100,13 +100,39 @@ export default class Contract extends Component {
             >
                 <div className="alter_content clear">
                     <ul className="a_c_list">
-                        <li>
+                        <li className="user_p">
                             <span>用户名：</span>
-                            <i>{alterData.username}</i>
+                            <Select size="large" style={{ width: 275 }} labelInValue
+                                    onChange={(value)=>{this.onSelectUser(value)}}
+                                    value={{ key: userid }}
+                                    disabled={disabledSelect}
+                                    getPopupContainer={() => document.getElementsByClassName('user_p')[0]}
+                            >
+                                {
+                                    userList.map((item) => {
+                                        return (
+                                            <Option value={item.userid} key={item.userid}>{item.username}</Option>
+                                        )
+                                    })
+                                }
+                            </Select>
                         </li>
-                        <li>
+                        <li className="type_p">
                             <span>契约类型：</span>
-                            <i>{title}</i>
+                            <Select size="large" style={{ width: 275 }}
+                                    onChange={(value)=>{this.onSelectSys(value)}}
+                                    value={title}
+                                    disabled={disabledSelect}
+                                    getPopupContainer={() => document.getElementsByClassName('type_p')[0]}
+                            >
+                                {
+                                    contractInfo.map((item) => {
+                                        return (
+                                            <Option value={item.contract} key={''+item.id}>{item.contract}</Option>
+                                        )
+                                    })
+                                }
+                            </Select>
                         </li>
                     </ul>
                     {textDescribe}

@@ -135,6 +135,7 @@ export default class HeaderNav extends Component {
 							setTimeout(() => modal.destroy(), 3000);
 							return;
 						}
+						this.onLotteryOut();
 					}
 				}
 	    	}

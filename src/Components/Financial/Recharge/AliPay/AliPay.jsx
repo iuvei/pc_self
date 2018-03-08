@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import Fetch from '../../../../Utils';
 import { stateVar } from '../../../../State';
-import { InputNumber, Button, Input } from 'antd';
+import { InputNumber, Button, Input, Modal } from 'antd';
 import { changeMoneyToChinese, onValidate, getStore } from '../../../../CommonJs/common';
 
 import './AliPay.scss'
@@ -104,6 +104,10 @@ export default class AliPay extends Component {
                             }
                         });
                     }
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
                 }
             }
         })

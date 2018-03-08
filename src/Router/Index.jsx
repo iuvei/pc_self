@@ -10,6 +10,7 @@ import {
     lottery,
     activity,
     activityDetails,
+    fanshui,
     teamManage,
     gameRecord,
     report,
@@ -93,6 +94,7 @@ const routes = params => (
             <Route path="/lottery" getComponent={lottery} params={params}/>
             <Route path="/activity" getComponent={activity} params={params}/>
             <Route path="/activity/activityDetails" getComponent={activityDetails} params={params}/>
+            <Route path="/activity/fanshui" getComponent={fanshui} params={params}/>
             <Route path="/tendency" getComponent={tendency} params={params}/>
             <Route path="/teamManage" getComponent={teamManage} params={params}>
                 <IndexRoute getComponent={teamList} />

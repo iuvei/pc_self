@@ -45,6 +45,12 @@ export const activityDetails = (location, callback) => {
         callback(null, require('../Components/Activity/ActivityDetails/ActivityDetails').default);
     }, 'activityDetails');
 };
+// 优惠活动/活动详情-周返水
+export const fanshui = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/Activity/ActivityDetails/Fanshui').default);
+    }, 'fanshui');
+};
 // 个人信息
 export const selfInfo = (location, callback) => {
     require.ensure([], (require) => {
