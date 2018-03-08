@@ -4,7 +4,6 @@ import Fetch from '../../../Utils';
 import { Row, Col, Button, Table, message, Modal  } from 'antd';
 import { timestampToTime } from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
-import lotteryTypeList from '../../../CommonJs/common.json';
 
 import litimg_details from './Img/litimg_details.png';
 import './ActivityDetails.scss';
@@ -515,7 +514,7 @@ export default class ActivityDetails extends Component {
         }else{
             return <p className="dissertation">无</p>
         }
-    }
+    };
     render() {
         const { response } = this.state;
         return (

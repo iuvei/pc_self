@@ -36,7 +36,8 @@ export default class Contract extends Component {
             quotaList: [], //配额列表
             quotaPost:{}, //申请配额请求参数
             quotaLoding: false,
-        }
+        };
+        this.getContractList = this.getContractList.bind(this);
     };
     componentDidMount() {
         this._ismount = true;
@@ -262,8 +263,8 @@ export default class Contract extends Component {
         this.setState({quotaPost});
     }
     render() {
-        const { dividend_ratio_status ,daily_salary_status,quota_status } = this.state.curUserSignStatus;
-        const { protocol,cur_dividend_radio,tableLength,tableData,columns, quotaList, quotaPost} = this.state;
+        const { dividend_ratio_status } = this.state.curUserSignStatus;
+        const { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost} = this.state;
 
 
         const text=<div className='c_info_wrap'>
@@ -370,11 +371,11 @@ export default class Contract extends Component {
                                <p>创建契约</p>
                            </li>
                        </ul>
-                       {/*{*/}
-                           {/*this.state.visible ?*/}
-                               {/*<ContractModal visible={this.state.visible}  transferMsg = {visible => this.transferMsg(visible)}/> : null*/}
-                       {/*}*/}
-                       <ContractModal visible={this.state.visible}  transferMsg = {visible => this.transferMsg(visible)}/>
+                       <ContractModal
+                           visible={this.state.visible}
+                           transferMsg = {visible => this.transferMsg(visible)}
+                           getContractList = {this.getContractList}
+                       />
                        <div className="c_table">
                            <Table columns={columns} dataSource={tableData} bordered={true} loading={this.state.loading} pagination={true}/>
                        </div>

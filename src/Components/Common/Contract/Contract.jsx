@@ -12,24 +12,16 @@ import './Contract.scss';
 export default class Contract extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            contract_name: '修改契约',
-        };
+        this.state = {};
     };
     /*修改契约*/
     onAffirm() {
         let contract_name = this.props.contract_name;
-        // if(contract_name == '修改契约'){
-        //     this.setState({contract_name:  '签订契约'});
-        // }else{
-        //     this.setState({contract_name: '修改契约'})
-        // }
         this.props.onAffirm(contract_name);
     };
     /*取消关闭modal*/
     onCancel(){
         this.props.onCancel(this.props.contract_name);
-        // this.setState({contract_name: '修改契约'})
     };
     /*是否已签订*/
     isSign() {

@@ -18,7 +18,7 @@ export default class ContractModal extends Component {
             alterData: {},
             type: -1, //契约类型
             affirmLoading: false,
-            contract_name: '修改协议', //按钮btn
+            contract_name: '修改契约', //按钮btn
             disabled: true,
             typeName: '', // 要修改类型的名字：日工资，分红，配额，奖金组
             contentArr: [],
@@ -56,7 +56,7 @@ export default class ContractModal extends Component {
     }
     /*关闭模态框*/
     onCancel(){
-        this.setState({contract_name: '修改协议', alterVisible: false, affirmLoading: false})
+        this.setState({contract_name: '修改契约', alterVisible: false, affirmLoading: false})
     };
     /*获取用户信息 */
     getUserInfo(){
@@ -454,12 +454,13 @@ export default class ContractModal extends Component {
                             Modal.success({
                                 title: res.repsoneContent,
                             });
+                            this.props.getContractList(); //更新列表
                             if(contract_name == '新申请'){
                                 this.setState({quotaVisible: false});
                                 this.getData();
                                 this.getNum();
                             }else{
-                                this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
+                                this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
                             }
                             this.getAccGroupList(alterData);
                         }else{
@@ -482,7 +483,8 @@ export default class ContractModal extends Component {
                             Modal.success({
                                 title: res.repsoneContent,
                             });
-                            this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
+                            this.props.getContractList(); //更新列表
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -506,10 +508,12 @@ export default class ContractModal extends Component {
                             Modal.success({
                                 title: res.repsoneContent,
                             });
-                            this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
+                            this.props.getContractList(); //更新列表
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
                         }else{
                             Modal.warning({
-                                title: res.shortMessage,
+                                title: res.longMessage,
+                                content: res.shortMessage
                             });
                         }
                     }
@@ -529,7 +533,8 @@ export default class ContractModal extends Component {
                             Modal.success({
                                 title: res.repsoneContent,
                             });
-                            this.setState({alterVisible: false, disabled: true, contract_name: '修改协议'});
+                            this.props.getContractList(); //更新列表
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -546,52 +551,56 @@ export default class ContractModal extends Component {
         this.onTypeContent(type);
         return (
             <div>
-                <Modal ref="myModal"
-                       wrapClassName= 'center-modal-c'
-                       visible={this.props.visible}
-                       footer={null}
-                       closable={false}
-                >
-                    <img className='c_m_guanbi' src={guanbi} onClick={()=>this.props.transferMsg(false)}/>
-                    <div className="c_aa_form">
-                        <ul className="c_aa_list">
-                            <li className="c_user">
-                                <span className="c_aa_left_text">用户名：</span>
-                                <Select size="large" style={{ width: 280 }} labelInValue
-                                        onChange={(value)=>{this.onSelectUser(value)}}
-                                        getPopupContainer={() => document.getElementsByClassName('c_user')[0]}
-                                        placeholder="请选择需要创建契约的用户"
-                                >
-                                    {
-                                        userList.map((item) => {
-                                            return (
-                                                <Option value={item.userid} key={item.userid}>{item.username}</Option>
-                                            )
-                                        })
-                                    }
-                                </Select>
-                            </li>
-                            <li className="c_contractType">
-                                <span className="c_aa_left_text">契约类型：</span>
-                                <Select className="c_aa_marg" size="large"
-                                        style={{ width: 280 }}
-                                        onChange={(value)=>{this.onSelectSys(value)}}
-                                        git={() => document.getElementsByClassName('c_contractType')[0]}
-                                        placeholder="请选择需要创建契约的系统"
-                                >
-                                    {
-                                        this.state.userid ?
-                                            contractInfo.map((item) => {
-                                                return (
-                                                    <Option value={''+item.id} key={item.id}>{item.contract}</Option>
-                                                )
-                                            }):''
-                                    }
-                                </Select>
-                            </li>
-                        </ul>
-                    </div>
-                </Modal>
+                {
+                    this.props.visible ?
+                        <Modal ref="myModal"
+                               wrapClassName= 'center-modal-c'
+                               visible={this.props.visible}
+                               footer={null}
+                               closable={false}
+                        >
+                            <img className='c_m_guanbi' src={guanbi} onClick={()=>this.props.transferMsg(false)}/>
+                            <div className="c_aa_form">
+                                <ul className="c_aa_list">
+                                    <li className="c_user">
+                                        <span className="c_aa_left_text">用户名：</span>
+                                        <Select size="large" style={{ width: 280 }} labelInValue
+                                                onChange={(value)=>{this.onSelectUser(value)}}
+                                                getPopupContainer={() => document.getElementsByClassName('c_user')[0]}
+                                                placeholder="请选择需要创建契约的用户"
+                                        >
+                                            {
+                                                userList.map((item) => {
+                                                    return (
+                                                        <Option value={item.userid} key={item.userid}>{item.username}</Option>
+                                                    )
+                                                })
+                                            }
+                                        </Select>
+                                    </li>
+                                    <li className="c_contractType">
+                                        <span className="c_aa_left_text">契约类型：</span>
+                                        <Select className="c_aa_marg" size="large"
+                                                style={{ width: 280 }}
+                                                onChange={(value)=>{this.onSelectSys(value)}}
+                                                git={() => document.getElementsByClassName('c_contractType')[0]}
+                                                placeholder="请选择需要创建契约的系统"
+                                        >
+                                            {
+                                                this.state.userid ?
+                                                    contractInfo.map((item) => {
+                                                        return (
+                                                            <Option value={''+item.id} key={item.id}>{item.contract}</Option>
+                                                        )
+                                                    }):''
+                                            }
+                                        </Select>
+                                    </li>
+                                </ul>
+                            </div>
+                        </Modal> :
+                        null
+                }
                 {
                     this.state.alterVisible ?
                         <Contract
