@@ -123,25 +123,25 @@ export default class Losesalary extends Component {
              {
                 title: '日期',
                 dataIndex: 'gmt_sale',
-                width: 275,
+                width: 250,
             }, {
                 title: '个人日亏损佣金',
                 dataIndex: 'salary',
                 className: 'column-right',
                 render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                                                         <span className="col_color_ying">{text}</span>,
-                width: 275,
+                width: 250,
             }, {
                 title: '团队日亏损佣金',
                 dataIndex: 'self_sale',
                 className: 'column-right',
                 render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                                                         <span className="col_color_ying">{text}</span>,
-                width: 275,
+                width: 250,
             }, {
                 title: '操作',
                 dataIndex: 'buttons',
-                width: 275,
+                width: 250,
                 render: (text, record, index) => <Button onClick={()=>this.onClickButton(record)}>查看详情</Button>,
             }];
         const columnsModal = [
@@ -152,34 +152,34 @@ export default class Losesalary extends Component {
                 }, {
                     title: '用户组',
                     dataIndex: 'usergroup_name',
-                    width: 110,
+                    width: 90,
                 }, {
                     title: '投注量',
                     dataIndex: 'cp_stake',
                     className: 'column-right',
-                    width: 110,
+                    width: 100,
                 }, {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    width: 110,
+                    width: 100,
                 }, {
                     title: '中奖金额',
                     dataIndex: 'cp_bonus',
                     className: 'column-right',
-                    width: 110,
+                    width: 100,
                 }, {
                     title: '亏损额',
                     dataIndex: 'cp_win_lose',
                     className: 'column-right',
-                    width: 110,
+                    width: 100,
                 }, {
                     title: '产生佣金',
                     dataIndex: 'lose_salary',
                     className: 'column-right',
                     render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                                                             <span className="col_color_ying">{text}</span>,
-                    width: 110,
+                    width: 100,
                 }
             ];
         const { sum, total, modalPostData, modalResp } = this.state;

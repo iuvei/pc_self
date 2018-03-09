@@ -104,11 +104,12 @@ export default class ContractModal extends Component {
         let { userList, contractInfo} = this.state,
             contractInfoFlag = [],
             alterData = userList.filter(items => items.userid == item.key)[0]; //选择的当前用户信息
-        if(alterData.prize_group < 1950){
-            contractInfoFlag = contractInfo.filter(items => items.id != 2);
-        }else{
-            contractInfoFlag = contractInfo;
-        }
+        // if(alterData.prize_group < 1950){
+        //     contractInfoFlag = contractInfo.filter(items => items.id != 2);
+        // }else{
+        //     contractInfoFlag = contractInfo;
+        // }
+        contractInfoFlag = contractInfo;
         this.setState({
             contractInfo: contractInfoFlag,
             userid:item.key,
@@ -177,6 +178,7 @@ export default class ContractModal extends Component {
                         typeName: '奖金组契约',
                         prizeGroupList: data.list,
                         prizeGroupPost,
+                        groupLevel: data.groupLevel,
                     })
                 }
             })
@@ -212,13 +214,13 @@ export default class ContractModal extends Component {
     onTypeContent(type){
         let { contentArr, agPost, diviPost, prizeGroupList, disabled, alterData } = this.state;
         if(type == 3 || type == '配额契约'){ //配额契约
-            let contentArrFlag = contentArr.filter(item => item.accGroup <= alterData.prize_group);
+            let accGroup = contentArr.filter(item => item.accGroup <= alterData.prize_group);
             typeContent = <div className="a_c_text">
                 <p>契约内容：</p>
                 <p>该用户可继续推广下级，其中可分配奖金组：</p>
                 <ul className="text_content_list">
                     {
-                        contentArrFlag.map((item, i)=>{
+                        accGroup.map((item, i)=>{
                             return (
                                 <li key={item.uagid}>
                                     {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个
@@ -620,6 +622,7 @@ export default class ContractModal extends Component {
                             disabled={this.state.disabled}
                             userList={this.state.userList}
                             contractInfo={this.state.contractInfo}
+                            // hideBtn = {accGroupFlag == 1}
                             onCancel={this.onCancel}
                             onAffirm={this.onDiviratio}
                             onSelectUser={this.onSelectUser}

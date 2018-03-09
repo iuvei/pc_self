@@ -296,7 +296,7 @@ export default class LotteryBet extends Component {
                         </div>
                     )
                 },
-                width: 120,
+                width: 90,
             }, {
                 title: '投注时间',
                 dataIndex: 'writetime',
@@ -304,7 +304,7 @@ export default class LotteryBet extends Component {
             }, {
                 title: '期号',
                 dataIndex: 'issue',
-                width: 110,
+                width: 90,
             }, {
                 title: '投注内容',
                 dataIndex: 'codes_str',
@@ -337,12 +337,12 @@ export default class LotteryBet extends Component {
                         </Popover>
                     )
                 },
-                width: 90,
+                width: 75,
             }, {
                 title: '投注金额',
                 dataIndex: 'totalprice',
                 className:'column-right',
-                width: 90,
+                width: 80,
                 sorter: (a, b) =>{},
             }, {
                 title: '奖金',
@@ -353,12 +353,12 @@ export default class LotteryBet extends Component {
                                 <span className="col_color_ying">{text}</span>
                 ),
                 sorter: (a, b) =>{},
-                width: 90,
+                width: 80,
             }, {
                 title: '状态',
                 dataIndex: 'active',
                 render: (text,record)=>this.onWinningState(record),
-                width: 80,
+                width: 70,
             }];
         const { seatModal, sum, total, responseData, postData, crowdid } = this.state;
         const footer = <div className="l_b_tabel_footer">

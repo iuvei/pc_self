@@ -42,7 +42,7 @@ export default class AfterRecord extends Component {
                 pn: 10, // 每页显示条数
                 p:1, //页码
 
-                sortdesc: null,
+                sortdesc: 0,
                 offects: null,
             },
             responseData: {
@@ -189,11 +189,11 @@ export default class AfterRecord extends Component {
                 title: '追号编号',
                 dataIndex: 'taskid',
                 classNam:'ellipsis_2',
-                width: 130,
+                width: 110,
             }, {
                 title: '追号时间',
                 dataIndex: 'begintime',
-                width: 100,
+                width: 90,
             }, {
                 title: '彩种与玩法',
                 dataIndex: 'cnname',
@@ -205,7 +205,7 @@ export default class AfterRecord extends Component {
                         </div>
                     )
                 },
-                width: 130,
+                width: 90,
             }, {
                 title: '追号进度',
                 dataIndex: 'beginissue',
@@ -229,7 +229,7 @@ export default class AfterRecord extends Component {
                             </Popover>
                     )
                 },
-                width: 110,
+                width: 90,
             }, {
                 title: '追号总金额',
                 dataIndex: 'taskprice',
@@ -241,13 +241,13 @@ export default class AfterRecord extends Component {
                 dataIndex: 'finishprice',
                 className:'column-right',
                 sorter: (a, b) =>{},
-                width: 110,
+                width: 100,
             }, {
                 title: '取消金额',
                 dataIndex: 'cancelprice',
                 className:'column-right',
                 sorter: (a, b) =>{},
-                width: 110,
+                width: 100,
             }, {
                 title: '中奖后终止',
                 dataIndex: 'stoponwin',
@@ -267,7 +267,7 @@ export default class AfterRecord extends Component {
                         </a>
                     )
                 },
-                width: 80,
+                width: 70,
             }];
         const sum = this.state.sum;
         const total = this.state.total;

@@ -151,7 +151,7 @@ export default class GameBill extends Component {
                         </div>
                     )
                 },
-                width: 130,
+                width: 90,
             }, {
                 title: '期号',
                 dataIndex: 'issue',
@@ -159,7 +159,7 @@ export default class GameBill extends Component {
             }, {
                 title: '投注模式',
                 dataIndex: 'modes',
-                width: 100,
+                width: 90,
             }, {
                 title: '帐变类型',
                 dataIndex: 'ordertypeid',
@@ -235,7 +235,7 @@ export default class GameBill extends Component {
                             </li>
                             <li>
                                 <span>帐变类型：</span>
-                                <Select defaultValue="0" style={{ width: 120 }} onChange={(value)=>{this.handleOrdertype(value)}}>
+                                <Select defaultValue="0" style={{ minWidth: 120 }} onChange={(value)=>{this.handleOrdertype(value)}}>
                                     <Option value="0">所有类型</Option>
                                     {
                                         type.map((item, i)=>{

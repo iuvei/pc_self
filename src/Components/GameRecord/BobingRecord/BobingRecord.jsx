@@ -45,9 +45,6 @@ export default class BobingRecord extends PureComponent {
     componentWillUnmount() {
         this._ismount = false;
     };
-    // shouldComponentUpdate(nextProps, nextState){
-        // return nextState.data == this.state.data
-    // }
     /*获取博饼投注*/
     getData() {
         Fetch.bbbetting({
@@ -205,7 +202,7 @@ export default class BobingRecord extends PureComponent {
                         <a href="javascript:void(0)" style={{color: '#0088DE'}}>详细内容</a>
                     </Popover>
                 ),
-                width: 100,
+                width: 90,
             },{
                 title: '博饼投注金额',
                 dataIndex: 'totalprice',
@@ -216,20 +213,18 @@ export default class BobingRecord extends PureComponent {
                 title: '加倍总投注额',
                 dataIndex: 'total_bet',
                 className: 'column-right',
-                // sorter: (a, b) => a.age - b.age,
-                width: 120,
+                width: 110,
             }, {
                 title: '返点总额',
                 dataIndex: 'total_point',
                 className: 'column-right',
-                // sorter: (a, b) => a.age - b.age,
-                width: 90,
+                width: 80,
             }, {
                 title: '中奖金额',
                 dataIndex: 'bonus',
                 className: 'column-right',
                 sorter: (a, b) => {},
-                width: 110,
+                width: 100,
             }, {
                 title: '奖池金额',
                 dataIndex: 'prizepool',
@@ -245,7 +240,6 @@ export default class BobingRecord extends PureComponent {
                             <span className="col_color_ying">{text}</span>
 
                 ),
-                // sorter: (a, b) => a.age - b.age,
                 width: 100,
             }, {
                 title: '加倍详情',
@@ -253,13 +247,13 @@ export default class BobingRecord extends PureComponent {
                 render: (text, record) => (
                     text == 0 ? '-' : <a href="javascript:void(0)" onClick={()=>this.onDoubledetails(record)}>查看</a>
                 ),
-                width: 100,
+                width: 80,
             }];
         let columnsDouble = [
             {
                 title: '游戏时间',
                 dataIndex: 'writetime',
-                width: 110,
+                width: 90,
             },
             {
                 title: '局数',
@@ -280,49 +274,49 @@ export default class BobingRecord extends PureComponent {
             {
                 title: '投注内容',
                 dataIndex: 'userbet',
-                width: 90,
+                width: 80,
             },
             {
                 title: '投注本金',
                 dataIndex: 'bet',
                 className:'column-right',
                 render: (text)=> -text,
-                width: 110,
+                width: 80,
             },
             {
                 title: '加倍补注',
                 dataIndex: 'addrecharge',
                 className:'column-right',
-                width: 110,
+                width: 80,
             },
             {
                 title: '失败补注',
                 dataIndex: 'failrecharge',
                 className:'column-right',
-                width: 110,
+                width: 80,
             },
             {
                 title: '返点金额',
                 dataIndex: 'userpoint',
                 className:'column-right',
-                width: 110,
+                width: 80,
             },
             {
                 title: '开奖结果',
                 dataIndex: 'game_result',
-                width: 120,
+                width: 100,
             },
             {
                 title: '中奖金额',
                 dataIndex: 'bonus',
                 className:'column-right',
-                width: 110,
+                width: 90,
             },
             {
                 title: '奖池奖金',
                 dataIndex: 'prizepool',
                 className:'column-right',
-                width: 110,
+                width: 90,
             },
             {
                 title: '盈亏',
@@ -331,7 +325,7 @@ export default class BobingRecord extends PureComponent {
                 render: (text)=>parseFloat(text) < 0 ?
                     <span className="col_color_shu">{text}</span> :
                     <span className="col_color_ying">{text}</span>,
-                width: 110,
+                width: 80,
             }
         ];
         const { totalInfo, doubleData, total, doubleName } = this.state;
@@ -359,7 +353,7 @@ export default class BobingRecord extends PureComponent {
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(common.setDateTime(0) + ' 00:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    // disabledDate={(current)=>common.disabledDate(current, -16, 0)}
+                                    disabledDate={(current)=>common.disabledDate(current, -16, 0)}
                                 />
                             </li>
                             <li style={{margin: '0 8px'}}>至</li>

@@ -156,7 +156,7 @@ export default class Person extends Component {
             }, {
                 title: '时间',
                 dataIndex: 'deal_startdate',
-                width: 160,
+                width: 130,
             }, {
                 title: '游戏名称',
                 dataIndex: 'name',
@@ -202,7 +202,7 @@ export default class Person extends Component {
                     text == '赢' ? <span className="col_color_ying">{text}</span> :
                                    <span className="col_color_shu">{text}</span>
                 ),
-                width: 100,
+                width: 70,
             }];
         const { sum, total, lotteryList } = this.state;
         const footer = <div className="l_b_tabel_footer" style={{display: total < 1 ? 'none' : ''}} >

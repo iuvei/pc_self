@@ -307,7 +307,7 @@ export default class Dividend extends Component {
                         return text;
                     }
                  },
-                width: 100,
+                width: 90,
             }, {
                 title: '所属组',
                 dataIndex: 'usergroup_name',
@@ -340,26 +340,26 @@ export default class Dividend extends Component {
                 title: '日工资总额',
                 dataIndex: 'daily_salary',
                 className: 'column-right',
-                width: 110,
+                width: 100,
             }, {
                 title: '日亏损总额',
                 dataIndex: 'lose_salary',
                 className: 'column-right',
-                width: 110,
+                width: 100,
             }, {
                 title: '分红比例',
                 dataIndex: 'dividend_radio',
                 className: 'column-right',
                 render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
                                                         <span className="col_color_ying">{text}%</span>,
-                width: 100,
+                width: 90,
             }, {
                 title: '分红',
                 dataIndex: 'allsalary',
                 className: 'column-right',
                 render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                                                         <span className="col_color_ying">{text}</span>,
-                width: 100,
+                width: 90,
             },
             {
                 title: '操作',
