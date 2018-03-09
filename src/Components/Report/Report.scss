@@ -135,26 +135,26 @@ $border-color: #B2B2B2;
                     text-align: right;
                 }
                 li:first-child{
-                    width: 155px;
+                    width: 172px;
                     text-align: center;
                 }
                 li:nth-child(2){
-                    width: 102px;
+                    width: 92px;
                 }
                 li:nth-child(3){
-                    width: 105px;
+                    width: 110px;
                 }
                 li:nth-child(4){
-                    width: 105px;
+                    width: 101px;
                 }
                 li:nth-child(5){
-                    width: 105px;
+                    width: 101px;
                 }
                 li:nth-child(6){
-                    width: 96px;
+                    width: 90px;
                 }
                 li:nth-child(7){
-                    width: 95px;
+                    width: 90px;
                 }
                 li:nth-child(8){
                     text-align: center;
@@ -174,47 +174,204 @@ $border-color: #B2B2B2;
         color:#CB1313;
         background: #FFF5F5 url('./Img/time_active.png') no-repeat right bottom;
     }
-    .st_footer{
+    .st_f_isSalary{
         li{
             float: left;
             text-align: right;
         }
         li:nth-child(1){
-            width: 120px;
+            width: 140px;
             text-align: center;
         }
         li:nth-child(2){
             width: 80px;
         }
         li:nth-child(3){
+            width: 93px;
+        }
+        li:nth-child(4){
+            width: 88px;
+        }
+        li:nth-child(5){
+            width: 88px;
+        }
+        li:nth-child(6){
             width: 86px;
+        }
+        li:nth-child(7){
+            width: 88px;
+        }
+        li:nth-child(8){
+            width: 71px;
+        }
+        li:nth-child(9){
+            width: 73px;
+        }
+        li:nth-child(10){
+            width: 81px;
+        }
+        li:nth-child(11){
+            width: 99px;
+        }
+    }
+    .st_f_showOne{
+        li{
+            float: left;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 154px;
+            text-align: center;
+        }
+        li:nth-child(2){
+            width: 88px;
+        }
+        li:nth-child(3){
+            width: 100px;
+        }
+        li:nth-child(4){
+            width: 96px;
+        }
+        li:nth-child(5){
+            width: 96px;
+        }
+        li:nth-child(6){
+            width: 96px;
+        }
+        li:nth-child(7){
+            width: 84px;
+        }
+        li:nth-child(8){
+            width: 84px;
+        }
+        li:nth-child(9){
+            width: 80px;
+        }
+        li:nth-child(10){
+            width: 109px;
+        }
+    }
+    .st_footer{
+        li{
+            float: left;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 130px;
+            text-align: center;
+        }
+        li:nth-child(2){
+            width: 72px;
+        }
+        li:nth-child(3){
+            width: 87px;
         }
         li:nth-child(4){
             width: 80px;
         }
         li:nth-child(5){
-            width: 80px;
+            width: 83px;
         }
         li:nth-child(6){
             width: 80px;
         }
         li:nth-child(7){
-            width: 80px;
-        }
-        li:nth-child(8), li:nth-child(9){
             width: 71px;
         }
+        li:nth-child(8){
+            width: 72px;
+        }
+        li:nth-child(9){
+            width: 78px;
+        }
         li:nth-child(10){
-            width: 80px;
+            width: 72px;
         }
         li:nth-child(11){
-            width: 70px;
+            width: 73px;
         }
         li:nth-child(12){
             width: 90px;
         }
     }
     /*团队总表footer*/
+    .tt_f_showTwo{
+        li{
+            float: left;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 157px;
+            text-align: center;
+        }
+        li:nth-child(2){
+            width: 80px;
+        }
+        li:nth-child(3){
+            width: 89px;
+        }
+        li:nth-child(4){
+            width: 86px;
+        }
+        li:nth-child(5){
+            width: 78px;
+        }
+        li:nth-child(6){
+            width: 87px;
+        }
+        li:nth-child(7){
+            width: 77px;
+        }
+        li:nth-child(8){
+            width: 81px;
+        }
+        li:nth-child(9){
+            width: 89px;
+        }
+        li:nth-child(10){
+            width: 81px;
+        }
+        li:nth-child(11){
+            width: 83px;
+        }
+    }
+    .tt_f_showOne{
+        li{
+            float: left;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 172px;
+            text-align: center;
+        }
+        li:nth-child(2){
+            width: 87px;
+        }
+        li:nth-child(3){
+            width: 96px;
+        }
+        li:nth-child(4){
+            width: 96px;
+        }
+        li:nth-child(5){
+            width: 84px;
+        }
+        li:nth-child(6){
+            width: 95px;
+        }
+        li:nth-child(7){
+            width: 83px;
+        }
+        li:nth-child(8){
+            width: 84px;
+        }
+        li:nth-child(9){
+            width: 82px;
+        }
+        li:nth-child(10){
+            width: 108px;
+        }
+    }
     .tt_footer{
         li{
             float: left;
@@ -231,28 +388,31 @@ $border-color: #B2B2B2;
             width: 82px;
         }
         li:nth-child(4){
-            width: 84px;
+            width: 81px;
         }
         li:nth-child(5){
-            width: 78px;
+            width: 70px;
         }
         li:nth-child(6){
-            width: 83px;
+            width: 80px;
         }
         li:nth-child(7){
             width: 78px;
         }
-        li:nth-child(8), li:nth-child(9){
-            width: 62px;
+        li:nth-child(8){
+            width: 71px;
+        }
+        li:nth-child(9){
+            width: 71px;
         }
         li:nth-child(10){
-            width: 84px;
+            width: 81px;
         }
         li:nth-child(11){
-            width: 78px;
+            width: 70px;
         }
         li:nth-child(12){
-            width: 81px;
+            width: 89px;
         }
     }
     .o_g_footer{
@@ -303,19 +463,22 @@ $border-color: #B2B2B2;
         }
         li:nth-child(1){
              text-align: center;
-             width: 278px;
+             width: 306px;
          }
         li:nth-child(2){
-            width: 135px;
+            width: 150px;
         }
         li:nth-child(3){
-            width: 143px;
+            width: 125px;
         }
         li:nth-child(4){
-            width: 143px;
+            width: 122px;
         }
-        li:nth-child(5), li:nth-child(6){
-            width: 144px;
+        li:nth-child(5){
+            width: 157px;
+        }
+        li:nth-child(6){
+            width: 128px;
         }
     }
 
@@ -332,23 +495,23 @@ $border-color: #B2B2B2;
             float: left;
             text-align: right;
             &:first-child{
-                width: 222px;
+                width: 195px;
                 text-align: center;
             }
             &:nth-child(2){
-                width: 110px;
+                width: 112px;
             }
             &:nth-child(3){
-                width: 117px;
+                width: 120px;
             }
             &:nth-child(4){
                 width: 115px;
             }
             &:nth-child(5){
-                width: 119px;
+                width: 125px;
             }
             &:nth-child(6){
-                width: 117px;
+                width: 120px;
             }
         }
     }
@@ -361,7 +524,7 @@ $border-color: #B2B2B2;
             text-align: right;
         }
         li:first-child{
-            width: 225px;
+            width: 230px;
             text-align: center;
         }
     }
@@ -428,13 +591,28 @@ $border-color: #B2B2B2;
         li{
             float: left;
             text-align: right;
-            width: 107px;
             padding: 0 8px;
             @include lh(45px);
         }
         li:first-child{
             width: 220px;
             text-align: center;
+        }
+        li:nth-child(2){
+            width: 100px;
+        }
+        li:nth-child(3){
+            width: 103px;
+        }
+        li:nth-child(4){
+            width: 106px;
+        }
+        li:nth-child(5){
+            width: 106px;
+        }
+        li:nth-child(6){
+            width: 120px;
+            padding-right: 23px;
         }
     }
     /*分红-历史分红footer*/

@@ -174,11 +174,11 @@ export default class PtRecord extends Component {
             {
                 title: '用户名',
                 dataIndex: 'username',
-                width: 135,
+                width: 110,
             }, {
                 title: '时间',
                 dataIndex: 'project_Game_date',
-                width: 170,
+                width: 110,
             }, {
                 title: '游戏名称',
                 dataIndex: 'game_name',
@@ -192,13 +192,13 @@ export default class PtRecord extends Component {
                 dataIndex: 'project_bet',
                 className: 'column-right',
                 sorter: (a, b) => a.age - b.age,
-                width: 135,
+                width: 120,
             }, {
                 title: '奖金',
                 dataIndex: 'project_win',
                 className: 'column-right',
                 sorter: (a, b) => a.age - b.age,
-                width: 135,
+                width: 120,
             }, {
                 title: '盈亏',
                 dataIndex: 'project_WinLossAmount',
@@ -221,7 +221,7 @@ export default class PtRecord extends Component {
                         return '和'
                     }
                 },
-                width: 100,
+                width: 70,
             }];
         const gamecate = this.state.postData.gamecate,
             games = this.state.games[gamecate] instanceof Array ? this.state.games[gamecate] : [];
@@ -321,7 +321,6 @@ export default class PtRecord extends Component {
                                loading={this.state.loading}
                                footer={total <= 0 ? null : ()=>footer}
                                onChange={this.handleTableChange}
-                               scroll={{y: 300}}
                         />
                     </div>
                     <div className="t_l_page" style={{display: total <= 0 ? 'none' : ''}}>

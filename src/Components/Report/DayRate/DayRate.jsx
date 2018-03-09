@@ -95,12 +95,12 @@ export default class DayRate extends Component {
                 if(res.status == 200){
                     let data = res.repsoneContent,
                         userName = stateVar.userInfo.userName;
-                    for(let i = 0, results = data.results; i < results.length; i++){
-                        if(userName == results[i].username){
-                            results[i].buttons[1].text = '自身协议';
-                            break;
-                        }
-                    }
+                    // for(let i = 0, results = data.results; i < results.length; i++){
+                    //     if(userName == results[i].username){
+                    //         results[i].buttons[1].text = '自身协议';
+                    //         break;
+                    //     }
+                    // }
                     table.dayRateList = data.results;
                     table.sum = data.sum;
                     table.total = parseInt(data.affects);
@@ -232,14 +232,6 @@ export default class DayRate extends Component {
                 }
             })
         }else if(type == '修改协议' || type == '已签订过' || type == '等待同意' || type == '自身协议' || type == '同意协议'){
-            Fetch.dailysalaryself({
-                method: 'POST',
-                body: JSON.stringify({userid: stateVar.userInfo.userId})
-            }).then((res)=>{
-                if(this._ismount && res.status == 200){
-                    this.setState({protocol: res.repsoneContent.pros[0]})
-                }
-            });
             this.setState({
                 alterData: record,
                 alterVisible: true,
@@ -256,7 +248,11 @@ export default class DayRate extends Component {
                 body: JSON.stringify(postDataSelf)
             }).then((res)=>{
                 if(this._ismount && res.status == 200){
-                    this.setState({contentArr: res.repsoneContent.pros[0], salary_ratio: res.repsoneContent.pros[0]})
+                    this.setState({
+                        contentArr: res.repsoneContent.pros[0],
+                        salary_ratio: res.repsoneContent.pros[0],
+                        protocol: res.repsoneContent.pros[0]
+                    })
                 }
             })
         }else{}
@@ -384,39 +380,39 @@ export default class DayRate extends Component {
                 title: '用户名',
                 dataIndex: 'username',
                 render: text => <a href="javascript:void(0)" onClick={()=>this.onClickUserName(text)} style={{color: '#0088DE'}}>{text}</a>,
-                width: 130,
+                width: 110,
                 filterIcon: <Icon type="smile-o" style={{ color: 'red' }} />,
             }, {
                 title: '所属组',
                 dataIndex: 'usergroup_name',
-                width: 130,
+                width: 90,
             }, {
                 title: '投注量',
                 dataIndex: 'sale',
                 className: 'column-right',
-                width: 130,
+                width: 120,
             }, {
                 title: '有效投注量',
                 dataIndex: 'effective_sale',
                 className: 'column-right',
-                width: 130,
+                width: 120,
             }, {
                 title: '日工资比例',
                 dataIndex: 'salary_ratio',
                 className: 'column-right',
-                width: 130,
+                width: 120,
             }, {
                 title: '团队日工资',
                 dataIndex: 'allsalary',
                 className: 'column-right',
-                width: 130,
+                width: 120,
             }, {
                 title: '日工资',
                 dataIndex: 'salary',
                 className: 'column-right',
                 render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                                                         <span className="col_color_ying">{text}</span>,
-                width: 130,
+                width: 120,
             }, {
                 title: '操作',
                 dataIndex: 'buttons',

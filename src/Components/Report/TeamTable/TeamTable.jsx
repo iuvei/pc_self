@@ -316,20 +316,21 @@ export default class TeamTable extends Component {
     render() {
         const { dailysalaryStatus } = stateVar;
         const { table, classify, variety, postData, selfDate } = this.state;
-        const columns = [
+        const sum = table.sum;
+
+        let columns = [
             {
                 title: '日期',
                 dataIndex: 'rdate',
                 render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
                 width: 70,
-                // filterIcon: <Icon type="smile-o" style={{ color: 'red' }} />,
             }, {
                 title: '用户名',
                 dataIndex: 'username',
                 render: (text, record, index) => index == 0 || postData.userid != null ? text :
                     <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
                        style={{color: '#0088DE'}}>{text}</a>,
-                width: 85,
+                width: 80,
             }, {
                 title: '投注量',
                 dataIndex: 'sum_price',
@@ -361,18 +362,6 @@ export default class TeamTable extends Component {
                 render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
-                title: '日工资',
-                dataIndex: 'sum_dailywages',
-                className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
-                render: text => parseFloat(text).toFixed(3),
-                width: 80,
-            }, {
-                title: '日亏损',
-                dataIndex: 'sum_dailyloss',
-                className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
-                render: text => parseFloat(text).toFixed(3),
-                width: 70,
-            }, {
                 title: '活动',
                 dataIndex: 'sum_activity',
                 className: 'column-right',
@@ -381,75 +370,605 @@ export default class TeamTable extends Component {
             }, {
                 title: '净收入',
                 dataIndex: 'sum_netincome',
-                className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
                 render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
+                title: '日工资',
+                dataIndex: 'sum_dailywages',
+                // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                render: text => parseFloat(text).toFixed(3),
+                width: 75,
+            }, {
+                title: '日亏损',
+                dataIndex: 'sum_dailyloss',
+                // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                render: text => parseFloat(text).toFixed(3),
+                width: 75,
+            }, {
                 title: '分红',
                 dataIndex: 'sum_dividents',
-                className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
                 render: text => parseFloat(text).toFixed(3),
-                width: 70,
+                width: 75,
             }, {
                 title: '总盈亏',
                 dataIndex: 'sum_total',
                 className: 'column-right',
                 render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
                     <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
-                width: 90,
+                width: 75,
             }
         ];
-        const sum = table.sum;
-        const footer = <ul className="tt_footer clear">
+        let footer = <ul className="tt_footer clear">
             <li>总计</li>
             <li>{sum.total_price}</li>
             <li>{sum.total_effective_price}</li>
             <li>{sum.total_bonus}</li>
             <li>{sum.total_point}</li>
             <li>{sum.total_grossincome}</li>
-            <li>{sum.total_dailywages}</li>
-            <li>{sum.total_dailyloss}</li>
             <li>{sum.total_activity}</li>
             <li>{sum.total_netincome}</li>
+            <li>{sum.total_dailywages}</li>
+            <li>{sum.total_dailyloss}</li>
             <li>{sum.total_dividents}</li>
             <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
         </ul>;
-        if(variety == 0 || variety == 1){
-            columnsRests = [
+        if(dailysalaryStatus.isLose != 1){
+            columns = [
                 {
                     title: '日期',
                     dataIndex: 'rdate',
                     render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
-                    width: 110,
+                    width: 70,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => index == 0 || postData.userid != null ? text :
                         <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
-                    width: 200,
+                    width: 80,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'sum_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'sum_effective_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'sum_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'sum_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'sum_grossincome',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'sum_netincome',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '日工资',
+                    dataIndex: 'sum_dailywages',
+                    // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '分红',
+                    dataIndex: 'sum_dividents',
+                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'sum_total',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="tt_f_showTwo clear">
+                <li>总计</li>
+                <li>{sum.total_price}</li>
+                <li>{sum.total_effective_price}</li>
+                <li>{sum.total_bonus}</li>
+                <li>{sum.total_point}</li>
+                <li>{sum.total_grossincome}</li>
+                <li>{sum.total_activity}</li>
+                <li>{sum.total_netincome}</li>
+                <li>{sum.total_dailywages}</li>
+                <li>{sum.total_dividents}</li>
+                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isSalary != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'rdate',
+                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    width: 70,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render: (text, record, index) => index == 0 || postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                           style={{color: '#0088DE'}}>{text}</a>,
+                    width: 80,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'sum_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'sum_effective_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'sum_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'sum_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'sum_grossincome',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'sum_netincome',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '日亏损',
+                    dataIndex: 'sum_dailyloss',
+                    // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '分红',
+                    dataIndex: 'sum_dividents',
+                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'sum_total',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="tt_f_showTwo clear">
+                <li>总计</li>
+                <li>{sum.total_price}</li>
+                <li>{sum.total_effective_price}</li>
+                <li>{sum.total_bonus}</li>
+                <li>{sum.total_point}</li>
+                <li>{sum.total_grossincome}</li>
+                <li>{sum.total_activity}</li>
+                <li>{sum.total_netincome}</li>
+                <li>{sum.total_dailyloss}</li>
+                <li>{sum.total_dividents}</li>
+                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isDividend != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'rdate',
+                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    width: 70,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render: (text, record, index) => index == 0 || postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                           style={{color: '#0088DE'}}>{text}</a>,
+                    width: 80,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'sum_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'sum_effective_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'sum_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'sum_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'sum_grossincome',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'sum_netincome',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '日工资',
+                    dataIndex: 'sum_dailywages',
+                    className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '日亏损',
+                    dataIndex: 'sum_dailyloss',
+                    className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'sum_total',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="tt_f_showTwo clear">
+                <li>总计</li>
+                <li>{sum.total_price}</li>
+                <li>{sum.total_effective_price}</li>
+                <li>{sum.total_bonus}</li>
+                <li>{sum.total_point}</li>
+                <li>{sum.total_grossincome}</li>
+                <li>{sum.total_activity}</li>
+                <li>{sum.total_netincome}</li>
+                <li>{sum.total_dailywages}</li>
+                <li>{sum.total_dailyloss}</li>
+                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'rdate',
+                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    width: 70,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render: (text, record, index) => index == 0 || postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                           style={{color: '#0088DE'}}>{text}</a>,
+                    width: 80,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'sum_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'sum_effective_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'sum_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'sum_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'sum_grossincome',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'sum_netincome',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '分红',
+                    dataIndex: 'sum_dividents',
+                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'sum_total',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="tt_f_showOne clear">
+                <li>总计</li>
+                <li>{sum.total_price}</li>
+                <li>{sum.total_effective_price}</li>
+                <li>{sum.total_bonus}</li>
+                <li>{sum.total_point}</li>
+                <li>{sum.total_grossincome}</li>
+                <li>{sum.total_activity}</li>
+                <li>{sum.total_netincome}</li>
+                <li>{sum.total_dividents}</li>
+                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isLose != 1 && dailysalaryStatus.isDividend != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'rdate',
+                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    width: 70,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render: (text, record, index) => index == 0 || postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                           style={{color: '#0088DE'}}>{text}</a>,
+                    width: 80,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'sum_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'sum_effective_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'sum_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'sum_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'sum_grossincome',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'sum_netincome',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '日工资',
+                    dataIndex: 'sum_dailywages',
+                    // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'sum_total',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="tt_f_showOne clear">
+                <li>总计</li>
+                <li>{sum.total_price}</li>
+                <li>{sum.total_effective_price}</li>
+                <li>{sum.total_bonus}</li>
+                <li>{sum.total_point}</li>
+                <li>{sum.total_grossincome}</li>
+                <li>{sum.total_activity}</li>
+                <li>{sum.total_netincome}</li>
+                <li>{sum.total_dailywages}</li>
+                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'rdate',
+                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    width: 70,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render: (text, record, index) => index == 0 || postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                           style={{color: '#0088DE'}}>{text}</a>,
+                    width: 80,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'sum_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'sum_effective_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'sum_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'sum_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'sum_grossincome',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'sum_netincome',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '日亏损',
+                    dataIndex: 'sum_dailyloss',
+                    // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'sum_total',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="tt_f_showOne clear">
+                <li>总计</li>
+                <li>{sum.total_price}</li>
+                <li>{sum.total_effective_price}</li>
+                <li>{sum.total_bonus}</li>
+                <li>{sum.total_point}</li>
+                <li>{sum.total_grossincome}</li>
+                <li>{sum.total_activity}</li>
+                <li>{sum.total_netincome}</li>
+                <li>{sum.total_dailyloss}</li>
+                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
+            </ul>;
+        }
+
+        if(variety == 0 || variety == 1){
+            columnsRests = [
+                {
+                    title: '日期',
+                    dataIndex: 'rdate',
+                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    width: 150,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render: (text, record, index) => index == 0 || postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                           style={{color: '#0088DE'}}>{text}</a>,
+                    width: 150,
                 }, {
                     title: '投注',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    width: 180,
+                    width: 150,
                 }, {
                     title: '有效投注',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    width: 180,
+                    width: 150,
                 }, {
                     title: '中奖金额',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    width: 180,
+                    width: 150,
                 }, {
                     title: '累计盈利',
                     dataIndex: 'sum_total',
                     className: 'column-right',
                     render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
-                    width: 180,
+                    width: 150,
                 }
             ];
             otherGamesFooter = <ul className="o_g_footer clear">
@@ -504,41 +1023,41 @@ export default class TeamTable extends Component {
                     title: '日期',
                     dataIndex: 'rdate',
                     render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
-                    width: 180,
+                    width: 150,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => index == 0 || postData.userid != null ? text :
                         <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
-                    width: 180,
+                    width: 150,
                 }, {
                     title: '总投注金额',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    width: 180,
+                    width: 150,
                 }, {
                     title: '返点总额',
                     dataIndex: 'sum_point',
                     className: 'column-right',
-                    width: 180,
+                    width: 120,
                 }, {
                     title: '中奖总额',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    width: 180,
+                    width: 120,
                 }, {
                     title: '奖池奖金总额',
                     dataIndex: 'sum_prizepool',
                     className: 'column-right',
-                    width: 180,
+                    width: 150,
                 }, {
                     title: '累计盈利',
                     dataIndex: 'sum_total',
                     className: 'column-right',
                     render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
-                    width: 180,
+                    width: 120,
                 }
             ];
             otherGamesFooter = <ul className="o_g_bobing_footer clear">

@@ -96,9 +96,10 @@ export default class WeChat extends Component {
 
     // 充值金额
     onRechargeAmount(value) {
-        let validate = this.state.validate,
-            postData = this.state.postData;
-        if(value == '' || value == undefined || value < this.state.loadmin || value > this.state.loadmax){
+        let {validate, postData, loadmin, loadmax} = this.state;
+        let reg = /^[0-9]*$/;
+        let r = reg.test(value);
+        if(!r || value < loadmin || value > loadmax){
             validate.money = 1;
         }else{
             validate.money = 0;

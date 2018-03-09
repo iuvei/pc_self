@@ -151,7 +151,7 @@ export default class Sports extends Component {
             {
                 title: '用户名',
                 dataIndex: 'username',
-                width: 120,
+                width: 110,
             }, {
                 title: '时间',
                 dataIndex: 'transaction_time',
@@ -163,12 +163,12 @@ export default class Sports extends Component {
             }, {
                 title: '注单号',
                 dataIndex: 'trans_id',
-                width: 110,
+                width: 100,
             }, {
                 title: '投注金额',
                 dataIndex: 'stake',
                 className:'column-right',
-                width: 110
+                width: 90
             }, {
                 title: '有效投注金额',
                 dataIndex: 'valid_amount',
@@ -180,12 +180,12 @@ export default class Sports extends Component {
                 dataIndex: 'winlost_amount',
                 className:'column-right',
                 sorter: (a, b) => a.age - b.age,
-                width: 110,
+                width: 90,
             }, {
                 title: '盈亏',
                 dataIndex: 'win_lost_money',
                 className:'column-right',
-                width: 110,
+                width: 100,
                 render:(text)=>(
                     text < 0 ? <span className="col_color_shu">{text}</span> :
                                 <span className="col_color_ying">{text}</span>
@@ -196,11 +196,11 @@ export default class Sports extends Component {
                 dataIndex: 'after_amount',
                 className:'column-right',
                 sorter: (a, b) => a.age - b.age,
-                width: 110,
+                width: 100,
             }, {
                 title: '状态',
                 dataIndex: 'ticket_status',
-                width: 110,
+                width: 90,
             }];
         const sum = this.state.sum;
         const total = this.state.total;
@@ -266,7 +266,7 @@ export default class Sports extends Component {
                             </li>
                             <li>
                                 <span>状态：</span>
-                                <Select defaultValue="0" style={{ minWidth: 110 }} onChange={(value)=>{this.handleStatus(value)}}>
+                                <Select defaultValue="0" style={{ width: 120 }} onChange={(value)=>{this.handleStatus(value)}}>
                                     <Option value="0">所有</Option>
                                     <Option value="WON">WON</Option>
                                     <Option value="LOSE">LOSE</Option>

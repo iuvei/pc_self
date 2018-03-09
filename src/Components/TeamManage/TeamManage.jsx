@@ -7,13 +7,13 @@ import ChildNav from '../Common/ChildNav/ChildNav';
 
 const navList = [
     {
-        link: '/TeamManage/teamList',
+        link: '/teamManage/teamList',
         text: '团队列表'
     },{
-        link: '/TeamManage/marketing',
+        link: '/teamManage/marketing',
         text: '市场推广'
     },{
-        link: '/TeamManage/contract',
+        link: '/teamManage/contract',
         text: '契约系统'
     }
 ];

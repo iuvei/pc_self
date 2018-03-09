@@ -19,7 +19,7 @@ export default class Message extends Component {
             total: 0, //总条数
 
             postData: {
-                msgids: [],
+                msgids: '',
                 tag: '',
                 p: 1,
                 pn: 10,
@@ -30,12 +30,13 @@ export default class Message extends Component {
                 content: '加载中...',
             },
             isview: 0, //是否已读，用来判断关闭后是否重新更新列表
+            selectedRowKeys: [],
         }
     };
     componentDidMount() {
         this._ismount = true;
         this.eventEmitter = emitter.on('zhanneixin', (e) => {
-            this.getData();
+            this.getData(1,'push');
         });
         this.getData();
     };
@@ -43,7 +44,7 @@ export default class Message extends Component {
         this._ismount = false;
         emitter.off(this.eventEmitter);
     };
-    getData(isview) {
+    getData(isview, type) {
         let { postData } = this.state;
         this.setState({ tableLoading: true });
         Fetch.messages({
@@ -57,10 +58,14 @@ export default class Message extends Component {
                         this.onUnread();
                     }
                     if(postData.tag != ''){
-                        message.success(res.shortMessage);
+                        if(type != 'push'){
+                            message.success(res.shortMessage);
+                        }
                         postData.tag = '';
-                        postData.msgids = [];
-                        this.setState({postData: postData}, ()=>this.getData());
+                        this.setState({
+                            postData,
+                            selectedRowKeys: [],
+                        }, ()=>this.getData());
                     }else{
                         let data = res.repsoneContent;
                         this.setState({
@@ -75,14 +80,7 @@ export default class Message extends Component {
     /*删除选中*/
     onDeleteAll() {
         this.setState({ loading: true });
-        let {postData} = this.state;
         this.getData(0);
-    };
-    onSelectChange = (msgids) => {
-        let {postData} = this.state;
-        postData.msgids = msgids.join();
-        postData.tag = 'deleteChoices';
-        this.setState({ postData });
     };
     /*删除某条*/
     onDeleteOne(record) {
@@ -140,8 +138,14 @@ export default class Message extends Component {
             this.getData();
         }
     };
+    onSelectChange = (selectedRowKeys) => {
+        let {postData} = this.state;
+        postData.msgids = selectedRowKeys.join();
+        postData.tag = 'deleteChoices';
+        this.setState({ postData, selectedRowKeys: selectedRowKeys});
+    };
     render() {
-        const { loading, data, total, postData, repDetails } = this.state;
+        const { loading, data, total, repDetails, selectedRowKeys } = this.state;
         const columns = [
                 {
                     title: '发送人',
@@ -171,12 +175,10 @@ export default class Message extends Component {
                     },
                 }
             ];
-        const msgids = postData.msgids;
         const rowSelection = {
-            msgids,
+            selectedRowKeys,
             onChange: this.onSelectChange,
         };
-        const hasSelected = postData.msgids.length > 0;
         return (
             <div className="message_main">
                 <Table rowSelection={rowSelection}
@@ -192,7 +194,7 @@ export default class Message extends Component {
                     <Button
                         type="primary"
                         onClick={()=>this.onDeleteAll()}
-                        disabled={!hasSelected}
+                        disabled={!selectedRowKeys.length > 0}
                         loading={loading}
                     >
                         删除选中

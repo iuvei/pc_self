@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { Icon ,Popover} from 'antd';
 import { hashHistory } from 'react-router';
 import './Rightplug.scss'
-import { stateVar } from '../../../State'
+import { stateVar } from '../../../State';
+import { getStore } from "../../../CommonJs/common";
 import ComplainAndSuggests from "../ComplainAndSuggests/ComplainAndSuggests";
 import Chat from '../../Chat/Chat';
 import qrcode from "./Img/qrcode.png";
@@ -75,6 +76,12 @@ export default class RightPlug extends Component {
                     visible={modalVisible}
                     hideChat={this.hideChat}
                 />
+                <iframe scrolling="no"
+                        id="lt_main" name="lt_main"
+                        style={{display: 'none'}}
+                        src={stateVar.httpUrl + '/pcservice/?controller=user&action=UserTeam&tag=html&sess=' + getStore('session')}
+                >
+                </iframe>
 	        	<div className="box-shape right_plug" style={{right:stateVar.paused ? 0 : '-140px'}}>
                     <ul className="right_list">
                         <li>

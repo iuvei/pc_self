@@ -432,7 +432,7 @@ export default class Marketing extends Component {
                                                         </CopyToClipboard>
                                                     </section>
                                                 </div>,
-                width: 345,
+                width: 340,
             }, {
                 title: '用户类型',
                 dataIndex: 'user_type',
@@ -445,7 +445,7 @@ export default class Marketing extends Component {
             }, {
                 title: '时间',
                 dataIndex: 'gmt_create',
-                width: 160,
+                width: 140,
             }, {
                 title: '注册数',
                 dataIndex: 'register_count',
@@ -463,7 +463,7 @@ export default class Marketing extends Component {
                                             onChange={(checked)=>this.onChangeSwitch(checked, record)}
                                     />
                                 </span>,
-                width: 100,
+                width: 90,
             }, {
                 title: '操作',
                 dataIndex: 'delete',

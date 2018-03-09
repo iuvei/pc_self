@@ -34,48 +34,53 @@ export default class Contract extends Component {
     };
     /*按钮*/
     onBtn(){
-      const { alterData } = this.props;
-      if(alterData.buttons == undefined){
-          // return
-      }
-      if(alterData.buttons != undefined && alterData.buttons[1].text == '同意协议'){
-          return (
-              <div className="a_c_btn">
-                  <Button loading={this.props.affirmLoading}
-                          onClick={()=>this.props.onConsent()}
-                          type="primary"
-                          className="a_c_cancel_btn"
-                  >
-                      同意
-                  </Button>
-                  <Button onClick={()=>this.onCancel()}
-                  >
-                      关闭
-                  </Button>
-              </div>
-          )
-      }else if(stateVar.userInfo.userName == alterData.username){
+      const { alterData, hideBtn } = this.props;
+      if(hideBtn){
           return (
               <div className="a_c_btn_one">
                   <Button onClick={()=>this.onCancel()}>关闭</Button>
               </div>
           )
       }else{
-          return (
-              <div className="a_c_btn">
-                  <Button loading={this.props.affirmLoading}
-                          onClick={()=>this.onAffirm()}
-                          type="primary"
-                          className="a_c_cancel_btn"
-                  >
-                      {this.props.contract_name}
-                  </Button>
-                  <Button onClick={()=>this.onCancel()}
-                  >
-                      关闭
-                  </Button>
-              </div>
-          )
+          if(alterData.buttons != undefined && alterData.buttons[1].text == '同意协议'){
+              return (
+                  <div className="a_c_btn">
+                      <Button loading={this.props.affirmLoading}
+                              onClick={()=>this.props.onConsent()}
+                              type="primary"
+                              className="a_c_cancel_btn"
+                      >
+                          同意
+                      </Button>
+                      <Button onClick={()=>this.onCancel()}
+                      >
+                          关闭
+                      </Button>
+                  </div>
+              )
+          }else if(stateVar.userInfo.userName == alterData.username){
+              return (
+                  <div className="a_c_btn_one">
+                      <Button onClick={()=>this.onCancel()}>关闭</Button>
+                  </div>
+              )
+          }else{
+              return (
+                  <div className="a_c_btn">
+                      <Button loading={this.props.affirmLoading}
+                              onClick={()=>this.onAffirm()}
+                              type="primary"
+                              className="a_c_cancel_btn"
+                      >
+                          {this.props.contract_name}
+                      </Button>
+                      <Button onClick={()=>this.onCancel()}
+                      >
+                          关闭
+                      </Button>
+                  </div>
+              )
+          }
       }
     };
 
