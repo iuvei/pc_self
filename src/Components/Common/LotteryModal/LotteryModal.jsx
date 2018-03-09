@@ -303,7 +303,6 @@ export default class AlterModal extends Component {
 						stateVar.BetContent = {
 					        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
 					    };
-						this.props.historyBet();
 	    			}else{
 	    				$(".btn_group .oktz span").html('确定');
 	    				this.setState({tzloding:false});

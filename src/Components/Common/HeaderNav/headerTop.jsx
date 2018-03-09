@@ -61,36 +61,27 @@ export default class HeaderTop extends Component {
         emitter.off(this.eventEmitter);
     };
     getDestination() {
-        let destination = 40,
-            noticeListFlag = JSON.parse(JSON.stringify(this.state.noticeList));
-        this._clearInt = setInterval(() => {
-            if (destination / 40 < noticeListFlag.length) {
-                this.move(destination, 500);
-                destination += 40;
-            } else { // 列表到底
-                this.setState({noticePosition: 0});// 设置列表为开始位置
-                destination = 40;
-                this.move(destination, 500);
-                destination += 40;
-            }
-        }, 6000)
-
-    };
-    move (destination, duration) { // 实现滚动动画
-        let speed = (((destination - this.state.noticePosition) * 1000) / (duration * 60));
-        let count = 0;
-        let step = () => {
-            this.setState({noticePosition: this.state.noticePosition + speed});
-            count++;
-            this._animationFrame = requestAnimationFrame(() => {
-                if (this.state.noticePosition < destination) {
-                    step()
-                } else {
-                    this.setState({noticePosition: destination});
-                }
-            })
-        };
-        step()
+    	let times = 1,
+    		duration = 40,
+    		noticeListFlag = JSON.parse(JSON.stringify(this.state.noticeList));
+    	$(".notice-list").css('height',duration*noticeListFlag.length);
+    	$(".notice-list").css('top',0);
+    	$(".notice-list").stop();
+		if(noticeListFlag.length <= 1){
+			return;
+		}
+		this.noticeInterval = setInterval(()=>{
+    		if(noticeListFlag.length <= 1){
+    			return;
+    		}
+    		if(times == noticeListFlag.length){
+    			times = 1;
+    			$(".notice-list").css('top',0);
+    		}
+    		$(".notice-list").animate({top:'-'+duration*times},500,()=>{
+    			times++;
+    		});
+    	},6000);
     };
     getress(){
         let userInfo = stateVar.userInfo;
@@ -352,7 +343,7 @@ export default class HeaderTop extends Component {
                     <div className="right">
                         <div className="n_t_lt">
                             <div className="show-notice">
-                                <ul className="notice-list left" style={{transform: 'translateY(-'+this.state.noticePosition+'px) translateZ(0px)'}}>
+                                <ul className="notice-list">
                                     {
                                         this.state.noticeList.map((item)=>{
                                             return (
