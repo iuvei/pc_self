@@ -70,7 +70,7 @@ export default class ContentMian extends Component {
         	periodsIndex:-1,
         	traceTotalIssue:0,
         	traceTotalMoney:0,
-        	traceifStop:true,
+        	traceifStop:false,
         	tempLotteryLength:0
         }
         this.lotteryOkBet = this.lotteryOkBet.bind(this);
@@ -164,7 +164,7 @@ export default class ContentMian extends Component {
     		stateVar.betVisible = false;
     	}else{
     		stateVar.betVisible = false;
-    		this.setState({traceItem:[],checkselectItem:[]});
+    		this.setState({traceItem:[],checkselectItem:[],traceifStop:false});
     		this.getSuperaddition();
     	}
     }
@@ -304,8 +304,8 @@ export default class ContentMian extends Component {
     		if(this._ismount && data.status == 200){
     			let tempData = data.repsoneContent || {};
     			let oneFlag = true;
-    			let version = common.getStore('version');
-    			if(version){
+    			let version = common.getStore('version') || [];
+    			if(version.length > 0){
     				let tempFlag = true;
     				for(let i=0;i<version.length;i++){
     					if(version[i].userId == tempData.userid){
@@ -1804,7 +1804,7 @@ export default class ContentMian extends Component {
     	stateVar.aboutGame.data_sel = [];
     	stateVar.aboutGame.minchosen = [];
     	if(numberObj.nfdprize.defaultprize == undefined){
-    		this.setState({omodel:'2'});
+    		this.setState({omodel:'1'});
     	}
     	let tempMode = [];
     	numberObj.modes.map((val,index)=>{
@@ -2520,7 +2520,7 @@ export default class ContentMian extends Component {
 						                    </div>
 						                    <div className="m_m_footer clear">
 						                        <div className="m_m_left_btn left">
-						                            <Checkbox onChange={(e)=>this.onChangeTraceStop(e)}>中奖后停止追号</Checkbox>
+						                            <Checkbox checked={this.state.traceifStop} onChange={(e)=>this.onChangeTraceStop(e)}>中奖后停止追号</Checkbox>
 						                            <Button type="primary" onClick={()=>this.clearTraceNumber()}>清空号码</Button>
 						                        </div>
 						                        <ul className="m_m_footer_info right">
