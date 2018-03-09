@@ -36,7 +36,8 @@ export default class Withdraw extends Component {
             },
             validate: {
                 money: 2, // 0: 对， 1：错
-            }
+            },
+            shortMessage: '',
         }
     };
     componentDidMount() {
@@ -64,9 +65,10 @@ export default class Withdraw extends Component {
                         defaultBank: data.bankList[0] != undefined ? data.bankList[0].id : '',
                         postData,
                         selectShow: false,
+                        shortMessage: res.shortMessage,
                     })
                 }else{
-                    this.setState({selectShow: true})
+                    this.setState({selectShow: true});
                 }
             }
         })
@@ -74,13 +76,15 @@ export default class Withdraw extends Component {
 
     onRechargeAmount(value) {
         let { validate, postData, response } = this.state;
-        if(value == '' || value == undefined || value < response.iMinMoney || value > response.iMaxMoney){
+        let reg = /^[0-9]*$/;
+        let r = reg.test(value);
+        if(!r || value < response.iMinMoney || value > response.iMaxMoney){
             validate.money = 1;
         }else{
             validate.money = 0;
         }
         this.setState({moneyFlag: value, validate},()=>{
-            if(value == '' || value == undefined){
+            if(!r){
                 postData.money = 0
             }else{
                 postData.money = value - this.onCountMoney();
@@ -161,11 +165,13 @@ export default class Withdraw extends Component {
                 <Spin spinning={spinLoading}>
                     {
                         selectShow ?
-                            <div className="w_m_nopassword">
-                                您尚未
-                                <span onClick={()=>this.onClickCapital()}>绑定银行卡</span>
-                                ，请先绑定银行卡
-                            </div> :
+                            <ul className="w_m_nopassword">
+                                <li>{this.state.shortMessage}</li>
+                                <li>
+                                    请先绑定银行卡，
+                                    <span onClick={()=>this.onClickCapital()}>绑定银行卡</span>
+                                </li>
+                            </ul> :
                             <div>
                                 <ul className="r_m_list">
                                     <li>

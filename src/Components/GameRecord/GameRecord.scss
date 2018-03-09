@@ -7,7 +7,7 @@ $border-color: #B2B2B2;
     color: #363636;
     font-size: 14px;
     .team_list_top{
-        padding: 30px 30px 13px;
+        padding: 30px 0 13px 30px;
         border-bottom: 1px solid #ccc;
         .t_l_time{
             padding-bottom: 15px;
@@ -59,7 +59,7 @@ $border-color: #B2B2B2;
                 @include lh(30px);
                 li{
                     float: left;
-                    margin-right: 15px;
+                    margin-right: 12px;
                     .l_b_acount{
 
                     }
@@ -129,7 +129,7 @@ $border-color: #B2B2B2;
             text-align: right;
         }
         li:nth-child(1){
-            width: 270px;
+            width: 286px;
             text-align: center;
         }
         li:nth-child(2){
@@ -139,13 +139,16 @@ $border-color: #B2B2B2;
             width: 115px;
         }
         li:nth-child(4){
-            width: 87px;
+            width: 79px;
         }
-        li:nth-child(5),li:nth-child(6){
-             width: 105px;
+        li:nth-child(5){
+             width: 100px;
+        }
+        li:nth-child(6){
+            width: 113px;
         }
         li:nth-child(7){
-            width: 97px;
+            width: 103px;
         }
     }
     // pt
@@ -226,28 +229,28 @@ $border-color: #B2B2B2;
             text-align: right;
         }
         li:nth-child(1){
-            width: 320px;
+            width: 360px;
             text-align: center;
         }
         li:nth-child(2){
-            width: 81px;
+            width: 68px;
         }
         li:nth-child(3),li:nth-child(4),li:nth-child(5){
-            width: 90px;
+            width: 80px;
         }
         li:nth-child(6){
             width: 90px;
             text-align: center;
         }
         li:nth-child(7){
-            width: 97px;
+            width: 102px;
         }
         li:nth-child(8){
             width: 93px;
         }
         li:nth-child(9){
             width: 98px;
-            padding-right: 10px;
+            padding-right: 16px;
         }
     }
     /*日亏损佣金-查看详情footer*/

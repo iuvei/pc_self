@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
-import { Row, Col, Button, Table, message, Modal  } from 'antd';
+import { Row, Col, Button, Table, Modal  } from 'antd';
 import { timestampToTime } from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
 
@@ -90,7 +90,9 @@ export default class ActivityDetails extends Component {
             if(this._ismount){
                 this.setState({btnLoading: false});
                 if(res.status == 200){
-                    message.success(res.shortMessage);
+                    Modal.success({
+                        title: res.shortMessage,
+                    });
                     this.getData();
                 }else{
                     Modal.warning({
@@ -289,12 +291,12 @@ export default class ActivityDetails extends Component {
                     { title: '达到天数', dataIndex: 'aw_days' ,width: 80},
                     { title: '奖金', dataIndex: 'aw_pay_awards' ,width: 80},
                     { title: '剩余奖品份数', dataIndex: 'aw_surplus_prizes' ,width: 80},
-                    { title: '可领取次数', dataIndex: 'user_aw_get_numbers' ,width: 80},
-                    { title: '操作', dataIndex: 'user_aw_get_numbers_2',
+                    { title: '可领取次数', dataIndex: 'aw_get_award_numbers' ,width: 80},
+                    { title: '操作', dataIndex: 'aw_get_award_numbers_2',
                         render: (text, record) =>
                             <Button
                                 onClick={()=>this.onSignTheAward(record)} type="primary"
-                                disabled={response.user_is_enrolls == 0 || (parseInt(record.user_aw_get_numbers) > 0 ? false : true)}
+                                disabled={response.user_is_enrolls == 0 || (parseInt(record.wa_get_awards) > 0 ? false : true)}
                             >
                                 领取
                             </Button>,
@@ -311,8 +313,8 @@ export default class ActivityDetails extends Component {
                 if(activity_award_sign_sets.aw_surplus_prizes == undefined){
                     columns = columns.filter(item => item.dataIndex != 'aw_surplus_prizes')
                 }
-                if(activity_award_sign_sets.user_aw_get_numbers == undefined){
-                    columns = columns.filter(item => item.dataIndex != 'user_aw_get_numbers')
+                if(activity_award_sign_sets.aw_get_award_numbers == undefined){
+                    columns = columns.filter(item => item.dataIndex != 'aw_get_award_numbers')
                 }
                 return (
                     <div>
@@ -344,11 +346,11 @@ export default class ActivityDetails extends Component {
                     { title: '序号', dataIndex: 'key', width: 50,
                         render: (text, record, index)=> index+1
                     },
-                    { title: '充值金额', dataIndex: 'wa_pay_amount', width: 80 },
-                    { title: '充值奖金', dataIndex: 'wa_pay_awards', width: 80 },
-                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_prizes', width: 80 },
-                    { title: '可领次数', dataIndex: 'wa_get_awards', width: 80 },
-                    { title: '操作', dataIndex: 'wa_get_awards_2',
+                    { title: '充值金额', dataIndex: 'wa_pay_amount', width: 75 },
+                    { title: '充值奖金', dataIndex: 'wa_pay_awards', width: 75 },
+                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_prizes', width: 75 },
+                    { title: '可领次数', dataIndex: 'wa_get_awards', width: 75 },
+                    { title: '操作', dataIndex: 'wa_get_awards_2', width: 75,
                         render: (text, record) =>
                             <Button type="primary"
                                     disabled={response.status != 1|| response.user_is_enrolls == 0 || (parseInt(record.wa_get_awards) <= 0 ? true : false)}
@@ -356,12 +358,11 @@ export default class ActivityDetails extends Component {
                             >
                                 领取
                             </Button>,
-                        width: 80
                     },
-                    { title: '流水金额', dataIndex: 'wa_water_account', width: 80 },
-                    { title: '流水奖金', dataIndex: 'wa_water_award', width: 80 },
-                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_award', width: 80 },
-                    { title: '可领次数', dataIndex: 'wa_get_award_numbers', width: 80 },
+                    { title: '流水金额', dataIndex: 'wa_water_account', width: 75 },
+                    { title: '流水奖金', dataIndex: 'wa_water_award', width: 75 },
+                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_award', width: 75 },
+                    { title: '可领次数', dataIndex: 'wa_get_award_numbers', width: 75 },
                     { title: '操作', dataIndex: 'wa_get_award_numbers_2', width: 80,
                         render: (text, record) =>
                             <Button type="primary"
@@ -409,7 +410,7 @@ export default class ActivityDetails extends Component {
                         </p>
                         <div className="a_d_table">
                             <Table columns={columns}
-                                   rowKey={() => {let i = 0; 'key' + ++i}}
+                                   rowKey={(record, index) => index}
                                    dataSource={response.water_bills_stes}
                                    pagination={false}
                                    loading={this.state.tableLoading}

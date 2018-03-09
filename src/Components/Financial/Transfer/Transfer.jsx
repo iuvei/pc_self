@@ -97,7 +97,9 @@ export default class Transfer extends Component {
     // 转账金额
     onTransferAmount(value) {
         let validate = this.state.validate;
-        if(value == '' || value == undefined || value < 10){
+        let reg = /^[0-9]*$/;
+        let r = reg.test(value);
+        if(!r || value < 10){
             validate.money = 1;
         }else{
             validate.money = 0;

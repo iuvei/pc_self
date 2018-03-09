@@ -105,21 +105,26 @@ export default class BankCardManage extends Component {
     // 增加修改银行卡号
     showModal(value, record) {
         this.onAdduserbank();
-        if (value === 'add') {
+        if (value == 'add') {
             this.setState({
                 visible: true,
                 ModalTitle: true,
             });
         } else {
             this.onProvince(record.province_id);
-            let addPostData = this.state.addPostData;
+            let {addPostData} = this.state;
             addPostData.bank_id = record.bank_id;
+            addPostData.bank = record.bank_name;
             addPostData.province_id = record.province_id;
+            addPostData.province = record.province;
             addPostData.city_id = record.city_id;
             addPostData.city = record.city;
+            addPostData.id = record.id;
             addPostData.account_name = record.account_name;
             addPostData.branch = record.branch;
-            addPostData.account = record.account;
+            addPostData.account = record.realaccount;
+            addPostData.account_again = record.realaccount;
+            addPostData.flag = 'confirmset';
             this.setState({
                 visible: true,
                 ModalTitle: false,
@@ -133,7 +138,6 @@ export default class BankCardManage extends Component {
         let addPostData = this.state.addPostData,
             adduserbank = this.state.adduserbank;
         addPostData.bank_id = items.key;
-        // addPostData.bank = val != '-1' && adduserbank.provincelist.length != 0 ? adduserbank.provincelist.filter(item => item.id == val)[0].bank_name : '';
         addPostData.bank = items.key != '-1' && adduserbank.provincelist.length != 0 ? items.label : '';
         this.setState({
             addPostData: addPostData,
@@ -174,13 +178,13 @@ export default class BankCardManage extends Component {
 
     /*支行名称*/
     onBranch(e){
-        let val = e.target.value,
-            validate = this.state.validate,
-            addPostData = this.state.addPostData;
-        addPostData.branch = val;
-        if (val != '') {
+        let {validate, addPostData} = this.state;
+        if(e != undefined){
+            addPostData.branch = e.target.value;
+        }
+        if (addPostData.branch != '') {
             let reg = /^[0-9a-zA-Z\u4e00-\u9fa5]{1,20}$/;
-            let r = reg.test(val);
+            let r = reg.test(addPostData.branch);
             if (r) {
                 validate.branch = 0;
             } else {
@@ -196,12 +200,12 @@ export default class BankCardManage extends Component {
     };
     /*开户人姓名*/
     onAccountName(e){
-        let val = e.target.value,
-            validate = this.state.validate,
-            addPostData = this.state.addPostData;
-        addPostData.account_name = val;
+        let {validate, addPostData} = this.state;
+        if(e != undefined){
+            addPostData.account_name = e.target.value;
+        }
         let reg = /^[.。·\u4e00-\u9fa5]{2,15}$/;
-        let r = reg.test(val);
+        let r = reg.test(addPostData.account_name);
         if (r) {
             validate.account_name = 0;
         } else {
@@ -292,6 +296,12 @@ export default class BankCardManage extends Component {
             });
             return
         }
+
+        if(!ModalTitle){
+            this.onBranch();
+            this.onAccountName();
+            validate.account = 0;
+        }
         if(ModalTitle){
             if(validate.branch != 0) {
                 validate.branch = 1
@@ -314,7 +324,6 @@ export default class BankCardManage extends Component {
                 validate.security_pass = 1
             }
         }
-
         this.setState({validate: validate});
         if(validate.branch != 0 ||
             validate.account_name != 0 ||
@@ -332,14 +341,20 @@ export default class BankCardManage extends Component {
             }).then((res)=>{
                 if(this._ismount){
                     this.setState({ loading: false });
+                    let _this = this;
                     if(res.status == 200){
-                        message.success(res.shortMessage);
+                        Modal.success({
+                            title: res.shortMessage,
+                            content: '银行卡列表更新最晚 1 分钟更新！',
+                            onOk(){
+                                _this.getData();
+                            }
+                        });
                         this.setState({
                             addPostData: {},
                             validate: {},
                             visible: false,
                         });
-                        this.getData();
                     }else{
                         Modal.warning({
                             title: res.shortMessage,
@@ -550,7 +565,6 @@ export default class BankCardManage extends Component {
                                                            type="password" size="large" style={{width: 280}} placeholder="请输入验证资金密码"
                                                     />
                                                     <a onClick={()=>this.setState({childVisible: true})} href="javascript:void(0)" style={{textDecoration:'underline', color:'#0393EF'}}>忘记资金密码？</a>
-                                                    {/*, display: this.state.ModalTitle ? 'none' : ''*/}
                                                 </li>
                                             </ul>
                                             <Button className="a_aa_btn" type="primary" loading={this.state.loading} onClick={()=>{this.onStep()}}>

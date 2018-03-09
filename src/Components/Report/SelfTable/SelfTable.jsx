@@ -273,7 +273,7 @@ export default class SelfTable extends Component {
     render() {
         const { dailysalaryStatus, userInfo } = stateVar;
         const { classify, variety, data, sum, otherGamesData, otherGamesSum, postData } = this.state;
-        const columns = [
+        let columns = [
             {
                 title: '日期',
                 dataIndex: 'date',
@@ -322,18 +322,6 @@ export default class SelfTable extends Component {
                 render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
-                title: '日工资',
-                dataIndex: 'salary',
-                className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
-                render: text => parseFloat(text).toFixed(3),
-                width: 80,
-            }, {
-                title: '日亏损',
-                dataIndex: 'lose_salary',
-                className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
-                render: text => parseFloat(text).toFixed(3),
-                width: 70,
-            }, {
                 title: '活动',
                 dataIndex: 'sum_activity',
                 className: 'column-right',
@@ -342,72 +330,633 @@ export default class SelfTable extends Component {
             }, {
                 title: '净收入',
                 dataIndex: 'net_income',
-                className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
                 render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
+                title: '日工资',
+                dataIndex: 'salary',
+                // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                render: text => parseFloat(text).toFixed(3),
+                width: 75,
+            }, {
+                title: '日亏损',
+                dataIndex: 'lose_salary',
+                // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                render: text => parseFloat(text).toFixed(3),
+                width: 75,
+            }, {
                 title: '分红',
                 dataIndex: 'allsalary',
-                className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
                 render: text => parseFloat(text).toFixed(3),
-                width: 70,
+                width: 75,
             }, {
                 title: '总盈亏',
                 dataIndex: 'last_win_lose',
                 className: 'column-right',
                 render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                                            <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
-                width: 90,
+                    <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                width: 75,
             }
         ];
-        const footer = <ul className="st_footer clear">
+        let footer = <ul className="st_footer clear">
             <li>总计</li>
             <li>{sum.sum_cp_stake}</li>
             <li>{sum.sum_cp_effective}</li>
             <li>{sum.sum_cp_bonust}</li>
             <li>{sum.sum_cp_point}</li>
             <li>{sum.sum_income}</li>
-            <li>{sum.sum_salary}</li>
-            <li>{sum.sum_lose_salary}</li>
             <li>{sum.sum_sum_activity}</li>
             <li>{sum.sum_net_income}</li>
+            <li>{sum.sum_salary}</li>
+            <li>{sum.sum_lose_salary}</li>
             <li>{sum.sum_allsalary}</li>
             <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
         </ul>;
+        if(dailysalaryStatus.isLose != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    render: text => text.slice(5),
+                    width: 50,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render:(text)=>{
+                        return (
+                            text.length < 10 ? text :
+                                <Popover content={text} title={null} trigger="hover">
+                                    <span className="ellipsis" style={{display: 'inline-block', width: 70}}>{text}</span>
+                                </Popover>
+                        )
+                    },
+                    width: 85,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'cp_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'cp_effective_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 85,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'cp_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'cp_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'income',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'net_income',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '日工资',
+                    dataIndex: 'salary',
+                    // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '分红',
+                    dataIndex: 'allsalary',
+                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'last_win_lose',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="st_f_isSalary clear">
+                <li>总计</li>
+                <li>{sum.sum_cp_stake}</li>
+                <li>{sum.sum_cp_effective}</li>
+                <li>{sum.sum_cp_bonust}</li>
+                <li>{sum.sum_cp_point}</li>
+                <li>{sum.sum_income}</li>
+                <li>{sum.sum_sum_activity}</li>
+                <li>{sum.sum_net_income}</li>
+                <li>{sum.sum_salary}</li>
+                <li>{sum.sum_allsalary}</li>
+                <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isSalary != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    render: text => text.slice(5),
+                    width: 50,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render:(text)=>{
+                        return (
+                            text.length < 10 ? text :
+                                <Popover content={text} title={null} trigger="hover">
+                                    <span className="ellipsis" style={{display: 'inline-block', width: 70}}>{text}</span>
+                                </Popover>
+                        )
+                    },
+                    width: 85,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'cp_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'cp_effective_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 85,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'cp_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'cp_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'income',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'net_income',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '日亏损',
+                    dataIndex: 'lose_salary',
+                    // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '分红',
+                    dataIndex: 'allsalary',
+                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'last_win_lose',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="st_f_isSalary clear">
+                <li>总计</li>
+                <li>{sum.sum_cp_stake}</li>
+                <li>{sum.sum_cp_effective}</li>
+                <li>{sum.sum_cp_bonust}</li>
+                <li>{sum.sum_cp_point}</li>
+                <li>{sum.sum_income}</li>
+                <li>{sum.sum_sum_activity}</li>
+                <li>{sum.sum_net_income}</li>
+                <li>{sum.sum_lose_salary}</li>
+                <li>{sum.sum_allsalary}</li>
+                <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isDividend != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    render: text => text.slice(5),
+                    width: 50,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render:(text)=>{
+                        return (
+                            text.length < 10 ? text :
+                                <Popover content={text} title={null} trigger="hover">
+                                    <span className="ellipsis" style={{display: 'inline-block', width: 70}}>{text}</span>
+                                </Popover>
+                        )
+                    },
+                    width: 85,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'cp_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'cp_effective_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 85,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'cp_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'cp_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'income',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'net_income',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '日工资',
+                    dataIndex: 'salary',
+                    // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '日亏损',
+                    dataIndex: 'lose_salary',
+                    // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'last_win_lose',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="st_f_isSalary clear">
+                <li>总计</li>
+                <li>{sum.sum_cp_stake}</li>
+                <li>{sum.sum_cp_effective}</li>
+                <li>{sum.sum_cp_bonust}</li>
+                <li>{sum.sum_cp_point}</li>
+                <li>{sum.sum_income}</li>
+                <li>{sum.sum_sum_activity}</li>
+                <li>{sum.sum_net_income}</li>
+                <li>{sum.sum_salary}</li>
+                <li>{sum.sum_lose_salary}</li>
+                <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    render: text => text.slice(5),
+                    width: 50,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render:(text)=>{
+                        return (
+                            text.length < 10 ? text :
+                                <Popover content={text} title={null} trigger="hover">
+                                    <span className="ellipsis" style={{display: 'inline-block', width: 70}}>{text}</span>
+                                </Popover>
+                        )
+                    },
+                    width: 85,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'cp_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'cp_effective_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 85,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'cp_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'cp_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'income',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'net_income',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '分红',
+                    dataIndex: 'allsalary',
+                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'last_win_lose',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="st_f_showOne clear">
+                <li>总计</li>
+                <li>{sum.sum_cp_stake}</li>
+                <li>{sum.sum_cp_effective}</li>
+                <li>{sum.sum_cp_bonust}</li>
+                <li>{sum.sum_cp_point}</li>
+                <li>{sum.sum_income}</li>
+                <li>{sum.sum_sum_activity}</li>
+                <li>{sum.sum_net_income}</li>
+                <li>{sum.sum_allsalary}</li>
+                <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isLose != 1 && dailysalaryStatus.isDividend != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    render: text => text.slice(5),
+                    width: 50,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render:(text)=>{
+                        return (
+                            text.length < 10 ? text :
+                                <Popover content={text} title={null} trigger="hover">
+                                    <span className="ellipsis" style={{display: 'inline-block', width: 70}}>{text}</span>
+                                </Popover>
+                        )
+                    },
+                    width: 85,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'cp_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'cp_effective_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 85,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'cp_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'cp_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'income',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'net_income',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '日工资',
+                    dataIndex: 'salary',
+                    // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'last_win_lose',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="st_f_showOne clear">
+                <li>总计</li>
+                <li>{sum.sum_cp_stake}</li>
+                <li>{sum.sum_cp_effective}</li>
+                <li>{sum.sum_cp_bonust}</li>
+                <li>{sum.sum_cp_point}</li>
+                <li>{sum.sum_income}</li>
+                <li>{sum.sum_sum_activity}</li>
+                <li>{sum.sum_net_income}</li>
+                <li>{sum.sum_salary}</li>
+                <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    render: text => text.slice(5),
+                    width: 50,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render:(text)=>{
+                        return (
+                            text.length < 10 ? text :
+                                <Popover content={text} title={null} trigger="hover">
+                                    <span className="ellipsis" style={{display: 'inline-block', width: 70}}>{text}</span>
+                                </Popover>
+                        )
+                    },
+                    width: 85,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'cp_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'cp_effective_stake',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 85,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'cp_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'cp_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'income',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'net_income',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '日亏损',
+                    dataIndex: 'lose_salary',
+                    // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 75,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'last_win_lose',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="st_f_showOne clear">
+                <li>总计</li>
+                <li>{sum.sum_cp_stake}</li>
+                <li>{sum.sum_cp_effective}</li>
+                <li>{sum.sum_cp_bonust}</li>
+                <li>{sum.sum_cp_point}</li>
+                <li>{sum.sum_income}</li>
+                <li>{sum.sum_sum_activity}</li>
+                <li>{sum.sum_net_income}</li>
+                <li>{sum.sum_lose_salary}</li>
+                <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
+            </ul>;
+        }
+
         if(otherGamesSum != undefined){
             if(variety == 0){
                 columnsRests = [
                     {
                         title: '日期',
                         dataIndex: 'date',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '用户名',
                         dataIndex: 'userName',
                         render: text => userInfo.userName,
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '投注',
                         dataIndex: 'stake_amount',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '有效投注',
                         dataIndex: 'valid_amount',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '中奖金额',
                         dataIndex: 'back_amount',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '累计盈利',
                         dataIndex: 'win_lose',
                         className: 'column-right',
                         render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                             <span className="col_color_ying">{text}</span>,
-                        width: 180,
+                        width: 150,
                     }
                 ];
                 otherGamesFooter = <ul className="o_g_footer clear">
@@ -422,34 +971,34 @@ export default class SelfTable extends Component {
                     {
                         title: '日期',
                         dataIndex: 'date',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '用户名',
                         dataIndex: 'userName',
                         render: text => userInfo.userName,
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '投注',
                         dataIndex: 'total_bet',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '有效投注',
                         dataIndex: 'total_valid_bet',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '中奖金额',
                         dataIndex: 'total_valid_win',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '累计盈利',
                         dataIndex: 'total_win_loss',
                         className: 'column-right',
                         render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                             <span className="col_color_ying">{text}</span>,
-                        width: 180,
+                        width: 150,
                     }
                 ];
                 otherGamesFooter = <ul className="o_g_footer clear">
@@ -464,29 +1013,29 @@ export default class SelfTable extends Component {
                     {
                         title: '日期',
                         dataIndex: 'date',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '用户名',
                         dataIndex: 'userName',
                         render: text => userInfo.userName,
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '投注',
                         dataIndex: 'stake_amount',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '有效投注',
                         dataIndex: 'valid_amount',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '累计盈利',
                         dataIndex: 'back_amount',
                         className: 'column-right',
                         render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                             <span className="col_color_ying">{text}</span>,
-                        width: 180,
+                        width: 150,
                     }
                 ];
                 otherGamesFooter = <ul className="o_g_tl_footer clear">
@@ -500,34 +1049,34 @@ export default class SelfTable extends Component {
                     {
                         title: '日期',
                         dataIndex: 'date',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '总投注金额',
                         dataIndex: 'total_bet',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '返点总额',
                         dataIndex: 'total_point',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '中奖总额',
                         dataIndex: 'total_win',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '奖池奖金总额',
                         dataIndex: 'total_win_pool',
                         className: 'column-right',
-                        width: 180,
+                        width: 150,
                     }, {
                         title: '累计盈利',
                         dataIndex: 'total_winloss',
                         className: 'column-right',
                         render: text => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                             <span className="col_color_ying">{text}</span>,
-                        width: 180,
+                        width: 150,
                     }
                 ];
                 otherGamesFooter = <ul className="o_g_bobing_footer clear">
@@ -612,7 +1161,7 @@ export default class SelfTable extends Component {
                     <div className="t_l_table">
                         <div className="t_l_table_list">
                             {
-                                classify === 0 ?
+                                classify == 0 ?
                                     <Table columns={columns}
                                            rowKey={record => record.date}
                                            dataSource={data}
