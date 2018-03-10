@@ -230,12 +230,18 @@ export default class TeamList extends Component {
                     method: 'POST',
                     body: JSON.stringify(postDataSelf)
                 }).then((res)=>{
-                    if(this._ismount && res.status == 200){
-                        let pros = res.repsoneContent.pros;
-                        this.setState({
-                            typeName: '日工资契约',
-                            contentArr: pros[pros.length - 1],
-                        })
+                    if(this._ismount){
+                        if(res.status == 200){
+                            let pros = res.repsoneContent.pros;
+                            this.setState({
+                                typeName: '日工资契约',
+                                contentArr: pros[pros.length - 1],
+                            })
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
                     }
                 });
                 Fetch.dailysalaryself({
@@ -259,17 +265,23 @@ export default class TeamList extends Component {
                     method: 'POST',
                     body: JSON.stringify({uid: record.userid})
                 }).then((res)=>{
-                    if(this._ismount && res.status == 200){
-                        let { prizeGroupPost } = this.state,
-                            data = res.repsoneContent;
-                        prizeGroupPost.uid = data.uid;
-                        prizeGroupPost.flag = 'rapid';
-                        prizeGroupPost.selfPoint = data.selfPoint;
-                        this.setState({
-                            typeName: '奖金组契约',
-                            prizeGroupList: data.list,
-                            prizeGroupPost,
-                        })
+                    if(this._ismount){
+                        if(res.status == 200){
+                            let { prizeGroupPost } = this.state,
+                                data = res.repsoneContent;
+                            prizeGroupPost.uid = data.uid;
+                            prizeGroupPost.flag = 'rapid';
+                            prizeGroupPost.selfPoint = data.selfPoint;
+                            this.setState({
+                                typeName: '奖金组契约',
+                                prizeGroupList: data.list,
+                                prizeGroupPost,
+                            })
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
                     }
                 })
             }
@@ -553,7 +565,10 @@ export default class TeamList extends Component {
             }, {
                 title: '奖金组',
                 dataIndex: 'prize_group',
-                render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
+                render: (text, record) =>
+                    tableData.history.length > 1 ?
+                        text :
+                        <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
                 sorter: () => {},
                 width: 90,
             }, {
@@ -564,17 +579,34 @@ export default class TeamList extends Component {
             }, {
                 title: '日工资',
                 dataIndex: 'daily_salary_status',
-                render: (text, record) => <Button type={text == 1 ? 'primary' : ''} ghost onClick={()=>this.onClickColBtn('日工资', record)}>{text==1 ? '已签订' : '未签订'}</Button>,
+                render: (text, record) =>
+                    <Button type={text == 1 ? 'primary' : ''} ghost
+                            onClick={()=>this.onClickColBtn('日工资', record)}
+                            disabled={tableData.history.length > 1}
+                    >
+                        {text==1 ? '已签订' : '未签订'}
+                    </Button>,
                 width: 100,
             }, {
                 title: '分红',
                 dataIndex: 'dividend_salary_status',
-                render: (text, record) => <Button type={text == 1 ? 'primary' : ''} ghost onClick={()=>this.onClickColBtn('分红', record)}>{text==1 ? '已签订' : '未签订'}</Button>,
+                render: (text, record) =>
+                    <Button type={text == 1 ? 'primary' : ''} ghost
+                            onClick={()=>this.onClickColBtn('分红', record)}
+                            disabled={tableData.history.length > 1}
+                    >
+                        {text==1 ? '已签订' : '未签订'}
+                            </Button>,
                 width: 100,
             }, {
                 title: '配额',
                 dataIndex: 'useraccgroup_status',
-                render: (text, record) => <Button className={text == 3 ? 'new_application' : ''} type={text == 1 ? 'primary' : ''} ghost onClick={()=>this.onClickColBtn('配额', record)}>
+                render: (text, record) =>
+                    <Button className={text == 3 ? 'new_application' : ''}
+                            type={text == 1 ? 'primary' : ''} ghost
+                            onClick={()=>this.onClickColBtn('配额', record)}
+                            disabled={tableData.history.length > 1}
+                    >
                     {
                         text == 0 ?
                             '未分配' :
