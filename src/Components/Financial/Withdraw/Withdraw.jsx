@@ -65,10 +65,9 @@ export default class Withdraw extends Component {
                         defaultBank: data.bankList[0] != undefined ? data.bankList[0].id : '',
                         postData,
                         selectShow: false,
-                        shortMessage: res.shortMessage,
                     })
                 }else{
-                    this.setState({selectShow: true});
+                    this.setState({selectShow: true,shortMessage: res.shortMessage,});
                 }
             }
         })
@@ -168,7 +167,6 @@ export default class Withdraw extends Component {
                             <ul className="w_m_nopassword">
                                 <li>{this.state.shortMessage}</li>
                                 <li>
-                                    请先绑定银行卡，
                                     <span onClick={()=>this.onClickCapital()}>绑定银行卡</span>
                                 </li>
                             </ul> :

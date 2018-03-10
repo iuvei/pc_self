@@ -195,6 +195,8 @@ const interFace = (key) => {
     INTERFACE['WATEAMOUNAWARD'] = 'controller=onlineactivities&goaction=WateAmountAward&absecs=True';
     //拉新领奖
     INTERFACE['PULLNEWAWARD'] = 'controller=onlineactivities&goaction=PullNewAward&absecs=True';
+    //新人注册领奖
+    INTERFACE['REGISTERAWARD'] = 'controller=onlineactivities&goaction=RegisterAward&absecs=True';
 
     let httpUrl = stateVar.httpUrl;
     if(key == 'PTLOGINNEW') {

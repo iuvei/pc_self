@@ -400,12 +400,10 @@ export default class HeaderTop extends Component {
                                     </ul>
                                 </div>
                             </li>
-                            <li className="n_t_message n_t_cursor">
-                            <span onClick={()=>this.onHashHistory('/selfInfo/message', 'selfInfo', 3)}>
+                            <li className="n_t_message n_t_cursor" onClick={()=>this.onHashHistory('/selfInfo/message', 'selfInfo', 3)}>
                                 <Badge count={stateVar.unread} overflowCount={99} showZero>
                                     <img src={email_icon} alt="站内信"/>
                                 </Badge>
-                            </span>
                             </li>
                             <li className={iconArrowsMoney ? 'n_t_cursor n_t_balance_p icon_arrows_bg' : 'n_t_cursor n_t_balance_p'}
                                 onMouseOver={()=>this.setState({iconArrowsMoney: true})}

@@ -17,7 +17,7 @@ export default class ActivityDetails extends Component {
             tableLoading: false,
             id: this.props.location.query.id, //活动id
             response:{
-                activity_mechanism_type: '-1', //活动奖金机制 （1 专题、2 拉新、3 签到、4 充值流水）
+                activity_mechanism_type: '-1', //活动奖金机制 （1 专题、2 拉新、3 签到、4 充值流水、7 新人注册）
                 activity_pics: '',//活动图片
                 activity_title: '', //活动标题
                 start_time: '', //活动开始时间戳
@@ -30,10 +30,6 @@ export default class ActivityDetails extends Component {
                 status: '', //状态状态。1 正常，200 已完成，400 已满员，401 已结束
                 reg_add_time_last_of: '0', //直属下线注册时间晚于时间戳值
                 is_regnew_pay_amount_val: '0',//直属下线充值限额条件值
-                // newadd_reward_amount: '0', //上级奖励金额 x 元
-                // newadd_reward_extract_amount: '0', //上级奖励金额 x 元
-                // reward_amount : '0', //新人奖励金额 x 元
-                // reward_extract_amount : '0', //新人奖励金额,且流水达提现限定值
                 max_online_num_num: '0', //最大参与人数
                 remain_online_num: '0', //剩余可参加人数
 
@@ -47,6 +43,7 @@ export default class ActivityDetails extends Component {
                 max_online_num_type: 0,
             },
             userSign: {}, //个人进度
+            tableData: [], // 新人注册活动
         };
     };
     componentDidMount(){
@@ -62,11 +59,30 @@ export default class ActivityDetails extends Component {
             // body: JSON.stringify({id: this.props.location.query.id})
         }, '&id='+this.state.id).then((res)=>{
             if(this._ismount && res.status == 200){
-                let data= res.repsoneContent;
+                let data= res.repsoneContent, newReset = [];
                 if(data.activity_mechanism_type != 1){
                     this.getUserSignDatas();
                 }
-                this.setState({response: data});
+                if(data.activity_mechanism_type == 7){
+                    newReset = [
+                        {
+                            recharge: '注册绑卡',
+                            bonus: data.zc_newadd_reward_amount,
+                            action: data.newadd_rewardzc_extract_amount,
+                            id: '1',
+                        },
+                        {
+                            recharge: data.zc_recharge_amount,
+                            bonus: data.zc_recharge_reward_amount,
+                            action: data.reward_extractzc_amount,
+                            id: '2',
+                        }
+                    ]
+                }
+                this.setState({
+                    response: data,
+                    tableData: newReset,
+                });
             }
         })
     }
@@ -221,6 +237,43 @@ export default class ActivityDetails extends Component {
             }
         })
     };
+    /*新人注册活动领取registerAward*/
+    onNewReset(record){
+        let type = '';
+        if(record.id == 1){//注册领取
+            type = 'recharge'
+        }else{
+            type = 'extract'
+        }
+        Fetch.registerAward({
+            method: 'POST',
+            body: JSON.stringify({
+                activityid: this.state.id,
+                amount: record.bonus,
+                register_type: type
+            })
+        }).then((res)=> {
+            if(this._ismount){
+                if(res.status == 200){
+                    Modal.success({
+                        title: '领取成功',
+                        content: res.shortMessage,
+                    });
+                    this.getData();
+                }else if(res.status == 400){
+                    Modal.success({
+                        title: '领取成功',
+                        content: res.shortMessage,
+                    });
+                    this.getData();
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    }
     /*奖金说明*/
     onActivityType(){
         let { response } = this.state,
@@ -423,6 +476,31 @@ export default class ActivityDetails extends Component {
             }else{
                 return <p className="no_data">暂无数据</p>;
             }
+        }else if(activityType == 7){
+            let columns = [
+                { title: '充值金额', dataIndex: 'recharge', width: 75 },
+                { title: '可领取奖金', dataIndex: 'bonus', width: 75 },
+                { title: '操作', dataIndex: 'action', width: 75,
+                    render: (text, record) =>
+                        <Button type="primary"
+                                disabled={false}
+                                onClick={()=>this.onNewReset(record)}
+                        >
+                            领取
+                        </Button>,
+                }
+            ];
+            return (
+                <div className="a_d_table">
+                    <Table columns={columns}
+                           rowKey={record => record.id}
+                           dataSource={this.state.tableData}
+                           pagination={false}
+                           loading={this.state.tableLoading}
+                           size="middle"
+                    />
+                </div>
+            )
         }else{
             return <p className="no_data">暂无数据</p>;
         }
@@ -513,6 +591,12 @@ export default class ActivityDetails extends Component {
                     }
                     <li>已领取奖金金额：{userSign.use_award_amount == undefined ? '0' : userSign.use_award_amount} 元</li>
                     <li>剩余奖金金额：{userSign.used_user_award_amount == undefined ? '0' : userSign.used_user_award_amount} 元</li>
+                </ul>
+            )
+        }else if(type == 7){
+            return (
+                <ul className="schedule_list">
+                    <li>已充值金额：{userSign.recharge_amount}元</li>
                 </ul>
             )
         }else{

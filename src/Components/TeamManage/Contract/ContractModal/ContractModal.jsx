@@ -125,6 +125,7 @@ export default class ContractModal extends Component {
     /*选择契约类型获取相应信息*/
     onSelectSys(type) {
         let { alterData } = this.state;
+        console.log(alterData)
         this.setState({
             alterVisible: true,
             disabled: true,
@@ -317,8 +318,8 @@ export default class ContractModal extends Component {
                     <div className="prize_group_slider">
                         <Icon className="slider_left" onClick={()=>this.onMinus()} type="left"/>
                         <Slider
-                            min={prizeGroupList.length !== 0 && parseInt(prizeGroupList[0].prizeGroup)}
-                            max={prizeGroupList.length !== 0 && parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup)}
+                            min={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[0].prizeGroup) : 0}
+                            max={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup) : 0}
                             step={2}
                             onChange={(value)=>{this.onRegisterSetBonus(value)}}
                             value={parseInt(this.state.prizeGroupFlag)}

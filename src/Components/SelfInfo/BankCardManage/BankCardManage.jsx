@@ -63,6 +63,7 @@ export default class BankCardManage extends Component {
     };
     componentWillUnmount() {
         this._ismount = false;
+        window.clearTimeout(this.clearTimeouts);
     };
     /*获取银行卡列表*/
     getData() {
@@ -341,15 +342,14 @@ export default class BankCardManage extends Component {
             }).then((res)=>{
                 if(this._ismount){
                     this.setState({ loading: false });
-                    let _this = this;
                     if(res.status == 200){
                         Modal.success({
                             title: res.shortMessage,
                             content: '银行卡列表更新最晚 1 分钟更新！',
-                            onOk(){
-                                _this.getData();
-                            }
                         });
+                        this.clearTimeouts = setTimeout(()=>{
+                            this.getData()
+                        }, 60000);
                         this.setState({
                             addPostData: {},
                             validate: {},
@@ -472,9 +472,10 @@ export default class BankCardManage extends Component {
                                                 }
                                                 <li id="select_p1">
                                                     <span className="a_aa_left_text">开户银行：</span>
-                                                    <Select value={{key: addPostData.bank_id}} size="large" labelInValue
+                                                    <Select value={{key: ''+addPostData.bank_id}} size="large" labelInValue
                                                             style={{ width: 280 }}
-                                                            onChange={(value)=>{this.onSelectBank(value)}} placeholder="请选择开户银行"
+                                                            onChange={(value)=>{this.onSelectBank(value)}}
+                                                            placeholder="请选择开户银行"
                                                             getPopupContainer={() => document.getElementById('select_p1')}
                                                     >
                                                         <Option value='-1'>请选择开户银行</Option>

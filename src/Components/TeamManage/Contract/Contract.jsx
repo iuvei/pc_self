@@ -38,6 +38,7 @@ export default class Contract extends Component {
             quotaLoding: false,
         };
         this.getContractList = this.getContractList.bind(this);
+        this.transferMsg = this.transferMsg.bind(this);
     };
     componentDidMount() {
         this._ismount = true;
@@ -373,7 +374,7 @@ export default class Contract extends Component {
                        </ul>
                        <ContractModal
                            visible={this.state.visible}
-                           transferMsg = {visible => this.transferMsg(visible)}
+                           transferMsg = {this.transferMsg}
                            getContractList = {this.getContractList}
                            protocol = {protocol}
                        />
