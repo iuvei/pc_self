@@ -38,7 +38,7 @@
     font-size: 20px;
     text-align: center;
     font-weight: bold;
-    padding: 0;  
+    padding: 0;
     &:disabled{
         outline: none;
         color: #fff;
@@ -232,10 +232,10 @@
     border-color: #BF0000 !important;
     background-color: #BF0000 !important;
 }
-.ant-switch{
-    border-color: #BF0000;
-    background-color: #BF0000;
-}
+//.ant-switch{
+    //border-color: #BF0000;
+    //background-color: #BF0000;
+//}
 .ant-switch-small:after {
     width: 17px;
     height: 17px;

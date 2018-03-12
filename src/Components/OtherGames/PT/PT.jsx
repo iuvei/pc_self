@@ -380,8 +380,8 @@ export default class PT extends Component {
                 </Modal>
                 <Modal visible={startVisible}
                        closable={false}
-                       mask={false}
-                       style={{ top: 120 }}
+                       // mask={false}
+                       style={{ top: 110 }}
                        footer={null}
                        width='100%'
                        loading={this.state.ptLoading}

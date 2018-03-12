@@ -349,7 +349,7 @@ export default class ActivityDetails extends Component {
                         render: (text, record) =>
                             <Button
                                 onClick={()=>this.onSignTheAward(record)} type="primary"
-                                disabled={response.user_is_enrolls == 0 || (parseInt(record.wa_get_awards) > 0 ? false : true)}
+                                disabled={response.user_is_enrolls == 0 || (parseInt(record.aw_get_award_numbers) <= 0 ? true : false)}
                             >
                                 领取
                             </Button>,

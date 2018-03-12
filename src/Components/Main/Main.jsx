@@ -33,18 +33,19 @@ export default class Main extends Component {
     };
 
     showLeftSider() {
-        if (hashHistory.getCurrentLocation().pathname == '/home' ||
-            hashHistory.getCurrentLocation().pathname == '/activity' ||
-            hashHistory.getCurrentLocation().pathname == '/activity/activityDetails' ||
-            hashHistory.getCurrentLocation().pathname == '/activity/fanshui' ||
-            hashHistory.getCurrentLocation().pathname == '/otherGames/bobing' ||
-            hashHistory.getCurrentLocation().pathname == '/tendency' ||
-            hashHistory.getCurrentLocation().pathname == '/otherGames/ea' ||
-            hashHistory.getCurrentLocation().pathname == '/otherGames/pt'||
-            hashHistory.getCurrentLocation().pathname == '/otherGames/gt'||
-            hashHistory.getCurrentLocation().pathname == '/otherGames/sport'||
-            hashHistory.getCurrentLocation().pathname == '/downLoadClient'||
-            hashHistory.getCurrentLocation().pathname == '/otherGames'
+        let pathname = hashHistory.getCurrentLocation().pathname;
+        if (pathname == '/home' ||
+            pathname == '/activity' ||
+            pathname == '/activity/activityDetails' ||
+            pathname == '/activity/fanshui' ||
+            pathname == '/otherGames/bobing' ||
+            pathname == '/tendency' ||
+            pathname == '/otherGames/ea' ||
+            pathname == '/otherGames/pt'||
+            pathname == '/otherGames/gt'||
+            pathname == '/otherGames/sport'||
+            pathname == '/downLoadClient'||
+            pathname == '/otherGames'
         ) {
             return true
         } else {
@@ -53,20 +54,29 @@ export default class Main extends Component {
     };
     /*隐藏帮助中心下的右边导航条*/
     hideLeft(){
-        if (hashHistory.getCurrentLocation().pathname == '/helpInfo'||
-            hashHistory.getCurrentLocation().pathname == '/helpInfo/playMethodIntroduce'||
-            hashHistory.getCurrentLocation().pathname == '/helpInfo/howDeposit'||
-            hashHistory.getCurrentLocation().pathname == '/helpInfo/commonProblems'||
-            hashHistory.getCurrentLocation().pathname == '/helpInfo/aboutHengCai'
+        let pathname = hashHistory.getCurrentLocation().pathname;
+        if (pathname == '/helpInfo'||
+            pathname == '/helpInfo/playMethodIntroduce'||
+            pathname == '/helpInfo/howDeposit'||
+            pathname == '/helpInfo/commonProblems'||
+            pathname == '/helpInfo/aboutHengCai'
             ) {
             return true
         } else {
             return false
         }
+    };
+    hideRight(){
+        let pathname = hashHistory.getCurrentLocation().pathname;
+        if(pathname == '/home'){
+            return true
+        }else{
+            return false
+        }
     }
     /*隐藏帮助中心下的底部导航条*/
     showFooter() {
-        if (hashHistory.getCurrentLocation().pathname === '/tendency') {
+        if (hashHistory.getCurrentLocation().pathname == '/tendency') {
             return true
         } else {
             return false
@@ -74,7 +84,7 @@ export default class Main extends Component {
     };
     /*隐藏帮助中心下的头部导航条*/
     showHeader(){
-        if (hashHistory.getCurrentLocation().pathname === '/tendency') {
+        if (hashHistory.getCurrentLocation().pathname == '/tendency') {
             return true
         } else {
             return false
@@ -86,8 +96,7 @@ export default class Main extends Component {
     }
 
     render() {
-        const contain = <div>
-            <div className="berCenter_bg">
+        const contain = <div className="berCenter_bg">
                 <Row type="flex" justify="center" align="top" className="main_width" >
                     <Col span={2} style={{zIndex: '1',display: this.hideLeft() ? 'none' : ''}}>
                         <LeftSider />
@@ -96,9 +105,7 @@ export default class Main extends Component {
                         {this.props.children}
                     </Col>
                 </Row>
-            </div>
-            <RightPlug/>
-        </div>;
+            </div>;
         return (
             <div>
                 <header style={{display: this.showHeader() ? 'none' : ''}}>
@@ -107,6 +114,9 @@ export default class Main extends Component {
                 {
                     this.showLeftSider() ? this.props.children : contain
                 }
+                <div style={{display: this.hideRight() ? 'none' : ''}}>
+                    <RightPlug/>
+                </div>
                 <footer style={{display: this.showFooter() ? 'none' : ''}}>
                     <Footer/>
                 </footer>
