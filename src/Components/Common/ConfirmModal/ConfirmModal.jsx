@@ -22,7 +22,6 @@ export default class ConfirmModal extends Component {
         this.props.transferMsg(false);
     }
     onCancel= () => {
-        console.log("cancel")
         this.props.transferMsg(false);
     }
 

@@ -328,7 +328,6 @@ export default class DayRate extends Component {
     };
     /*修改协议*/
     onDiviratio(contract_name){
-        console.log(contract_name)
         if(contract_name == '修改契约'){
             this.setState({disabled: false, contract_name: '签订契约'});
         }else{

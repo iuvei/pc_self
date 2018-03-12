@@ -175,7 +175,6 @@ export default class ContentMian extends Component {
         this.setState({omodel:value});
     };
     handleSizeChange(e) {
-        console.log(e.target.value)
     };
     toggleChecked = () => {
 	    this.setState({ checked: !this.state.checked });

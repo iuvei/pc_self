@@ -436,7 +436,6 @@ export default class ModalView extends Component {
     	this.setState({traceItem:dataTemp,checkselectItem:tempArray,traceTotalMoney:tempMoney,traceTotalIssue:tempTime});
     };
     render() {
-    	console.log(33)
     	const navList = [
             {
                 link: '',

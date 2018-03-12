@@ -121,11 +121,10 @@ export default class ContractModal extends Component {
                 this.onSelectSys(this.state.type)
             }
         });
-    }
+    };
     /*选择契约类型获取相应信息*/
     onSelectSys(type) {
         let { alterData } = this.state;
-        console.log(alterData)
         this.setState({
             alterVisible: true,
             disabled: true,

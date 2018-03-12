@@ -645,7 +645,6 @@ const onCanvas03=()=> {
         }
         vars.frameNo++;
         requestAnimationFrame(function () {
-            console.log("requestAnimationFrame")
             frame(vars)
         });
         process(vars);

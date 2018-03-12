@@ -16,7 +16,6 @@ export default class Login extends Component {
     };
 
     componentDidMount() {
-        console.log("classname",'download_main'+ this.state.navListIndex)
 
     };
     componentWillUnmount(){

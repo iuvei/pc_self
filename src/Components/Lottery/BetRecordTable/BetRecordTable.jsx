@@ -31,7 +31,7 @@ export default class BetRecordTable extends Component {
 					setTimeout(() => modal.destroy(), 3000);
     			}
     		})
-		
+
 	};
 	//撤单
 	cancelBet(index){
@@ -40,7 +40,6 @@ export default class BetRecordTable extends Component {
     		method : "POST",
     		body : JSON.stringify({id:tempObj.projectno})}
     		).then((data)=>{
-    			console.log(data)
     			if(data.status == 200){
     				this.props.histoeryBet();
     				const modal = Modal.success({
@@ -52,7 +51,6 @@ export default class BetRecordTable extends Component {
     		})
 	}
 	openModal(a,b){
-		console.log(b);
 		let tempObj = b || {};
 		this.setState({visible:true,seatModal:tempObj});
 	};
@@ -65,7 +63,7 @@ export default class BetRecordTable extends Component {
     		columns = [
 	            { title: '投注时间', dataIndex: 'datatime', key: 'datatime',width: 110 },
 	            { title: '玩法', dataIndex: 'address', key: 'addr2ess',width: 110 },
-	            { title: '投注内容', dataIndex: 'betContent', key: 'add2ress',width: 110 ,render: (text) => 
+	            { title: '投注内容', dataIndex: 'betContent', key: 'add2ress',width: 110 ,render: (text) =>
 	            text.length > 10 ? <Popover content={text}>
 				    <div>详细号码</div>
 				</Popover>  : text
@@ -79,7 +77,7 @@ export default class BetRecordTable extends Component {
 	            { title: '订单号', dataIndex: 'name', key: 'name',width: 140 ,render: (a,b) => <a href="javascript:;" onClick={()=>this.openModal(a,b)}>{a.length > 15 ? a.substr(0,15)+'...' : text}</a>},
 	            { title: '期号', dataIndex: 'age', key: 'age',width: 100 },
 	            { title: '玩法', dataIndex: 'address', key: 'addr2ess',width: 100 },
-	            { title: '投注内容', dataIndex: 'betContent', key: 'add2ress',width: 100 ,render: (text) => 
+	            { title: '投注内容', dataIndex: 'betContent', key: 'add2ress',width: 100 ,render: (text) =>
 	            	text.length > 10 ? <Popover content={text}>
 					    <div>详细号码</div>
 					</Popover>  : text

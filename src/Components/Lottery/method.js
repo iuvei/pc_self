@@ -4,7 +4,7 @@ import  commone  from './commone.js'
 
 /*获取玩法ID*/
 const methodId =  {
-    2:'ZX3',3:'ZXHZ',5:'ZX3',6:'ZXHZ',8:'ZUS',9:'ZUL',10:'HHZX',11:'ZUHZ',13:'ZUS',14:'ZUL',15:'HHZX',16:'ZUHZ',18:'BDW1',20:'BDW2',513:'BDW2',22:'ZX2',26:'ZU2',24:'ZX2',28:'ZU2',30:'DWD',31:'DWD',32:'DWD',33:'DWD',34:'DWD',36:'DXDS',38:'DXDS',			
+    2:'ZX3',3:'ZXHZ',5:'ZX3',6:'ZXHZ',8:'ZUS',9:'ZUL',10:'HHZX',11:'ZUHZ',13:'ZUS',14:'ZUL',15:'HHZX',16:'ZUHZ',18:'BDW1',20:'BDW2',513:'BDW2',22:'ZX2',26:'ZU2',24:'ZX2',28:'ZU2',30:'DWD',31:'DWD',32:'DWD',33:'DWD',34:'DWD',36:'DXDS',38:'DXDS',
 	89:'ZX3',92:'ZXHZ',102:'ZX3',103:'ZXHZ',104:'ZUS',105:'ZUL',106:'HHZX',107:'ZUHZ',108:'ZUS',109:'ZUL',110:'HHZX',111:'ZUHZ',112:'BDW1',113:'BDW2',114:'ZX2',115:'ZX2',116:'ZU2',117:'ZU2',118:'DWD',119:'DWD',120:'DWD',121:'DWD',122:'DWD',123:'DXDS',124:'DXDS',
 	126:'ZX3',127:'ZXHZ',129:'ZX3',130:'ZXHZ',132:'ZUS',133:'ZUL',134:'HHZX',135:'ZUHZ',137:'ZUS',138:'ZUL',139:'HHZX',140:'ZUHZ',142:'BDW1',144:'BDW2',146:'ZX2',148:'ZX2',150:'ZU2',152:'ZU2',154:'DWD',155:'DWD',156:'DWD',157:'DWD',158:'DWD',160:'DXDS',162:'DXDS',
 	265:'ZX3',266:'ZXHZ',268:'ZX3',269:'ZXHZ',271:'ZUS',272:'ZUL',273:'HHZX',274:'ZUHZ',276:'ZUS',277:'ZUL',278:'HHZX',279:'ZUHZ',281:'BDW1',283:'BDW2',285:'ZX2',287:'ZX2',289:'ZU2',291:'ZU2',293:'DWD',294:'DWD',295:'DWD',296:'DWD',297:'DWD',299:'DXDS',301:'DXDS',
@@ -111,7 +111,7 @@ const methodId =  {
     1020440:'LHZXL4H5', 1020441:'LHZXH4L5',
     1030001:'LHZXZ', 1030002: 'LHZXX', 1030003: 'LHZXH', 1030004: 'LHZXZDZ', 1030005: 'LHZXXDZ', 1030006: 'LHZXZBZ', 1030007: 'LHZXXBZ', 1030008: 'LHZXZTW', 1030009: 'LHZXXTW',
     // 龙虎和-20160310
-    3110666 : 'LHZXWQH', 3110667 : 'LHZXWBH', 3110668 : 'LHZXWSH', 3110669 : 'LHZXWGH', 3110670 : 'LHZXQBH', 3110671 : 'LHZXQSH', 3110672 : 'LHZXQGH', 3110673 : 'LHZXBSH', 3110674 : 'LHZXBGH', 3110675 : 'LHZXSGH', 
+    3110666 : 'LHZXWQH', 3110667 : 'LHZXWBH', 3110668 : 'LHZXWSH', 3110669 : 'LHZXWGH', 3110670 : 'LHZXQBH', 3110671 : 'LHZXQSH', 3110672 : 'LHZXQGH', 3110673 : 'LHZXBSH', 3110674 : 'LHZXBGH', 3110675 : 'LHZXSGH',
 	//任选二-直选复式
     3110101:"RXZXFFC2",3110102:"RXZXFFC2",3110103:"RXZXFFC2",3110104:"RXZXFFC2",3110105:"RXZXFFC2",3110106:"RXZXFFC2",3110107:"RXZXFFC2",3110108:"RXZXFFC2",3110109:"RXZXFFC2",3110110:"RXZXFFC2",
     //任选二-组选复式
@@ -152,7 +152,7 @@ const methodId =  {
     3110616 : 'RXZU4FFC4',3110617 : 'RXZU4FFC4',3110618 : 'RXZU4FFC4',3110619 : 'RXZU4FFC4',3110620 : 'RXZU4FFC4',
 
     //四星、五星趣味-20160412
-    3110755 : '4XDT', 3110756 : '4XHDHD', 3110760 : '5XDT', 3110761 : '5XHDHD', 
+    3110755 : '4XDT', 3110756 : '4XHDHD', 3110760 : '5XDT', 3110761 : '5XHDHD',
 	//重庆时时彩3星直选跨度
     3110676:'3XZXKD',3110678:'3XZXKD',3110677:'3XZXKD',
     //重庆时时彩3星直选组合
@@ -160,7 +160,7 @@ const methodId =  {
     //重庆时时彩3星组选_组三跨度
     3110700:'3XZXZSKD',3110701:'3XZXZSKD',3110702:'3XZXZSKD',
     //重庆时时彩3星组选_组六跨度
-    3110710:'3XZXZLKD',3110711:'3XZXZLKD',3110712:'3XZXZLKD',                
+    3110710:'3XZXZLKD',3110711:'3XZXZLKD',3110712:'3XZXZLKD',
     // 三星特殊-胆拖-20160322
 	3110689 : '3XDT', 3110691 : '3XDT', 3110693 : '3XDT',
     // 三星特殊-红胆黑胆-20160324
@@ -181,8 +181,8 @@ const methodId =  {
     3111018:'PK10DWD',3111019:'PK10DWD',3111020:'PK10DWD',3111021:'PK10DWD',3111009:'PK10DXDS', 3111010:'PK10DXDS',3111011:'PK10DXDS',
 	//河南481
     3110919 : "ZYY", 3110924 : 'ZY', 3110931 : 'ZYW', 3110772:'RYSMZXFS', 3110776:'RYYWDHZ', 3110777:'RYZWDHZ', 3110778:'RYZYDHZ', 3110779:'RYZYWHZ',3110791:"RXEALL",3110792:"RXSALL",
-    3110780 : "RYSMZXKD", 3110785 : 'RYZYWZH', 3110786 : 'RYZYDZH', 3110786 : 'RYZWDZH', 3110788 : 'RYYWDZH', 3110794 : 'RYSMZXZS', 3110798 : 'RYSMZXZL', 
-    3110802 : 'RYSMZSKD', 3110806 : 'RYSMZLKD', 3110811 : 'RYSMZXBD', 3110816 : 'RYSMTS', 3110837 : 'RYSMDT', 3110841 : 'RYSMHDHD', 3110845 : 'RYSMEDYFS', 3110847 : 'RYSMEDYBDUI', 
+    3110780 : "RYSMZXKD", 3110785 : 'RYZYWZH', 3110786 : 'RYZYDZH', 3110786 : 'RYZWDZH', 3110788 : 'RYYWDZH', 3110794 : 'RYSMZXZS', 3110798 : 'RYSMZXZL',
+    3110802 : 'RYSMZSKD', 3110806 : 'RYSMZLKD', 3110811 : 'RYSMZXBD', 3110816 : 'RYSMTS', 3110837 : 'RYSMDT', 3110841 : 'RYSMHDHD', 3110845 : 'RYSMEDYFS', 3110847 : 'RYSMEDYBDUI',
     3110849 : 'RYSMEDYBDAN', 3110851 : 'RYSMSBCF', 3110854 : 'RYEMZXFS', 3110860 : 'RYEMZXHZ', 3110866 : 'RYEMZXKD', 3110878 : 'RYEMZUFS', 3110884 : 'RYEMZUHZ',
     3110884 : 'RYEMZUHZ', 3110898 : 'RYEMZUBD', 3110905 : 'SXZX', 3110907 : 'SXZH', 3110909 : 'SXZU24', 3110910 : 'SXZU12', 3110911 : 'SXZU6', 3110912 : 'SXZU4',3110913 : 'SXZU24DT',
     3110914 : 'SXZU12DT', 3110915 : 'SXZU6DT', 3110916 : 'SXZU4DT',3110894 : 'HN481ZXSMALL',3110895 : 'HN481ZXEMALL',
@@ -574,8 +574,8 @@ const checkNum = ()=>{
                 case "PK10ZX5":
                 case "PK10ZX6":
                 var baseLen = parseInt(mname.substr(6,1));
-                nums = play.calculateInputNumbersLength(play.checkInputNumbersArray(stateVar.aboutGame.data_sel[0],baseLen).length);  
-                
+                nums = play.calculateInputNumbersLength(play.checkInputNumbersArray(stateVar.aboutGame.data_sel[0],baseLen).length);
+
                     break;
                 default   : break;
             }
@@ -592,10 +592,6 @@ const checkNum = ()=>{
             case"WXZU20":
             case"WXZU10":
             case"WXZU5":
-            console.log(stateVar.aboutGame.data_sel[0].length)
-            console.log(stateVar.aboutGame.minchosen[0])
-            console.log(stateVar.aboutGame.data_sel[1])
-            console.log(stateVar.aboutGame.minchosen[1])
                         if(stateVar.aboutGame.data_sel[0].length>=stateVar.aboutGame.minchosen[0]&&stateVar.aboutGame.data_sel[1].length>=stateVar.aboutGame.minchosen[1]){
                             var h=Array.intersect(stateVar.aboutGame.data_sel[0],stateVar.aboutGame.data_sel[1]).length;
                             tmp_nums=commone.Combination(stateVar.aboutGame.data_sel[0].length,stateVar.aboutGame.minchosen[0])*commone.Combination(stateVar.aboutGame.data_sel[1].length,stateVar.aboutGame.minchosen[1]);
@@ -723,9 +719,9 @@ const checkNum = ()=>{
                                     nums += s*(s-1)/2;
                                 }
                             };break;
-                            
+
             case 'ZXHZ2':	//直选和值2
-                
+
                 cc = {
                     0:1,
                     1:2,
@@ -783,7 +779,7 @@ const checkNum = ()=>{
                         nums += cc[parseInt(stateVar.aboutGame.data_sel[i][j],10)];
                     }
                 };
-                break;                                         
+                break;
             case 'DWD'  :   //定位胆所有在一起特殊处理
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
                                 nums += stateVar.aboutGame.data_sel[i].length;
@@ -1106,7 +1102,7 @@ const checkNum = ()=>{
 				}
 				nums = tmp_nums * 3;
 				break;
-			//三星组选_组三跨度					
+			//三星组选_组三跨度
 			case '3XZXZSKD' :
 				var len = stateVar.aboutGame.data_sel[0].length,n;
 				for(var i = 0; i < len; i++){
@@ -1114,7 +1110,7 @@ const checkNum = ()=>{
 					nums += (10 - n) * 6;
 				}
 			break;
-			//三星组选_组六跨度					
+			//三星组选_组六跨度
 			case '3XZXZLKD' :
 				var len = stateVar.aboutGame.data_sel[0].length,n;
 				for(var i = 0; i < len; i++){
@@ -1168,7 +1164,7 @@ const checkNum = ()=>{
 				}
 			break;
 			//pk10
-            case "PK10ZX2":                        
+            case "PK10ZX2":
             	nums = 0;
                 if( stateVar.aboutGame.data_sel[0].length > 0 && stateVar.aboutGame.data_sel[1].length > 0 ){
                     for( i=0; i<stateVar.aboutGame.data_sel[0].length; i++ ){
@@ -1179,8 +1175,8 @@ const checkNum = ()=>{
                         }
                     }
                 }
-            break;                
-            case "PK10ZX3":   
+            break;
+            case "PK10ZX3":
             	nums = 0;
                 if( stateVar.aboutGame.data_sel[0].length > 0 && stateVar.aboutGame.data_sel[1].length > 0 && stateVar.aboutGame.data_sel[2].length > 0 ){
                     for( i=0; i<stateVar.aboutGame.data_sel[0].length; i++ ){
@@ -1215,7 +1211,7 @@ const checkNum = ()=>{
                     }
                 }
             break;
-            case "PK10ZX5":                           
+            case "PK10ZX5":
             	nums = 0;
             	var data_sel1 = stateVar.aboutGame.data_sel[0];
             	var data_sel2 = stateVar.aboutGame.data_sel[1];
@@ -1240,14 +1236,14 @@ const checkNum = ()=>{
                                 		    data_sel4[x] != data_sel5[y] ){
                                 			nums++;
                                 		}
-                            		}	
+                            		}
                             	}
                             }
                         }
                     }
                 }
             break;
-            case "PK10ZX6":                          
+            case "PK10ZX6":
             	nums = 0;
             	var data_sel1 = stateVar.aboutGame.data_sel[0];
             	var data_sel2 = stateVar.aboutGame.data_sel[1];
@@ -1280,7 +1276,7 @@ const checkNum = ()=>{
                                     				nums++;
                                     		}
                             			}
-                            		}	
+                            		}
                             	}
                             }
                         }
@@ -1304,7 +1300,6 @@ const checkNum = ()=>{
 			break;
         }
     }
-    console.log(nums)
     return nums;
 }
 let _inputCheck_Num = (l,e,fun,sort) => {
@@ -1409,7 +1404,7 @@ const _SortNum = (a,b)=>{//数字大小排序
     };
 let play = {
     //文本框输入计算
-    calculateInputNumbersLength: (num_len) => {                
+    calculateInputNumbersLength: (num_len) => {
         return num_len;
     },
     //格式化文本域的值
@@ -1423,8 +1418,8 @@ let play = {
         var num_separator = " ";
         var check_type = 1;
         return play.getCheckedInputNumbersArray(num_arr,base_len,num_separator,check_type);
-    },          
-    replaceInputNumbers:(val,num_separator) => {         	
+    },
+    replaceInputNumbers:(val,num_separator) => {
         val = val.replace(/[^\n\S]+/g," ");
         if (num_separator == ' ') {
             val = val.replace(/[^\d\s]+|\n+/g, ",").replace(/(^[,]*)|([,]*$)/g, "")
@@ -1442,16 +1437,16 @@ let play = {
         var max = 10;
         var min = 1;
         var arr_len = num_arr.length;
-        var num_dict = {};            
+        var num_dict = {};
         for(var i = 0;i < arr_len;i++) {
             var _n = num_arr[i];
             var num = _n.split(num_separator == '' ? /\D*/g : num_separator);
             //var num = _n.split(" ");
             var flag = num.length == base_len;
-            if(flag) {                        
-                for(let j=0;j<num.length;j++){  
+            if(flag) {
+                for(let j=0;j<num.length;j++){
                 	flag = num[j] <= max && num[j] >= min && num[j].indexOf("0")!== -1 && num[j].length<3;
-                	if(!flag)break; 
+                	if(!flag)break;
                 }
             }
             if(flag) {
@@ -1495,7 +1490,7 @@ let play = {
         }
         stateVar.savePkInput = {error_num:error_num,repeat_num:no_repeat_num,right_num:num_arr,no_repeat_num:no_repeat_num};
         return num_arr;
-    },  
+    },
     //号码验证:不允许重复
     checkNumberNorepeat:(num) => {
         var flag = false;
@@ -1703,7 +1698,7 @@ const random = () => {
 					case 1:
 						random_number[i][0] = '小';
 						break;
-	
+
 					case 2:
 						random_number[i][0] = '单';
 						break;
@@ -1711,7 +1706,7 @@ const random = () => {
 						random_number[i][0] = '双';
 						break;
 				};
-	
+
 			};
 			break;
 		case 'SD337': //220
@@ -1971,7 +1966,6 @@ let getSuiji2 = (length, minchose, t) => {
 		}
 
 	}
-	//console.log(results);
 	return results;
 }
 //随机算法3
