@@ -317,7 +317,8 @@ export default class HeaderTop extends Component {
     			this.getMenu();
     		}else if(tempType == 6){
     			this.getNotice();
-    		}else if(tempType == 8){
+    		}else if(tempType == 8 || tempType == 2){
+    			common.removeStore(common.getStore('userId'));
     			this.getAccGroup();
     		}else if(tempType == 10){
     			this.onUnread();
