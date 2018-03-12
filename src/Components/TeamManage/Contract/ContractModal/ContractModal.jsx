@@ -108,8 +108,7 @@ export default class ContractModal extends Component {
             if(this._ismount){
                 if(res.status == 200){
                     let data = res.repsoneContent,
-                        userListFlag = data.results.filter(item => item.usertype == '1'),
-                        alterData = userListFlag.filter(items => items.userid == item.key)[0]; //选择的当前用户信息;
+                        alterData = data.results.filter(items => items.userid == item.key)[0]; //选择的当前用户信息;
                     this.setState({
                         userid:item.key,
                         username:item.label,
@@ -123,28 +122,6 @@ export default class ContractModal extends Component {
                 }
             }
         })
-
-        // let { userList, contractInfo} = this.state,
-        //     contractInfoFlag = [],
-            // alterData = userList.filter(items => items.userid == item.key)[0]; //选择的当前用户信息
-        // if(alterData.prize_group < 1950){
-        //     contractInfoFlag = contractInfo.filter(items => items.id != 2);
-        // }else{
-        //     contractInfoFlag = contractInfo;
-        // }
-
-        // contractInfoFlag = contractInfo;
-        // this.setState({
-        //     contractInfo: contractInfoFlag,
-        //     userid:item.key,
-        //     username:item.label,
-        //     alterData: alterData,
-        //     contract_name: '修改契约',
-        // }, ()=>{
-        //     if(origin == 'child'){
-        //         this.onSelectSys(this.state.type)
-        //     }
-        // });
     };
     /*选择契约类型获取相应信息*/
     onSelectSys(type) {
@@ -333,7 +310,9 @@ export default class ContractModal extends Component {
                 <p>契约内容：</p>
                 <div>
                     该用户的奖金组级别为
-                    <InputNumber min={0} value={this.state.prizeGroupFlag}
+                    <InputNumber min={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[0].prizeGroup) : 0}
+                                 max={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup) : 0}
+                                 value={this.state.prizeGroupFlag}
                                  step={2}
                                  onChange={(value)=>this.onRegisterSetBonus(value)}
                                  disabled={this.state.disabled}

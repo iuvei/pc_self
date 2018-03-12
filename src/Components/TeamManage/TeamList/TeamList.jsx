@@ -372,12 +372,12 @@ export default class TeamList extends Component {
                             });
                             if(contract_name == '新申请'){
                                 this.setState({quotaVisible: false});
-                                this.getData();
                                 this.getNum();
                             }else{
                                 this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
                             }
                             this.getAccGroupList(alterData);
+                            this.getData();
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -399,6 +399,7 @@ export default class TeamList extends Component {
                                 title: res.repsoneContent,
                             });
                             this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                            this.getData();
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -423,6 +424,7 @@ export default class TeamList extends Component {
                                 title: res.repsoneContent,
                             });
                             this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                            this.getData();
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -446,6 +448,7 @@ export default class TeamList extends Component {
                                 title: res.repsoneContent,
                             });
                             this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                            this.getData();
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,
@@ -665,7 +668,7 @@ export default class TeamList extends Component {
                     {
                         contentArr.map((item, i)=>{
                             return (
-                                <li key={i}>
+                                <li key={i+1}>
                                     {i+1}档：
                                     日销量≥
                                     <span style={{width: 58, display: 'inline-block'}}>{item.sale}</span>
@@ -699,7 +702,7 @@ export default class TeamList extends Component {
                             )
                         })
                     }
-                    <li className="brisk_user">当日投注金额≥1000元，计为一个活跃用户</li>
+                    <li className="brisk_user" key="0">当日投注金额≥1000元，计为一个活跃用户</li>
                 </ul>
                 <span className="hover col_color_ying add_sale"
                       onClick={()=>this.onAddSale()}
@@ -727,7 +730,9 @@ export default class TeamList extends Component {
                 <p>契约内容：</p>
                 <div>
                     该用户的奖金组级别为
-                    <InputNumber min={0} value={this.state.prizeGroupFlag}
+                    <InputNumber min={prizeGroupList.length !== 0 && parseInt(prizeGroupList[0].prizeGroup)}
+                                 max={prizeGroupList.length !== 0 && parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup)}
+                                 value={this.state.prizeGroupFlag}
                                  step={2}
                                  onChange={(value)=>this.onRegisterSetBonus(value)}
                                  disabled={this.state.disabled}
