@@ -395,6 +395,7 @@ export default class ContentTop extends Component {
     }
     // 音效开关
     onChangeSound(checked) {
+    	debugger
         if(checked){
         	common.setStore('soundswitch','off');
         }else{
