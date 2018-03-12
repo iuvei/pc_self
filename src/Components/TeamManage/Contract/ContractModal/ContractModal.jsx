@@ -101,26 +101,50 @@ export default class ContractModal extends Component {
     };
     /*选择下级用户*/
     onSelectUser(item, origin){
-        let { userList, contractInfo} = this.state,
-            contractInfoFlag = [],
-            alterData = userList.filter(items => items.userid == item.key)[0]; //选择的当前用户信息
+        Fetch.childrenList({
+            method: "POST",
+            body: JSON.stringify({pn: 100})
+        }).then((res)=> {
+            if(this._ismount){
+                if(res.status == 200){
+                    let data = res.repsoneContent,
+                        userListFlag = data.results.filter(item => item.usertype == '1'),
+                        alterData = userListFlag.filter(items => items.userid == item.key)[0]; //选择的当前用户信息;
+                    this.setState({
+                        userid:item.key,
+                        username:item.label,
+                        alterData: alterData,
+                        contract_name: '修改契约',
+                    }, ()=>{
+                        if(origin == 'child'){
+                            this.onSelectSys(this.state.type)
+                        }
+                    });
+                }
+            }
+        })
+
+        // let { userList, contractInfo} = this.state,
+        //     contractInfoFlag = [],
+            // alterData = userList.filter(items => items.userid == item.key)[0]; //选择的当前用户信息
         // if(alterData.prize_group < 1950){
         //     contractInfoFlag = contractInfo.filter(items => items.id != 2);
         // }else{
         //     contractInfoFlag = contractInfo;
         // }
-        contractInfoFlag = contractInfo;
-        this.setState({
-            contractInfo: contractInfoFlag,
-            userid:item.key,
-            username:item.label,
-            alterData: alterData,
-            contract_name: '修改契约',
-        }, ()=>{
-            if(origin == 'child'){
-                this.onSelectSys(this.state.type)
-            }
-        });
+
+        // contractInfoFlag = contractInfo;
+        // this.setState({
+        //     contractInfo: contractInfoFlag,
+        //     userid:item.key,
+        //     username:item.label,
+        //     alterData: alterData,
+        //     contract_name: '修改契约',
+        // }, ()=>{
+        //     if(origin == 'child'){
+        //         this.onSelectSys(this.state.type)
+        //     }
+        // });
     };
     /*选择契约类型获取相应信息*/
     onSelectSys(type) {
