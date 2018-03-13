@@ -106,14 +106,16 @@ export default class BankCardManage extends Component {
     // 增加修改银行卡号
     showModal(value, record) {
         this.onAdduserbank();
+        let {addPostData} = this.state;
         if (value == 'add') {
+            addPostData.flag = 'confirm';
             this.setState({
                 visible: true,
                 ModalTitle: true,
+                addPostData
             });
         } else {
             this.onProvince(record.province_id);
-            let {addPostData} = this.state;
             addPostData.bank_id = record.bank_id;
             addPostData.bank = record.bank_name;
             addPostData.province_id = record.province_id;

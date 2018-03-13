@@ -932,6 +932,82 @@ export default class TeamTable extends Component {
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }
+        if(dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){
+            columns = [
+                {
+                    title: '日期',
+                    dataIndex: 'rdate',
+                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    width: 70,
+                }, {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render: (text, record, index) => index == 0 || postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                           style={{color: '#0088DE'}}>{text}</a>,
+                    width: 80,
+                }, {
+                    title: '投注量',
+                    dataIndex: 'sum_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '有效投注量',
+                    dataIndex: 'sum_effective_price',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                },  {
+                    title: '中奖',
+                    dataIndex: 'sum_bonus',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '返点',
+                    dataIndex: 'sum_point',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '毛收入',
+                    dataIndex: 'sum_grossincome',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '活动',
+                    dataIndex: 'sum_activity',
+                    className: 'column-right',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 70,
+                }, {
+                    title: '净收入',
+                    dataIndex: 'sum_netincome',
+                    render: text => parseFloat(text).toFixed(3),
+                    width: 80,
+                }, {
+                    title: '总盈亏',
+                    dataIndex: 'sum_total',
+                    className: 'column-right',
+                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
+                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    width: 75,
+                }
+            ];
+            footer = <ul className="tt_f_showOne clear">
+                <li>总计</li>
+                <li>{sum.total_price}</li>
+                <li>{sum.total_effective_price}</li>
+                <li>{sum.total_bonus}</li>
+                <li>{sum.total_point}</li>
+                <li>{sum.total_grossincome}</li>
+                <li>{sum.total_activity}</li>
+                <li>{sum.total_netincome}</li>
+                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
+            </ul>;
+        }
 
         if(variety == 0 || variety == 1){
             columnsRests = [

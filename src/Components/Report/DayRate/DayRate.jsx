@@ -67,6 +67,7 @@ export default class DayRate extends Component {
                 }
             ],
             protocol: [],// 自身协议
+            hideBtn: false,
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -231,7 +232,10 @@ export default class DayRate extends Component {
                     }
                 }
             })
-        }else if(type == '修改协议' || type == '已签订过' || type == '等待同意' || type == '自身协议' || type == '同意协议'){
+        }else if(type == '修改协议' || type == '已签订过' || type == '等待同意' || type == '自身协议' || type == '同意协议' || type == '查看协议'){
+            if(type == '查看协议'){
+                this.setState({hideBtn: true})
+            }
             this.setState({
                 alterData: record,
                 alterVisible: true,
@@ -378,7 +382,7 @@ export default class DayRate extends Component {
             {
                 title: '用户名',
                 dataIndex: 'username',
-                render: text => <a href="javascript:void(0)" onClick={()=>this.onClickUserName(text)} style={{color: '#0088DE'}}>{text}</a>,
+                render: (text, record, index) => index == 0 ? text : <a href="javascript:void(0)" onClick={()=>this.onClickUserName(text)} style={{color: '#0088DE'}}>{text}</a>,
                 width: 110,
                 filterIcon: <Icon type="smile-o" style={{ color: 'red' }} />,
             }, {
@@ -599,6 +603,7 @@ export default class DayRate extends Component {
                     onCancel={this.onCancel}
                     onAffirm={this.onDiviratio}
                     onConsent={this.onConsent}
+                    hideBtn={this.state.hideBtn}
                 />
             </div>
         );

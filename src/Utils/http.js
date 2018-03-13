@@ -180,23 +180,25 @@ const interFace = (key) => {
     //投诉建议
     INTERFACE['COMPLAINANDSUGGESTS'] = 'controller=help&action=AddComplain';
     //活动列表
-    INTERFACE['ACTIVELISTS'] = 'controller=onlineactivities&goaction=Lists&absecs=True';
+    INTERFACE['ACTIVELISTS'] = 'controller=onlineactivities&action=GetLists&absecs=True';
     //活动详情
-    INTERFACE['ACTIVITYDATA'] = 'controller=onlineactivities&goaction=ActivityData&absecs=True';
+    INTERFACE['ACTIVITYDATA'] = 'controller=onlineactivities&action=GetActivityData&absecs=True';
     //个人进度
-    INTERFACE['USERSIGNDATAS'] = 'controller=onlineactivities&goaction=UserSignDatas&absecs=True';
+    INTERFACE['USERSIGNDATAS'] = 'controller=onlineactivities&action=GetUserSignDatas&absecs=True';
     //活动报名
     INTERFACE['POSTENROLLS'] = 'controller=onlineactivities&action=PostEnrolls&absecs=True';
     //活动签到领奖
-    INTERFACE['SIGNTHEAWARD'] = 'controller=onlineactivities&goaction=SignTheAward&absecs=True';
+    INTERFACE['SIGNTHEAWARD'] = 'controller=onlineactivities&action=PostSignTheAward&absecs=True';
     //充值达标领奖
-    INTERFACE['RECHARGEAMOUNTAWARD'] = 'controller=onlineactivities&goaction=RechargeAmountAward&absecs=True';
+    INTERFACE['RECHARGEAMOUNTAWARD'] = 'controller=onlineactivities&action=PostRechargeAmountAward&absecs=True';
     //流水达标领奖
-    INTERFACE['WATEAMOUNAWARD'] = 'controller=onlineactivities&goaction=WateAmountAward&absecs=True';
+    INTERFACE['WATEAMOUNAWARD'] = 'controller=onlineactivities&action=PostWateAmountAward&absecs=True';
     //拉新领奖
-    INTERFACE['PULLNEWAWARD'] = 'controller=onlineactivities&goaction=PullNewAward&absecs=True';
+    INTERFACE['PULLNEWAWARD'] = 'controller=onlineactivities&action=PostPullNewAward&absecs=True';
     //新人注册领奖
     INTERFACE['REGISTERAWARD'] = 'controller=onlineactivities&goaction=RegisterAward&absecs=True';
+    //EA填写个人资料
+    INTERFACE['ADDUSERINFO'] = 'controller=sportsbook&action=AddUserInfo';
 
     let httpUrl = stateVar.httpUrl;
     if(key == 'PTLOGINNEW') {

@@ -189,6 +189,8 @@ const pullNewAward = (body) =>  request(http.interFace('PULLNEWAWARD'),body);
 const registerAward = (body) =>  request(http.interFace('REGISTERAWARD'),body);
 //微信绑定
 const wechatbind = (body) =>  request(http.interFace('WECHATBIND'),body);
+//EA填写个人资料
+const addUserInfo = (body) =>  request(http.interFace('ADDUSERINFO'),body);
 
 export default {
     getSess,
@@ -283,5 +285,6 @@ export default {
     wateAmountAward,
     pullNewAward,
     registerAward,
-    wechatbind
+    wechatbind,
+    addUserInfo
 }
