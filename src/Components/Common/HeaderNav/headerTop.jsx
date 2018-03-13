@@ -76,13 +76,8 @@ export default class HeaderTop extends Component {
     		if(noticeListFlag.length <= 1){
     			return;
     		}
-<<<<<<< HEAD
-    		if(times > noticeListFlag.length){
-    			times = 1;
-=======
     		if(times == noticeListFlag.length){
     			times = 0;
->>>>>>> moore66
     			$(".notice-list").css('top',0);
     		}
     		$(".notice-list").animate({top:'-'+duration*times},500,()=>{
