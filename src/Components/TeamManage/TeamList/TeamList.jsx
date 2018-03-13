@@ -853,12 +853,13 @@ export default class TeamList extends Component {
         }
 
         if(typeName == '配额契约'){
+            let accGroup = contentArr.filter(item => item.accGroup <= this.state.alterData.prize_group);
             typeContent = <div className="a_c_text">
                 <p>契约内容：</p>
                 <p>该用户可继续推广下级，其中可分配奖金组：</p>
                 <ul className="text_content_list">
                     {
-                        contentArr.map((item, i)=>{
+                        accGroup.map((item, i)=>{
                             return (
                                 <li key={item.uagid}>
                                     {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个

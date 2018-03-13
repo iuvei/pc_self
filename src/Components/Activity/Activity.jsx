@@ -172,7 +172,7 @@ export default class Activity extends Component {
                                 })
                             }
                         </ul>
-                        <div className="active_pagination">
+                        <div className="active_pagination" style={{display: this.state.total <= 0 || this.state.total == undefined ? 'none' : ''}}>
                             <Pagination showSizeChanger
                                         onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}}
                                         onChange={(page)=>this.onChangePagination(page)}
