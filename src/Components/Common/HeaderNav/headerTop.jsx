@@ -68,6 +68,7 @@ export default class HeaderTop extends Component {
     	$(".notice-list").css('height',duration*noticeListFlag.length);
     	$(".notice-list").css('top',0);
     	$(".notice-list").stop();
+    	clearInterval(this.noticeInterval)
 		if(noticeListFlag.length <= 1){
 			return;
 		}
@@ -75,8 +76,13 @@ export default class HeaderTop extends Component {
     		if(noticeListFlag.length <= 1){
     			return;
     		}
+<<<<<<< HEAD
     		if(times > noticeListFlag.length){
     			times = 1;
+=======
+    		if(times == noticeListFlag.length){
+    			times = 0;
+>>>>>>> moore66
     			$(".notice-list").css('top',0);
     		}
     		$(".notice-list").animate({top:'-'+duration*times},500,()=>{
