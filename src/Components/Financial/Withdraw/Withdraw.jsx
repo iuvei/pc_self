@@ -15,6 +15,7 @@ export default class Withdraw extends Component {
         super(props);
         this.state = {
             selectShow: true,
+            resultCode: '',
             spinLoading: true,
             iconLoadingRecharge: false,
             moneyFlag: 0,
@@ -67,7 +68,11 @@ export default class Withdraw extends Component {
                         selectShow: false,
                     })
                 }else{
-                    this.setState({selectShow: true,shortMessage: res.shortMessage,});
+                    this.setState({
+                        selectShow: true,
+                        shortMessage: res.shortMessage,
+                        resultCode: res.resultCode,
+                    });
                 }
             }
         })
@@ -124,14 +129,25 @@ export default class Withdraw extends Component {
         this.setState({postData, defaultBank: item.id})
     };
     /*跳转绑定银行卡*/
-    onClickCapital(){
-        stateVar.navIndex = 'selfInfo';
-        hashHistory.push({
-            pathname: '/selfInfo/bankCardManage',
-            query: {
-                navIndex: 1
-            }
-        });
+    onClickCapital(type){
+        if(type == 1){
+            stateVar.navIndex = 'selfInfo';
+            stateVar.securityIndex = 1;
+            hashHistory.push({
+                pathname: '/selfInfo/security',
+                query: {
+                    navIndex: 2
+                }
+            });
+        }else{
+            stateVar.navIndex = 'selfInfo';
+            hashHistory.push({
+                pathname: '/selfInfo/bankCardManage',
+                query: {
+                    navIndex: 1
+                }
+            });
+        }
     };
     /*enter键提交*/
     onSubmit(e){
@@ -156,7 +172,7 @@ export default class Withdraw extends Component {
         }
     }
     render() {
-        const { selectShow, response, spinLoading, postData } = this.state;
+        const { selectShow, response, spinLoading, postData, resultCode } = this.state;
         const userInfo = stateVar.userInfo;
 
         return (
@@ -164,88 +180,99 @@ export default class Withdraw extends Component {
                 <Spin spinning={spinLoading}>
                     {
                         selectShow ?
-                            <ul className="w_m_nopassword">
-                                <li>{this.state.shortMessage}</li>
-                                <li>
-                                    <span onClick={()=>this.onClickCapital()}>绑定银行卡</span>
-                                </li>
-                            </ul> :
-                            <div>
-                                <ul className="r_m_list">
+                            resultCode == 1002 ?
+                                <ul className="w_m_nopassword">
+                                    <li>{this.state.shortMessage}</li>
                                     <li>
-                                        <span className="r_m_li_w">用户名：</span>
-                                        <span className="r_m_qq">{userInfo.userName}</span>
+                                        <span onClick={()=>this.onClickCapital(1)}>设置资金密码</span>
                                     </li>
-                                    <li>
-                                        <span className="r_m_li_w">可提款金额：</span>
-                                        <span className="r_m_qq fAvailableBalance">￥{response.fAvailableBalance}</span>
-                                    </li>
-                                    <li className="clear">
-                                        <span className="r_m_li_w bank_v_top">可提款银行：</span>
-                                        <ul className="back_list">
-                                            {
-                                                response.bankList == undefined ? '' :
-                                                    response.bankList.map((item)=>{
-                                                        return (
-                                                            <li key={item.id} onClick={()=>this.onSelectBank(item)}>
-                                                                <div className={this.state.defaultBank == item.id ? 'r_m_qq_controler r_m_active' : 'r_m_qq_controler'}>
-                                                                    <img src={require('./Img/yinhang/'+item.bank_code+'.jpg')} alt=""/>
-                                                                    <span className="r_m_qq">{item.bank_name.substring(0, 4)}：{item.account.slice(-5)}[{item.account_name}]</span>
-                                                                </div>
-                                                            </li>
-                                                        )
-                                                    })
-                                            }
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span className="r_m_li_w">提款金额：</span>
-                                        <InputNumber min={0}
-                                                     formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                                     size="large"
-                                                     onChange={(value)=>{this.onRechargeAmount(value)}}
-                                                     className={onValidate('money', this.state.validate)}
-                                        />
-                                        <span className="span_margin">元</span>
-                                        <p className="r_m_dx">
-                                            <span className="r_m_recharge_text">
-                                            单笔充值限额：最低：
-                                            <strong>{response.iMinMoney} 元</strong>
-                                            ，最高：
-                                            <strong>{response.iMaxMoney} 元</strong>
-                                        </span>
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <span className="r_m_li_w">提款手续费：</span>
-                                        <span className="r_m_qq fAvailableBalance">{this.onCountMoney()}元</span>
-                                    </li>
-                                    <li>
-                                        <span className="r_m_li_w">实际到账金额：</span>
-                                        <span className="r_m_qq fAvailableBalance">{postData.money}元</span>
-                                        <div className="tr_m_text">
-                                            <h4>
-                                                平台每日可免费提现&nbsp;<i>{response.plattimes}</i>&nbsp;次，今日剩余&nbsp;<em>{response.plattimes - response.todaytimes}</em>&nbsp;次
-                                            </h4>
-                                        </div>
-                                    </li>
-                                    <li className="r_m_primary_btn">
-                                        <span className="r_m_li_w"></span>
-                                        <Button type="primary" size="large" loading={this.state.iconLoadingRecharge} onClick={()=>{this.onRecharge()}}>
-                                            下一步
-                                        </Button>
-                                    </li>
-                                    <li>
-                                        <div className="r_m_dx">
-                                            <p>注意事项：</p>
-                                            <p>1.单笔取款最高{response.iMaxMoney}元</p>
-                                            <p>2.通常你的提款申请只需3分钟即可到账，最高峰可能需要15分钟左右，如超过30分钟未到账，请及时联系在线客服。</p>
-                                            <p>3.本平台每日可免费提款{response.plattimes}次，超过{response.plattimes}后每笔收取1%手续费，每笔上限50元，请您合理安排取款事宜。</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                                </ul> :
+                                resultCode == 1003 ?
+                                    <ul className="w_m_nopassword">
+                                        <li>{this.state.shortMessage}</li>
+                                        <li>
+                                            <span onClick={()=>this.onClickCapital(2)}>绑定银行卡</span>
+                                        </li>
+                                    </ul> :
+                                    <ul className="w_m_nopassword">
+                                        <li>{this.state.shortMessage}</li>
+                                    </ul> :
+                                <div>
+                                    <ul className="r_m_list">
+                                        <li>
+                                            <span className="r_m_li_w">用户名：</span>
+                                            <span className="r_m_qq">{userInfo.userName}</span>
+                                        </li>
+                                        <li>
+                                            <span className="r_m_li_w">可提款金额：</span>
+                                            <span className="r_m_qq fAvailableBalance">￥{response.fAvailableBalance}</span>
+                                        </li>
+                                        <li className="clear">
+                                            <span className="r_m_li_w bank_v_top">可提款银行：</span>
+                                            <ul className="back_list">
+                                                {
+                                                    response.bankList == undefined ? '' :
+                                                        response.bankList.map((item)=>{
+                                                            return (
+                                                                <li key={item.id} onClick={()=>this.onSelectBank(item)}>
+                                                                    <div className={this.state.defaultBank == item.id ? 'r_m_qq_controler r_m_active' : 'r_m_qq_controler'}>
+                                                                        <img src={require('./Img/yinhang/'+item.bank_code+'.jpg')} alt=""/>
+                                                                        <span className="r_m_qq">{item.bank_name.substring(0, 4)}：{item.account.slice(-5)}[{item.account_name}]</span>
+                                                                    </div>
+                                                                </li>
+                                                            )
+                                                        })
+                                                }
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <span className="r_m_li_w">提款金额：</span>
+                                            <InputNumber min={0}
+                                                         formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                         parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                                         size="large"
+                                                         onChange={(value)=>{this.onRechargeAmount(value)}}
+                                                         className={onValidate('money', this.state.validate)}
+                                            />
+                                            <span className="span_margin">元</span>
+                                            <p className="r_m_dx">
+                                                <span className="r_m_recharge_text">
+                                                单笔充值限额：最低：
+                                                <strong>{response.iMinMoney} 元</strong>
+                                                ，最高：
+                                                <strong>{response.iMaxMoney} 元</strong>
+                                            </span>
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span className="r_m_li_w">提款手续费：</span>
+                                            <span className="r_m_qq fAvailableBalance">{this.onCountMoney()}元</span>
+                                        </li>
+                                        <li>
+                                            <span className="r_m_li_w">实际到账金额：</span>
+                                            <span className="r_m_qq fAvailableBalance">{postData.money}元</span>
+                                            <div className="tr_m_text">
+                                                <h4>
+                                                    平台每日可免费提现&nbsp;<i>{response.plattimes}</i>&nbsp;次，今日剩余&nbsp;<em>{response.plattimes - response.todaytimes}</em>&nbsp;次
+                                                </h4>
+                                            </div>
+                                        </li>
+                                        <li className="r_m_primary_btn">
+                                            <span className="r_m_li_w"></span>
+                                            <Button type="primary" size="large" loading={this.state.iconLoadingRecharge} onClick={()=>{this.onRecharge()}}>
+                                                下一步
+                                            </Button>
+                                        </li>
+                                        <li>
+                                            <div className="r_m_dx">
+                                                <p>注意事项：</p>
+                                                <p>1.单笔取款最高{response.iMaxMoney}元</p>
+                                                <p>2.通常你的提款申请只需3分钟即可到账，最高峰可能需要15分钟左右，如超过30分钟未到账，请及时联系在线客服。</p>
+                                                <p>3.本平台每日可免费提款{response.plattimes}次，超过{response.plattimes}后每笔收取1%手续费，每笔上限50元，请您合理安排取款事宜。</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                     }
                 </Spin>
             </div>

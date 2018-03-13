@@ -310,8 +310,9 @@ export default class ContractModal extends Component {
                 <p>契约内容：</p>
                 <div>
                     该用户的奖金组级别为
-                    <InputNumber min={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[0].prizeGroup) : 0}
-                                 max={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup) : 0}
+                    <InputNumber
+                                 min={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[0].prizeGroup) : 1800}
+                                 max={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup) : 1956}
                                  value={this.state.prizeGroupFlag}
                                  step={2}
                                  onChange={(value)=>this.onRegisterSetBonus(value)}

@@ -378,12 +378,12 @@ export default class BankCardManage extends Component {
     };
     /*设置资金密码*/
     onClickCapital(){
-        stateVar.navIndex = 'account';
+        stateVar.navIndex = 'selfInfo';
         stateVar.securityIndex = 1;
         hashHistory.push({
             pathname: '/selfInfo/security',
             query: {
-                navIndex: 5
+                navIndex: 2
             }
         });
     };

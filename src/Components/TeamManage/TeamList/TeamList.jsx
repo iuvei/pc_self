@@ -217,7 +217,6 @@ export default class TeamList extends Component {
                 alterData: record,
                 alterVisible: true,
                 disabled: true,
-                prizeGroupFlag: record.prize_group,
             });
             if(type == '配额'){
                 this.getAccGroupList(record);
@@ -276,12 +275,14 @@ export default class TeamList extends Component {
                                 typeName: '奖金组契约',
                                 prizeGroupList: data.list,
                                 prizeGroupPost,
+                                prizeGroupFlag: record.prize_group,
                             })
-                        }else{
-                            Modal.warning({
-                                title: res.shortMessage,
-                            });
                         }
+                        // else{
+                        //     Modal.warning({
+                        //         title: res.shortMessage,
+                        //     });
+                        // }
                     }
                 })
             }
@@ -636,6 +637,7 @@ export default class TeamList extends Component {
                                   <strong>{tableData.accnumall} 人</strong>
                             </span>
                         </div>;
+
         if(typeName == '配额契约'){
             typeContent = <div className="a_c_text">
                 <p>契约内容：</p>
@@ -730,18 +732,19 @@ export default class TeamList extends Component {
                 <p>契约内容：</p>
                 <div>
                     该用户的奖金组级别为
-                    <InputNumber min={prizeGroupList.length !== 0 && parseInt(prizeGroupList[0].prizeGroup)}
-                                 max={prizeGroupList.length !== 0 && parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup)}
+                    <InputNumber
+                                 // min={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[0].prizeGroup) : 1800}
+                                 // max={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup) : 1956}
                                  value={this.state.prizeGroupFlag}
                                  step={2}
                                  onChange={(value)=>this.onRegisterSetBonus(value)}
-                                 disabled={this.state.disabled}
+                                 disabled={true}
                     />。
                     <div className="prize_group_slider">
                         <Icon className="slider_left" onClick={()=>this.onMinus()} type="left"/>
                         <Slider
-                                min={prizeGroupList.length !== 0 && parseInt(prizeGroupList[0].prizeGroup)}
-                                max={prizeGroupList.length !== 0 && parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup)}
+                                min={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[0].prizeGroup) : 1800}
+                                max={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup) : 1956}
                                 step={2}
                                 onChange={(value)=>{this.onRegisterSetBonus(value)}}
                                 value={parseInt(this.state.prizeGroupFlag)}

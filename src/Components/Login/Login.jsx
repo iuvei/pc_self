@@ -565,7 +565,7 @@ export default class Login extends Component {
                 立即登录
             </Button>
         </div>;
-        
+
         switch (this.state.navListIndex) {
 
             case 0:
@@ -638,7 +638,7 @@ export default class Login extends Component {
                 </div>
                 <div className="login">
                     <img  className="loginLogo" src={loginSrc} />
-                    
+
                     <div className='l_m_content'>
 	                    <ul className="l_m_select_list clear">
 	                        {

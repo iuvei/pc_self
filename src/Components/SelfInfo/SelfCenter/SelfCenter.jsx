@@ -307,7 +307,7 @@ export default class SelfInfo extends PureComponent {
                             </span>
                             <Button className="recharge_btn right" type="primary"
                                     icon="pay-circle-o"
-                                    onClick={()=>this.onHashHistory('/financial/transfer', 'financial', 0)}>
+                                    onClick={()=>this.onHashHistory('/financial/recharge', 'financial', 0)}>
                                 立即充值
                             </Button>
                         </div>

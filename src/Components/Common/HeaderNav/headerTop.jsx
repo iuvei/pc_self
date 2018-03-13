@@ -75,7 +75,7 @@ export default class HeaderTop extends Component {
     		if(noticeListFlag.length <= 1){
     			return;
     		}
-    		if(times == noticeListFlag.length){
+    		if(times > noticeListFlag.length){
     			times = 1;
     			$(".notice-list").css('top',0);
     		}
