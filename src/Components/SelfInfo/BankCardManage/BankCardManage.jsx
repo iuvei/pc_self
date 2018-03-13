@@ -472,7 +472,7 @@ export default class BankCardManage extends Component {
                                                 }
                                                 <li id="select_p1">
                                                     <span className="a_aa_left_text">开户银行：</span>
-                                                    <Select value={{key: ''+addPostData.bank_id}} size="large" labelInValue
+                                                    <Select value={{key: addPostData.bank_id ? ''+addPostData.bank_id : '-1'}} size="large" labelInValue
                                                             style={{ width: 280 }}
                                                             onChange={(value)=>{this.onSelectBank(value)}}
                                                             placeholder="请选择开户银行"
@@ -488,7 +488,7 @@ export default class BankCardManage extends Component {
                                                 </li>
                                                 <li id="select_p2">
                                                     <span className="a_aa_left_text">开户银行区域：</span>
-                                                    <Select value={addPostData.province_id} className="a_aa_marg" size="large"
+                                                    <Select value={addPostData.province_id ? addPostData.province_id : '-1'} className="a_aa_marg" size="large"
                                                             style={{ width: 280 }}
                                                             onChange={(value)=>{this.onProvince(value)}}
                                                             placeholder="请选择省份"
@@ -501,7 +501,7 @@ export default class BankCardManage extends Component {
                                                             })
                                                         }
                                                     </Select>
-                                                    <Select value={addPostData.city_id} size="large" style={{ width: 280 }}
+                                                    <Select value={addPostData.city_id ? addPostData.city_id : '-1'} size="large" style={{ width: 280 }}
                                                             onChange={(value)=>{this.onCity(value)}} placeholder="请选择城市"
                                                             getPopupContainer={() => document.getElementById('select_p2')}
                                                     >
