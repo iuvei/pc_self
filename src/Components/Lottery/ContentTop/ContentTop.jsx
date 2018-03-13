@@ -446,6 +446,7 @@ export default class ContentTop extends Component {
     		}else if(tempType == 8 || tempType == 2){
     			common.removeStore(common.getStore('userId'))
     			this.props.getLotteryData();
+    			this.getAccGroup();
     		}else if(tempType == 7){
 				notification.open(
     				{
@@ -459,6 +460,24 @@ export default class ContentTop extends Component {
     		}
     	}
     }
+    //获取奖金组
+    getAccGroup() {
+        //登录
+        Fatch.login({
+            method: "POST",
+            body: JSON.stringify({
+                "sType": 'message',
+            })
+        }).then((data)=>{
+            if(this._ismount){
+                let result = data.repsoneContent;
+                if(data.status==200){
+                    stateVar.userInfo.accGroup = result.accGroup;
+                    common.setStore("accGroup",result.accGroup);
+                }
+            }
+        })
+    };
     openWebsocket(){
     	var msg = {"method":"join","uid":common.getStore('userId'),"hobby":1};
     	this.refWebSocket.state.ws.send(JSON.stringify(msg))
