@@ -91,22 +91,22 @@ export default class Activity extends Component {
     };
     /*按钮状态*/
     onBtnType(item){
-        switch (parseInt(item.status)) {
-            case 1:
+
+        let status = item.status;
+        if(status == 1){
+            if(item.user_is_enrolls == 1){
+                return '进行中'
+            }else{
                 return '立即参与';
-                break;
-            case 200:
-                return '已完成';
-                break;
-            case 400:
-                return '已满员';
-                break;
-            case 401:
-                return '已结束';
-                break;
-            default:
-                return '加载中';
-                break;
+            }
+        }else if(status == 200){
+            return '已完成';
+        }else if(status == 400){
+            return '已满员';
+        }else if(status == 401){
+            return '已结束';
+        }else{
+            return '加载中';
         }
     };
 
