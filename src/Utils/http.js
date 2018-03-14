@@ -11,6 +11,9 @@ const interFace = (key) => {
     INTERFACE['LOGIN'] = 'controller=default&action=login';
 
     //重置密码
+    INTERFACE['KEFU'] = 'controller=default&action=index&KefuLink=true';
+
+    //重置密码
     INTERFACE['RESETPWD'] = 'controller=user&action=ChangeLoginPass';
 
     //返回旧版

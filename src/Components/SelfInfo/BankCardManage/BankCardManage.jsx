@@ -543,7 +543,7 @@ export default class BankCardManage extends Component {
                                                                    size="large" style={{width: 280}} placeholder="请输入银行卡号"
                                                                    disabled={!ModalTitle}
                                                             />
-                                                            <span className="a_aa_right_text">银行卡卡号由16位或19位数字组成</span>
+                                                            <span className="a_aa_right_text">银行卡卡号由16位至19位数字组成</span>
                                                         </li> :
                                                         null
                                                 }

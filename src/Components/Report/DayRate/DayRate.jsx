@@ -255,8 +255,15 @@ export default class DayRate extends Component {
                     this.setState({
                         contentArr: res.repsoneContent.pros[0],
                         salary_ratio: res.repsoneContent.pros[0],
-                        protocol: res.repsoneContent.pros[0]
                     })
+                }
+            });
+            Fetch.dailysalaryself({
+                method: 'POST',
+                body: JSON.stringify({userid: stateVar.userInfo.userId})
+            }).then((res)=>{
+                if(this._ismount && res.status == 200){
+                    this.setState({protocol: res.repsoneContent.pros[0]})
                 }
             })
         }else{}

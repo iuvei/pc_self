@@ -533,7 +533,7 @@ export default class TeamList extends Component {
                 })
             }
         })
-    }
+    };
     onCancelQuota(){
         this.setState({quotaVisible: false, quotaPost: {}});
         this.getData();
@@ -604,7 +604,7 @@ export default class TeamList extends Component {
                     >
                         {text==1 ? '已签订' : '未签订'}
                     </Button>,
-                width: 100,
+                width: 90,
             }, {
                 title: '分红',
                 dataIndex: 'dividend_salary_status',
@@ -615,7 +615,7 @@ export default class TeamList extends Component {
                     >
                         {text==1 ? '已签订' : '未签订'}
                             </Button>,
-                width: 100,
+                width: 90,
             }, {
                 title: '配额',
                 dataIndex: 'useraccgroup_status',
@@ -637,7 +637,7 @@ export default class TeamList extends Component {
             }, {
                 title: '最后登录时间',
                 dataIndex: 'lasttime',
-                width: 90,
+                width: 110,
             }, {
                 title: '操作',
                 dataIndex: 'action',
@@ -853,15 +853,16 @@ export default class TeamList extends Component {
         }
 
         if(typeName == '配额契约'){
-            let accGroup = contentArr.filter(item => item.accGroup <= this.state.alterData.prize_group);
+            // let accGroup = contentArr.filter(item => item.accGroup <= this.state.alterData.prize_group);
+            let prize_group = this.state.alterData.prize_group;
             typeContent = <div className="a_c_text">
                 <p>契约内容：</p>
                 <p>该用户可继续推广下级，其中可分配奖金组：</p>
                 <ul className="text_content_list">
                     {
-                        accGroup.map((item, i)=>{
+                        contentArr.map((item, i)=>{
                             return (
-                                <li key={item.uagid}>
+                                <li key={item.uagid} style={{display: item.accGroup > prize_group ? 'none' : ''}}>
                                     {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个
                                     <span style={{display: this.state.disabled ? 'none' : ''}}>
                                             ，再增加

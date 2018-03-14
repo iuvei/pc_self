@@ -56,6 +56,28 @@ export default class Login extends Component {
 			showWechat:'none'
         }
     };
+    componentDidMount() {
+        // let indx = Math.floor(Math.random()*(onCanvas.length-1));
+        this._ismount = true;
+        onCanvas[1]();
+        this.getSession();
+        this.getWechat();
+        this.getKefu();
+    };
+    componentWillUnmount(){
+        this._ismount = false;
+    };
+    getKefu(){
+        Fetch.kefu({
+            method: "POST"
+        }).then((res)=>{
+            if(this._ismount && res.status == 200){
+                let data = res.repsoneContent;
+                stateVar.httpService = data.kefulink;
+                stateVar.httpCS = data.domain;
+            }
+        })
+    };
     /*
     * 获取前后台交互所需带的sess
     * 同时使页面已加载页面就将图片的请求加上sess
@@ -401,17 +423,6 @@ export default class Login extends Component {
         })
     }
 
-    componentDidMount() {
-        // let indx = Math.floor(Math.random()*(onCanvas.length-1));
-        this._ismount = true;
-        onCanvas[1]();
-        this.getSession();
-		this.getWechat();
-    };
-    componentWillUnmount(){
-        this._ismount = false;
-    };
-
     loginMain() {
         /*
         * 账号登录
@@ -578,7 +589,7 @@ export default class Login extends Component {
             	return ul_2;
             	break;
         }
-    }
+    };
     /*
      * 点击微信切换
      */
@@ -606,7 +617,7 @@ export default class Login extends Component {
                                 });}} onMouseLeave={()=>{this.setState({
                                 speedSrc:speedSrc,
                             });}}>
-                                <a href="http://hengcai88.com/" target="_blank">
+                                <a href={stateVar.httpCS} target="_blank">
                                     <img  src={this.state.speedSrc}/>
                                     <span>域名测速</span>
                                 </a>

@@ -271,7 +271,7 @@ export default class Dividend extends Component {
                         Modal.success({
                             title: res.repsoneContent,
                         });
-                        this.setState({alterVisible: false, disabled: true});
+                        this.setState({alterVisible: false, disabled: true, contract_name: '修改契约',});
                         this.getData();
                     }else{
                         Modal.warning({
