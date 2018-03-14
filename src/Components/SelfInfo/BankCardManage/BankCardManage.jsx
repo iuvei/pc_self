@@ -226,7 +226,7 @@ export default class BankCardManage extends Component {
             addPostData = this.state.addPostData;
         addPostData.account = val;
         if (val != '') {
-            let reg = /^(\d{16}|\d{19})$/;
+            let reg = /^[\d]{16,19}$/;
             let r = reg.test(val);
             if (r) {
                 validate.account = 0;

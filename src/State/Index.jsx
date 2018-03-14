@@ -2,8 +2,8 @@ import { observable, toJS, useStrict } from 'mobx';
 
 // useStrict(true);
 class State {
-    @observable httpUrl = window.location.origin || (window.location.protocol +'//' + window.location.host); // 域名
-    // @observable httpUrl = 'http://10.63.15.242'; // 域名
+    // @observable httpUrl = window.location.origin || (window.location.protocol +'//' + window.location.host); // 域名
+    @observable httpUrl = 'http://10.63.15.242'; // 域名
     @observable httpService = 'https://ngmm.livechatvalue.com/chat/chatClient/chatbox.jsp?companyID=12397&configID=50&jid=&s=1'; // 联系客服url
 
     @observable userInfo = {// 用户信息

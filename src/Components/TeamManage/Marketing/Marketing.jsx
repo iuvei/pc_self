@@ -4,11 +4,11 @@ import {observer} from 'mobx-react';
 import { InputNumber,Input, Slider, Button, Table, Radio, Modal, Switch, Popconfirm, message, Popover } from 'antd';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 let QRCode = require('qrcode.react');
+import { onValidate } from '../../../CommonJs/common';
 
 import Fetch from '../../../Utils';
-import AlterModal from '../../Common/AlertModal/AlertModal';
 
-import './Marketing.scss'
+import './Marketing.scss';
 
 @observer
 export default class Marketing extends Component {
@@ -31,12 +31,14 @@ export default class Marketing extends Component {
                 username: '', // 用户名
                 userpass: '', //密码
                 nickname: '', //昵称
-                keeppoint: 0, //自身保留返点
+                keeppoint: 7.8, //自身保留返点
                 groupLevel: 1800, //奖金组级别
             },
-            validateUserName: 2, // 验证注册用户名 0：正确；1：错误；2：不显示
-            validateUserPass: 2,
-            validateNickName: 2,
+            validate: {
+                userName: 2,// 0: 对， 1：错
+                userPass: 2,
+                nickName: 2,
+            },
             registerAccountNum: 0,
 
             reneralizeAccountNum: 0,
@@ -100,81 +102,56 @@ export default class Marketing extends Component {
     };
     /*注册-用户名*/
     onRegisteruserName(e) {
-        let val = e.target.value,
+        let {validate, registerPost} = this.state,
+            val = e.target.value,
             reg = /^(?=.*[\da-zA-Z]+)(?!.*?([a-zA-Z0-9]+?)\1\1\1).{6,16}$/,
             r = reg.test(val);
         if(r) {
-            this.setState({validateUserName: 0})
+            validate.userName = 0
         }else {
-            this.setState({validateUserName: 1})
+            validate.userName = 1
         }
-        let registerPost = this.state.registerPost;
-        registerPost.username = e.target.value;
-        this.setState({registerPost: registerPost});
-
+        registerPost.username = val;
+        this.setState({
+            registerPost,
+            validate
+        });
     };
     /*注册-密码*/
     onRegisteruserPass(e) {
-        let val = e.target.value,
+        let {validate, registerPost} = this.state,
+            val = e.target.value,
             reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,16}$/,
             r = reg.test(val);
         if(r) {
-            this.setState({validateUserPass: 0})
+            validate.userPass = 0
         }else {
-            this.setState({validateUserPass: 1})
+            validate.userPass = 1
         }
-        let registerPost = this.state.registerPost;
-        registerPost.userpass = e.target.value;
-        this.setState({registerPost: registerPost});
+        registerPost.userpass = val;
+        this.setState({
+            registerPost,
+            validate
+        });
 
     };
     /*注册-昵称*/
     onRegisternickName(e){
-        let val = e.target.value,
+        let {validate, registerPost} = this.state,
+            val = e.target.value,
             reg = /^.{2,6}$/,
             r = reg.test(val);
         if(r) {
-            this.setState({validateNickName: 0})
+            validate.nickName = 0
         }else {
-            this.setState({validateNickName: 1})
+            validate.nickName = 1
         }
-        let registerPost = this.state.registerPost;
-        registerPost.nickname = e.target.value;
-        this.setState({registerPost: registerPost});
+        registerPost.nickname = val;
+        this.setState({
+            registerPost,
+            validate
+        });
     }
-    validateUserName() {
-        let classNames;
-        if(this.state.validateUserName === 2) {
-            classNames = ''
-        } else if(this.state.validateUserName === 1) {
-            classNames = 'input_p wrong'
-        } else {
-            classNames = 'input_p correct'
-        }
-        return classNames
-    };
-    validateUserPass() {
-        let classNames;
-        if(this.state.validateUserPass === 2) {
-            classNames = ''
-        } else if(this.state.validateUserPass === 1) {
-            classNames = 'input_p wrong'
-        } else {
-            classNames = 'input_p correct'
-        }
-        return classNames
-    };
-    validateNickName() {
-        let classNames;
-        if(this.state.validateNickName === 2) {
-            classNames = ''
-        } else if(this.state.validateNickName === 1) {
-            classNames = 'input_p wrong'
-        } else {
-            classNames = 'input_p correct'
-        }
-        return classNames
-    };
     /*注册-奖金组设置， 注册-滑动条*/
     onRegisterSetBonus(value) {
         let registerPost = this.state.registerPost;
@@ -195,55 +172,59 @@ export default class Marketing extends Component {
     };
     /*注册-提交用户*/
     enterIconLoadingRegister() {
-        let {validateUserName, validateUserPass, validateNickName, registerPost, registerAccountNum } = this.state;
-        if(validateUserName === 0 &&
-            validateUserPass === 0 &&
-            validateNickName === 0) {
-            this.setState({ iconLoadingRegister: true });
-            Fetch.adduser({
-                method:'POST',
-                body: JSON.stringify(registerPost),
-            }).then((res)=>{
-                if(this._ismount){
-                    this.setState({
-                        iconLoadingRegister: false,
-                    });
-                    if(res.status == 200){
-                        let _this = this;
-                        if(registerAccountNum > 0){
-                            this.getData();
-                        }
-
-                        Modal.success({
-                            title: res.shortMessage,
-                            content: res.repsoneContent,
-                            onOk() {
-                                let registerPost = _this.state.registerPost;
-                                registerPost.username = '';
-                                registerPost.userpass = '';
-                                registerPost.nickname = '';
-                                _this.setState({
-                                    validateUserName: 2,
-                                    validateUserPass: 2,
-                                    validateNickName: 2,
-                                    registerPost: registerPost,
-                                });
-                            },
-                        });
-                    } else {
-                        Modal.warning({
-                            title: res.shortMessage,
-                        });
-                    }
-                }
-            })
-        }else{
-            this.setState({
-                validateUserName: 1,
-                validateUserPass: 1,
-                validateNickName: 1,
-            });
+        let {validate, registerPost, registerAccountNum } = this.state;
+        if(validate.userName != 0 || validate.userPass != 0 || validate.nickName != 0){
+            if(validate.userName != 0){
+                validate.userName = 1
+            }
+            if(validate.userPass != 0){
+                validate.userPass = 1
+            }
+            if(validate.nickName != 0){
+                validate.nickName = 1
+            }
+            this.setState({validate});
+            return
         }
+        this.setState({ iconLoadingRegister: true });
+        Fetch.adduser({
+            method:'POST',
+            body: JSON.stringify(registerPost),
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({
+                    iconLoadingRegister: false,
+                });
+                if(res.status == 200){
+                    let _this = this;
+                    if(registerAccountNum > 0){
+                        this.getData();
+                    }
+
+                    Modal.success({
+                        title: res.shortMessage,
+                        content: res.repsoneContent,
+                        onOk() {
+                            let registerPost = _this.state.registerPost;
+                            registerPost.username = '';
+                            registerPost.userpass = '';
+                            registerPost.nickname = '';
+                            validate.userName = 2;
+                            validate.userPass = 2;
+                            validate.nickName = 2;
+                            _this.setState({
+                                validate,
+                                registerPost,
+                            });
+                        },
+                    });
+                } else {
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
     };
 
     /*点击推广链接时*/
@@ -497,17 +478,33 @@ export default class Marketing extends Component {
                             </li>
                             <li>
                                 <span className="marke_k_left">用户名：</span>
-                                <Input className={this.validateUserName()} size="large" placeholder="请输入您的用户名" value={registerPost.username} onChange={(e)=>this.onRegisteruserName(e)}/>
+                                <Input
+                                       size="large"
+                                       placeholder="请输入您的用户名"
+                                       value={registerPost.username}
+                                       onChange={(e)=>this.onRegisteruserName(e)}
+                                       className={onValidate('userName', this.state.validate)}
+                                />
                                 <span className="inputText">由字母或数字组成的6-16个字符,不能连续四位相同的字符,首字不能以0或者o开头</span>
                             </li>
                             <li>
                                 <span className="marke_k_left">密码：</span>
-                                <Input className={this.validateUserPass()} type="password" size="large" placeholder="请输入您的密码"  value={registerPost.userpass} onChange={(e)=>this.onRegisteruserPass(e)}/>
+                                <Input
+                                    type="password" size="large" placeholder="请输入您的密码"
+                                    value={registerPost.userpass}
+                                    onChange={(e)=>this.onRegisteruserPass(e)}
+                                    className={onValidate('userPass', this.state.validate)}
+                                />
                                 <span className="inputText">由字母和数字组成6-16个字符,且必须包含数字和字母</span>
                             </li>
                             <li>
                                 <span className="marke_k_left">昵称：</span>
-                                <Input className={this.validateNickName()} size="large" placeholder="请输入您的昵称" value={registerPost.nickname} onChange={(e)=>this.onRegisternickName(e)}/>
+                                <Input
+                                    size="large" placeholder="请输入您的昵称"
+                                    value={registerPost.nickname}
+                                    onChange={(e)=>this.onRegisternickName(e)}
+                                    className={onValidate('nickName', this.state.validate)}
+                                />
                                 <span className="inputText">由2-6个字符组成</span>
                             </li>
                             <li>
