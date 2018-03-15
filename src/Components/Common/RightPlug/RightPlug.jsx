@@ -1,11 +1,13 @@
 /*右边快捷方式组件*/
 import { observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { Icon ,Popover} from 'antd';
+import { Icon ,Popover, Modal, Input, Button} from 'antd';
 import { hashHistory } from 'react-router';
+import Fetch from '../../../Utils';
 import './Rightplug.scss'
 import { stateVar } from '../../../State';
-import { getStore } from "../../../CommonJs/common";
+import md5 from 'md5';
+import { getStore, onValidate } from "../../../CommonJs/common";
 import ComplainAndSuggests from "../ComplainAndSuggests/ComplainAndSuggests";
 import Chat from '../../Chat/Chat';
 import qrcode from "./Img/qrcode.png";
@@ -19,15 +21,24 @@ export default class RightPlug extends Component {
             visible:false,      //控制投诉建议模态框的显示
             modalVisible: false,
             showMsg: false,
+            capitalVisible: false,
+            capitalPass: '', // 资金密码
+            validate: {
+                capitalPass: 2
+            },
+            btnLoading: false,
+            hintText: '',
         };
         this.hideChat = this.hideChat.bind(this);
         this.hideTousuModal = this.hideTousuModal.bind(this);
     };
     componentDidMount() {
+        this._ismount = true;
         let cw = document.body.clientWidth;
         if(cw < 1340){
             this.hideRight()
         }
+        this.onGetIframe();
         /*添加全局方法，给后台调用*/
         let _this = this;
         window.onShowMsg = function(type){
@@ -38,6 +49,19 @@ export default class RightPlug extends Component {
             }
 
         };
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
+    onGetIframe(){
+        return (
+            <iframe scrolling="no"
+                    id="lt_main" name="lt_main"
+                    style={{display: 'none'}}
+                    src={stateVar.httpUrl + '/pcservice/?controller=user&action=UserTeam&tag=html&sess=' + getStore('session')}
+            >
+            </iframe>
+        )
     };
     transferMsg(visible) {
         this.setState({
@@ -67,21 +91,73 @@ export default class RightPlug extends Component {
     hideTousuModal(){
         this.setState({visible: false})
     };
+    onCancelCapital() {
+        let {validate} = this.state;
+        validate.capitalPass = 2;
+        this.setState({
+            capitalVisible: false,
+            validate,
+            capitalPass: null,
+            btnLoading: false,
+            hintText: null
+        })
+    };
+    onChangeCapitalPass(e) {
+        let val = e.target.value,
+            {validate} = this.state;
+        if(val){
+            validate.capitalPass = 0
+        }else{
+            validate.capitalPass = 1
+        }
+        this.setState({
+            validate,
+            capitalPass: val,
+        })
+    };
+    /*验证资金密码*/
+    getCapitalPass() {
+        let {validate, capitalPass} = this.state;
+        if(validate.capitalPass == 0){
+            this.setState({btnLoading: true});
+            Fetch.checkpass({
+                method: 'POST',
+                body: JSON.stringify({
+                    secpass: md5(capitalPass),
+                    flag: 'check'
+                })
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({btnLoading: false});
+                    if(res.status == 200){
+                        this.onCancelCapital();
+                        this.setState({
+                            modalVisible: true,
+                            capitalVisible: false,
+                        })
+                    }else{
+                        validate.capitalPass = 1;
+                        this.setState({
+                            hintText: res.shortMessage,
+                            validate,
+                        });
+                    }
+                }
+            })
+        }else{
+            validate.capitalPass = 1;
+            this.setState({validate});
+        }
+    };
 
     render() {
-        const { modalVisible } = this.state;
+        const { modalVisible, capitalVisible, hintText } = this.state;
         return (
         	<div>
                 <Chat
                     visible={modalVisible}
                     hideChat={this.hideChat}
                 />
-                <iframe scrolling="no"
-                        id="lt_main" name="lt_main"
-                        style={{display: 'none'}}
-                        src={stateVar.httpUrl + '/pcservice/?controller=user&action=UserTeam&tag=html&sess=' + getStore('session')}
-                >
-                </iframe>
 	        	<div className="box-shape right_plug" style={{right:stateVar.paused ? 0 : '-140px'}}>
                     <ul className="right_list">
                         <li>
@@ -118,7 +194,7 @@ export default class RightPlug extends Component {
                             {
                                 this.state.showMsg ? <b className="r_p_common_extent"></b> : null
                             }
-                            <p className="r_p_kefu r_p_common" onClick={()=>this.setState({modalVisible: true})}>联系好友</p>
+                            <p className="r_p_kefu r_p_common" onClick={()=>this.setState({capitalVisible: true})}>联系好友</p>
                         </li>
                         <li>
                             <p className="r_p_zoushi r_p_common">
@@ -152,6 +228,38 @@ export default class RightPlug extends Component {
 		           	 	<Icon type="double-left" />
 		           	</div>
 	           	</div>
+
+                <Modal
+                    title="验证资金密码"
+                    width={400}
+                    wrapClassName="vertical-center-modal capitalPass_modal"
+                    visible={capitalVisible}
+                    onCancel={()=>this.onCancelCapital()}
+                    footer={null}
+                    maskClosable={false}
+                >
+                    <ul className="info_list">
+                        <li>
+                            <span>资金密码：</span>
+                            <Input placeholder="请输入您的资金密码"
+                                   type="password"
+                                   value={this.state.capitalPass}
+                                   onChange={(e)=>this.onChangeCapitalPass(e)}
+                                   size="large"
+                                   className={onValidate('capitalPass', this.state.validate)}
+                            />
+                            <p className="hint_text">{hintText}</p>
+                        </li>
+                        <li className="btn">
+                            <Button type="primary"
+                                    onClick={()=>this.getCapitalPass()}
+                                    loading={this.state.btnLoading}
+                            >
+                                提交
+                            </Button>
+                        </li>
+                    </ul>
+                </Modal>
             </div>
         );
     }

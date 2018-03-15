@@ -75,9 +75,15 @@
         border-top: 1px dotted #85888D;
     }
     .t_l_table_list{
+        position: relative;
         border: 1px solid #ccc;
         background-color: #fff;
         padding: 8px 5px;
+        .hint_text{
+            position: absolute;
+            right: 88px;
+            top: 23px;
+        }
     }
     .ant-btn-lg{
         padding: 4px 26px 5px 26px;

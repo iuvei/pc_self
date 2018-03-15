@@ -1,14 +1,13 @@
 /*市场推广*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { InputNumber,Input, Slider, Button, Table, Radio, Modal, Switch, Popconfirm, message, Popover } from 'antd';
+import { InputNumber,Input, Slider, Button, Table, Radio, Modal, Switch, Popconfirm, message, Popover, Tooltip } from 'antd';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 let QRCode = require('qrcode.react');
 import { onValidate } from '../../../CommonJs/common';
-
 import Fetch from '../../../Utils';
-
 import './Marketing.scss';
+import hint from './img/hint.png';
 
 @observer
 export default class Marketing extends Component {
@@ -656,6 +655,15 @@ export default class Marketing extends Component {
                                        loading={this.state.loading}
                                        scroll={{y: 200}}
                                 />
+
+                                <Tooltip placement="bottomRight"
+                                         title={<div>
+                                             <p>禁止后通过该注册链接</p>
+                                             <p>无法继续注册下级</p>
+                                         </div>}
+                                >
+                                    <img className="hint_text" src={hint} alt=""/>
+                                </Tooltip>
                             </div>
                         </div>
                 }

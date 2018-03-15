@@ -283,12 +283,12 @@ export default class PT extends Component {
                                     gameList.map((item, i)=>{
                                         return (
                                             <li key={item.id}>
-                                                <img src={stateVar.httpUrl + '/pcservice/' + item.pic} width={'100%'} className="games_type" alt=""/>
+                                                <img src={stateVar.httpUrl + item.pic} width={'100%'} className="games_type" alt=""/>
                                                 <p className="games_name">{item.cn_name}</p>
                                                 <div className="games_hover">
-                                                    <Button type="primary" loading={this.state.startLoading} onClick={()=>this.onStartGame(item.id, item.isdemo, 'start')}>开始游戏</Button>
+                                                    <Button type="primary" loading={this.state.startLoading} onClick={()=>this.onStartGame(item.id, '0', 'start')}>开始游戏</Button>
                                                     <div className="demo_btn" style={{display: item.isdemo == 1 ? '' : 'none'}}>
-                                                        <Button type="primary" loading={this.state.demoLoading} onClick={()=>this.onStartGame(item.id, item.isdemo, 'demo')}>免费试玩</Button>
+                                                        <Button type="primary" loading={this.state.demoLoading} onClick={()=>this.onStartGame(item.id, '1', 'demo')}>免费试玩</Button>
                                                     </div>
                                                 </div>
                                             </li>

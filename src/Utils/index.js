@@ -193,6 +193,8 @@ const registerAward = (body) =>  request(http.interFace('REGISTERAWARD'),body);
 const wechatbind = (body) =>  request(http.interFace('WECHATBIND'),body);
 //EA填写个人资料
 const addUserInfo = (body) =>  request(http.interFace('ADDUSERINFO'),body);
+//判断是否输入过资金密码和密码验证
+const checkpass = (body) =>  request(http.interFace('CHECKPASS'),body);
 
 export default {
     getSess,
@@ -289,5 +291,6 @@ export default {
     pullNewAward,
     registerAward,
     wechatbind,
-    addUserInfo
+    addUserInfo,
+    checkpass
 }

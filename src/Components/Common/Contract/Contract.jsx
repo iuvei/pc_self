@@ -85,6 +85,7 @@ export default class Contract extends Component {
     };
 
     onSelectUser(item){
+        console.log(item)
         // this.props.onSelectUser(item, 'child')
     };
     onSelectSys(value){
@@ -92,9 +93,6 @@ export default class Contract extends Component {
     };
     render() {
         const { alterData, title, alterVisible, textDescribe, userList, contractInfo, disabledSelect, userid, username } = this.props;
-        console.log(userid)
-        console.log(username)
-        console.log(alterData)
 
         return (
             <Modal
@@ -114,14 +112,14 @@ export default class Contract extends Component {
                                     mode="combobox"
                                     size="large" style={{ width: 275 }} labelInValue
                                     onChange={(value)=>{this.onSelectUser(value)}}
-                                    value={{ key: username }}
+                                    value={{ key: username, label: userid }}
                                     disabled={disabledSelect}
                                     getPopupContainer={() => document.getElementsByClassName('user_p')[0]}
                             >
                                 {
                                     userList.map((item) => {
                                         return (
-                                            <Option value={item.userid} key={item.userid}>{item.username}</Option>
+                                            <Option key={item.username}>{item.username}</Option>
                                         )
                                     })
                                 }
