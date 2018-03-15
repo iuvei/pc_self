@@ -253,7 +253,7 @@ export default class Withdraw extends Component {
                                             <span className="r_m_qq fAvailableBalance">{postData.money}元</span>
                                             <div className="tr_m_text">
                                                 <h4>
-                                                    平台每日可免费提现&nbsp;<i>{response.plattimes}</i>&nbsp;次，今日剩余&nbsp;<em>{response.plattimes - response.todaytimes}</em>&nbsp;次
+                                                    平台每日可免费提现&nbsp;<i>{response.plattimes}</i>&nbsp;次，今日剩余&nbsp;<em>{response.plattimes - response.todaytimes < 0 ? 0 : response.plattimes - response.todaytimes}</em>&nbsp;次
                                                 </h4>
                                             </div>
                                         </li>

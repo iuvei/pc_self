@@ -106,14 +106,16 @@ export default class BankCardManage extends Component {
     // 增加修改银行卡号
     showModal(value, record) {
         this.onAdduserbank();
+        let {addPostData} = this.state;
         if (value == 'add') {
+            addPostData.flag = 'confirm';
             this.setState({
                 visible: true,
                 ModalTitle: true,
+                addPostData
             });
         } else {
             this.onProvince(record.province_id);
-            let {addPostData} = this.state;
             addPostData.bank_id = record.bank_id;
             addPostData.bank = record.bank_name;
             addPostData.province_id = record.province_id;
@@ -224,7 +226,7 @@ export default class BankCardManage extends Component {
             addPostData = this.state.addPostData;
         addPostData.account = val;
         if (val != '') {
-            let reg = /^(\d{16}|\d{19})$/;
+            let reg = /^[\d]{16,19}$/;
             let r = reg.test(val);
             if (r) {
                 validate.account = 0;
@@ -472,7 +474,7 @@ export default class BankCardManage extends Component {
                                                 }
                                                 <li id="select_p1">
                                                     <span className="a_aa_left_text">开户银行：</span>
-                                                    <Select value={{key: ''+addPostData.bank_id}} size="large" labelInValue
+                                                    <Select value={{key: addPostData.bank_id ? ''+addPostData.bank_id : '-1'}} size="large" labelInValue
                                                             style={{ width: 280 }}
                                                             onChange={(value)=>{this.onSelectBank(value)}}
                                                             placeholder="请选择开户银行"
@@ -488,7 +490,7 @@ export default class BankCardManage extends Component {
                                                 </li>
                                                 <li id="select_p2">
                                                     <span className="a_aa_left_text">开户银行区域：</span>
-                                                    <Select value={addPostData.province_id} className="a_aa_marg" size="large"
+                                                    <Select value={addPostData.province_id ? addPostData.province_id : '-1'} className="a_aa_marg" size="large"
                                                             style={{ width: 280 }}
                                                             onChange={(value)=>{this.onProvince(value)}}
                                                             placeholder="请选择省份"
@@ -501,7 +503,7 @@ export default class BankCardManage extends Component {
                                                             })
                                                         }
                                                     </Select>
-                                                    <Select value={addPostData.city_id} size="large" style={{ width: 280 }}
+                                                    <Select value={addPostData.city_id ? addPostData.city_id : '-1'} size="large" style={{ width: 280 }}
                                                             onChange={(value)=>{this.onCity(value)}} placeholder="请选择城市"
                                                             getPopupContainer={() => document.getElementById('select_p2')}
                                                     >
@@ -541,7 +543,7 @@ export default class BankCardManage extends Component {
                                                                    size="large" style={{width: 280}} placeholder="请输入银行卡号"
                                                                    disabled={!ModalTitle}
                                                             />
-                                                            <span className="a_aa_right_text">银行卡卡号由16位或19位数字组成</span>
+                                                            <span className="a_aa_right_text">银行卡卡号由16位至19位数字组成</span>
                                                         </li> :
                                                         null
                                                 }

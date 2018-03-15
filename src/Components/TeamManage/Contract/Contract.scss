@@ -32,9 +32,24 @@ $border_color: #C8C8C8;
             width: 240px;
             height: 152px;
         }
+        .c_portion_height{
+            width: 240px;
+            height: 315px;
+            .c_table_wrap{
+                padding-top: 90px;
+            }
+        }
+        .c_dividend{
+            width: 284px;
+            height: 315px;
+        }
         .c_quota{
             width: 240px;
             height: 315px;
+        }
+        .c_quota_width{
+            height: 315px;
+            width: 534px;
         }
         .quota_list{
             li{

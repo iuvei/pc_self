@@ -262,12 +262,38 @@ export default class Contract extends Component {
             quotaPost[item.prizeGroup] = 0;
         }
         this.setState({quotaPost});
+    };
+    onStyleAccGroup() {
+        let {protocol, curUserSignStatus} = this.state;
+        if(protocol == 0 && curUserSignStatus.dividend_ratio_status != 1){//无日工资比例，无分红比例
+            return 'border_content c_portion_height'
+        }
+        else if(protocol != 0 && curUserSignStatus.dividend_ratio_status != 1){
+            return 'border_content c_portion_height'
+        }
+        else{
+            return 'border_content c_portion'
+        }
     }
+    onStyleAccnum() {
+        let {protocol, curUserSignStatus} = this.state;
+        if(protocol == 0 && curUserSignStatus.dividend_ratio_status != 1){
+            return 'border_content c_quota_width'
+        }else{
+            return 'border_content c_quota'
+        }
+    }
+    onStyleDividend() {
+        let {protocol, curUserSignStatus} = this.state;
+        if(protocol == 0 && curUserSignStatus.dividend_ratio_status == 1){
+            return 'c_dividend border_content'
+        }else {
+            return 'c_portion border_content'
+        }
+    };
     render() {
         const { dividend_ratio_status } = this.state.curUserSignStatus;
         const { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost} = this.state;
-
-
         const text=<div className='c_info_wrap'>
             <p className='c_info_title'>日工资规则</p>
             <p className='c_i_title1'>恒彩日工资：</p>
@@ -305,36 +331,40 @@ export default class Contract extends Component {
                    !this.state.loading ?
                    <div>
                        <ul className='c_top clear'>
+                           {
+                               protocol == 0 ?
+                                   null :
+                                   <li>
+                                       <div className='c_salary border_content' >
+                                           <p className='c_title'><img src={moneySrc}/>我的日工资比例
+                                               <Tooltip placement="bottom" title={text}  overlayClassName='contract_helpinfo'>
+                                                   <Icon className='c-info' type="info-circle" />
+                                               </Tooltip>
+                                           </p>
+                                           <div className="day_table">
+                                               <Table bordered={true}
+                                                      rowKey={(record, index)=> index}
+                                                      dataSource={protocol}
+                                                      columns={columnsDay}
+                                                      pagination={false}
+                                               />
+                                           </div>
+                                       </div>
+                                   </li>
+                           }
                            <li>
-                               <div className='c_salary border_content' >
-                                   <p className='c_title'><img src={moneySrc}/>我的日工资比例
-                                       <Tooltip placement="bottom" title={text}  overlayClassName='contract_helpinfo'>
-                                           <Icon className='c-info' type="info-circle" />
-                                       </Tooltip>
-                                   </p>
-                                   <div className="day_table">
-                                       <Table bordered={true}
-                                              rowKey={(record, index)=> index}
-                                              dataSource={protocol}
-                                              columns={columnsDay}
-                                              pagination={false}
-                                       />
-                                   </div>
-                               </div>
-                           </li>
-                           <li>
-                               <div className='c_portion border_content' >
-                                   <p className='c_title'><img src={yuanSrc}/>我的分红比例</p>
-                                   <div className='c_table_wrap'>
-                                       <p>分红</p>
-                                       {
-                                           dividend_ratio_status==1 ?
-                                               <p className='c_txt'>{cur_dividend_radio}%</p> :
-                                               <p className='c_txt'>无</p>
-                                       }
-                                   </div>
-                               </div>
-                               <div className="c_portion border_content">
+                               {
+                                   dividend_ratio_status == 1 ?
+                                       <div className={this.onStyleDividend()} >
+                                           <p className='c_title'><img src={yuanSrc}/>我的分红比例</p>
+                                           <div className='c_table_wrap'>
+                                               <p>分红</p>
+                                               <p className='c_txt'>{cur_dividend_radio}%</p>
+                                           </div>
+                                       </div> :
+                                       null
+                               }
+                               <div className={this.onStyleAccGroup()}>
                                    <p className='c_title'><img src={dollarSrc}/>我的奖金组</p>
                                    <div className='c_table_wrap'>
                                        <div >
@@ -345,7 +375,7 @@ export default class Contract extends Component {
                                </div>
                            </li>
                            <li>
-                               <div className="c_quota border_content">
+                               <div className={this.onStyleAccnum()}>
                                    <p className='c_title'>
                                        <img src={quota}/>
                                        我的配额

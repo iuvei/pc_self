@@ -89,11 +89,24 @@ export default class TeamList extends Component {
     };
     componentDidMount() {
         this._ismount = true;
+        this.changeDailysalary();
         this.getData();
         this.getNum();
     };
     componentWillUnmount() {
         this._ismount = false;
+    };
+    /*是否有日工资 分红*/
+    changeDailysalary() {
+        Fetch.dailysalary({
+            method: 'POST',
+            body: JSON.stringify({check: 1}),
+        }).then((res)=>{
+            if(this._ismount && res.status == 200) {
+                let data = res.repsoneContent;
+                stateVar.dailysalaryStatus = data;
+            }
+        })
     };
     getNum(){
         Fetch.quota({
@@ -104,7 +117,7 @@ export default class TeamList extends Component {
                 this.setState({num: res.repsoneContent.num})
             }
         })
-    }
+    };
     handleTableChange = (pagination, filters, sorter) => {
         let selectInfo = this.state.selectInfo;
         if(sorter.columnKey == undefined){
@@ -520,7 +533,7 @@ export default class TeamList extends Component {
                 })
             }
         })
-    }
+    };
     onCancelQuota(){
         this.setState({quotaVisible: false, quotaPost: {}});
         this.getData();
@@ -550,8 +563,9 @@ export default class TeamList extends Component {
     };
 
     render() {
+        const { dailysalaryStatus } = stateVar;
         const { disabled, tableData, typeName, contentArr, prizeGroupList, agPost, diviPost } = this.state;
-        const columns = [
+        let columns = [
             {
                 title: '用户名',
                 dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
@@ -590,7 +604,7 @@ export default class TeamList extends Component {
                     >
                         {text==1 ? '已签订' : '未签订'}
                     </Button>,
-                width: 100,
+                width: 90,
             }, {
                 title: '分红',
                 dataIndex: 'dividend_salary_status',
@@ -601,7 +615,7 @@ export default class TeamList extends Component {
                     >
                         {text==1 ? '已签订' : '未签订'}
                             </Button>,
-                width: 100,
+                width: 90,
             }, {
                 title: '配额',
                 dataIndex: 'useraccgroup_status',
@@ -623,14 +637,14 @@ export default class TeamList extends Component {
             }, {
                 title: '最后登录时间',
                 dataIndex: 'lasttime',
-                width: 90,
+                width: 110,
             }, {
                 title: '操作',
                 dataIndex: 'action',
                 render: (text, record) => <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>,
                 width: 110,
             }];
-        const footer = <div className="tabel_footer">
+        let footer = <div className="tabel_footer">
                             <span>总计</span>
                             <span>
                                   团队总人数：
@@ -638,7 +652,209 @@ export default class TeamList extends Component {
                             </span>
                         </div>;
 
+        if(dailysalaryStatus.isSalary != 1){
+            columns = [
+                {
+                    title: '用户名',
+                    dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
+                    render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
+                    width: 140,
+                }, {
+                    title: '用户类型',
+                    dataIndex: 'groupname',
+                    width: 70,
+                }, {
+                    title: '团队人数',
+                    dataIndex: 'team_count',
+                    sorter: () => {},
+                    width: 80,
+                }, {
+                    title: '奖金组',
+                    dataIndex: 'prize_group',
+                    render: (text, record) =>
+                        tableData.history.length > 1 ?
+                            text :
+                            <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
+                    sorter: () => {},
+                    width: 90,
+                }, {
+                    title: '注册时间',
+                    dataIndex: 'register_time',
+                    sorter: () => {},
+                    width: 110,
+                }, {
+                    title: '分红',
+                    dataIndex: 'dividend_salary_status',
+                    render: (text, record) =>
+                        <Button type={text == 1 ? 'primary' : ''} ghost
+                                onClick={()=>this.onClickColBtn('分红', record)}
+                                disabled={tableData.history.length > 1}
+                        >
+                            {text==1 ? '已签订' : '未签订'}
+                        </Button>,
+                    width: 100,
+                }, {
+                    title: '配额',
+                    dataIndex: 'useraccgroup_status',
+                    render: (text, record) =>
+                        <Button className={text == 3 ? 'new_application' : ''}
+                                type={text == 1 ? 'primary' : ''} ghost
+                                onClick={()=>this.onClickColBtn('配额', record)}
+                                disabled={tableData.history.length > 1}
+                        >
+                            {
+                                text == 0 ?
+                                    '未分配' :
+                                    text == 1 ?
+                                        '已分配' :
+                                        '新申请'
+                            }
+                        </Button>,
+                    width: 100,
+                }, {
+                    title: '最后登录时间',
+                    dataIndex: 'lasttime',
+                    width: 110,
+                }, {
+                    title: '操作',
+                    dataIndex: 'action',
+                    render: (text, record) => <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>,
+                    width: 110,
+                }];
+        }
+        if(dailysalaryStatus.isDividend != 1){
+            columns = [
+                {
+                    title: '用户名',
+                    dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
+                    render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
+                    width: 140,
+                }, {
+                    title: '用户类型',
+                    dataIndex: 'groupname',
+                    width: 70,
+                }, {
+                    title: '团队人数',
+                    dataIndex: 'team_count',
+                    sorter: () => {},
+                    width: 80,
+                }, {
+                    title: '奖金组',
+                    dataIndex: 'prize_group',
+                    render: (text, record) =>
+                        tableData.history.length > 1 ?
+                            text :
+                            <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
+                    sorter: () => {},
+                    width: 70,
+                }, {
+                    title: '注册时间',
+                    dataIndex: 'register_time',
+                    sorter: () => {},
+                    width: 120,
+                }, {
+                    title: '日工资',
+                    dataIndex: 'daily_salary_status',
+                    render: (text, record) =>
+                        <Button type={text == 1 ? 'primary' : ''} ghost
+                                onClick={()=>this.onClickColBtn('日工资', record)}
+                                disabled={tableData.history.length > 1}
+                        >
+                            {text==1 ? '已签订' : '未签订'}
+                        </Button>,
+                    width: 90,
+                }, {
+                    title: '配额',
+                    dataIndex: 'useraccgroup_status',
+                    render: (text, record) =>
+                        <Button className={text == 3 ? 'new_application' : ''}
+                                type={text == 1 ? 'primary' : ''} ghost
+                                onClick={()=>this.onClickColBtn('配额', record)}
+                                disabled={tableData.history.length > 1}
+                        >
+                            {
+                                text == 0 ?
+                                    '未分配' :
+                                    text == 1 ?
+                                        '已分配' :
+                                        '新申请'
+                            }
+                        </Button>,
+                    width: 90,
+                }, {
+                    title: '最后登录时间',
+                    dataIndex: 'lasttime',
+                    width: 120,
+                }, {
+                    title: '操作',
+                    dataIndex: 'action',
+                    render: (text, record) => <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>,
+                    width: 110,
+                }];
+        }
+        if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){
+            columns = [
+                {
+                    title: '用户名',
+                    dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
+                    render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
+                    width: 140,
+                }, {
+                    title: '用户类型',
+                    dataIndex: 'groupname',
+                    width: 70,
+                }, {
+                    title: '团队人数',
+                    dataIndex: 'team_count',
+                    sorter: () => {},
+                    width: 80,
+                }, {
+                    title: '奖金组',
+                    dataIndex: 'prize_group',
+                    render: (text, record) =>
+                        tableData.history.length > 1 ?
+                            text :
+                            <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
+                    sorter: () => {},
+                    width: 90,
+                }, {
+                    title: '注册时间',
+                    dataIndex: 'register_time',
+                    sorter: () => {},
+                    width: 110,
+                }, {
+                    title: '配额',
+                    dataIndex: 'useraccgroup_status',
+                    render: (text, record) =>
+                        <Button className={text == 3 ? 'new_application' : ''}
+                                type={text == 1 ? 'primary' : ''} ghost
+                                onClick={()=>this.onClickColBtn('配额', record)}
+                                disabled={tableData.history.length > 1}
+                        >
+                            {
+                                text == 0 ?
+                                    '未分配' :
+                                    text == 1 ?
+                                        '已分配' :
+                                        '新申请'
+                            }
+                        </Button>,
+                    width: 100,
+                }, {
+                    title: '最后登录时间',
+                    dataIndex: 'lasttime',
+                    width: 110,
+                }, {
+                    title: '操作',
+                    dataIndex: 'action',
+                    render: (text, record) => <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>,
+                    width: 110,
+                }];
+        }
+
         if(typeName == '配额契约'){
+            // let accGroup = contentArr.filter(item => item.accGroup <= this.state.alterData.prize_group);
+            let prize_group = this.state.alterData.prize_group;
             typeContent = <div className="a_c_text">
                 <p>契约内容：</p>
                 <p>该用户可继续推广下级，其中可分配奖金组：</p>
@@ -646,7 +862,7 @@ export default class TeamList extends Component {
                     {
                         contentArr.map((item, i)=>{
                             return (
-                                <li key={item.uagid}>
+                                <li key={item.uagid} style={{display: item.accGroup > prize_group ? 'none' : ''}}>
                                     {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个
                                     <span style={{display: this.state.disabled ? 'none' : ''}}>
                                             ，再增加
