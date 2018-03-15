@@ -202,6 +202,8 @@ const interFace = (key) => {
     INTERFACE['REGISTERAWARD'] = 'controller=onlineactivities&goaction=RegisterAward&absecs=True';
     //EA填写个人资料
     INTERFACE['ADDUSERINFO'] = 'controller=sportsbook&action=AddUserInfo';
+    //判断是否输入过资金密码和密码验证
+    INTERFACE['CHECKPASS'] = 'controller=security&action=checkpass';
 
     let httpUrl = stateVar.httpUrl;
     if(key == 'PTLOGINNEW') {

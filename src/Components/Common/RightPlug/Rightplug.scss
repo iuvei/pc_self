@@ -138,3 +138,30 @@
         color: #fff;
     }
 }
+
+.capitalPass_modal{
+    .info_list{
+        width: 300px;
+        margin: 0 auto;
+        font-size: 14px;
+        li{
+            margin: 15px 0 10px;
+        }
+        .hint_text{
+            font-size: 12px;
+            color: $color_CF2027;
+            @include lh(20px);
+            padding-left: 70px;
+        }
+    }
+    .ant-input{
+        width: 200px;
+    }
+    .btn{
+        text-align: center;
+        margin-top: 30px;
+        .ant-btn{
+            padding: 5px 30px;
+        }
+    }
+}
