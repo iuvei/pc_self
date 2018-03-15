@@ -35,7 +35,7 @@ export default class AutoLogin extends Component {
 
     }
     componentDidMount() {
-        onCanvas[1]();
+        onCanvas[0]();
         /*将本地存储变量获取到全局*/
         stateVar.userInfo = {
             userId:getStore("userId"),

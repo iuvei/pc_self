@@ -237,7 +237,7 @@ export default class ContractModal extends Component {
                             )
                         })
                     }
-                    <li>1948&nbsp;及以下剩余配额：无限；</li>
+                    <li>{alterData.prize_group < 1950 ? alterData.prize_group : '1948'}&nbsp;及以下剩余配额：无限；</li>
                 </ul>
             </div>;
         }else if(type == 0 || type == '日工资契约'){//日工资契约
@@ -282,7 +282,8 @@ export default class ContractModal extends Component {
                             )
                         })
                     }
-                    <li className="brisk_user">当日投注金额≥1000元，计为一个活跃用户</li>
+                    <li className="brisk_user" key="0">当日投注金额≥1000元，计为一个活跃用户</li>
+                    <li className="brisk_user" key="00">下级日工资各档位日销量要求需与自身保持一致，删除档位时遵循从高到底的原则，但至少保留三档。</li>
                 </ul>
                 <span className="hover col_color_ying add_sale"
                       onClick={()=>this.onAddSale()}
@@ -618,6 +619,7 @@ export default class ContractModal extends Component {
                         <Contract
                             title={this.state.typeName}
                             userid={this.state.userid}
+                            username={this.state.username}
                             textDescribe={typeContent}
                             alterData={this.state.alterData}
                             alterVisible={this.state.alterVisible}

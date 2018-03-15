@@ -59,7 +59,7 @@ export default class Login extends Component {
     componentDidMount() {
         // let indx = Math.floor(Math.random()*(onCanvas.length-1));
         this._ismount = true;
-        onCanvas[1]();
+        onCanvas[0]();
         this.getSession();
         this.getWechat();
         this.getKefu();
@@ -329,12 +329,13 @@ export default class Login extends Component {
                 displayWarn:false,
             });
         } else if(value ==='reset_pwd'){ //显示重置密码模态框
-            if(this.state.accountM==''||this.state.passwordM==''){
+            let {accountM, passwordM, aptchacM} = this.state;
+            if(accountM==''|| passwordM==''){
                 this.setState({
                     warnM:"用户名或密码为空",
                     displayWarnM:true,
                 },()=>this.refreshImgModal());
-            }else if(this.state.aptchacM==''){
+            }else if(aptchacM==''){
                 this.setState({
                     warnM:"验证码为空",
                     displayWarnM:true,
@@ -345,9 +346,9 @@ export default class Login extends Component {
                         method: "POST",
                         body:JSON.stringify({
                             "sType":'formal',
-                            "username":this.state.accountM,
-                            "loginpass":md5((md5(this.state.aptchacM)+md5('qwe123'))),
-                            "validcode":this.state.aptchacM
+                            "username": accountM,
+                            "loginpass":md5((md5(aptchacM)+md5(passwordM))),
+                            "validcode": aptchacM
                         })
                     }).then((data)=>{
                     if(data.status==200){
@@ -366,26 +367,26 @@ export default class Login extends Component {
 
             }
         }else if(value ==='suggest'){
-            if(this.state.newPwdM==''||this.state.confirmPwdM==''){
+            let {newPwdM, confirmPwdM} = this.state;
+            if(newPwdM=='' || confirmPwdM==''){
                 this.setState({
                     warnM1:"密码为空",
                     displayWarnM1:true,
                 });
-            }else if(this.state.newPwdM!=this.state.confirmPwdM){
+            }else if(newPwdM != confirmPwdM){
                 this.setState({
                     warnM1:"两次输入密码不同",
                     displayWarnM1:true,
                 });
             }else{
-
-                Fatch.resetPwd(  //重置密码
-
+                Fetch.resetPwd(  //重置密码
                 {
                         method: "POST",
                         body:JSON.stringify({
-                            "newpass":md5('123qwe'),
-                            "confirm_newpass":md5('123qwe'),
-                            "changetype":"loginpass"
+                            "flag": 'changepass',
+                            "changetype":"loginpass",
+                            "newpass":md5(newPwdM),
+                            "confirm_newpass":md5(confirmPwdM),
                         })
                     }).then((data)=>{
                     if(data.status==200){
@@ -480,7 +481,7 @@ export default class Login extends Component {
                     >
                         <p className='m_name'>{this.state.accountM}</p>
                         <Input type="password" size="large"   placeholder="新登录密码"  value={this.state.newPwdM}  onChange={(e)=>{this.onNewPwdM(e)}}/>
-                        <Input size="large"  placeholder="确认新登录密码" value={this.state.confirmPwdM}  onChange={(e)=>{this.onConfirmPwdM(e)}}/>
+                        <Input type="password" size="large"  placeholder="确认新登录密码" value={this.state.confirmPwdM}  onChange={(e)=>{this.onConfirmPwdM(e)}}/>
                         <Button type="primary" onClick={()=>{this.showModal('suggest')}} >
                             确定
                         </Button>
@@ -508,7 +509,7 @@ export default class Login extends Component {
                 <div>
                     <Modal
                         title="《协议与条款》"
-                        wrapClassName="m_accept_contract"
+                        wrapClassName="vertical-center-modal m_accept_contract"
                         maskClosable={false}
                         visible={this.state.visible4}
                         onCancel={()=>{this.setState({ visible4: false })}}
@@ -517,7 +518,6 @@ export default class Login extends Component {
                         </Button>}
                         closable={false}
                     >
-
                         <div className='m_contract'>
                             <p>《恒彩在线》是持菲律宾共和国合法经营执照，并受其相关法律保护和约束的线上游戏平台运营商。</p>
                             <p>用户在登录使用平台服务前，请仔细阅读以下内容，并确认使用平台服务符合所在国家和居住地的法律及规定。本平台不承担任何因用户违反当地法规引起的任何责任。用户一经登录平台，则视为完全接受平台所有之规定。</p>
@@ -648,8 +648,9 @@ export default class Login extends Component {
                     </div>
                 </div>
                 <div className="login">
-                    <img  className="loginLogo" src={loginSrc} />
-
+                    <div className="loginLogo">
+                        <img src={loginSrc} />
+                    </div>
                     <div className='l_m_content'>
 	                    <ul className="l_m_select_list clear">
 	                        {

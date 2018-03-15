@@ -985,6 +985,7 @@ export default class TeamTable extends Component {
                 }, {
                     title: '净收入',
                     dataIndex: 'sum_netincome',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
@@ -996,7 +997,7 @@ export default class TeamTable extends Component {
                     width: 75,
                 }
             ];
-            footer = <ul className="tt_f_showOne clear">
+            footer = <ul className="tt_f_showZero clear">
                 <li>总计</li>
                 <li>{sum.total_price}</li>
                 <li>{sum.total_effective_price}</li>

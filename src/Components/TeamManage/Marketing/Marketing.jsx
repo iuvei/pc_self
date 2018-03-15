@@ -71,17 +71,20 @@ export default class Marketing extends Component {
         }).then((res)=>{
             if(this._ismount && res.status === 200){
                 let repsone = res.repsoneContent,
-                    { registerSlider, generalizeSlider } = this.state;
+                    { registerSlider, generalizeSlider, registerPost, generalizePost } = this.state;
+
                 registerSlider.sliderMax = repsone.groupLevel;
                 generalizeSlider.sliderMax = repsone.groupLevel;
+                registerPost.keeppoint = parseFloat(((repsone.selfPoint - repsone.list['1800'].high)*100).toFixed(1));
+                generalizePost.keeppoint = parseFloat(((repsone.selfPoint - repsone.list['1800'].high)*100).toFixed(1));
                 this.setState({
                     registerSlider: registerSlider,
                     generalizeSlider: generalizeSlider,
                     list: repsone.list,
                     selfPoint: repsone.selfPoint,
+                    registerPost,
+                    generalizePost
                 }, ()=>{
-                    let registerPost = this.state.registerPost,
-                        generalizePost = this.state.generalizePost;
                     this.setState({
                         registerAccountNum: this.state.list[registerPost.groupLevel].accnum,
                         reneralizeAccountNum: this.state.list[generalizePost.groupLevel].accnum,
@@ -381,35 +384,35 @@ export default class Marketing extends Component {
             {
                 title: '链接地址',
                 dataIndex: 'linkaddress',
-                render: (text, record, index)=><div className="clear">
+                render: (text, record, index)=><div className="url_content clear">
                                                     <a className="url_style ellipsis" href={text} target="_blank">{text}</a>
                                                     <span className="qrcode right">
                                                         <Popover content={
                                                                             <QRCode value={text}
-                                                                                    size={200}
+                                                                                    size={180}
                                                                                     bgColor="#FFFFFF"
                                                                                     fgColor="#000000"
                                                                             />
                                                                         }
                                                                  title="手机扫描二维码"
                                                                  trigger="click">
-                                                            <Button type="primary" size="small" style={{marginRight:'3px'}}>手机二维码</Button>
+                                                            <Button className='phone_btn' size="small">手机二维码</Button>
                                                         </Popover>
                                                         <Popover content={
                                                                             <QRCode value={record.qrLink}
-                                                                                    size={200}
+                                                                                    size={180}
                                                                                     bgColor="#FFFFFF"
                                                                                     fgColor="#000000"
                                                                             />
                                                                         }
                                                                  title="微信注册二维码"
                                                                  trigger="click">
-                                                            <Button type="primary" size="small">微信二维码</Button>
+                                                            <Button className='weChat_btn' size="small">微信开户</Button>
                                                         </Popover>
                                                     </span>
                                                     <section className="copy right">
                                                         <CopyToClipboard text={text} onCopy={() => message.success('复制成功')}>
-                                                            <Button type="primary" size="small">复制</Button>
+                                                            <Button className='copy_btn' size="small">复制</Button>
                                                         </CopyToClipboard>
                                                     </section>
                                                 </div>,

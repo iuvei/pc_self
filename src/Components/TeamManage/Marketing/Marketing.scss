@@ -48,18 +48,6 @@
                 float: left;
                 line-height: 32px;
             }
-            //.m_k_minus_add{
-            //    @include wh(20px, 20px);
-            //    line-height: 18px;
-            //    border: 1px solid #C8C8C8;
-            //    @include borderRadius(3px);
-            //    margin-top: 5.5px;
-            //    background-color: #fff;
-            //    text-align: center;
-            //    &:hover{
-            //        cursor: pointer;
-            //    }
-            //}
         }
     }
     .url_style{
@@ -97,6 +85,22 @@
     .ant-slider{
         background-color: #A9A9A9;
     }
+    .url_content{
+        .copy_btn{
+            margin-right: 3px;
+            border-color: #D33F48;
+            color: #D33F48;
+        }
+        .weChat_btn{
+            border-color: #73D461;
+            color: #73D461;
+        }
+        .phone_btn{
+            margin-right: 3px;
+            border-color: #3E9DE0;
+            color: #3E9DE0;
+        }
+    }
     .qrcode{
         margin-right: 10px;
         .ant-btn-primary{
@@ -116,25 +120,7 @@
             border-color: #37C800;
         }
     }
-    .copy{
-        margin-right: 5px;
-        .ant-btn-primary{
-            background-color: #0087DD;
-            border-color: #0087DD;
-        }
-        .ant-btn-primary:hover,
-        .ant-btn-primary:focus {
-            color: #fff;
-            background-color: #0491DD;
-            border-color: #0491DD;
-        }
-        .ant-btn-clicked:after {
-            border: 0 solid #0087DD;
-        }
-        .ant-btn-danger.ant-btn-clicked:after {
-            border-color: #0087DD;
-        }
-    }
+
     .switch{
         .ant-switch-checked {
             border-color: #009900;

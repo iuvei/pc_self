@@ -68,7 +68,9 @@ export default class Main extends Component {
     };
     hideRight(){
         let pathname = hashHistory.getCurrentLocation().pathname;
-        if(pathname == '/home'){
+        if(pathname == '/home' ||
+            pathname == '/tendency'
+        ){
             return true
         }else{
             return false

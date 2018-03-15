@@ -330,23 +330,25 @@ export default class SelfTable extends Component {
             }, {
                 title: '净收入',
                 dataIndex: 'net_income',
+                className: 'column-right',
                 render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
                 title: '日工资',
                 dataIndex: 'salary',
-                // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                className: 'column-right',
                 render: text => parseFloat(text).toFixed(3),
                 width: 75,
             }, {
                 title: '日亏损',
                 dataIndex: 'lose_salary',
-                // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                className: 'column-right',
                 render: text => parseFloat(text).toFixed(3),
                 width: 75,
             }, {
                 title: '分红',
                 dataIndex: 'allsalary',
+                className: 'column-right',
                 // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
                 render: text => parseFloat(text).toFixed(3),
                 width: 75,
@@ -430,19 +432,20 @@ export default class SelfTable extends Component {
                     width: 70,
                 }, {
                     title: '净收入',
+                    className: 'column-right',
                     dataIndex: 'net_income',
                     render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'salary',
-                    // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '分红',
                     dataIndex: 'allsalary',
-                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
@@ -526,18 +529,19 @@ export default class SelfTable extends Component {
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日亏损',
                     dataIndex: 'lose_salary',
-                    // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '分红',
                     dataIndex: 'allsalary',
-                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
@@ -621,18 +625,19 @@ export default class SelfTable extends Component {
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'salary',
-                    // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '日亏损',
                     dataIndex: 'lose_salary',
-                    // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
@@ -716,11 +721,13 @@ export default class SelfTable extends Component {
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '分红',
                     dataIndex: 'allsalary',
+                    className: 'column-right',
                     // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
@@ -804,12 +811,13 @@ export default class SelfTable extends Component {
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'salary',
-                    // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
@@ -892,12 +900,13 @@ export default class SelfTable extends Component {
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日亏损',
                     dataIndex: 'lose_salary',
-                    // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
@@ -980,6 +989,7 @@ export default class SelfTable extends Component {
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
@@ -991,7 +1001,7 @@ export default class SelfTable extends Component {
                     width: 75,
                 }
             ];
-            footer = <ul className="st_f_showOne clear">
+            footer = <ul className="st_f_showZero clear">
                 <li>总计</li>
                 <li>{sum.sum_cp_stake}</li>
                 <li>{sum.sum_cp_effective}</li>

@@ -248,3 +248,23 @@ td.column-right {
     float: right;
     margin-top: 8px;
 }
+
+/*--模态框上下居中 start--*/
+.vertical-center-modal {
+    text-align: center;
+    white-space: nowrap;
+}
+.vertical-center-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+}
+.vertical-center-modal .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: left;
+}
+/*--模态框上下居中 end--*/

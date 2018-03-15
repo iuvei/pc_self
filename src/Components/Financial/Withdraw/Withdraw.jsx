@@ -237,7 +237,7 @@ export default class Withdraw extends Component {
                                             <span className="span_margin">元</span>
                                             <p className="r_m_dx">
                                                 <span className="r_m_recharge_text">
-                                                单笔充值限额：最低：
+                                                单笔提现限额：最低：
                                                 <strong>{response.iMinMoney} 元</strong>
                                                 ，最高：
                                                 <strong>{response.iMaxMoney} 元</strong>

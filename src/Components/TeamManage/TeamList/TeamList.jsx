@@ -170,10 +170,6 @@ export default class TeamList extends Component {
                     tableData.accnumall = parseInt(resData.self.team_count);
                     tableData.total = parseInt(resData.affects);
                     this.setState({tableData: tableData});
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
                 }
             }
         })
@@ -328,35 +324,6 @@ export default class TeamList extends Component {
         let { contentArr } = this.state;
         contentArr[index].active_member = ''+val;
         this.setState({salary_ratio: contentArr});
-    };
-    /*修改日销量*/
-    onChangeDailySales(val, item, index){
-        item.sale = val;
-        let { contentArr } = this.state;
-        contentArr[index].sale = ''+val;
-        this.setState({salary_ratio: contentArr});
-    };
-    /*日销量排序从小到大*/
-    compare(property){
-        return function(a,b){
-            let value1 = a[property];
-            let value2 = b[property];
-            return value1 - value2;
-        }
-    }
-    /*日销量失去焦点事件*/
-    onBlurSale(){
-        let { contentArr } = this.state;
-        let contentArrFlag = contentArr.sort(this.compare('sale'));
-        for(let i=0;i<contentArr.length;i++){
-            if (contentArrFlag[i+1] != undefined && contentArrFlag[i].sale == contentArrFlag[i+1].sale){
-                Modal.warning({
-                    title: '不同档位日销量不能相同，请重新输入！',
-                });
-                contentArrFlag[i].sale = '0'
-            }
-        }
-        this.setState({contentArr: contentArrFlag})
     };
     /*提交协议*/
     onDiviratio(contract_name){
@@ -865,18 +832,18 @@ export default class TeamList extends Component {
                                 <li key={item.uagid} style={{display: item.accGroup > prize_group ? 'none' : ''}}>
                                     {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个
                                     <span style={{display: this.state.disabled ? 'none' : ''}}>
-                                            ，再增加
-                                            <InputNumber min={0}
-                                                         value={agPost.accnum[i]}
-                                                         onChange={(value)=>this.onChangeAccGroup(value, item)}
-                                            />
-                                            个 （剩余可分配{item.accnum}个）
-                                        </span>
+                                        ，再增加
+                                        <InputNumber min={0}
+                                                     value={agPost.accnum[i]}
+                                                     onChange={(value)=>this.onChangeAccGroup(value, item)}
+                                        />
+                                        个 （剩余可分配{item.accnum}个）
+                                    </span>
                                 </li>
                             )
                         })
                     }
-                    <li>1948&nbsp;及以下剩余配额：无限；</li>
+                    <li>{prize_group < 1950 ? prize_group : '1948'}&nbsp;及以下剩余配额：无限；</li>
                 </ul>
             </div>;
         }else if(typeName == '日工资契约'){
@@ -921,6 +888,7 @@ export default class TeamList extends Component {
                         })
                     }
                     <li className="brisk_user" key="0">当日投注金额≥1000元，计为一个活跃用户</li>
+                    <li className="brisk_user" key="00">下级日工资各档位日销量要求需与自身保持一致，删除档位时遵循从高到底的原则，但至少保留三档。</li>
                 </ul>
                 <span className="hover col_color_ying add_sale"
                       onClick={()=>this.onAddSale()}

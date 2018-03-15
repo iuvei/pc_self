@@ -5,8 +5,10 @@ $width_100: 100%;
 
 .login_main{
     .loginLogo{
-        margin-left: 220px;
-        margin-bottom: 140px;
+        text-align: center;
+       img{
+           margin-bottom: 140px;
+       }
     }
     canvas{
         background-image: radial-gradient(ellipse farthest-corner at center top, #000d4d 0%, #000105 100%);
@@ -178,7 +180,7 @@ $width_100: 100%;
                 cursor: pointer;
                 color: #fff;
             }
-    
+
             li.l_m_select_list_active {
                 width: 131px;
                 height: 34px;
@@ -187,7 +189,7 @@ $width_100: 100%;
                 z-index: 2;
                 color:#333333;
             }
-    
+
         }
         div.l_m_select_list_active{
             width: 131px;
@@ -337,14 +339,8 @@ $width_100: 100%;
     text-align: left;
 }
 .m_accept_contract{
-    text-align: center;
     .ant-modal{
         width: 720px !important;
-
-    }
-    .ant-modal-content{
-        border-radius: 10px;
-        padding: 0 28px;
     }
     .ant-modal-body{
         white-space: pre-wrap;
@@ -352,7 +348,6 @@ $width_100: 100%;
         overflow-y: scroll;
         background: #fff;
         color: #333333;
-
         padding-right: 5px;
         p{
             font-size: 14px;
@@ -385,20 +380,6 @@ $width_100: 100%;
         padding: 5px 50px;
     }
 
-}
-.m_accept_contract:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    width: 0;
-}
-
-.m_accept_contract .ant-modal {
-    display: inline-block;
-    vertical-align: middle;
-    top: 154px;
-    text-align: left;
 }
 .l_accept{
     display: block;

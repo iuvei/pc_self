@@ -85,18 +85,21 @@ export default class Contract extends Component {
     };
 
     onSelectUser(item){
-        this.props.onSelectUser(item, 'child')
-        // this.forceUpdate();
+        // this.props.onSelectUser(item, 'child')
     };
     onSelectSys(value){
         this.props.onSelectSys(value)
     };
     render() {
-        const { alterData, title, alterVisible, textDescribe, userList, contractInfo, disabledSelect, userid } = this.props;
+        const { alterData, title, alterVisible, textDescribe, userList, contractInfo, disabledSelect, userid, username } = this.props;
+        console.log(userid)
+        console.log(username)
+        console.log(alterData)
 
         return (
             <Modal
                 visible={alterVisible}
+                wrapClassName="vertical-center-modal"
                 footer={null}
                 maskClosable={false}
                 closable={false}
@@ -107,9 +110,11 @@ export default class Contract extends Component {
                     <ul className="a_c_list">
                         <li className="user_p">
                             <span>用户名：</span>
-                            <Select size="large" style={{ width: 275 }} labelInValue
+                            <Select
+                                    mode="combobox"
+                                    size="large" style={{ width: 275 }} labelInValue
                                     onChange={(value)=>{this.onSelectUser(value)}}
-                                    value={{ key: userid }}
+                                    value={{ key: username }}
                                     disabled={disabledSelect}
                                     getPopupContainer={() => document.getElementsByClassName('user_p')[0]}
                             >

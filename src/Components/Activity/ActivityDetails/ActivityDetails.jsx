@@ -349,7 +349,11 @@ export default class ActivityDetails extends Component {
                         render: (text, record) =>
                             <Button
                                 onClick={()=>this.onSignTheAward(record)} type="primary"
-                                disabled={response.user_is_enrolls == 0 || (parseInt(record.aw_get_award_numbers) <= 0 ? true : false)}
+                                disabled={
+                                    response.user_is_enrolls == 0 ||
+                                    (parseInt(record.aw_get_award_numbers) <= 0 ||
+                                    record.user_sing_get_numbers != 1
+                                        ? true : false)}
                             >
                                 领取
                             </Button>,
@@ -406,7 +410,12 @@ export default class ActivityDetails extends Component {
                     { title: '操作', dataIndex: 'wa_get_awards_2', width: 75,
                         render: (text, record) =>
                             <Button type="primary"
-                                    disabled={response.status != 1|| response.user_is_enrolls == 0 || (parseInt(record.wa_get_awards) <= 0 ? true : false)}
+                                    disabled={
+                                        response.status != 1||
+                                        response.user_is_enrolls == 0 ||
+                                        parseInt(record.wa_get_awards) <= 0 ||
+                                        record.user_aw_get_numbers != 1 ? true : false
+                                    }
                                     onClick={()=>this.onRechargeAmountAward(record)}
                             >
                                 领取
@@ -419,7 +428,12 @@ export default class ActivityDetails extends Component {
                     { title: '操作', dataIndex: 'wa_get_award_numbers_2', width: 80,
                         render: (text, record) =>
                             <Button type="primary"
-                                    disabled={response.status != 1|| response.user_is_enrolls == 0 || (parseInt(record.wa_get_award_numbers) <= 0 ? true : false)}
+                                    disabled={
+                                        response.status != 1||
+                                        response.user_is_enrolls == 0 ||
+                                        parseInt(record.wa_get_award_numbers) <= 0 ||
+                                        record.user_wa_get_numbers != 1 ? true : false
+                                    }
                                     onClick={()=>this.onWateAmountAward(record)}
                             >
                                 领取
@@ -483,7 +497,7 @@ export default class ActivityDetails extends Component {
                 { title: '操作', dataIndex: 'action', width: 75,
                     render: (text, record) =>
                         <Button type="primary"
-                                disabled={false}
+                                disabled={record.user_reg_status == 1 ? false : true}
                                 onClick={()=>this.onNewReset(record)}
                         >
                             领取

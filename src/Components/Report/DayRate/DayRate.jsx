@@ -252,9 +252,16 @@ export default class DayRate extends Component {
                 body: JSON.stringify(postDataSelf)
             }).then((res)=>{
                 if(this._ismount && res.status == 200){
+                    let data = res.repsoneContent;
+                    let prosFlag = [];
+                    if(data.pros.length > 1){
+                        prosFlag = res.repsoneContent.pros[1]
+                    }else{
+                        prosFlag = res.repsoneContent.pros[0]
+                    }
                     this.setState({
-                        contentArr: res.repsoneContent.pros[0],
-                        salary_ratio: res.repsoneContent.pros[0],
+                        contentArr: prosFlag,
+                        salary_ratio: prosFlag,
                     })
                 }
             });
@@ -589,7 +596,8 @@ export default class DayRate extends Component {
                                             )
                                         })
                                     }
-                                    <li className="brisk_user">当日投注金额≥1000元，计为一个活跃用户</li>
+                                    <li className="brisk_user" key="0">当日投注金额≥1000元，计为一个活跃用户</li>
+                                    <li className="brisk_user" key="00">下级日工资各档位日销量要求需与自身保持一致，删除档位时遵循从高到底的原则，但至少保留三档。</li>
                                 </ul>
                                 <span className="hover col_color_ying add_sale"
                                       onClick={()=>this.onAddSale()}

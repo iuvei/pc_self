@@ -56,9 +56,15 @@ export default class LotteryReport extends Component {
     };
     /*获取彩票报表列表*/
     getData(clickTable, type, username) {
+        let {postData, checkedList, table} = this.state;
+        if(clickTable == 'clickTable' && checkedList.length == 0){
+            table.tableData = [];
+            table.total = 0;
+            this.setState({table, searchLoading: false});
+            return
+        }
         this.setState({ loading: true });
-        let postData = this.state.postData;
-        postData.lotteryid = this.state.checkedList.join(',');
+        postData.lotteryid = checkedList.join(',');
         Fetch.historyteamlottery({
             method: "POST",
             body: JSON.stringify(postData)
@@ -82,10 +88,14 @@ export default class LotteryReport extends Component {
                             item.username = username
                         })
                     }
+                    data.lotterys.forEach((item, i)=>{
+                        checkedList.push(item.lotteryid)
+                    });
                     this.setState({
                         table: table,
                         lotteryList: data.lotterys,
                         selfDate: postData.starttime.slice(5) +' 至 '+ postData.endtime.slice(5),
+                        checkedList,
                     });
                 } else {
                     Modal.warning({

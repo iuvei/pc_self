@@ -96,7 +96,7 @@ export default class Dividend extends Component {
                             userid: '-1',
                             id: '-1',
                             username: '团队数据',
-                            sale: sum.sale_total,
+                            sale_total: sum.sale_total,
                             gross_income: sum.gross_income,
                             daily_salary: sum.team_daily_salary,
                             lose_salary: sum.team_lose_salary,
@@ -327,7 +327,7 @@ export default class Dividend extends Component {
             },
             {
                 title: '有效投注量',
-                dataIndex: 'sale',
+                dataIndex: 'sale_total',
                 className: 'column-right',
                 width: 110,
             },
@@ -395,7 +395,7 @@ export default class Dividend extends Component {
             ];
         const { postData, sum, divIdEndTotals, total, oneKeyDividend, data, disabled } = this.state;
         const footer = <ul className="dividend_footer clear">
-                            <li>总计</li>
+                            <li>个人结余</li>
                             <li>{sum.sale}</li>
                             <li>{sum.self_gross_income}</li>
                             <li>{sum.daily_salary}</li>

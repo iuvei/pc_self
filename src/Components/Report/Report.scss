@@ -220,7 +220,7 @@ $border-color: #B2B2B2;
             text-align: right;
         }
         li:nth-child(1){
-            width: 154px;
+            width: 151px;
             text-align: center;
         }
         li:nth-child(2){
@@ -242,13 +242,47 @@ $border-color: #B2B2B2;
             width: 84px;
         }
         li:nth-child(8){
-            width: 84px;
+            width: 74px;
         }
         li:nth-child(9){
-            width: 80px;
+            width: 90px;
         }
         li:nth-child(10){
-            width: 109px;
+            width: 111px;
+        }
+    }
+    .st_f_showZero{
+        li{
+            float: left;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 166px;
+            text-align: center;
+        }
+        li:nth-child(2){
+            width: 98px;
+        }
+        li:nth-child(3){
+            width: 112px;
+        }
+        li:nth-child(4){
+            width: 105px;
+        }
+        li:nth-child(5){
+            width: 105px;
+        }
+        li:nth-child(6){
+            width: 105px;
+        }
+        li:nth-child(7){
+            width: 92px;
+        }
+        li:nth-child(8){
+            width: 104px;
+        }
+        li:nth-child(9){
+            width: 99px;
         }
     }
     .st_footer{
@@ -261,16 +295,16 @@ $border-color: #B2B2B2;
             text-align: center;
         }
         li:nth-child(2){
-            width: 72px;
+            width: 70px;
         }
         li:nth-child(3){
-            width: 87px;
+            width: 86px;
         }
         li:nth-child(4){
-            width: 80px;
+            width: 82px;
         }
         li:nth-child(5){
-            width: 83px;
+            width: 82px;
         }
         li:nth-child(6){
             width: 80px;
@@ -279,19 +313,19 @@ $border-color: #B2B2B2;
             width: 71px;
         }
         li:nth-child(8){
-            width: 72px;
+            width: 81px;
         }
         li:nth-child(9){
-            width: 78px;
+            width: 76px;
         }
         li:nth-child(10){
-            width: 72px;
+            width: 75px;
         }
         li:nth-child(11){
-            width: 73px;
+            width: 76px;
         }
         li:nth-child(12){
-            width: 90px;
+            width: 78px;
         }
     }
     /*团队总表footer*/
@@ -363,13 +397,49 @@ $border-color: #B2B2B2;
             width: 83px;
         }
         li:nth-child(8){
-            width: 84px;
+            width: 111px;
+            text-align: center;
         }
         li:nth-child(9){
             width: 82px;
+            text-align: center;
         }
         li:nth-child(10){
-            width: 108px;
+            width: 84px;
+        }
+    }
+    .tt_f_showZero{
+        li{
+            float: left;
+            text-align: right;
+        }
+        li:nth-child(1){
+            width: 190px;
+            text-align: center;
+        }
+        li:nth-child(2){
+            width: 93px;
+        }
+        li:nth-child(3){
+            width: 106px;
+        }
+        li:nth-child(4){
+            width: 105px;
+        }
+        li:nth-child(5){
+            width: 92px;
+        }
+        li:nth-child(6){
+            width: 105px;
+        }
+        li:nth-child(7){
+            width: 93px;
+        }
+        li:nth-child(8){
+            width: 104px;
+        }
+        li:nth-child(9){
+            width: 98px;
         }
     }
     .tt_footer{
@@ -385,34 +455,34 @@ $border-color: #B2B2B2;
             width: 80px;
         }
         li:nth-child(3){
-            width: 82px;
+            width: 81px;
         }
         li:nth-child(4){
             width: 81px;
         }
         li:nth-child(5){
-            width: 70px;
+            width: 72px;
         }
         li:nth-child(6){
             width: 80px;
         }
         li:nth-child(7){
-            width: 78px;
+            width: 73px;
         }
         li:nth-child(8){
-            width: 71px;
+            width: 72px;
         }
         li:nth-child(9){
-            width: 71px;
-        }
-        li:nth-child(10){
-            width: 81px;
-        }
-        li:nth-child(11){
             width: 70px;
         }
+        li:nth-child(10){
+            width: 77px;
+        }
+        li:nth-child(11){
+            width: 75px;
+        }
         li:nth-child(12){
-            width: 89px;
+            width: 92px;
         }
     }
     .o_g_footer{
