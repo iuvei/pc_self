@@ -96,7 +96,7 @@
             "curmid": 313051,
             "imgUrl":"pk10",
             "lotterLength":10,
-            "imgSrc": "nav_n",
+            "imgSrc": false,
             "disabled": false
         },
         {
@@ -110,7 +110,7 @@
             "lotterytype": 3,
             "curmid": 174,
             "imgUrl":"sd11y",
-            "imgSrc": "nav_h",
+            "imgSrc": "",
             "disabled": false
         },
         {
@@ -167,7 +167,7 @@
             "curmid": 614,
             "imgUrl":"3d",
             "lotterLength":3,
-            "imgSrc": "nav_n",
+            "imgSrc": "",
             "disabled": false
         },
         {
@@ -182,7 +182,7 @@
             "curmid": 615,
             "imgUrl":"pl3",
             "lotterLength":3,
-            "imgSrc": "nav_h",
+            "imgSrc": "",
             "disabled": false
         },
         {
@@ -196,7 +196,7 @@
             "lotterytype": 4,
             "curmid": 313550,
             "imgUrl":"txffc",
-            "imgSrc": "nav_h",
+            "imgSrc": "",
             "disabled": false
         },
 

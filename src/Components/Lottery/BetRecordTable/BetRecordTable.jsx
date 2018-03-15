@@ -15,6 +15,17 @@ export default class BetRecordTable extends Component {
         	seatModal:{}
         }
     };
+    /*获取本平台余额*/
+    getMenu() {
+        Fatch.menu({
+            method: 'POST',
+            body: JSON.stringify({"flag":"getmoney"})
+        }).then((res)=>{
+            if (res.status == 200) {
+                stateVar.allBalance.cpbalance = res.repsoneContent;
+            }
+        })
+    };
     //再次购买
 	againBuy(index){
 		let tempObj = this.props.betHistory[index];
@@ -24,6 +35,13 @@ export default class BetRecordTable extends Component {
     		).then((data)=>{
     			if(data.status == 200){
     				this.props.histoeryBet();
+    				this.getMenu();
+    				const modal = Modal.success({
+					    title: '温馨提示',
+					    content: data.longMessage,
+					});
+					setTimeout(() => modal.destroy(), 3000);
+    			}else{
     				const modal = Modal.success({
 					    title: '温馨提示',
 					    content: data.longMessage,
@@ -41,7 +59,14 @@ export default class BetRecordTable extends Component {
     		body : JSON.stringify({id:tempObj.projectno})}
     		).then((data)=>{
     			if(data.status == 200){
+    				this.getMenu();
     				this.props.histoeryBet();
+    				const modal = Modal.success({
+					    title: '温馨提示',
+					    content: data.longMessage,
+					});
+					setTimeout(() => modal.destroy(), 3000);
+    			}else{
     				const modal = Modal.success({
 					    title: '温馨提示',
 					    content: data.longMessage,

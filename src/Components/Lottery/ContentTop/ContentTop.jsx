@@ -204,7 +204,7 @@ export default class ContentTop extends Component {
                 clearInterval(this.interval);
 				message.config({
 				  top:'50%',
-				  duration: 3
+				  duration: 300
 				});
 				stateVar.betVisible = false;
 				message.info('当期销售已截止，请进入下一期购买');
@@ -395,11 +395,10 @@ export default class ContentTop extends Component {
     }
     // 音效开关
     onChangeSound(checked) {
-    	debugger
         if(checked){
-        	common.setStore('soundswitch','off');
-        }else{
         	common.setStore('soundswitch','on');
+        }else{
+        	common.setStore('soundswitch','off');
         }
     };
     //控制音效
@@ -546,7 +545,7 @@ export default class ContentTop extends Component {
 	                                        </div>
 	                                        <div className="m_bottom">
 	                                            <span style={{fontSize:'12px',marginRight:'5px'}}>音效</span>
-	                                            <Switch size="small" defaultChecked={common.getStore('soundswitch') == 'off' ? true : false} onChange={(checked) => this.onChangeSound(checked)} />
+	                                            <Switch size="small" defaultChecked={common.getStore('soundswitch') == 'off' ? false : true} onChange={(checked) => this.onChangeSound(checked)} />
 	                                        </div>
 	                                    </li>
 	                                    <li className="abort_time">

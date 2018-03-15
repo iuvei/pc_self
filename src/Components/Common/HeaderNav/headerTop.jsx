@@ -353,7 +353,7 @@ export default class HeaderTop extends Component {
                                                 <li key={item.id}
                                                     onClick={()=>this.showModal(item)}>
                                                     <img src={notice_icon}/>
-                                                    {item.subject}&nbsp;&nbsp;[点击查看]
+                                                    {item.subject.length > 15 ? item.subject.substr(0,15)+'...' : item.subject}&nbsp;&nbsp;[点击查看]
                                                 </li>
                                             )
                                         })
