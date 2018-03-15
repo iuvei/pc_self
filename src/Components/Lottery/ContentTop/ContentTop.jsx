@@ -44,11 +44,15 @@ export default class ContentTop extends Component {
     	this.eventEmitter = emitter.on('kjhistory', () => {
             this.getKjHistory();
         });
+        this.eventWebsocket = emitter.on('openWebsocket',(data)=>{
+        	this.handleData(data);
+        })
     	this.initData();
     };
     componentWillUnmount() {
     	this._ismount = false;
     	emitter.off(this.eventEmitter);
+    	emitter.off(this.eventWebsocket);
 	    clearInterval(this.interval);
 	}
     initData(){
@@ -203,8 +207,8 @@ export default class ContentTop extends Component {
     			
                 clearInterval(this.interval);
 				message.config({
-				  top:'50%',
-				  duration: 300
+				  top:'48%',
+				  duration: 3
 				});
 				stateVar.betVisible = false;
 				message.info('当期销售已截止，请进入下一期购买');
@@ -477,18 +481,9 @@ export default class ContentTop extends Component {
             }
         })
     };
-    openWebsocket(){
-    	var msg = {"method":"join","uid":common.getStore('userId'),"hobby":1};
-    	this.refWebSocket.state.ws.send(JSON.stringify(msg))
-    }
     render() {
         return (
             <div className="bet_content" key="ContentTop">
-	            <Websocket url={'ws://'+common.getStore("pushDomain")+''} onMessage={this.handleData.bind(this)} onOpen={this.openWebsocket.bind(this)}
-        			ref = {Websocket => {
-                  this.refWebSocket = Websocket;
-                }}
-        		/>
                 <div className="content_title">
                 {
                 	(()=>{

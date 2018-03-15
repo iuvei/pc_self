@@ -462,15 +462,19 @@ export default class ContentMian extends Component {
     	}
     	if(tempMsg){
     		this.setState({lotteryMethod:[]},()=>{
-				if(val['ffc'].msg == undefined){
-					stateVar.nowlottery.lotteryId = 'ffc';
-				}else{
-					if(val['ffc'].msg == undefined){
-    					stateVar.nowlottery.lotteryId = '24xsc';
-    				}else{
-    					stateVar.nowlottery.lotteryId = 'txffc';
-    				}
-				}
+    			if(val['ssc'].msg == undefined){
+    				stateVar.nowlottery.lotteryId = 'ssc';
+    			}else{
+    				if(val['ffc'].msg == undefined){
+						stateVar.nowlottery.lotteryId = 'ffc';
+					}else{
+						if(val['ffc'].msg == undefined){
+	    					stateVar.nowlottery.lotteryId = '24xsc';
+	    				}else{
+	    					stateVar.nowlottery.lotteryId = 'txffc';
+	    				}
+					}
+    			}
 	    		this.initData();
 	    		stateVar.openLotteryFlag = true;
     		});
@@ -513,6 +517,7 @@ export default class ContentMian extends Component {
     };
     //玩法title切换
     changeMethod(a,b){
+    	$(".c_m_number_select .li").removeClass("selected");
     	 this.clearNum();
     	 this.setState({navIndex:a,navTwoIndex:b || 0,navThreeIndex:0,navFourIndex:0,renIndex:b,textAreaValue:''},()=>{
     	 	this.selectAreaData(this.state.lotteryMethod);
@@ -931,6 +936,7 @@ export default class ContentMian extends Component {
     //清除选中号码
     clearNum(){
     	$('li[class="number_active"]').attr("class","");
+    	$(".c_m_number_select .li").removeClass("selected");
     	this.setState({numss:0,money:0,multipleValue:1})
     }
     //清除输入框的内容
@@ -976,6 +982,7 @@ export default class ContentMian extends Component {
         	setTimeout(() => modal.destroy(), 3000);
             return false;
         }
+        $(".c_m_number_select .li").removeClass("selected");
         if( otype == 'input' ){//如果是输入型，则检测号码合法性，以及是否存在重复号
             let mname = Method.methodId[stateVar.aboutGame.methodID];//玩法的简写,如:'ZX3'
             let error = [];
@@ -1302,6 +1309,7 @@ export default class ContentMian extends Component {
     	if(param == this.state.traceTitleIndex){
     		return;
     	}
+    	$(".c_m_number_select .li").removeClass("selected");
     	this.setState({
     		traceIssueNum:1,
         	traceTimeNum:1,
