@@ -9,8 +9,7 @@ import lotteryTypeList from '../../../CommonJs/common.json';
 import HeaderTop from './HeaderTop';
 import './headerNav.scss';
 
-import nav_h from './Img/nav_h.png';
-import nav_n from './Img/nav_n.png';
+import nav_h from './../../Lottery/LeftSider/Img/hot.png';
 
 
 @observer
@@ -302,7 +301,7 @@ export default class HeaderNav extends Component {
                                                                 {item.cnname}
                                                                 {
                                                                     item.imgSrc ?
-                                                                        <img className="h_n_icon" src={item.imgSrc == 'nav_h' ? nav_h : item.imgSrc == 'nav_n' ? nav_n : ''}/> :
+                                                                        <img className="h_n_icon" src={nav_h}/> :
                                                                         null
                                                                 }
                                                             </li>

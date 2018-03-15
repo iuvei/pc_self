@@ -23,7 +23,7 @@ import TG11_5 from './Img/TG11-5.png';
 import ticaip3 from './Img/ticaip3.png';
 import TJSSC from './Img/TJSSC.png';
 import txffc from './Img/txffc.png';
-import new_lottery from './Img/new_lottery.png';
+import hot_lottery from './Img/hot.png';
 
 @observer
 export default class LeftSider extends Component {
@@ -137,21 +137,24 @@ export default class LeftSider extends Component {
                             style={{ width: 120 }}
                             defaultOpenKeys={this.openKey()}
                             selectedKeys={[stateVar.nowlottery.lotteryId]}
+                            className="new_lottery"
                             mode="inline"
                         >
-                            <SubMenu key="sub1" title={<span><img className="icon_img" src={left_1}/><span>常玩彩种</span></span>}>
+                            <SubMenu key="sub1" title={<span><img className="icon_img" src={left_1}/><span>热门彩种</span></span>}>
                                 <Menu.Item key="ssc" className="spe_lottery">
                                     <img className="icon_img" src={ssc}/>
                                     重庆时时彩
+                                    <img className="icon_new_lottery" src={hot_lottery} alt=""/>
                                 </Menu.Item>
                                 <Menu.Item key="mmc">
                                     <img className="icon_img" src={mmc}/>
                                     泰国秒秒彩
+                                    <img className="icon_new_lottery" src={hot_lottery} alt=""/>
                                 </Menu.Item>
                                 <Menu.Item key="ffc" className="new_lottery">
                                     <img className="icon_img" src={ffc}/>
                                     泰国60秒
-                                    <img className="icon_new_lottery" src={new_lottery} alt=""/>
+                                    <img className="icon_new_lottery" src={hot_lottery} alt=""/>
                                 </Menu.Item>
                             </SubMenu>
                             {
@@ -175,8 +178,8 @@ export default class LeftSider extends Component {
                                                             <img className="icon_img" src={require('./Img/'+ item.nav +'.png')}/>
                                                             {item.cnname}
                                                             {
-                                                                item.imgSrc == 'nav_n' ?
-                                                                    <img className="icon_new_lottery" src={new_lottery}/> :
+                                                                item.imgSrc == 'nav_h' ?
+                                                                    <img className="icon_new_lottery" src={hot_lottery}/> :
                                                                     null
                                                             }
                                                         </Menu.Item>

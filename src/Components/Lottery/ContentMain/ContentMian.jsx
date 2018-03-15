@@ -702,9 +702,9 @@ export default class ContentMian extends Component {
     	 b,目标元素
     	 **/
     	if(1){
-        	/*if(b.target.className == ''){
-        		$(b.target).addClass("selected").siblings().removeClass("selected")
-        	}*/
+        	if(b.target.className == 'li'){
+        		$(b.target).addClass("selected").siblings().removeClass("selected");
+        	}
         	var td = $(b.target).parent().parent().children('ul')[0];
         	td = $(td);
             switch($(b.target).attr('name')){
@@ -2196,6 +2196,7 @@ export default class ContentMian extends Component {
     	let htmldata = this.selectArea(oneLotteryData);//投注区域
     	let objRen = {};
     	let imgUrl = stateVar.nowlottery.imgUrl;
+    	let exampleTitle = <p dangerouslySetInnerHTML={{ __html: oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methodexample : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methodexample }}  />;
         return (
         	<div>
 	            <div className='content_bet'>
@@ -2263,6 +2264,9 @@ export default class ContentMian extends Component {
 	                                </div>
 	                                <span className="c_m_select_title_right right">
 	                                    <span>{oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methoddesc : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methoddesc}</span>
+	                                    <Tooltip placement="bottomRight" title={exampleTitle}>
+									        <span className='c_m_lottery_explain'>玩法示例</span>
+									    </Tooltip>
 	                                    <Tooltip placement="bottomRight" title={oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methodhelp : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methodhelp}>
 									        <span className='c_m_lottery_explain'>中奖说明</span>
 									    </Tooltip>
