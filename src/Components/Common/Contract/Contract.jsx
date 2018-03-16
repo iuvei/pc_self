@@ -112,9 +112,8 @@ export default class Contract extends Component {
                                     labelInValue
                                     size="large" style={{ width: 275 }}
                                     onChange={(value)=>{this.onSelectUser(value)}}
-                                    // onBlur = {()=>{this.onBlurUser()}}
-                                    // value={{ key: username }}
-                                    defaultValue = {{ key: userid }}
+                                    value={{ key: userid }}
+                                    // defaultValue = {{ key: userid }}
                                     disabled={disabledSelect}
                                     optionFilterProp="children"
                                     getPopupContainer={() => document.getElementsByClassName('user_p')[0]}

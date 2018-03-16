@@ -102,6 +102,7 @@ export default class TeamList extends Component {
                 userid: '',
             },
             rechargeLoading: false,
+            self: {},
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -188,7 +189,10 @@ export default class TeamList extends Component {
                     tableData.dataSource = resData.results;
                     tableData.accnumall = parseInt(resData.self.team_count);
                     tableData.total = parseInt(resData.affects);
-                    this.setState({tableData: tableData});
+                    this.setState({
+                        tableData: tableData,
+                        self: resData.self
+                    });
                 }
             }
         })
@@ -264,6 +268,7 @@ export default class TeamList extends Component {
                                 typeName: '日工资契约',
                                 contentArr: pros[pros.length - 1],
                                 alterVisible: true,
+                                salary_ratio: pros[pros.length - 1],
                             })
                         }else{
                             Modal.warning({
@@ -413,7 +418,7 @@ export default class TeamList extends Component {
             }else if(typeName == '日工资契约'){
                 let postData = {
                     userid: alterData.userid,
-                    parentid: alterData.parentid,
+                    parentid: this.state.self.userid,
                     salary_ratio: this.state.salary_ratio,
                 };
                 Fetch.dailysalaryupdate({
@@ -597,7 +602,7 @@ export default class TeamList extends Component {
         let {validate, postDataRecharge, recharge} = this.state;
         let reg = /^[0-9]*$/;
         let r = reg.test(value);
-        if(!r ||value == 0 || value < recharge.recharge_min || value > recharge.recharge_max){
+        if(!r || value == 0 || value < recharge.recharge_min || value > recharge.recharge_max){
             validate.money = 1;
         }else{
             validate.money = 0;
@@ -784,7 +789,7 @@ export default class TeamList extends Component {
                     title: '注册时间',
                     dataIndex: 'register_time',
                     sorter: () => {},
-                    width: 110,
+                    width: 120,
                 }, {
                     title: '分红',
                     dataIndex: 'dividend_salary_status',
@@ -817,7 +822,7 @@ export default class TeamList extends Component {
                 }, {
                     title: '最后登录时间',
                     dataIndex: 'lasttime',
-                    width: 110,
+                    width: 120,
                 }, {
                     title: '操作',
                     dataIndex: 'action',
@@ -940,7 +945,7 @@ export default class TeamList extends Component {
                     title: '注册时间',
                     dataIndex: 'register_time',
                     sorter: () => {},
-                    width: 110,
+                    width: 120,
                 }, {
                     title: '配额',
                     dataIndex: 'useraccgroup_status',
@@ -962,7 +967,7 @@ export default class TeamList extends Component {
                 }, {
                     title: '最后登录时间',
                     dataIndex: 'lasttime',
-                    width: 110,
+                    width: 120,
                 }, {
                     title: '操作',
                     dataIndex: 'action',
@@ -1244,9 +1249,10 @@ export default class TeamList extends Component {
                             <span>充值金额：</span>
                             <InputNumber min={parseInt(recharge.recharge_min)} size="large"
                                          max={parseInt(recharge.recharge_max)}
+                                         // step={0.0001}
                                          value={postDataRecharge.money}
-                                         formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                         parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                         // formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                         // parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                          className={onValidate('money', this.state.validate)}
                                          onChange={(value)=>{this.onRechargeAmount(value)}}
                             />

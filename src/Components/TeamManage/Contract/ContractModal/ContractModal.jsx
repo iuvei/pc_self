@@ -41,6 +41,7 @@ export default class ContractModal extends Component {
             contractInfo:[],//契约类型
             userid:null, // 下级用户userid
             username: '',//下级用户username
+            self: {}
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -94,6 +95,7 @@ export default class ContractModal extends Component {
                     this.setState({
                         userList: data.results.filter(item => item.usertype == '1'),
                         contractInfo,
+                        self: data.self
                     });
                 }
             }
@@ -152,6 +154,7 @@ export default class ContractModal extends Component {
                         this.setState({
                             typeName: '日工资契约',
                             contentArr: pros[pros.length - 1],
+                            salary_ratio: pros[pros.length - 1],
                         })
                     }
                 }
@@ -483,7 +486,7 @@ export default class ContractModal extends Component {
             }else if(type == 0){//日工资契约
                 let postData = {
                     userid: alterData.userid,
-                    parentid: alterData.parentid,
+                    parentid: this.state.self.userid,
                     salary_ratio: this.state.salary_ratio,
                 };
                 Fetch.dailysalaryupdate({

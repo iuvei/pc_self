@@ -77,11 +77,11 @@ export default class Promptly extends Component {
                             </li>
                             <li>
                                 <span className="p_r_text"></span>
-                                <Button style={{marginTop: 30}} disabled={this.state.disabled} size="large" type="primary">
-                                    <a href={aliPayInfo.account_name} target="_blank">
+                                {/*<Button style={{marginTop: 30}} disabled={this.state.disabled} size="large" type="primary">*/}
+                                    <a className="blank_text" href={aliPayInfo.account_name} target="_blank">
                                         登录支付宝转账
                                     </a>
-                                </Button>
+                                {/*</Button>*/}
                             </li>
                         </ul> :
                         <ul className="p_r_list left">
@@ -125,11 +125,11 @@ export default class Promptly extends Component {
                             </li>
                             <li>
                                 <span className="p_r_text"></span>
-                                <Button style={{marginTop: 30}} disabled={this.state.disabled} size="large" type="primary">
-                                    <a href={aliPayInfo.account_name} target="_blank">
+                                {/*<Button style={{marginTop: 30}} disabled={this.state.disabled} size="large" type="primary">*/}
+                                    <a className="blank_text" href={aliPayInfo.account_name} target="_blank">
                                         登录网上银行付款
                                     </a>
-                                </Button>
+                                {/*</Button>*/}
                             </li>
                         </ul>
 
