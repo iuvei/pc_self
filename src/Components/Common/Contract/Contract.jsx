@@ -85,14 +85,13 @@ export default class Contract extends Component {
     };
 
     onSelectUser(item){
-        console.log(item)
-        // this.props.onSelectUser(item, 'child')
+        this.props.onSelectUser(item, 'child')
     };
     onSelectSys(value){
         this.props.onSelectSys(value)
     };
     render() {
-        const { alterData, title, alterVisible, textDescribe, userList, contractInfo, disabledSelect, userid, username } = this.props;
+        const { alterData, title, alterVisible, textDescribe, userList, contractInfo, disabledSelect, userid } = this.props;
 
         return (
             <Modal
@@ -109,17 +108,22 @@ export default class Contract extends Component {
                         <li className="user_p">
                             <span>用户名：</span>
                             <Select
-                                    mode="combobox"
-                                    size="large" style={{ width: 275 }} labelInValue
+                                    showSearch
+                                    labelInValue
+                                    size="large" style={{ width: 275 }}
                                     onChange={(value)=>{this.onSelectUser(value)}}
-                                    value={{ key: username, label: userid }}
+                                    // onBlur = {()=>{this.onBlurUser()}}
+                                    // value={{ key: username }}
+                                    defaultValue = {{ key: userid }}
                                     disabled={disabledSelect}
+                                    optionFilterProp="children"
                                     getPopupContainer={() => document.getElementsByClassName('user_p')[0]}
+                                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                             >
                                 {
                                     userList.map((item) => {
                                         return (
-                                            <Option key={item.username}>{item.username}</Option>
+                                            <Option value={item.userid} key={item.username}>{item.username}</Option>
                                         )
                                     })
                                 }
@@ -143,10 +147,12 @@ export default class Contract extends Component {
                             </Select>
                         </li>
                     </ul>
-                    {textDescribe}
-                    <div className={this.isSign()}>
-                        <p>{alterData.username}</p>
-                        <p>{common.setDateTime(0)}</p>
+                    <div>
+                        {textDescribe}
+                        <div className={this.isSign()}>
+                            <p>{alterData.username}</p>
+                            <p>{common.setDateTime(0)}</p>
+                        </div>
                     </div>
                     {
                         this.onBtn()

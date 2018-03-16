@@ -9,7 +9,6 @@ import onCanvas from './canvas';
 import './Login.scss';
 
 import loginSrc from './Img/logo.png';
-import warnSrc from './Img/warn.png';
 import speedSrc from './Img/speed.png';
 import dnsSrc from './Img/dns.png';
 import serviceSrc from './Img/service.png';
@@ -17,7 +16,7 @@ import speedSrc_active from './Img/speed_active.png';
 import dnsSrc_active from './Img/dns_active.png';
 import serviceSrc_active from './Img/service_active.png';
 import valicodeSrc from './Img/valicode.png';
-import {removeStore, setStore,getStore } from "../../CommonJs/common";
+import {removeStore, setStore,getStore, onValidate } from "../../CommonJs/common";
 const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
 let QRCode = require('qrcode.react');
 @observer
@@ -25,6 +24,7 @@ export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {     //后缀带M为模态框上的数据
+            resetUserid: null,
             loading: false,
             account: getStore('userName'),  //用户名
             accountM: '',
@@ -53,7 +53,11 @@ export default class Login extends Component {
             serviceSrc:serviceSrc,
             dnsSrc:dnsSrc,
 			wechatLink:'',
-			showWechat:'none'
+			showWechat:'none',
+            validate: {
+                newpass: 2,
+                confirm_newpass: 2
+            }
         }
     };
     componentDidMount() {
@@ -75,6 +79,7 @@ export default class Login extends Component {
                 let data = res.repsoneContent;
                 stateVar.httpService = data.kefulink;
                 stateVar.httpCS = data.domain;
+                setStore("kefu",data);
             }
         })
     };
@@ -299,10 +304,30 @@ export default class Login extends Component {
         this.setState({passwordM: e.target.value});
     }
     onNewPwdM(e) {
-        this.setState({newPwdM: e.target.value});
+        let value = e.target.value,
+            validate = this.state.validate;
+        if (value != '') {
+            let reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,16}$/,
+                r = reg.test(value);
+            if (r) {
+                validate.newpass = 0;
+            } else {
+                validate.newpass = 1;
+            }
+        }else{
+            validate.newpass = 1;
+        }
+        this.setState({newPwdM: value});
     }
     onConfirmPwdM(e) {
-        this.setState({confirmPwdM: e.target.value});
+        let value = e.target.value,
+            {validate, newPwdM} = this.state;
+        if(value === newPwdM){
+            validate.confirm_newpass = 0;
+        }else{
+            validate.confirm_newpass = 1;
+        }
+        this.setState({confirmPwdM: value});
     }
     refreshImg(){
         this.setState({validImg:validImgSrc+'?rand='+Math.random()+"&sess="+this.state.session});
@@ -341,25 +366,26 @@ export default class Login extends Component {
                     displayWarnM:true,
                 },()=>this.refreshImgModal());
             }else{
-                Fetch.login(  //找回密码
+                Fetch.resetPwd(  //找回密码
                     {
                         method: "POST",
                         body:JSON.stringify({
-                            "sType":'formal',
+                            "flag": 'changepasscheck',
                             "username": accountM,
-                            "loginpass":md5((md5(aptchacM)+md5(passwordM))),
+                            "loginpass": md5(passwordM),
                             "validcode": aptchacM
                         })
-                    }).then((data)=>{
-                    if(data.status==200){
+                    }).then((res)=>{
+                    if(res.status==200){
                         this.setState({
                             displayWarnM:false,
                             visible1: false,
                             visible2: true,
+                            resetUserid: res.repsoneContent.userid
                         });
                     }else{
                         this.setState({
-                            warnM:data.shortMessage,
+                            warnM:res.shortMessage,
                             displayWarnM:true,
                         },()=>this.refreshImgModal());
                     }
@@ -383,7 +409,8 @@ export default class Login extends Component {
                 {
                         method: "POST",
                         body:JSON.stringify({
-                            "flag": 'changepass',
+                            "flag": 'changeseritycheck',
+                            "userid": this.state.resetUserid,
                             "changetype":"loginpass",
                             "newpass":md5(newPwdM),
                             "confirm_newpass":md5(confirmPwdM),
@@ -451,51 +478,91 @@ export default class Login extends Component {
                 <div>
                     <Modal
                         title="找回密码"
-                        wrapClassName="center-modal-l"
+                        wrapClassName="vertical-center-modal find_password_modal"
                         maskClosable={false}
+                        width={300}
                         visible={this.state.visible1}
                         onCancel={()=>{this.setState({ visible1: false,displayWarnM:false, })}}
-                        footer={<div  className='l-modal-warn' style={{display: this.state.displayWarnM ? 'block' : 'none' }}>
-                            <img  src={warnSrc}  /><span className=''>操作失败:<span>{this.state.warnM}</span></span></div>}
+                        footer={null}
                     >
+                        <ul className="password_list">
+                            <li>
+                                <Input size="large"  placeholder="用户名" onChange={(e)=>{this.onAccountM(e)}}/>
+                            </li>
+                            <li>
+                                <Input type="password" size="large"  placeholder="资金密码" onChange={(e)=>{this.onPwdM(e)}}/>
+                            </li>
+                            <li className="l_m_vali">
+                                <Input size="large"   value={this.state.aptchacM}
+                                       onFocus={()=>{this.refreshImgModal()}}
+                                       onChange={(e)=>{this.onaptchacM(e)}} placeholder="验证码" />
+                                <img className="l_m_valicode" src={this.state.validImgM} onClick={()=>{this.refreshImgModal()}}/>
 
-                        <Input size="large"  placeholder="用户名" onChange={(e)=>{this.onAccountM(e)}}/>
-                        <Input type="password" size="large"  placeholder="资金密码" onChange={(e)=>{this.onPwdM(e)}}/>
-                        <div className="l_m_vali">
-                            <Input size="large"   value={this.state.aptchacM} onFocus={()=>{this.refreshImgModal()}} onChange={(e)=>{this.onaptchacM(e)}} placeholder="验证码" />
-                            <img className="l_m_valicode" src={this.state.validImgM} onClick={()=>{this.refreshImgModal()}}/>
-                        </div>
-                        <Button type="primary"  onClick={()=>{this.showModal('reset_pwd')}}>
-                            下一步
-                        </Button>
-
+                                <div className='hint_text'>
+                                    <span style={{display: this.state.displayWarnM ? 'block' : 'none' }}>
+                                        操作失败:{this.state.warnM}
+                                    </span>
+                                </div>
+                            </li>
+                            <li>
+                                <Button type="primary"  onClick={()=>{this.showModal('reset_pwd')}}>
+                                    下一步
+                                </Button>
+                            </li>
+                        </ul>
                     </Modal>
                     <Modal
                         title="重置密码"
-                        wrapClassName="center-modal-l"
+                        wrapClassName="vertical-center-modal find_password_modal"
+                        width={300}
                         maskClosable={false}
                         visible={this.state.visible2}
                         onCancel={()=>{this.setState({ visible2: false,displayWarnM1:false })}}
-                        footer={<div  className='l-modal-warn' style={{display: this.state.displayWarnM1 ? 'block' : 'none' }}>
-                            <img  src={warnSrc}  /><span className=''>操作失败:<span>{this.state.warnM1}</span></span></div>}
+                        footer={null}
                     >
-                        <p className='m_name'>{this.state.accountM}</p>
-                        <Input type="password" size="large"   placeholder="新登录密码"  value={this.state.newPwdM}  onChange={(e)=>{this.onNewPwdM(e)}}/>
-                        <Input type="password" size="large"  placeholder="确认新登录密码" value={this.state.confirmPwdM}  onChange={(e)=>{this.onConfirmPwdM(e)}}/>
-                        <Button type="primary" onClick={()=>{this.showModal('suggest')}} >
-                            确定
-                        </Button>
+                        <ul className="password_list">
+                            <li>
+                                <p className='m_name'>{this.state.accountM}</p>
+                            </li>
+                            <li>
+                                <Input type="password" size="large"
+                                       placeholder="新登录密码"
+                                       value={this.state.newPwdM}
+                                       onChange={(e)=>{this.onNewPwdM(e)}}
+                                       className={onValidate('newpass', this.state.validate)}
+                                />
+                                <p className="password_text">密码由字母和数字组成6-16个字符</p>
+                            </li>
+                            <li>
+                                <Input type="password" size="large"
+                                       placeholder="确认新登录密码"
+                                       value={this.state.confirmPwdM}
+                                       onChange={(e)=>{this.onConfirmPwdM(e)}}
+                                       className={onValidate('confirm_newpass', this.state.validate)}
+                                />
+                                <div className='hint_text'>
+                                    <span style={{display: this.state.displayWarnM1 ? 'block' : 'none' }}>
+                                        操作失败:{this.state.warnM1}
+                                    </span>
+                                </div>
+                            </li>
+                            <li>
+                                <Button className='suggest_btn' type="primary" onClick={()=>{this.showModal('suggest')}} >
+                                    确定
+                                </Button>
+                            </li>
+                        </ul>
                     </Modal>
                     <Modal
                         title="提示"
-                        wrapClassName="center-modal-l"
+                        wrapClassName="vertical-center-modal hint_modal_succeed"
+                        width={300}
                         maskClosable={false}
                         visible={this.state.visible3}
                         onCancel={()=>{this.setState({ visible3: false })}}
                         footer={null}
                     >
-                        <Icon type="check-circle-o" style={{ fontSize: 65, color: '#73b573',marginTop: 28,
-                            marginBottom: 20 }}/>
+                        <Icon type="check-circle-o" style={{ fontSize: 65, color: '#73b573', marginBottom: 20 }}/>
                         <p className='m_p_input'>密码重置成功</p>
                         <Button  type="primary" onClick={()=>{this.setState({ visible3: false })}} >
                             确定
@@ -651,27 +718,32 @@ export default class Login extends Component {
                     <div className="loginLogo">
                         <img src={loginSrc} />
                     </div>
-                    <div className='l_m_content'>
-	                    <ul className="l_m_select_list clear">
-	                        {
-	                            navList.map((value, index)=>{
-	                                return <li className={this.state.navListIndex === index ? 'l_m_select_list_active' : ''}
-	                                           onClick={()=> {this.onChangLoginMode(index)}} key={index}>{value}</li>
-	                            })
-	                        }
-	                    </ul>
-	                    <div className='l_m_select_list_active' onClick={()=>this.tigger()}>微信登录手机版</div>
-	                    <div className='wechatQrcode' style={{display:this.state.showWechat}}>
-				        	<QRCode value={this.state.wechatLink}
-				                    size={180}
-				                    bgColor="#FFFFFF"
-				                    fgColor="#000000"
-				            />
-				        </div>
+                    <div className="login_content">
+                        <div className='l_m_content'>
+                            <ul className="l_m_select_list clear">
+                                {
+                                    navList.map((value, index)=>{
+                                        return <li className={this.state.navListIndex === index ? 'l_m_select_list_active' : ''}
+                                                   onClick={()=> {this.onChangLoginMode(index)}} key={index}>{value}</li>
+                                    })
+                                }
+                            </ul>
+                            <div className='l_m_select_list_active' onClick={()=>this.tigger()}>微信登录手机版</div>
+                            <div className='wechatQrcode' style={{display:this.state.showWechat}}>
+                                <QRCode value={this.state.wechatLink}
+                                        size={180}
+                                        bgColor="#FFFFFF"
+                                        fgColor="#000000"
+                                />
+                            </div>
+                        </div>
+                        { this.loginMain() }
                     </div>
-                    { this.loginMain() }
+
                     <div  className='l-warn' style={{display: this.state.displayWarn ? 'block' : 'none'}}>
-                        <img  src={warnSrc}  /><span className=''>操作失败:<span>{this.state.warn}</span></span>
+                        <div className='failure_text'>
+                            操作失败:{this.state.warn}
+                        </div>
                     </div>
                 </div>
 

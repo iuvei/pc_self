@@ -104,6 +104,9 @@ export default class TeamTable extends Component {
                 postData.thirdid = 4;
             }else{}
         }
+        if(type == 'onSearch'){
+            postData.userid = null;
+        }
         Fetch.teammain({
             method: 'POST',
             body: JSON.stringify(postData),
@@ -115,6 +118,10 @@ export default class TeamTable extends Component {
                     let data = res.repsoneContent;
                     table.tableData = data.forYourself.concat(data.forYourTeamResult);
                     table.sum = data.totalSum;
+
+                    if(type == 'onSearch'){
+                        table.history = table.history.filter((item)=>item.name.indexOf('(每日数据)') < 0)
+                    }
                     if(type == 'DATE'){
                         table.tableData.forEach((item, i)=>{
                             item.username = username
@@ -145,7 +152,7 @@ export default class TeamTable extends Component {
     /*搜索*/
     onSearch() {
         this.setState({ searchLoading: true });
-        this.getData();
+        this.getData('onSearch');
     };
     /*开始查询日期*/
     onChangeStartTime(date, dateString) {
@@ -269,7 +276,7 @@ export default class TeamTable extends Component {
             history = {};
         if(type == 'DATE') {
             postData.userid = parseInt(record.userid);
-            postData.username = null;
+            // postData.username = null;
             postData.gDate = 1;
             history = {
                 name: record.username + '(每日数据)',
@@ -370,24 +377,25 @@ export default class TeamTable extends Component {
             }, {
                 title: '净收入',
                 dataIndex: 'sum_netincome',
+                className: 'column-right',
                 render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
                 title: '日工资',
                 dataIndex: 'sum_dailywages',
-                // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                className: 'column-right',
                 render: text => parseFloat(text).toFixed(3),
                 width: 75,
             }, {
                 title: '日亏损',
                 dataIndex: 'sum_dailyloss',
-                // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                className: 'column-right',
                 render: text => parseFloat(text).toFixed(3),
                 width: 75,
             }, {
                 title: '分红',
                 dataIndex: 'sum_dividents',
-                // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                className: 'column-right',
                 render: text => parseFloat(text).toFixed(3),
                 width: 75,
             }, {
@@ -466,18 +474,19 @@ export default class TeamTable extends Component {
                 }, {
                     title: '净收入',
                     dataIndex: 'sum_netincome',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'sum_dailywages',
-                    // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '分红',
                     dataIndex: 'sum_dividents',
-                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
@@ -561,13 +570,13 @@ export default class TeamTable extends Component {
                 }, {
                     title: '日亏损',
                     dataIndex: 'sum_dailyloss',
-                    // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '分红',
                     dataIndex: 'sum_dividents',
-                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
@@ -646,18 +655,19 @@ export default class TeamTable extends Component {
                 }, {
                     title: '净收入',
                     dataIndex: 'sum_netincome',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'sum_dailywages',
-                    className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '日亏损',
                     dataIndex: 'sum_dailyloss',
-                    className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
@@ -741,7 +751,7 @@ export default class TeamTable extends Component {
                 }, {
                     title: '分红',
                     dataIndex: 'sum_dividents',
-                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
@@ -819,12 +829,13 @@ export default class TeamTable extends Component {
                 }, {
                     title: '净收入',
                     dataIndex: 'sum_netincome',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'sum_dailywages',
-                    // className: dailysalaryStatus.isLose != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
@@ -907,7 +918,7 @@ export default class TeamTable extends Component {
                 }, {
                     title: '日亏损',
                     dataIndex: 'sum_dailyloss',
-                    // className: dailysalaryStatus.isSalary != 1 ? 'column-right status_hide' : 'column-right',
+                    className: 'column-right',
                     render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {

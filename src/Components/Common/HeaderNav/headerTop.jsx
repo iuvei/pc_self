@@ -311,7 +311,10 @@ export default class HeaderTop extends Component {
         })
     };
     handleData(data){
-    	emitter.emit('openWebsocket',data);
+    	let thisUrl = window.location.href.indexOf('lottery') > -1 ? true : false;
+    	if(thisUrl){
+    		emitter.emit('openWebsocket',data);
+    	}
     	let message = eval('('+ data +')');
     	if(message.status == 1){
     		let tempType = message.data.type;

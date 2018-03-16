@@ -69,12 +69,14 @@ export default class ActivityDetails extends Component {
                             recharge: '注册绑卡',
                             bonus: data.zc_newadd_reward_amount,
                             action: data.newadd_rewardzc_extract_amount,
+                            btn: data.user_reg_status,
                             id: '1',
                         },
                         {
                             recharge: data.zc_recharge_amount,
                             bonus: data.zc_recharge_reward_amount,
                             action: data.reward_extractzc_amount,
+                            btn: data.user_cha_status,
                             id: '2',
                         }
                     ]
@@ -239,7 +241,8 @@ export default class ActivityDetails extends Component {
     };
     /*新人注册活动领取registerAward*/
     onNewReset(record){
-        let type = '';
+        let type = '',
+            {userSign} = this.state;
         if(record.id == 1){//注册领取
             type = 'recharge'
         }else{
@@ -249,7 +252,7 @@ export default class ActivityDetails extends Component {
             method: 'POST',
             body: JSON.stringify({
                 activityid: this.state.id,
-                amount: record.bonus,
+                amount: userSign.recharge_amount,
                 register_type: type
             })
         }).then((res)=> {
@@ -497,7 +500,10 @@ export default class ActivityDetails extends Component {
                 { title: '操作', dataIndex: 'action', width: 75,
                     render: (text, record) =>
                         <Button type="primary"
-                                disabled={record.user_reg_status == 1 ? false : true}
+                                disabled={
+                                    response.user_is_enrolls == 0 ||
+                                    record.btn != 1 ? true : false
+                                }
                                 onClick={()=>this.onNewReset(record)}
                         >
                             领取

@@ -81,14 +81,14 @@ export default class Contract extends Component {
                     if(data.protocol instanceof Array){
                         curUserSignStatus.daily_salary_status = 1;
                     }
-                    curUserSignStatus.dividend_ratio_status = data.dividend_ratio != null && data.dividend_ratio.status;
+                    curUserSignStatus.dividend_ratio_status = data.dividend_ratio != null && '1';
                     if(data.self_acc_group.length>0){
                         curUserSignStatus.quota_status = 1;
                     }
                     this.setState({
                         curUserSignStatus:curUserSignStatus,
                         protocol:data.protocol,
-                        cur_dividend_radio: data.dividend_ratio != null && data.dividend_ratio.dividend_radio,
+                        cur_dividend_radio: data.dividend_ratio != null && data.dividend_ratio,
                         tableLength:data.results.length,
                         quotaList: data.prizeaccount,
                     });

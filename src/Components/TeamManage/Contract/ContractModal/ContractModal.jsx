@@ -294,7 +294,7 @@ export default class ContractModal extends Component {
         }else if(type == 1 || type == '分红契约'){//分红契约
             typeContent = <div className="a_c_text">
                 <p>契约内容：</p>
-                <div>
+                <div style={{whiteSpace: 'normal'}}>
                     如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
                     <InputNumber min={0} value={diviPost.dividend_radio}
                                  onChange={(value)=>{
@@ -370,13 +370,6 @@ export default class ContractModal extends Component {
         contentArr[index].active_member = ''+val;
         this.setState({salary_ratio: contentArr});
     };
-    /*修改日销量*/
-    onChangeDailySales(val, item, index){
-        item.sale = val;
-        let { contentArr } = this.state;
-        contentArr[index].sale = ''+val;
-        this.setState({salary_ratio: contentArr});
-    };
     /*删除档位*/
     onDelete(i){
         let { contentArr } = this.state;
@@ -399,28 +392,6 @@ export default class ContractModal extends Component {
         let contentObj = protocol[contentArr.length];
         contentArr.push(contentObj);
         this.setState({contentArr});
-    };
-    /*日销量排序从小到大*/
-    compare(property){
-        return function(a,b){
-            let value1 = a[property];
-            let value2 = b[property];
-            return value1 - value2;
-        }
-    };
-    /*日销量失去焦点事件*/
-    onBlurSale(){
-        let { contentArr } = this.state;
-        let contentArrFlag = contentArr.sort(this.compare('sale'));
-        for(let i=0;i<contentArr.length;i++){
-            if (contentArrFlag[i+1] != undefined && contentArrFlag[i].sale == contentArrFlag[i+1].sale){
-                Modal.warning({
-                    title: '不同档位日销量不能相同，请重新输入！',
-                });
-                contentArrFlag[i].sale = '0'
-            }
-        }
-        this.setState({contentArr: contentArrFlag})
     };
     /*奖金组设置 滑动条*/
     onRegisterSetBonus(value) {
@@ -577,15 +548,20 @@ export default class ContractModal extends Component {
                                 <ul className="c_aa_list">
                                     <li className="c_user">
                                         <span className="c_aa_left_text">用户名：</span>
-                                        <Select size="large" style={{ width: 280 }} labelInValue
-                                                onChange={(value)=>{this.onSelectUser(value)}}
-                                                getPopupContainer={() => document.getElementsByClassName('c_user')[0]}
-                                                placeholder="请选择需要创建契约的用户"
+                                        <Select
+                                            showSearch
+                                            labelInValue
+                                            style={{ width: 280 }}
+                                            placeholder="请选择需要创建契约的用户"
+                                            optionFilterProp="children"
+                                            onChange={(value)=>{this.onSelectUser(value)}}
+                                            getPopupContainer={() => document.getElementsByClassName('c_user')[0]}
+                                            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                         >
                                             {
                                                 userList.map((item) => {
                                                     return (
-                                                        <Option value={item.userid} key={item.userid}>{item.username}</Option>
+                                                        <Option value={item.userid} key={item.username}>{item.username}</Option>
                                                     )
                                                 })
                                             }
@@ -596,7 +572,7 @@ export default class ContractModal extends Component {
                                         <Select className="c_aa_marg" size="large"
                                                 style={{ width: 280 }}
                                                 onChange={(value)=>{this.onSelectSys(value)}}
-                                                git={() => document.getElementsByClassName('c_contractType')[0]}
+                                                getPopupContainer={() => document.getElementsByClassName('c_contractType')[0]}
                                                 placeholder="请选择需要创建契约的系统"
                                         >
                                             {
@@ -619,7 +595,6 @@ export default class ContractModal extends Component {
                         <Contract
                             title={this.state.typeName}
                             userid={this.state.userid}
-                            username={this.state.username}
                             textDescribe={typeContent}
                             alterData={this.state.alterData}
                             alterVisible={this.state.alterVisible}
@@ -637,7 +612,6 @@ export default class ContractModal extends Component {
                 }
 
             </div>
-
         )
     }
 }

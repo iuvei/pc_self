@@ -65,6 +65,7 @@ export default class Dividend extends Component {
                 }
             ],
             contract_name: '修改契约', //按钮btn
+            send_all_button: '',
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -117,6 +118,7 @@ export default class Dividend extends Component {
                         sum: sum,
                         total: data.alldata.affects,
                         oneKeyDividend: data.send_status,
+                        send_all_button: data.send_all_button
                     });
 
                 }
@@ -223,7 +225,7 @@ export default class Dividend extends Component {
             let _this = this;
             confirm({
                 title: val,
-                content: <p>本期一键发放分红合计金额：{_this.state.sum.allsalary}</p>,
+                content: <p>{_this.state.send_all_button.msg}</p>,
                 okText: '确认发放',
                 okType: '取消',
                 onOk() {
@@ -329,7 +331,7 @@ export default class Dividend extends Component {
                 title: '有效投注量',
                 dataIndex: 'sale_total',
                 className: 'column-right',
-                width: 110,
+                width: 90,
             },
             {
                 title: '盈亏总额',
@@ -364,7 +366,7 @@ export default class Dividend extends Component {
             {
                 title: '操作',
                 dataIndex: 'buttons',
-                width: 240,
+                width: 260,
                 render: (text, record) => {
                     if(record.username == '团队数据'){
                         return text
@@ -488,7 +490,7 @@ export default class Dividend extends Component {
                         textDescribe={
                             <div className="a_c_text">
                                 <p>契约内容：</p>
-                                <div>
+                                <div style={{whiteSpace: 'normal'}}>
                                     如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
                                     <InputNumber min={0} value={this.state.alterData.dividend_radio}
                                                  onChange={(value)=>this.onChangeAlterContract(value)}
