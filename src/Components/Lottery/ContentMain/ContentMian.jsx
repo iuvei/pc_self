@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Select,Table, Modal,message, InputNumber, Row, Col, Checkbox,Button, Radio ,Switch,Tooltip,Spin,Popover } from 'antd';
+import { Select,Table, Modal,message, InputNumber, Row, Col, Checkbox,Button, Radio ,Switch,Tooltip,Spin,Popover,AutoComplete} from 'antd';
 import mobx,{computed, autorun} from "mobx";
 import QueueAnim from 'rc-queue-anim';
 import './ContentMain.scss'
@@ -37,7 +37,7 @@ export default class ContentMian extends Component {
             renIndex:0,
             hotIndex : 0,
             hotSwitch : false, // 冷热遗漏开关
-            multipleValue : 1, // 投注倍数
+            multipleValue : '1', // 投注倍数
             multipleMmcValue : 1,//连续投注次数
             modes:[],
             selectYjf: 0, // 选择元角分模式
@@ -78,6 +78,7 @@ export default class ContentMian extends Component {
         this.getLotteryData = this.getLotteryData.bind(this);
         this.onChangeNavIndex = this.onChangeNavIndex.bind(this);
         this.actionTrace = this.actionTrace.bind(this);
+        this.multipleValue = this.multipleValue.bind(this);
     };
     //初始化默认调用方法
     componentDidMount() {
@@ -205,21 +206,21 @@ export default class ContentMian extends Component {
         if (isNaN(value) || typeof value != 'number') {
             value = 1
         }
-        this.setState({multipleValue: value},()=>{
+        this.setState({multipleValue: value.toString()},()=>{
         	this.getNumMoney(this.state.numss)
         });
     };
     // 减少倍数
     minusMultiple() {
-        this.state.multipleValue <= 1 ? this.setState({multipleValue: 1},()=>{
+        this.state.multipleValue <= 1 ? this.setState({multipleValue: '1'},()=>{
         	this.getNumMoney(this.state.numss)
-        }) : this.setState({multipleValue: (this.state.multipleValue - 1)},()=>{
+        }) : this.setState({multipleValue: (this.state.multipleValue - 1).toString()},()=>{
         	this.getNumMoney(this.state.numss)
         })
     };
     // 增加倍数
     addMultiple() {
-        this.setState({multipleValue: this.state.multipleValue + 1},()=>{
+        this.setState({multipleValue: (this.state.multipleValue - 0 + 1).toString()},()=>{
         	this.getNumMoney(this.state.numss)
         })
     };
@@ -937,7 +938,7 @@ export default class ContentMian extends Component {
     clearNum(){
     	$('li[class="number_active"]').attr("class","");
     	$(".c_m_number_select .li").removeClass("selected");
-    	this.setState({numss:0,money:0,multipleValue:1})
+    	this.setState({numss:0,money:0,multipleValue:'1'})
     }
     //清除输入框的内容
     cleartextArea(){
@@ -1111,69 +1112,141 @@ export default class ContentMian extends Component {
         }
         if(param){
         	this.setState({directFlag:true});
-        	let postData = {
-	    		lotteryid : stateVar.nowlottery.lotteryBetId,
-	    		curmid : stateVar.nowlottery.cuimId,
-	    		poschoose : "",
-	    		flag :"save",
-	    		play_source : 10,
-	    		lt_allin_if : "no",
-	    		lt_furture_issue : stateVar.issueIndex,
-	    		lt_issue_start : stateVar.nextIssue,
-	    		lt_total_nums : nums,
-	    		lt_total_money : money,
-	    		randomNum : Math.floor((Math.random() * 10000) + 1),
-	    		lt_project : [tempObj]
-	    	};
-        	Fatch.aboutBet({
+        	let postData;
+        	if(stateVar.nowlottery.lotteryBetId == 23){
+        		postData = {
+		    		lotteryid : 23,
+		    		mid : 311700,
+		    		poschoose : "",
+		    		flag : 'save',
+		    		play_source : 10,
+		    		lt_total_nums : nums,
+		    		lt_total_money : money,
+		    		randomNum : Math.floor((Math.random() * 10000) + 1),
+		    		times:this.state.time,
+		    		lt_trace_count_input:1,
+		    		It_trace_stop:'no',
+		    		lt_project : [tempObj],
+		    		times:1
+		    	};
+        	}else{
+        		postData = {
+		    		lotteryid : stateVar.nowlottery.lotteryBetId,
+		    		curmid : stateVar.nowlottery.cuimId,
+		    		poschoose : "",
+		    		flag :"save",
+		    		play_source : 10,
+		    		lt_allin_if : "no",
+		    		lt_furture_issue : stateVar.issueIndex,
+		    		lt_issue_start : stateVar.nextIssue,
+		    		lt_total_nums : nums,
+		    		lt_total_money : money,
+		    		randomNum : Math.floor((Math.random() * 10000) + 1),
+		    		lt_project : [tempObj]
+		    	};
+        	}
+        	if(stateVar.nowlottery.lotteryBetId == 23){
+        		Fatch.aboutMmc({
 	    		method:"POST",
 	    		body:JSON.stringify(postData)
-	    		}).then((data)=>{
-	    			this.setState({directFlag:false});
-	    			if(data.status == 200){
-	    				const modal = Modal.success({
-						    title: '温馨提示',
-						    content: data.longMessage,
-						});
-						this.getBetHistory();
-						this.getMenu();
-						setTimeout(() => modal.destroy(), 3000);
-						stateVar.BetContent = {
-					        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
-					    };
-						//成功添加以后清空选号区数据
-				        for(let i=0; i<stateVar.aboutGame.data_sel.length; i++ ){//清空已选择数据
-				            stateVar.aboutGame.data_sel[i] = [];
-				            this.setState({numss:0,money:0});
-				        }
-				        if( otype == 'input' ){//清空所有显示的数据
-				            this.setState({textAreaValue:''},()=>{
-				            	this._inptu_deal();
-				            });
-				        }else if( otype == 'digital' || otype == 'dxds' || otype == 'dds' ){
-				           $("li.number_active").removeClass('number_active');
-				        }else if(otype == 'lhzx_lh'){
-				        	$(".lh .hover").removeClass('hover');
-				        }else if(otype = 'lhzx_zx'){
-				        	$(".zx span").removeClass('hover');
-				        }
-	    			}else{
-	    				let modal;
-	    				if(data.longMessage.fail > 0){
-	    					let msg = data.longMessage.content[0];
-	    					modal = Modal.error({
-							    title: '温馨提示',
-							    content: msg,
-							});
-	    				}else{
-	    					modal = Modal.error({
+		    		}).then((data)=>{
+		    			this.setState({directFlag:false});
+		    			if(data.status == 200){
+		    				const modal = Modal.success({
 							    title: '温馨提示',
 							    content: data.longMessage,
 							});
-	    				}
-						setTimeout(() => modal.destroy(), 3000);
-	    			}
-    		})
+							this.getBetHistory();
+							emitter.emit('kjhistory');
+							this.getMenu();
+							setTimeout(() => modal.destroy(), 3000);
+							stateVar.BetContent = {
+						        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
+						    };
+							//成功添加以后清空选号区数据
+					        for(let i=0; i<stateVar.aboutGame.data_sel.length; i++ ){//清空已选择数据
+					            stateVar.aboutGame.data_sel[i] = [];
+					            this.setState({numss:0,money:0});
+					        }
+					        if( otype == 'input' ){//清空所有显示的数据
+					            this.setState({textAreaValue:''},()=>{
+					            	this._inptu_deal();
+					            });
+					        }else if( otype == 'digital' || otype == 'dxds' || otype == 'dds' ){
+					           $("li.number_active").removeClass('number_active');
+					        }else if(otype == 'lhzx_lh'){
+					        	$(".lh .hover").removeClass('hover');
+					        }else if(otype = 'lhzx_zx'){
+					        	$(".zx span").removeClass('hover');
+					        }
+		    			}else{
+		    				let modal;
+		    				if(data.longMessage.fail > 0){
+		    					let msg = data.longMessage.content[0];
+		    					modal = Modal.error({
+								    title: '温馨提示',
+								    content: msg,
+								});
+		    				}else{
+		    					modal = Modal.error({
+								    title: '温馨提示',
+								    content: data.longMessage,
+								});
+		    				}
+							setTimeout(() => modal.destroy(), 3000);
+		    			}
+	    		})
+        	}else{
+        		Fatch.aboutBet({
+	    		method:"POST",
+	    		body:JSON.stringify(postData)
+		    		}).then((data)=>{
+		    			this.setState({directFlag:false});
+		    			if(data.status == 200){
+		    				const modal = Modal.success({
+							    title: '温馨提示',
+							    content: data.longMessage,
+							});
+							this.getBetHistory();
+							this.getMenu();
+							setTimeout(() => modal.destroy(), 3000);
+							stateVar.BetContent = {
+						        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
+						    };
+							//成功添加以后清空选号区数据
+					        for(let i=0; i<stateVar.aboutGame.data_sel.length; i++ ){//清空已选择数据
+					            stateVar.aboutGame.data_sel[i] = [];
+					            this.setState({numss:0,money:0});
+					        }
+					        if( otype == 'input' ){//清空所有显示的数据
+					            this.setState({textAreaValue:''},()=>{
+					            	this._inptu_deal();
+					            });
+					        }else if( otype == 'digital' || otype == 'dxds' || otype == 'dds' ){
+					           $("li.number_active").removeClass('number_active');
+					        }else if(otype == 'lhzx_lh'){
+					        	$(".lh .hover").removeClass('hover');
+					        }else if(otype = 'lhzx_zx'){
+					        	$(".zx span").removeClass('hover');
+					        }
+		    			}else{
+		    				let modal;
+		    				if(data.longMessage.fail > 0){
+		    					let msg = data.longMessage.content[0];
+		    					modal = Modal.error({
+								    title: '温馨提示',
+								    content: msg,
+								});
+		    				}else{
+		    					modal = Modal.error({
+								    title: '温馨提示',
+								    content: data.longMessage,
+								});
+		    				}
+							setTimeout(() => modal.destroy(), 3000);
+		    			}
+	    		})
+        	}
 	    	return;
         }
         stateVar.BetContent.lt_same_code.push(tempObj);
@@ -2194,6 +2267,7 @@ export default class ContentMian extends Component {
             }
         ];
         const periodsList = ['5期','10期', '20期', '50期', '全部'];
+        const dataSource = ['5','10','30','50','100'];
     	let oneLotteryData = this.state.lotteryMethod;
     	if(oneLotteryData.length == 0){
     		return <div className='loadingbet'>
@@ -2288,7 +2362,13 @@ export default class ContentMian extends Component {
 	                                <span className="c_m_select_multiple">
 	                                    <span>倍数：</span>
 	                                    <img className="hvr-grow-shadow" onClick={()=>{this.minusMultiple()}} src={minus_multiple} alt="减少倍数"/>
-	                                    <InputNumber type="text" min={1} max={9999} value={this.state.multipleValue} onChange={this.multipleValue.bind(this)}></InputNumber>
+	                                   <AutoComplete
+									      style={{ width: 80,margin:"0 2px" }}
+									      dataSource={dataSource}
+									      placeholder="1"
+									      value={this.state.multipleValue}
+									      onChange={this.multipleValue}
+									    />
 	                                    <img className="hvr-grow-shadow" onClick={()=>{this.addMultiple()}} src={add_multiple} alt="增加倍数"/>
 	                                </span>
 	                                <span className="c_m_select_yjftype">
@@ -2345,7 +2425,7 @@ export default class ContentMian extends Component {
 	                            </div>
 	                            <div className="c_m_select_button">
 	                                <span className="c_m_add_btn" onClick={()=>this.addNum()}>添加号码</span>
-	                                <Button style={{display:(stateVar.nowlottery.lotteryBetId == 23 ? 'none' : 'inline-block')}} disabled={this.state.directFlag} className="c_m_bet_btn directBet" onClick={()=>this.directBet()}>直接投注</Button>
+	                                <Button disabled={this.state.directFlag} className="c_m_bet_btn directBet" onClick={()=>this.directBet()}>直接投注</Button>
 	                            </div>
 	                        </div>
 	                        <div className="c_m_select_code_record">

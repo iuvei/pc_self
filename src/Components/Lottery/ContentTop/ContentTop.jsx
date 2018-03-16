@@ -208,7 +208,7 @@ export default class ContentTop extends Component {
                 clearInterval(this.interval);
 				message.config({
 				  top:'48%',
-				  duration: 3
+				  duration: 2
 				});
 				stateVar.betVisible = false;
 				message.info('当期销售已截止，请进入下一期购买');
