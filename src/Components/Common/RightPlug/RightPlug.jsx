@@ -152,6 +152,7 @@ export default class RightPlug extends Component {
 
     render() {
         const { modalVisible, capitalVisible, hintText } = this.state;
+        const {userInfo} = stateVar;
         return (
         	<div>
                 <Chat
@@ -190,12 +191,16 @@ export default class RightPlug extends Component {
                                 </a>
                             </p>
                         </li>
-                        <li className="lianxi_p">
-                            {
-                                this.state.showMsg ? <b className="r_p_common_extent"></b> : null
-                            }
-                            <p className="r_p_kefu r_p_common" onClick={()=>this.setState({capitalVisible: true})}>联系好友</p>
-                        </li>
+                        {
+                            userInfo.sType == 'demo' ?
+                                null :
+                                <li className="lianxi_p">
+                                    {
+                                        this.state.showMsg ? <b className="r_p_common_extent"></b> : null
+                                    }
+                                    <p className="r_p_kefu r_p_common" onClick={()=>this.setState({capitalVisible: true})}>联系好友</p>
+                                </li>
+                        }
                         <li>
                             <p className="r_p_zoushi r_p_common">
                                 <a href={curLocation.split("#")[0] + "#/tendency"} target="_blank">

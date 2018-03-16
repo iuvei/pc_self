@@ -193,10 +193,11 @@ export default class ContractModal extends Component {
         }).then((res)=>{
             if(this._ismount && res.status == 200){
                 let aAllUserTypeAccNum = res.repsoneContent.aAllUserTypeAccNum,
-                    { agPost } = this.state;
+                    { agPost } = this.state,
+                    contentArrFlag = aAllUserTypeAccNum.filter(item => item.accGroup <= record.prize_group);
                 agPost.accgroup = [];
                 agPost.accnum = [];
-                aAllUserTypeAccNum.forEach((item)=>{
+                contentArrFlag.forEach((item)=>{
                     agPost.accgroup.push(item.agid);
                     if(item.quotanum != undefined){
                         agPost.accnum.push(item.quotanum);

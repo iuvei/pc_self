@@ -328,7 +328,8 @@ export default class Login extends Component {
     onConfirmPwdM(e) {
         let value = e.target.value,
             {validate, newPwdM} = this.state;
-        if(value === newPwdM){
+        console.log(value)
+        if(value === newPwdM && value != ''){
             validate.confirm_newpass = 0;
         }else{
             validate.confirm_newpass = 1;
@@ -411,31 +412,41 @@ export default class Login extends Component {
                     displayWarnM1:true,
                 });
             }else{
-                Fetch.resetPwd(  //重置密码
-                {
-                        method: "POST",
-                        body:JSON.stringify({
-                            "flag": 'changeseritycheck',
-                            "userid": this.state.resetUserid,
-                            "changetype":"loginpass",
-                            "newpass":md5(newPwdM),
-                            "confirm_newpass":md5(confirmPwdM),
-                        })
-                    }).then((data)=>{
-                    if(data.status==200){
-                        this.setState({
-                            displayWarnM1:false,
-                            visible2: false,
-                            visible3: true,
-                        });
-                    }else{
-                        this.setState({
-                            warnM1:data.shortMessage,
-                            displayWarnM1:true,
-                        });
+                let {validate} = this.state;
+                if(validate.newpass == 0 && validate.confirm_newpass == 0){
+                    Fetch.resetPwd(  //重置密码
+                        {
+                            method: "POST",
+                            body:JSON.stringify({
+                                "flag": 'changeseritycheck',
+                                "userid": this.state.resetUserid,
+                                "changetype":"loginpass",
+                                "newpass":md5(newPwdM),
+                                "confirm_newpass":md5(confirmPwdM),
+                            })
+                        }).then((data)=>{
+                        if(data.status==200){
+                            this.setState({
+                                displayWarnM1:false,
+                                visible2: false,
+                                visible3: true,
+                            });
+                        }else{
+                            this.setState({
+                                warnM1:data.shortMessage,
+                                displayWarnM1:true,
+                            });
+                        }
+                    })
+                }else{
+                    if(validate.newpass == 2) {
+                        validate.newpass == 1
                     }
-                })
-
+                    if(validate.confirm_newpass == 2) {
+                        validate.confirm_newpass == 1
+                    }
+                    this.setState({validate})
+                }
             }
         }else if(value ==='l_accept'){//显示登录即同意协议模态框
             this.setState({
