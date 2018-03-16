@@ -40,21 +40,19 @@ $c_color:#7f6b37;
     }
     .c_aa_form{
         margin-top: 160px;
-
-        ul{
-            margin-left: 100px;
-        }
         .c_aa_list{
+            width: 370px;
+            margin: 0 auto;
             li{
-                position: relative;
-                margin-top: 25px;
-            }
-            li:nth-child(1){
-                margin-left: 12px;
+                margin-bottom: 10px;
             }
         }
         .c_aa_left_text{
+            width: 70px;
+            text-align: right;
             color:$c_color;
+            display: inline-block;
+            font-size: 14px;
         }
         .ant-select-selection{
             @include c_sel

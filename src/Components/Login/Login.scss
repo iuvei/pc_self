@@ -6,9 +6,6 @@ $width_100: 100%;
 .login_main{
     .loginLogo{
         text-align: center;
-       img{
-           margin-bottom: 140px;
-       }
     }
     canvas{
         background-image: radial-gradient(ellipse farthest-corner at center top, #000d4d 0%, #000105 100%);
@@ -94,15 +91,17 @@ $width_100: 100%;
         }
     }
     .l-warn{
-        display: inline-block;
-        left: 260px;
         border-radius: 4px;
         width: 300px;
-        height: 50px;
         background: #ca5e58;
-        position: relative;
-        margin-top: 75px;
-
+        margin: 75px auto 0;
+        padding: 5px;
+        .failure_text{
+            padding-left: 35px;
+            background: url(./Img/warn.png) no-repeat center left;
+            line-height: 30px;
+            color: #fff;
+        }
         img{
             margin-left: 5px;
             margin-top: 5px;
@@ -130,8 +129,11 @@ $width_100: 100%;
     left: 50%;
     margin-left: -410px;
     top: 50%;
-    margin-top: -300px;
+    margin-top: -270px;
 
+    .login_content{
+        margin-top: 100px;
+    }
     .login_wrap{
         .l_input{
             width: 670px;
@@ -233,111 +235,7 @@ $width_100: 100%;
 
 
 }
-.center-modal-l {
-    text-align: center;
-    white-space: nowrap;
-    .ant-modal{
-        width: 300px !important;
-    }
-    .ant-modal-content{
-        background: transparent;
-        box-shadow:none;
-    }
-    .ant-modal-body{
-        text-align: center;
-        white-space: pre-wrap;
-        background: #fff;
-    }
-    .ant-modal-header{
-        padding: 10px 16px;
-    }
-    .ant-modal-title{
-        color: #333333;
-    }
-    .ant-modal-close{
-        color:#333333;
-    }
-    .ant-modal-close-x{
-        font-size: 18px;
-    }
-    .ant-input {
-        display: block;
-        width: 240px;
-        margin: 0 auto 20px;
-        height: 37px;
 
-    }
-    .ant-modal-footer{
-        padding: 24px 16px 24px 10px;
-        text-align: center;
-
-    }
-    .l_m_vali{
-        position: relative;
-        display: inline-block;
-        .l_m_valicode{
-            position: absolute;
-            top: 1px;
-            right: 2px;
-            color: red;
-            &:hover{
-                cursor: pointer;
-            }
-        }
-    }
-    .m_name{
-        background-color: #f1eeee;
-        width: 240px;
-        height: 32px;
-        border: 1px solid $border_color;
-        margin-left: 15px;
-        margin-bottom: 19px;
-        text-align: center;
-        line-height: 32px;
-        color: #333333;
-        border-radius: 4px;
-    }
-    .m_p_input{
-        color: #73b573;
-        margin-bottom: 25px;
-    }
-    .m_contract{
-       // word-wrap: break-word;
-    }
-    .l-modal-warn{
-        display: inline-block;
-        width: 300px;
-        height: 50px;
-        margin-left: -10px;
-        border-radius: 4px;
-        text-align: left;
-        background: #ca5e58;
-
-        img{
-            margin-left: 5px;
-            margin-top: 5px;
-            margin-bottom: -8px;
-        }
-
-    }
-
-
-}
-
-.center-modal-l:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    width: 0;
-}
-
-.center-modal-l .ant-modal {
-    display: inline-block;
-    vertical-align: middle;
-    top: 0;
-    text-align: left;
-}
 .m_accept_contract{
     .ant-modal{
         width: 720px !important;
@@ -386,5 +284,58 @@ $width_100: 100%;
     margin-top: -18px;
     margin-left: 670px;
     color: #fff;
+}
+
+.find_password_modal{
+    .password_list{
+        width: 240px;
+        margin: 0 auto;
+        li{
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        li:last-child{
+            margin: 0;
+        }
+        .l_m_vali{
+            position: relative;
+            .l_m_valicode{
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                height: 34px;
+                border-bottom-right-radius: 3px;
+                border-top-right-radius: 3px;
+            }
+            .ant-input{
+                padding-right: 70px;
+            }
+        }
+        .hint_text{
+            padding-top: 5px;
+            color: $color_CF2027;
+            height: 24px;
+        }
+
+        .m_name{
+            background-color: #f1eeee;
+            width: 240px;
+            height: 32px;
+            border: 1px solid $border_color;
+            text-align: center;
+            line-height: 32px;
+            color: #333333;
+            border-radius: 4px;
+        }
+    }
+}
+.hint_modal_succeed{
+    .ant-modal-body{
+        text-align: center;
+    }
+    .m_p_input{
+        color: #73b573;
+        margin-bottom: 25px;
+    }
 }
 

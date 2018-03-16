@@ -50,10 +50,13 @@ export default class AutoLogin extends Component {
             setsecurity: getStore("setsecurity"),
             email: getStore("email"),
         };
+        stateVar.httpService = getStore('kefu').kefulink;
+        stateVar.httpCS = getStore('kefu').domain;
         this.refs.progress.style.width=0;
         this.interval = setInterval(() => this.tick(), 10);
-
-
+    };
+    componentWillUnmount(){
+        clearInterval(this.interval);
     };
     render() {
         return(<div className='autologin_main'>

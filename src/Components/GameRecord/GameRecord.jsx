@@ -55,7 +55,7 @@ export default class GameRecord extends Component {
                                 <div className="a_m_controler">
                                     <div style={{display: stateVar.afterDetails ? 'none' : ''}}>
                                         <div className="a_m_title">
-                                            <span>游戏记录</span>
+                                            <span>投注记录</span>
                                             <span> > </span>
                                             <span>{navList[this.state.navIndex].text}</span>
                                         </div>

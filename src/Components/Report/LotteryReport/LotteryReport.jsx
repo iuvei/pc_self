@@ -63,6 +63,12 @@ export default class LotteryReport extends Component {
             this.setState({table, searchLoading: false});
             return
         }
+        if(clickTable == 'clickTable'){
+            postData.userid = null;
+        }
+        if(type == 'DATE'){
+            // postData.username = null;
+        }
         this.setState({ loading: true });
         postData.lotteryid = checkedList.join(',');
         Fetch.historyteamlottery({
@@ -78,6 +84,11 @@ export default class LotteryReport extends Component {
                 if(res.status == 200){
                     if(clickTable == 'clickTable'){
                         this.onClickTable('USERNAME', postData);
+                        if(postData.username == null){
+                            table.history = table.history.splice(0, 1)
+                        }else{
+                            table.history = table.history.filter((item)=>item.name.indexOf('(每日数据)') < 0);
+                        }
                     }
                     let data = res.repsoneContent;
                     table.tableData = data.results.slice(0, -1);
@@ -101,10 +112,6 @@ export default class LotteryReport extends Component {
                     Modal.warning({
                         title: res.shortMessage,
                     });
-                    // table.tableData = [];
-                    // table.sum = {};
-                    // table.total = 0;
-                    // this.setState({table: table});
                 }
             }
         });
@@ -157,9 +164,8 @@ export default class LotteryReport extends Component {
     };
     /*点击日期和用户名*/
     onClickTable(type, record) {
-        let table = this.state.table,
-            historyArr = this.state.table.history,
-            postData = this.state.postData,
+        let {table, postData} = this.state,
+            historyArr = table.history,
             historyFlag = true,
             history = {};
         if(type == 'DATE') {
@@ -187,7 +193,7 @@ export default class LotteryReport extends Component {
                     break;
                 }
             }
-            if (historyFlag) {
+            if (historyFlag && record.username != '' && record.username != null) {
                 table.history.push(history);
             }
             this.getData('no', type, record.username);
@@ -245,7 +251,9 @@ export default class LotteryReport extends Component {
             {
                 title: '日期',
                 dataIndex: 'dateLevel',
-                render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                render: (text, record) => postData.userid != null ?
+                    text :
+                    <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
                 width: 140,
                 filterIcon: <Icon type="smile-o" style={{ color: 'red' }} />,
             }, {

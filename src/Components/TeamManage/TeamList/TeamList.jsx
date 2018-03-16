@@ -224,10 +224,10 @@ export default class TeamList extends Component {
         }else{
             this.setState({
                 alterData: record,
-                alterVisible: true,
                 disabled: true,
             });
             if(type == '配额'){
+                this.setState({alterVisible: true});
                 this.getAccGroupList(record);
             }else if(type == '日工资'){
                 let postDataSelf = {
@@ -244,6 +244,7 @@ export default class TeamList extends Component {
                             this.setState({
                                 typeName: '日工资契约',
                                 contentArr: pros[pros.length - 1],
+                                alterVisible: true,
                             })
                         }else{
                             Modal.warning({
@@ -265,6 +266,7 @@ export default class TeamList extends Component {
                 diviPost.dividend_radio = record.dividend_radio;
                 this.setState({
                     typeName: '分红契约',
+                    alterVisible: true,
                     diviPost,
                 })
             }else{
@@ -285,13 +287,14 @@ export default class TeamList extends Component {
                                 prizeGroupList: data.list,
                                 prizeGroupPost,
                                 prizeGroupFlag: record.prize_group,
+                                alterVisible: true,
                             })
+                        }else{
+                            Modal.warning({
+                                title: res.shortMessage,
+                                content: '新注册的用户10分钟后才能修改奖金组，请稍后再试！'
+                            });
                         }
-                        // else{
-                        //     Modal.warning({
-                        //         title: res.shortMessage,
-                        //     });
-                        // }
                     }
                 })
             }
@@ -899,7 +902,7 @@ export default class TeamList extends Component {
         }else if(typeName == '分红契约'){
             typeContent = <div className="a_c_text">
                 <p>契约内容：</p>
-                <div>
+                <div style={{whiteSpace: 'normal'}}>
                     如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
                     <InputNumber min={0} value={diviPost.dividend_radio}
                                  onChange={(value)=>{

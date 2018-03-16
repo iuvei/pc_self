@@ -457,7 +457,7 @@ export default class SelfTable extends Component {
                     width: 75,
                 }
             ];
-            footer = <ul className="st_f_isSalary clear">
+            footer = <ul className="st_f_Two clear">
                 <li>总计</li>
                 <li>{sum.sum_cp_stake}</li>
                 <li>{sum.sum_cp_effective}</li>
@@ -553,7 +553,7 @@ export default class SelfTable extends Component {
                     width: 75,
                 }
             ];
-            footer = <ul className="st_f_isSalary clear">
+            footer = <ul className="st_f_Two clear">
                 <li>总计</li>
                 <li>{sum.sum_cp_stake}</li>
                 <li>{sum.sum_cp_effective}</li>
@@ -649,7 +649,7 @@ export default class SelfTable extends Component {
                     width: 75,
                 }
             ];
-            footer = <ul className="st_f_isSalary clear">
+            footer = <ul className="st_f_Two clear">
                 <li>总计</li>
                 <li>{sum.sum_cp_stake}</li>
                 <li>{sum.sum_cp_effective}</li>
