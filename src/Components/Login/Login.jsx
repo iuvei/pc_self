@@ -67,9 +67,14 @@ export default class Login extends Component {
         this.getSession();
         this.getWechat();
         this.getKefu();
+        // console.log(window.animationFrame)
     };
     componentWillUnmount(){
+        // console.log(window.animationFrame)
         this._ismount = false;
+        window.removeEventListener('resize', function (event) {
+            event.preventDefault();
+        });
     };
     getKefu(){
         Fetch.kefu({

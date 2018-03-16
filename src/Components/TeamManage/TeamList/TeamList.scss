@@ -103,6 +103,9 @@ $border-color: #B2B2B2;
         border-color: #369900 !important;
         color: #369900 !important;
     }
+    .recharge_btn{
+        margin-left: 5px;
+    }
 
 }
 .t_l_prompt{
@@ -163,5 +166,26 @@ $border-color: #B2B2B2;
     }
     .ant-input-number-disabled .ant-input-number-input{
         background-color: #fbfaf5;
+    }
+}
+.recharge_modal{
+    .recharge_list{
+        width: 300px;
+        margin: 0 auto;
+        li{
+            margin-bottom: 10px;
+        }
+        li:last-child{
+            margin: 20px 0 0;
+        }
+        .ant-input-number{
+            width: 130px;
+        }
+        .ant-input{
+            width: 130px;
+        }
+        .ant-btn{
+            padding: 5px 25px;
+        }
     }
 }

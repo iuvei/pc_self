@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import Websocket from 'react-websocket';
 import Fetch from '../../../Utils';
-import { Icon, Badge, Modal, Button ,notification,Icon} from 'antd';
+import { Icon, Badge, Modal, Button ,notification } from 'antd';
 const confirm = Modal.confirm;
 import { stateVar } from '../../../State';
 import emitter from '../../../Utils/events';

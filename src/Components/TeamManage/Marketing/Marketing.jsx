@@ -68,7 +68,7 @@ export default class Marketing extends Component {
         Fetch.adduser({
             method:'POST',
         }).then((res)=>{
-            if(this._ismount && res.status === 200){
+            if(this._ismount && res.status == 200){
                 let repsone = res.repsoneContent,
                     { registerSlider, generalizeSlider, registerPost, generalizePost } = this.state;
 
@@ -90,9 +90,9 @@ export default class Marketing extends Component {
                     })
                 })
             }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+                // Modal.warning({
+                //     title: res.shortMessage,
+                // });
             }
         })
     };

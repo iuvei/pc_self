@@ -92,7 +92,7 @@
     .text_content_list{
         //width: 545px;
         li{
-            @include lh(28px);
+            line-height: 28px;
         }
         .delete_sale{
             padding-left: 15px;

@@ -7,6 +7,7 @@ import Fetch from '../../../Utils';
 import Crumbs from '../../Common/Crumbs/Crumbs'
 import { stateVar } from '../../../State';
 import Contract from '../../Common/Contract/Contract';
+import { changeMoneyToChinese, onValidate } from '../../../CommonJs/common';
 
 import './TeamList.scss';
 
@@ -83,6 +84,15 @@ export default class TeamList extends Component {
                 }
             ],
             protocol: [],//自身协议
+            rechargeVisible: false,
+            validate: {
+                money: 2, // 0: 对， 1：错
+                fundPassword: 2
+            },
+            postDataRecharge: {// 充值
+                money: 0,
+                fundPassword: ''
+            }
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -531,7 +541,62 @@ export default class TeamList extends Component {
         contentArr.push(contentObj);
         this.setState({contentArr});
     };
+    /*选择充值*/
+    onRecharge(record){
+        this.setState({rechargeVisible: true})
+    };
+    onCancelRecharge() {
+        let {validate, postDataRecharge} = this.state;
+        validate.money = 2;
+        validate.fundPassword = 2;
+        postDataRecharge.money = null;
+        postDataRecharge.fundPassword = null;
+        this.setState({
+            rechargeVisible: false,
+            validate,
+            postDataRecharge
+        })
+    }
+    // 充值金额
+    onRechargeAmount(value) {
+        let {validate, postDataRecharge, loadmin, loadmax} = this.state;
+        let reg = /^[0-9]*$/;
+        let r = reg.test(value);
+        if(!r ||value == 0 || value < loadmin || value > loadmax){
+            validate.money = 1;
+        }else{
+            validate.money = 0;
+        }
+        postDataRecharge.money = value;
+        this.setState({postDataRecharge, validate});
 
+    };
+    /*立即充值*/
+    onConfirm() {
+        let {validate, postDataRecharge} = this.state;
+        if(validate.money == 0 && validate.fundPassword == 0){
+
+        }else{
+            if(validate.money == 2){
+                validate.money == 1
+            }
+            if(validate.fundPassword == 2){
+                validate.fundPassword == 1
+            }
+            this.setState({validate})
+        }
+    };
+    onFundPassword(e){
+        let {validate, postDataRecharge} = this.state,
+            val = e.target.value;
+        if(val == ''){
+            validate.fundPassword = 1
+        }else{
+            validate.fundPassword = 0
+        }
+        postDataRecharge.fundPassword = val;
+        this.setState({postDataRecharge, validate});
+    };
     render() {
         const { dailysalaryStatus } = stateVar;
         const { disabled, tableData, typeName, contentArr, prizeGroupList, agPost, diviPost } = this.state;
@@ -540,11 +605,11 @@ export default class TeamList extends Component {
                 title: '用户名',
                 dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
                 render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
-                width: 140,
+                width: 110,
             }, {
                 title: '用户类型',
                 dataIndex: 'groupname',
-                width: 80,
+                width: 70,
             }, {
                 title: '团队人数',
                 dataIndex: 'team_count',
@@ -590,6 +655,8 @@ export default class TeamList extends Component {
                 title: '配额',
                 dataIndex: 'useraccgroup_status',
                 render: (text, record) =>
+                record.usertype == 0 ?
+                    '---' :
                     <Button className={text == 3 ? 'new_application' : ''}
                             type={text == 1 ? 'primary' : ''} ghost
                             onClick={()=>this.onClickColBtn('配额', record)}
@@ -607,12 +674,15 @@ export default class TeamList extends Component {
             }, {
                 title: '最后登录时间',
                 dataIndex: 'lasttime',
-                width: 110,
+                width: 85,
             }, {
                 title: '操作',
                 dataIndex: 'action',
-                render: (text, record) => <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>,
-                width: 110,
+                render: (text, record) => <div>
+                    <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
+                    <Button className='recharge_btn' onClick={()=>this.onRecharge(record)}>充值</Button>
+                </div>,
+                width: 150,
             }];
         let footer = <div className="tabel_footer">
                             <span>总计</span>
@@ -891,7 +961,10 @@ export default class TeamList extends Component {
                         })
                     }
                     <li className="brisk_user" key="0">当日投注金额≥1000元，计为一个活跃用户</li>
-                    <li className="brisk_user" key="00">下级日工资各档位日销量要求需与自身保持一致，删除档位时遵循从高到底的原则，但至少保留三档。</li>
+                    <li key="00">
+                        <p className="brisk_user">下级日工资各档位日销量要求需与自身保持一致，</p>
+                        <p style={{paddingLeft: 15, color: '#6C6C6C'}}>删除档位时遵循从高到底的原则，但至少保留三档。</p>
+                    </li>
                 </ul>
                 <span className="hover col_color_ying add_sale"
                       onClick={()=>this.onAddSale()}
@@ -1059,6 +1132,55 @@ export default class TeamList extends Component {
                         <li>
                             <Button onClick={()=>this.onDiviratio('新申请')} loading={this.state.quotaLoding} type="primary">确认</Button>
                             <Button onClick={()=>this.onCancelQuota()}>取消</Button>
+                        </li>
+                    </ul>
+                </Modal>
+                <Modal
+                    title="下级充值"
+                    wrapClassName="vertical-center-modal recharge_modal"
+                    width={400}
+                    maskClosable={false}
+                    visible={this.state.rechargeVisible}
+                    onCancel={()=>this.onCancelRecharge()}
+                    footer={null}
+                >
+                    <ul className="recharge_list">
+                        <li>
+                            <span>用户账号：</span>
+                            <span>fafaf</span>
+                        </li>
+                        <li>
+                            <span>剩余金额：</span>
+                            <span className="col_color_ying">10000.333 元</span>
+                        </li>
+                        <li>
+                            <span>充值金额：</span>
+                            <InputNumber min={0} size="large"
+                                         formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                         parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                         className={onValidate('money', this.state.validate)}
+                                         onChange={(value)=>{this.onRechargeAmount(value)}}
+                            />
+                            <span style={{marginLeft: 5}}>元，</span>
+                            <span className="r_m_recharge_text">
+                                充值最低金额：
+                                <strong className="col_color_ying">45</strong>
+                                元
+                            </span>
+
+                            <p style={{marginLeft: 60, height: 18}}>{changeMoneyToChinese(this.state.postDataRecharge.money)}</p>
+                        </li>
+                        <li>
+                            <span>资金密码：</span>
+                            <Input type="password" size="large"  placeholder="资金密码"
+                                   onChange={(e)=>this.onFundPassword(e)}
+                                   className={onValidate('fundPassword', this.state.validate)}
+                            />
+                        </li>
+                        <li style={{textAlign: 'center'}}>
+                            <Button className='suggest_btn' type="primary" onClick={()=>{this.onConfirm()}} >
+                                确定
+                            </Button>
                         </li>
                     </ul>
                 </Modal>

@@ -264,35 +264,42 @@ export default class Contract extends Component {
         this.setState({quotaPost});
     };
     onStyleAccGroup() {
-        let {protocol, curUserSignStatus} = this.state;
-        if(protocol == 0 && curUserSignStatus.dividend_ratio_status != 1){//无日工资比例，无分红比例
+        const { dailysalaryStatus } = stateVar;
+        if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){//无日工资比例，无分红比例
             return 'border_content c_portion_height'
         }
-        else if(protocol != 0 && curUserSignStatus.dividend_ratio_status != 1){
+        else if(dailysalaryStatus.isSalary == 1 && dailysalaryStatus.isDividend != 1){//无分红比例
             return 'border_content c_portion_height'
+        }
+        else if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend == 1){//无日工资比例
+            return 'border_content no_salay'
         }
         else{
             return 'border_content c_portion'
         }
     }
     onStyleAccnum() {
-        let {protocol, curUserSignStatus} = this.state;
-        if(protocol == 0 && curUserSignStatus.dividend_ratio_status != 1){
+        const { dailysalaryStatus } = stateVar;
+        if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){//无日工资比例，无分红比例
             return 'border_content c_quota_width'
         }else{
             return 'border_content c_quota'
         }
     }
     onStyleDividend() {
-        let {protocol, curUserSignStatus} = this.state;
-        if(protocol == 0 && curUserSignStatus.dividend_ratio_status == 1){
+        const { dailysalaryStatus } = stateVar;
+        if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){//无日工资比例，无分红比例
             return 'c_dividend border_content'
-        }else {
+        }
+        else if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend == 1){//无日工资比例
+            return 'border_content no_salay'
+        }
+        else {
             return 'c_portion border_content'
         }
     };
     render() {
-        const { dividend_ratio_status } = this.state.curUserSignStatus;
+        const { dailysalaryStatus } = stateVar;
         const { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost} = this.state;
         const text=<div className='c_info_wrap'>
             <p className='c_info_title'>日工资规则</p>
@@ -332,7 +339,7 @@ export default class Contract extends Component {
                    <div>
                        <ul className='c_top clear'>
                            {
-                               protocol == 0 ?
+                               dailysalaryStatus.isSalary == 0 ?
                                    null :
                                    <li>
                                        <div className='c_salary border_content' >
@@ -354,7 +361,7 @@ export default class Contract extends Component {
                            }
                            <li>
                                {
-                                   dividend_ratio_status == 1 ?
+                                   dailysalaryStatus.isDividend == 1 ?
                                        <div className={this.onStyleDividend()} >
                                            <p className='c_title'><img src={yuanSrc}/>我的分红比例</p>
                                            <div className='c_table_wrap'>

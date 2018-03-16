@@ -410,6 +410,10 @@ export default class ActivityDetails extends Component {
                     { title: '充值奖金', dataIndex: 'wa_pay_awards', width: 75 },
                     { title: '剩余奖金份数', dataIndex: 'wa_surplus_prizes', width: 75 },
                     { title: '可领次数', dataIndex: 'wa_get_awards', width: 75 },
+                    { title: '流水金额', dataIndex: 'wa_water_account', width: 75 },
+                    { title: '流水奖金', dataIndex: 'wa_water_award', width: 75 },
+                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_award', width: 75 },
+                    { title: '可领次数', dataIndex: 'wa_get_award_numbers', width: 75 },
                     { title: '操作', dataIndex: 'wa_get_awards_2', width: 75,
                         render: (text, record) =>
                             <Button type="primary"
@@ -424,10 +428,6 @@ export default class ActivityDetails extends Component {
                                 领取
                             </Button>,
                     },
-                    { title: '流水金额', dataIndex: 'wa_water_account', width: 75 },
-                    { title: '流水奖金', dataIndex: 'wa_water_award', width: 75 },
-                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_award', width: 75 },
-                    { title: '可领次数', dataIndex: 'wa_get_award_numbers', width: 75 },
                     { title: '操作', dataIndex: 'wa_get_award_numbers_2', width: 80,
                         render: (text, record) =>
                             <Button type="primary"
