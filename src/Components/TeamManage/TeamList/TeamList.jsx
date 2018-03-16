@@ -8,6 +8,7 @@ import Crumbs from '../../Common/Crumbs/Crumbs'
 import { stateVar } from '../../../State';
 import Contract from '../../Common/Contract/Contract';
 import { changeMoneyToChinese, onValidate } from '../../../CommonJs/common';
+import md5 from 'md5';
 
 import './TeamList.scss';
 
@@ -90,9 +91,17 @@ export default class TeamList extends Component {
                 fundPassword: 2
             },
             postDataRecharge: {// 充值
-                money: 0,
+                money: '',
                 fundPassword: ''
-            }
+            },
+            recharge: {
+                balance: 0,
+                recharge_max: 0,
+                recharge_min: 0,
+                username: '',
+                userid: '',
+            },
+            rechargeLoading: false,
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -543,26 +552,52 @@ export default class TeamList extends Component {
     };
     /*选择充值*/
     onRecharge(record){
-        this.setState({rechargeVisible: true})
+        Fetch.transfer({
+            method: 'POST',
+            body: JSON.stringify({
+                toUserid: record.userid,
+                type: 'TransferInfo'
+            })
+        }).then((res)=>{
+            if(this._ismount && res.status == 200){
+                let {recharge} = this.state,
+                    data = res.repsoneContent;
+                recharge.userid = record.userid;
+                recharge.username = data.username;
+                recharge.recharge_max = data.recharge_max;
+                recharge.recharge_min = data.recharge_min;
+                recharge.balance = data.balance;
+                this.setState({
+                    recharge,
+                    rechargeVisible: true
+                })
+            }else{
+                Modal.warning({
+                    title: res.shortMessage,
+                });
+            }
+        })
+
     };
     onCancelRecharge() {
         let {validate, postDataRecharge} = this.state;
         validate.money = 2;
         validate.fundPassword = 2;
-        postDataRecharge.money = null;
-        postDataRecharge.fundPassword = null;
+        postDataRecharge.money = '';
+        postDataRecharge.fundPassword = '';
         this.setState({
             rechargeVisible: false,
             validate,
-            postDataRecharge
+            postDataRecharge,
+            rechargeLoading: false,
         })
     }
     // 充值金额
     onRechargeAmount(value) {
-        let {validate, postDataRecharge, loadmin, loadmax} = this.state;
+        let {validate, postDataRecharge, recharge} = this.state;
         let reg = /^[0-9]*$/;
         let r = reg.test(value);
-        if(!r ||value == 0 || value < loadmin || value > loadmax){
+        if(!r ||value == 0 || value < recharge.recharge_min || value > recharge.recharge_max){
             validate.money = 1;
         }else{
             validate.money = 0;
@@ -573,15 +608,38 @@ export default class TeamList extends Component {
     };
     /*立即充值*/
     onConfirm() {
-        let {validate, postDataRecharge} = this.state;
+        let {validate, postDataRecharge, recharge} = this.state;
         if(validate.money == 0 && validate.fundPassword == 0){
-
+            this.setState({rechargeLoading: true});
+            Fetch.transfer({
+                method: 'POST',
+                body: JSON.stringify({
+                    toUserid: recharge.userid,
+                    type: 'goTransfer',
+                    money: postDataRecharge.money,
+                    secpass: md5(postDataRecharge.fundPassword)
+                })
+            }).then((res)=>{
+                if(this._ismount){
+                    if(res.status == 200){
+                        Modal.success({
+                            title: res.shortMessage,
+                        });
+                        this.onCancelRecharge();
+                    }else{
+                        this.setState({rechargeLoading: false});
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
+                }
+            })
         }else{
             if(validate.money == 2){
-                validate.money == 1
+                validate.money = 1
             }
             if(validate.fundPassword == 2){
-                validate.fundPassword == 1
+                validate.fundPassword = 1
             }
             this.setState({validate})
         }
@@ -598,8 +656,8 @@ export default class TeamList extends Component {
         this.setState({postDataRecharge, validate});
     };
     render() {
-        const { dailysalaryStatus } = stateVar;
-        const { disabled, tableData, typeName, contentArr, prizeGroupList, agPost, diviPost } = this.state;
+        const { dailysalaryStatus} = stateVar;
+        const { disabled, tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge } = this.state;
         let columns = [
             {
                 title: '用户名',
@@ -680,7 +738,12 @@ export default class TeamList extends Component {
                 dataIndex: 'action',
                 render: (text, record) => <div>
                     <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
-                    <Button className='recharge_btn' onClick={()=>this.onRecharge(record)}>充值</Button>
+                    <Button className='recharge_btn'
+                            onClick={()=>this.onRecharge(record)}
+                            disabled={record.canRecharge == 1 ? false : true}
+                    >
+                        充值
+                    </Button>
                 </div>,
                 width: 150,
             }];
@@ -698,7 +761,7 @@ export default class TeamList extends Component {
                     title: '用户名',
                     dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
                     render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
-                    width: 140,
+                    width: 110,
                 }, {
                     title: '用户类型',
                     dataIndex: 'groupname',
@@ -732,7 +795,7 @@ export default class TeamList extends Component {
                         >
                             {text==1 ? '已签订' : '未签订'}
                         </Button>,
-                    width: 100,
+                    width: 85,
                 }, {
                     title: '配额',
                     dataIndex: 'useraccgroup_status',
@@ -750,7 +813,7 @@ export default class TeamList extends Component {
                                         '新申请'
                             }
                         </Button>,
-                    width: 100,
+                    width: 85,
                 }, {
                     title: '最后登录时间',
                     dataIndex: 'lasttime',
@@ -758,8 +821,16 @@ export default class TeamList extends Component {
                 }, {
                     title: '操作',
                     dataIndex: 'action',
-                    render: (text, record) => <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>,
-                    width: 110,
+                    render: (text, record) => <div>
+                        <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
+                        <Button className='recharge_btn'
+                                onClick={()=>this.onRecharge(record)}
+                                disabled={record.canRecharge == 1 ? false : true}
+                        >
+                            充值
+                        </Button>
+                    </div>,
+                    width: 150,
                 }];
         }
         if(dailysalaryStatus.isDividend != 1){
@@ -768,7 +839,7 @@ export default class TeamList extends Component {
                     title: '用户名',
                     dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
                     render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
-                    width: 140,
+                    width: 110,
                 }, {
                     title: '用户类型',
                     dataIndex: 'groupname',
@@ -802,7 +873,7 @@ export default class TeamList extends Component {
                         >
                             {text==1 ? '已签订' : '未签订'}
                         </Button>,
-                    width: 90,
+                    width: 85,
                 }, {
                     title: '配额',
                     dataIndex: 'useraccgroup_status',
@@ -820,7 +891,7 @@ export default class TeamList extends Component {
                                         '新申请'
                             }
                         </Button>,
-                    width: 90,
+                    width: 85,
                 }, {
                     title: '最后登录时间',
                     dataIndex: 'lasttime',
@@ -828,8 +899,16 @@ export default class TeamList extends Component {
                 }, {
                     title: '操作',
                     dataIndex: 'action',
-                    render: (text, record) => <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>,
-                    width: 110,
+                    render: (text, record) => <div>
+                        <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
+                        <Button className='recharge_btn'
+                                onClick={()=>this.onRecharge(record)}
+                                disabled={record.canRecharge == 1 ? false : true}
+                        >
+                            充值
+                        </Button>
+                    </div>,
+                    width: 150,
                 }];
         }
         if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){
@@ -838,7 +917,7 @@ export default class TeamList extends Component {
                     title: '用户名',
                     dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
                     render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
-                    width: 140,
+                    width: 110,
                 }, {
                     title: '用户类型',
                     dataIndex: 'groupname',
@@ -887,8 +966,16 @@ export default class TeamList extends Component {
                 }, {
                     title: '操作',
                     dataIndex: 'action',
-                    render: (text, record) => <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>,
-                    width: 110,
+                    render: (text, record) => <div>
+                        <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
+                        <Button className='recharge_btn'
+                                onClick={()=>this.onRecharge(record)}
+                                disabled={record.canRecharge == 1 ? false : true}
+                        >
+                            充值
+                        </Button>
+                    </div>,
+                    width: 150,
                 }];
         }
 
@@ -1147,39 +1234,46 @@ export default class TeamList extends Component {
                     <ul className="recharge_list">
                         <li>
                             <span>用户账号：</span>
-                            <span>fafaf</span>
+                            <span>{recharge.username}</span>
                         </li>
                         <li>
-                            <span>剩余金额：</span>
-                            <span className="col_color_ying">10000.333 元</span>
+                            <span>您的余额：</span>
+                            <span className="col_color_ying">{recharge.balance} 元</span>
                         </li>
                         <li>
                             <span>充值金额：</span>
-                            <InputNumber min={0} size="large"
+                            <InputNumber min={parseInt(recharge.recharge_min)} size="large"
+                                         max={parseInt(recharge.recharge_max)}
+                                         value={postDataRecharge.money}
                                          formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                          parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                          className={onValidate('money', this.state.validate)}
                                          onChange={(value)=>{this.onRechargeAmount(value)}}
                             />
-                            <span style={{marginLeft: 5}}>元，</span>
-                            <span className="r_m_recharge_text">
+                            <span style={{marginLeft: 5}}>元</span>
+                            <p style={{marginLeft: 60}}>
                                 充值最低金额：
-                                <strong className="col_color_ying">45</strong>
+                                <strong className="col_color_ying">{recharge.recharge_min}</strong>
+                                元，最高
+                                <strong className="col_color_ying">{recharge.recharge_max}</strong>
                                 元
-                            </span>
-
+                            </p>
                             <p style={{marginLeft: 60, height: 18}}>{changeMoneyToChinese(this.state.postDataRecharge.money)}</p>
                         </li>
                         <li>
                             <span>资金密码：</span>
                             <Input type="password" size="large"  placeholder="资金密码"
+                                   value={postDataRecharge.fundPassword}
                                    onChange={(e)=>this.onFundPassword(e)}
                                    className={onValidate('fundPassword', this.state.validate)}
                             />
                         </li>
                         <li style={{textAlign: 'center'}}>
-                            <Button className='suggest_btn' type="primary" onClick={()=>{this.onConfirm()}} >
-                                确定
+                            <Button className='suggest_btn' type="primary"
+                                    onClick={()=>{this.onConfirm()}}
+                                    loading={this.state.rechargeLoading}
+                            >
+                                立即充值
                             </Button>
                         </li>
                     </ul>

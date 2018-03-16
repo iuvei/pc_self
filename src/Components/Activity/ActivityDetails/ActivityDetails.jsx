@@ -37,7 +37,7 @@ export default class ActivityDetails extends Component {
                 sign_conditions_water_amount: '0', //流水达到 x 元，自动签到
                 activity_award_sign_sets: [], //签到奖励的档次数据
 
-                user_get_bonus_number_val: '0', //总计可领取奖金次数
+                user_get_bonus_number_val: '0', //可领取奖金次数
                 water_bills_stes: {}, //充值流水
                 user_is_enrolls: '1', //当前用户是否已经报名。0 否，1 是。当未登录时，永远显示 0
                 max_online_num_type: 0,
@@ -474,7 +474,7 @@ export default class ActivityDetails extends Component {
                 return (
                     <div>
                         <p className="a_d_explain_text">
-                            总计可领取奖金次数：
+                            可领取奖金次数：
                             <span className="col_color_ying">{response.user_get_bonus_number_val}</span>
                             次
                         </p>

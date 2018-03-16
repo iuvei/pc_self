@@ -26,7 +26,7 @@ class State {
         cpbalance: '0.00', // 恒彩主账户
         eabalance: '0.00', // EA真人娱乐
         ptbalance: '0.00', // PT娱乐
-        kgbalance: '0.00', // GT娱乐城
+        kgbalance: '0.00', // KGAME游戏
         bobingBalance: '0.00', // 博饼账户
         sbbalance: '0.00', // 体育
     };

@@ -86,7 +86,7 @@ export default class Fanshui extends Component {
                                     <li>
                                         <span className="col_color_ying">②</span>&nbsp;
                                         此活动规则适用于
-                                        <span className="col_color_ying">体育竞技、EA娱乐城、PT娱乐城、GT娱乐城、博饼</span>
+                                        <span className="col_color_ying">体育竞技、EA娱乐城、PT娱乐城、KGAME游戏、博饼</span>
                                         ；
                                     </li>
                                     <li>
@@ -136,7 +136,7 @@ export default class Fanshui extends Component {
                                         <li className="left">EA娱乐城</li>
                                         <li className="left">体育竞技</li>
                                         <li className="left">PT娱乐城</li>
-                                        <li className="left">GT娱乐城</li>
+                                        <li className="left">KGAME游戏</li>
                                         <li className="left">博饼</li>
                                     </ul>
                             </div>

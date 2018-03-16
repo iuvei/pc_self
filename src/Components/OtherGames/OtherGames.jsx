@@ -29,7 +29,7 @@ const otherGamesArr = [
         disabled: true,
         money: allBalance.ptbalance,
     },{
-        name: 'GT娱乐城',
+        name: 'KGAME游戏',
         link: '/otherGames/gt',
         id: 'gt',
         disabled: true,

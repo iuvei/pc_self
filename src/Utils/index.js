@@ -195,6 +195,8 @@ const wechatbind = (body) =>  request(http.interFace('WECHATBIND'),body);
 const addUserInfo = (body) =>  request(http.interFace('ADDUSERINFO'),body);
 //判断是否输入过资金密码和密码验证
 const checkpass = (body) =>  request(http.interFace('CHECKPASS'),body);
+//上下级转账
+const transfer = (body) =>  request(http.interFace('TRANSFER'),body);
 
 export default {
     getSess,
@@ -292,5 +294,6 @@ export default {
     registerAward,
     wechatbind,
     addUserInfo,
-    checkpass
+    checkpass,
+    transfer
 }

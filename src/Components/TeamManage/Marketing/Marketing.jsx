@@ -64,7 +64,7 @@ export default class Marketing extends Component {
     componentWillUnmount() {
         this._ismount = false;
     };
-    getData(){
+    getData(type){
         Fetch.adduser({
             method:'POST',
         }).then((res)=>{
@@ -74,8 +74,10 @@ export default class Marketing extends Component {
 
                 registerSlider.sliderMax = repsone.groupLevel;
                 generalizeSlider.sliderMax = repsone.groupLevel;
-                registerPost.keeppoint = parseFloat(((repsone.selfPoint - repsone.list['1800'].high)*100).toFixed(1));
-                generalizePost.keeppoint = parseFloat(((repsone.selfPoint - repsone.list['1800'].high)*100).toFixed(1));
+                if(type != 'register'){
+                    registerPost.keeppoint = parseFloat(((repsone.selfPoint - repsone.list['1800'].high)*100).toFixed(1));
+                    generalizePost.keeppoint = parseFloat(((repsone.selfPoint - repsone.list['1800'].high)*100).toFixed(1));
+                }
                 this.setState({
                     registerSlider: registerSlider,
                     generalizeSlider: generalizeSlider,
@@ -200,7 +202,7 @@ export default class Marketing extends Component {
                 if(res.status == 200){
                     let _this = this;
                     if(registerAccountNum > 0){
-                        this.getData();
+                        this.getData('register');
                     }
 
                     Modal.success({
@@ -313,7 +315,7 @@ export default class Marketing extends Component {
             generalizePost: generalizePost,
             reneralizeAccountNum: list[generalizePost.groupLevel].accnum,
         })
-    }
+    };
     /*推广-减btn*/
     onGeneralizeMinus() {
         let generalizePost = this.state.generalizePost,
@@ -325,7 +327,7 @@ export default class Marketing extends Component {
             generalizePost: generalizePost,
             reneralizeAccountNum: list[generalizePost.groupLevel].accnum,
         })
-    }
+    };
     /*启用/禁止*/
     onChangeSwitch(checked,record) {
         let postData = {

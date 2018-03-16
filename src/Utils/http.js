@@ -204,6 +204,8 @@ const interFace = (key) => {
     INTERFACE['ADDUSERINFO'] = 'controller=sportsbook&action=AddUserInfo';
     //判断是否输入过资金密码和密码验证
     INTERFACE['CHECKPASS'] = 'controller=security&action=checkpass';
+    //上下级转账
+    INTERFACE['TRANSFER'] = 'controller=financial&action=Transfer';
 
     let httpUrl = stateVar.httpUrl;
     if(key == 'PTLOGINNEW') {
