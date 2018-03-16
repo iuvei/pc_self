@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import Websocket from 'react-websocket';
 import Fetch from '../../../Utils';
-import { Icon, Badge, Modal, Button } from 'antd';
+import { Icon, Badge, Modal, Button ,notification,Icon} from 'antd';
 const confirm = Modal.confirm;
 import { stateVar } from '../../../State';
 import emitter from '../../../Utils/events';
@@ -311,7 +311,10 @@ export default class HeaderTop extends Component {
         })
     };
     handleData(data){
-    	emitter.emit('openWebsocket',data);
+    	let thisUrl = window.location.href.indexOf('lottery') > -1 ? true : false;
+    	if(thisUrl){
+    		emitter.emit('openWebsocket',data);
+    	}
     	let message = eval('('+ data +')');
     	if(message.status == 1){
     		let tempType = message.data.type;
@@ -319,9 +322,22 @@ export default class HeaderTop extends Component {
     			this.getMenu();
     		}else if(tempType == 6){
     			this.getNotice();
+    		}else if(tempType == 7){
+    			notification.open(
+    				{
+					    message: message.data.data.title,
+					    description: message.data.data.content,
+					    placement:'bottomRight',
+					    duration:10,
+					    icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+					}
+    			)
+    			this.getMenu();
     		}else if(tempType == 8 || tempType == 2){
-    			common.removeStore(common.getStore('userId'));
-    			this.getAccGroup();
+    			if(!thisUrl){
+    				common.removeStore(common.getStore('userId'));
+    				this.getAccGroup();
+    			}
     		}else if(tempType == 10){
     			this.onUnread();
     			emitter.emit('zhanneixin');

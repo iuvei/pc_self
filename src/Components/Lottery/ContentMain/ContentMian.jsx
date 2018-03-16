@@ -482,7 +482,7 @@ export default class ContentMian extends Component {
     };
     //得到投注记录
      getBetHistory(){
-     	let tempObj = {flag:'getprojects',lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20}
+     	let tempObj = {flag:'getprojects',lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20};
      	if(stateVar.nowlottery.lotteryBetId == 23){
      		Fatch.aboutMmc({
 	    		method:"POST",

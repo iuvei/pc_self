@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Websocket from 'react-websocket';
 import emitter from '../../../Utils/events';
-import { Row, Col, Switch,message,Button,notification,Icon} from 'antd';
+import { Row, Col, Switch,message,Button} from 'antd';
 import {Link} from 'react-router';
 import QueueAnim from 'rc-queue-anim';
 import './ContentTop.scss'
@@ -447,19 +447,9 @@ export default class ContentTop extends Component {
     		}else if(tempType == 4 || tempType == 3){
     			this.props.getBetHistory();
     		}else if(tempType == 8 || tempType == 2){
-    			common.removeStore(common.getStore('userId'))
+    			common.removeStore(common.getStore('userId'));
     			this.props.getLotteryData();
     			this.getAccGroup();
-    		}else if(tempType == 7){
-				notification.open(
-    				{
-					    message: message.data.data.title,
-					    description: message.data.data.content,
-					    placement:'bottomRight',
-					    duration:10,
-					    icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
-					}
-    			)
     		}
     	}
     }
