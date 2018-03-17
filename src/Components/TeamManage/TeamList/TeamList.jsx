@@ -1249,20 +1249,17 @@ export default class TeamList extends Component {
                             <span>充值金额：</span>
                             <InputNumber min={parseInt(recharge.recharge_min)} size="large"
                                          max={parseInt(recharge.recharge_max)}
-                                         // step={0.0001}
                                          value={postDataRecharge.money}
-                                         // formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                         // parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                          className={onValidate('money', this.state.validate)}
                                          onChange={(value)=>{this.onRechargeAmount(value)}}
                             />
                             <span style={{marginLeft: 5}}>元</span>
                             <p style={{marginLeft: 60}}>
-                                充值最低金额：
+                                充值最低金额
                                 <strong className="col_color_ying">{recharge.recharge_min}</strong>
                                 元，最高
                                 <strong className="col_color_ying">{recharge.recharge_max}</strong>
-                                元
+                                元的整数
                             </p>
                             <p style={{marginLeft: 60, height: 18}}>{changeMoneyToChinese(this.state.postDataRecharge.money)}</p>
                         </li>

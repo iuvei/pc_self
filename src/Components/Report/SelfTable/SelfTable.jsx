@@ -295,69 +295,58 @@ export default class SelfTable extends Component {
                 title: '投注量',
                 dataIndex: 'cp_stake',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
                 title: '有效投注量',
                 dataIndex: 'cp_effective_stake',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 85,
             },  {
                 title: '中奖',
                 dataIndex: 'cp_bonus',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
                 title: '返点',
                 dataIndex: 'cp_point',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
                 title: '毛收入',
                 dataIndex: 'income',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
                 title: '活动',
                 dataIndex: 'sum_activity',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 70,
             }, {
                 title: '净收入',
                 dataIndex: 'net_income',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
                 title: '日工资',
                 dataIndex: 'salary',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 75,
             }, {
                 title: '日亏损',
                 dataIndex: 'lose_salary',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 75,
             }, {
                 title: '分红',
                 dataIndex: 'allsalary',
                 className: 'column-right',
-                // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 75,
             }, {
                 title: '总盈亏',
                 dataIndex: 'last_win_lose',
                 className: 'column-right',
-                render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                    <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                    <span className="col_color_ying">{text}</span>,
                 width: 75,
             }
         ];
@@ -398,62 +387,53 @@ export default class SelfTable extends Component {
                     title: '投注量',
                     dataIndex: 'cp_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 85,
                 },  {
                     title: '中奖',
                     dataIndex: 'cp_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     className: 'column-right',
                     dataIndex: 'net_income',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'salary',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '分红',
                     dataIndex: 'allsalary',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'last_win_lose',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -494,62 +474,53 @@ export default class SelfTable extends Component {
                     title: '投注量',
                     dataIndex: 'cp_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 85,
                 },  {
                     title: '中奖',
                     dataIndex: 'cp_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日亏损',
                     dataIndex: 'lose_salary',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '分红',
                     dataIndex: 'allsalary',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'last_win_lose',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -590,62 +561,53 @@ export default class SelfTable extends Component {
                     title: '投注量',
                     dataIndex: 'cp_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 85,
                 },  {
                     title: '中奖',
                     dataIndex: 'cp_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'salary',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '日亏损',
                     dataIndex: 'lose_salary',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'last_win_lose',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -686,57 +648,48 @@ export default class SelfTable extends Component {
                     title: '投注量',
                     dataIndex: 'cp_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 85,
                 },  {
                     title: '中奖',
                     dataIndex: 'cp_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '分红',
                     dataIndex: 'allsalary',
                     className: 'column-right',
-                    // className: dailysalaryStatus.isDividend != 1 ? 'column-right status_hide' : 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'last_win_lose',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -776,56 +729,48 @@ export default class SelfTable extends Component {
                     title: '投注量',
                     dataIndex: 'cp_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 85,
                 },  {
                     title: '中奖',
                     dataIndex: 'cp_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'salary',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'last_win_lose',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -865,56 +810,48 @@ export default class SelfTable extends Component {
                     title: '投注量',
                     dataIndex: 'cp_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 85,
                 },  {
                     title: '中奖',
                     dataIndex: 'cp_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日亏损',
                     dataIndex: 'lose_salary',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'last_win_lose',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -954,50 +891,43 @@ export default class SelfTable extends Component {
                     title: '投注量',
                     dataIndex: 'cp_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 85,
                 },  {
                     title: '中奖',
                     dataIndex: 'cp_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'net_income',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'last_win_lose',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];

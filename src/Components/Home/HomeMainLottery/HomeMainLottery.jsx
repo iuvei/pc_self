@@ -40,11 +40,9 @@ export default class HomeMainLottery extends Component {
                         dataArray.map((item)=>{
                             return (
                                 <li key={item.nav}>
-                                    <div className="h_l_content">
-                                        <img src={item.img} width="100%" alt=""/>
-                                        <div className="home_m_lottery_type home_m_lottery_type_hover" onClick={()=>this.onLotterys(item.nav)}>
-                                            {item.action}
-                                        </div>
+                                    <img src={item.img} width="100%" alt=""/>
+                                    <div className="home_m_lottery_type home_m_lottery_type_hover" onClick={()=>this.onLotterys(item.nav)}>
+                                        {item.action}
                                     </div>
                                 </li>
                             )

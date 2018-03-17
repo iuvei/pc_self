@@ -342,68 +342,58 @@ export default class TeamTable extends Component {
                 title: '投注量',
                 dataIndex: 'sum_price',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
                 title: '有效投注量',
                 dataIndex: 'sum_effective_price',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 80,
             },  {
                 title: '中奖',
                 dataIndex: 'sum_bonus',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
                 title: '返点',
                 dataIndex: 'sum_point',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 70,
             }, {
                 title: '毛收入',
                 dataIndex: 'sum_grossincome',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
                 title: '活动',
                 dataIndex: 'sum_activity',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 70,
             }, {
                 title: '净收入',
                 dataIndex: 'sum_netincome',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 80,
             }, {
                 title: '日工资',
                 dataIndex: 'sum_dailywages',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 75,
             }, {
                 title: '日亏损',
                 dataIndex: 'sum_dailyloss',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 75,
             }, {
                 title: '分红',
                 dataIndex: 'sum_dividents',
                 className: 'column-right',
-                render: text => parseFloat(text).toFixed(3),
                 width: 75,
             }, {
                 title: '总盈亏',
                 dataIndex: 'sum_total',
                 className: 'column-right',
-                render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                    <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                    <span className="col_color_ying">{text}</span>,
                 width: 75,
             }
         ];
@@ -439,62 +429,53 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'sum_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'sum_grossincome',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'sum_netincome',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'sum_dailywages',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '分红',
                     dataIndex: 'sum_dividents',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -530,61 +511,52 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'sum_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'sum_grossincome',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'sum_netincome',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日亏损',
                     dataIndex: 'sum_dailyloss',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '分红',
                     dataIndex: 'sum_dividents',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -620,62 +592,53 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'sum_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'sum_grossincome',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'sum_netincome',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'sum_dailywages',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '日亏损',
                     dataIndex: 'sum_dailyloss',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -711,55 +674,47 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'sum_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'sum_grossincome',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'sum_netincome',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '分红',
                     dataIndex: 'sum_dividents',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -794,56 +749,48 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'sum_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'sum_grossincome',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'sum_netincome',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日工资',
                     dataIndex: 'sum_dailywages',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -878,55 +825,47 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'sum_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'sum_grossincome',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'sum_netincome',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '日亏损',
                     dataIndex: 'sum_dailyloss',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 75,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
@@ -961,50 +900,43 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '返点',
                     dataIndex: 'sum_point',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'sum_grossincome',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '活动',
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 70,
                 }, {
                     title: '净收入',
                     dataIndex: 'sum_netincome',
                     className: 'column-right',
-                    render: text => parseFloat(text).toFixed(3),
                     width: 80,
                 }, {
                     title: '总盈亏',
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    render: text => text < 0 ? <span className="col_color_shu">{parseFloat(text).toFixed(3)}</span> :
-                        <span className="col_color_ying">{parseFloat(text).toFixed(3)}</span>,
+                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
                     width: 75,
                 }
             ];
