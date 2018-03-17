@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import Websocket from 'react-websocket';
 import emitter from '../../../Utils/events';
 import { Row, Col, Switch,message,Button} from 'antd';
 import {Link} from 'react-router';
@@ -88,7 +87,6 @@ export default class ContentTop extends Component {
 	    	});
     	}
     	this.getlotterycode();
-    	this.getFutureIssue();
     	this.getFutureIssue();
     	this.getKjHistory();
     };

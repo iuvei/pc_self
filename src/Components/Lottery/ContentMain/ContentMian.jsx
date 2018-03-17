@@ -127,7 +127,8 @@ export default class ContentMian extends Component {
     	}
     	stateVar.alllotteryType = tempLotteryType;//所有彩种类型
     	stateVar.openLotteryFlag = false;//控制彩种是否可以点击
-    	this.setState({
+    	if(this._ismount){
+    		this.setState({
 	        	navIndex:0,
 	        	navTwoIndex: 0,
 	        	navThreeIndex:0,
@@ -144,20 +145,143 @@ export default class ContentMian extends Component {
             	checked: true,
             	omodel:'2'
         	},()=>{
-        	$("li.number_active").removeClass('number_active');
-        	$(".lh .hover").removeClass('hover');
-        	$(".zx span").removeClass('hover');
-        	//判断玩法是否有缓存，没有则重新获取所有玩法
-        	let commonData = common.getStore(common.getStore('userId'));
-	    	let ifMehtod = commonData == (null || undefined) ? false : true;
-	    	if(ifMehtod){
-				this.setOneMethod(commonData);
-	    	}else{
-	    		this.getLotteryData();
-	    	}
-	    	this.getBetHistory();
-	    	this.getVersion();//得到版本号
-    	});
+	        	$("li.number_active").removeClass('number_active');
+	        	$(".lh .hover").removeClass('hover');
+	        	$(".zx span").removeClass('hover');
+	        	//判断玩法是否有缓存，没有则重新获取所有玩法
+	        	let commonData = common.getStore(common.getStore('userId'));
+		    	let ifMehtod = commonData == (null || undefined) ? false : true;
+		    	if(ifMehtod){
+		    		if(stateVar.nowlottery.lotteryBetId == 23){
+		    			if(commonData['mmc'] == undefined){
+		    				this.getMmcMethod();
+		    			}else{
+		    				this.setOneMethod(commonData);
+		    			}
+		    		}else{
+		    			if(commonData['ssc'] == undefined){
+		    				this.getLotteryData();
+		    			}else{
+		    				this.setOneMethod(commonData);
+		    			}
+		    		}
+		    	}else{
+		    		if(stateVar.nowlottery.lotteryBetId == 23){
+		    			this.getMmcMethod();
+		    		}else{
+		    			this.getLotteryData();
+		    		}
+		    	}
+		    	this.getBetHistory();
+		    	this.getVersion();//得到版本号
+	    	});
+    	}
+    };
+    //设置单个彩种玩法 val:所有玩法信息
+    setOneMethod(val){
+    	let tempIndex = 0;
+    	let tempMsg;
+    	for(let i in val){
+			if(i == stateVar.nowlottery.lotteryId){
+				let tempVal = val[i];
+				if(tempVal.msg != undefined){
+					tempMsg = tempVal.msg;
+					stateVar.openLotteryFlag = true;
+					break;
+				}else{
+					for(let j=0;j<tempVal.length;j++){
+						let tempK = tempVal[j].label;
+						for(let k=0;k<tempK.length;k++){
+							let tempS = tempK[k].label;
+							for(let s=0;s<tempS.length;s++){
+								if(tempS[s].methodid == stateVar.nowlottery.defaultMethodId && tempS[s].selectarea.type != "input"){
+									tempIndex = j;
+									break;
+								}
+							}
+						}
+					}
+					if(this._ismount){
+						this.setState({lotteryMethod:val[i],navIndex:tempIndex},()=>{
+							//相关玩法的state值赋值
+		    				this.selectAreaData(this.state.lotteryMethod);
+						})
+					}
+				}
+			}
+    	}
+    	if(tempMsg){
+    		this.setState({lotteryMethod:[]},()=>{
+    			if(val['ssc'] && val['ssc'].msg == undefined){
+    				stateVar.nowlottery.lotteryId = 'ssc';
+    			}else{
+    				if(val['ffc'] && val['ffc'].msg == undefined){
+						stateVar.nowlottery.lotteryId = 'ffc';
+					}else{
+						if(val['24xsc'] && val['24xsc'].msg == undefined){
+	    					stateVar.nowlottery.lotteryId = '24xsc';
+	    				}else{
+	    					stateVar.nowlottery.lotteryId = 'txffc';
+	    				}
+					}
+    			}
+	    		this.initData();
+	    		stateVar.openLotteryFlag = true;
+    		});
+    	}
+    };
+    //获取所有彩种玩法
+    getLotteryData(){
+    	Fatch.lotteryBets({
+    		method : "POST",
+    		body : JSON.stringify({sCurmids:stateVar.alllotteryType})}
+    		).then((data)=>{
+    			stateVar.openLotteryFlag = true;
+    			this.setState({ loading: false });
+    			if(this._ismount && data.status == 200){
+    				let tempData = data.repsoneContent;
+    				let tempObj = common.getStore(common.getStore('userId')) || {};
+    				if(tempObj['mmc'] == undefined){
+    					tempObj = tempData;
+    				}else{
+    					let tempmmc = tempObj['mmc'];
+    					tempObj = tempData;
+    					tempObj['mmc'] = tempmmc;
+    				}
+    				common.setStore(common.getStore('userId'), tempObj);
+    				this.setOneMethod(tempData);
+    			}else{
+    				const modal = Modal.success({
+					    title: '温馨提示',
+					    content: data.shortMessage
+					});
+					setTimeout(() => modal.destroy(), 3000);
+    			}
+    		})
+    };
+    //获取秒秒彩玩法
+    getMmcMethod(){
+    	Fatch.aboutMmc(
+    		{
+    			method:'post',
+    			body:JSON.stringify({sCurmids:311700,lotteryid:23})
+    		}
+    	).then((data)=>{
+    		stateVar.openLotteryFlag = true;
+			if(this._ismount && data.status == 200){
+				let tempData = data.repsoneContent;
+				let tempObj = common.getStore(common.getStore('userId')) || {};
+				tempObj['mmc'] = tempData;
+				common.setStore(common.getStore('userId'), tempObj);
+				this.setOneMethod(tempObj);
+			}else{
+				const modal = Modal.success({
+				    title: '温馨提示',
+				    content: data.shortMessage
+				});
+				setTimeout(() => modal.destroy(), 3000);
+			}
+		})
     };
     //确定投注页面
     lotteryOkBet(param){
@@ -297,7 +421,6 @@ export default class ContentMian extends Component {
     onChangeStop(e){
     	this.setState({isPrizeStop:e.target.checked});
     }
-
     getVersion(){
     	let tempObj = {version:'push'};
     	Fatch.getVersion({method:'post',body:JSON.stringify(tempObj)}).then((data)=>{
@@ -327,7 +450,7 @@ export default class ContentMian extends Component {
     				}else{
     					if(!oneFlag){
     						this.setState({lotteryMethod:[]});
-    						common.removeStore(common.getStore('userId'))
+    						common.removeStore(common.getStore('userId'));
     						common.setStore('version',version);
     						this.getLotteryData();
     					}
@@ -342,7 +465,7 @@ export default class ContentMian extends Component {
     				common.setStore('version',version);
     			}
     		}else{
-
+				common.removeStore(common.getStore('userId'));
     		}
 		});
     };
@@ -395,91 +518,6 @@ export default class ContentMian extends Component {
     		},50);
 		});
 
-    };
-    //获取所有彩种玩法
-    getLotteryData(){
-    	Fatch.lotteryBets({
-    		method : "POST",
-    		body : JSON.stringify({sCurmids:stateVar.alllotteryType})}
-    		).then((data)=>{
-    			this.setState({ loading: false });
-    			if(this._ismount && data.status == 200){
-    				let tempData = data.repsoneContent;
-    				this.getMmcMethod(tempData);
-    				this.setOneMethod(tempData);
-    			}
-    		})
-    };
-    //获取秒秒彩玩法
-    getMmcMethod(val){
-    	Fatch.aboutMmc(
-    		{
-    			method:'post',
-    			body:JSON.stringify({sCurmids:311700,lotteryid:23})
-    		}
-    	).then((data)=>{
-    		stateVar.openLotteryFlag = true;
-			if(this._ismount && data.status == 200){
-				let tempData = data.repsoneContent;
-				let tempBets = val;
-				tempBets['mmc'] = tempData;
-				common.setStore(common.getStore('userId'), tempBets);
-				if(stateVar.nowlottery.lotteryBetId == 23){
-					this.setOneMethod(tempData);
-				}
-			}
-		})
-    };
-    //设置单个彩种玩法 val:所有玩法信息
-    setOneMethod(val){
-    	let tempIndex = 0;
-    	let tempMsg;
-    	for(let i in val){
-			if(i == stateVar.nowlottery.lotteryId){
-				let tempVal = val[i];
-				if(tempVal.msg != undefined){
-					tempMsg = tempVal.msg;
-					stateVar.openLotteryFlag = true;
-					break;
-				}else{
-					for(let j=0;j<tempVal.length;j++){
-						let tempK = tempVal[j].label;
-						for(let k=0;k<tempK.length;k++){
-							let tempS = tempK[k].label;
-							for(let s=0;s<tempS.length;s++){
-								if(tempS[s].methodid == stateVar.nowlottery.defaultMethodId && tempS[s].selectarea.type != "input"){
-									tempIndex = j;
-									break;
-								}
-							}
-						}
-					}
-					this.setState({lotteryMethod:val[i],navIndex:tempIndex},()=>{
-						//相关玩法的state值赋值
-	    				this.selectAreaData(this.state.lotteryMethod);
-					})
-				}
-			}
-    	}
-    	if(tempMsg){
-    		this.setState({lotteryMethod:[]},()=>{
-    			if(val['ssc'].msg == undefined){
-    				stateVar.nowlottery.lotteryId = 'ssc';
-    			}else{
-    				if(val['ffc'].msg == undefined){
-						stateVar.nowlottery.lotteryId = 'ffc';
-					}else{
-						if(val['ffc'].msg == undefined){
-	    					stateVar.nowlottery.lotteryId = '24xsc';
-	    				}else{
-	    					stateVar.nowlottery.lotteryId = 'txffc';
-	    				}
-					}
-    			}
-	    		this.initData();
-	    		stateVar.openLotteryFlag = true;
-    		});
-    	}
     };
     //得到投注记录
      getBetHistory(){

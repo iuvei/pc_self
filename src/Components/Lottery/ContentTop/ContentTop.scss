@@ -23,27 +23,31 @@
 .title_list>li{
    float: left;
 }
-.title_list .monikj{
-    float: left;
-    margin-top: 20px;
-    margin-left: 54px;
-    cursor: pointer;
-    width: 165px;
-    height: 55px;
-    border: none;
-    outline: none;
-    @include red_gradient;
-    line-height: 55px;
-    color: #fff;
-    font-size: 20px;
-    text-align: center;
-    font-weight: bold;
-    padding: 0;
-    &:disabled{
+.title_list{
+    .monikj{
+        float: left;
+        margin-top: 20px;
+        margin-left: 54px;
+        cursor: pointer;
+        width: 165px;
+        height: 55px;
         outline: none;
+        @include red_gradient;
+        line-height: 55px;
         color: #fff;
-        border:1px solid #ddd;
-        cursor:not-allowed;
+        font-size: 20px;
+        text-align: center;
+        font-weight: bold;
+        padding: 0;
+        &:disabled{
+            outline: none;
+            color: #fff;
+            border:1px solid #ddd;
+            cursor:not-allowed;
+        }
+    }
+    .ant-btn:hover{
+        background:linear-gradient(#fb2222,#c72023)
     }
 }
 .content_center{
