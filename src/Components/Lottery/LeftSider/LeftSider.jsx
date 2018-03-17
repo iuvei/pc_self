@@ -49,59 +49,87 @@ export default class LeftSider extends Component {
     		if(tempMethod == undefined || stateVar.nowlottery.lotteryId == tempId){
 	    		return;
 	    	}else{
-	    		for(let val in tempMethod){
-					if(val == tempId){
-						if(tempMethod[val].msg == undefined){
-							this._ismount = false;
-							stateVar.todayAndTomorrow = [];
-						    stateVar.tomorrowIssue = [];
-						    stateVar.issueIndex = '?????';
-							stateVar.BetContent.lt_same_code = [];
-					    	stateVar.BetContent.totalDan = 0;
-					    	stateVar.BetContent.totalNum = 0;
-					       	stateVar.BetContent.totalMoney = 0;
-					       	stateVar.BetContent.lt_trace_base = 0;
-					       	stateVar.kjNumberList = [];
-					       	stateVar.mmCkjNumberList=[];
-							clearInterval(window.interval);
-							stateVar.checkLotteryId= false;
-							stateVar.nowlottery.lotteryId = e.key;
-							stateVar.BetContent = {
-						        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
-						    };
-						    emitter.emit('initData');
-							stateVar.isload = false;
-						}else{
-							const modal = Modal.error({
-							    title: '温馨提示',
-							    content: tempMethod[val].msg,
-							});
-							setTimeout(() => modal.destroy(), 3000);
-							return;
+	    		let tempFlag = true;
+	    		if(tempId == 'mmc' && tempMethod['mmc'] == undefined){
+	    			tempFlag = false;
+	    		}else{
+	    			if(tempMethod[tempId] == undefined){
+	    				tempFlag = false;
+	    			}else{
+	    				for(let val in tempMethod){
+							if(val == tempId){
+								if(tempMethod[val].msg == undefined){
+									tempFlag = false;
+								}else{
+									const modal = Modal.error({
+									    title: '温馨提示',
+									    content: tempMethod[val].msg,
+									});
+									setTimeout(() => modal.destroy(), 3000);
+									return;
+								}
+								break;
+							}
 						}
-					}
-				}
+	    			}
+	    		}
+	    		if(!tempFlag){
+	    			this._ismount = false;
+					stateVar.todayAndTomorrow = [];
+				    stateVar.tomorrowIssue = [];
+				    stateVar.issueIndex = '?????';
+					stateVar.BetContent.lt_same_code = [];
+			    	stateVar.BetContent.totalDan = 0;
+			    	stateVar.BetContent.totalNum = 0;
+			       	stateVar.BetContent.totalMoney = 0;
+			       	stateVar.BetContent.lt_trace_base = 0;
+			       	stateVar.kjNumberList = [];
+			       	stateVar.mmCkjNumberList=[];
+					clearInterval(window.interval);
+					stateVar.checkLotteryId= false;
+					stateVar.nowlottery.lotteryId = tempId;
+					stateVar.BetContent = {
+				        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
+				    };
+				    emitter.emit('initData');
+					stateVar.isload = false;
+	    		}
 	    	}
     	}else{
     		stateVar.navIndex = 'lottery';
     		stateVar.kjNumberList = [];
-    		for(let val in tempMethod){
-				if(val == tempId){
-					if(tempMethod[val].msg == undefined){
-						stateVar.nowlottery.lotteryId = e.key;
+    		if(tempId == 'mmc' && tempMethod != undefined && tempMethod['mmc'] == undefined){
+    			stateVar.nowlottery.lotteryId = tempId;
+				hashHistory.push('/lottery');
+    		}else{
+    			if(tempMethod != undefined){
+    				if(tempMethod[tempId] == undefined){
+    					stateVar.nowlottery.lotteryId = tempId;
 						hashHistory.push('/lottery');
-					}else{
-						const modal = Modal.error({
-						    title: '温馨提示',
-						    content: tempMethod[val].msg,
-						});
-						setTimeout(() => modal.destroy(), 3000);
-						stateVar.nowlottery.lotteryId = 'ssc';
-						hashHistory.push('/lottery');
-						return;
-					}
-				}
-			}
+    				}else{
+    					for(let val in tempMethod){
+							if(val == tempId){
+								if(tempMethod[val].msg == undefined){
+									stateVar.nowlottery.lotteryId = tempId;
+									hashHistory.push('/lottery');
+								}else{
+									const modal = Modal.error({
+									    title: '温馨提示',
+									    content: tempMethod[val].msg,
+									});
+									setTimeout(() => modal.destroy(), 3000);
+									stateVar.nowlottery.lotteryId = 'ssc';
+									hashHistory.push('/lottery');
+									return;
+								}
+							}
+						}
+    				}
+    			}else{
+    				stateVar.nowlottery.lotteryId = tempId;
+					hashHistory.push('/lottery');
+    			}
+    		}
     	}
     };
 	openKey(){

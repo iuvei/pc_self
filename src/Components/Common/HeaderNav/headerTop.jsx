@@ -50,8 +50,8 @@ export default class HeaderTop extends Component {
         this.getBalance();
         this.getNotice();
         this.onUnread();
+        this.getWebsocket();
         this.getress();
-        this.getAccGroup();
     };
     componentWillUnmount() {
         this._ismount = false;
@@ -310,6 +310,17 @@ export default class HeaderTop extends Component {
             }
         })
     };
+    //开始推送
+    getWebsocket(){
+    	let ws = new WebSocket('ws://'+common.getStore("pushDomain")+'');
+    	ws.onopen = () =>{
+	    	let msg = {"method":"join","uid":common.getStore('userId'),"hobby":1};
+	    	ws.send(JSON.stringify(msg));
+    	}
+    	ws.onmessage = (e) => {
+    		this.handleData(e.data);
+    	}
+    };
     handleData(data){
     	let thisUrl = window.location.href.indexOf('lottery') > -1 ? true : false;
     	if(thisUrl){
@@ -328,7 +339,7 @@ export default class HeaderTop extends Component {
 					    message: message.data.data.title,
 					    description: message.data.data.content,
 					    placement:'bottomRight',
-					    duration:10,
+					    duration:5,
 					    icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
 					}
     			)
@@ -344,20 +355,11 @@ export default class HeaderTop extends Component {
     		}
     	}
     }
-    openWebsocket(){
-    	var msg = {"method":"join","uid":common.getStore('userId'),"hobby":1};
-    	this.refWebSocket.state.ws.send(JSON.stringify(msg))
-    }
     render() {
         const { allBalance, userInfo } = stateVar;
         const { iconArrowsName, iconArrowsMoney } = this.state;
         return (
             <div className="nav_top">
-           		<Websocket url={'ws://'+common.getStore("pushDomain")+''} onMessage={this.handleData.bind(this)} onOpen={this.openWebsocket.bind(this)}
-        			ref = {Websocket => {
-                  	this.refWebSocket = Websocket;
-                }}
-        		/>
                 <div className="nav_top_content clear">
                     <img className="logo" src={logoSrc} alt="logo"/>
                     <div className="right">
