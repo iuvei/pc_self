@@ -29,8 +29,16 @@
         &::-webkit-scrollbar-track-piece{
             background-color:#F4F4F4;
         }
+        th{
+            border-left: 1px solid #e5e5e5;
+            border-right: 1px solid #e5e5e5;
+            padding: 10px 15px;
+        }
         td{
             text-align: center;
+            border: 1px solid #e5e5e5;
+            padding: 10px 15px;
+            line-height: 1.8;
         }
     }
 }

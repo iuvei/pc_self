@@ -437,8 +437,7 @@ export default class ContentTop extends Component {
 	    				}else{
 	    					tempCode = tempData['number'].split(' ');
 	    				}
-	    				this.setState({kjStopallFlag:true});
-    					this.setState({code:tempCode,nowIssue:tempData.expectedIssue});
+    					this.setState({kjStopallFlag:true,code:tempCode,nowIssue:tempData.expectedIssue});
     					this.getKjHistory(true);
     				}
     			}
