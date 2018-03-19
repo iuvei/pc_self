@@ -132,9 +132,10 @@ export default class AliPay extends Component {
         let value = e.target.value,
             validate = this.state.validate,
             postData = this.state.postData,
-            regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
-            regCn = /[！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
-        if(value == '' || regEn.test(value) || regCn.test(value)){
+            // regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
+            // regCn = /[！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
+            reg=/^[·\u2E80-\u9FFF]+$/;
+        if(value == '' || !reg.test(value)){
             validate.alipayName = 1;
         }else{
             validate.alipayName = 0;
@@ -185,7 +186,7 @@ export default class AliPay extends Component {
                                         backList.map((item, index)=>{
                                             return (
                                                 <li className={ this.state.imgUrlIndex === index ? 'ali_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
-                                                    <img src={require('../Img/'+item.code+'.png')} alt=""/>
+                                                    <img src={stateVar.httpUrl + item.bankImgUrl} alt=""/>
                                                 </li>
                                             )
                                         })

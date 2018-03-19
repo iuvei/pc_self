@@ -264,12 +264,12 @@ export default class ContractModal extends Component {
                                     且活跃用户≥
                                     <InputNumber min={0} value={item.active_member}
                                                  onChange={(value)=>this.onChangeActiveNumber(value, item, i)}
-                                                 disabled={disabled}
+                                                 // disabled={disabled}
                                     />
                                     人，日工资比例为
                                     <InputNumber min={0} value={item.salary_ratio}
                                                  onChange={(value)=>this.onChangeAlterContract(value, item)}
-                                                 disabled={disabled}
+                                                 // disabled={disabled}
                                     />
                                     %。
                                     {
@@ -287,9 +287,8 @@ export default class ContractModal extends Component {
                         })
                     }
                     <li className="brisk_user" key="0">当日投注金额≥1000元，计为一个活跃用户</li>
-                    <li key="00">
-                        <p className="brisk_user">下级日工资各档位日销量要求需与自身保持一致，</p>
-                        <p style={{paddingLeft: 15, color: '#6C6C6C'}}>删除档位时遵循从高到底的原则，但至少保留三档。</p>
+                    <li className="brisk_user" key="00">
+                        下级日工资各档位日销量要求需与自身保持一致，删除档位时遵循从高到底的原则，但至少保留三档。
                     </li>
                 </ul>
                 <span className="hover col_color_ying add_sale"

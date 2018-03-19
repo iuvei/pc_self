@@ -144,7 +144,7 @@ export default class WeChat extends Component {
                                             backList.map((item, index)=>{
                                                 return (
                                                     <li className={ imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
-                                                        <img src={require('./Img/'+item.code+'.jpg')} alt="选择"/>
+                                                        <img src={stateVar.httpUrl + item.bankImgUrl} alt="选择"/>
                                                     </li>
                                                 )
                                             })

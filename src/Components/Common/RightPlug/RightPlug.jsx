@@ -155,10 +155,14 @@ export default class RightPlug extends Component {
         const {userInfo} = stateVar;
         return (
         	<div>
-                <Chat
-                    visible={modalVisible}
-                    hideChat={this.hideChat}
-                />
+                {
+                    modalVisible ?
+                        <Chat
+                            visible={modalVisible}
+                            hideChat={this.hideChat}
+                        /> :
+                        null
+                }
 	        	<div className="box-shape right_plug" style={{right:stateVar.paused ? 0 : '-140px'}}>
                     <ul className="right_list">
                         <li>

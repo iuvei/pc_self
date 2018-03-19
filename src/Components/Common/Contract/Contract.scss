@@ -90,9 +90,11 @@
         right: 40%;
     }
     .text_content_list{
-        //width: 545px;
         li{
             line-height: 28px;
+            .ant-input-number-input{
+                text-align: center;
+            }
         }
         .delete_sale{
             padding-left: 15px;
@@ -108,7 +110,9 @@
             white-space: normal;
             color: #6C6C6C;
             padding-left: 15px;
-            background: url(./img/hint.png) no-repeat left center;
+            background: url(./img/hint.png) no-repeat left 5px;
+            font-size: 12px;
+            line-height: 22px;
         }
     }
     .ant-btn{

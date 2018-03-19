@@ -363,7 +363,7 @@ export default class AlterModal extends Component {
                             }
                             </ul>
                             <ul className='l_m_warn'>
-                                <li>单挑警告：该单处于单挑模式，本期最大奖金30000元</li>
+                                <li>单挑模式下，单玩法当期最大奖金3万+投注本金</li>
                             </ul>
                             <p>总金额：<span className='l_m_total'>{tempData.lt_trace_if == 'yes' ? Number(tempData.lt_trace_money).toFixed(4) : Number(tempData.lt_total_money).toFixed(4)}</span>元</p>
                         </div>
