@@ -253,38 +253,44 @@ export default class Dividend extends Component {
     };
     /*修改分红比例*/
     onDiviratio(contract_name){
-        if(contract_name == '修改契约'){
-            this.setState({disabled: false, contract_name: '签订契约'})
-        }else{
-            this.setState({affirmLoading: true});
-            let alterData = this.state.alterData;
-            let postData = {
-                userid: alterData.userid,
-                id: alterData.id,
-                dividend_radio: alterData.dividend_radio,
-            };
-            Fetch.diviratio({
-                method: 'POST',
-                body: JSON.stringify(postData)
-            }).then((res)=>{
-                if(this._ismount){
-                    this.setState({affirmLoading: false});
-                    if(res.status == 200){
-                        Modal.success({
-                            title: res.repsoneContent,
-                        });
-                        this.setState({alterVisible: false, disabled: true, contract_name: '修改契约',});
-                        this.getData();
-                    }else{
-                        Modal.warning({
-                            title: res.shortMessage,
-                        });
-                    }
-                }
-            })
-        }
+        let _this = this;
+        confirm({
+            title: '确认要修改吗?',
+            onOk() {
+                _this.setProtocol(contract_name)
+            },
+            onCancel() {},
+        });
+    };
 
-    }
+    setProtocol(contract_name){
+        this.setState({affirmLoading: true, contract_name: '签订契约'});
+        let alterData = this.state.alterData;
+        let postData = {
+            userid: alterData.userid,
+            id: alterData.id,
+            dividend_radio: alterData.dividend_radio,
+        };
+        Fetch.diviratio({
+            method: 'POST',
+            body: JSON.stringify(postData)
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({affirmLoading: false});
+                if(res.status == 200){
+                    Modal.success({
+                        title: res.repsoneContent,
+                    });
+                    this.setState({alterVisible: false, disabled: true, contract_name: '修改契约',});
+                    this.getData();
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    };
     /*修改值*/
     onChangeAlterContract(val){
         let alterData = this.state.alterData;
@@ -494,7 +500,7 @@ export default class Dividend extends Component {
                                     如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
                                     <InputNumber min={0} value={this.state.alterData.dividend_radio}
                                                  onChange={(value)=>this.onChangeAlterContract(value)}
-                                                 disabled={disabled}
+                                                 // disabled={disabled}
                                     />
                                     %。
                                 </div>

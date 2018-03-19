@@ -229,15 +229,16 @@ export default class ContractModal extends Component {
                         accGroup.map((item, i)=>{
                             return (
                                 <li key={item.uagid}>
-                                    {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个
+                                    {item.accGroup}&nbsp;配额为
+                                    <span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个
                                     <span>
-                                            ，再增加
-                                            <InputNumber min={0}
-                                                         value={agPost.accnum[i]}
-                                                         onChange={(value)=>this.onChangeAccGroup(value, item)}
-                                            />
-                                            个 （剩余可分配{item.accnum}个）
-                                        </span>
+                                        ，再增加
+                                        <InputNumber min={0}
+                                                     value={agPost.accnum[i]}
+                                                     onChange={(value)=>this.onChangeAccGroup(value, item)}
+                                        />
+                                        个 （剩余可分配{item.accnum}个）
+                                    </span>
                                 </li>
                             )
                         })
@@ -303,10 +304,12 @@ export default class ContractModal extends Component {
                 <p>契约内容：</p>
                 <div style={{whiteSpace: 'normal'}}>
                     如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
-                    <InputNumber min={0} value={diviPost.dividend_radio}
-                                 onChange={(value)=>{
-                                     diviPost.dividend_radio = value;
-                                     this.setState({diviPost});
+                    <InputNumber min={0}
+                                 max={100}
+                                 value={diviPost.dividend_radio}
+                                  onChange={(value)=>{
+                                      diviPost.dividend_radio = value;
+                                      this.setState({diviPost});
                                  }}
                     />
                     %。

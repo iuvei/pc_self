@@ -14,6 +14,19 @@ import quota from './Img/quota.png';
 
 import './Contract.scss'
 
+const text=<div className='c_info_wrap'>
+    <p className='c_info_title'>日工资规则</p>
+    <p className='c_i_title1'>恒彩日工资：</p>
+    <p>发放时间：每日10:00由系统自动发放上一日工资；</p>
+    <p className='c_i_title2'>日工资规则：</p>
+    <p>1、非同IP、非同银行卡会员</p>
+    <p>2、参与投注的流水统计限彩票，且玩法投注不得超过该玩法70%（不包含70%</p>
+    <p>），即定位胆必须小于7住，二码必须小于69注，三码必须小于699注，四星必</p>
+    <p>须小于6999注，</p>
+    <p>五星必须小于69999注。如发现违规投注情况，均视作放弃日工资；恒彩娱乐保</p>
+    <p>留最终解释权，并持有终止、修改等权利</p>
+</div>;
+
 @observer
 export default class Contract extends Component {
     constructor(props){
@@ -301,18 +314,7 @@ export default class Contract extends Component {
     render() {
         const { dailysalaryStatus } = stateVar;
         const { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost} = this.state;
-        const text=<div className='c_info_wrap'>
-            <p className='c_info_title'>日工资规则</p>
-            <p className='c_i_title1'>恒彩日工资：</p>
-            <p>发放时间：每日10:00由系统自动发放上一日工资；</p>
-            <p className='c_i_title2'>日工资规则：</p>
-            <p>1、非同IP、非同银行卡会员</p>
-            <p>2、参与投注的流水统计限彩票，且玩法投注不得超过该玩法70%（不包含70%</p>
-            <p>），即定位胆必须小于7住，二码必须小于69注，三码必须小于699注，四星必</p>
-            <p>须小于6999注，</p>
-            <p>五星必须小于69999注。如发现违规投注情况，均视作放弃日工资；恒彩娱乐保</p>
-            <p>留最终解释权，并持有终止、修改等权利</p>
-        </div>;
+
         const columnsDay = [
             {
                 title: '日有销量',
