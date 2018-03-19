@@ -72,7 +72,7 @@ export default class Contract extends Component {
                               type="primary"
                               className="a_c_cancel_btn"
                       >
-                          {this.props.contract_name}
+                          确认修改
                       </Button>
                       <Button onClick={()=>this.onCancel()}
                       >
@@ -148,7 +148,7 @@ export default class Contract extends Component {
                     </ul>
                     <div>
                         {textDescribe}
-                        <div className={this.isSign()}>
+                        <div className="a_c_name a_c_active">
                             <p>{alterData.username}</p>
                             <p>{common.setDateTime(0)}</p>
                         </div>

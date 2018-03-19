@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import { DatePicker, Table, Pagination, Input, Button, Icon, Modal, InputNumber, Popconfirm } from 'antd';
 import moment from 'moment';
+const confirm = Modal.confirm;
 const ButtonGroup = Button.Group;
 import { stateVar } from '../../../State';
 import { setDateTime, disabledDate } from '../../../CommonJs/common';
@@ -346,39 +347,44 @@ export default class DayRate extends Component {
     };
     /*修改协议*/
     onDiviratio(contract_name){
-        if(contract_name == '修改契约'){
-            this.setState({disabled: false, contract_name: '签订契约'});
-        }else{
-            this.setState({affirmLoading: true});
-            let alterData = this.state.alterData;
-            let postData = {
-                userid: alterData.userid,
-                id: alterData.id,
-                parentid: alterData.parent_id,
-                gmt_sale: alterData.gmt_sale,
-                salary_ratio: this.state.salary_ratio,
-            };
-            Fetch.dailysalaryupdate({
-                method: 'POST',
-                body: JSON.stringify(postData)
-            }).then((res)=>{
-                if(this._ismount){
-                    this.setState({affirmLoading: false});
-                    if(res.status == 200){
-                        Modal.success({
-                            title: res.repsoneContent,
-                        });
-                        this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
-                        this.getData();
-                    }else{
-                        Modal.warning({
-                            title: res.shortMessage,
-                        });
-                    }
+        let _this = this;
+        confirm({
+            title: '确认要修改吗?',
+            onOk() {
+                _this.setProtocol(contract_name)
+            },
+            onCancel() {},
+        });
+    };
+    setProtocol(contract_name){
+        this.setState({affirmLoading: true, contract_name: '签订契约'});
+        let alterData = this.state.alterData;
+        let postData = {
+            userid: alterData.userid,
+            id: alterData.id,
+            parentid: alterData.parent_id,
+            gmt_sale: alterData.gmt_sale,
+            salary_ratio: this.state.salary_ratio,
+        };
+        Fetch.dailysalaryupdate({
+            method: 'POST',
+            body: JSON.stringify(postData)
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({affirmLoading: false});
+                if(res.status == 200){
+                    Modal.success({
+                        title: res.repsoneContent,
+                    });
+                    this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                    this.getData();
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
                 }
-            })
-        }
-
+            }
+        })
     };
     /*关闭修改日工资模态框*/
     onCancel(){
@@ -612,7 +618,7 @@ export default class DayRate extends Component {
                     alterData={this.state.alterData}
                     alterVisible={this.state.alterVisible}
                     affirmLoading={this.state.affirmLoading}
-                    disabled={this.state.disabled}
+                    // disabled={this.state.disabled}
                     contract_name={this.state.contract_name}
                     userList={table.dayRateList}
                     contractInfo={this.state.contractInfo}
