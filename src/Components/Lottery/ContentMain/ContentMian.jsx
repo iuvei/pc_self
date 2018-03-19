@@ -250,12 +250,6 @@ export default class ContentMian extends Component {
     				}
     				common.setStore(common.getStore('userId'), tempObj);
     				this.setOneMethod(tempData);
-    			}else{
-    				const modal = Modal.success({
-					    title: '温馨提示',
-					    content: data.shortMessage
-					});
-					setTimeout(() => modal.destroy(), 3000);
     			}
     		})
     };

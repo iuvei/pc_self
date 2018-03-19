@@ -49,10 +49,12 @@ export default class HelpInfo extends Component {
                     <Row type="flex" justify="center" align="top" key="helpInfoCenter">
                         <Col span={24}>
                             <div className="a_m_controler">
-                                <div className="a_m_title">
-                                    <span>帮助中心</span>
+                            	<div className='leftHelp'>
+	                                <div className="a_m_title">
+	                                    <span>帮助中心</span>
+	                                </div>
+	                                <ChildNav navList={navList} defaultIndex={this.state.navIndex}  onChangeNavIndex={this.onChangeNavIndex.bind(this)}/>
                                 </div>
-                                <ChildNav navList={navList} defaultIndex={this.state.navIndex}  onChangeNavIndex={this.onChangeNavIndex.bind(this)}/>
                                 <div>
                                     {this.props.children}
                                 </div>
