@@ -485,15 +485,15 @@ export default class TeamList extends Component {
     };
     /*奖金组*/
     onMinus() {
-        let { disabled, prizeGroupFlag, prizeGroupList } = this.state;
-        if(disabled || prizeGroupFlag <= prizeGroupList[0].prizeGroup){
+        let { prizeGroupFlag, prizeGroupList } = this.state;
+        if( prizeGroupFlag <= prizeGroupList[0].prizeGroup){
             return
         }
         this.setState({prizeGroupFlag: this.state.prizeGroupFlag - 2});
     };
     onAdd(){
-        let { disabled, prizeGroupFlag, prizeGroupList } = this.state;
-        if(disabled || prizeGroupFlag >= prizeGroupList[prizeGroupList.length - 1].prizeGroup){
+        let { prizeGroupFlag, prizeGroupList } = this.state;
+        if(prizeGroupFlag >= prizeGroupList[prizeGroupList.length - 1].prizeGroup){
             return
         }
         this.setState({prizeGroupFlag: this.state.prizeGroupFlag + 2});
@@ -670,7 +670,7 @@ export default class TeamList extends Component {
     };
     render() {
         const { dailysalaryStatus} = stateVar;
-        const { disabled, tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge } = this.state;
+        const { tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge } = this.state;
         let columns = [
             {
                 title: '用户名',
@@ -1004,7 +1004,7 @@ export default class TeamList extends Component {
                             return (
                                 <li key={item.uagid} style={{display: item.accGroup > prize_group ? 'none' : ''}}>
                                     {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个
-                                    <span style={{display: this.state.disabled ? 'none' : ''}}>
+                                    <span>
                                         ，再增加
                                         <InputNumber min={0}
                                                      value={agPost.accnum[i]}
@@ -1052,7 +1052,7 @@ export default class TeamList extends Component {
                                             <Popconfirm title="确定删除吗?"
                                                         onConfirm={() => this.onDelete(i)}
                                             >
-                                                <span className="hover col_color_ying delete_sale" style={{display: disabled ? 'none' : ''}}>删除</span>
+                                                <span className="hover col_color_ying delete_sale">删除</span>
                                             </Popconfirm> :
                                             null
                                     }
@@ -1067,7 +1067,7 @@ export default class TeamList extends Component {
                 </ul>
                 <span className="hover col_color_ying add_sale"
                       onClick={()=>this.onAddSale()}
-                      style={{display: disabled || contentArr.length >= 6 ? 'none' : ''}}>
+                      style={{display: contentArr.length >= 6 ? 'none' : ''}}>
                     添加档位
                 </span>
             </div>;
@@ -1076,12 +1076,12 @@ export default class TeamList extends Component {
                 <p>契约内容：</p>
                 <div style={{whiteSpace: 'normal'}}>
                     如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
-                    <InputNumber min={0} value={diviPost.dividend_radio}
+                    <InputNumber min={0}
+                                 value={diviPost.dividend_radio}
                                  onChange={(value)=>{
                                      diviPost.dividend_radio = value;
                                      this.setState({diviPost});
                                  }}
-                                 disabled={this.state.disabled}
                     />
                     %。
                 </div>
@@ -1107,7 +1107,6 @@ export default class TeamList extends Component {
                                 step={2}
                                 onChange={(value)=>{this.onRegisterSetBonus(value)}}
                                 value={parseInt(this.state.prizeGroupFlag)}
-                                disabled={this.state.disabled}
                         />
                         <Icon className="slider_right" onClick={()=>this.onAdd()} type="right" />
                     </div>

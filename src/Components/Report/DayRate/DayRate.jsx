@@ -594,7 +594,7 @@ export default class DayRate extends Component {
                                                             <Popconfirm title="确定删除吗?"
                                                                         onConfirm={() => this.onDelete(i)}
                                                             >
-                                                                <span className="hover col_color_ying delete_sale" style={{display: disabled ? 'none' : ''}}>删除</span>
+                                                                <span className="hover col_color_ying delete_sale">删除</span>
                                                             </Popconfirm> :
                                                             null
                                                     }
@@ -609,7 +609,7 @@ export default class DayRate extends Component {
                                 </ul>
                                 <span className="hover col_color_ying add_sale"
                                       onClick={()=>this.onAddSale()}
-                                      style={{display: disabled || contentArr.length >= 6 ? 'none' : ''}}>
+                                      style={{display: contentArr.length >= 6 ? 'none' : ''}}>
                                     添加档位
                                 </span>
                             </div>

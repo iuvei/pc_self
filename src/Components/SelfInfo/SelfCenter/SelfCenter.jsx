@@ -245,7 +245,10 @@ export default class SelfInfo extends PureComponent {
                                 <p>当前IP：{ logs[0] != undefined ? logs[0].proxyip + ' ' + logs[0].ip_address : '暂未获取到当前IP' }</p>
                             </div>
                             <div className="s_i_info right">
-                                <h3>欢迎您！ {userInfo.userName}</h3>
+                                <h3>
+                                    欢迎您！
+                                    <span className="ellipsis">{userInfo.userName}</span>
+                                </h3>
                                 <p>用户类型：{userInfo.userType == 0 ? '会员' : '代理'}</p>
                                 <p>奖金组：{userInfo.accGroup}</p>
                             </div>

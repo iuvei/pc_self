@@ -72,10 +72,9 @@ export default class LotteryBet extends Component {
         this.setState({loading: true});
         let postData = this.state.postData,
             name = this.props.location.query.name;
-        if(name != undefined) {
+        if(name != undefined && postData.username == null){
             postData.username = name
         }
-
         Fetch.newGameList({
             method: 'POST',
             body: JSON.stringify(this.state.postData)

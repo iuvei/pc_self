@@ -71,6 +71,7 @@ export default class OtherGames extends Component {
         this._ismount = false;
     };
     onHashHistory(item) {
+
         this.setState({activeItem: item});
         if(item.id == 'bb'){
             this.onBobing(item.link);
@@ -289,6 +290,7 @@ export default class OtherGames extends Component {
                                                 </div>
                                                 <Button className="right"
                                                         onClick={()=>this.onHashHistory(item)} type="primary" size="large"
+                                                        // loading={!item.disabled}
                                                 >
                                                     立即游戏
                                                 </Button>

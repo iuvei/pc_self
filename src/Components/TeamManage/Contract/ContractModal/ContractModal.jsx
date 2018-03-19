@@ -218,7 +218,7 @@ export default class ContractModal extends Component {
     };
     /*选择不同类型对应不同显示类容*/
     onTypeContent(type){
-        let { contentArr, agPost, diviPost, prizeGroupList, disabled, alterData } = this.state;
+        let { contentArr, agPost, diviPost, prizeGroupList, alterData } = this.state;
         if(type == 3 || type == '配额契约'){ //配额契约
             let accGroup = contentArr.filter(item => item.accGroup <= alterData.prize_group);
             typeContent = <div className="a_c_text">
@@ -230,7 +230,7 @@ export default class ContractModal extends Component {
                             return (
                                 <li key={item.uagid}>
                                     {item.accGroup}&nbsp;配额为<span className="subaccnum">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个
-                                    <span style={{display: this.state.disabled ? 'none' : ''}}>
+                                    <span>
                                             ，再增加
                                             <InputNumber min={0}
                                                          value={agPost.accnum[i]}
@@ -278,7 +278,7 @@ export default class ContractModal extends Component {
                                             <Popconfirm title="确定删除吗?"
                                                         onConfirm={() => this.onDelete(i)}
                                             >
-                                                <span className="hover col_color_ying delete_sale" style={{display: disabled ? 'none' : ''}}>删除</span>
+                                                <span className="hover col_color_ying delete_sale">删除</span>
                                             </Popconfirm> :
                                             null
                                     }
@@ -294,7 +294,7 @@ export default class ContractModal extends Component {
                 </ul>
                 <span className="hover col_color_ying add_sale"
                       onClick={()=>this.onAddSale()}
-                      style={{display: disabled || contentArr.length >= 6 ? 'none' : ''}}>
+                      style={{display: contentArr.length >= 6 ? 'none' : ''}}>
                     添加档位
                 </span>
             </div>;
@@ -308,7 +308,6 @@ export default class ContractModal extends Component {
                                      diviPost.dividend_radio = value;
                                      this.setState({diviPost});
                                  }}
-                                 disabled={this.state.disabled}
                     />
                     %。
                 </div>
@@ -324,7 +323,6 @@ export default class ContractModal extends Component {
                                  value={this.state.prizeGroupFlag}
                                  step={2}
                                  onChange={(value)=>this.onRegisterSetBonus(value)}
-                                 disabled={this.state.disabled}
                     />。
                     <div className="prize_group_slider">
                         <Icon className="slider_left" onClick={()=>this.onMinus()} type="left"/>
@@ -334,7 +332,6 @@ export default class ContractModal extends Component {
                             step={2}
                             onChange={(value)=>{this.onRegisterSetBonus(value)}}
                             value={parseInt(this.state.prizeGroupFlag)}
-                            disabled={this.state.disabled}
                         />
                         <Icon className="slider_right" onClick={()=>this.onAdd()} type="right" />
                     </div>
@@ -406,15 +403,15 @@ export default class ContractModal extends Component {
     };
     /*奖金组*/
     onMinus() {
-        let { disabled, prizeGroupFlag, prizeGroupList } = this.state;
-        if(disabled || prizeGroupFlag <= prizeGroupList[0].prizeGroup){
+        let { prizeGroupFlag, prizeGroupList } = this.state;
+        if( prizeGroupFlag <= prizeGroupList[0].prizeGroup){
             return
         }
         this.setState({prizeGroupFlag: this.state.prizeGroupFlag - 2});
     };
     onAdd(){
-        let { disabled, prizeGroupFlag, prizeGroupList } = this.state;
-        if(disabled || prizeGroupFlag >= prizeGroupList[prizeGroupList.length - 1].prizeGroup){
+        let { prizeGroupFlag, prizeGroupList } = this.state;
+        if( prizeGroupFlag >= prizeGroupList[prizeGroupList.length - 1].prizeGroup){
             return
         }
         this.setState({prizeGroupFlag: this.state.prizeGroupFlag + 2});
