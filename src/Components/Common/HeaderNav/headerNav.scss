@@ -25,25 +25,49 @@ $width_100: 100%;
                 position: relative;
                 float: right;
                 font-size: 14px;
-                li{
+                &>li{
                     float: left;
                     color: #fff;
                     @include lh(40px);
                     display: inline-block;
-                    padding: 0 20px;
                     background: url(./Img/xian.png) no-repeat right center;
+                    div{
+                        padding: 0 20px;
+                        &:hover{
+                            cursor: pointer;
+                            color: $color_CF2027;
+                            background: $hover_background;
+                        }
+                    }
                 }
-
+                .otherGames_down{
+                    position: absolute;
+                    left: 163px;
+                    top: 40px;
+                    width: 96px;
+                    height: 0;
+                    overflow: hidden;
+                    background: rgba(255,255,255, .95);
+                    @include transform(height, 0.3s);
+                    color: #4A4A5F;
+                    .o_down_list{
+                        text-align: center;
+                        li:hover{
+                            color: $color_CF2027;
+                            cursor: pointer;
+                        }
+                    }
+                }
+                .otherGames_down_show{
+                    height: 205px;
+                    border: 1px solid $color_CF2027;
+                    //border-top: 0;
+                }
                 .hover_lottery{
                     position: relative;
                     &:before{
                         @include icon_arrows_bg(35px,42px,$color_CF2027,10px,rgba(255,255,255, .95),-45deg);
                     }
-                }
-                li:hover{
-                    cursor: pointer;
-                    color: $color_CF2027;
-                    background: $hover_background;
                 }
                 .nav_active{
                     color: $color_CF2027;

@@ -185,7 +185,7 @@ export default class AliPay extends Component {
                                         backList.map((item, index)=>{
                                             return (
                                                 <li className={ this.state.imgUrlIndex === index ? 'ali_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
-                                                    <img src={require('./Img/'+item.code+'.png')} alt=""/>
+                                                    <img src={require('../Img/'+item.code+'.png')} alt=""/>
                                                 </li>
                                             )
                                         })

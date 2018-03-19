@@ -56,9 +56,9 @@ export default class HeaderTop extends Component {
     componentWillUnmount() {
         this._ismount = false;
         // 清除定时器与暂停动画
-        clearInterval(this._clearInt);
+        // clearInterval(this._clearInt);
         clearInterval(this.noticeInterval)
-        cancelAnimationFrame(this._animationFrame);
+        // cancelAnimationFrame(this._animationFrame);
         emitter.off(this.eventEmitter);
     };
     getDestination() {
