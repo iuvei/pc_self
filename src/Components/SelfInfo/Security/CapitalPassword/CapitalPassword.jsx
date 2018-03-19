@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import { Input,Button,Modal } from 'antd';
 import Fetch from '../../../../Utils';
 import { stateVar } from '../../../../State';
+import { hashHistory } from 'react-router';
 import ForgetFundPw from '../ForgetFundPw/ForgetFundPw';
 import { onValidate } from '../../../../CommonJs/common';
 import md5 from 'md5';
@@ -58,6 +59,7 @@ export default class CapitalPassword extends Component {
                     if(res.status == 200){
                         Modal.success({
                             title: res.repsoneContent,
+                            content: '资金密码需重新登录才能生效，马上重新登录 ?',
                             onOk() {
                                 validate.secpass = 2;
                                 validate.secpass_confirm = 2;
@@ -67,8 +69,8 @@ export default class CapitalPassword extends Component {
                                     validate: validate,
                                     postData,
                                 },()=>stateVar.userInfo.setsecurity = 'no');
+                                hashHistory.push('/login');
                             },
-
                         });
                     }else{
                         Modal.warning({

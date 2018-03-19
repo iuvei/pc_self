@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, Badge, Popconfirm } from 'antd';
+const confirm = Modal.confirm;
 import Fetch from '../../../Utils';
 import Crumbs from '../../Common/Crumbs/Crumbs'
 import { stateVar } from '../../../State';
@@ -355,117 +356,123 @@ export default class TeamList extends Component {
     };
     /*提交协议*/
     onDiviratio(contract_name){
-        if(contract_name == '修改契约'){
-            this.setState({disabled: false, contract_name: '签订契约'});
-        }else{
-            let { typeName, alterData } = this.state;
-            this.setState({affirmLoading: true});
-            if(typeName == '配额契约'){
-                this.setState({quotaLoding: true});
-                let { agPost } = this.state;
-                if(contract_name == '新申请'){
-                    agPost.SH = 1;
-                }else{
-                    agPost.SH != undefined && delete agPost.SH;
-                }
-                agPost.uid = alterData.userid;
-                Fetch.quota({
-                    method: 'POST',
-                    body: JSON.stringify(agPost)
-                }).then((res)=>{
-                    if(this._ismount){
-                        this.setState({affirmLoading: false, quotaLoding: false});
-                        if(res.status == 200){
-                            Modal.success({
-                                title: res.repsoneContent,
-                            });
-                            if(contract_name == '新申请'){
-                                this.setState({quotaVisible: false});
-                                this.getNum();
-                            }else{
-                                this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
-                            }
-                            this.getAccGroupList(alterData);
-                            this.getData();
-                        }else{
-                            Modal.warning({
-                                title: res.shortMessage,
-                            });
-                        }
-                    }
-                })
-            }else if(typeName == '分红契约'){
-                let diviPost = this.state.diviPost;
-                diviPost.userid = alterData.userid;
-                Fetch.diviratio({
-                    method: 'POST',
-                    body: JSON.stringify(diviPost)
-                }).then((res)=>{
-                    if(this._ismount) {
-                        this.setState({affirmLoading: false});
-                        if(res.status == 200){
-                            Modal.success({
-                                title: res.repsoneContent,
-                            });
-                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
-                            this.getData();
-                        }else{
-                            Modal.warning({
-                                title: res.shortMessage,
-                            });
-                        }
-                    }
-                })
-            }else if(typeName == '日工资契约'){
-                let postData = {
-                    userid: alterData.userid,
-                    parentid: this.state.self.userid,
-                    salary_ratio: this.state.salary_ratio,
-                };
-                Fetch.dailysalaryupdate({
-                    method: 'POST',
-                    body: JSON.stringify(postData)
-                }).then((res)=>{
-                    if(this._ismount){
-                        this.setState({affirmLoading: false});
-                        if(res.status == 200){
-                            Modal.success({
-                                title: res.repsoneContent,
-                            });
-                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
-                            this.getData();
-                        }else{
-                            Modal.warning({
-                                title: res.shortMessage,
-                            });
-                        }
-                    }
-                })
-            }else if(typeName == '奖金组契约'){
-                let { prizeGroupFlag, prizeGroupPost, prizeGroupList } = this.state;
-                let selectPrizeGroup = prizeGroupList.filter((item, index) => item.prizeGroup == prizeGroupFlag)[0];
-                prizeGroupPost.groupLevel = prizeGroupFlag;
-                prizeGroupPost.keeppoint = ((prizeGroupPost.selfPoint - selectPrizeGroup.high) * 100).toFixed(2);
-                Fetch.awardTeam({
-                    method: 'POST',
-                    body: JSON.stringify(prizeGroupPost)
-                }).then((res)=>{
-                    if(this._ismount){
-                        this.setState({affirmLoading: false});
-                        if(res.status == 200){
-                            Modal.success({
-                                title: res.repsoneContent,
-                            });
-                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
-                            this.getData();
-                        }else{
-                            Modal.warning({
-                                title: res.shortMessage,
-                            });
-                        }
-                    }
-                })
+        let _this = this;
+        confirm({
+            title: '确认要修改吗?',
+            onOk() {
+                _this.setProtocol(contract_name)
+            },
+            onCancel() {},
+        });
+    };
+    setProtocol(contract_name){
+        let { typeName, alterData } = this.state;
+        this.setState({affirmLoading: true, contract_name: '签订契约'});
+        if(typeName == '配额契约'){
+            this.setState({quotaLoding: true});
+            let { agPost } = this.state;
+            if(contract_name == '新申请'){
+                agPost.SH = 1;
+            }else{
+                agPost.SH != undefined && delete agPost.SH;
             }
+            agPost.uid = alterData.userid;
+            Fetch.quota({
+                method: 'POST',
+                body: JSON.stringify(agPost)
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({affirmLoading: false, quotaLoding: false});
+                    if(res.status == 200){
+                        Modal.success({
+                            title: res.repsoneContent,
+                        });
+                        if(contract_name == '新申请'){
+                            this.setState({quotaVisible: false});
+                            this.getNum();
+                        }else{
+                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                        }
+                        this.getAccGroupList(alterData);
+                        this.getData();
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
+                }
+            })
+        }else if(typeName == '分红契约'){
+            let diviPost = this.state.diviPost;
+            diviPost.userid = alterData.userid;
+            Fetch.diviratio({
+                method: 'POST',
+                body: JSON.stringify(diviPost)
+            }).then((res)=>{
+                if(this._ismount) {
+                    this.setState({affirmLoading: false});
+                    if(res.status == 200){
+                        Modal.success({
+                            title: res.repsoneContent,
+                        });
+                        this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                        this.getData();
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
+                }
+            })
+        }else if(typeName == '日工资契约'){
+            let postData = {
+                userid: alterData.userid,
+                parentid: this.state.self.userid,
+                salary_ratio: this.state.salary_ratio,
+            };
+            Fetch.dailysalaryupdate({
+                method: 'POST',
+                body: JSON.stringify(postData)
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({affirmLoading: false});
+                    if(res.status == 200){
+                        Modal.success({
+                            title: res.repsoneContent,
+                        });
+                        this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                        this.getData();
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
+                }
+            })
+        }else if(typeName == '奖金组契约'){
+            let { prizeGroupFlag, prizeGroupPost, prizeGroupList } = this.state;
+            let selectPrizeGroup = prizeGroupList.filter((item, index) => item.prizeGroup == prizeGroupFlag)[0];
+            prizeGroupPost.groupLevel = prizeGroupFlag;
+            prizeGroupPost.keeppoint = ((prizeGroupPost.selfPoint - selectPrizeGroup.high) * 100).toFixed(2);
+            Fetch.awardTeam({
+                method: 'POST',
+                body: JSON.stringify(prizeGroupPost)
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({affirmLoading: false});
+                    if(res.status == 200){
+                        Modal.success({
+                            title: res.repsoneContent,
+                        });
+                        this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                        this.getData();
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
+                }
+            })
         }
     };
     /*关闭模态框*/
@@ -1185,7 +1192,7 @@ export default class TeamList extends Component {
                     alterVisible={this.state.alterVisible}
                     affirmLoading={this.state.affirmLoading}
                     contract_name={this.state.contract_name}
-                    disabled={this.state.disabled}
+                    // disabled={this.state.disabled}
                     userList={this.state.tableData.dataSource}
                     contractInfo={this.state.contractInfo}
                     disabledSelect={true}

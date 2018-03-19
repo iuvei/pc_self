@@ -199,7 +199,7 @@ const interFace = (key) => {
     //拉新领奖
     INTERFACE['PULLNEWAWARD'] = 'controller=onlineactivities&action=PostPullNewAward&absecs=True';
     //新人注册领奖
-    INTERFACE['REGISTERAWARD'] = 'controller=onlineactivities&action=RegisterAward&absecs=True';
+    INTERFACE['REGISTERAWARD'] = 'controller=onlineactivities&action=PostRegisterAward&absecs=True';
     //EA填写个人资料
     INTERFACE['ADDUSERINFO'] = 'controller=sportsbook&action=AddUserInfo';
     //判断是否输入过资金密码和密码验证
