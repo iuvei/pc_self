@@ -99,7 +99,8 @@ export default class WeChat extends Component {
         let {validate, postData, loadmin, loadmax} = this.state;
         let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
         let r = reg.test(value);
-        if(!r || value < loadmin || value > loadmax){
+        let val = parseFloat(value);
+        if(!r || val == 0 || val < parseFloat(loadmin) || val > parseFloat(loadmax)){
             validate.money = 1;
         }else{
             validate.money = 0;

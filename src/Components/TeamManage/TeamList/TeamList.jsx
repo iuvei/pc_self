@@ -610,7 +610,7 @@ export default class TeamList extends Component {
         let {validate, postDataRecharge, recharge} = this.state;
         let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
         let r = reg.test(value);
-        if(!r || value == 0 || value < recharge.recharge_min || value > recharge.recharge_max){
+        if(!r || value < recharge.recharge_min || value > recharge.recharge_max){
             validate.money = 1;
         }else{
             validate.money = 0;
