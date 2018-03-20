@@ -170,7 +170,7 @@ export default class Contract extends Component {
                     * 当上级用户签订了配额管理时，下级才有配额管理表头
                     * 配额管理下的组别必须小于当前用户奖金组级别表头
                     * */
-                    if(data.self_acc_group.length>0){
+                    if(stateVar.userInfo.accGroup >= 1950 && data.self_acc_group.length>0){
                         let columnChildren=[];
                         for(let i=1950;i<=parseInt(data.prize);i++){
                             columnChildren.push({

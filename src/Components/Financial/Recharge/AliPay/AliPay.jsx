@@ -132,10 +132,10 @@ export default class AliPay extends Component {
         let value = e.target.value,
             validate = this.state.validate,
             postData = this.state.postData,
-            // regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
-            // regCn = /[！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
+            regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
+            regCn = /[！#￥（——）：；“”‘、，|《。》？、【】[\]]/im,
             reg=/^[·\u2E80-\u9FFF]+$/;
-        if(value == '' || !reg.test(value)){
+        if(value == '' || !reg.test(value) || regEn.test(value) || regCn.test(value)){
             validate.alipayName = 1;
         }else{
             validate.alipayName = 0;

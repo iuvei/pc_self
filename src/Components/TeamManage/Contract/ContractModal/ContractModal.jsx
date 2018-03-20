@@ -4,7 +4,7 @@ import {  Icon,Modal,Select,Slider,InputNumber , Popconfirm } from 'antd';
 const confirm = Modal.confirm;
 import Fetch from '../../../../Utils';
 import Contract from '../../../Common/Contract/Contract';
-let typeContent = '';
+// let typeContent = '';
 
 import './ContractModal.scss';
 import guanbi  from  './Img/guanbi.png'
@@ -25,7 +25,7 @@ export default class ContractModal extends Component {
             contentArr: [],
             diviPost:{// 分红请求参数
                 userid: null,
-                dividend_radio: null, // 要修改的比例
+                dividend_radio: 0, // 要修改的比例
             },
             prizeGroupPost: {}, // 奖金组请求参数
             prizeGroupList: [], //可设置的奖金组列表
@@ -42,7 +42,8 @@ export default class ContractModal extends Component {
             contractInfo:[],//契约类型
             userid:null, // 下级用户userid
             username: '',//下级用户username
-            self: {}
+            self: {},
+            typeContent: '',
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -156,7 +157,7 @@ export default class ContractModal extends Component {
                             typeName: '日工资契约',
                             contentArr: pros[pros.length - 1],
                             salary_ratio: pros[pros.length - 1],
-                        })
+                        }, ()=>this.onTypeContent());
                     }
                 }
             });
@@ -166,7 +167,7 @@ export default class ContractModal extends Component {
             this.setState({
                 typeName: '分红契约',
                 diviPost,
-            })
+            }, ()=>this.onTypeContent());
         }else if(type == 2 || type == '奖金组契约'){ //奖金组
             //获取可设置的奖金组列表
             Fetch.awardTeam({
@@ -184,7 +185,7 @@ export default class ContractModal extends Component {
                         prizeGroupList: data.list,
                         prizeGroupPost,
                         groupLevel: data.groupLevel,
-                    })
+                    }, ()=>this.onTypeContent());
                 }
             })
         }else{}
@@ -212,13 +213,14 @@ export default class ContractModal extends Component {
                 this.setState({
                     typeName: '配额契约',
                     contentArr: aAllUserTypeAccNum,
-                })
+                }, ()=>this.onTypeContent());
             }
         })
     };
     /*选择不同类型对应不同显示类容*/
-    onTypeContent(type){
-        let { contentArr, agPost, diviPost, prizeGroupList, alterData } = this.state;
+    onTypeContent(){
+        let { contentArr, agPost, diviPost, prizeGroupList, alterData, type } = this.state,
+            typeContent = '';
         if(type == 3 || type == '配额契约'){ //配额契约
             let accGroup = contentArr.filter(item => item.accGroup <= alterData.prize_group);
             typeContent = <div className="a_c_text">
@@ -304,12 +306,14 @@ export default class ContractModal extends Component {
                 <p>契约内容：</p>
                 <div style={{whiteSpace: 'normal'}}>
                     如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
-                    <InputNumber min={0}
+                    <span style={{display: 'none'}}>{diviPost.dividend_radio}</span>
+                    <InputNumber
+                                 min={0}
                                  max={100}
                                  value={diviPost.dividend_radio}
-                                  onChange={(value)=>{
-                                      diviPost.dividend_radio = value;
-                                      this.setState({diviPost});
+                                 onChange={(value)=>{
+                                    diviPost.dividend_radio = value;
+                                    this.setState({diviPost}, ()=>this.onTypeContent());
                                  }}
                     />
                     %。
@@ -346,6 +350,7 @@ export default class ContractModal extends Component {
         }else{
             typeContent = ''
         }
+        this.setState({typeContent: typeContent});
     };
     /*设置配额契约*/
     onChangeAccGroup(value, item){
@@ -357,7 +362,7 @@ export default class ContractModal extends Component {
                 break;
             }
         }
-        this.setState({agPost});
+        this.setState({agPost}, ()=>this.onTypeContent());
     };
     /*修改日工资比例*/
     onChangeAlterContract(val, item){
@@ -368,14 +373,14 @@ export default class ContractModal extends Component {
                 data.salary_ratio = val
             }
         });
-        this.setState({salary_ratio: salary_ratioFlag});
+        this.setState({salary_ratio: salary_ratioFlag}, ()=>this.onTypeContent());
     };
     /*修改活跃人数*/
     onChangeActiveNumber(val, item, index){
         item.active_member = val;
         let { contentArr } = this.state;
         contentArr[index].active_member = ''+val;
-        this.setState({salary_ratio: contentArr});
+        this.setState({salary_ratio: contentArr}, ()=>this.onTypeContent());
     };
     /*删除档位*/
     onDelete(i){
@@ -390,7 +395,7 @@ export default class ContractModal extends Component {
         this.setState({
             contentArr: contentArrFlag,
             salary_ratio: contentArrFlag
-        })
+        }, ()=>this.onTypeContent())
     };
     /*添加档位*/
     onAddSale(){
@@ -398,11 +403,11 @@ export default class ContractModal extends Component {
             protocol = this.props.protocol;
         let contentObj = protocol[contentArr.length];
         contentArr.push(contentObj);
-        this.setState({contentArr});
+        this.setState({contentArr}, ()=>this.onTypeContent());
     };
     /*奖金组设置 滑动条*/
     onRegisterSetBonus(value) {
-        this.setState({prizeGroupFlag: value});
+        this.setState({prizeGroupFlag: value}, ()=>this.onTypeContent());
     };
     /*奖金组*/
     onMinus() {
@@ -410,14 +415,14 @@ export default class ContractModal extends Component {
         if( prizeGroupFlag <= prizeGroupList[0].prizeGroup){
             return
         }
-        this.setState({prizeGroupFlag: this.state.prizeGroupFlag - 2});
+        this.setState({prizeGroupFlag: this.state.prizeGroupFlag - 2}, ()=>this.onTypeContent());
     };
     onAdd(){
         let { prizeGroupFlag, prizeGroupList } = this.state;
         if( prizeGroupFlag >= prizeGroupList[prizeGroupList.length - 1].prizeGroup){
             return
         }
-        this.setState({prizeGroupFlag: this.state.prizeGroupFlag + 2});
+        this.setState({prizeGroupFlag: this.state.prizeGroupFlag + 2}, ()=>this.onTypeContent());
     };
     /*提交协议*/
     onDiviratio(contract_name){
@@ -427,7 +432,6 @@ export default class ContractModal extends Component {
             onOk() {
                 _this.setProtocol(contract_name)
             },
-            onCancel() {},
         });
     };
 
@@ -546,7 +550,7 @@ export default class ContractModal extends Component {
 
     render() {
         const {userList, contractInfo, type } = this.state;
-        this.onTypeContent(type);
+        // this.onTypeContent(type);
         return (
             <div>
                 {
@@ -609,7 +613,7 @@ export default class ContractModal extends Component {
                         <Contract
                             title={this.state.typeName}
                             userid={this.state.userid}
-                            textDescribe={typeContent}
+                            textDescribe={this.state.typeContent}
                             alterData={this.state.alterData}
                             alterVisible={this.state.alterVisible}
                             affirmLoading={this.state.affirmLoading}
