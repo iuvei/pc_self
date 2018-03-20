@@ -723,7 +723,10 @@ export default class TeamList extends Component {
                             </Button>,
                 width: 90,
             }, {
-                title: '配额',
+                title: <span>
+                        配额
+                        <Badge count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
+                </span>,
                 dataIndex: 'useraccgroup_status',
                 render: (text, record) =>
                 record.usertype == 0 ?
@@ -810,7 +813,10 @@ export default class TeamList extends Component {
                         </Button>,
                     width: 85,
                 }, {
-                    title: '配额',
+                    title: <span>
+                        配额
+                        <Badge count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
+                    </span>,
                     dataIndex: 'useraccgroup_status',
                     render: (text, record) =>
                         <Button className={text == 3 ? 'new_application' : ''}
@@ -888,7 +894,10 @@ export default class TeamList extends Component {
                         </Button>,
                     width: 85,
                 }, {
-                    title: '配额',
+                    title: <span>
+                        配额
+                        <Badge count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
+                    </span>,
                     dataIndex: 'useraccgroup_status',
                     render: (text, record) =>
                         <Button className={text == 3 ? 'new_application' : ''}
@@ -955,7 +964,10 @@ export default class TeamList extends Component {
                     sorter: () => {},
                     width: 120,
                 }, {
-                    title: '配额',
+                    title: <span>
+                        配额
+                        <Badge count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
+                    </span>,
                     dataIndex: 'useraccgroup_status',
                     render: (text, record) =>
                         <Button className={text == 3 ? 'new_application' : ''}
@@ -1169,9 +1181,6 @@ export default class TeamList extends Component {
                                footer={tableData.total <= 0 ? null : ()=>footer}
                                onChange={this.handleTableChange}
                         />
-                        <div className="num">
-                            <Badge count={this.state.num} style={{ backgroundColor: '#369900' }} />
-                        </div>
                     </div>
                     <div className="page right"  style={{display: tableData.total <= 0 ? 'none' : ''}}>
                         <Pagination showSizeChanger
