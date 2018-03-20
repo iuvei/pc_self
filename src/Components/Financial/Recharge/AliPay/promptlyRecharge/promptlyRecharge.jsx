@@ -35,7 +35,8 @@ export default class Promptly extends Component {
         }, 1000);
     }
     render() {
-        const aliPayInfo = stateVar.aliPayInfo;
+        const {aliPayInfo} = stateVar;
+
         return (
             <div className="promptly_recharge clear">
                 {
@@ -123,7 +124,7 @@ export default class Promptly extends Component {
                                     <Button className="btn_p" type="primary">通用复制</Button>
                                 </CopyToClipboard>
                             </li>
-                            <li>
+                            <li style={{display: aliPayInfo.b_acc_name == 'khcz' || aliPayInfo.b_acc_name == 'khzz' ? 'none' : 'block'}}>
                                 <span className="p_r_text"></span>
                                 {/*<Button style={{marginTop: 30}} disabled={this.state.disabled} size="large" type="primary">*/}
                                     <a className="blank_text" href={aliPayInfo.account_name} target="_blank">
@@ -153,18 +154,16 @@ export default class Promptly extends Component {
                             </div> :
                             <div className="p_r_e_text">
                                 <p>注意事项：</p>
-                                <p>1、复制“附言内容”粘贴到工行“附言”栏内，否则充值将无法到账。</p>
-                                <p>2、充值附言随机生成，一个附言只能充值一次，重复使用充值将无法到账。</p>
-                                <p>3、充值账户应当与平台绑定的农行卡完全一致，否则充值将无法到账。</p>
-                                <p>4、收款账户和E-mail将会不定时更换，请在获取最新信息后充值，否则充值将无法即时到帐。</p>
-                                <p>5、平台填写金额应当与网银汇款金额完全一致，否则将无法即时到帐。</p>
-                                <p>6、登陆工行网银后，点击“转账汇款”后选择“E-mail汇款”。</p>
+                                <p>1、充值附言随机生成，一次附言只能充值一次，重复使用附言将无法到账。</p>
+                                <p>2、充值账户应已绑定至平台，否则充值将无法到账。</p>
+                                <p>3、收款账户将不定时更换，请勿保存，充值前请获取最新信息后充值。</p>
+                                <p>4、填写的充值金额应与网银转账金额完全一致，否则将无法即时到账。</p>
                                 <p className="col_color_ying">
                                     {
-                                        stateVar.aliPayInfo.code == 'icbc' ? '7、平台工行充值只支持工行网银转账。' : '7、支持跨行转账，您也可自行登录其他银行官网进行转账。'
+                                        aliPayInfo.b_acc_name == 'khcz' || aliPayInfo.b_acc_name == 'khzz' ? '5、支持跨行转账，您可自行登录各大银行官网进行转账操作。' : '5、不支持跨行转账，请登录收款卡对应银行官网进行转账操作。'
                                     }
                                 </p>
-                                <p>8、如充值后未到账，请联系在线客服。<a href={stateVar.httpService}>点击联系在线客服</a></p>
+                                <p>6、如充值后未到账，请联系在线客服。<a href={stateVar.httpService}>点击联系在线客服</a></p>
                             </div>
                     }
                 </div>

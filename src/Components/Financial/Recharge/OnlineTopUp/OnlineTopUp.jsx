@@ -97,7 +97,7 @@ export default class OnlineTopUp extends Component {
     // 充值金额
     onRechargeAmount(value) {
         let {validate, postData, loadmin, loadmax} = this.state;
-        let reg = /^[0-9]*$/;
+        let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
         let r = reg.test(value);
         if(!r ||value == 0 || value < loadmin || value > loadmax){
             validate.money = 1;
@@ -160,6 +160,7 @@ export default class OnlineTopUp extends Component {
                     <li>
                         <span className="r_m_li_w">充值金额：</span>
                         <InputNumber min={0} size="large"
+                                     step={0.01}
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      className={onValidate('money', this.state.validate)}
@@ -173,7 +174,7 @@ export default class OnlineTopUp extends Component {
                                 <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmin}</strong>
                                 元，最高
                                 <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmax}</strong>
-                                元，单日充值总额无上限
+                                元，最多保留两位小数，单日充值总额无上限
                             </span>
                         </p>
                     </li>

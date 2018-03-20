@@ -62,6 +62,9 @@ export default class AutoLogin extends Component {
         window.removeEventListener('resize', function (event) {
             event.preventDefault();
         });
+        if(window._closeAnimationFrame){
+            window.cancelAnimationFrame(window._closeAnimationFrame);
+        }
     };
     render() {
         return(<div className='autologin_main'>

@@ -105,7 +105,7 @@ export default class Ebank extends Component {
     /*充值金额*/
     onRechargeAmount(value) {
         let {validate, postData, loadmin, loadmax} = this.state;
-        let reg = /^[0-9]*$/;
+        let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
         let r = reg.test(value);
         if(!r || value < loadmin || value > loadmax){
             validate.money = 1;
@@ -177,7 +177,7 @@ export default class Ebank extends Component {
                             <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmin}</strong>
                             元，最高
                             <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmax}</strong>
-                            元
+                            元，最多保留两位小数
                         </span>
                         </p>
                     </li>
