@@ -1,4 +1,5 @@
 /*公用方法*/
+import mobx from "mobx";
 import { stateVar } from '../../State'
 import  commone  from './commone.js'
 
@@ -504,8 +505,9 @@ const checkNum = ()=>{
     //var modes = parseInt($("#lt_project_modes").val(),10);//投注模式
 	//alert(modes+'----'+mname);
     //01:验证号码合法性并计算注数
+    let tempAr = mobx.toJS(stateVar.aboutGame.data_sel);
     if( stateVar.aboutGame.otype == 'input' ){//输入框形式的检测
-        if( stateVar.aboutGame.data_sel[0].length > 0 ){//如果输入的有值
+        if( tempAr[0].length > 0 ){//如果输入的有值
             switch(mname){
                 case 'ZX3'  : nums = _inputCheck_Num(3,false); break;
                 case 'ZX4'  : nums = _inputCheck_Num(4,false); break;
@@ -575,16 +577,15 @@ const checkNum = ()=>{
                 case "PK10ZX6":
                 var baseLen = parseInt(mname.substr(6,1));
                 nums = play.calculateInputNumbersLength(play.checkInputNumbersArray(stateVar.aboutGame.data_sel[0],baseLen).length);
-
-                    break;
-                default   : break;
+                break;
+                default : break;
             }
         }
     }else{//其他选择号码形式[暂时就数字型和大小单双]
         let tmp_nums = 1;
         switch(mname){//根据玩法分类不同做不同处理
             case"WXZU120":
-                        var s=stateVar.aboutGame.data_sel[0].length;if(s>4){
+                        var s=tempAr[0].length;if(s>4){
                             nums+=commone.Combination(s,5)
                         }break;
             case"WXZU60":
@@ -592,20 +593,20 @@ const checkNum = ()=>{
             case"WXZU20":
             case"WXZU10":
             case"WXZU5":
-                        if(stateVar.aboutGame.data_sel[0].length>=stateVar.aboutGame.minchosen[0]&&stateVar.aboutGame.data_sel[1].length>=stateVar.aboutGame.minchosen[1]){
-                            var h=Array.intersect(stateVar.aboutGame.data_sel[0],stateVar.aboutGame.data_sel[1]).length;
-                            tmp_nums=commone.Combination(stateVar.aboutGame.data_sel[0].length,stateVar.aboutGame.minchosen[0])*commone.Combination(stateVar.aboutGame.data_sel[1].length,stateVar.aboutGame.minchosen[1]);
+                        if(tempAr[0].length>=stateVar.aboutGame.minchosen[0]&&tempAr[1].length>=stateVar.aboutGame.minchosen[1]){
+                            var h=Array.intersect(tempAr[0],tempAr[1]).length;
+                            tmp_nums=commone.Combination(tempAr[0].length,stateVar.aboutGame.minchosen[0])*commone.Combination(tempAr[1].length,stateVar.aboutGame.minchosen[1]);
                             if(h>0){
                                 if(mname=="WXZU60"){
-                                    tmp_nums-=commone.Combination(h,1)*commone.Combination(stateVar.aboutGame.data_sel[1].length-1,2)
+                                    tmp_nums-=commone.Combination(h,1)*commone.Combination(tempAr[1].length-1,2)
                                 }else{
                                     if(mname=="WXZU30"){
                                         tmp_nums-=commone.Combination(h,2)*commone.Combination(2,1);
-                                        if(stateVar.aboutGame.data_sel[0].length-h>0){
-                                            tmp_nums-=commone.Combination(h,1)*commone.Combination(stateVar.aboutGame.data_sel[0].length-h,1)
+                                        if(tempAr[0].length-h>0){
+                                            tmp_nums-=commone.Combination(h,1)*commone.Combination(tempAr[0].length-h,1)
                                         }}else{
                                         if(mname=="WXZU20"){
-                                            tmp_nums-=commone.Combination(h,1)*commone.Combination(stateVar.aboutGame.data_sel[1].length-1,1)
+                                            tmp_nums-=commone.Combination(h,1)*commone.Combination(tempAr[1].length-1,1)
                                         }else{
                                             if(mname=="WXZU10"||mname=="WXZU5"){
                                                 tmp_nums-=commone.Combination(h,1)
@@ -629,9 +630,9 @@ const checkNum = ()=>{
                     cc = {1:1,2:2,3:2,4:4,5:5,6:6,7:8,8:10,9:11,10:13,11:14,12:14,13:15,14:15,15:14,16:14,17:13,18:11,19:10,20:8,21:6,22:5,23:4,24:2,25:2,26:1};
                 }
                 for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                    var s = stateVar.aboutGame.data_sel[i].length;
+                    var s = tempAr[i].length;
                     for( let j=0; j<s; j++ ){
-                        nums += cc[parseInt(stateVar.aboutGame.data_sel[i][j],10)];
+                        nums += cc[parseInt(tempAr[i][j],10)];
                     }
                 };
                 if( mname == 'RXZXSSC3HZ' || mname == 'RXZUSSC3HZ'||mname == 'RXZXWFC3HZ' || mname == 'RXZUWFC3HZ'||mname == 'RXZXFFC3HZ' || mname == 'RXZUFFC3HZ' ){//任选三直选和值,任选三组选和值
@@ -644,7 +645,7 @@ const checkNum = ()=>{
             case 'RXZUSANFFC3'	:
             case 'RXZUSANSSC3'	:
                 for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                    var s = stateVar.aboutGame.data_sel[i].length;
+                    var s = tempAr[i].length;
                     if( s > 1 ){//组三必须选两位或者以上
                         nums += s*(s-1);
                     }
@@ -659,7 +660,7 @@ const checkNum = ()=>{
             case 'RXZUSIXFFC3'	:
             case 'RXZUSIXSSC3'	:
                 for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                    var s = stateVar.aboutGame.data_sel[i].length;
+                    var s = tempAr[i].length;
                     if( s > 2 ){//组六必须选三位或者以上
                         nums += s*(s-1)*(s-2)/6;
                     }
@@ -674,33 +675,33 @@ const checkNum = ()=>{
             case 'ZH3'  :
                 for( i=0; i<=stateVar.aboutGame.max_place; i++ )
                 {
-                    if( stateVar.aboutGame.data_sel[i].length == 0 )
+                    if( tempAr[i].length == 0 )
                     {//有位置上没有选择
                         tmp_nums = 0;
                         break;
                     }
-                    tmp_nums *= stateVar.aboutGame.data_sel[i].length;
+                    tmp_nums *= tempAr[i].length;
                 }
                 nums = tmp_nums*parseInt(mname.charAt(mname.length-1));
                 break;
             case "SXZU24":
-                var s=stateVar.aboutGame.data_sel[0].length;if(s>3){nums+=commone.Combination(s,4)}
+                var s=tempAr[0].length;if(s>3){nums+=commone.Combination(s,4)}
                 break;
             case 'SXZU6':
-                if( stateVar.aboutGame.data_sel[0].length >= stateVar.aboutGame.minchosen[0] )
+                if( tempAr[0].length >= stateVar.aboutGame.minchosen[0] )
                 {
                     //C(n,2)
-                    nums += commone.Combination(stateVar.aboutGame.data_sel[0].length, stateVar.aboutGame.minchosen[0]);
+                    nums += commone.Combination(tempAr[0].length, stateVar.aboutGame.minchosen[0]);
                 }
                 break;
             case"SXZU12":
             case"SXZU4":
-                if(stateVar.aboutGame.data_sel[0].length>=stateVar.aboutGame.minchosen[0]&&stateVar.aboutGame.data_sel[1].length>=stateVar.aboutGame.minchosen[1]){
-                    var h=Array.intersect(stateVar.aboutGame.data_sel[0],stateVar.aboutGame.data_sel[1]).length;
-                    tmp_nums=commone.Combination(stateVar.aboutGame.data_sel[0].length,stateVar.aboutGame.minchosen[0])*commone.Combination(stateVar.aboutGame.data_sel[1].length,stateVar.aboutGame.minchosen[1]);
+                if(tempAr[0].length>=stateVar.aboutGame.minchosen[0]&&tempAr[1].length>=stateVar.aboutGame.minchosen[1]){
+                    var h=Array.intersect(tempAr[0],tempAr[1]).length;
+                    tmp_nums=commone.Combination(tempAr[0].length,stateVar.aboutGame.minchosen[0])*commone.Combination(tempAr[1].length,stateVar.aboutGame.minchosen[1]);
                     if(h>0){
                         if(mname=="SXZU12"){
-                            tmp_nums-=commone.Combination(h,1)*commone.Combination(stateVar.aboutGame.data_sel[1].length-1,1)
+                            tmp_nums-=commone.Combination(h,1)*commone.Combination(tempAr[1].length-1,1)
                         }
                         else{
                             if(mname=="SXZU4"){
@@ -714,7 +715,7 @@ const checkNum = ()=>{
             case 'BDW2'  :  //二码不定位
             case 'ZU2'   :  //2位组选
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 1 ){//二码不定位必须选两位或者以上
                                     nums += s*(s-1)/2;
                                 }
@@ -744,9 +745,9 @@ const checkNum = ()=>{
                     18:1
                 };
                 for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                    var s = stateVar.aboutGame.data_sel[i].length;
+                    var s = tempAr[i].length;
                     for( let j=0; j<s; j++ ){
-                        nums += cc[parseInt(stateVar.aboutGame.data_sel[i][j],10)];
+                        nums += cc[parseInt(tempAr[i][j],10)];
                     }
                 };
 
@@ -774,23 +775,23 @@ const checkNum = ()=>{
                     18:0
                 };
                 for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                    var s = stateVar.aboutGame.data_sel[i].length;
+                    var s = tempAr[i].length;
                     for( let j=0; j<s; j++ ){
-                        nums += cc[parseInt(stateVar.aboutGame.data_sel[i][j],10)];
+                        nums += cc[parseInt(tempAr[i][j],10)];
                     }
                 };
                 break;
             case 'DWD'  :   //定位胆所有在一起特殊处理
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                nums += stateVar.aboutGame.data_sel[i].length;
+                                nums += tempAr[i].length;
                             };break;
             case 'SDZX3': //山东11运前三直选
                             nums = 0;
-                            if( stateVar.aboutGame.data_sel[0].length > 0 && stateVar.aboutGame.data_sel[1].length > 0 && stateVar.aboutGame.data_sel[2].length > 0 ){
-                                for( i=0; i<stateVar.aboutGame.data_sel[0].length; i++ ){
-                                    for( let j=0; j<stateVar.aboutGame.data_sel[1].length; j++ ){
-                                        for( let k=0; k<stateVar.aboutGame.data_sel[2].length; k++ ){
-                                            if( stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[1][j] && stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[2][k] && stateVar.aboutGame.data_sel[1][j] != stateVar.aboutGame.data_sel[2][k] ){
+                            if( tempAr[0].length > 0 && tempAr[1].length > 0 && tempAr[2].length > 0 ){
+                                for( i=0; i<tempAr[0].length; i++ ){
+                                    for( let j=0; j<tempAr[1].length; j++ ){
+                                        for( let k=0; k<tempAr[2].length; k++ ){
+                                            if( tempAr[0][i] != tempAr[1][j] && tempAr[0][i] != tempAr[2][k] && tempAr[1][j] != tempAr[2][k] ){
                                                 nums++;
                                             }
                                         }
@@ -800,17 +801,17 @@ const checkNum = ()=>{
                             break;
             case 'SDZU3': //山东11运前三组选
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 2 ){//组六必须选三位或者以上
                                     nums += s*(s-1)*(s-2)/6;
                                 }
                             };break;
             case 'SDZX2': //山动十一运前二直选
                           nums = 0;
-                            if( stateVar.aboutGame.data_sel[0].length > 0 && stateVar.aboutGame.data_sel[1].length > 0 ){
-                                for( i=0; i<stateVar.aboutGame.data_sel[0].length; i++ ){
-                                    for( let j=0; j<stateVar.aboutGame.data_sel[1].length; j++ ){
-                                        if( stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[1][j]){
+                            if( tempAr[0].length > 0 && tempAr[1].length > 0 ){
+                                for( i=0; i<tempAr[0].length; i++ ){
+                                    for( let j=0; j<tempAr[1].length; j++ ){
+                                        if( tempAr[0][i] != tempAr[1][j]){
                                             nums++;
                                         }
                                     }
@@ -819,7 +820,7 @@ const checkNum = ()=>{
                             break;
             case 'SDZU2': //山东十一运前二组选
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 1 ){//组六必须选三位或者以上
                                     nums += s*(s-1)/2;
                                 }
@@ -830,53 +831,53 @@ const checkNum = ()=>{
             case 'SDCZW':
             case 'SDRX1': //任选1中1
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                nums += stateVar.aboutGame.data_sel[i].length;
+                                nums += tempAr[i].length;
                             };break;
             case 'SDRX2': //任选2中2
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 1 ){//二码不定位必须选两位或者以上
                                     nums += s*(s-1)/2;
                                 }
                             };break;
             case 'SDRX3': //任选3中3
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 2 ){//必须选三位或者以上
                                     nums += s*(s-1)*(s-2)/6;
                                 }
                             };break;
             case 'SDRX4': //任选4中4
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 3 ){//必须选四位或者以上
                                     nums += s*(s-1)*(s-2)*(s-3)/24;
                                 }
                             };break;
             case 'SDRX5': //任选5中5
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 4 ){//必须选四位或者以上
                                     nums += s*(s-1)*(s-2)*(s-3)*(s-4)/120;
                                 }
                             };break;
             case 'SDRX6': //任选6中6
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 5 ){//必须选四位或者以上
                                     nums += s*(s-1)*(s-2)*(s-3)*(s-4)*(s-5)/720;
                                 }
                             };break;
             case 'SDRX7': //任选7中7
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 6 ){//必须选四位或者以上
                                     nums += s*(s-1)*(s-2)*(s-3)*(s-4)*(s-5)*(s-6)/5040;
                                 }
                             };break;
             case 'SDRX8': //任选8中8
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 7 ){//必须选四位或者以上
                                     nums += s*(s-1)*(s-2)*(s-3)*(s-4)*(s-5)*(s-6)*(s-7)/40320;
                                 }
@@ -884,42 +885,42 @@ const checkNum = ()=>{
 //下面是北京快乐吧
             case 'BJRX2': //北京快乐8 任选2
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 1 ){//必须选 两位到八位
                                     nums += s*(s-1)/2;
                                 }
                             };break;
             case 'BJRX3': //北京快乐8 任选3
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 2 ){//必须选 三位到八位
                                     nums += s*(s-1)*(s-2)/6;
                                 }
                             };break;
             case 'BJRX4': //北京快乐8 任选4
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 3 ){//必须选 四位到八位
                                     nums += s*(s-1)*(s-2)*(s-3)/24;
                                 }
                             };break;
             case 'BJRX5': //北京快乐8 任选5
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 4 ){//必须选 五位到八位
                                     nums += s*(s-1)*(s-2)*(s-3)*(s-4)/120;
                                 }
                             };break;
             case 'BJRX6': //北京快乐8 任选6
                             for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                                var s = stateVar.aboutGame.data_sel[i].length;
+                                var s = tempAr[i].length;
                                 if( s > 5 ){//必须选 六位到八位
                                     nums += s*(s-1)*(s-2)*(s-3)*(s-4)*(s-5)/720;
                                 }
                             };break;
             case 'BJRX7': //北京快乐8 任选7
                 for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                    var s = stateVar.aboutGame.data_sel[i].length;
+                    var s = tempAr[i].length;
                     if( s > 6 ){//必须选 七位到八位
                         nums += s*(s-1)*(s-2)*(s-3)*(s-4)*(s-5)*(s-6)/5040;
                     }
@@ -927,11 +928,11 @@ const checkNum = ()=>{
             case "RXZXWFC2":
             case "RXZXFFC2":
             case "RXZXSSC2": //任选二直选
-                var wan = stateVar.aboutGame.data_sel[0].length;
-                var qian = stateVar.aboutGame.data_sel[1].length;
-                var bai = stateVar.aboutGame.data_sel[2].length;
-                var shi = stateVar.aboutGame.data_sel[3].length;
-                var ge = stateVar.aboutGame.data_sel[4].length;
+                var wan = tempAr[0].length;
+                var qian = tempAr[1].length;
+                var bai = tempAr[2].length;
+                var shi = tempAr[3].length;
+                var ge = tempAr[4].length;
                 //万*千 + 万*百 + 万*十 + 万*个 + 千*百 + 千*十 + 千*个 + 百*十 + 百*个 + 十*个
                 nums += wan * qian + wan * bai + wan * shi + wan * ge + qian * bai + qian * shi + qian * ge + bai * shi + bai * ge + shi * ge;
                 break;
@@ -939,7 +940,7 @@ const checkNum = ()=>{
             case "RXZUFFC2":
             case "RXZUSSC2": //任选二组选
                 for (let i = 0; i <= stateVar.aboutGame.max_place; i++) {
-                    var s = stateVar.aboutGame.data_sel[i].length;
+                    var s = tempAr[i].length;
                     if (s > 1) {
                         nums += s * (s - 1) / 2;
                     }
@@ -963,9 +964,9 @@ const checkNum = ()=>{
             case "RXZXSSC2HZ":
                 cc = {0: 1,1: 2,2: 3,3: 4,4: 5,5: 6,6: 7,7: 8,8: 9,9: 10,10: 9,11: 8,12: 7,13: 6,14: 5,15: 4,16: 3,17: 2,18: 1};
                 for (let i = 0; i <= stateVar.aboutGame.max_place; i++) {
-                    var s = stateVar.aboutGame.data_sel[i].length;
+                    var s = tempAr[i].length;
                     for (let j = 0; j < s; j++) {
-                        nums += cc[parseInt(stateVar.aboutGame.data_sel[i][j], 10)];
+                        nums += cc[parseInt(tempAr[i][j], 10)];
                     }
                 }
                 nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 2);
@@ -977,9 +978,9 @@ const checkNum = ()=>{
             case "RXZUSSC2HZ":
                 cc = {0: 0,1: 1,2: 1,3: 2,4: 2,5: 3,6: 3,7: 4,8: 4,9: 5,10: 4,11: 4,12: 3,13: 3,14: 2,15: 2,16: 1,17: 1,18: 0};
                 for (let i = 0; i <= stateVar.aboutGame.max_place; i++) {
-                    var s = stateVar.aboutGame.data_sel[i].length;
+                    var s = tempAr[i].length;
                     for (let j = 0; j < s; j++) {
-                        nums += cc[parseInt(stateVar.aboutGame.data_sel[i][j], 10)];
+                        nums += cc[parseInt(tempAr[i][j], 10)];
                     }
                 }
                 nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 2);
@@ -991,7 +992,7 @@ const checkNum = ()=>{
             case "RXZXFFC3":
                 var aCodePosition = [];
                 for (let i = 0; i <= stateVar.aboutGame.max_place; i++) {
-                    var codelen = stateVar.aboutGame.data_sel[i].length;
+                    var codelen = tempAr[i].length;
                     if (codelen > 0) {
                         aCodePosition.push(i);
                     }
@@ -1006,7 +1007,7 @@ const checkNum = ()=>{
                     iLen = aCombo.length;
                     tmpNums = 1;
                     for (h = 0; h < iLen; h++) {
-                        tmpNums *= stateVar.aboutGame.data_sel[aCombo[h]].length;
+                        tmpNums *= tempAr[aCombo[h]].length;
                     }
                     nums += tmpNums;
                 }
@@ -1017,7 +1018,7 @@ const checkNum = ()=>{
             case "RXZXSSC4":
                 var aCodePosition = [];
                 for (let i = 0; i <= stateVar.aboutGame.max_place; i++) {
-                    var codelen = stateVar.aboutGame.data_sel[i].length;
+                    var codelen = tempAr[i].length;
                     if (codelen > 0) {
                         aCodePosition.push(i);
                     }
@@ -1032,7 +1033,7 @@ const checkNum = ()=>{
                     iLen = aCombo.length;
                     tmpNums = 1;
                     for (h = 0; h < iLen; h++) {
-                        tmpNums *= stateVar.aboutGame.data_sel[aCombo[h]].length;
+                        tmpNums *= tempAr[aCombo[h]].length;
                     }
                     nums += tmpNums;
                 }
@@ -1041,7 +1042,7 @@ const checkNum = ()=>{
             case "RXZU24SSC4":
             case "RXZU24WFC4":
             case "RXZU24FFC4":
-                var s = stateVar.aboutGame.data_sel[0].length;
+                var s = tempAr[0].length;
                 if (s > 3) {
                     nums += commone.Combination(s, 4);
                 }
@@ -1055,12 +1056,12 @@ const checkNum = ()=>{
             case "RXZU4FFC4":
             case "RXZU12SSC4":
             case "RXZU4SSC4":
-                if (stateVar.aboutGame.data_sel[0].length >= stateVar.aboutGame.minchosen[0] && stateVar.aboutGame.data_sel[1].length >= stateVar.aboutGame.minchosen[1]) {
-                    var h = Array.intersect(stateVar.aboutGame.data_sel[0], stateVar.aboutGame.data_sel[1]).length;
-                    tmp_nums = commone.Combination(stateVar.aboutGame.data_sel[0].length, stateVar.aboutGame.minchosen[0]) * commone.Combination(stateVar.aboutGame.data_sel[1].length, stateVar.aboutGame.minchosen[1]);
+                if (tempAr[0].length >= stateVar.aboutGame.minchosen[0] && tempAr[1].length >= stateVar.aboutGame.minchosen[1]) {
+                    var h = Array.intersect(tempAr[0], tempAr[1]).length;
+                    tmp_nums = commone.Combination(tempAr[0].length, stateVar.aboutGame.minchosen[0]) * commone.Combination(tempAr[1].length, stateVar.aboutGame.minchosen[1]);
                     if (h > 0) {
                         if (mname == "RXZU12SSC4"||mname == "RXZU12WFC4"||mname == "RXZU12FFC4") {
-                            tmp_nums -= commone.Combination(h, 1) * commone.Combination(stateVar.aboutGame.data_sel[1].length - 1, 1);
+                            tmp_nums -= commone.Combination(h, 1) * commone.Combination(tempAr[1].length - 1, 1);
                         } else {
                             if (mname == "RXZU4SSC4"||mname == "RXZU4WFC4"||mname == "RXZU4FFC4") {
                                 tmp_nums -= commone.Combination(h, 1);
@@ -1076,17 +1077,17 @@ const checkNum = ()=>{
             case "RXZU6WFC4":
             case "RXZU6FFC4":
             case "RXZU6SSC4":
-                if (stateVar.aboutGame.data_sel[0].length >= stateVar.aboutGame.minchosen[0]) {
-                    nums += commone.Combination(stateVar.aboutGame.data_sel[0].length, stateVar.aboutGame.minchosen[0]);
+                if (tempAr[0].length >= stateVar.aboutGame.minchosen[0]) {
+                    nums += commone.Combination(tempAr[0].length, stateVar.aboutGame.minchosen[0]);
                 }
                 nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 4);
 				/*recordPoschoose();*/
                 break;
 			//3星直选跨度
 			case '3XZXKD' :
-				var len = stateVar.aboutGame.data_sel[0].length,n;
+				var len = tempAr[0].length,n;
 				for(var i = 0; i < len; i++){
-					n = parseInt(stateVar.aboutGame.data_sel[0][i],10);
+					n = parseInt(tempAr[0][i],10);
 					if(n === 0){
 						nums += 10;
 					}else{
@@ -1096,31 +1097,31 @@ const checkNum = ()=>{
 				break;
 			//3星直选组合
 			case '3XZXZH' :
-				var len = stateVar.aboutGame.data_sel.length;
+				var len = tempAr.length;
 				for(var i = 0; i < len; i++){
-					tmp_nums*=stateVar.aboutGame.data_sel[i].length;
+					tmp_nums*=tempAr[i].length;
 				}
 				nums = tmp_nums * 3;
 				break;
 			//三星组选_组三跨度
 			case '3XZXZSKD' :
-				var len = stateVar.aboutGame.data_sel[0].length,n;
+				var len = tempAr[0].length,n;
 				for(var i = 0; i < len; i++){
-					n = parseInt(stateVar.aboutGame.data_sel[0][i],10);
+					n = parseInt(tempAr[0][i],10);
 					nums += (10 - n) * 6;
 				}
 			break;
 			//三星组选_组六跨度
 			case '3XZXZLKD' :
-				var len = stateVar.aboutGame.data_sel[0].length,n;
+				var len = tempAr[0].length,n;
 				for(var i = 0; i < len; i++){
-					n = parseInt(stateVar.aboutGame.data_sel[0][i],10);
+					n = parseInt(tempAr[0][i],10);
 					nums += (n-1)*(10-n)*6;
 				}
 			break;
 			case '3XDT' ://三码胆拖
-                var danlen = stateVar.aboutGame.data_sel[0].length;
-                var tuolen = stateVar.aboutGame.data_sel[1].length;
+                var danlen = tempAr[0].length;
+                var tuolen = tempAr[1].length;
                 if(danlen !== 0 && tuolen !== 0){
                     if (danlen === 1) {
 						nums = commone.Combination(tuolen, 2);
@@ -1130,8 +1131,8 @@ const checkNum = ()=>{
                 }
 			break;
 			case '4XDT' ://四码胆拖
-                var danlen = stateVar.aboutGame.data_sel[0].length;
-                var tuolen = stateVar.aboutGame.data_sel[1].length;
+                var danlen = tempAr[0].length;
+                var tuolen = tempAr[1].length;
                 if(danlen !== 0 && tuolen !== 0){
                     if (danlen === 1) {
 						nums = commone.Combination(tuolen, 3);
@@ -1143,8 +1144,8 @@ const checkNum = ()=>{
                 }
 			break;
 			case '5XDT' ://五码胆拖
-                var danlen = stateVar.aboutGame.data_sel[0].length;
-                var tuolen = stateVar.aboutGame.data_sel[1].length;
+                var danlen = tempAr[0].length;
+                var tuolen = tempAr[1].length;
                 if(danlen !== 0 && tuolen !== 0){
                     if (danlen === 1) {
 						nums = commone.Combination(tuolen, 4);
@@ -1158,7 +1159,7 @@ const checkNum = ()=>{
                 }
 			break;
 			case 'ZU3BD' ://三星组选包胆
-				var len = stateVar.aboutGame.data_sel[0].length;
+				var len = tempAr[0].length;
 				if(len === 1){
 					nums = 54;
 				}
@@ -1166,10 +1167,10 @@ const checkNum = ()=>{
 			//pk10
             case "PK10ZX2":
             	nums = 0;
-                if( stateVar.aboutGame.data_sel[0].length > 0 && stateVar.aboutGame.data_sel[1].length > 0 ){
-                    for( i=0; i<stateVar.aboutGame.data_sel[0].length; i++ ){
-                        for( let j=0; j<stateVar.aboutGame.data_sel[1].length; j++ ){
-                            if( stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[1][j]){
+                if( tempAr[0].length > 0 && tempAr[1].length > 0 ){
+                    for( i=0; i<tempAr[0].length; i++ ){
+                        for( let j=0; j<tempAr[1].length; j++ ){
+                            if( tempAr[0][i] != tempAr[1][j]){
                                 nums++;
                             }
                         }
@@ -1178,11 +1179,11 @@ const checkNum = ()=>{
             break;
             case "PK10ZX3":
             	nums = 0;
-                if( stateVar.aboutGame.data_sel[0].length > 0 && stateVar.aboutGame.data_sel[1].length > 0 && stateVar.aboutGame.data_sel[2].length > 0 ){
-                    for( i=0; i<stateVar.aboutGame.data_sel[0].length; i++ ){
-                        for( let j=0; j<stateVar.aboutGame.data_sel[1].length; j++ ){
-                            for( let k=0; k<stateVar.aboutGame.data_sel[2].length; k++ ){
-                                if( stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[1][j] && stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[2][k] && stateVar.aboutGame.data_sel[1][j] != stateVar.aboutGame.data_sel[2][k] ){
+                if( tempAr[0].length > 0 && tempAr[1].length > 0 && tempAr[2].length > 0 ){
+                    for( i=0; i<tempAr[0].length; i++ ){
+                        for( let j=0; j<tempAr[1].length; j++ ){
+                            for( let k=0; k<tempAr[2].length; k++ ){
+                                if( tempAr[0][i] != tempAr[1][j] && tempAr[0][i] != tempAr[2][k] && tempAr[1][j] != tempAr[2][k] ){
                                     nums++;
                                 }
                             }
@@ -1192,17 +1193,17 @@ const checkNum = ()=>{
             break;
             case "PK10ZX4":
             	nums = 0;
-                if( stateVar.aboutGame.data_sel[0].length > 0 && stateVar.aboutGame.data_sel[1].length > 0 && stateVar.aboutGame.data_sel[2].length > 0 && stateVar.aboutGame.data_sel[3].length > 0 ){
-                    for( i=0; i<stateVar.aboutGame.data_sel[0].length; i++ ){
-                        for( let j=0; j<stateVar.aboutGame.data_sel[1].length; j++ ){
-                            for( let k=0; k<stateVar.aboutGame.data_sel[2].length; k++ ){
-                            	for( let x=0; x<stateVar.aboutGame.data_sel[3].length; x++ ){
-                            		if( stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[1][j] &&
-                            		    stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[2][k] &&
-                            		    stateVar.aboutGame.data_sel[0][i] != stateVar.aboutGame.data_sel[3][x] &&
-                            		    stateVar.aboutGame.data_sel[1][j] != stateVar.aboutGame.data_sel[2][k] &&
-                            		    stateVar.aboutGame.data_sel[1][j] != stateVar.aboutGame.data_sel[3][x] &&
-                            		    stateVar.aboutGame.data_sel[2][k] != stateVar.aboutGame.data_sel[3][x] ){
+                if( tempAr[0].length > 0 && tempAr[1].length > 0 && tempAr[2].length > 0 && tempAr[3].length > 0 ){
+                    for( i=0; i<tempAr[0].length; i++ ){
+                        for( let j=0; j<tempAr[1].length; j++ ){
+                            for( let k=0; k<tempAr[2].length; k++ ){
+                            	for( let x=0; x<tempAr[3].length; x++ ){
+                            		if( tempAr[0][i] != tempAr[1][j] &&
+                            		    tempAr[0][i] != tempAr[2][k] &&
+                            		    tempAr[0][i] != tempAr[3][x] &&
+                            		    tempAr[1][j] != tempAr[2][k] &&
+                            		    tempAr[1][j] != tempAr[3][x] &&
+                            		    tempAr[2][k] != tempAr[3][x] ){
                             			nums++;
                             		}
                             	}
@@ -1213,11 +1214,11 @@ const checkNum = ()=>{
             break;
             case "PK10ZX5":
             	nums = 0;
-            	var data_sel1 = stateVar.aboutGame.data_sel[0];
-            	var data_sel2 = stateVar.aboutGame.data_sel[1];
-            	var data_sel3 = stateVar.aboutGame.data_sel[2];
-            	var data_sel4 = stateVar.aboutGame.data_sel[3];
-            	var data_sel5 = stateVar.aboutGame.data_sel[4];
+            	var data_sel1 = tempAr[0];
+            	var data_sel2 = tempAr[1];
+            	var data_sel3 = tempAr[2];
+            	var data_sel4 = tempAr[3];
+            	var data_sel5 = tempAr[4];
                 if( data_sel1.length > 0 && data_sel2.length > 0 && data_sel3.length > 0 && data_sel4.length > 0 && data_sel5.length > 0 ){
                     for( let i=0; i<data_sel1.length; i++ ){
                         for( let j=0; j<data_sel2.length; j++ ){
@@ -1245,12 +1246,12 @@ const checkNum = ()=>{
             break;
             case "PK10ZX6":
             	nums = 0;
-            	var data_sel1 = stateVar.aboutGame.data_sel[0];
-            	var data_sel2 = stateVar.aboutGame.data_sel[1];
-            	var data_sel3 = stateVar.aboutGame.data_sel[2];
-            	var data_sel4 = stateVar.aboutGame.data_sel[3];
-            	var data_sel5 = stateVar.aboutGame.data_sel[4];
-            	var data_sel6 = stateVar.aboutGame.data_sel[5];
+            	var data_sel1 = tempAr[0];
+            	var data_sel2 = tempAr[1];
+            	var data_sel3 = tempAr[2];
+            	var data_sel4 = tempAr[3];
+            	var data_sel5 = tempAr[4];
+            	var data_sel6 = tempAr[5];
                 if( data_sel1.length > 0 && data_sel2.length > 0 && data_sel3.length > 0 && data_sel4.length > 0 && data_sel5.length > 0 && data_sel6.length > 0){
                     for( let i=0; i<data_sel1.length; i++ ){
                         for( let j=0; j<data_sel2.length; j++ ){
@@ -1285,16 +1286,16 @@ const checkNum = ()=>{
             break;
             case "PK10DWD":
             	for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-                    nums += stateVar.aboutGame.data_sel[i].length;
+                    nums += tempAr[i].length;
                 };
             break;
             default     : //默认情况
 				for( i=0; i<=stateVar.aboutGame.max_place; i++ ){
-					if( stateVar.aboutGame.data_sel[i].length == 0 ){//有位置上没有选择
+					if( tempAr[i].length == 0 ){//有位置上没有选择
 						tmp_nums = 0;
 						break;
 					}
-					tmp_nums *= stateVar.aboutGame.data_sel[i].length;
+					tmp_nums *= tempAr[i].length;
 				}
 				nums = tmp_nums;
 			break;

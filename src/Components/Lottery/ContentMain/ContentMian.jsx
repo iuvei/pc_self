@@ -821,6 +821,7 @@ export default class ContentMian extends Component {
 	            reader.onload = function (evt) {
 	                let filestring = evt.target.result;
 	                _this.setState({textAreaValue:filestring},()=>{
+	                	target.value = '';
 	                	_this._inptu_deal();
 	                });
 	            }
@@ -949,17 +950,17 @@ export default class ContentMian extends Component {
         if( l == 0 ){
             return err;
         }
+        var tempSel = mobx.toJS(stateVar.aboutGame.data_sel[0]),obj = {};
         for(let i=0; i<l; i++ ){
-            if( $.inArray(stateVar.aboutGame.data_sel[0][i],err) != -1 ){
+            if( $.inArray(tempSel[i],err) != -1 ){
                 continue;
             }
-            for( let j=i+1; j<l; j++ ){
-                if( stateVar.aboutGame.data_sel[0][i] == stateVar.aboutGame.data_sel[0][j] ){
-                    err.push(stateVar.aboutGame.data_sel[0][i]);
-                    break;
-                }
-            }
-            news.push(stateVar.aboutGame.data_sel[0][i]);
+            if(!obj[tempSel[i]]){ //如果能查找到，证明数组元素重复了
+            	obj[tempSel[i]] = 1;
+			   news.push(tempSel[i]);
+			}else{
+				err.push(tempSel[i]);
+			}
         }
         if( isdeal ){//如果是做删除重复号的处理
             stateVar.aboutGame.data_sel[0] = news;
@@ -1017,12 +1018,12 @@ export default class ContentMian extends Component {
         }
         $(".c_m_number_select .li").removeClass("selected");
         if( otype == 'input' ){//如果是输入型，则检测号码合法性，以及是否存在重复号
-            let mname = Method.methodId[stateVar.aboutGame.methodID];//玩法的简写,如:'ZX3'
+            let mname = Method.methodId[stateVar.aboutGame.methodID];
             let error = [];
             let edump = [];
             let ermsg = "";
             //检测重复号，并除去重复号
-            edump = this.dumpNum(true);
+            edump = mobx.toJS(this.dumpNum(true));
             if( edump.length >0 ){//有重复号
                 ermsg += '以下号码重复，已自动进行过滤'+'\n'+edump.join(",");
                 nums = Method.checkNum();
@@ -1102,9 +1103,10 @@ export default class ContentMian extends Component {
         }
     	let nos = stateVar.aboutGame.str;
         let temp = [];
-        for( let i=0; i<stateVar.aboutGame.data_sel.length; i++ ){
-            nos = nos.replace('X',stateVar.aboutGame.data_sel[i].sort(Method._SortNum).join(","));
-            temp.push( stateVar.aboutGame.data_sel[i].sort(Method._SortNum).join("&") );
+        let tempBetData = mobx.toJS(stateVar.aboutGame.data_sel);
+        for( let i=0; i<tempBetData.length; i++ ){
+            nos = nos.replace('X',tempBetData[i].sort(Method._SortNum).join(","));
+            temp.push( tempBetData[i].sort(Method._SortNum).join("&") );
         }
         let nohtml = nos;
         let tempName  = '['+stateVar.aboutGame.title+'_'+stateVar.aboutGame.name+']';
@@ -1405,7 +1407,6 @@ export default class ContentMian extends Component {
         	periodsIndex:-1,
         	traceTotalMoney:0,
         	traceTotalIssue:0,
-        	traceItem:[],
         	checkselectItem:[]
         });
     };
@@ -1430,7 +1431,7 @@ export default class ContentMian extends Component {
     //清空追号号码
     clearTraceNumber(){
     	this.setState({checkAll:false},()=>{
-			let tempTraceItem = this.state.traceItem;
+			let tempTraceItem = mobx.toJS(this.state.traceItem);
 			let tempArray = [];
 			for(let i=0;i<tempTraceItem.length;i++){
 				tempArray.push(false);
@@ -1487,7 +1488,7 @@ export default class ContentMian extends Component {
     	let tempData = this.state.checkselectItem;
 		let tempTotalIssue = this.state.traceIssueNum;
 		let tempTotalTime = this.state.traceTimeNum;
-		let tempTraceItem = this.state.traceItem;
+		let tempTraceItem = mobx.toJS(this.state.traceItem);
 		let tempSpaceIssue	= this.state.traceIssueSpaceNum;
         let tempSpaceTime = this.state.traceTimeSpaceNum;
         let tempLowTraceMoney = this.state.traceLowMoneyNum;
@@ -1629,7 +1630,7 @@ export default class ContentMian extends Component {
 			setTimeout(() => modal.destroy(), 3000);
     		return;
     	}
-    	let tempIssue = this.state.traceItem;
+    	let tempIssue = mobx.toJS(this.state.traceItem);
     	let submitIssue = [];
     	let summitTime = {};
     	for(let i=0;i<tempIssue.length;i++){
@@ -1686,7 +1687,7 @@ export default class ContentMian extends Component {
     //单选追号复选框处理
     selectItem(index,e){
     	let tempData = this.state.checkselectItem;
-    	let tempTraceItem = this.state.traceItem;
+    	let tempTraceItem = mobx.toJS(this.state.traceItem);
     	let tempFlag = true;
     	let tempMoney = 0;
     	let tempTime = 0;
@@ -1718,7 +1719,7 @@ export default class ContentMian extends Component {
     	}
     	let tempMoney = 0;
     	let tempTime = 0;
-    	let tempTraceItem = this.state.traceItem;
+    	let tempTraceItem = mobx.toJS(this.state.traceItem);
     	for(let i=0;i<tempTraceItem.length;i++){
     		if(i == index){
     			tempTraceItem[i].times = val;
@@ -1734,7 +1735,7 @@ export default class ContentMian extends Component {
     //全选追号
     onCheckAllChange(e){
     	this.setState({checkAll:!this.state.checkAll},()=>{
-    		let tempData = this.state.traceItem;
+    		let tempData = mobx.toJS(this.state.traceItem);
     		let tempArray = [];
     		let tempMoney = 0;
     		let tempTime = 0;
@@ -1764,6 +1765,7 @@ export default class ContentMian extends Component {
     }
     //追号数据处理
     actionTrace(){
+    	console.log(3)
     	if(!this.state.tracevisible){
     		return;
     	}
@@ -1773,34 +1775,34 @@ export default class ContentMian extends Component {
     	}
     	let tempMoney = 0;
     	let tempTime = 0;
-    	let tempData = stateVar.todayAndTomorrow;
+    	let tempData = mobx.toJS(stateVar.todayAndTomorrow);
     	let dataTemp = [];
     	let tempArray = [];
     	for(let i=0;i<tempData.length;i++){
-    		if(i >= 50){
+    		if(i >= 100){
     			break;
     		}else{
     			let obj = {};
-    			if(tempObj.length > 0 && tempObj[i] != undefined && tempObj[i].times > 0){
-    				obj = {
+				if(tempObj.length > 0 && tempObj[i] != undefined && tempObj[i].times > 0){
+					obj = {
 		                age: tempObj[i].age,
 		                times: tempObj[i].times,
 		                money: tempObj[i].money,
 		                kjtime: tempObj[i].kjtime,
 		    		}
-    				tempArray.push(true);
-    			}else{
-    				obj = {
+					tempArray.push(true);
+				}else{
+					obj = {
 		                age: tempData[i].issue,
 		                times: 0,
 		                money: 0,
 		                kjtime: tempData[i].saleend,
 		    		}
-    				tempArray.push(false);
-    			}
-    			tempMoney += obj.money;
-    			tempTime += obj.times;
-    			dataTemp.push(obj)
+					tempArray.push(false);
+				}
+				tempMoney += obj.money;
+				tempTime += obj.times;
+				dataTemp.push(obj);
     		}
     	}
     	this.setState({traceItem:dataTemp,checkselectItem:tempArray,traceTotalMoney:tempMoney,traceTotalIssue:tempTime});
@@ -2310,7 +2312,8 @@ export default class ContentMian extends Component {
     	let htmldata = this.selectArea(oneLotteryData);//投注区域
     	let objRen = {};
     	let imgUrl = stateVar.nowlottery.imgUrl;
-    	let exampleTitle = <p dangerouslySetInnerHTML={{ __html: oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methodexample : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methodexample }}  />;
+    	let tempExample = oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methodexample : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methodexample;
+    	let exampleTitle = <p dangerouslySetInnerHTML={{ __html: tempExample }}  />;
         return (
         	<div>
 	            <div className='content_bet'>
@@ -2378,9 +2381,11 @@ export default class ContentMian extends Component {
 	                                </div>
 	                                <span className="c_m_select_title_right right">
 	                                    <span>{oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methoddesc : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methoddesc}</span>
-	                                    <Tooltip placement="bottomRight" title={exampleTitle}>
-									        <span className='c_m_lottery_explain'>玩法示例</span>
-									    </Tooltip>
+	                                    <span style={{display:(tempExample ? 'inline' : 'none')}}>
+		                                    <Tooltip placement="bottomRight" title={exampleTitle}>
+										        <span className='c_m_lottery_explain'>玩法示例</span>
+										    </Tooltip>
+									    </span>
 	                                    <Tooltip placement="bottomRight" title={oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methodhelp : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methodhelp}>
 									        <span className='c_m_lottery_explain'>中奖说明</span>
 									    </Tooltip>
@@ -2559,7 +2564,7 @@ export default class ContentMian extends Component {
 							                        </div>
 							                        <div className="periods_input left">
 							                            <span>手动输入</span>
-							                            <InputNumber min={1} max={120} value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
+							                            <InputNumber min={1} max={100}  value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
 							                            <span>期</span>
 							                        </div>
 							                        <div className="multiple_input left">
@@ -2574,7 +2579,7 @@ export default class ContentMian extends Component {
 						                        <div style={{display:this.state.traceTitleIndex ==2 ? 'block':'none'}}>
 						                        	<div className="periods_input left">
 							                            <span>追号期数</span>
-							                            <InputNumber min={1} max={120} value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
+							                            <InputNumber min={1} max={100} value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
 							                            <span>期</span>
 							                        </div>
 							                        <div className="multiple_input left">
@@ -2595,12 +2600,12 @@ export default class ContentMian extends Component {
 							                    <div style={{display:this.state.traceTitleIndex ==1 ? 'block':'none'}}>
 							                    	<div className="multiple_input left">
 							                            <span>追号期数</span>
-							                            <InputNumber min={1} max={120} value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
+							                            <InputNumber min={1} max={100} value={this.state.traceIssueNum} onChange={(value)=>{this.onChangeInputTraceIssue(value)}} />
 							                            <span>期</span>
 							                        </div>
 							                        <div className="periods_input left">
 							                            <span>隔</span>
-							                            <InputNumber min={1} max={120} value={this.state.traceIssueSpaceNum} onChange={(value)=>{this.onChangeInputSpaceTraceIssue(value)}} />
+							                            <InputNumber min={1} value={this.state.traceIssueSpaceNum} onChange={(value)=>{this.onChangeInputSpaceTraceIssue(value)}} />
 							                            <span>期</span>
 							                        </div>
 							                        <div className="periods_input periods_inputlv left">
@@ -2625,7 +2630,7 @@ export default class ContentMian extends Component {
 							                        <table>
 							                        	<tbody>
 								                        	{
-								                        		this.state.traceItem.map((val,index)=>{
+								                        		mobx.toJS(this.state.traceItem).map((val,index)=>{
 								                        			return(
 								                        				<tr key={index}>
 											                        		<td style={{width:'15%'}}>{index+1}</td>
