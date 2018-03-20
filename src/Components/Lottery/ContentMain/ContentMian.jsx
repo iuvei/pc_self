@@ -1017,6 +1017,7 @@ export default class ContentMian extends Component {
             return false;
         }
         $(".c_m_number_select .li").removeClass("selected");
+        debugger
         if( otype == 'input' ){//如果是输入型，则检测号码合法性，以及是否存在重复号
             let mname = Method.methodId[stateVar.aboutGame.methodID];
             let error = [];

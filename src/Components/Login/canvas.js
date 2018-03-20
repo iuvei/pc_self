@@ -73,7 +73,7 @@ const onCanvas01=()=> {
     }
 
     function anim(){
-        window.requestAnimationFrame( anim );
+        window._closeAnimationFrame = window.requestAnimationFrame( anim );
 
         ctx.globalCompositeOperation = 'source-over';
         ctx.fillStyle = opts.repaintAlpha;

@@ -77,6 +77,9 @@ export default class Login extends Component {
         window.removeEventListener('resize', function (event) {
             event.preventDefault();
         });
+        if(window._closeAnimationFrame){
+            window.cancelAnimationFrame(window._closeAnimationFrame);
+        }
     };
     getKefu(){
         Fetch.kefu({
