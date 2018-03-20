@@ -289,7 +289,7 @@ export default class Transfer extends Component {
             postData = {
                 from: 'bb',
                 target: 'ssc',
-                money: outMoney,
+                money: this.state.money,
                 tag: 'transfer'
             };
             this.transferBobing(postData);

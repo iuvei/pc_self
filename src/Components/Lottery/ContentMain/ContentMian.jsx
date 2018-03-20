@@ -1793,7 +1793,6 @@ export default class ContentMian extends Component {
     }
     //追号数据处理
     actionTrace(){
-    	console.log(3)
     	if(!this.state.tracevisible){
     		return;
     	}

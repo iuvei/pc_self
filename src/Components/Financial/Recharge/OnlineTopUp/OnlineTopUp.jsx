@@ -99,7 +99,8 @@ export default class OnlineTopUp extends Component {
         let {validate, postData, loadmin, loadmax} = this.state;
         let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
         let r = reg.test(value);
-        if(!r ||value == 0 || value < loadmin || value > loadmax){
+        let val = parseFloat(value);
+        if(!r || val < parseFloat(loadmin) || val > parseFloat(loadmax)){
             validate.money = 1;
         }else{
             validate.money = 0;
@@ -160,7 +161,6 @@ export default class OnlineTopUp extends Component {
                     <li>
                         <span className="r_m_li_w">充值金额：</span>
                         <InputNumber min={0} size="large"
-                                     step={0.01}
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      className={onValidate('money', this.state.validate)}
