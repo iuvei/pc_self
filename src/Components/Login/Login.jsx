@@ -68,10 +68,11 @@ export default class Login extends Component {
         this.getSession();
         this.getWechat();
         this.getKefu();
-        // console.log(window.animationFrame)
+        if(stateVar.userInfo.sType == 'demo'){
+            this.setState({account: null})
+        }
     };
     componentWillUnmount(){
-        // console.log(window.animationFrame)
         this._ismount = false;
         window.removeEventListener('resize', function (event) {
             event.preventDefault();
@@ -328,7 +329,6 @@ export default class Login extends Component {
     onConfirmPwdM(e) {
         let value = e.target.value,
             {validate, newPwdM} = this.state;
-        console.log(value)
         if(value === newPwdM && value != ''){
             validate.confirm_newpass = 0;
         }else{
@@ -427,9 +427,12 @@ export default class Login extends Component {
                         }).then((data)=>{
                         if(data.status==200){
                             this.setState({
-                                displayWarnM1:false,
-                                visible2: false,
+                                // displayWarnM1:false,
+                                // visible2: false,
                                 visible3: true,
+                            }, ()=>{
+                                this.onCancelSetPassw();
+                                this.onCancelInputPassw();
                             });
                         }else{
                             this.setState({
@@ -467,7 +470,28 @@ export default class Login extends Component {
             showWechat:'none'
         })
     }
-
+    /*关闭找回密码modal*/
+    onCancelInputPassw() {
+        this.setState({
+            visible1: false,
+            displayWarnM:false,
+            accountM: null,
+            passwordM: null,
+            aptchacM: null,
+        })
+    }
+    onCancelSetPassw() {
+        let {validate} = this.state;
+        validate.newpass = 2;
+        validate.confirm_newpass = 2;
+        this.setState({
+            visible2: false,
+            displayWarnM1:false,
+            newPwdM: null,
+            confirmPwdM: null,
+            validate,
+        }, ()=>this.onCancelInputPassw());
+    }
     loginMain() {
         /*
         * 账号登录
@@ -499,20 +523,28 @@ export default class Login extends Component {
                         maskClosable={false}
                         width={300}
                         visible={this.state.visible1}
-                        onCancel={()=>{this.setState({ visible1: false,displayWarnM:false, })}}
+                        onCancel={()=>this.onCancelInputPassw()}
                         footer={null}
                     >
                         <ul className="password_list">
                             <li>
-                                <Input size="large"  placeholder="用户名" onChange={(e)=>{this.onAccountM(e)}}/>
+                                <Input size="large"  placeholder="用户名"
+                                       value={this.state.accountM}
+                                       onChange={(e)=>{this.onAccountM(e)}}
+                                />
                             </li>
                             <li>
-                                <Input type="password" size="large"  placeholder="资金密码" onChange={(e)=>{this.onPwdM(e)}}/>
+                                <Input type="password" size="large"  placeholder="资金密码"
+                                       value={this.state.passwordM}
+                                       onChange={(e)=>{this.onPwdM(e)}}
+                                />
                             </li>
                             <li className="l_m_vali">
-                                <Input size="large"   value={this.state.aptchacM}
+                                <Input size="large"
+                                       value={this.state.aptchacM}
                                        onFocus={()=>{this.refreshImgModal()}}
-                                       onChange={(e)=>{this.onaptchacM(e)}} placeholder="验证码" />
+                                       onChange={(e)=>{this.onaptchacM(e)}} placeholder="验证码"
+                                />
                                 <img className="l_m_valicode" src={this.state.validImgM} onClick={()=>{this.refreshImgModal()}}/>
 
                                 <div className='hint_text'>
@@ -534,7 +566,7 @@ export default class Login extends Component {
                         width={300}
                         maskClosable={false}
                         visible={this.state.visible2}
-                        onCancel={()=>{this.setState({ visible2: false,displayWarnM1:false })}}
+                        onCancel={()=>this.onCancelSetPassw()}
                         footer={null}
                     >
                         <ul className="password_list">
@@ -638,7 +670,6 @@ export default class Login extends Component {
                             <p>2.8 本公司保留对其他未尽事宜或争议的解释权和修订权。
                             </p>
                         </div>
-
                     </Modal>
                 </div>
             </div>

@@ -2,9 +2,10 @@
 @import '../../Style/mixin';
 
 .helpInfo_main{
+    width: $nav_width_1200;
+    margin: 0 auto;
     .a_m_controler{
-        margin: 11px 0 30px 5px;
-        min-height: 700px;
+        min-height: 703px;
     }
     .leftHelp{
         width: 182px;

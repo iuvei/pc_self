@@ -6,7 +6,7 @@
     @include boxS(0, 4px, 18px, 0, #DCDCDC, null);
     .a_d_activeImg{
         vertical-align: middle;
-        width: 1172px;
+        width: $nav_width_1200;
     }
     .a_d_activeName{
         @include lh(45px);

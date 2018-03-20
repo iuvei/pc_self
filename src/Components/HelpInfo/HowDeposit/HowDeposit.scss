@@ -2,7 +2,7 @@
 @import '../../../Style/mixin';
 
 .howDeposit_main{
-    padding: 0 15px 0 197px;
+    padding-left: 197px;
     .h_select_list{
         padding: 25px 0;
         border-bottom: 1px dotted #C8C8C8;
@@ -22,8 +22,8 @@
         background: #cc0000;
         color: #fff;
     }
-    .nongkuahang, .zhaohang{
-        height: 590px;
+    .zhaohang{
+        height: 616px;
         overflow-y: scroll;
         overflow-x: hidden;
         &::-webkit-scrollbar-track-piece{

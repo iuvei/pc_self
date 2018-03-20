@@ -438,7 +438,7 @@ export default class ContractModal extends Component {
     setProtocol(contract_name){
         let { type, alterData } = this.state;
         this.setState({affirmLoading: true, contract_name: '签订契约'});
-        if(type == 3){//配额契约
+        if(type == 3 || type == '配额契约'){//配额契约
             this.setState({quotaLoding: true});
             let { agPost } = this.state;
             if(contract_name == '新申请'){
@@ -473,7 +473,7 @@ export default class ContractModal extends Component {
                     }
                 }
             })
-        }else if(type == 1){//分红契约
+        }else if(type == 1 || type == '分红契约'){//分红契约
             let diviPost = this.state.diviPost;
             diviPost.userid = alterData.userid;
             Fetch.diviratio({
@@ -495,7 +495,7 @@ export default class ContractModal extends Component {
                     }
                 }
             })
-        }else if(type == 0){//日工资契约
+        }else if(type == 0 || type == '日工资契约'){//日工资契约
             let postData = {
                 userid: alterData.userid,
                 parentid: this.state.self.userid,
@@ -521,7 +521,7 @@ export default class ContractModal extends Component {
                     }
                 }
             })
-        }else if(type == 2){//奖金组契约
+        }else if(type == 2 || type == '奖金组契约'){//奖金组契约
             let { prizeGroupFlag, prizeGroupPost, prizeGroupList } = this.state;
             let selectPrizeGroup = prizeGroupList.filter((item, index) => item.prizeGroup == prizeGroupFlag)[0];
             prizeGroupPost.groupLevel = prizeGroupFlag;
@@ -545,12 +545,11 @@ export default class ContractModal extends Component {
                     }
                 }
             })
-        }
+        }else{}
     };
 
     render() {
-        const {userList, contractInfo, type } = this.state;
-        // this.onTypeContent(type);
+        const {userList, contractInfo } = this.state;
         return (
             <div>
                 {

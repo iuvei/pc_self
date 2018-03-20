@@ -41,10 +41,10 @@ export default class HowDeposit extends Component {
           return '';
       }
 
-      var  ul_0 = <p className="gonghang" dangerouslySetInnerHTML={{__html: this.state.gonghangContent}}/>
-      var ul_1 = <div className="jianhang" dangerouslySetInnerHTML={{__html: this.state.jianhangContent}}></div>
-      var ul_2 = <div className="nonghang" dangerouslySetInnerHTML={{__html: this.state.nonghangContent}}></div>
-      var ul_3 = <div className="nongkuahang" dangerouslySetInnerHTML={{__html: this.state.nongkuahangContent}}></div>
+      var ul_0 = <div className="zhaohang" dangerouslySetInnerHTML={{__html: this.state.gonghangContent}}></div>
+      var ul_1 = <div className="zhaohang" dangerouslySetInnerHTML={{__html: this.state.jianhangContent}}></div>
+      var ul_2 = <div className="zhaohang" dangerouslySetInnerHTML={{__html: this.state.nonghangContent}}></div>
+      var ul_3 = <div className="zhaohang" dangerouslySetInnerHTML={{__html: this.state.nongkuahangContent}}></div>
       var ul_4 = <div className="zhaohang" dangerouslySetInnerHTML={{__html: this.state.zhaohangContent}}></div>
         switch (this.state.navListIndex) {
 

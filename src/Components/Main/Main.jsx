@@ -45,7 +45,12 @@ export default class Main extends Component {
             pathname == '/otherGames/gt'||
             pathname == '/otherGames/sport'||
             pathname == '/downLoadClient'||
-            pathname == '/otherGames'
+            pathname == '/otherGames' ||
+            pathname == '/helpInfo'||
+            pathname == '/helpInfo/playMethodIntroduce'||
+            pathname == '/helpInfo/howDeposit'||
+            pathname == '/helpInfo/commonProblems'||
+            pathname == '/helpInfo/aboutHengCai'
         ) {
             return true
         } else {
@@ -54,17 +59,17 @@ export default class Main extends Component {
     };
     /*隐藏帮助中心下的右边导航条*/
     hideLeft(){
-        let pathname = hashHistory.getCurrentLocation().pathname;
-        if (pathname == '/helpInfo'||
-            pathname == '/helpInfo/playMethodIntroduce'||
-            pathname == '/helpInfo/howDeposit'||
-            pathname == '/helpInfo/commonProblems'||
-            pathname == '/helpInfo/aboutHengCai'
-            ) {
-            return true
-        } else {
-            return false
-        }
+        // let pathname = hashHistory.getCurrentLocation().pathname;
+        // if (pathname == '/helpInfo'||
+        //     pathname == '/helpInfo/playMethodIntroduce'||
+        //     pathname == '/helpInfo/howDeposit'||
+        //     pathname == '/helpInfo/commonProblems'||
+        //     pathname == '/helpInfo/aboutHengCai'
+        //     ) {
+        //     return true
+        // } else {
+        //     return false
+        // }
     };
     hideRight(){
         let pathname = hashHistory.getCurrentLocation().pathname;
@@ -100,7 +105,7 @@ export default class Main extends Component {
     render() {
         const contain = <div className="berCenter_bg">
                 <Row type="flex" justify="center" align="top" className="main_width" >
-                    <Col span={2} style={{zIndex: '1',display: this.hideLeft() ? 'none' : ''}}>
+                    <Col span={2} style={{zIndex: '1'}}>
                         <LeftSider />
                     </Col>
                     <Col span={22}>
