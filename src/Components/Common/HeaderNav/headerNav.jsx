@@ -338,6 +338,7 @@ export default class HeaderNav extends Component {
     			}
     		}
     	}
+        this.setState({showLottery: false})
     };
     onOtherGames(item){
         this.setState({activeItem: item});
