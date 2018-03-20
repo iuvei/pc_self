@@ -49,6 +49,7 @@ export default class HeaderTop extends Component {
         this.getMenu();
         this.getBalance();
         this.getNotice();
+        this.getAccGroup();
         this.onUnread();
         this.getWebsocket();
         this.getress();

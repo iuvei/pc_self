@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import './DownLoadClient.scss'
 import QRSrc from './Img/QR.png';
 import phoneQRSrc from './Img/phone_QR.png';
-
+let QRCode = require('qrcode.react');
 @observer
 export default class Login extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ export default class Login extends Component {
     };
 
     componentDidMount() {
-
+		
     };
     componentWillUnmount(){
     };
@@ -27,18 +27,30 @@ export default class Login extends Component {
             <a href="https://dn-scmobile.qbox.me/setuphc.msi" target="_blank"><p className='pc_btn'>PC客户端下载</p></a>
         </div>;
         const ul_1 = <div className='phone_contain'>
-            <a href="https://dn-outwitinc.qbox.me/hcol/ioshc.ipa"><p className='phone_btn1'onMouseEnter={()=>{this.setState({
+            <a href={(window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/feed/downH5/ioshc.ipa?' + (new Date).getTime()} target='_blank'><p className='phone_btn1'onMouseEnter={()=>{this.setState({
                 displayQR1:true,
             });}} onMouseOut={()=>{this.setState({
                 displayQR1:false,
-            });}}>iPhone下载</p></a>
-            <a href="https://dn-outwitinc.qbox.me/hcol/androidhc.apk"><p className='phone_btn2' onMouseEnter={()=>{this.setState({
+            })}}>iPhone下载</p></a>
+            <a href={(window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/feed/downH5/andriod_hc_1_2.apk?' + (new Date).getTime()}  target='_blank'><p className='phone_btn2' onMouseEnter={()=>{this.setState({
                 displayQR2:true,
-            });}} onMouseOut={()=>{this.setState({
+            })}} onMouseOut={()=>{this.setState({
                 displayQR2:false,
             });}}>安卓版下载</p></a>
-            <img src={phoneQRSrc} className='phone_QR1' style={{display: this.state.displayQR1 ? 'inline-block' : 'none'}}/>
-            <img src={phoneQRSrc} className='phone_QR2' style={{display: this.state.displayQR2 ? 'inline-block' : 'none'}}/>
+            <span className='phone_QR1' style={{display: this.state.displayQR1 ? 'inline-block' : 'none'}}>
+            	<QRCode value={(window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime()}
+                    size={150}
+                    bgColor="#FFFFFF"
+                    fgColor="#000000"
+            	/>
+            </span>
+            <span className='phone_QR2' style={{display: this.state.displayQR2 ? 'inline-block' : 'none'}}>
+            	<QRCode value={(window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime()}
+                    size={150}
+                    bgColor="#FFFFFF"
+                    fgColor="#000000"
+            	/>
+            </span>
         </div>;
         const ul_2 = <div className='people_contain'>
             <a href="http://download.gr-mission.com/hcgame.exe" target="_blank"><p className='people_btn'>真人娱乐城下载</p></a>

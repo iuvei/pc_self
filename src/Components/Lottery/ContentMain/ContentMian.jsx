@@ -324,6 +324,12 @@ export default class ContentMian extends Component {
         if (isNaN(value) || typeof value != 'number') {
             value = 1
         }
+        if(value > 9999){
+        	value = 9999;
+        }
+        if(value <= 1){
+        	value = 1;
+        }
         this.setState({multipleValue: value.toString()},()=>{
         	this.getNumMoney(this.state.numss)
         });
@@ -338,7 +344,9 @@ export default class ContentMian extends Component {
     };
     // 增加倍数
     addMultiple() {
-        this.setState({multipleValue: (this.state.multipleValue - 0 + 1).toString()},()=>{
+    	this.state.multipleValue >= 9999 ? this.setState({multipleValue: '9999'},()=>{
+        	this.getNumMoney(this.state.numss)
+        }) : this.setState({multipleValue: (this.state.multipleValue - 0 + 1).toString()},()=>{
         	this.getNumMoney(this.state.numss)
         })
     };
@@ -447,6 +455,7 @@ export default class ContentMian extends Component {
     						common.removeStore(common.getStore('userId'));
     						common.setStore('version',version);
     						this.getLotteryData();
+    						this.getAccGroup();
     					}
     				}
     			}else{
@@ -462,6 +471,24 @@ export default class ContentMian extends Component {
 				common.removeStore(common.getStore('userId'));
     		}
 		});
+    };
+    //获取奖金组
+    getAccGroup() {
+        //登录
+        Fatch.login({
+            method: "POST",
+            body: JSON.stringify({
+                "sType": 'message',
+            })
+        }).then((data)=>{
+            if(this._ismount){
+                let result = data.repsoneContent;
+                if(data.status==200){
+                    stateVar.userInfo.accGroup = result.accGroup;
+                    common.setStore("accGroup",result.accGroup);
+                }
+            }
+        })
     };
     /**
      Function 开奖动画

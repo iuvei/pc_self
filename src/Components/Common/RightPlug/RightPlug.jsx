@@ -10,7 +10,7 @@ import md5 from 'md5';
 import { getStore, onValidate } from "../../../CommonJs/common";
 import ComplainAndSuggests from "../ComplainAndSuggests/ComplainAndSuggests";
 import Chat from '../../Chat/Chat';
-import qrcode from "./Img/qrcode.png";
+let QRCode = require('qrcode.react');
 let curLocation = location.href;  /*当前浏览器url地址*/
 @observer
 export default class RightPlug extends Component {
@@ -174,7 +174,11 @@ export default class RightPlug extends Component {
                             <Popover
                                 placement="left"
                                 content={
-                                    <img src={qrcode} width={160}/>
+                                    <QRCode value={(window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime()}
+					                    size={160}
+					                    bgColor="#FFFFFF"
+					                    fgColor="#000000"
+					            	/>
                                 }
                                 title="手机扫一扫，下载手机APP"
                             >
