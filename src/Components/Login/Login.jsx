@@ -155,7 +155,7 @@ export default class Login extends Component {
                 loading:false,
             },()=>this.refreshImg());
         }else {
-            this.login()
+            this.login();
         }
 
     };
@@ -289,7 +289,10 @@ export default class Login extends Component {
                     this.setState({
                         warn:data.shortMessage,
                         displayWarn:true,
-                    },()=>this.refreshImg());
+                    },()=>{
+                    	this.getSession();
+                    	this.refreshImg();	
+                    });
                 }
             }
         })
