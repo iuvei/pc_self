@@ -918,7 +918,7 @@ export default class ContentMian extends Component {
 	                })
 	                const modal = Modal.success({
 					    title: '温馨提示',
-					    content: '已删除以下重复号'+'\r\n'+err.join(";"),
+					    content: <div>已删除以下重复号<div style={{maxHeight:'180px',overflowY:'auto',lineHeight: 1.5,wordWrap: "break-word"}}>{err.join(",")}</div></div>
 					});
 					setTimeout(() => modal.destroy(), 3000);
 	            } else {
@@ -958,7 +958,7 @@ export default class ContentMian extends Component {
             }
             const modal = Modal.success({
 			    title: '温馨提示',
-			    content: '已删除以下重复号'+'\r\n'+err.join(";")
+			    content: <div>已删除以下重复号<div style={{maxHeight:'180px',overflowY:'auto',lineHeight: 1.5,wordWrap: "break-word"}}>{err.join(",")}</div></div>
 			});
 			setTimeout(() => modal.destroy(), 3000);
         }else{
@@ -977,16 +977,14 @@ export default class ContentMian extends Component {
         if( l == 0 ){
             return err;
         }
-        var tempSel = mobx.toJS(stateVar.aboutGame.data_sel[0]),obj = {};
+        var tempSels = mobx.toJS(stateVar.aboutGame.data_sel[0]),obj = {};
         for(let i=0; i<l; i++ ){
-            if( $.inArray(tempSel[i],err) != -1 ){
-                continue;
-            }
-            if(!obj[tempSel[i]]){ //如果能查找到，证明数组元素重复了
-            	obj[tempSel[i]] = 1;
-			   news.push(tempSel[i]);
+        	let tempSel = tempSels[i];
+            if(!obj[tempSel]){ //如果能查找到，证明数组元素重复了
+            	obj[tempSel] = 1;
+			    news.push(tempSel);
 			}else{
-				err.push(tempSel[i]);
+				err.push(tempSel);
 			}
         }
         if( isdeal ){//如果是做删除重复号的处理
@@ -1044,7 +1042,6 @@ export default class ContentMian extends Component {
             return false;
         }
         $(".c_m_number_select .li").removeClass("selected");
-        debugger
         if( otype == 'input' ){//如果是输入型，则检测号码合法性，以及是否存在重复号
             let mname = Method.methodId[stateVar.aboutGame.methodID];
             let error = [];
