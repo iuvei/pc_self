@@ -240,12 +240,18 @@ export default class Marketing extends Component {
             method: 'POST',
             body: JSON.stringify({flag: 'getlink'}),
         }).then((res)=>{
-            if(this._ismount && res.status == 200){
-                this.setState({generalizeData: res.repsoneContent})
-            }else{
-                Modal.warning({
-                    title: res.shortMessage,
-                });
+            if(this._ismount){
+                if(res.status == 200){
+                    let data = res.repsoneContent;
+                    for(let i = 0; i < data.length; i++){
+                        data[i].setVisible = false;
+                    }
+                    this.setState({generalizeData: data});
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
             }
         })
     };
@@ -380,17 +386,17 @@ export default class Marketing extends Component {
         })
     };
 
-    handleVisibleMobile(visibleMobile, url) {
+    handleVisibleMobile(visibleMobile, url, index) {
         this.setState({ visibleMobile }, ()=>{
             if(visibleMobile){
-                _code('qrcode_mobile', url, 170, 150)
+                _code('qrcode_mobile' + index, url, 170, 150)
             }
         });
     };
-    handleVisibleWechat(visibleWechat, url) {
+    handleVisibleWechat(visibleWechat, url, index) {
         this.setState({ visibleWechat }, ()=>{
             if(visibleWechat){
-                _code('qrcode_wechat', url, 170, 150)
+                _code('qrcode_wechat' + index, url, 170, 150)
             }
         });
     };
@@ -405,21 +411,21 @@ export default class Marketing extends Component {
                                                     <span className="qrcode right">
                                                         <Popover
                                                                  content={
-                                                                     <div id="qrcode_mobile" style={{width: 170, height: 150}}></div>
+                                                                     <div id={'qrcode_mobile' + index} style={{width: 170, height: 150}}></div>
                                                                  }
                                                                  placement="top"
-                                                                 visible={this.state.visibleMobile}
-                                                                 onVisibleChange={(visibleMobile)=>this.handleVisibleMobile(visibleMobile, text)}
+                                                                 // visible={record.setVisible}
+                                                                 onVisibleChange={(visibleMobile)=>this.handleVisibleMobile(visibleMobile, text, index)}
                                                                  title="手机扫描二维码"
                                                                  trigger="click">
                                                             <Button className='phone_btn' size="small">手机二维码</Button>
                                                         </Popover>
                                                         <Popover content={
-                                                                        <div id="qrcode_wechat" style={{width: 170, height: 150}}></div>
+                                                                        <div id={'qrcode_wechat' + index} style={{width: 170, height: 150}}></div>
                                                                  }
                                                                  placement="top"
-                                                                 visible={this.state.visibleWechat}
-                                                                 onVisibleChange={(visibleWechat)=>this.handleVisibleWechat(visibleWechat, record.qrLink)}
+                                                                 // visible={this.state.visibleWechat}
+                                                                 onVisibleChange={(visibleWechat)=>this.handleVisibleWechat(visibleWechat, record.qrLink, index)}
                                                                  title="微信注册二维码"
                                                                  trigger="click"
                                                         >

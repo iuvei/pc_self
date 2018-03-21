@@ -17,7 +17,7 @@ export default class Login extends Component {
     };
 
     componentDidMount() {
-        _code('qrcode', '/m/index.html', 250, 220);
+        _code('qrcode', '/m/index.html?', 250, 220);
     };
     handleVisibleIphone = (visibleIphone) =>{
         this.setState({ visibleIphone }, ()=>{
