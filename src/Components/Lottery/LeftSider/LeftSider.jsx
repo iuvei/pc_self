@@ -7,7 +7,7 @@ import { hashHistory } from 'react-router';
 const SubMenu = Menu.SubMenu;
 
 import './LeftSider.scss'
-import { stateVar } from '../../../State'
+import { stateVar } from '../../../State';
 import common from '../../../CommonJs/common';
 
 import left_1 from './Img/left_1.png';

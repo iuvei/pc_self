@@ -117,7 +117,7 @@ export default class Fanshui extends Component {
                                     </li>
                                     <li>
                                         <span className="col_color_ying">⑦</span>&nbsp;
-                                        恒彩娱乐平台保留对活动的最终解释权，并持有修改、终止等权利；
+                                        恒彩彩票平台保留对活动的最终解释权，并持有修改、终止等权利；
                                     </li>
                                 </ul>
                             </div>

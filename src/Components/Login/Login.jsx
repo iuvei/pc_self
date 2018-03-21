@@ -16,9 +16,9 @@ import speedSrc_active from './Img/speed_active.png';
 import dnsSrc_active from './Img/dns_active.png';
 import serviceSrc_active from './Img/service_active.png';
 import valicodeSrc from './Img/valicode.png';
-import {removeStore, setStore,getStore, onValidate } from "../../CommonJs/common";
+import {removeStore, setStore,getStore, onValidate, _code } from "../../CommonJs/common";
 const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
-let QRCode = require('qrcode.react');
+
 @observer
 export default class Login extends Component {
     constructor(props) {
@@ -52,7 +52,6 @@ export default class Login extends Component {
             speedSrc:speedSrc,
             serviceSrc:serviceSrc,
             dnsSrc:dnsSrc,
-			wechatLink:'',
 			showWechat:'none',
             validate: {
                 newpass: 2,
@@ -116,7 +115,7 @@ export default class Login extends Component {
         	method: "POST",
         	body:JSON.stringify({sType:"wechat"})
         }).then((data)=>{
-            this.setState({wechatLink:data.repsoneContent.url});
+            _code('wechatLink', data.repsoneContent.url, 200, 175);
         })
 
     }
@@ -294,7 +293,7 @@ export default class Login extends Component {
                         displayWarn:true,
                     },()=>{
                     	this.getSession();
-                    	this.refreshImg();	
+                    	this.refreshImg();
                     });
                 }
             }
@@ -784,11 +783,7 @@ export default class Login extends Component {
                             </ul>
                             <div className='l_m_select_list_active' onClick={()=>this.tigger()}>微信登录手机版</div>
                             <div className='wechatQrcode' style={{display:this.state.showWechat}}>
-                                <QRCode value={this.state.wechatLink}
-                                        size={180}
-                                        bgColor="#FFFFFF"
-                                        fgColor="#000000"
-                                />
+                                <div id="wechatLink"></div>
                             </div>
                         </div>
                         { this.loginMain() }

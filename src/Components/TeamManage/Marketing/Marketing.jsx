@@ -1,13 +1,11 @@
 /*市场推广*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { InputNumber,Input, Slider, Button, Table, Radio, Modal, Switch, Popconfirm, message, Popover, Tooltip } from 'antd';
+import { InputNumber,Input, Slider, Button, Table, Radio, Modal, Switch, Popconfirm, message, Popover, Tooltip, Icon } from 'antd';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
-let QRCode = require('qrcode.react');
-import { onValidate } from '../../../CommonJs/common';
+import { onValidate, _code } from '../../../CommonJs/common';
 import Fetch from '../../../Utils';
 import './Marketing.scss';
-import hint from './img/hint.png';
 
 @observer
 export default class Marketing extends Component {
@@ -54,6 +52,8 @@ export default class Marketing extends Component {
                 usertype: 1, //1：为代理 0:为普通用户
                 remark: '', //有备注或者为空
             },
+            visibleMobile: false,
+            visibleWechat: false,
         }
     };
     componentDidMount() {
@@ -380,6 +380,21 @@ export default class Marketing extends Component {
         })
     };
 
+    handleVisibleMobile(visibleMobile, url) {
+        this.setState({ visibleMobile }, ()=>{
+            if(visibleMobile){
+                _code('qrcode_mobile', url, 170, 150)
+            }
+        });
+    };
+    handleVisibleWechat(visibleWechat, url) {
+        this.setState({ visibleWechat }, ()=>{
+            if(visibleWechat){
+                _code('qrcode_wechat', url, 170, 150)
+            }
+        });
+    };
+
     render() {
         const columns = [
             {
@@ -388,26 +403,26 @@ export default class Marketing extends Component {
                 render: (text, record, index)=><div className="url_content clear">
                                                     <a className="url_style ellipsis" href={text} target="_blank">{text}</a>
                                                     <span className="qrcode right">
-                                                        <Popover content={
-                                                                            <QRCode value={text}
-                                                                                    size={180}
-                                                                                    bgColor="#FFFFFF"
-                                                                                    fgColor="#000000"
-                                                                            />
-                                                                        }
+                                                        <Popover
+                                                                 content={
+                                                                     <div id="qrcode_mobile" style={{width: 170, height: 150}}></div>
+                                                                 }
+                                                                 placement="top"
+                                                                 visible={this.state.visibleMobile}
+                                                                 onVisibleChange={(visibleMobile)=>this.handleVisibleMobile(visibleMobile, text)}
                                                                  title="手机扫描二维码"
                                                                  trigger="click">
                                                             <Button className='phone_btn' size="small">手机二维码</Button>
                                                         </Popover>
                                                         <Popover content={
-                                                                            <QRCode value={record.qrLink}
-                                                                                    size={180}
-                                                                                    bgColor="#FFFFFF"
-                                                                                    fgColor="#000000"
-                                                                            />
-                                                                        }
+                                                                        <div id="qrcode_wechat" style={{width: 170, height: 150}}></div>
+                                                                 }
+                                                                 placement="top"
+                                                                 visible={this.state.visibleWechat}
+                                                                 onVisibleChange={(visibleWechat)=>this.handleVisibleWechat(visibleWechat, record.qrLink)}
                                                                  title="微信注册二维码"
-                                                                 trigger="click">
+                                                                 trigger="click"
+                                                        >
                                                             <Button className='weChat_btn' size="small">微信开户</Button>
                                                         </Popover>
                                                     </span>
@@ -430,17 +445,28 @@ export default class Marketing extends Component {
             }, {
                 title: '时间',
                 dataIndex: 'gmt_create',
-                width: 140,
+                width: 135,
             }, {
                 title: '注册数',
                 dataIndex: 'register_count',
-                width: 70,
+                width: 65,
             }, {
                 title: '备注',
                 dataIndex: 'remark',
                 width: 100,
             }, {
-                title: '启用/禁止',
+                title: <span>
+                        启用/禁止
+                        <Tooltip placement="bottomRight"
+                        title={
+                            <div>
+                                <p>禁止后通过该注册链接</p>
+                                <p>无法继续注册下级</p>
+                            </div>
+                        }>
+                            <Icon className='hint_text' type="info-circle" />
+                    </Tooltip>
+                </span>,
                 dataIndex: 'status',
                 render: (text,record)=> <span className="switch">
                                     <Switch checkedChildren="开" unCheckedChildren="关"
@@ -448,7 +474,7 @@ export default class Marketing extends Component {
                                             onChange={(checked)=>this.onChangeSwitch(checked, record)}
                                     />
                                 </span>,
-                width: 90,
+                width: 95,
             }, {
                 title: '操作',
                 dataIndex: 'delete',
@@ -657,15 +683,6 @@ export default class Marketing extends Component {
                                        loading={this.state.loading}
                                        scroll={{y: 200}}
                                 />
-
-                                <Tooltip placement="bottomRight"
-                                         title={<div>
-                                             <p>禁止后通过该注册链接</p>
-                                             <p>无法继续注册下级</p>
-                                         </div>}
-                                >
-                                    <img className="hint_text" src={hint} alt=""/>
-                                </Tooltip>
                             </div>
                         </div>
                 }

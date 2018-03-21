@@ -37,7 +37,6 @@ export default class ActivityDetails extends Component {
                 sign_conditions_water_amount: '0', //流水达到 x 元，自动签到
                 activity_award_sign_sets: [], //签到奖励的档次数据
 
-                user_get_bonus_number_val: '0', //可领取奖金次数
                 water_bills_stes: {}, //充值流水
                 user_is_enrolls: '1', //当前用户是否已经报名。0 否，1 是。当未登录时，永远显示 0
                 max_online_num_type: 0,
@@ -408,11 +407,11 @@ export default class ActivityDetails extends Component {
                     },
                     { title: '充值金额', dataIndex: 'wa_pay_amount', width: 75 },
                     { title: '充值奖金', dataIndex: 'wa_pay_awards', width: 75 },
-                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_prizes', width: 75 },
+                    // { title: '剩余奖金份数', dataIndex: 'wa_surplus_prizes', width: 75 },
                     { title: '可领次数', dataIndex: 'wa_get_awards', width: 75 },
                     { title: '流水金额', dataIndex: 'wa_water_account', width: 75 },
                     { title: '流水奖金', dataIndex: 'wa_water_award', width: 75 },
-                    { title: '剩余奖金份数', dataIndex: 'wa_surplus_award', width: 75 },
+                    // { title: '剩余奖金份数', dataIndex: 'wa_surplus_award', width: 75 },
                     { title: '可领次数', dataIndex: 'wa_get_award_numbers', width: 75 },
                     { title: '操作', dataIndex: 'wa_get_awards_2', width: 75,
                         render: (text, record) =>
@@ -472,22 +471,15 @@ export default class ActivityDetails extends Component {
                 }
 
                 return (
-                    <div>
-                        <p className="a_d_explain_text">
-                            可领取奖金次数：
-                            <span className="col_color_ying">{response.user_get_bonus_number_val}</span>
-                            次
-                        </p>
-                        <div className="a_d_table">
-                            <Table columns={columns}
-                                   rowKey={(record, index) => index}
-                                   dataSource={response.water_bills_stes}
-                                   pagination={false}
-                                   loading={this.state.tableLoading}
-                                   scroll={{y: 300}}
-                                   size="middle"
-                            />
-                        </div>
+                    <div className="a_d_table">
+                        <Table columns={columns}
+                               rowKey={(record, index) => index}
+                               dataSource={response.water_bills_stes}
+                               pagination={false}
+                               loading={this.state.tableLoading}
+                               scroll={{y: 300}}
+                               size="middle"
+                        />
                     </div>
                 )
             }else{
@@ -667,7 +659,7 @@ export default class ActivityDetails extends Component {
                                             this.onStatus()
                                         }
                                     </Button>
-                                    <p className="a_d_residue_number">（限额剩余{response.remain_online_num}人）</p>
+                                    {/*<p className="a_d_residue_number">（限额剩余{response.remain_online_num}人）</p>*/}
                                 </div>
                             </div>
                             <div className="a_d_explain">

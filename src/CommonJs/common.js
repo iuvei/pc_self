@@ -1,3 +1,4 @@
+import { stateVar } from '../State';
 /**
  * 获取当前日期的前后n天日期
  */
@@ -299,6 +300,28 @@ export const onValidate = (val, validate) => {
     return classNames
 };
 
+/**
+ * 生成二维码
+ */
+export const _code = (id, url, w, h) => {
+    let qrcode = document.getElementById(id);
+    if(!qrcode){
+        return
+    }
+    let childs = qrcode.childNodes;
+    if(childs.length === 0){
+        $('#'+ id).qrcode({
+            render : "canvas",
+            text : stateVar.httpUrl + url + (new Date).getTime(),
+            width : w,
+            height : h,
+            background : "#ffffff",
+            foreground : "#000000",
+            src: require('../Images/icon.png')
+        });
+    }
+};
+
 export default {
     setDateTime,
     setNewDateTime,
@@ -314,6 +337,7 @@ export default {
     onValidate,
     getCookie,
     delCookie,
-    timestampToTime
+    timestampToTime,
+    _code
 }
 

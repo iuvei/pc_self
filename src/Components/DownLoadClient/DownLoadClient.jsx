@@ -1,93 +1,43 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import './DownLoadClient.scss'
-import QRSrc from './Img/QR.png';
-import phoneQRSrc from './Img/phone_QR.png';
-let QRCode = require('qrcode.react');
+import { stateVar } from '../../State';
+import { _code } from '../../CommonJs/common';
+import { Popover } from 'antd';
+import './DownLoadClient.scss';
+
 @observer
 export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             navListIndex:0,
-            displayQR1:false,
-            displayQR2:false,
-        }
+            visibleIphone: false,
+            visibleAndriod: false,
+        };
     };
 
     componentDidMount() {
-		
+        _code('qrcode', '/m/index.html', 250, 220);
     };
-    componentWillUnmount(){
+    handleVisibleIphone = (visibleIphone) =>{
+        this.setState({ visibleIphone }, ()=>{
+            if(visibleIphone){
+                _code('qrcode_iphone', '/feed/downH5/mobileh5vue.html?', 210, 185)
+            }
+        });
     };
-
-    downloadMain() {
-
-        const ul_0 = <div className='pc_contain'>
-            <a href="https://dn-scmobile.qbox.me/setuphc.msi" target="_blank"><p className='pc_btn'>PC客户端下载</p></a>
-        </div>;
-        const ul_1 = <div className='phone_contain'>
-            <a href={(window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/feed/downH5/ioshc.ipa?' + (new Date).getTime()} target='_blank'><p className='phone_btn1'onMouseEnter={()=>{this.setState({
-                displayQR1:true,
-            });}} onMouseOut={()=>{this.setState({
-                displayQR1:false,
-            })}}>iPhone下载</p></a>
-            <a href={(window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/feed/downH5/andriod_hc_1_2.apk?' + (new Date).getTime()}  target='_blank'><p className='phone_btn2' onMouseEnter={()=>{this.setState({
-                displayQR2:true,
-            })}} onMouseOut={()=>{this.setState({
-                displayQR2:false,
-            });}}>安卓版下载</p></a>
-            <span className='phone_QR1' style={{display: this.state.displayQR1 ? 'inline-block' : 'none'}}>
-            	<QRCode value={(window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime()}
-                    size={150}
-                    bgColor="#FFFFFF"
-                    fgColor="#000000"
-            	/>
-            </span>
-            <span className='phone_QR2' style={{display: this.state.displayQR2 ? 'inline-block' : 'none'}}>
-            	<QRCode value={(window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime()}
-                    size={150}
-                    bgColor="#FFFFFF"
-                    fgColor="#000000"
-            	/>
-            </span>
-        </div>;
-        const ul_2 = <div className='people_contain'>
-            <a href="http://download.gr-mission.com/hcgame.exe" target="_blank"><p className='people_btn'>真人娱乐城下载</p></a>
-        </div>;
-        const ul_3 = <div className='pt_contain'>
-            <a href="http://link.vbet.club/happyslots" target="_blank"><p className='pt_btn1'>PT客户端下载</p></a>
-            <a href="http://m.ld176888.com/live/download.html" target="_blank"><p className='pt_btn2'>PT真人下载</p></a>
-            <a href="http://m.ld176888.com/download.html" target="_blank"><p className='pt_btn3'>PT老虎机下载</p></a>
-
-        </div>;
-        const ul_4 = <div className='m_contain'>
-            <img src={QRSrc} />
-        </div>;
-
-
-        switch (this.state.navListIndex) {
-            case 0:
-                return ul_0;
-                break;
-            case 1:
-                return ul_1;
-                break;
-            case 2:
-                return ul_2;
-                break;
-            case 3:
-                return ul_3;
-                break;
-            case 4:
-                return ul_4;
-                break;
-        }
-    }
+    handleVisibleAndriod = (visibleAndriod) => {
+        this.setState({ visibleAndriod }, ()=>{
+            if(visibleAndriod){
+                _code('qrcode_andriod', '/feed/downH5/mobileh5vue.html?', 210, 185)
+            }
+        });
+    };
 
     render() {
-
         const navList = ['PC客户端', '手机客户端','真人娱乐城','PT娱乐城','M站二维码'];
+        const {navListIndex} = this.state;
+
         return (
             <div className={'download_main'+ this.state.navListIndex}>
                 <div className={'download_contain'+ this.state.navListIndex}>
@@ -95,15 +45,60 @@ export default class Login extends Component {
                         <ul className="download_title">
                             {
                                 navList.map((value, index)=>{
-                                    return <li className={this.state.navListIndex === index ? 'download_title_active' : ''}
-                                               onClick={() => {this.setState({navListIndex: index})}} key={index}>{value}</li>
+                                    return <li className={navListIndex === index ? 'download_title_active' : ''}
+                                               onClick={() => this.setState({navListIndex: index})} key={index}>
+                                                {value}
+                                            </li>
                                 })
                             }
 
                         </ul>
-                        { this.downloadMain() }
-                    </div>
+                        <div className='pc_contain' style={{display: navListIndex == 0 ? 'block' : 'none'}}>
+                            <a href="https://dn-scmobile.qbox.me/setuphc.msi" target="_blank">
+                                <p className='pc_btn'>PC客户端下载</p>
+                            </a>
+                        </div>
+                        <div className='phone_contain' style={{display: navListIndex == 1 ? 'block' : 'none'}}>
+                            <Popover content={
+                                <div id="qrcode_iphone" style={{width: 210}}></div>
+                            }
+                                     placement="bottom"
+                                     visible={this.state.visibleIphone}
+                                     onVisibleChange={this.handleVisibleIphone}
+                            >
+                                <a href={stateVar.httpUrl + '/feed/downH5/ioshc.ipa?' + (new Date).getTime()} target='_blank'>
+                                    <p className='phone_btn1'>
+                                        iPhone下载
+                                    </p>
+                                </a>
+                            </Popover>
+                            <Popover content={
+                                <div id="qrcode_andriod" style={{width: 210}}></div>
+                            }
+                                     placement="bottom"
+                                     visible={this.state.visibleAndriod}
+                                     onVisibleChange={this.handleVisibleAndriod}
+                            >
+                                <a href={stateVar.httpUrl + '/feed/downH5/andriod_hc_1_2.apk?' + (new Date).getTime()}  target='_blank'>
+                                    <p className='phone_btn2'>
+                                        安卓版下载
+                                    </p>
+                                </a>
+                            </Popover>
+                        </div>
+                        <div className='people_contain' style={{display: navListIndex == 2 ? 'block' : 'none'}}>
+                            <a href="http://download.gr-mission.com/hcgame.exe" target="_blank"><p className='people_btn'>真人娱乐城下载</p></a>
+                        </div>
+                        <div className='pt_contain' style={{display: navListIndex == 3 ? 'block' : 'none'}}>
+                            <a href="http://link.vbet.club/happyslots" target="_blank"><p className='pt_btn1'>PT客户端下载</p></a>
+                            <a href="http://m.ld176888.com/live/download.html" target="_blank"><p className='pt_btn2'>PT真人下载</p></a>
+                            <a href="http://m.ld176888.com/download.html" target="_blank"><p className='pt_btn3'>PT老虎机下载</p></a>
 
+                        </div>
+                        <div className='m_contain' style={{display: navListIndex == 4 ? 'block' : 'none'}}>
+                            <div id="qrcode"></div>
+                        </div>
+                    </div>
                 </div>
 
             </div>

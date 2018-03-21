@@ -59,6 +59,7 @@
         background: #d43030 url("./Img/QRcode_active.png") no-repeat   10% 60% ;
     }
 }
+
 .pc_contain{
     width: 268px;
     .pc_btn{
@@ -77,6 +78,12 @@
 .phone_contain{
     margin-top: 230px;
     margin-left: 310px;
+    a{
+        display: inline-block;
+    }
+    a:nth-child(2){
+        margin-left: 20px;
+    }
     .phone_btn1{
         width: 253px;
         height: 69px;
@@ -93,20 +100,11 @@
         height: 69px;
         line-height: 69px;
         color: #fff;
-        margin-left: 20px;
         cursor: pointer;
         float: left;
         padding-left: 110px;
         font-size: 17px;
         @include bis('./Img/phone_btn2.png');
-    }
-    .phone_QR1{
-        margin-top: 66px;
-        margin-left: -474px;
-    }
-    .phone_QR2{
-        margin-left: 326px;
-        margin-top: -2px;
     }
 
 }
@@ -161,8 +159,11 @@
     }
 }
 .m_contain{
-    width: 359px;
+    width: 270px;
     margin: 120px auto 0;
+    text-align: center;
+    background: #f5f2f2;
+    padding: 10px;
 }
 .download_contain0{
     width: 1107px;

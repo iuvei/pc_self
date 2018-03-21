@@ -22,6 +22,9 @@
 .ant-col-22{
     width: $nav_width_1200 - 130px;
 }
+.ant-popover-inner-content{
+    padding: 8px;
+}
 /* 禁止页面选中复制 */
 .content_main, .disabled_copy{
     -moz-user-select:none !important;

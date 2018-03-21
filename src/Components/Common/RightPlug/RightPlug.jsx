@@ -6,11 +6,11 @@ import { hashHistory } from 'react-router';
 import Fetch from '../../../Utils';
 import './Rightplug.scss'
 import { stateVar } from '../../../State';
+import { _code } from '../../../CommonJs/common';
 import md5 from 'md5';
 import { getStore, onValidate } from "../../../CommonJs/common";
 import ComplainAndSuggests from "../ComplainAndSuggests/ComplainAndSuggests";
 import Chat from '../../Chat/Chat';
-let QRCode = require('qrcode.react');
 let curLocation = location.href;  /*当前浏览器url地址*/
 @observer
 export default class RightPlug extends Component {
@@ -20,6 +20,7 @@ export default class RightPlug extends Component {
             loading: false,
             visible:false,      //控制投诉建议模态框的显示
             modalVisible: false,
+            visibleApp: false,
             showMsg: false,
             capitalVisible: false,
             capitalPass: '', // 资金密码
@@ -149,6 +150,13 @@ export default class RightPlug extends Component {
             this.setState({validate});
         }
     };
+    handleVisibleApp = (visibleApp) =>{
+        this.setState({ visibleApp }, ()=>{
+            if(visibleApp){
+                _code('qrcode_app', '/feed/downH5/mobileh5vue.html?', 150, 130)
+            }
+        });
+    };
 
     render() {
         const { modalVisible, capitalVisible, hintText } = this.state;
@@ -174,12 +182,10 @@ export default class RightPlug extends Component {
                             <Popover
                                 placement="left"
                                 content={
-                                    <QRCode value={(window.location.origin || (window.location.protocol +'//' + window.location.host)) + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime()}
-					                    size={160}
-					                    bgColor="#FFFFFF"
-					                    fgColor="#000000"
-					            	/>
+                                    <div id="qrcode_app" style={{height: 130, textAlign: 'center'}}></div>
                                 }
+                                visible={this.state.visibleApp}
+                                onVisibleChange={this.handleVisibleApp}
                                 title="手机扫一扫，下载手机APP"
                             >
                                 <p className="r_p_app r_p_common">
