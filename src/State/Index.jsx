@@ -1,4 +1,4 @@
-import { observable, toJS, useStrict } from 'mobx';
+import { observable } from 'mobx';
 
 // useStrict(true);
 class State {

@@ -345,7 +345,7 @@ export default class ActivityDetails extends Component {
                 let columns = [
                     { title: '达到天数', dataIndex: 'aw_days' ,width: 80},
                     { title: '奖金', dataIndex: 'aw_pay_awards' ,width: 80},
-                    { title: '剩余奖品份数', dataIndex: 'aw_surplus_prizes' ,width: 80},
+                    // { title: '剩余奖品份数', dataIndex: 'aw_surplus_prizes' ,width: 80},
                     { title: '可领取次数', dataIndex: 'aw_get_award_numbers' ,width: 80},
                     { title: '操作', dataIndex: 'aw_get_award_numbers_2',
                         render: (text, record) =>

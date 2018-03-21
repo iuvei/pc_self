@@ -123,12 +123,12 @@ export default class Fanshui extends Component {
                             </div>
                         </div>
                         <div className="right">
-                            <div className="a_d_schedule clear">
-                                <p className="schedule_title">个人进度</p>
-                                <ul className="schedule_list">
-                                    <li>有效流水金额：10000000.00元</li>
-                                </ul>
-                            </div>
+                            {/*<div className="a_d_schedule clear">*/}
+                                {/*<p className="schedule_title">个人进度</p>*/}
+                                {/*<ul className="schedule_list">*/}
+                                    {/*<li>流水金额：10000000.00元</li>*/}
+                                {/*</ul>*/}
+                            {/*</div>*/}
                             <div className="a_d_schedule clear">
                                 <p className="schedule_title">活动范围</p>
                                     <ul className="schedule_list lottery_name clear">

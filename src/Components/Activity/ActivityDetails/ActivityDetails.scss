@@ -7,6 +7,7 @@
     .a_d_activeImg{
         vertical-align: middle;
         width: $nav_width_1200;
+        margin-top: 11px;
     }
     .a_d_activeName{
         @include lh(45px);

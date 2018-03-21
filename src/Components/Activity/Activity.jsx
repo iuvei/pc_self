@@ -143,16 +143,6 @@ export default class Activity extends Component {
                                                 <div className="left">
                                                     <p>
                                                         {item.activity_title}
-                                                        {
-                                                            item.activity_id == '-1' ? '' :
-                                                                <span className="active_bonus">
-                                                                    最高奖金:
-                                                                    {item.plan_award_amount == undefined ||
-                                                                    item.plan_award_amount == '' ?
-                                                                        '0' :
-                                                                        item.plan_award_amount} 元
-                                                                </span>
-                                                        }
                                                     </p>
                                                     <i>活动时间：{timestampToTime(item.start_time)} 至 {timestampToTime(item.end_time)}</i>
                                                 </div>
