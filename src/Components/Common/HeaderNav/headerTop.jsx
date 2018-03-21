@@ -216,9 +216,9 @@ export default class HeaderTop extends Component {
                     body: JSON.stringify({sType: stateVar.userInfo.sType})
                 }).then((res)=>{
                     if(_this._ismount){
+                    	delCookie('sess');
+                        removeStore('session');
                         if(res.status == 200){
-                            delCookie('sess');
-                            removeStore('session');
                             setTimeout(()=>{
                             	hashHistory.push('/login');
                             },500);

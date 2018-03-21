@@ -944,6 +944,7 @@ $c_m_background: #4A4A5F;
                             background: none;
                             font-size: 16px;
                             color: #333;
+                            font-weight:bold;
                         }
                     }
                     .c_m_affirm_bet_btn{
@@ -968,5 +969,8 @@ $c_m_background: #4A4A5F;
         height: 24px;
         line-height: 23px;
     }
-
+    .overlayHe{
+        max-height: 180px;
+        overflow-y: scroll;
+    }
 }
