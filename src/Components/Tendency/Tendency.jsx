@@ -129,44 +129,37 @@ export default class Tendency extends Component {
                    * 并将走势图类型对应上彩种id进行数组重构
                    * 通过判断数组变量tableTrendTotal的长度判断是否进行数组重构(有待处理）
                    * */
-                        let trendPic=[],
-                            tableTrendTotal=[],
+                        let tableTrendTotal=[],
+                            tableTrend=[],
+                            lotteryListFlag = data.repsoneContent.aData.lotteryList,
+                            trendPic = data.repsoneContent.aData.trendPic;
+                        for(let i=0; i<lotteryListFlag.length; i++){
                             tableTrend=[];
-                        trendPic=data.repsoneContent.aData.trendPic;
-                        for(let i=0;i<23;i++){
-                            tableTrend=[];
-                            for(let x in trendPic[data.repsoneContent.aData.lotteryList[i].lotteryid][0]){
+                            for(let x in trendPic[lotteryListFlag[i].lotteryid][0]){
                                 tableTrend.push({
                                     id:x,
-                                    name:trendPic[data.repsoneContent.aData.lotteryList[i].lotteryid][0][x],
+                                    name:trendPic[lotteryListFlag[i].lotteryid][0][x],
                                 })
-
                             }
-                            tableTrendTotal[data.repsoneContent.aData.lotteryList[i].lotteryid]=tableTrend;
+                            tableTrendTotal[lotteryListFlag[i].lotteryid]=tableTrend;
                         }
-
                         this.setState({
                             tableTrendTotal:tableTrendTotal,
-
-                        })
+                        });
 
                 /*重构后台返回的lotteryList
                 * 将彩种id作为索引，彩种大类作为变量内容
                 * */
                let lotteryBigType=[];
-                for(let i=0; i<23; i++){
-                    lotteryBigType[data.repsoneContent.aData.lotteryList[i].lotteryid]=data.repsoneContent.aData.lotteryList[i].lotterytype;
+                for(let i=0; i<lotteryListFlag.length; i++){
+                    lotteryBigType[lotteryListFlag[i].lotteryid] = lotteryListFlag[i].lotterytype;
                 }
-
-
                    this.setState({
                        trendPic:data.repsoneContent.aData.trenPic,
                        tableTrend:tableTrend,
                        loading: false,
                        lotteryBigType:lotteryBigType,
                        responseData:data,
-
-
                    })
                }else{
 
