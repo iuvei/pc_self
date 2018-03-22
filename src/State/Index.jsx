@@ -39,7 +39,7 @@ class State {
     @observable aliPayInfo = {}; // 支付宝充值相关信息
     @observable navListIndex = 0; // 充值页面下的充值方式
     @observable lotteryType = []; // 彩种分类
-
+    @observable kefuStatus = true; // 联系好友是否要验证资金密码
 
     @observable auth = false;
 

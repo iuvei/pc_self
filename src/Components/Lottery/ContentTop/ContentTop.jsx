@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import emitter from '../../../Utils/events';
-import { Row, Col, Switch,message,Button} from 'antd';
+import { Switch,message,Button} from 'antd';
 import {Link} from 'react-router';
-import QueueAnim from 'rc-queue-anim';
 import './ContentTop.scss'
 import zoushi from './Img/zoushi.png'
 import introduce from './Img/introduce.png'
@@ -202,7 +201,7 @@ export default class ContentTop extends Component {
     			this.setState({kjStopallFlag:false,kjStopTime:0,kjStopFlag:[false,false,false,false,false]},()=>{
     				this.kjanimate(0);
     			});
-    			
+
                 clearInterval(this.interval);
 				message.config({
 				  top:'48%',

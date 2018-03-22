@@ -312,7 +312,7 @@ export const _code = (id, url, w, h) => {
     if(childs.length === 0){
         $('#'+ id).qrcode({
             render : "canvas",
-            text : stateVar.httpUrl + url + (new Date).getTime(),
+            text : url,
             width : w,
             height : h,
             background : "#ffffff",

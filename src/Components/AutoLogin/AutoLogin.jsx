@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import { stateVar } from '../../State';
 import onCanvas from '../Login/canvas';
-import {getStore } from "../../CommonJs/common";
+import {getStore, setStore } from "../../CommonJs/common";
 import './AutoLogin.scss';
 import logoAuto from '../../Images/logo.png';
 import speedSrc from './Img/speed.png'
@@ -15,24 +15,20 @@ export default class AutoLogin extends Component {
         super(props);
         this.state={
             count:0,
-
         }
     }
 
     tick(){
         if(parseInt(this.state.count)<103){
             this.refs.progress.style.width=parseInt(this.refs.progress.style.width)+0.01*document.body.clientWidth+'px';
-
+            this.setState(preState => (
+                preState.count++
+            ))
         }else{
             clearInterval(this.interval);
             stateVar.auth=true;
             hashHistory.push('/lottery');
         }
-        this.setState(preState => (
-            preState.count++
-        ))
-
-
     }
     componentDidMount() {
         onCanvas[0]();
