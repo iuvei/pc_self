@@ -207,6 +207,7 @@ export default class Login extends Component {
                         setquestion: result.setquestion,
                         setsecurity: result.setsecurity,
                         email: result.email,
+                        
                     };
 
                     setStore("userId",result.userid);
@@ -219,6 +220,7 @@ export default class Login extends Component {
                     setStore("issetbank",result.issetbank);
                     setStore("setquestion",result.setquestion);
                     setStore("setsecurity",result.setsecurity);
+                    setStore("pushDomain",result.push_domain);
                     setStore("email",result.emai);
                     hashHistory.push('/lottery');
                 }else{

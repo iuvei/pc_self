@@ -392,7 +392,6 @@ export default class ModalView extends Component {
     }
     //追号数据处理
     actionTrace(){
-    	debugger
     	stateVar.checkTrace = true;
     	if(!stateVar.tracevisible){
     		return;

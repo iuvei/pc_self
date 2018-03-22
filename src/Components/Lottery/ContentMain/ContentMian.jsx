@@ -269,7 +269,7 @@ export default class ContentMian extends Component {
 				common.setStore(common.getStore('userId'), tempObj);
 				this.setOneMethod(tempObj);
 			}else{
-				const modal = Modal.success({
+				const modal = Modal.error({
 				    title: '温馨提示',
 				    content: data.shortMessage
 				});
@@ -467,8 +467,6 @@ export default class ContentMian extends Component {
     				version.push(tempObj);
     				common.setStore('version',version);
     			}
-    		}else{
-				common.removeStore(common.getStore('userId'));
     		}
 		});
     };
