@@ -182,11 +182,15 @@ export default class RightPlug extends Component {
                 }
 	        	<div className="box-shape right_plug" style={{right:stateVar.paused ? 0 : '-140px'}}>
                     <ul className="right_list">
-                        <li>
-		                    <p className="r_p_goOld r_p_common" onClick={()=>this.switchOld()}>
-                                    返回旧版
-                            </p>
-                        </li>
+                        {
+                            userInfo.sType == 'demo' ?
+                                null :
+                                <li>
+                                    <p className="r_p_goOld r_p_common" onClick={()=>this.switchOld()}>
+                                        返回旧版
+                                    </p>
+                                </li>
+                        }
                         <li>
                             <Popover
                                 placement="left"
