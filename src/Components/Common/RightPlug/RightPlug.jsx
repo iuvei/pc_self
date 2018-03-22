@@ -135,7 +135,8 @@ export default class RightPlug extends Component {
                         this.setState({
                             modalVisible: true,
                             capitalVisible: false,
-                        })
+                        });
+                        stateVar.kefuStatus = false;
                     }else{
                         validate.capitalPass = 1;
                         this.setState({
@@ -153,9 +154,17 @@ export default class RightPlug extends Component {
     handleVisibleApp = (visibleApp) =>{
         this.setState({ visibleApp }, ()=>{
             if(visibleApp){
-                _code('qrcode_app', '/feed/downH5/mobileh5vue.html?', 150, 130)
+                _code('qrcode_app', stateVar.httpUrl + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime(), 150, 130)
             }
         });
+    };
+    onKefu() {
+        const {kefuStatus} = stateVar;
+        if(kefuStatus){
+            this.setState({capitalVisible: true})
+        }else{
+            this.setState({modalVisible: true})
+        }
     };
 
     render() {
@@ -212,7 +221,7 @@ export default class RightPlug extends Component {
                                     {
                                         this.state.showMsg ? <b className="r_p_common_extent"></b> : null
                                     }
-                                    <p className="r_p_kefu r_p_common" onClick={()=>this.setState({capitalVisible: true})}>联系好友</p>
+                                    <p className="r_p_kefu r_p_common" onClick={()=>this.onKefu()}>联系好友</p>
                                 </li>
                         }
                         <li>

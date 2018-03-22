@@ -57,20 +57,6 @@ export default class Main extends Component {
             return false
         }
     };
-    /*隐藏帮助中心下的右边导航条*/
-    hideLeft(){
-        // let pathname = hashHistory.getCurrentLocation().pathname;
-        // if (pathname == '/helpInfo'||
-        //     pathname == '/helpInfo/playMethodIntroduce'||
-        //     pathname == '/helpInfo/howDeposit'||
-        //     pathname == '/helpInfo/commonProblems'||
-        //     pathname == '/helpInfo/aboutHengCai'
-        //     ) {
-        //     return true
-        // } else {
-        //     return false
-        // }
-    };
     hideRight(){
         let pathname = hashHistory.getCurrentLocation().pathname;
         if(pathname == '/home' ||
