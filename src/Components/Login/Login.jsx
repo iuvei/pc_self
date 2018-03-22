@@ -56,7 +56,8 @@ export default class Login extends Component {
             validate: {
                 newpass: 2,
                 confirm_newpass: 2
-            }
+            },
+            activityClose: true, // 显示活动
         }
     };
     componentDidMount() {
@@ -207,7 +208,7 @@ export default class Login extends Component {
                         setquestion: result.setquestion,
                         setsecurity: result.setsecurity,
                         email: result.email,
-                        
+
                     };
 
                     setStore("userId",result.userid);
@@ -790,17 +791,19 @@ export default class Login extends Component {
                         </div>
                         { this.loginMain() }
                     </div>
-
                     <div  className='l-warn' style={{display: this.state.displayWarn ? 'block' : 'none'}}>
                         <div className='failure_text'>
                             操作失败:{this.state.warn}
                         </div>
                     </div>
                 </div>
-
+                <div className="activity_content" style={{display: this.state.activityClose ? 'block' : 'none'}}>
+                    <a href="https://q1893.cn" className="pc_activity" target="_blank"></a>
+                    <div className="close_content">
+                        <Icon className="activity_close" type="close" onClick={()=>this.setState({activityClose: false})}/>
+                    </div>
+                </div>
             </div>
-
         );
-
     }
 }

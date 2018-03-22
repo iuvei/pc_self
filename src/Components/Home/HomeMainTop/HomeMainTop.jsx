@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 import {observer} from 'mobx-react';
-import top from '../Img/top.png';
-import './HomeMainTop.scss'
+import { Carousel } from 'antd';
+import top1 from '../Img/top1.png';
+import top2 from '../Img/top2.png';
 
 @observer
 export default class HomeMainTop extends Component {
@@ -12,11 +13,18 @@ export default class HomeMainTop extends Component {
 
     render() {
         return (
-            <div className="home_m_top">
-                <a href="https://www.guqxa.com/index.html" target="_blank">
-                    <img className="img_bg" src={top} alt=""/>
-                </a>
-            </div>
+            <Carousel autoplay >
+                <div>
+                    <a href="https://q1893.cn" target="_blank">
+                        <img style={{width: '100%'}} src={top2} alt="活动"/>
+                    </a>
+                </div>
+                <div>
+                    <a href="https://www.guqxa.com/index.html" target="_blank">
+                        <img style={{width: '100%'}} src={top1} alt="活动"/>
+                    </a>
+                </div>
+            </Carousel>
         )
     }
 }

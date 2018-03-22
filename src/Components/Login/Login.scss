@@ -10,6 +10,7 @@ $width_100: 100%;
     canvas{
         background-image: radial-gradient(ellipse farthest-corner at center top, #000d4d 0%, #000105 100%);
         position: absolute;
+        bottom: 0;
     }
     .l_nav_top{
         @include wh($width_100, 64px);
@@ -122,6 +123,33 @@ $width_100: 100%;
         color: #df0019;
     }
     /*end*/
+    .activity_content{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        z-index: 10000;
+        height: 140px;
+        background: url(./Img/pc_activity.png) no-repeat center center;
+        .pc_activity{
+            display: block;
+            height: 140px;
+        }
+        .close_content{
+            position: relative;
+            width: 820px;
+            margin: 0 auto;
+        }
+        .activity_close{
+            cursor: pointer;
+            padding: 4px 10px;
+            position: absolute;
+            right: 0;
+            top: -140px;
+            color: #fff;
+            font-size: 30px;
+        }
+    }
 }
 .login{
     width: 820px;
