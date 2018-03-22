@@ -31,7 +31,16 @@ export default class Tendency extends Component {
             reversetable:false, /*控制是否上下转换表格，boolean*/
         }
     };
+    componentWillMount(){
+        this.getTable();
+    };
 
+    componentDidMount() {
+        this._ismount = true;
+    };
+    componentWillUnmount() {
+        this._ismount = false;
+    };
 /*处理时间对象 begin*/
     disabledStartDate = (startValue) => {
         const endValue = this.state.endValue;
@@ -129,23 +138,23 @@ export default class Tendency extends Component {
                    * 并将走势图类型对应上彩种id进行数组重构
                    * 通过判断数组变量tableTrendTotal的长度判断是否进行数组重构(有待处理）
                    * */
-                        let tableTrendTotal=[],
-                            tableTrend=[],
-                            lotteryListFlag = data.repsoneContent.aData.lotteryList,
-                            trendPic = data.repsoneContent.aData.trendPic;
-                        for(let i=0; i<lotteryListFlag.length; i++){
-                            tableTrend=[];
-                            for(let x in trendPic[lotteryListFlag[i].lotteryid][0]){
-                                tableTrend.push({
-                                    id:x,
-                                    name:trendPic[lotteryListFlag[i].lotteryid][0][x],
-                                })
-                            }
-                            tableTrendTotal[lotteryListFlag[i].lotteryid]=tableTrend;
-                        }
-                        this.setState({
-                            tableTrendTotal:tableTrendTotal,
-                        });
+                let tableTrendTotal=[],
+                    tableTrend=[],
+                    lotteryListFlag = data.repsoneContent.aData.lotteryList,
+                    trendPic = data.repsoneContent.aData.trendPic;
+                for(let i=0; i<lotteryListFlag.length; i++){
+                    tableTrend=[];
+                    for(let x in trendPic[lotteryListFlag[i].lotteryid][0]){
+                        tableTrend.push({
+                            id:x,
+                            name:trendPic[lotteryListFlag[i].lotteryid][0][x],
+                        })
+                    }
+                    tableTrendTotal[lotteryListFlag[i].lotteryid]=tableTrend;
+                }
+                this.setState({
+                    tableTrendTotal:tableTrendTotal,
+                });
 
                 /*重构后台返回的lotteryList
                 * 将彩种id作为索引，彩种大类作为变量内容
@@ -205,24 +214,8 @@ export default class Tendency extends Component {
              return "";
          }
     }
-    componentWillMount(){
-        this._ismount = false;
-        this.getTable();
-    };
-
-    componentDidMount() {
-        this._ismount = true;
-
-    };
-    componentWillUpdate(){
-
-    }
-
-    componentWillUnmount(){
-    }
     render() {
-        const tableTrendTotal=this.state.tableTrendTotal;
-        const { startValue, endValue, endOpen } = this.state;
+        const { endOpen, tableTrendTotal } = this.state;
         const shortcutTime = [
             {
                 text: '最近30期',

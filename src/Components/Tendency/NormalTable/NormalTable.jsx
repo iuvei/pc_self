@@ -31,8 +31,9 @@ export default class NormalTable extends Component {
         * 将彩种id作为索引，彩种大类作为变量内容
         * */
         let lotteryBigType=[];
-        for(let i=0; i<23; i++){
-            lotteryBigType[data.repsoneContent.aData.lotteryList[i].lotteryid]=data.repsoneContent.aData.lotteryList[i].lotterytype;
+        let lotteryListFlag = data.repsoneContent.aData.lotteryList;
+        for(let i=0; i<lotteryListFlag.length; i++){
+            lotteryBigType[lotteryListFlag[i].lotteryid]=lotteryListFlag[i].lotterytype;
         }
 
         /*表头 begin*/

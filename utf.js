@@ -13,6 +13,9 @@
  */
 
 function utf16to8(str) {
+    if(str == null){
+        return
+    }
     var out, i, len, c;
 
     out = "";
@@ -43,7 +46,7 @@ function utf8to16(str) {
     while(i < len) {
 	c = str.charCodeAt(i++);
 	switch(c >> 4)
-	{ 
+	{
 	  case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
 	    // 0xxxxxxx
 	    out += str.charAt(i-1);
