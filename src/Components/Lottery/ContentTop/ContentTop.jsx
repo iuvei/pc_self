@@ -425,8 +425,8 @@ export default class ContentTop extends Component {
     	var message = eval('('+ data +')');
     	if(message.status == 1){
     		let tempType = message.data.type;
+            let tempData = message.data.data;
     		if(tempType == 1){
-    			let tempData = message.data.data;
     			if(tempData){
     				if(tempData.lotteryid == stateVar.nowlottery.lotteryBetId){
     					this.actionSound('kj');
@@ -441,7 +441,9 @@ export default class ContentTop extends Component {
     				}
     			}
     		}else if(tempType == 4 || tempType == 3){
-    			this.props.getBetHistory();
+                if(tempData && (tempData.lotteryid == stateVar.nowlottery.lotteryBetId)){
+                    this.props.getBetHistory();
+                }
     		}else if(tempType == 8 || tempType == 2){
     			common.removeStore(common.getStore('userId'));
     			this.props.getLotteryData();

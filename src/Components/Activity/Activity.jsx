@@ -94,11 +94,12 @@ export default class Activity extends Component {
 
         let status = item.status;
         if(status == 1){
-            if(item.user_is_enrolls == 1){
-                return '进行中'
-            }else{
-                return '立即参与';
-            }
+            // if(item.user_is_enrolls == 1){
+            //     return '进行中'
+            // }else{
+            //     return '立即参与';
+            // }
+            return '进行中'
         }else if(status == 200){
             return '已完成';
         }else if(status == 400){

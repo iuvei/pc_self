@@ -229,6 +229,9 @@ export default class Login extends Component {
                         warn:data.shortMessage,
                         displayWarn:true,
                     });
+                    if(data.shortMessage == '验证码错误'){
+                        this.getSession()
+                    }
                 }
             }
 
@@ -295,6 +298,9 @@ export default class Login extends Component {
                         warn:data.shortMessage,
                         displayWarn:true,
                     });
+                    if(data.shortMessage == '验证码错误'){
+                        this.getSession()
+                    }
                 }
             }
         })
@@ -400,6 +406,9 @@ export default class Login extends Component {
                             warnM:res.shortMessage,
                             displayWarnM:true,
                         });
+                        if(res.shortMessage == '验证码错误'){
+                            this.getSession()
+                        }
                     }
                 })
 

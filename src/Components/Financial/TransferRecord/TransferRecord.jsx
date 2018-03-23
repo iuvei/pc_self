@@ -202,8 +202,8 @@ export default class TransferRecord extends Component {
                                     disabledDate={(current)=>disabledDate(current, -18, 1)}
                                 />
                             </li>
-                            <li className="t_m_date_mar">
-                                由于第三方数据同步存在延迟，如需实时数据请您咨询客服!
+                            <li className="t_m_date_mar r_m_hint">
+                                <p>提示：由于第三方数据同步存在延迟，如需实时数据请您咨询客服!</p>
                             </li>
                         </ul>
                         <ul className="t_l_classify">

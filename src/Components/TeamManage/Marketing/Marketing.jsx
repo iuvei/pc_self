@@ -400,6 +400,15 @@ export default class Marketing extends Component {
             }
         });
     };
+    onPuls() {
+        let {registerPost, list} = this.state;
+        registerPost.groupLevel = parseInt(registerPost.groupLevel) + 2;
+        registerPost.keeppoint = parseFloat(((this.state.selfPoint - this.state.list[registerPost.groupLevel].high)*100).toFixed(1));
+        this.setState({
+            registerPost: registerPost,
+            registerAccountNum: list[registerPost.groupLevel].accnum
+        });
+    }
 
     render() {
         const columns = [
@@ -590,12 +599,7 @@ export default class Marketing extends Component {
                                         <Button disabled={registerPost.groupLevel >= registerSlider.sliderMax}
                                                 icon="plus"
                                                 onClick={()=>{
-                                                    registerPost.groupLevel = parseInt(registerPost.groupLevel) + 2;
-                                                    registerPost.keeppoint = parseFloat(((this.state.selfPoint - this.state.list[registerPost.groupLevel].high)*100).toFixed(1));
-                                                    this.setState({
-                                                        registerPost: registerPost,
-                                                        registerAccountNum: list[registerPost.groupLevel].accnum
-                                                    });
+                                                    this.onPuls()
                                                 }}>
                                         </Button>
                                     </li>

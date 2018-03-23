@@ -58,9 +58,10 @@ export default class HeaderTop extends Component {
         this._ismount = false;
         // 清除定时器与暂停动画
         // clearInterval(this._clearInt);
-        clearInterval(this.noticeInterval)
+        clearInterval(this.noticeInterval);
         // cancelAnimationFrame(this._animationFrame);
         emitter.off(this.eventEmitter);
+        this.ws.close();
     };
     getDestination() {
     	let times = 1,
@@ -313,18 +314,17 @@ export default class HeaderTop extends Component {
     };
     //开始推送
     getWebsocket(){
-        let ws;
         if(window.location.protocol.indexOf('https') > -1){
-            ws = new WebSocket('wss://'+common.getStore("pushDomain")+'');
+            this.ws = new WebSocket('wss://'+common.getStore("pushDomain")+'');
         }else {
-            ws = new WebSocket('ws://'+common.getStore("pushDomain")+'');
+            this.ws = new WebSocket('ws://'+common.getStore("pushDomain")+'');
         }
 
-    	ws.onopen = () =>{
+        this.ws.onopen = () =>{
 	    	let msg = {"method":"join","uid":common.getStore('userId'),"hobby":1};
-	    	ws.send(JSON.stringify(msg));
-    	}
-    	ws.onmessage = (e) => {
+	    	this.ws.send(JSON.stringify(msg));
+    	};
+        this.ws.onmessage = (e) => {
     		this.handleData(e.data);
     	}
     };

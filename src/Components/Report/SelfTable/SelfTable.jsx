@@ -82,6 +82,7 @@ export default class SelfTable extends Component {
                     this.setState({ searchLoading: false, tableLoading: false });
                     if(res.status == 200) {
                         let data = res.repsoneContent;
+
                         this.setState({
                             data: data.results,
                             sum: data.total,
@@ -290,7 +291,7 @@ export default class SelfTable extends Component {
                             </Popover>
                     )
                 },
-                width: 85,
+                width: 70,
             }, {
                 title: '投注量',
                 dataIndex: 'cp_stake',
@@ -310,7 +311,7 @@ export default class SelfTable extends Component {
                 title: '返点',
                 dataIndex: 'cp_point',
                 className: 'column-right',
-                width: 80,
+                width: 70,
             }, {
                 title: '毛收入',
                 dataIndex: 'income',
@@ -321,12 +322,14 @@ export default class SelfTable extends Component {
                 dataIndex: 'sum_activity',
                 className: 'column-right',
                 width: 70,
-            }, {
-                title: '净收入',
-                dataIndex: 'net_income',
-                className: 'column-right',
-                width: 80,
-            }, {
+            },
+            // {
+            //     title: '净收入',
+            //     dataIndex: 'net_income',
+            //     className: 'column-right',
+            //     width: 80,
+            // },
+            {
                 title: '日工资',
                 dataIndex: 'salary',
                 className: 'column-right',
@@ -358,7 +361,7 @@ export default class SelfTable extends Component {
             <li>{sum.sum_cp_point}</li>
             <li>{sum.sum_income}</li>
             <li>{sum.sum_sum_activity}</li>
-            <li>{sum.sum_net_income}</li>
+            {/*<li>{sum.sum_net_income}</li>*/}
             <li>{sum.sum_salary}</li>
             <li>{sum.sum_lose_salary}</li>
             <li>{sum.sum_allsalary}</li>
@@ -382,14 +385,14 @@ export default class SelfTable extends Component {
                                 </Popover>
                         )
                     },
-                    width: 85,
+                    width: 70,
                 }, {
                     title: '投注量',
                     dataIndex: 'cp_stake',
                     className: 'column-right',
                     width: 80,
                 }, {
-                    title: '有效投注量',
+                    title: '有效量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
                     width: 85,
@@ -402,7 +405,7 @@ export default class SelfTable extends Component {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    width: 80,
+                    width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
@@ -413,12 +416,14 @@ export default class SelfTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    className: 'column-right',
-                    dataIndex: 'net_income',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     className: 'column-right',
+                //     dataIndex: 'net_income',
+                //     width: 80,
+                // },
+                {
                     title: '日工资',
                     dataIndex: 'salary',
                     className: 'column-right',
@@ -445,7 +450,7 @@ export default class SelfTable extends Component {
                 <li>{sum.sum_cp_point}</li>
                 <li>{sum.sum_income}</li>
                 <li>{sum.sum_sum_activity}</li>
-                <li>{sum.sum_net_income}</li>
+                {/*<li>{sum.sum_net_income}</li>*/}
                 <li>{sum.sum_salary}</li>
                 <li>{sum.sum_allsalary}</li>
                 <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
@@ -469,7 +474,7 @@ export default class SelfTable extends Component {
                                 </Popover>
                         )
                     },
-                    width: 85,
+                    width: 70,
                 }, {
                     title: '投注量',
                     dataIndex: 'cp_stake',
@@ -489,7 +494,7 @@ export default class SelfTable extends Component {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    width: 80,
+                    width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
@@ -500,12 +505,14 @@ export default class SelfTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'net_income',
-                    className: 'column-right',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'net_income',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '日亏损',
                     dataIndex: 'lose_salary',
                     className: 'column-right',
@@ -532,7 +539,7 @@ export default class SelfTable extends Component {
                 <li>{sum.sum_cp_point}</li>
                 <li>{sum.sum_income}</li>
                 <li>{sum.sum_sum_activity}</li>
-                <li>{sum.sum_net_income}</li>
+                {/*<li>{sum.sum_net_income}</li>*/}
                 <li>{sum.sum_lose_salary}</li>
                 <li>{sum.sum_allsalary}</li>
                 <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
@@ -556,7 +563,7 @@ export default class SelfTable extends Component {
                                 </Popover>
                         )
                     },
-                    width: 85,
+                    width: 70,
                 }, {
                     title: '投注量',
                     dataIndex: 'cp_stake',
@@ -576,7 +583,7 @@ export default class SelfTable extends Component {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    width: 80,
+                    width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
@@ -587,12 +594,14 @@ export default class SelfTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'net_income',
-                    className: 'column-right',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'net_income',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '日工资',
                     dataIndex: 'salary',
                     className: 'column-right',
@@ -619,7 +628,7 @@ export default class SelfTable extends Component {
                 <li>{sum.sum_cp_point}</li>
                 <li>{sum.sum_income}</li>
                 <li>{sum.sum_sum_activity}</li>
-                <li>{sum.sum_net_income}</li>
+                {/*<li>{sum.sum_net_income}</li>*/}
                 <li>{sum.sum_salary}</li>
                 <li>{sum.sum_lose_salary}</li>
                 <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
@@ -643,7 +652,7 @@ export default class SelfTable extends Component {
                                 </Popover>
                         )
                     },
-                    width: 85,
+                    width: 70,
                 }, {
                     title: '投注量',
                     dataIndex: 'cp_stake',
@@ -663,7 +672,7 @@ export default class SelfTable extends Component {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    width: 80,
+                    width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
@@ -674,12 +683,14 @@ export default class SelfTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'net_income',
-                    className: 'column-right',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'net_income',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '分红',
                     dataIndex: 'allsalary',
                     className: 'column-right',
@@ -701,7 +712,7 @@ export default class SelfTable extends Component {
                 <li>{sum.sum_cp_point}</li>
                 <li>{sum.sum_income}</li>
                 <li>{sum.sum_sum_activity}</li>
-                <li>{sum.sum_net_income}</li>
+                {/*<li>{sum.sum_net_income}</li>*/}
                 <li>{sum.sum_allsalary}</li>
                 <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
             </ul>;
@@ -724,7 +735,7 @@ export default class SelfTable extends Component {
                                 </Popover>
                         )
                     },
-                    width: 85,
+                    width: 70,
                 }, {
                     title: '投注量',
                     dataIndex: 'cp_stake',
@@ -744,7 +755,7 @@ export default class SelfTable extends Component {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    width: 80,
+                    width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
@@ -755,12 +766,14 @@ export default class SelfTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'net_income',
-                    className: 'column-right',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'net_income',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '日工资',
                     dataIndex: 'salary',
                     className: 'column-right',
@@ -782,7 +795,7 @@ export default class SelfTable extends Component {
                 <li>{sum.sum_cp_point}</li>
                 <li>{sum.sum_income}</li>
                 <li>{sum.sum_sum_activity}</li>
-                <li>{sum.sum_net_income}</li>
+                {/*<li>{sum.sum_net_income}</li>*/}
                 <li>{sum.sum_salary}</li>
                 <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
             </ul>;
@@ -805,7 +818,7 @@ export default class SelfTable extends Component {
                                 </Popover>
                         )
                     },
-                    width: 85,
+                    width: 70,
                 }, {
                     title: '投注量',
                     dataIndex: 'cp_stake',
@@ -825,7 +838,7 @@ export default class SelfTable extends Component {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    width: 80,
+                    width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
@@ -836,12 +849,14 @@ export default class SelfTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'net_income',
-                    className: 'column-right',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'net_income',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '日亏损',
                     dataIndex: 'lose_salary',
                     className: 'column-right',
@@ -863,7 +878,7 @@ export default class SelfTable extends Component {
                 <li>{sum.sum_cp_point}</li>
                 <li>{sum.sum_income}</li>
                 <li>{sum.sum_sum_activity}</li>
-                <li>{sum.sum_net_income}</li>
+                {/*<li>{sum.sum_net_income}</li>*/}
                 <li>{sum.sum_lose_salary}</li>
                 <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
             </ul>;
@@ -886,7 +901,7 @@ export default class SelfTable extends Component {
                                 </Popover>
                         )
                     },
-                    width: 85,
+                    width: 70,
                 }, {
                     title: '投注量',
                     dataIndex: 'cp_stake',
@@ -906,7 +921,7 @@ export default class SelfTable extends Component {
                     title: '返点',
                     dataIndex: 'cp_point',
                     className: 'column-right',
-                    width: 80,
+                    width: 70,
                 }, {
                     title: '毛收入',
                     dataIndex: 'income',
@@ -917,12 +932,14 @@ export default class SelfTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'net_income',
-                    className: 'column-right',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'net_income',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '总盈亏',
                     dataIndex: 'last_win_lose',
                     className: 'column-right',
@@ -939,7 +956,7 @@ export default class SelfTable extends Component {
                 <li>{sum.sum_cp_point}</li>
                 <li>{sum.sum_income}</li>
                 <li>{sum.sum_sum_activity}</li>
-                <li>{sum.sum_net_income}</li>
+                {/*<li>{sum.sum_net_income}</li>*/}
                 <li className={parseFloat(sum.sum_last_win_lose) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.sum_last_win_lose}</li>
             </ul>;
         }
@@ -1146,7 +1163,9 @@ export default class SelfTable extends Component {
                                     }
                                 </ul>
                             </li>
-                            <li style={{color: '#6f6f6f'}}>个人总表数据是在数据产生30分钟后更新</li>
+                            <li className="r_m_hint">
+                                <p>提示：表数据是在数据产生30分钟后更新</p>
+                            </li>
                         </ul>
                         <ul className="t_l_classify">
                             <li>

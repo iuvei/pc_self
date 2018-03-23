@@ -329,72 +329,89 @@ export default class TeamTable extends Component {
             {
                 title: '日期',
                 dataIndex: 'rdate',
-                render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
-                width: 70,
+                render: (text, record) => postData.userid != null ?
+                    text :
+                    <p className="hover" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</p>,
+                width: 60,
+                // fixed: 'left',
             }, {
                 title: '用户名',
                 dataIndex: 'username',
                 render: (text, record, index) => index == 0 || postData.userid != null ? text :
-                    <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
-                       style={{color: '#0088DE'}}>{text}</a>,
-                width: 80,
+                    <p className="hover" onClick={()=>this.onClickTable('USERNAME', record)}
+                       style={{color: '#0088DE'}}>{text}</p>,
+                width: 75,
+                // fixed: 'left',
             }, {
                 title: '投注量',
                 dataIndex: 'sum_price',
                 className: 'column-right',
-                width: 80,
+                // render: (text) =>  parseFloat(text).toFixed(2),
+                width: 85,
             }, {
-                title: '有效投注量',
+                title: '有效量',
                 dataIndex: 'sum_effective_price',
                 className: 'column-right',
-                width: 80,
+                // render: (text) =>  parseFloat(text).toFixed(2),
+                width: 85,
             },  {
                 title: '中奖',
                 dataIndex: 'sum_bonus',
                 className: 'column-right',
-                width: 80,
+                // render: (text) =>  parseFloat(text).toFixed(2),
+                width: 85,
             }, {
                 title: '返点',
                 dataIndex: 'sum_point',
                 className: 'column-right',
+                // render: (text) =>  parseFloat(text).toFixed(2),
                 width: 70,
             }, {
                 title: '毛收入',
                 dataIndex: 'sum_grossincome',
                 className: 'column-right',
-                width: 80,
+                // render: (text) =>  <span className="col_color_ying">{parseFloat(text).toFixed(2)}</span>,
+                width: 85,
             }, {
                 title: '活动',
                 dataIndex: 'sum_activity',
                 className: 'column-right',
-                width: 70,
-            }, {
-                title: '净收入',
-                dataIndex: 'sum_netincome',
-                className: 'column-right',
-                width: 80,
-            }, {
+                // render: (text) =>  parseFloat(text).toFixed(2),
+                width: 85,
+            },
+            // {
+            //     title: '净收入',
+            //     dataIndex: 'sum_netincome',
+            //     className: 'column-right',
+            //     // render: (text) =>  <span className="col_color_ying">{parseFloat(text).toFixed(2)}</span>,
+            //     width: 120,
+            // },
+            {
                 title: '日工资',
                 dataIndex: 'sum_dailywages',
                 className: 'column-right',
-                width: 75,
+                // render: (text) =>  parseFloat(text).toFixed(2),
+                width: 85,
             }, {
                 title: '日亏损',
                 dataIndex: 'sum_dailyloss',
                 className: 'column-right',
-                width: 75,
+                // render: (text) =>  parseFloat(text).toFixed(2),
+                width: 85,
             }, {
                 title: '分红',
                 dataIndex: 'sum_dividents',
                 className: 'column-right',
-                width: 75,
+                // render: (text) =>  parseFloat(text).toFixed(2),
+                width: 85,
             }, {
                 title: '总盈亏',
                 dataIndex: 'sum_total',
                 className: 'column-right',
                 render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                     <span className="col_color_ying">{text}</span>,
-                width: 75,
+                width: 95,
+                // fixed: 'right',
             }
         ];
         let footer = <ul className="tt_footer clear">
@@ -405,7 +422,7 @@ export default class TeamTable extends Component {
             <li>{sum.total_point}</li>
             <li>{sum.total_grossincome}</li>
             <li>{sum.total_activity}</li>
-            <li>{sum.total_netincome}</li>
+            {/*<li>{sum.total_netincome}</li>*/}
             <li>{sum.total_dailywages}</li>
             <li>{sum.total_dailyloss}</li>
             <li>{sum.total_dividents}</li>
@@ -417,14 +434,14 @@ export default class TeamTable extends Component {
                     title: '日期',
                     dataIndex: 'rdate',
                     render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
-                    width: 70,
+                    width: 50,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => index == 0 || postData.userid != null ? text :
                         <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
-                    width: 80,
+                    width: 70,
                 }, {
                     title: '投注量',
                     dataIndex: 'sum_price',
@@ -434,7 +451,7 @@ export default class TeamTable extends Component {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    width: 80,
+                    width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
@@ -455,12 +472,14 @@ export default class TeamTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'sum_netincome',
-                    className: 'column-right',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'sum_netincome',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '日工资',
                     dataIndex: 'sum_dailywages',
                     className: 'column-right',
@@ -487,7 +506,7 @@ export default class TeamTable extends Component {
                 <li>{sum.total_point}</li>
                 <li>{sum.total_grossincome}</li>
                 <li>{sum.total_activity}</li>
-                <li>{sum.total_netincome}</li>
+                {/*<li>{sum.total_netincome}</li>*/}
                 <li>{sum.total_dailywages}</li>
                 <li>{sum.total_dividents}</li>
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
@@ -499,14 +518,14 @@ export default class TeamTable extends Component {
                     title: '日期',
                     dataIndex: 'rdate',
                     render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
-                    width: 70,
+                    width: 50,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => index == 0 || postData.userid != null ? text :
                         <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
-                    width: 80,
+                    width: 70,
                 }, {
                     title: '投注量',
                     dataIndex: 'sum_price',
@@ -516,7 +535,7 @@ export default class TeamTable extends Component {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    width: 80,
+                    width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
@@ -537,11 +556,14 @@ export default class TeamTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'sum_netincome',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'sum_netincome',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '日亏损',
                     dataIndex: 'sum_dailyloss',
                     className: 'column-right',
@@ -568,7 +590,7 @@ export default class TeamTable extends Component {
                 <li>{sum.total_point}</li>
                 <li>{sum.total_grossincome}</li>
                 <li>{sum.total_activity}</li>
-                <li>{sum.total_netincome}</li>
+                {/*<li>{sum.total_netincome}</li>*/}
                 <li>{sum.total_dailyloss}</li>
                 <li>{sum.total_dividents}</li>
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
@@ -597,7 +619,7 @@ export default class TeamTable extends Component {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    width: 80,
+                    width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
@@ -618,12 +640,14 @@ export default class TeamTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'sum_netincome',
-                    className: 'column-right',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'sum_netincome',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '日工资',
                     dataIndex: 'sum_dailywages',
                     className: 'column-right',
@@ -650,7 +674,7 @@ export default class TeamTable extends Component {
                 <li>{sum.total_point}</li>
                 <li>{sum.total_grossincome}</li>
                 <li>{sum.total_activity}</li>
-                <li>{sum.total_netincome}</li>
+                {/*<li>{sum.total_netincome}</li>*/}
                 <li>{sum.total_dailywages}</li>
                 <li>{sum.total_dailyloss}</li>
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
@@ -679,7 +703,7 @@ export default class TeamTable extends Component {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    width: 80,
+                    width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
@@ -700,11 +724,14 @@ export default class TeamTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'sum_netincome',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'sum_netincome',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '分红',
                     dataIndex: 'sum_dividents',
                     className: 'column-right',
@@ -726,7 +753,7 @@ export default class TeamTable extends Component {
                 <li>{sum.total_point}</li>
                 <li>{sum.total_grossincome}</li>
                 <li>{sum.total_activity}</li>
-                <li>{sum.total_netincome}</li>
+                {/*<li>{sum.total_netincome}</li>*/}
                 <li>{sum.total_dividents}</li>
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
@@ -754,7 +781,7 @@ export default class TeamTable extends Component {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    width: 80,
+                    width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
@@ -775,12 +802,14 @@ export default class TeamTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'sum_netincome',
-                    className: 'column-right',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'sum_netincome',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '日工资',
                     dataIndex: 'sum_dailywages',
                     className: 'column-right',
@@ -802,7 +831,7 @@ export default class TeamTable extends Component {
                 <li>{sum.total_point}</li>
                 <li>{sum.total_grossincome}</li>
                 <li>{sum.total_activity}</li>
-                <li>{sum.total_netincome}</li>
+                {/*<li>{sum.total_netincome}</li>*/}
                 <li>{sum.total_dailywages}</li>
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
@@ -830,7 +859,7 @@ export default class TeamTable extends Component {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    width: 80,
+                    width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
@@ -851,11 +880,14 @@ export default class TeamTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'sum_netincome',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'sum_netincome',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '日亏损',
                     dataIndex: 'sum_dailyloss',
                     className: 'column-right',
@@ -877,7 +909,7 @@ export default class TeamTable extends Component {
                 <li>{sum.total_point}</li>
                 <li>{sum.total_grossincome}</li>
                 <li>{sum.total_activity}</li>
-                <li>{sum.total_netincome}</li>
+                {/*<li>{sum.total_netincome}</li>*/}
                 <li>{sum.total_dailyloss}</li>
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
@@ -905,7 +937,7 @@ export default class TeamTable extends Component {
                     title: '有效投注量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    width: 80,
+                    width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
@@ -926,12 +958,14 @@ export default class TeamTable extends Component {
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 70,
-                }, {
-                    title: '净收入',
-                    dataIndex: 'sum_netincome',
-                    className: 'column-right',
-                    width: 80,
-                }, {
+                },
+                // {
+                //     title: '净收入',
+                //     dataIndex: 'sum_netincome',
+                //     className: 'column-right',
+                //     width: 80,
+                // },
+                {
                     title: '总盈亏',
                     dataIndex: 'sum_total',
                     className: 'column-right',
@@ -948,7 +982,7 @@ export default class TeamTable extends Component {
                 <li>{sum.total_point}</li>
                 <li>{sum.total_grossincome}</li>
                 <li>{sum.total_activity}</li>
-                <li>{sum.total_netincome}</li>
+                {/*<li>{sum.total_netincome}</li>*/}
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }
@@ -1125,7 +1159,9 @@ export default class TeamTable extends Component {
                                     }
                                 </ul>
                             </li>
-                            <li style={{color: '#6f6f6f'}}>团队总表数据是在数据产生30分钟后更新</li>
+                            <li className="r_m_hint">
+                                <p>提示：表数据是在数据产生30分钟后更新</p>
+                            </li>
                         </ul>
                         <ul className="t_l_classify">
                             <li>
@@ -1178,6 +1214,8 @@ export default class TeamTable extends Component {
                                        loading={this.state.tableLoading}
                                        pagination={false}
                                        footer={table.tableData.length <= 0 ? null : ()=>footer}
+                                       // bordered={true}
+                                       scroll={{ y: 600 }}
                                 /> :
                                 <Table columns={columnsRests}
                                        rowKey={record => record.rdate !== undefined ? record.rdate : record.userid}
@@ -1185,6 +1223,7 @@ export default class TeamTable extends Component {
                                        loading={this.state.tableLoading}
                                        pagination={false}
                                        footer={table.tableData.length <= 0 ? null : ()=>otherGamesFooter}
+                                       scroll={{ y: 600 }}
                                 />
                         }
 
