@@ -1146,6 +1146,7 @@ export default class SelfTable extends Component {
                                     }
                                 </ul>
                             </li>
+                            <li style={{color: '#6f6f6f'}}>个人总表数据是在数据产生30分钟后更新</li>
                         </ul>
                         <ul className="t_l_classify">
                             <li>

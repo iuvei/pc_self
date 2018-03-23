@@ -305,7 +305,7 @@ export default class AfterRecord extends Component {
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(setDateTime(0) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -16, 0)}
+                                    disabledDate={(current)=>disabledDate(current, -16, 1)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
@@ -314,7 +314,7 @@ export default class AfterRecord extends Component {
                                     placeholder="请选择结束时间"
                                     defaultValue={moment(setDateTime(1) + ' 02:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -16, 0)}
+                                    disabledDate={(current)=>disabledDate(current, -16, 1)}
                                 />
                             </li>
                             <li className="t_m_line"></li>

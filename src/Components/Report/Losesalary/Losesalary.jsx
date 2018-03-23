@@ -200,14 +200,14 @@ export default class Losesalary extends Component {
                                 <DatePicker placeholder="查询开始日期"
                                             defaultValue={moment(setDateTime(-1))}
                                             onChange={(date, dateString)=>{this.onChangeStartDate(date, dateString)}}
-                                            disabledDate={(current)=>disabledDate(current, -35, 1)}
+                                            disabledDate={(current)=>disabledDate(current, -35, 0)}
 
                                 />
                                 <span style={{margin: '0 5px'}}>至</span>
                                 <DatePicker placeholder="查询结束日期"
                                             defaultValue={moment(setDateTime(0))}
                                             onChange={(date, dateString)=>{this.onChangeEndDate(date, dateString)}}
-                                            disabledDate={(current)=>disabledDate(current, -35, 1)}
+                                            disabledDate={(current)=>disabledDate(current, -35, 0)}
                                 />
                             </li>
                             <li>

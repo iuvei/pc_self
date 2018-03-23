@@ -15,7 +15,6 @@ import serviceSrc from './Img/service.png';
 import speedSrc_active from './Img/speed_active.png';
 import dnsSrc_active from './Img/dns_active.png';
 import serviceSrc_active from './Img/service_active.png';
-import valicodeSrc from './Img/valicode.png';
 import {removeStore, setStore,getStore, onValidate, _code } from "../../CommonJs/common";
 const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
 
@@ -37,8 +36,8 @@ export default class Login extends Component {
             visible1: false, //控制模态框显示
             visible2: false,
             visible3: false,
-            validImg:valicodeSrc,   //验证码图片
-            validImgM:valicodeSrc,
+            validImg:'',   //验证码图片
+            validImgM:'',
             session: null,//提交后台时带的sess
             warn:null,//登录错误提示信息
             warnM:null,
@@ -102,11 +101,13 @@ export default class Login extends Component {
             let parseData = data;
             this.setState({
                 session: parseData.repsoneContent,
+            }, ()=>{
+                this.refreshImg();
+                this.refreshImgModal();
             });
             setStore("session",parseData.repsoneContent);
             document.cookie = 'sess='+ parseData.repsoneContent + ';path=/';
         })
-
     }
     /*
      * 获取微信登录地址
@@ -118,7 +119,6 @@ export default class Login extends Component {
         }).then((data)=>{
             _code('wechatLink', data.repsoneContent.url, 200, 175);
         })
-
     }
     /*
     * 正常登录按下enter按钮处理提交
@@ -150,13 +150,13 @@ export default class Login extends Component {
                 warn:"用户名或密码为空",
                 displayWarn:true,
                 loading: false,
-            },()=>this.refreshImg());
+            });
         }else if(this.state.aptchac==''){
             this.setState({
                 warn:"验证码为空",
                 displayWarn:true,
                 loading:false,
-            },()=>this.refreshImg());
+            });
         }else {
             this.login();
         }
@@ -174,7 +174,7 @@ export default class Login extends Component {
                 warn:"验证码为空",
                 displayWarn:true,
                 loading:false,
-            },()=>this.refreshImg());
+            });
         }else {
             this.trygameLogin()
         }
@@ -228,7 +228,7 @@ export default class Login extends Component {
                     this.setState({
                         warn:data.shortMessage,
                         displayWarn:true,
-                    },()=>this.refreshImg());
+                    });
                 }
             }
 
@@ -252,8 +252,8 @@ export default class Login extends Component {
         }).then((data)=>{
             if(this._ismount){
                 this.setState({ loading: false });
-                let result = data.repsoneContent;
                 if(data.status==200){
+                    let result = data.repsoneContent;
                     stateVar.auth=true;
                     stateVar.userInfo = {
                         userId:result.userid,
@@ -294,9 +294,6 @@ export default class Login extends Component {
                     this.setState({
                         warn:data.shortMessage,
                         displayWarn:true,
-                    },()=>{
-                    	this.getSession();
-                    	this.refreshImg();
                     });
                 }
             }
@@ -374,12 +371,12 @@ export default class Login extends Component {
                 this.setState({
                     warnM:"用户名或密码为空",
                     displayWarnM:true,
-                },()=>this.refreshImgModal());
+                });
             }else if(aptchacM==''){
                 this.setState({
                     warnM:"验证码为空",
                     displayWarnM:true,
-                },()=>this.refreshImgModal());
+                });
             }else{
                 Fetch.resetPwd(  //找回密码
                     {
@@ -402,7 +399,7 @@ export default class Login extends Component {
                         this.setState({
                             warnM:res.shortMessage,
                             displayWarnM:true,
-                        },()=>this.refreshImgModal());
+                        });
                     }
                 })
 
@@ -435,8 +432,6 @@ export default class Login extends Component {
                         }).then((data)=>{
                         if(data.status==200){
                             this.setState({
-                                // displayWarnM1:false,
-                                // visible2: false,
                                 visible3: true,
                             }, ()=>{
                                 this.onCancelSetPassw();
@@ -474,9 +469,8 @@ export default class Login extends Component {
         this.setState({
             navListIndex: index,
             displayWarn:false,
-            validImg:valicodeSrc,
             showWechat:'none'
-        })
+        });
     }
     /*关闭找回密码modal*/
     onCancelInputPassw() {
@@ -512,13 +506,20 @@ export default class Login extends Component {
                     <span className="l_forget" onClick={()=>{this.showModal('forget_pwd')}}>忘记密码？</span>
                 </div>
                 <div className="l_vali">
-                    <Input size="large" className='login_input'  value={this.state.aptchac}  onFocus={()=>{this.refreshImg()}} onChange={(e)=>{this.onAptchac(e)}} placeholder="验证码" />
-                    <img className="l_valicode" src={this.state.validImg} onClick={()=>{this.refreshImg()}}/>
+                    <Input size="large" className='login_input'
+                           value={this.state.aptchac}
+                           onChange={(e)=>{this.onAptchac(e)}}
+                           placeholder="验证码"
+                    />
+                    <img className="l_valicode" src={this.state.validImg} onClick={()=>{this.getSession()}}/>
                 </div>
 
             </div>
 
-            <Button type="primary" className='login_btn' icon="right-circle" loading={this.state.loading} onClick={()=>{this.enterLogin()}}>
+            <Button type="primary" className='login_btn' icon="right-circle"
+                    loading={this.state.loading}
+                    onClick={()=>{this.enterLogin()}}
+            >
                 立即登录
             </Button>
             <Checkbox style={{color:'#fff',marginTop:10}} checked={this.state.checkPw} onChange={(e)=>{this.onCheckedPw(e)}}>记住密码</Checkbox>
@@ -550,10 +551,10 @@ export default class Login extends Component {
                             <li className="l_m_vali">
                                 <Input size="large"
                                        value={this.state.aptchacM}
-                                       onFocus={()=>{this.refreshImgModal()}}
-                                       onChange={(e)=>{this.onaptchacM(e)}} placeholder="验证码"
+                                       onChange={(e)=>{this.onaptchacM(e)}}
+                                       placeholder="验证码"
                                 />
-                                <img className="l_m_valicode" src={this.state.validImgM} onClick={()=>{this.refreshImgModal()}}/>
+                                <img className="l_m_valicode" src={this.state.validImgM} onClick={()=>{this.getSession()}}/>
 
                                 <div className='hint_text'>
                                     <span style={{display: this.state.displayWarnM ? 'block' : 'none' }}>
@@ -689,8 +690,12 @@ export default class Login extends Component {
             <div className='l_input' onKeyDown={(e)=>{this.trygameloginEnter(e)}}>
                 <p className='l_try_txt'>恭喜您获得<span className='l_try_888'>8888</span>元免费试玩体验金！</p>
                 <div className="l_vali">
-                    <Input size="large" className='login_input'  value={this.state.aptchac} onFocus={()=>{this.refreshImg()}}   onChange={(e)=>{this.onAptchac(e)}} placeholder="验证码" />
-                    <img className="l_valicode" src={this.state.validImg} onClick={()=>{this.refreshImg()}}/>
+                    <Input size="large" className='login_input'
+                           value={this.state.aptchac}
+                           onChange={(e)=>{this.onAptchac(e)}}
+                           placeholder="验证码"
+                    />
+                    <img className="l_valicode" src={this.state.validImg} onClick={()=>{this.getSession()}}/>
                 </div>
 
             </div>
@@ -798,7 +803,7 @@ export default class Login extends Component {
                     </div>
                 </div>
                 <div className="activity_content" style={{display: this.state.activityClose ? 'block' : 'none'}}>
-                    <a href="https://q1893.cn" className="pc_activity" target="_blank"></a>
+                    <a href="https://www.guqxa.com/index.html" className="pc_activity" target="_blank"></a>
                     <div className="close_content">
                         <Icon className="activity_close" type="close" onClick={()=>this.setState({activityClose: false})}/>
                     </div>

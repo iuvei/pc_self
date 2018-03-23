@@ -353,7 +353,7 @@ export default class BobingRecord extends PureComponent {
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(common.setDateTime(0) + ' 00:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -16, 0)}
+                                    disabledDate={(current)=>common.disabledDate(current, -16, 1)}
                                 />
                             </li>
                             <li style={{margin: '0 8px'}}>至</li>
@@ -365,7 +365,7 @@ export default class BobingRecord extends PureComponent {
                                     defaultValue={moment(common.setDateTime(0) + ' 23:59:59')}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
                                     onOk={(date)=>{this.onOk(date)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -16, 0)}
+                                    disabledDate={(current)=>common.disabledDate(current, -16, 1)}
                                 />
                             </li>
                             <li style={{margin: '0 10px'}}>

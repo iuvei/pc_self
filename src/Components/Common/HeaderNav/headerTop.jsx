@@ -313,7 +313,13 @@ export default class HeaderTop extends Component {
     };
     //开始推送
     getWebsocket(){
-    	let ws = new WebSocket('ws://'+common.getStore("pushDomain")+'');
+        let ws;
+        if(window.location.protocol.indexOf('https') > -1){
+            ws = new WebSocket('wss://'+common.getStore("pushDomain")+'');
+        }else {
+            ws = new WebSocket('ws://'+common.getStore("pushDomain")+'');
+        }
+
     	ws.onopen = () =>{
 	    	let msg = {"method":"join","uid":common.getStore('userId'),"hobby":1};
 	    	ws.send(JSON.stringify(msg));

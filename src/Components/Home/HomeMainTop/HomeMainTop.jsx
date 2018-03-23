@@ -14,11 +14,11 @@ export default class HomeMainTop extends Component {
     render() {
         return (
             <Carousel autoplay >
-                <div>
-                    <a href="https://q1893.cn" target="_blank">
-                        <img style={{width: '100%'}} src={top2} alt="活动"/>
-                    </a>
-                </div>
+                {/*<div>*/}
+                    {/*<a href="https://q1893.cn" target="_blank">*/}
+                        {/*<img style={{width: '100%'}} src={top2} alt="活动"/>*/}
+                    {/*</a>*/}
+                {/*</div>*/}
                 <div>
                     <a href="https://www.guqxa.com/index.html" target="_blank">
                         <img style={{width: '100%'}} src={top1} alt="活动"/>
