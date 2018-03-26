@@ -676,7 +676,7 @@ export default class TeamList extends Component {
                 title: '用户名',
                 dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
                 render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
-                width: 110,
+                width: 100,
             }, {
                 title: '用户类型',
                 dataIndex: 'groupname',
@@ -684,6 +684,11 @@ export default class TeamList extends Component {
             }, {
                 title: '团队人数',
                 dataIndex: 'team_count',
+                sorter: () => {},
+                width: 80,
+            }, {
+                title: '团队余额',
+                dataIndex: 'team_money',
                 sorter: () => {},
                 width: 90,
             }, {
@@ -694,12 +699,13 @@ export default class TeamList extends Component {
                         text :
                         <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
                 sorter: () => {},
-                width: 90,
+                width: 70,
             }, {
                 title: '注册时间',
                 dataIndex: 'register_time',
                 sorter: () => {},
-                width: 85,
+                render: text => <p>{text.slice(0,10)}<br/>{text.slice(10)}</p>,
+                width: 75,
             }, {
                 title: '日工资',
                 dataIndex: 'daily_salary_status',
@@ -748,6 +754,7 @@ export default class TeamList extends Component {
             }, {
                 title: '最后登录时间',
                 dataIndex: 'lasttime',
+                render: text => <p>{text.slice(0,10)}<br/>{text.slice(10)}</p>,
                 width: 85,
             }, {
                 title: '操作',
@@ -788,6 +795,11 @@ export default class TeamList extends Component {
                     sorter: () => {},
                     width: 80,
                 }, {
+                    title: '团队余额',
+                    dataIndex: 'team_money',
+                    sorter: () => {},
+                    width: 90,
+                }, {
                     title: '奖金组',
                     dataIndex: 'prize_group',
                     render: (text, record) =>
@@ -799,6 +811,7 @@ export default class TeamList extends Component {
                 }, {
                     title: '注册时间',
                     dataIndex: 'register_time',
+                    render: text => <p>{text.slice(0,10)}<br/>{text.slice(10)}</p>,
                     sorter: () => {},
                     width: 120,
                 }, {
@@ -836,6 +849,7 @@ export default class TeamList extends Component {
                 }, {
                     title: '最后登录时间',
                     dataIndex: 'lasttime',
+                    render: text => <p>{text.slice(0,10)}<br/>{text.slice(10)}</p>,
                     width: 120,
                 }, {
                     title: '操作',
@@ -869,6 +883,11 @@ export default class TeamList extends Component {
                     sorter: () => {},
                     width: 80,
                 }, {
+                    title: '团队余额',
+                    dataIndex: 'team_money',
+                    sorter: () => {},
+                    width: 90,
+                },{
                     title: '奖金组',
                     dataIndex: 'prize_group',
                     render: (text, record) =>
@@ -880,6 +899,7 @@ export default class TeamList extends Component {
                 }, {
                     title: '注册时间',
                     dataIndex: 'register_time',
+                    render: text => <p>{text.slice(0,10)}<br/>{text.slice(10)}</p>,
                     sorter: () => {},
                     width: 120,
                 }, {
@@ -917,6 +937,7 @@ export default class TeamList extends Component {
                 }, {
                     title: '最后登录时间',
                     dataIndex: 'lasttime',
+                    render: text => <p>{text.slice(0,10)}<br/>{text.slice(10)}</p>,
                     width: 120,
                 }, {
                     title: '操作',
@@ -949,6 +970,11 @@ export default class TeamList extends Component {
                     dataIndex: 'team_count',
                     sorter: () => {},
                     width: 80,
+                }, {
+                    title: '团队余额',
+                    dataIndex: 'team_money',
+                    sorter: () => {},
+                    width: 90,
                 }, {
                     title: '奖金组',
                     dataIndex: 'prize_group',

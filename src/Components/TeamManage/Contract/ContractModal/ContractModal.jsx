@@ -370,7 +370,7 @@ export default class ContractModal extends Component {
         let salary_ratioFlag = this.state.contentArr;
         salary_ratioFlag.forEach((data, i)=>{
             if(data.sale == item.sale){
-                data.salary_ratio = val
+                data.salary_ratio = val == '' ? 0 : val
             }
         });
         this.setState({salary_ratio: salary_ratioFlag}, ()=>this.onTypeContent());

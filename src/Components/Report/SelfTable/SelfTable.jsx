@@ -56,8 +56,8 @@ export default class SelfTable extends Component {
             otherGamesData: [],
             otherGamesSum: {},
             postData: {
-                starttime: common.setDateTime(-1),
-                endtime: common.setDateTime(0),
+                starttime: common.setDateTime(0),
+                endtime: common.setDateTime(1),
             },
             startHMS: '02:00',
             endHMS: '01:59'

@@ -25,6 +25,7 @@ export default class BankCardManage extends Component {
                 bankList: [], //绑定银行卡列表
                 binded: 0, //已绑定的银行卡数量
                 num: 0, //最大绑定的银行卡数量
+                withdrawLimit: 0,
             },
             adduserbank: {
                 banklist: [],//开户行
@@ -75,13 +76,8 @@ export default class BankCardManage extends Component {
                 this.setState({tableLoading: false});
                 if(res.status == 200){
                     let data = res.repsoneContent;
-                    let response = {
-                        bankList: data.bankList,
-                        binded: data.binded,
-                        num: data.num,
-                    };
                     this.setState({
-                        response: response,
+                        response: data,
                     });
                 }
             }
@@ -434,7 +430,7 @@ export default class BankCardManage extends Component {
                                 <div className="b_cm_text_explain">
                                     <p>1、一个账户最多只能绑定5张银行卡，你当前绑定<i> ({response.binded == undefined ? '0' : response.binded}) </i>张，还能绑定<i> ({response.num == undefined ? '5' : response.num - response.binded}) </i>张。</p>
                                     <p>2、如需删除已绑定的银行卡，请点击“申请删除”，之后会有客服人员主动与您连续进行确认。</p>
-                                    <p>3、为了您的账户资金安全，银行卡“新增”和“修改”将在操作完成2小时0分后，新卡才能发起“向平台提现”。</p>
+                                    <p>3、为了您的账户资金安全，银行卡“新增”和“修改”将在操作完成 {response.withdrawLimit/3600} 小时后，新卡才能发起“向平台提现”。</p>
                                 </div>
                                 <div className="b_cm_table">
                                     <Table columns={columns}

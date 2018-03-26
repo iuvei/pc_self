@@ -53,8 +53,8 @@ export default class TeamTable extends Component {
             classify: 0, // 游戏分类
             variety: 0, // 游戏种类
             postData: {
-                sdatetime: setDateTime(-1),
-                edatetime: setDateTime(0),
+                sdatetime: setDateTime(0),
+                edatetime: setDateTime(1),
                 fType: 'getTeamLotteryReport', // getTeamLotteryReport获取团队彩票总表; getTeamThirdReport 获取团队第三方总表
                 username: null,
                 thirdid: null, //第三方的id 1是pt;2是ea;3是 体育;4是博饼
@@ -331,7 +331,7 @@ export default class TeamTable extends Component {
                 dataIndex: 'rdate',
                 render: (text, record) => postData.userid != null ?
                     text :
-                    <p className="hover" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</p>,
+                    <p className="hover" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate.slice(0,5)}<br/>{selfDate.slice(5)}</p>,
                 width: 60,
                 // fixed: 'left',
             }, {

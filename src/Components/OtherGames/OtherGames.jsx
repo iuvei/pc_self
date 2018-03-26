@@ -71,28 +71,45 @@ export default class OtherGames extends Component {
         this._ismount = false;
     };
     onHashHistory(item) {
+        let {otherGamesArr} = this.state;
+        otherGamesArr.forEach(function(items){
+            if(items['id']==item.id){
+                items['disabled'] = false;
+            }
+        });
 
-        this.setState({activeItem: item});
+        this.setState({activeItem: item, otherGamesArr});
         if(item.id == 'bb'){
-            this.onBobing(item.link);
+            this.onBobing(item);
         }else if(item.id == 'ea'){
-            this.onEa(item.link);
+            this.onEa(item);
         }else if(item.id == 'pt'){
-            this.onPt(item.link);
+            this.onPt(item);
         }else if(item.id == 'gt'){
-            this.onGt(item.link);
+            this.onGt(item);
         }else if(item.id == 'sport'){
-            this.onSport(item.link);
+            this.onSport(item);
         }else{}
     };
+
+    onForEach(item){
+        let {otherGamesArr} = this.state;
+        otherGamesArr.forEach(function(items){
+            if(items['id']==item.id){
+                items['disabled'] = true;
+            }
+        });
+        this.setState({otherGamesArr});
+    };
     /*是否有权限进入Ea*/
-    onEa(link) {
+    onEa(item) {
         Fetch.eagame({
             method: 'POST'
         }).then((res)=>{
             if(this._ismount){
+                this.onForEach(item);
                 if(res.status == 200){
-                    hashHistory.push(link);
+                    hashHistory.push(item.link);
                 }else{
                     let {eaPostData} = this.state;
                     eaPostData.navname = '真人娱乐';
@@ -111,13 +128,14 @@ export default class OtherGames extends Component {
         })
     };
     /*是否有权限进入pt*/
-    onPt(link) {
+    onPt(item) {
         Fetch.ptindex({
             method: 'POST',
         }).then((res)=>{
             if(this._ismount){
+                this.onForEach(item);
                 if(res.status == 200){
-                    hashHistory.push(link);
+                    hashHistory.push(item.link);
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -127,14 +145,15 @@ export default class OtherGames extends Component {
         })
     };
     /*是否有权限进入体育竞技*/
-    onSport(link){
+    onSport(item){
         Fetch.sport({
             method: 'POST',
             body: JSON.stringify({"do":"login"})
         }).then((res)=>{
             if(this._ismount){
+                this.onForEach(item);
                 if(res.status == 200){
-                    hashHistory.push(link);
+                    hashHistory.push(item.link);
                 }else{
                     let {eaPostData} = this.state;
                     eaPostData.navname = '体彩中心';
@@ -153,13 +172,14 @@ export default class OtherGames extends Component {
         })
     };
     /*是否有权限进入GT娱乐*/
-    onGt(link){
+    onGt(item){
         Fetch.gtLogin({
             method: 'POST'
         }).then((res)=>{
             if(this._ismount){
+                this.onForEach(item);
                 if(res.status == 200){
-                    hashHistory.push(link);
+                    hashHistory.push(item.link);
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -169,13 +189,14 @@ export default class OtherGames extends Component {
         })
     };
     /*是否有权限进入博饼*/
-    onBobing(link) {
+    onBobing(item) {
         Fetch.newGetprizepool({
             method: 'POST'
         }).then((res)=>{
             if(this._ismount){
+                this.onForEach(item);
                 if(res.status == 200){
-                    hashHistory.push(link);
+                    hashHistory.push(item.link);
                 }else{
                     Modal.warning({
                         title: res.data,
@@ -290,7 +311,7 @@ export default class OtherGames extends Component {
                                                 </div>
                                                 <Button className="right"
                                                         onClick={()=>this.onHashHistory(item)} type="primary" size="large"
-                                                        // loading={!item.disabled}
+                                                        loading={!item.disabled}
                                                 >
                                                     立即游戏
                                                 </Button>

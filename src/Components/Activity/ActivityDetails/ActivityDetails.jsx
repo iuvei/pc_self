@@ -292,16 +292,16 @@ export default class ActivityDetails extends Component {
                 { title: '已推广人数（人）', dataIndex: 'pull_new_num' ,width: 80},
                 { title: '有效推广人数（人）', dataIndex: 'used_recharge_count' ,width: 80},
                 { title: '可领奖金', dataIndex: 'used_user_award_amount' ,width: 80},
-                // { title: '操作', dataIndex: 'used_user_award_amount_2',
-                //     render: (text) =>
-                //         <Button
-                //             onClick={()=>this.onPullNewAward()} type="primary"
-                //             disabled={response.user_is_enrolls == 0 ? true : false}
-                //         >
-                //             领取
-                //         </Button>,
-                //     width: 80
-                // }
+                { title: '操作', dataIndex: 'used_user_award_amount_2',
+                    render: (text) =>
+                        <Button
+                            onClick={()=>this.onPullNewAward()} type="primary"
+                            disabled={response.user_is_enrolls == 0 ? true : false}
+                        >
+                            领取
+                        </Button>,
+                    width: 80
+                }
             ];
             let { userSign } = this.state;
             let data = [
@@ -345,22 +345,21 @@ export default class ActivityDetails extends Component {
                 let columns = [
                     { title: '达到天数', dataIndex: 'aw_days' ,width: 80},
                     { title: '奖金', dataIndex: 'aw_pay_awards' ,width: 80},
-                    // { title: '剩余奖品份数', dataIndex: 'aw_surplus_prizes' ,width: 80},
                     { title: '可领取次数', dataIndex: 'aw_get_award_numbers' ,width: 80},
-                    // { title: '操作', dataIndex: 'aw_get_award_numbers_2',
-                    //     render: (text, record) =>
-                    //         <Button
-                    //             onClick={()=>this.onSignTheAward(record)} type="primary"
-                    //             disabled={
-                    //                 response.user_is_enrolls == 0 ||
-                    //                 (parseInt(record.aw_get_award_numbers) <= 0 ||
-                    //                 record.user_sing_get_numbers != 1
-                    //                     ? true : false)}
-                    //         >
-                    //             领取
-                    //         </Button>,
-                    //     width: 80
-                    // }
+                    { title: '操作', dataIndex: 'aw_get_award_numbers_2',
+                        render: (text, record) =>
+                            <Button
+                                onClick={()=>this.onSignTheAward(record)} type="primary"
+                                disabled={
+                                    response.user_is_enrolls == 0 ||
+                                    (parseInt(record.aw_get_award_numbers) <= 0 ||
+                                    record.user_sing_get_numbers != 1
+                                        ? true : false)}
+                            >
+                                领取
+                            </Button>,
+                        width: 80
+                    }
                 ];
 
                 if(activity_award_sign_sets.aw_days == undefined){
@@ -411,36 +410,35 @@ export default class ActivityDetails extends Component {
                     { title: '可领次数', dataIndex: 'wa_get_awards', width: 75 },
                     { title: '流水金额', dataIndex: 'wa_water_account', width: 75 },
                     { title: '流水奖金', dataIndex: 'wa_water_award', width: 75 },
-                    // { title: '剩余奖金份数', dataIndex: 'wa_surplus_award', width: 75 },
                     { title: '可领次数', dataIndex: 'wa_get_award_numbers', width: 75 },
-                    // { title: '操作', dataIndex: 'wa_get_awards_2', width: 75,
-                    //     render: (text, record) =>
-                    //         <Button type="primary"
-                    //                 disabled={
-                    //                     response.status != 1||
-                    //                     response.user_is_enrolls == 0 ||
-                    //                     parseInt(record.wa_get_awards) <= 0 ||
-                    //                     record.user_aw_get_numbers != 1 ? true : false
-                    //                 }
-                    //                 onClick={()=>this.onRechargeAmountAward(record)}
-                    //         >
-                    //             领取
-                    //         </Button>,
-                    // },
-                    // { title: '操作', dataIndex: 'wa_get_award_numbers_2', width: 80,
-                    //     render: (text, record) =>
-                    //         <Button type="primary"
-                    //                 disabled={
-                    //                     response.status != 1||
-                    //                     response.user_is_enrolls == 0 ||
-                    //                     parseInt(record.wa_get_award_numbers) <= 0 ||
-                    //                     record.user_wa_get_numbers != 1 ? true : false
-                    //                 }
-                    //                 onClick={()=>this.onWateAmountAward(record)}
-                    //         >
-                    //             领取
-                    //         </Button>
-                    // },
+                    { title: '操作', dataIndex: 'wa_get_awards_2', width: 75,
+                        render: (text, record) =>
+                            <Button type="primary"
+                                    disabled={
+                                        response.status != 1||
+                                        response.user_is_enrolls == 0 ||
+                                        parseInt(record.wa_get_awards) <= 0 ||
+                                        record.user_aw_get_numbers != 1 ? true : false
+                                    }
+                                    onClick={()=>this.onRechargeAmountAward(record)}
+                            >
+                                领取
+                            </Button>,
+                    },
+                    { title: '操作', dataIndex: 'wa_get_award_numbers_2', width: 80,
+                        render: (text, record) =>
+                            <Button type="primary"
+                                    disabled={
+                                        response.status != 1||
+                                        response.user_is_enrolls == 0 ||
+                                        parseInt(record.wa_get_award_numbers) <= 0 ||
+                                        record.user_wa_get_numbers != 1 ? true : false
+                                    }
+                                    onClick={()=>this.onWateAmountAward(record)}
+                            >
+                                领取
+                            </Button>
+                    },
                 ];
 
                 if(water_bills_stes.wa_pay_amount == undefined){
@@ -489,18 +487,18 @@ export default class ActivityDetails extends Component {
             let columns = [
                 { title: '充值金额', dataIndex: 'recharge', width: 75 },
                 { title: '可领取奖金', dataIndex: 'bonus', width: 75 },
-                // { title: '操作', dataIndex: 'action', width: 75,
-                //     render: (text, record) =>
-                //         <Button type="primary"
-                //                 disabled={
-                //                     response.user_is_enrolls == 0 ||
-                //                     record.btn != 1 ? true : false
-                //                 }
-                //                 onClick={()=>this.onNewReset(record)}
-                //         >
-                //             领取
-                //         </Button>,
-                // }
+                { title: '操作', dataIndex: 'action', width: 75,
+                    render: (text, record) =>
+                        <Button type="primary"
+                                disabled={
+                                    response.user_is_enrolls == 0 ||
+                                    record.btn != 1 ? true : false
+                                }
+                                onClick={()=>this.onNewReset(record)}
+                        >
+                            领取
+                        </Button>,
+                }
             ];
             return (
                 <div className="a_d_table">
@@ -651,14 +649,17 @@ export default class ActivityDetails extends Component {
                                     </li>
                                 </ul>
                                 <div className="a_d_apply right">
-                                    {/*<Button type="primary" loading={this.state.btnLoading}*/}
-                                            {/*onClick={()=>this.enterApply()}*/}
-                                            {/*disabled = {response.status != 1 || response.user_is_enrolls != 0}*/}
-                                    {/*>*/}
-                                        {/*{*/}
-                                            {/*this.onStatus()*/}
-                                        {/*}*/}
-                                    {/*</Button>*/}
+                                    {
+                                        response.activity_mechanism_type == 1 ? null :
+                                            <Button type="primary" loading={this.state.btnLoading}
+                                                    onClick={()=>this.enterApply()}
+                                                    disabled = {response.status != 1 || response.user_is_enrolls != 0}
+                                            >
+                                                {
+                                                    this.onStatus()
+                                                }
+                                            </Button>
+                                    }
                                     {/*<p className="a_d_residue_number">（限额剩余{response.remain_online_num}人）</p>*/}
                                 </div>
                             </div>

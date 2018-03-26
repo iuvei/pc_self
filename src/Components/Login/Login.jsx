@@ -812,7 +812,7 @@ export default class Login extends Component {
                     </div>
                 </div>
                 <div className="activity_content" style={{display: this.state.activityClose ? 'block' : 'none'}}>
-                    <a href="https://www.guqxa.com/index.html" className="pc_activity" target="_blank"></a>
+                    <a href="http://www.hc88zr.com" className="pc_activity" target="_blank"></a>
                     <div className="close_content">
                         <Icon className="activity_close" type="close" onClick={()=>this.setState({activityClose: false})}/>
                     </div>
