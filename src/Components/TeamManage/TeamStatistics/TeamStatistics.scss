@@ -3,7 +3,7 @@
 
 .t_st_main{
     .t_st_people_num{
-        margin-top: 10px;
+        margin: 10px 0 5px;
         border-bottom: 1px solid #EAEAEA;
         li{
             float: left;
@@ -55,7 +55,7 @@
     .t_st_broken_line{
         position: relative;
         background-color: #fff;
-        margin-top: 20px;
+        margin-top: 40px;
         padding: 30px 0;
         .t_st_select_day{
             position: absolute;

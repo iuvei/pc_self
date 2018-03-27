@@ -93,6 +93,12 @@ export const teamList = (location, callback) => {
         callback(null, require('../Components/TeamManage/TeamList/TeamList').default);
     }, 'teamList');
 };
+// 报表管理/团队统计
+export const teamStatistics = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/TeamManage/TeamStatistics/TeamStatistics').default);
+    }, 'teamStatistics');
+};
 // 团队管理/市场推广
 export const marketing = (location, callback) => {
     require.ensure([], (require) => {
@@ -160,19 +166,13 @@ export const report = (location, callback) => {
         callback(null, require('../Components/Report/Report').default);
     }, 'report');
 };
-// 报表管理/团队统计
-export const teamStatistics = (location, callback) => {
-    require.ensure([], (require) => {
-        callback(null, require('../Components/Report/TeamStatistics/TeamStatistics').default);
-    }, 'teamStatistics');
-};
 // 报表管理/个人总表
 export const selfTable = (location, callback) => {
     require.ensure([], (require) => {
         callback(null, require('../Components/Report/SelfTable/SelfTable').default);
     }, 'selfTable');
 };
-// 报表管理/团队总表
+// 报表管理/盈亏总表
 export const teamTable = (location, callback) => {
     require.ensure([], (require) => {
         callback(null, require('../Components/Report/TeamTable/TeamTable').default);

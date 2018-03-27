@@ -128,7 +128,7 @@ export default class Activity extends Component {
                                                         <img src={fanshui} alt=""/> :
                                                         item.activity_pics == undefined || item.activity_pics == '' ?
                                                             <img src={litimg} alt="活动"/> :
-                                                            <img src={stateVar.httpUrl+item.activity_pics} alt="活动"/>
+                                                            <img src={stateVar.httpUrl+item.activity_pics + '?'+ new Date().getTime()} alt="活动"/>
                                                 }
                                             </div>
                                             {

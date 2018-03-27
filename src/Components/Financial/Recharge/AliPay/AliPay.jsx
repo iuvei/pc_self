@@ -85,7 +85,7 @@ export default class AliPay extends Component {
             return
         }
         this.setState({ iconLoadingRecharge: true });
-
+        let tempwindow = window.open();
         Fetch.payment({
             method: 'POST',
             body: JSON.stringify(postData)
@@ -94,7 +94,7 @@ export default class AliPay extends Component {
                 this.setState({ iconLoadingRecharge: false });
                 if(res.status == 200){
                     if(postData.code == 'zfbsm'){ // 支付宝扫码
-                        window.open(stateVar.httpUrl + res.repsoneContent.payUrl+ '&sess=' + getStore('session'))
+                        tempwindow.location.href = stateVar.httpUrl + res.repsoneContent.payUrl+ '&sess=' + getStore('session')
                     }else{
                         stateVar.aliPayInfo = res.repsoneContent.payInfo;
                         hashHistory.push({

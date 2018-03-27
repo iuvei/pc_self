@@ -29,6 +29,7 @@ export default class Sport extends Component {
     /*获取第三方网址*/
     getThirdAddress(){
         this.setState({btnLoading: true});
+        let tempwindow = window.open();
         Fetch.sport({
             method: "POST",
             body: JSON.stringify({"do":"login"}),
@@ -36,7 +37,7 @@ export default class Sport extends Component {
             if(this._ismount){
                 this.setState({btnLoading: false});
                 if(res.status == 200) {
-                    window.open(res.repsoneContent[0]);
+                    tempwindow.location.href = res.repsoneContent[0]
                 }else{
                     Modal.warning({
                         title: res.shortMessage,

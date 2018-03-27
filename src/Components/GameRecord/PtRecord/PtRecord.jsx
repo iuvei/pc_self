@@ -191,13 +191,13 @@ export default class PtRecord extends Component {
                 title: '投注金额',
                 dataIndex: 'project_bet',
                 className: 'column-right',
-                sorter: (a, b) => a.age - b.age,
+                sorter: (a, b) => {},
                 width: 120,
             }, {
                 title: '奖金',
                 dataIndex: 'project_win',
                 className: 'column-right',
-                sorter: (a, b) => a.age - b.age,
+                sorter: (a, b) => {},
                 width: 120,
             }, {
                 title: '盈亏',
@@ -207,7 +207,7 @@ export default class PtRecord extends Component {
                     text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>
                 ),
-                sorter: (a, b) => a.age - b.age,
+                sorter: (a, b) => {},
                 width: 135,
             }, {
                 title: '状态',
@@ -235,6 +235,7 @@ export default class PtRecord extends Component {
                                 <span className="t_m_date_classify">投注时间：</span>
                                 <DatePicker
                                     showTime
+                                    allowClear={false}
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(setDateTime(0) + ' 02:00:00')}
@@ -244,6 +245,7 @@ export default class PtRecord extends Component {
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     showTime
+                                    allowClear={false}
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择结束时间"
                                     defaultValue={moment(setDateTime(1) + ' 02:00:00')}

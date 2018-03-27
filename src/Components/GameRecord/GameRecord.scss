@@ -26,7 +26,7 @@ $border-color: #B2B2B2;
                 }
             }
             .t_m_line{
-                margin-top: 3px;
+                margin: 3px 20px 0 0;
                 height: 22px;
                 border-left: 1px solid #AFAFAF;
             }
@@ -39,6 +39,7 @@ $border-color: #B2B2B2;
                     padding: 0 8px;
                     border:1px solid $border-color;
                     margin-right: 3px;
+                    border-radius: 3px;
                     &:hover{
                         cursor: pointer;
                         background-color: #ddd;

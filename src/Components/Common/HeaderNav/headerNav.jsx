@@ -107,7 +107,7 @@ export default class HeaderNav extends Component {
                 },
                 {
                     name: '报表管理',
-                    link: stateVar.userInfo.userType == 0 ? '/report/lotteryReport' : '/report/teamStatistics',
+                    link: '/report',
                     id: 'report',
                 },
                 {
@@ -150,7 +150,7 @@ export default class HeaderNav extends Component {
                 },
                 {
                     name: '报表管理',
-                    link: stateVar.userInfo.userType == 0 ? '/report/lotteryReport' : '/report/teamStatistics',
+                    link: '/report',
                     id: 'report',
                 },
                 {

@@ -198,6 +198,7 @@ export default class Losesalary extends Component {
                             <li>
                                 <span>查询日期：</span>
                                 <DatePicker placeholder="查询开始日期"
+                                            allowClear={false}
                                             defaultValue={moment(setDateTime(-1))}
                                             onChange={(date, dateString)=>{this.onChangeStartDate(date, dateString)}}
                                             disabledDate={(current)=>disabledDate(current, -35, 0)}
@@ -205,6 +206,7 @@ export default class Losesalary extends Component {
                                 />
                                 <span style={{margin: '0 5px'}}>至</span>
                                 <DatePicker placeholder="查询结束日期"
+                                            allowClear={false}
                                             defaultValue={moment(setDateTime(0))}
                                             onChange={(date, dateString)=>{this.onChangeEndDate(date, dateString)}}
                                             disabledDate={(current)=>disabledDate(current, -35, 0)}
@@ -218,6 +220,9 @@ export default class Losesalary extends Component {
                                 >
                                     搜索
                                 </Button>
+                            </li>
+                            <li className="r_m_hint">
+                                <p>提示：日亏损数据保留为有效时间最近30天数据</p>
                             </li>
                         </ul>
                     </div>

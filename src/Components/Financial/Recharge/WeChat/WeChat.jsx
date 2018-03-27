@@ -77,6 +77,7 @@ export default class WeChat extends Component {
             return
         }
         this.setState({ iconLoadingRecharge: true });
+        let tempwindow = window.open();
         Fetch.payment({
             method: 'POST',
             body: JSON.stringify(this.state.postData)
@@ -84,7 +85,7 @@ export default class WeChat extends Component {
             if(this._ismount){
                 this.setState({ iconLoadingRecharge: false });
                 if(res.status == 200){
-                    window.open(stateVar.httpUrl + res.repsoneContent.payUrl + '&sess=' + getStore('session'))
+                    tempwindow.location.href = stateVar.httpUrl + res.repsoneContent.payUrl + '&sess=' + getStore('session')
                 }else{
                     Modal.warning({
                         title: res.shortMessage,

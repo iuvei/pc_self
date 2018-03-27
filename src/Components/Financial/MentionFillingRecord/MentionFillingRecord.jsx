@@ -178,6 +178,7 @@ export default class MentionFillingRecord extends Component {
                                 <span>查询日期：</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
+                                    allowClear={false}
                                     placeholder="请选择查询开始日期"
                                     defaultValue={moment(setDateTime(0))}
                                     onChange={(date, dateString)=>{this.onChangeStartDate(date, dateString)}}
@@ -188,6 +189,7 @@ export default class MentionFillingRecord extends Component {
                                 <span className="t_m_date_mar">至</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
+                                    allowClear={false}
                                     placeholder="请选择查询结束日期"
                                     defaultValue={moment(setDateTime(1))}
                                     onChange={(date, dateString)=>{this.onChangeEndDate(date, dateString)}}

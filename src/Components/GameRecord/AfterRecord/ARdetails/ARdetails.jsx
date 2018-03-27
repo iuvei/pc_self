@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import { stateVar } from '../../../../State';
-import { Button, Modal, Table, Pagination, message } from 'antd';
+import { Button, Modal, Table, Pagination, message, Popover } from 'antd';
 import Fetch from '../../../../Utils';
 
 import './ARdetails.scss';
@@ -166,7 +166,7 @@ export default class ARdetails extends Component {
             {
                 title: '订单号',
                 dataIndex: 'projectid',
-                render:(text,record)=><a className="ellipsis_2 hover_a" href="javascript:void(0)" onClick={()=>this.onClickProjectid(record)}>{text}</a>,
+                render:(text,record)=><span className="ellipsis_2 hover_a" onClick={()=>this.onClickProjectid(record)}>{text}</span>,
                 width: 90,
             }, {
                 title: '用户名',
@@ -199,7 +199,7 @@ export default class ARdetails extends Component {
                     return (
                         text != '详细号码' ? text :
                             <Popover content={<div style={{width: '150px',wordWrap: 'break-word'}}>{record.code}</div>} title="详细号码" trigger="hover">
-                                <a className="hover_a" href="javascript:void(0)">{text}</a>
+                                <span className="hover_a">{text}</span>
                             </Popover>
                     )
                 },

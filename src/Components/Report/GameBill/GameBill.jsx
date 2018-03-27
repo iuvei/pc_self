@@ -196,6 +196,7 @@ export default class GameBill extends Component {
                                 <span>查询日期：</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
+                                    allowClear={false}
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(setDateTime(0))}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
@@ -204,6 +205,7 @@ export default class GameBill extends Component {
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
+                                    allowClear={false}
                                     placeholder="请选择结束时间"
                                     defaultValue={moment(setDateTime(1))}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}

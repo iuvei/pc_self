@@ -3304,7 +3304,7 @@ samp {
   display: inline-block;
   padding: 4px 7px;
   width: 100%;
-  height: 28px;
+  height: 30px;
   cursor: text;
   font-size: 12px;
   line-height: 1.5;
@@ -4208,7 +4208,7 @@ textarea.ant-select-auto-complete.ant-select .ant-input {
   display: inline-block;
   padding: 4px 7px;
   width: 100%;
-  height: 28px;
+  height: 30px;
   cursor: text;
   font-size: 12px;
   line-height: 1.5;

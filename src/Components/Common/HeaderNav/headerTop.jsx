@@ -219,10 +219,11 @@ export default class HeaderTop extends Component {
                     if(_this._ismount){
                     	delCookie('sess');
                         removeStore('session');
+                        removeStore('kefuStatus');
                         if(res.status == 200){
-                            setTimeout(()=>{
+                            // setTimeout(()=>{
                             	hashHistory.push('/login');
-                            },500);
+                            // },500);
                         }else{
                             Modal.warning({
                                 title: res.shortMessage,

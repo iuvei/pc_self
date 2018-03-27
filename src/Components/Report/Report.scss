@@ -20,16 +20,6 @@ $border-color: #B2B2B2;
                     float: left;
                     margin-right: 10px;
                 }
-                .r_m_hint {
-                    @include lh(30px);
-                    border: 1px dotted #C5C5C3;
-                    background: #FEFCF2;
-                    padding: 0 5px;
-                    p{
-                        padding-left: 30px;
-                        background: url(../../Images/plaint_sj.png) no-repeat center left;
-                    }
-                }
                 .ant-input{
                     width: 150px;
                 }
@@ -329,14 +319,14 @@ $border-color: #B2B2B2;
             width: 85px;
         }
     }
-    /*团队总表footer*/
+    /*盈亏总表footer*/
     .tt_f_showTwo{
         li{
             float: left;
             text-align: right;
         }
         li:nth-child(1){
-            width: 152px;
+            width: 150px;
             text-align: center;
         }
         li:nth-child(2){
@@ -349,22 +339,22 @@ $border-color: #B2B2B2;
             width: 97px;
         }
         li:nth-child(5){
-            width: 85px;
+            width: 87px;
         }
         li:nth-child(6){
             width: 97px;
         }
         li:nth-child(7){
-            width: 87px;
+            width: 85px;
         }
         li:nth-child(8){
-            width: 93px;
-        }
-        li:nth-child(9){
             width: 92px;
         }
+        li:nth-child(9){
+            width: 90px;
+        }
         li:nth-child(10){
-            width: 93px;
+            width: 98px;
         }
     }
     .tt_f_showOne{
@@ -373,7 +363,7 @@ $border-color: #B2B2B2;
             text-align: right;
         }
         li:nth-child(1){
-            width: 197px;
+            width: 200px;
             text-align: center;
         }
         li:nth-child(2){
@@ -386,10 +376,10 @@ $border-color: #B2B2B2;
             width: 103px;
         }
         li:nth-child(5){
-            width: 91px;
+            width: 89px;
         }
         li:nth-child(6){
-            width: 104px;
+            width: 102px;
         }
         li:nth-child(7){
             width: 89px;
@@ -398,7 +388,7 @@ $border-color: #B2B2B2;
             width: 97px;
         }
         li:nth-child(9){
-            width: 95px;
+            width: 102px;
         }
     }
     .tt_f_showZero{
@@ -407,14 +397,14 @@ $border-color: #B2B2B2;
             text-align: right;
         }
         li:nth-child(1){
-            width: 219px;
+            width: 218px;
             text-align: center;
         }
         li:nth-child(2){
             width: 105px;
         }
         li:nth-child(3){
-            width: 127px;
+            width: 128px;
         }
         li:nth-child(4){
             width: 114px;
@@ -429,7 +419,7 @@ $border-color: #B2B2B2;
             width: 100px;
         }
         li:nth-child(8){
-            width: 106px;
+            width: 114px;
         }
     }
     .tt_footer{
@@ -585,7 +575,7 @@ $border-color: #B2B2B2;
             text-align: center;
         }
     }
-    /*彩票报表footer*/
+    /*彩票明细footer*/
     .lotteryReport_footer{
         li{
             float: left;

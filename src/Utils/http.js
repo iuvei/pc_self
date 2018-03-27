@@ -162,7 +162,7 @@ const interFace = (key) => {
     INTERFACE['PAYMENT'] = 'controller=financial&action=payment';
     // 游戏账变
     INTERFACE['LOTTERYACCOUNTCHANGED'] = 'controller=gameinfo&action=LotteryAccountChanged';
-    // 彩票报表
+    // 彩票明细
     INTERFACE['HISTORYTEAMLOTTERY'] = 'controller=gameinfo&action=historyteamlottery';
     // 个人总表
     INTERFACE['PROFITLOSSLOTTERYBYSELF'] = 'controller=report&action=ProfitLossLotteryBySelf';
@@ -174,7 +174,7 @@ const interFace = (key) => {
     INTERFACE['HISTORYSPORTS'] = 'controller=report&action=historysports';
     // 个人总表-博饼
     INTERFACE['BBDAIYSELF'] = 'controller=report&action=bbdailybyself';
-    // 团队总表
+    // 盈亏总表
     INTERFACE['TEAMMAIN'] = 'controller=gameinfo&action=Main';
     //GT娱乐-登录
     INTERFACE['GTLOGIN'] = 'controller=kgame&action=login';

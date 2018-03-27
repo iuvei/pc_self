@@ -63,22 +63,34 @@ export default class ActivityDetails extends Component {
                     this.getUserSignDatas();
                 }
                 if(data.activity_mechanism_type == 7){
-                    newReset = [
-                        {
-                            recharge: '注册绑卡',
-                            bonus: data.zc_newadd_reward_amount,
-                            action: data.newadd_rewardzc_extract_amount,
-                            btn: data.user_reg_status,
-                            id: '1',
-                        },
-                        {
-                            recharge: data.zc_recharge_amount,
-                            bonus: data.zc_recharge_reward_amount,
-                            action: data.reward_extractzc_amount,
-                            btn: data.user_cha_status,
-                            id: '2',
-                        }
-                    ]
+                    if(data.zc_recharge_amount){
+                        newReset = [
+                            {
+                                recharge: '注册绑卡',
+                                bonus: data.zc_newadd_reward_amount,
+                                action: data.newadd_rewardzc_extract_amount,
+                                btn: data.user_reg_status,
+                                id: '1',
+                            },
+                            {
+                                recharge: data.zc_recharge_amount,
+                                bonus: data.zc_recharge_reward_amount,
+                                action: data.reward_extractzc_amount,
+                                btn: data.user_cha_status,
+                                id: '2',
+                            }
+                        ]
+                    }else{
+                        newReset = [
+                            {
+                                recharge: '注册绑卡',
+                                bonus: data.zc_newadd_reward_amount,
+                                action: data.newadd_rewardzc_extract_amount,
+                                btn: data.user_reg_status,
+                                id: '1',
+                            }
+                        ]
+                    }
                 }
                 this.setState({
                     response: data,
@@ -587,10 +599,10 @@ export default class ActivityDetails extends Component {
                         water_bills_stes.wa_pay_amount != undefined ?
                             <li>充值金额：{userSign.recharge_amount == undefined ? '0' : userSign.recharge_amount} 元</li> : null
                     }
-                    {
-                        water_bills_stes.wa_pay_amount != undefined ?
-                            <li>充值奖金金额：{userSign.user_award_amount == undefined ? '0' : userSign.user_award_amount} 元</li> : null
-                    }
+                    {/*{*/}
+                        {/*water_bills_stes.wa_pay_amount != undefined ?*/}
+                            {/*<li>充值奖金金额：{userSign.user_award_amount == undefined ? '0' : userSign.user_award_amount} 元</li> : null*/}
+                    {/*}*/}
                     {
                         water_bills_stes.wa_water_account != undefined ?
                             <li>流水金额：{userSign.user_loss_amount == undefined ? '0' : userSign.user_loss_amount} 元</li> : null
@@ -600,7 +612,7 @@ export default class ActivityDetails extends Component {
                             <li>流水奖金金额：{userSign.loss_award_amount == undefined ? '0' : userSign.loss_award_amount} 元</li> : null
                     }
                     <li>已领取奖金金额：{userSign.use_award_amount == undefined ? '0' : userSign.use_award_amount} 元</li>
-                    <li>剩余奖金金额：{userSign.used_user_award_amount == undefined ? '0' : userSign.used_user_award_amount} 元</li>
+                    {/*<li>剩余奖金金额：{userSign.used_user_award_amount == undefined ? '0' : userSign.used_user_award_amount} 元</li>*/}
                 </ul>
             )
         }else if(type == 7){
@@ -621,7 +633,7 @@ export default class ActivityDetails extends Component {
                     {
                         response.activity_pics == undefined || response.activity_pics == '' ?
                             <img className="a_d_activeImg" src={litimg_details} alt=""/> :
-                            <img className="a_d_activeImg" src={stateVar.httpUrl+response.activity_pics} alt="活动"/>
+                            <img className="a_d_activeImg" src={stateVar.httpUrl+response.activity_pics + '?' + new Date().getTime()} alt="活动"/>
 
                     }
                     <h3 className="a_d_activeName">{response.activity_title}</h3>

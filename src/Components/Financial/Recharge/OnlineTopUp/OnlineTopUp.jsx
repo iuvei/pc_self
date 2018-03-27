@@ -30,7 +30,8 @@ export default class OnlineTopUp extends Component {
             },
             validate: {
                 money: 2, // 0: 对， 1：错
-            }
+            },
+            visible: false,
         };
     };
     componentDidMount() {
@@ -78,6 +79,7 @@ export default class OnlineTopUp extends Component {
             return
         }
         this.setState({ iconLoadingRecharge: true });
+        let tempwindow = window.open();
         Fetch.payment({
             method: 'POST',
             body: JSON.stringify(this.state.postData)
@@ -85,7 +87,7 @@ export default class OnlineTopUp extends Component {
             if(this._ismount){
                 this.setState({ iconLoadingRecharge: false });
                 if(res.status == 200){
-                    window.open(stateVar.httpUrl + res.repsoneContent.payUrl + '&sess=' + getStore('session'))
+                    tempwindow.location.href = stateVar.httpUrl + res.repsoneContent.payUrl + '&sess=' + getStore('session')
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -149,7 +151,6 @@ export default class OnlineTopUp extends Component {
                                             backList.map((item, index)=>{
                                                 return (
                                                     <li className={ imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
-                                                        {/*<img src={require('../Img/'+item.code+'.jpg')} alt="选择银行"/>*/}
                                                         <img src={stateVar.httpUrl + item.bankImgUrl} alt="选择银行"/>
                                                     </li>
                                                 )
@@ -188,6 +189,16 @@ export default class OnlineTopUp extends Component {
                         </Button>
                     </li>
                 </ul>
+                <Modal
+                    title="充值申请"
+                    width={600}
+                    wrapClassName="center-modal-sec"
+                    visible={this.state.visible}
+                    // onCancel={()=>{this.props.onHideModal()}}
+                    footer={null}
+                    maskClosable={false}
+                >
+                </Modal>
             </div>
         )
     }

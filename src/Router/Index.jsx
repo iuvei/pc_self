@@ -97,8 +97,9 @@ const routes = params => (
             <Route path="/activity/fanshui" getComponent={fanshui} params={params}/>
             <Route path="/tendency" getComponent={tendency} params={params}/>
             <Route path="/teamManage" getComponent={teamManage} params={params}>
-                <IndexRoute getComponent={teamList} />
+                <IndexRoute getComponent={teamStatistics} />
                 <Route path="/teamManage/teamList" getComponent={teamList} params={params}/>
+                <Route path="/teamManage/teamStatistics" getComponent={teamStatistics} params={params}/>
                 <Route path="/teamManage/marketing" getComponent={marketing} params={params}/>
                 <Route path="/teamManage/contract" getComponent={contract} params={params}/>
             </Route>
@@ -139,10 +140,10 @@ const routes = params => (
                 <Route path="/financial/withdraw/affirmWithdraw" getComponent={affirmWithdraw} params={params}/>
             </Route>
             <Route path="/report" getComponent={report} params={params}>
-                <Route path="/report/teamStatistics" getComponent={teamStatistics} params={params}/>
+                <IndexRoute getComponent={gameBill} />
+                <Route path="/report/gameBill" getComponent={gameBill} params={params}/>
                 <Route path="/report/teamTable" getComponent={teamTable} params={params}/>
                 <Route path="/report/selfTable" getComponent={selfTable} params={params}/>
-                <Route path="/report/gameBill" getComponent={gameBill} params={params}/>
                 <Route path="/report/dividend" getComponent={dividend} params={params}/>
                 <Route path="/report/losesalary" getComponent={losesalary} params={params}/>
                 <Route path="/report/dayRate" getComponent={dayRate} params={params}/>

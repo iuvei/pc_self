@@ -236,6 +236,7 @@ td.column-right {
     color: #0088DE;
 }
 .hover_a:hover{
+    cursor: pointer;
     text-decoration: underline;
 }
 /*-end-*/
@@ -272,3 +273,25 @@ td.column-right {
     text-align: left;
 }
 /*--模态框上下居中 end--*/
+
+/*--提示样式 start--*/
+.r_m_hint{
+    @include lh(30px);
+    border: 1px dotted #C5C5C3;
+    border-radius: 3px;
+    background: #FEFCF2;
+    margin: 0 5px;
+    padding: 0 5px;
+    p{
+        padding-left: 25px;
+        background: url(../Images/plaint_sj.png) no-repeat center left;
+    }
+}
+/*--提示样式 end--*/
+
+/*--表格提示 start--*/
+.head_hint{
+    color: #575655;
+    margin-left: 5px;
+}
+/*--表格提示 end--*/

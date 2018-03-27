@@ -13,16 +13,6 @@
                 .t_m_date_mar{
                     margin: 0 8px;
                 }
-                .r_m_hint{
-                    @include lh(28px);
-                    border: 1px dotted #C5C5C3;
-                    background: #FEFCF2;
-                    padding: 0 5px;
-                    p{
-                        padding-left: 30px;
-                        background: url(../../Images/plaint_sj.png) no-repeat center left;
-                    }
-                }
                 .t_l_time_row{
                     @include lh(30px);
                     margin-bottom: 12px;

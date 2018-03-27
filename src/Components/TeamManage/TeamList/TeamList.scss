@@ -11,10 +11,6 @@ $border-color: #B2B2B2;
         border-bottom: 1px solid #ccc;
         .t_l_time{
             padding-bottom: 10px;
-            .t_m_date_classify{
-                display: inline-block;
-                margin-left: 30px;
-            }
             .t_l_time_row{
                 @include lh(30px);
                 margin-bottom: 12px;
@@ -28,16 +24,7 @@ $border-color: #B2B2B2;
                 }
                 li{
                     float: left;
-                }
-                li:first-child{
-                    margin-left: 15px;
-                }
-                .t_m_serch{
-                    height: 30px;
-                    margin-left: 12px;
-                    &:hover{
-                        cursor: pointer;
-                    }
+                    margin-right: 20px;
                 }
             }
 
@@ -104,7 +91,9 @@ $border-color: #B2B2B2;
     .recharge_btn{
         margin-left: 5px;
     }
-
+    .game_record{
+        margin-top: 4px;
+    }
 }
 .t_l_prompt{
     background-color: #bbb;
@@ -186,4 +175,8 @@ $border-color: #B2B2B2;
             padding: 5px 25px;
         }
     }
+}
+
+.spin_dp{
+    display: inline-block;
 }

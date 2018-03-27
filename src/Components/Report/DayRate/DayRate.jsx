@@ -138,7 +138,7 @@ export default class DayRate extends Component {
         let postData = this.state.postData;
         postData.p = current;
         postData.pn = pageSize;
-        this.setState({postData: postData},()=>this.getData())
+        this.setState({postData: postData},()=>this.getData());
     };
     /*面包屑组件调用*/
     onChildState(item, table) {
@@ -282,16 +282,20 @@ export default class DayRate extends Component {
         let salary_ratioFlag = this.state.contentArr;
         salary_ratioFlag.forEach((data)=>{
             if(data.sale == item.sale){
-                data.salary_ratio = val
+                data.salary_ratio = val == '' ? 0 : val
             }
         });
         this.setState({salary_ratio: salary_ratioFlag});
     };
     /*修改活跃人数*/
     onChangeActiveNumber(val, item, index){
-        item.active_member = val;
+        let value = val;
+        if(!value){
+            value = 0;
+        }
+        item.active_member = value;
         let { contentArr } = this.state;
-        contentArr[index].active_member = ''+val;
+        contentArr[index].active_member = ''+value;
         this.setState({salary_ratio: contentArr});
     };
     /*修改日销量*/
@@ -488,10 +492,11 @@ export default class DayRate extends Component {
                                 <span className="t_m_date_classify">查询日期：</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
+                                    allowClear={false}
                                     defaultValue={moment(setDateTime(0))}
                                     placeholder="请选择日期"
                                     onChange={(date, dateString)=>{this.onChangeDate(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -35, 0)}
+                                    disabledDate={(current)=>disabledDate(current, -30, 0)}
                                 />
                             </li>
                             <li>
@@ -502,6 +507,9 @@ export default class DayRate extends Component {
                                 >
                                     搜索
                                 </Button>
+                            </li>
+                            <li className="r_m_hint">
+                                <p>提示：日工资数据保留为有效时间最近30天数据</p>
                             </li>
                         </ul>
                     </div>

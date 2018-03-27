@@ -449,6 +449,9 @@ export default class Dividend extends Component {
                                     搜索
                                 </Button>
                             </li>
+                            <li className="r_m_hint">
+                                <p>提示：分红资数据保留为有效时间最近30天数据</p>
+                            </li>
                         </ul>
                     </div>
                 </div>

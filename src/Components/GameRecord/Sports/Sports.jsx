@@ -173,13 +173,13 @@ export default class Sports extends Component {
                 title: '有效投注金额',
                 dataIndex: 'valid_amount',
                 className:'column-right',
-                sorter: (a, b) => a.age - b.age,
+                sorter: (a, b) => {},
                 width: 115,
             }, {
                 title: '奖金',
                 dataIndex: 'winlost_amount',
                 className:'column-right',
-                sorter: (a, b) => a.age - b.age,
+                sorter: (a, b) => {},
                 width: 90,
             }, {
                 title: '盈亏',
@@ -190,12 +190,12 @@ export default class Sports extends Component {
                     text < 0 ? <span className="col_color_shu">{text}</span> :
                                 <span className="col_color_ying">{text}</span>
                 ),
-                sorter: (a, b) => a.age - b.age,
+                sorter: (a, b) => {},
             }, {
                 title: '金额',
                 dataIndex: 'after_amount',
                 className:'column-right',
-                sorter: (a, b) => a.age - b.age,
+                sorter: (a, b) => {},
                 width: 100,
             }, {
                 title: '状态',
@@ -236,6 +236,7 @@ export default class Sports extends Component {
                                 <span>投注时间：</span>
                                 <DatePicker
                                     showTime
+                                    allowClear={false}
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(setDateTime(0) + ' 02:00:00')}
@@ -245,6 +246,7 @@ export default class Sports extends Component {
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     showTime
+                                    allowClear={false}
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择结束时间"
                                     defaultValue={moment(setDateTime(1) + ' 02:00:00')}

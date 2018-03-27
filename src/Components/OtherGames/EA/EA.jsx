@@ -78,14 +78,14 @@ export default class EA extends Component {
     onLogin() {
         if(LOGIN_FLAG){
             LOGIN_FLAG = false;
+            let tempwindow = window.open();
             Fetch.eagame({
                 method: 'POST',
                 body: JSON.stringify({do: 'login'})
             }).then((res)=>{
                 LOGIN_FLAG = true;
                 if(this._ismount && res.status == 200){
-                    let data = res.repsoneContent;
-                    window.open (data[0]);
+                    tempwindow.location.href = res.repsoneContent[0];
                 }
             })
         }

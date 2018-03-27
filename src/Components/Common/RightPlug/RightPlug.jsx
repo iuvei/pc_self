@@ -8,7 +8,7 @@ import './Rightplug.scss'
 import { stateVar } from '../../../State';
 import { _code } from '../../../CommonJs/common';
 import md5 from 'md5';
-import { getStore, onValidate } from "../../../CommonJs/common";
+import { setStore, getStore, onValidate } from "../../../CommonJs/common";
 import ComplainAndSuggests from "../ComplainAndSuggests/ComplainAndSuggests";
 import Chat from '../../Chat/Chat';
 let curLocation = location.href;  /*当前浏览器url地址*/
@@ -136,7 +136,7 @@ export default class RightPlug extends Component {
                             modalVisible: true,
                             capitalVisible: false,
                         });
-                        stateVar.kefuStatus = false;
+                        setStore('kefuStatus', true)
                     }else{
                         validate.capitalPass = 1;
                         this.setState({
@@ -159,11 +159,10 @@ export default class RightPlug extends Component {
         });
     };
     onKefu() {
-        const {kefuStatus} = stateVar;
-        if(kefuStatus){
-            this.setState({capitalVisible: true})
-        }else{
+        if(getStore('kefuStatus')){
             this.setState({modalVisible: true})
+        }else{
+            this.setState({capitalVisible: true})
         }
     };
 

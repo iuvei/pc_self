@@ -124,7 +124,11 @@ export default class Promptly extends Component {
                                     <Button className="btn_p" type="primary">通用复制</Button>
                                 </CopyToClipboard>
                             </li>
-                            <li style={{display: aliPayInfo.b_acc_name == 'khcz' || aliPayInfo.b_acc_name == 'khzz' ? 'none' : 'block'}}>
+                            <li style={{
+                                display:
+                                    aliPayInfo.b_acc_name == 'khcz' ||
+                                    aliPayInfo.b_acc_name == 'khzz' ? 'none' : 'block'}}
+                            >
                                 <span className="p_r_text"></span>
                                 {/*<Button style={{marginTop: 30}} disabled={this.state.disabled} size="large" type="primary">*/}
                                     <a className="blank_text" href={aliPayInfo.account_name} target="_blank">

@@ -281,6 +281,7 @@ export default class Tendency extends Component {
                         <DatePicker
                             disabledDate={()=>{this.disabledStartDate(this.state.startValue)}}
                             showTime
+                            allowClear={false}
                             format="YYYY-MM-DD"
                             placeholder="开始时间"
                             onChange={(date, dateString)=>{this.onStartChange(date, dateString)}}
@@ -289,6 +290,7 @@ export default class Tendency extends Component {
                         <DatePicker
                             disabledDate={()=>{this.disabledEndDate(this.state.endValue)}}
                             showTime
+                            allowClear={false}
                             format="YYYY-MM-DD"
                             placeholder="结束时间"
                             onChange={(date, dateString)=>{this.onEndChange(date, dateString)}}

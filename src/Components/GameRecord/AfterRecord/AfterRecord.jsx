@@ -225,7 +225,7 @@ export default class AfterRecord extends Component {
                     return (
                         text != '详细号码' ? text :
                             <Popover content={<div style={{width: '150px',wordWrap: 'break-word'}}>{record.codes}</div>} title="详细号码" trigger="hover">
-                                <a className="hover_a" href="javascript:void(0)">{text}</a>
+                                <span className="hover_a">{text}</span>
                             </Popover>
                     )
                 },
@@ -301,6 +301,7 @@ export default class AfterRecord extends Component {
                                 <span>投注时间：</span>
                                 <DatePicker
                                     showTime
+                                    allowClear={false}
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(setDateTime(0) + ' 02:00:00')}
@@ -310,6 +311,7 @@ export default class AfterRecord extends Component {
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     showTime
+                                    allowClear={false}
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择结束时间"
                                     defaultValue={moment(setDateTime(1) + ' 02:00:00')}

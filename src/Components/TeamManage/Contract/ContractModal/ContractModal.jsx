@@ -377,9 +377,13 @@ export default class ContractModal extends Component {
     };
     /*修改活跃人数*/
     onChangeActiveNumber(val, item, index){
-        item.active_member = val;
+        let value = val;
+        if(!value){
+            value = 0;
+        }
+        item.active_member = value;
         let { contentArr } = this.state;
-        contentArr[index].active_member = ''+val;
+        contentArr[index].active_member = ''+value;
         this.setState({salary_ratio: contentArr}, ()=>this.onTypeContent());
     };
     /*删除档位*/

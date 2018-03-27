@@ -1,4 +1,4 @@
-/*彩票报表*/
+/*彩票明细*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils'
@@ -33,7 +33,7 @@ export default class LotteryReport extends Component {
             checkAll: true,
 
             table: {
-                tableData: [], // 彩票报表列表
+                tableData: [], // 彩票明细列表
                 sum: {},
                 total: 0, // 记录条数
                 history: [
@@ -49,12 +49,12 @@ export default class LotteryReport extends Component {
     };
     componentDidMount() {
         this._ismount = true;
-        this.getData();
+        this.getData('init');
     };
     componentWillUnmount() {
         this._ismount = false;
     };
-    /*获取彩票报表列表*/
+    /*获取彩票明细列表*/
     getData(clickTable, type, username) {
         let {postData, checkedList, table} = this.state;
         if(clickTable == 'clickTable' && checkedList.length == 0){
@@ -99,9 +99,12 @@ export default class LotteryReport extends Component {
                             item.username = username
                         })
                     }
-                    data.lotterys.forEach((item, i)=>{
-                        checkedList.push(item.lotteryid)
-                    });
+                    if(clickTable == 'init'){
+                        checkedList = [];
+                        data.lotterys.forEach((item, i)=>{
+                            checkedList.push(item.lotteryid)
+                        });
+                    }
                     this.setState({
                         table: table,
                         lotteryList: data.lotterys,
@@ -284,7 +287,7 @@ export default class LotteryReport extends Component {
                 className: 'column-right',
                 width: 130,
             }, {
-                title: '盈亏',
+                title: '毛收入',
                 dataIndex: 'self_shu',
                 className: 'column-right',
                 render: (text, record)=> {
@@ -315,7 +318,8 @@ export default class LotteryReport extends Component {
                             <li>
                                 <span>查询日期：</span>
                                 <DatePicker
-                                    format="YYYY-MM-DD"
+                                    format={ "YYYY-MM-DD" + ' ' + '02:00:00' }
+                                    allowClear={false}
                                     placeholder="请选择开始查询日期"
                                     defaultValue={moment(setDateTime(0))}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
@@ -323,12 +327,16 @@ export default class LotteryReport extends Component {
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
-                                    format="YYYY-MM-DD"
+                                    format={ "YYYY-MM-DD" + ' ' + '01:59:59' }
+                                    allowClear={false}
                                     placeholder="请选择结束查询日期"
                                     defaultValue={moment(setDateTime(1))}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
                                     disabledDate={(current)=>disabledDate(current, -35, 1)}
                                 />
+                            </li>
+                            <li className="r_m_hint">
+                                <p>提示：彩票明细数据保留为有效时间最近16天数据</p>
                             </li>
                         </ul>
                         <ul className="t_l_classify">

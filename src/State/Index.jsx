@@ -2,8 +2,8 @@ import { observable } from 'mobx';
 
 // useStrict(true);
 class State {
-    @observable httpUrl = window.location.origin || (window.location.protocol +'//' + window.location.host); // 域名
-    // @observable httpUrl = 'http://10.63.15.242'; // 域名
+    // @observable httpUrl = window.location.origin || (window.location.protocol +'//' + window.location.host); // 域名
+    @observable httpUrl = 'http://10.63.15.242'; // 域名
 
     @observable httpService = ''; // 联系客服url
     @observable httpCS = ''; // 域名测速
@@ -39,7 +39,6 @@ class State {
     @observable aliPayInfo = {}; // 支付宝充值相关信息
     @observable navListIndex = 0; // 充值页面下的充值方式
     @observable lotteryType = []; // 彩种分类
-    @observable kefuStatus = true; // 联系好友是否要验证资金密码
 
     @observable auth = false;
 

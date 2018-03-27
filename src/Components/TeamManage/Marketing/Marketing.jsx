@@ -479,7 +479,7 @@ export default class Marketing extends Component {
                                 <p>无法继续注册下级</p>
                             </div>
                         }>
-                            <Icon className='hint_text' type="info-circle" />
+                            <Icon className='head_hint' type="info-circle" />
                     </Tooltip>
                 </span>,
                 dataIndex: 'status',

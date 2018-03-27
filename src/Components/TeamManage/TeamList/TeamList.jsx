@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
-import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, Badge, Popconfirm } from 'antd';
+import { DatePicker, Table, Input, Button, Pagination, Modal, InputNumber, Slider, Icon, Badge, Popconfirm, Popover, Spin } from 'antd';
 const confirm = Modal.confirm;
 import Fetch from '../../../Utils';
 import Crumbs from '../../Common/Crumbs/Crumbs'
@@ -104,6 +104,8 @@ export default class TeamList extends Component {
             },
             rechargeLoading: false,
             self: {},
+            teamMoney: 0,
+            popoverLoading: false,
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -342,16 +344,20 @@ export default class TeamList extends Component {
         let salary_ratioFlag = this.state.contentArr;
         salary_ratioFlag.forEach((data, i)=>{
             if(data.sale == item.sale){
-                data.salary_ratio = val
+                data.salary_ratio = val == '' ? 0 : val
             }
         });
         this.setState({salary_ratio: salary_ratioFlag});
     };
     /*修改活跃人数*/
     onChangeActiveNumber(val, item, index){
-        item.active_member = val;
+        let value = val;
+        if(!value){
+            value = 0;
+        }
+        item.active_member = value;
         let { contentArr } = this.state;
-        contentArr[index].active_member = ''+val;
+        contentArr[index].active_member = ''+value;
         this.setState({salary_ratio: contentArr});
     };
     /*提交协议*/
@@ -453,6 +459,7 @@ export default class TeamList extends Component {
             let { prizeGroupFlag, prizeGroupPost, prizeGroupList } = this.state;
             let selectPrizeGroup = prizeGroupList.filter((item, index) => item.prizeGroup == prizeGroupFlag)[0];
             prizeGroupPost.groupLevel = prizeGroupFlag;
+            debugger
             prizeGroupPost.keeppoint = ((prizeGroupPost.selfPoint - selectPrizeGroup.high) * 100).toFixed(2);
             Fetch.awardTeam({
                 method: 'POST',
@@ -668,6 +675,24 @@ export default class TeamList extends Component {
         postDataRecharge.fundPassword = val;
         this.setState({postDataRecharge, validate});
     };
+    /*团队余额*/
+    getTeamMoney(record) {
+        this.setState({
+            teamMoney: 0,
+            popoverLoading: true,
+        });
+        Fetch.usreList({
+            method: 'POST',
+            body: JSON.stringify({uid: record.userid, tag: 'get_team_money'})
+        }).then((res)=>{
+            if(this._ismount){
+                this.setState({popoverLoading: false});
+                if(res.status == 200){
+                    this.setState({teamMoney: res.repsoneContent.money})
+                }
+            }
+        })
+    };
     render() {
         const { dailysalaryStatus} = stateVar;
         const { tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge } = this.state;
@@ -675,7 +700,7 @@ export default class TeamList extends Component {
             {
                 title: '用户名',
                 dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
-                render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
+                render: (text, record) => <span className="hover_a" onClick={()=>this.getData('clickName', record)}>{text}</span>,
                 width: 100,
             }, {
                 title: '用户类型',
@@ -687,7 +712,7 @@ export default class TeamList extends Component {
                 sorter: () => {},
                 width: 80,
             }, {
-                title: '团队余额',
+                title: '个人余额',
                 dataIndex: 'team_money',
                 sorter: () => {},
                 width: 90,
@@ -697,7 +722,7 @@ export default class TeamList extends Component {
                 render: (text, record) =>
                     tableData.history.length > 1 ?
                         text :
-                        <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
+                        <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
                 sorter: () => {},
                 width: 70,
             }, {
@@ -716,7 +741,7 @@ export default class TeamList extends Component {
                     >
                         {text==1 ? '已签订' : '未签订'}
                     </Button>,
-                width: 90,
+                width: 80,
             }, {
                 title: '分红',
                 dataIndex: 'dividend_salary_status',
@@ -727,7 +752,7 @@ export default class TeamList extends Component {
                     >
                         {text==1 ? '已签订' : '未签订'}
                             </Button>,
-                width: 90,
+                width: 80,
             }, {
                 title: <span>
                         配额
@@ -750,7 +775,7 @@ export default class TeamList extends Component {
                                 '新申请'
                     }
                 </Button>,
-                width: 100,
+                width: 80,
             }, {
                 title: '最后登录时间',
                 dataIndex: 'lasttime',
@@ -759,15 +784,33 @@ export default class TeamList extends Component {
             }, {
                 title: '操作',
                 dataIndex: 'action',
-                render: (text, record) => <div>
-                    <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
-                    <Button className='recharge_btn'
-                            onClick={()=>this.onRecharge(record)}
-                            disabled={record.canRecharge == 1 ? false : true}
-                    >
-                        充值
-                    </Button>
-                </div>,
+                render: (text, record) => (
+                    <div>
+                        <Popover content={
+                            <span>
+                                团队余额 : &nbsp;
+                                <Spin wrapperClassName="col_color_ying spin_dp"
+                                      spinning={this.state.popoverLoading}
+                                      size="small"
+                                >
+                                    {this.state.teamMoney }
+                                    </Spin>
+                                &nbsp;元
+                            </span>
+                        }
+                                 trigger="click"
+                        >
+                            <Button onClick={()=>this.getTeamMoney(record)}>团队余额</Button>
+                        </Popover>
+                        <Button className='recharge_btn'
+                                onClick={()=>this.onRecharge(record)}
+                                disabled={record.canRecharge == 1 ? false : true}
+                        >
+                            充值
+                        </Button>
+                        <Button className='game_record' onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
+                    </div>
+                ),
                 width: 150,
             }];
         let footer = <div className="tabel_footer">
@@ -783,7 +826,7 @@ export default class TeamList extends Component {
                 {
                     title: '用户名',
                     dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
-                    render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
+                    render: (text, record) => <span className="hover_a" onClick={()=>this.getData('clickName', record)}>{text}</span>,
                     width: 110,
                 }, {
                     title: '用户类型',
@@ -795,7 +838,7 @@ export default class TeamList extends Component {
                     sorter: () => {},
                     width: 80,
                 }, {
-                    title: '团队余额',
+                    title: '个人余额',
                     dataIndex: 'team_money',
                     sorter: () => {},
                     width: 90,
@@ -805,7 +848,7 @@ export default class TeamList extends Component {
                     render: (text, record) =>
                         tableData.history.length > 1 ?
                             text :
-                            <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
+                            <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
                     sorter: () => {},
                     width: 90,
                 }, {
@@ -871,7 +914,7 @@ export default class TeamList extends Component {
                 {
                     title: '用户名',
                     dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
-                    render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
+                    render: (text, record) => <span className="hover_a" onClick={()=>this.getData('clickName', record)}>{text}</span>,
                     width: 110,
                 }, {
                     title: '用户类型',
@@ -883,8 +926,8 @@ export default class TeamList extends Component {
                     sorter: () => {},
                     width: 80,
                 }, {
-                    title: '团队余额',
-                    dataIndex: 'team_money',
+                    title: '个人余额',
+                    dataIndex: 'private_money',
                     sorter: () => {},
                     width: 90,
                 },{
@@ -893,7 +936,7 @@ export default class TeamList extends Component {
                     render: (text, record) =>
                         tableData.history.length > 1 ?
                             text :
-                            <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
+                            <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
                     sorter: () => {},
                     width: 70,
                 }, {
@@ -959,7 +1002,7 @@ export default class TeamList extends Component {
                 {
                     title: '用户名',
                     dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
-                    render: (text, record) => <a className="hover_a" href="javascript:void(0)" onClick={()=>this.getData('clickName', record)}>{text}</a>,
+                    render: (text, record) => <span className="hover_a" onClick={()=>this.getData('clickName', record)}>{text}</span>,
                     width: 110,
                 }, {
                     title: '用户类型',
@@ -971,7 +1014,7 @@ export default class TeamList extends Component {
                     sorter: () => {},
                     width: 80,
                 }, {
-                    title: '团队余额',
+                    title: '个人余额',
                     dataIndex: 'team_money',
                     sorter: () => {},
                     width: 90,
@@ -981,7 +1024,7 @@ export default class TeamList extends Component {
                     render: (text, record) =>
                         tableData.history.length > 1 ?
                             text :
-                            <a className="hover_a" href="javascript:void(0)" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</a>,
+                            <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
                     sorter: () => {},
                     width: 90,
                 }, {
@@ -1081,6 +1124,7 @@ export default class TeamList extends Component {
                                     />
                                     人，日工资比例为
                                     <InputNumber min={0} value={item.salary_ratio}
+                                                 max={100}
                                                  onChange={(value)=>this.onChangeAlterContract(value, item)}
                                                  // disabled={disabled}
                                     />
@@ -1115,6 +1159,7 @@ export default class TeamList extends Component {
                 <div style={{whiteSpace: 'normal'}}>
                     如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
                     <InputNumber min={0}
+                                 max={100}
                                  value={diviPost.dividend_radio}
                                  onChange={(value)=>{
                                      diviPost.dividend_radio = value;
@@ -1166,23 +1211,23 @@ export default class TeamList extends Component {
                                 <span>用户名：</span>
                                 <Input placeholder="请输入用户名" value={this.state.selectInfo.username} onChange={(e)=>this.onChangeUserName(e)}/>
                             </li>
-                            <li className="t_m_date_classify">注册时间：</li>
                             <li style={{marginLeft: '8px'}}>
+                                <span>注册时间：</span>
                                 <DatePicker showTime
+                                            allowClear={false}
                                             format="YYYY-MM-DD HH:mm:ss"
                                             placeholder="请选择开始时间"
                                             onChange={(date, dateString)=>this.onRegisterTimeStart(date, dateString)}
                                 />
-                            </li>
-                            <li style={{margin: '0 8px'}}>至</li>
-                            <li>
+                                <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker showTime
+                                            allowClear={false}
                                             format="YYYY-MM-DD HH:mm:ss"
                                             placeholder="请选择结束时间"
                                             onChange={(date, dateString)=>this.onRegisterTimeEnd(date, dateString)}
                                 />
                             </li>
-                            <li className="t_m_serch">
+                            <li>
                                 <Button type="primary"
                                         icon="search"
                                         onClick={()=>this.getData()}

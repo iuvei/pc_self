@@ -8,84 +8,53 @@ import QueueAnim from 'rc-queue-anim';
 import ChildNav from '../Common/ChildNav/ChildNav'
 import './Report.scss';
 
-const navListAgency = [
-    {
-        link: '/report/teamStatistics',
-        text: '团队统计'
-    },{
-        link: '/report/lotteryReport',
-        text: '彩票报表'
-    },{
-        link: '/report/selfTable',
-        text: '个人总表'
-    },{
-        link: '/report/teamTable',
-        text: '团队总表'
-    },{
-        link: '/report/gameBill',
-        text: '游戏帐变'
-    },{
-        link: '/report/dividend',
-        text: '分红'
-    },{
-        link: '/report/dayRate',
-        text: '日工资'
-    },{
-        link: '/report/losesalary',
-        text: '日亏损佣金'
-    }
-];
-const navListMember = [
-    {
-        link: '/report/lotteryReport',
-        text: '彩票报表'
-    },{
-        link: '/report/selfTable',
-        text: '个人总表'
-    },{
-        link: '/report/gameBill',
-        text: '游戏帐变'
-    },{
-        link: '/report/dividend',
-        text: '分红'
-    },{
-        link: '/report/dayRate',
-        text: '日工资'
-    },{
-        link: '/report/losesalary',
-        text: '日亏损佣金'
-    }
-];
 @observer
 export default class Report extends Component {
     constructor(props){
         super(props);
         this.state = {
             navIndex: 0,
-            navList: navListAgency,
+            navList: [
+                {
+                    link: '/report/gameBill',
+                    text: '游戏帐变'
+                },{
+                    link: '/report/lotteryReport',
+                    text: '彩票明细'
+                },
+                // {
+                //     link: '/report/selfTable',
+                //     text: '个人总表'
+                // },
+                {
+                    link: '/report/dayRate',
+                    text: '日工资'
+                },{
+                    link: '/report/losesalary',
+                    text: '日亏损佣金'
+                },{
+                    link: '/report/dividend',
+                    text: '分红'
+                },{
+                    link: '/report/teamTable',
+                    text: '盈亏总表'
+                }
+            ],
         }
     };
     componentDidMount(){
         this._ismount = true;
-        this.changeType();
         this.getData();
     }
     componentWillUnmount() {
         this._ismount = false;
     };
-    /*判断代理会员*/
-    changeType(){
-        if(stateVar.userInfo.userType == 0){ //是会员
-            this.setState({navList: navListMember})
-        }else{
-            this.setState({navList: navListAgency})
-        }
-    }
+
     /*获得日工资，亏损，分红签订状态*/
     getData() {
         Fetch.dailysalary({
             method: 'POST',
-            body: JSON.stringify({check: 1}),
+            body: JSON.stringify({check: 1})
         }).then((res)=>{
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,

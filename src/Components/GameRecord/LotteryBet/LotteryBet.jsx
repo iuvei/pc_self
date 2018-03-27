@@ -278,7 +278,7 @@ export default class LotteryBet extends Component {
             {
                 title: '订单号',
                 dataIndex: 'projectid',
-                render:(text,record)=><a className="ellipsis_2 hover_a" href="javascript:void(0)" onClick={()=>this.onClickProjectid(record)}>{text}</a>,
+                render:(text,record)=><span className="ellipsis_2 hover_a" onClick={()=>this.onClickProjectid(record)}>{text}</span>,
                 width: 90,
             }, {
                 title: '用户名',
@@ -311,7 +311,7 @@ export default class LotteryBet extends Component {
                     return (
                         text != '详细号码' ? text :
                         <Popover content={<div style={{width: '150px',wordWrap: 'break-word'}}>{record.code}</div>} title="详细号码" trigger="hover">
-                            <a className="hover_a" href="javascript:void(0)">{text}</a>
+                            <span className="hover_a">{text}</span>
                         </Popover>
                     )
                 },
@@ -332,7 +332,7 @@ export default class LotteryBet extends Component {
                     return (
                         text != null && ''+text.length < 10 ? text :
                         <Popover content={<div style={{width: '150px',wordWrap: 'break-word'}}>{record.i_code}</div>} title="详细号码" trigger="hover">
-                            <a className="hover_a" href="javascript:void(0)">详细号码</a>
+                            <span className="hover_a">详细号码</span>
                         </Popover>
                     )
                 },
@@ -381,6 +381,7 @@ export default class LotteryBet extends Component {
                                 <span>投注时间：</span>
                                 <DatePicker
                                     showTime
+                                    allowClear={false}
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(common.setDateTime(0) + ' 02:00:00')}
@@ -390,6 +391,7 @@ export default class LotteryBet extends Component {
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     showTime
+                                    allowClear={false}
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择结束时间"
                                     defaultValue={moment(common.setDateTime(1) + ' 02:00:00')}

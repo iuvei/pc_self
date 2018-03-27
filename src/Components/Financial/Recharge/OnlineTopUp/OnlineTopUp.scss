@@ -4,16 +4,8 @@
 $width_110px: 110px;
 .online_top_up{
     .r_m_hint{
-        @include lh(35px);
-        width: 550px;
-        border: 1px dotted #C5C5C3;
-        background: #FEFCF2;
-        margin:0 0 20px 30px;
-        padding-left: 15px;
-        p{
-            padding-left: 30px;
-            background: url(./Img/plaint_sj.png) no-repeat center left;
-        }
+        display: inline-block;
+        margin: 0 0 25px 35px;
     }
     .r_m_list{
         margin-left: 50px;

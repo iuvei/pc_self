@@ -147,7 +147,7 @@ const fundreport= (body) =>  request(http.interFace('FUNDREPORT'),body);
 const payment= (body) =>  request(http.interFace('PAYMENT'),body);
 /*游戏账变*/
 const lotteryAccountChanged= (body) =>  request(http.interFace('LOTTERYACCOUNTCHANGED'),body);
-/*彩票报表*/
+/*彩票明细*/
 const historyteamlottery= (body) =>  request(http.interFace('HISTORYTEAMLOTTERY'),body);
 /*个人总表*/
 const profitLossLotteryBySelf= (body) =>  request(http.interFace('PROFITLOSSLOTTERYBYSELF'),body);
@@ -159,7 +159,7 @@ const ptdaily= (body) =>  request(http.interFace('PTDAILY'),body);
 const historysports= (body) =>  request(http.interFace('HISTORYSPORTS'),body);
 /*个人总表-体育*/
 const bbdailybyself= (body) =>  request(http.interFace('BBDAIYSELF'),body);
-/*团队总表*/
+/*盈亏总表*/
 const teammain= (body) =>  request(http.interFace('TEAMMAIN'),body);
 /*GT娱乐-登录*/
 const gtLogin= (body) =>  request(http.interFace('GTLOGIN'),body);

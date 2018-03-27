@@ -345,22 +345,22 @@ export default class BobingRecord extends PureComponent {
                 <div className="team_list_top">
                     <div className="t_l_time">
                         <ul className="t_l_time_row">
-                            <li className="t_m_date_classify">投注时间：</li>
                             <li>
+                                <span>投注时间：</span>
                                 <DatePicker
                                     showTime
                                     format="YYYY-MM-DD HH:mm:ss"
+                                    allowClear={false}
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(common.setDateTime(0) + ' 00:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
                                     disabledDate={(current)=>common.disabledDate(current, -16, 1)}
                                 />
-                            </li>
-                            <li style={{margin: '0 8px'}}>至</li>
-                            <li>
+                                <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
                                     showTime
                                     format="YYYY-MM-DD HH:mm:ss"
+                                    allowClear={false}
                                     placeholder="请选择结束时间"
                                     defaultValue={moment(common.setDateTime(0) + ' 23:59:59')}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
@@ -368,7 +368,7 @@ export default class BobingRecord extends PureComponent {
                                     disabledDate={(current)=>common.disabledDate(current, -16, 1)}
                                 />
                             </li>
-                            <li style={{margin: '0 10px'}}>
+                            <li>
                                 <span>用户名：</span>
                                 <Input placeholder="请输入用户名" style={{width: '150px'}} value={this.state.postData.username} onChange={(e)=>this.onUserName(e)}/>
                             </li>
