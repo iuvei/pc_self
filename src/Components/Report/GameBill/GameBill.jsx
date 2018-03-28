@@ -6,7 +6,7 @@ const Option = Select.Option;
 const RadioGroup = Radio.Group;
 import moment from 'moment';
 import Fetch from '../../../Utils';
-import { setDateTime, disabledDate } from '../../../CommonJs/common';
+import { setDateTime, disabledDate, datedifference } from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
 
 @observer
@@ -130,7 +130,7 @@ export default class GameBill extends Component {
         this.setState({showLottery: !this.state.showLottery})
     };
     render() {
-        const { total, lotteryList, modes, type } = this.state;
+        const { total, lotteryList, modes, type, postData } = this.state;
         let columns = [
             {
                 title: '用户名',
@@ -200,7 +200,7 @@ export default class GameBill extends Component {
                                     placeholder="请选择开始时间"
                                     defaultValue={moment(setDateTime(0))}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -35, 0)}
+                                    disabledDate={(current)=>disabledDate(current, -16, 0)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
@@ -209,7 +209,7 @@ export default class GameBill extends Component {
                                     placeholder="请选择结束时间"
                                     defaultValue={moment(setDateTime(1))}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -35, 0)}
+                                    disabledDate={(current)=>disabledDate(current, -datedifference(postData.starttime, setDateTime(0)), 1)}
                                 />
                             </li>
                         </ul>

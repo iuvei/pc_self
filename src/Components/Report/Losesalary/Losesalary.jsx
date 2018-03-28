@@ -1,7 +1,7 @@
 /*日亏损佣金*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { setDateTime, disabledDate } from '../../../CommonJs/common';
+import { setDateTime, disabledDate, datedifference } from '../../../CommonJs/common';
 import { Table, Pagination, Button, Modal, DatePicker } from 'antd';
 import moment from 'moment';
 import { stateVar } from '../../../State';
@@ -182,7 +182,7 @@ export default class Losesalary extends Component {
                     width: 100,
                 }
             ];
-        const { sum, total, modalPostData, modalResp } = this.state;
+        const { sum, total, modalPostData, modalResp, postData } = this.state;
         const modalTotal = modalResp.total != undefined ? modalResp.total : FLAG_OBJECT;
         const list = modalResp.list != undefined ? modalResp.list : FLAG_OBJECT;
         const footer = <ul className="losesaLary_footer clear">
@@ -201,7 +201,7 @@ export default class Losesalary extends Component {
                                             allowClear={false}
                                             defaultValue={moment(setDateTime(-1))}
                                             onChange={(date, dateString)=>{this.onChangeStartDate(date, dateString)}}
-                                            disabledDate={(current)=>disabledDate(current, -35, 0)}
+                                            disabledDate={(current)=>disabledDate(current, -30, 0)}
 
                                 />
                                 <span style={{margin: '0 5px'}}>至</span>
@@ -209,7 +209,7 @@ export default class Losesalary extends Component {
                                             allowClear={false}
                                             defaultValue={moment(setDateTime(0))}
                                             onChange={(date, dateString)=>{this.onChangeEndDate(date, dateString)}}
-                                            disabledDate={(current)=>disabledDate(current, -35, 0)}
+                                            disabledDate={(current)=>disabledDate(current, -datedifference(postData.begintime, setDateTime(0)), 1)}
                                 />
                             </li>
                             <li>

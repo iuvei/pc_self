@@ -5,7 +5,7 @@ import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import { DatePicker, Button, Table, Pagination, Input, Tooltip, Icon } from 'antd';
 import moment from 'moment';
-import { setDateTime, disabledDate, getTime, getNextMonth, getMonthEndDate } from '../../../CommonJs/common';
+import { setDateTime, disabledDate, getTime, getNextMonth, getMonthEndDate, datedifference } from '../../../CommonJs/common';
 import Crumbs from '../../Common/Crumbs/Crumbs';
 
 const shortcutTime = [
@@ -1374,7 +1374,7 @@ export default class TeamTable extends Component {
                                     value={moment(postData.sdatetime)}
                                     allowClear={false}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -35, 1)}
+                                    disabledDate={(current)=>disabledDate(current, -30, 0)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
@@ -1383,7 +1383,7 @@ export default class TeamTable extends Component {
                                     value={moment(postData.edatetime)}
                                     allowClear={false}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -35, 1)}
+                                    disabledDate={(current)=>disabledDate(current, -datedifference(postData.sdatetime, setDateTime(0)), 1)}
                                 />
                             </li>
                             <li className="t_m_line"></li>

@@ -376,10 +376,8 @@ export default class Contract extends Component {
                                <div className={this.onStyleAccGroup()}>
                                    <p className='c_title'><img src={dollarSrc}/>我的奖金组</p>
                                    <div className='c_table_wrap'>
-                                       <div >
-                                           <p>奖金组</p>
-                                           <p className='c_txt'>{stateVar.userInfo.accGroup}</p>
-                                       </div>
+                                       <p>奖金组</p>
+                                       <p className='c_txt'>{stateVar.userInfo.accGroup}</p>
                                    </div>
                                </div>
                            </li>
