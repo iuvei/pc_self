@@ -1,4 +1,5 @@
-import { observable } from 'mobx';
+import {observable, action} from 'mobx';
+import _code from '../CommonJs/common'
 
 // useStrict(true);
 class State {
@@ -48,7 +49,14 @@ class State {
     @observable homeMainLeftActive = true;
     @observable allLottery = [];
     @observable alllotteryType = {};
-    @observable nowlottery = {'lotteryId':'ssc','cuimId':'',defaultMethodId:0,lotteryBetId:1,cnname:'重庆时时彩',imgUrl:''};
+    @observable nowlottery = {
+        'lotteryId': 'ssc',
+        'cuimId': '',
+        defaultMethodId: 0,
+        lotteryBetId: 1,
+        cnname: '重庆时时彩',
+        imgUrl: ''
+    };
     @observable defaultMethod = 0;
     @observable openLotteryFlag = true;
     @observable todayAndTomorrow = [];
@@ -57,33 +65,38 @@ class State {
     @observable nextIssue = '?????';
     @observable savePkInput = {};
     @observable aboutGame = {
-        data_sel:[],
-        methodID:'',
-        max_place:0,
-        minchosen:[],
-        otype:'',
-        maxcodecount:0,
-        noBigIndex:0,
-        random_bets:false,
-        title:'',
-        name:'',
-        str:'',
-        menuid:'',
-        sp:'',
-        prize:0
+        data_sel: [],
+        methodID: '',
+        max_place: 0,
+        minchosen: [],
+        otype: '',
+        maxcodecount: 0,
+        noBigIndex: 0,
+        random_bets: false,
+        title: '',
+        name: '',
+        str: '',
+        menuid: '',
+        sp: '',
+        prize: 0
     };
     @observable BetContent = {
-        lt_same_code:[],totalDan:0,totalNum:0,totalMoney:0,lt_trace_base:0
+        lt_same_code: [], totalDan: 0, totalNum: 0, totalMoney: 0, lt_trace_base: 0
     };
     @observable issueItem = [];
     @observable kjNumberList = [];
     @observable mmCkjNumberList = [];
-    @observable mmccode = ['-','-','-','-','-'];
-	@observable methodIdItem = [];
-	@observable shapeObj = {type:'',content:[]};
-	@observable checkLotteryId = true;
-	@observable paused = true;
-	@observable betVisible = false;
+    @observable mmccode = ['-', '-', '-', '-', '-'];
+    @observable methodIdItem = [];
+    @observable shapeObj = {type: '', content: []};
+    @observable checkLotteryId = true;
+    @observable paused = true;
+    @observable betVisible = false;
+    @observable activeTheme = _code.getStore('webTheme') || 'white';
+    @action('修改网站主题 换肤') changeTheme = (color) => {
+        _code.setStore('webTheme', color)
+        this.activeTheme = color
+    }
 }
 
 export const stateVar = new State();

@@ -1,13 +1,13 @@
 @import '../../../Style/variables';
 @import '../../../Style/mixin';
 
-.right_plug_open{
+.right_plug_open {
     position: fixed;
     right: -20px;
     top: 50%;
     margin-top: -25px;
     z-index: 98;
-    .openRight{
+    .openRight {
         text-align: center;
         width: 20px;
         border: 0;
@@ -15,20 +15,21 @@
         background: #ddd;
         cursor: pointer;
         z-index: 99;
-        i{
+        i {
             color: #A1A1A1;
         }
-        &:hover i{
+        &:hover i {
             color: #fff;
         }
     }
 }
-.right_plug{
+
+.right_plug {
     position: fixed;
     right: 0;
     top: 20%;
     z-index: 99;
-    .right_list{
+    .right_list {
         .r_p_common_extent {
             position: absolute;
             top: 10px;
@@ -40,10 +41,10 @@
             @include borderRadius(5px);
             background: #DE2124;
         }
-        .lianxi_p{
+        .lianxi_p {
             position: relative;
         }
-        li{
+        li {
             width: 80px;
             @include lh(75px);
             color: #999;
@@ -51,75 +52,81 @@
             background: $background_F5F5F5;
             border-top: 1px solid #ddd;
             border-left: 1px solid #ddd;
-            &:hover{
+            &:hover {
                 cursor: pointer;
                 background: $color_CF2027;
                 color: #fff;
             }
-            &:hover .r_p_common{
+            &:hover .r_p_common {
                 transform: scale(1.1);
                 @include transform(transform, 0.3s);
             }
-            a{
-                color:#999;
+            a {
+                color: #999;
                 display: inline-block;
                 @include wh(100%, 60px);
             }
-            .r_p_common{
+            .r_p_common {
                 @include wh(80px, 75px);
                 padding-top: 13px;
                 display: inline-block;
-                &:hover a{
+                &:hover a {
                     color: #fff;
                 }
             }
-            .r_p_goOld{
+            .r_p_goOld {
                 background: url(./Img/fanhui1.png) no-repeat center 12px;
-                &:hover{
+                &:hover {
                     background: url(./Img/fanhui2.png) no-repeat center 12px;
                 }
             }
-            .r_p_kefu{
+            .r_p_kefu {
                 background: url(./Img/kefu1.png) no-repeat center 12px;
-                &:hover{
+                &:hover {
                     background: url(./Img/kefu2.png) no-repeat center 12px;
                 }
             }
-            .r_p_kehuduan{
+            .r_p_kehuduan {
                 background: url(./Img/kehuduan1.png) no-repeat center 12px;
-                &:hover{
+                &:hover {
                     background: url(./Img/kehuduan2.png) no-repeat center 12px;
                 }
             }
-            .r_p_app{
+            .r_p_app {
                 background: url(./Img/shoujiapp1.png) no-repeat center 12px;
-                &:hover{
+                &:hover {
                     background: url(./Img/shoujiapp2.png) no-repeat center 12px;
                 }
             }
-            .r_p_zoushi{
+            .r_p_zoushi {
                 background: url(./Img/zoushi1.png) no-repeat center 12px;
-                &:hover{
+                &:hover {
                     background: url(./Img/zoushi2.png) no-repeat center 12px;
                 }
             }
-            .r_p_tousu{
+            .r_p_tousu {
                 background: url(./Img/tousu1.png) no-repeat center 12px;
-                &:hover{
+                &:hover {
                     background: url(./Img/tousu2.png) no-repeat center 12px;
                 }
             }
-            .r_p_kehuzx{
+            .r_p_kehuzx {
                 background: url(./Img/zx1.png) no-repeat center 12px;
-                &:hover{
+                &:hover {
                     background: url(./Img/zx2.png) no-repeat center 12px;
+                }
+            }
+            .r_p_theme {
+                background: url(./Img/theme1.png) no-repeat center 12px;
+                &:hover {
+                    background: url(./Img/theme2.png) no-repeat center 12px;
                 }
             }
         }
     }
 }
 
-.r_caret-right{
+.r_caret-right {
     text-align: center;
     width: 80px;
     border: 0;
@@ -131,23 +138,23 @@
     cursor: pointer;
     z-index: 99;
     margin-top: -5px;
-    i{
+    i {
         color: #A1A1A1;
     }
-    &:hover i{
+    &:hover i {
         color: #fff;
     }
 }
 
-.capitalPass_modal{
-    .info_list{
+.capitalPass_modal {
+    .info_list {
         width: 300px;
         margin: 0 auto;
         font-size: 14px;
-        li{
+        li {
             margin: 15px 0 10px;
         }
-        .hint_text{
+        .hint_text {
             font-size: 12px;
             color: $color_CF2027;
             line-height: 20px;
@@ -155,14 +162,59 @@
             white-space: normal;
         }
     }
-    .ant-input{
+    .ant-input {
         width: 230px;
     }
-    .btn{
+    .btn {
         text-align: center;
         margin-top: 30px !important;
-        .ant-btn{
+        .ant-btn {
             padding: 5px 30px;
+        }
+    }
+}
+
+// 换肤选项
+.theme-select {
+    height: 65px;
+    text-align: center;
+    ul {
+        padding: 5px;
+        overflow: hidden;
+        li {
+            margin-right: 10px;
+            cursor: pointer;
+            &:before {
+                content: '';
+                display: block;
+                width: 40px;
+                height: 40px;
+                border-radius: 4px;
+                border: 1px solid #999999;
+            }
+            &:first-child {
+                &:before {
+                    background-color: #fff;
+                }
+            }
+            &:nth-child(2) {
+                &:before {
+                    background-color: #cccccc;
+                }
+            }
+            &:last-child {
+                margin-right: 0;
+                &:before {
+                    background-color: #333333;
+                }
+            }
+        }
+        li.active {
+            color: #cc0000;
+            &:before {
+                border-width: 2px;
+                border-color: #cc0000;
+            }
         }
     }
 }

@@ -5,11 +5,24 @@ header {
     @include wh(100%, 110px);
 }
 
-.berCenter_bg{
+.berCenter_bg {
     background: $main_bg;
-    .main{
+    transition: background-color .5s;
+    .main {
         width: $nav_width_1200;
         min-height: 700px;
         margin: 0 auto 20px;
     }
+}
+
+.berCenter_bg.theme-white {
+    background-color: $main_bg;
+}
+
+.berCenter_bg.theme-gray {
+    background-color: $main_bg_gray;
+}
+
+.berCenter_bg.theme-black {
+    background-color: $main_bg_black;
 }

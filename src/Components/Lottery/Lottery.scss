@@ -1,24 +1,37 @@
 @import '../../Style/variables';
 @import '../../Style/mixin';
 
-.all_bet{
+.all_bet {
     width: $nav_width_1040;
-    margin:  0 auto;
+    margin: 0 auto;
     overflow: hidden;
 }
-.main{
+
+.main {
     position: relative;
     width: 1040px !important;
     margin: 0 !important;
     background: $main_bg;
-    .b_c_left_sider{
+    transition: background-color .5s;
+    .b_c_left_sider {
         position: absolute;
         left: 0;
         top: 0;
         z-index: 9;
     }
-    audio{
+    audio {
         display: none;
     }
 }
 
+.main.theme-white {
+    background-color: $main_bg;
+}
+
+.main.theme-gray {
+    background-color: $main_bg_gray;
+}
+
+.main.theme-black {
+    background-color: $main_bg_black;
+}
