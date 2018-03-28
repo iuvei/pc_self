@@ -6,7 +6,7 @@ import { DatePicker, Table, Pagination, Input, Button, Icon, Checkbox, Modal } f
 
 import moment from 'moment';
 import { stateVar } from '../../../State';
-import { setDateTime, disabledDate } from '../../../CommonJs/common';
+import { setDateTime, disabledDate, datedifference } from '../../../CommonJs/common';
 import Crumbs from '../../Common/Crumbs/Crumbs';
 
 @observer
@@ -323,7 +323,7 @@ export default class LotteryReport extends Component {
                                     placeholder="请选择开始查询日期"
                                     defaultValue={moment(setDateTime(0))}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -35, 1)}
+                                    disabledDate={(current)=>disabledDate(current, -16, 0)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
@@ -332,7 +332,7 @@ export default class LotteryReport extends Component {
                                     placeholder="请选择结束查询日期"
                                     defaultValue={moment(setDateTime(1))}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -35, 1)}
+                                    disabledDate={(current)=>disabledDate(current, -datedifference(postData.starttime, setDateTime(0)), 1)}
                                 />
                             </li>
                             <li className="r_m_hint">

@@ -30,7 +30,7 @@ $c_m_background: #4A4A5F;
             padding-left: 12px;
             .renxuan{
                 position: absolute;
-                right: 0;
+                right: -1px;
                 top:0;
                 width: 89px;
                 height: 40px;
@@ -93,8 +93,8 @@ $c_m_background: #4A4A5F;
         .c_m_select_list{
             position: absolute;
             top: 40px;
-            left:-15px;
-            width:$c_m_select_method_w;
+            left:-13px;
+            width: 89px;
             background-color: #fff;
             border-left: 1px solid #B2B2B2;
             border-right: 1px solid #B2B2B2;

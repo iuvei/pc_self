@@ -1,4 +1,3 @@
-import { stateVar } from '../State';
 /**
  * 获取当前日期的前后n天日期
  */
@@ -37,7 +36,7 @@ export const getNextMonth = (date) =>{
  * 获取毫秒数
  */
 export const setNewDateTime = (n) => {
-    let s, d, t, t2;
+    let d, t, t2;
     t = new Date().getTime();
     t2 = n * 1000 * 3600 * 24;
     t += t2;
@@ -85,6 +84,16 @@ export const timestampToTime = (timestamp) => {
  */
 export const disabledDate = (current, min, max) => {
     return !(current && current.valueOf() < setNewDateTime(max) && current.valueOf() > setNewDateTime(min));
+};
+export const datedifference = (sDate1, sDate2) => {    //sDate1和sDate2是2006-12-18格式
+    let dateSpan,
+        iDays;
+    sDate1 = Date.parse(sDate1);
+    sDate2 = Date.parse(sDate2);
+    dateSpan = sDate2 - sDate1;
+    dateSpan = Math.abs(dateSpan);
+    iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+    return iDays
 };
 
 /***参数都是以周一为基准的***/
@@ -338,6 +347,7 @@ export default {
     getCookie,
     delCookie,
     timestampToTime,
-    _code
+    _code,
+    datedifference
 }
 
