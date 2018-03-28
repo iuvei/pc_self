@@ -1,54 +1,67 @@
 @import '../../Style/variables';
 @import '../../Style/mixin';
 
-.activity_main{
-    margin-bottom: 15px;
-    .activity_list{
+.activity_main {
+    padding-bottom: 15px;
+    transition: background-color .5s;
+    .activity_list {
         min-height: 657px;
-        li{
+        li {
             position: relative;
             float: left;
             margin-top: 10px;
             border: 1px solid #ddd;
-            .activity_img{
+            .activity_img {
                 @include wh(580px, 250px);
                 overflow: hidden;
             }
-            img{
+            img {
                 width: 580px;
                 vertical-align: middle;
             }
-            &:nth-child(2n+1){
+            &:nth-child(2n+1) {
                 margin-right: 8px;
             }
-            .activity_apply{
+            .activity_apply {
                 position: absolute;
                 top: 0;
                 left: 0;
                 width: 87px;
             }
         }
-        .activity_participation{
+        .activity_participation {
             background-color: #fff;
             padding: 12px;
-            p{
+            p {
                 color: $color_363636;
                 font-size: 18px;
             }
-            i{
+            i {
                 font-style: normal;
                 color: #999999;
                 font-size: 12px;
             }
-            .endBtn{
+            .endBtn {
                 color: #B7B7B7;
                 background-color: #F5F5F5;
                 border-color: #D9D9D9;
             }
         }
     }
-    .active_pagination{
+    .active_pagination {
         margin-top: 15px;
         float: right;
     }
+}
+
+.activity_main.theme-white {
+    background-color: $main_bg;
+}
+
+.activity_main.theme-gray {
+    background-color: $main_bg_gray;
+}
+
+.activity_main.theme-black {
+    background-color: $main_bg_black;
 }

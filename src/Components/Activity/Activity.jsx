@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../Utils';
-import { Row, Col, Button, Pagination  } from 'antd';
-import { timestampToTime } from '../../CommonJs/common';
-import { stateVar } from '../../State';
-import { hashHistory, Link } from 'react-router';
+import {Row, Col, Button, Pagination} from 'antd';
+import {timestampToTime} from '../../CommonJs/common';
+import {stateVar} from '../../State';
+import {hashHistory, Link} from 'react-router';
 
 import './Activity.scss'
 
@@ -28,19 +28,22 @@ export default class Activity extends Component {
             }
         };
     };
-    componentDidMount(){
+
+    componentDidMount() {
         this._ismount = true;
         this.getData();
     };
+
     componentWillUnmount() {
         this._ismount = false;
     };
-    getData(){
+
+    getData() {
         Fetch.acitveLists({
             method: 'POST',
             body: JSON.stringify(this.state.postData)
-        }).then((res)=>{
-            if(this._ismount && res.status == 200){
+        }).then((res) => {
+            if (this._ismount && res.status == 200) {
                 let data = res.repsoneContent;
                 let fanshui = {
                     activity_id: "-1",
@@ -64,23 +67,26 @@ export default class Activity extends Component {
             }
         })
     }
+
     /*切换页面时*/
     onChangePagination(page) {
         let postData = this.state.postData;
         postData.p = page;
-        this.setState({postData: postData},()=>this.getData());
+        this.setState({postData: postData}, () => this.getData());
     };
+
     /*切换每页条数*/
     onShowSizeChange(current, pageSize) {
         let postData = this.state.postData;
         postData.p = current;
         postData.pn = pageSize;
-        this.setState({postData: postData},()=>this.getData())
+        this.setState({postData: postData}, () => this.getData())
     };
+
     activityDetails(item) {
-        if(item.activity_id == '-1'){
+        if (item.activity_id == '-1') {
             hashHistory.push('/activity/fanshui');
-        }else{
+        } else {
             hashHistory.push({
                 pathname: '/activity/activityDetails',
                 query: {
@@ -89,37 +95,38 @@ export default class Activity extends Component {
             });
         }
     };
+
     /*按钮状态*/
-    onBtnType(item){
+    onBtnType(item) {
 
         let status = item.status;
-        if(status == 1){
+        if (status == 1) {
             // if(item.user_is_enrolls == 1){
             //     return '进行中'
             // }else{
             //     return '立即参与';
             // }
             return '进行中'
-        }else if(status == 200){
+        } else if (status == 200) {
             return '已完成';
-        }else if(status == 400){
+        } else if (status == 400) {
             return '已满员';
-        }else if(status == 401){
+        } else if (status == 401) {
             return '已结束';
-        }else{
+        } else {
             return '加载中';
         }
     };
 
     render() {
-        const { activityArr } = this.state;
+        const {activityArr} = this.state;
         return (
-            <div className="activity_main">
-                <Row type="flex" justify="center" align="top" className="main_width" >
+            <div className={`activity_main theme-${stateVar.activeTheme}`}>
+                <Row type="flex" justify="center" align="top" className="main_width">
                     <Col span={24}>
                         <ul className="activity_list clear">
                             {
-                                activityArr.map((item)=>{
+                                activityArr.map((item) => {
                                     return (
                                         <li key={item.activity_id}>
                                             <div className="activity_img">
@@ -128,7 +135,9 @@ export default class Activity extends Component {
                                                         <img src={fanshui} alt=""/> :
                                                         item.activity_pics == undefined || item.activity_pics == '' ?
                                                             <img src={litimg} alt="活动"/> :
-                                                            <img src={stateVar.httpUrl+item.activity_pics + '?'+ new Date().getTime()} alt="活动"/>
+                                                            <img
+                                                                src={stateVar.httpUrl + item.activity_pics + '?' + new Date().getTime()}
+                                                                alt="活动"/>
                                                 }
                                             </div>
                                             {
@@ -136,7 +145,8 @@ export default class Activity extends Component {
                                                 item.status == '200' ||
                                                 item.status == '400' ||
                                                 item.status == '401' ?
-                                                    <img className="activity_apply" src={require('./Img/active'+item.status+'.png')}/> :
+                                                    <img className="activity_apply"
+                                                         src={require('./Img/active' + item.status + '.png')}/> :
                                                     null
                                             }
 
@@ -149,7 +159,7 @@ export default class Activity extends Component {
                                                 </div>
                                                 <Button className={item.status != 1 ? 'endBtn right' : 'right'}
                                                         type="primary" size="large"
-                                                        onClick={()=>this.activityDetails(item)}
+                                                        onClick={() => this.activityDetails(item)}
                                                 >
                                                     {
                                                         item.activity_id == '-1' ?
@@ -163,10 +173,13 @@ export default class Activity extends Component {
                                 })
                             }
                         </ul>
-                        <div className="active_pagination" style={{display: this.state.total <= 0 || this.state.total == undefined ? 'none' : ''}}>
+                        <div className="active_pagination"
+                             style={{display: this.state.total <= 0 || this.state.total == undefined ? 'none' : ''}}>
                             <Pagination showSizeChanger
-                                        onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}}
-                                        onChange={(page)=>this.onChangePagination(page)}
+                                        onShowSizeChange={(current, pageSize) => {
+                                            this.onShowSizeChange(current, pageSize)
+                                        }}
+                                        onChange={(page) => this.onChangePagination(page)}
                                         defaultCurrent={1}
                                         total={parseInt(this.state.total)}
                                         pageSizeOptions={stateVar.pageSizeOptions.slice()}

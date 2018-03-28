@@ -295,7 +295,7 @@ export default class OtherGames extends Component {
     render() {
         const { otherGamesArr, visible, eaPostData } = this.state;
         return (
-            <div className="otherGames_main">
+            <div className={`otherGames_main theme-${stateVar.activeTheme}`}>
                 <Row type="flex" justify="center" align="top" className="main_width" >
                     <Col span={24}>
                         <ul className="activity_list clear">
