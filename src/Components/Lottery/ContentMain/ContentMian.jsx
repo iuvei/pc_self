@@ -2039,8 +2039,8 @@ export default class ContentMian extends Component {
     }
     //生成选号界面
     selectArea(a){
-    	if(!a){
-    		return;
+    	if(a.length == 0){
+    		return '';
     	}
     	let numberObj = a[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex];
     	let numberObjLh  = a[this.state.navIndex]
@@ -2220,6 +2220,9 @@ export default class ContentMian extends Component {
     }
     //玩法gtitle区域
     gtitleArea(a){
+    	if(a.length == 0){
+    		return ''
+    	}
     	let oneLotteryData = a;
     	if(oneLotteryData[this.state.navIndex].title == "龙虎庄闲"){
     		return (
@@ -2289,6 +2292,9 @@ export default class ContentMian extends Component {
     };
     //得到奖金组视图
     getnfprizeArea(a){
+    	if(a.length == 0){
+    		return '';
+    	}
     	let oneLotteryData = a;
     	let tempHtml,nfprize;
     	if(oneLotteryData[this.state.navIndex].title == "龙虎庄闲"){
@@ -2325,17 +2331,18 @@ export default class ContentMian extends Component {
         const periodsList = ['5期','10期', '20期', '50期', '全部'];
         const dataSource = ['5','10','30','50','100'];
     	let oneLotteryData = this.state.lotteryMethod;
-    	if(oneLotteryData.length == 0){
-    		return <div className='loadingbet'>
-    			<Spin tip="加载中..." size="large"></Spin>
-    		</div>
-    	}
     	let htmlmethod = this.gtitleArea(oneLotteryData);//玩法区域
     	let htmldata = this.selectArea(oneLotteryData);//投注区域
     	let objRen = {};
     	let imgUrl = stateVar.nowlottery.imgUrl;
-    	let tempExample = oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methodexample : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methodexample;
-    	let exampleTitle = <p dangerouslySetInnerHTML={{ __html: tempExample }}  />;
+    	let tempExample,exampleTitle;
+    	if(oneLotteryData.length == 0){
+    		tempExample = '';
+    		exampleTitle = '';
+    	}else{
+    		tempExample = oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methodexample : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methodexample;
+    		exampleTitle = oneLotteryData.length > 0 &&  <p dangerouslySetInnerHTML={{ __html: tempExample }}  />;
+    	}
         return (
         	<div>
 	            <div className='content_bet'>
@@ -2376,45 +2383,59 @@ export default class ContentMian extends Component {
 	                        </ul>
 	                    </div>
 	                    <div className="c_m_controler">
-	                        <div className="c_m_controler_method">
-	                     	{htmlmethod}
-	                        	{
-	                        		this.getnfprizeArea(oneLotteryData)
-	                        	}
-	                        </div>
-	                        <div className="c_m_select_number">
-	                            <div className="c_m_select_title">
-	                                <div className="c_m_select_name">
-	                                    {oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].gtitle : (oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].gtitle + oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].name)}
-	                                </div>
-	                                <div style={{display:'none'}}>
-		                                <ul className="c_m_select_hot">
-		                                    <li onClick={()=>{this.setState({hotIndex : 0})}} className={this.state.hotIndex === 0 ? 'active' : ''} >冷热</li>
-		                                    <li onClick={()=>{this.setState({hotIndex : 1})}} className={this.state.hotIndex === 1 ? 'active' : ''}>遗漏</li>
-		                                </ul>
-		                                <Button className="c_m_btn" onClick={()=>{this.setState({hotSwitch : !this.state.hotSwitch})}}>
-		                                    {this.state.hotSwitch ? '开' : '关'}
-		                                </Button>
-		                                <Radio.Group  onChange={(e)=>{this.handleSizeChange(e)}}>
-		                                    <Radio.Button value="30期">30期</Radio.Button>
-		                                    <Radio.Button value="60期">60期</Radio.Button>
-		                                    <Radio.Button value="100期">100期</Radio.Button>
-		                                </Radio.Group>
-	                                </div>
-	                                <span className="c_m_select_title_right right">
-	                                    <span>{oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methoddesc : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methoddesc}</span>
-	                                    <span style={{display:(tempExample ? 'inline' : 'none')}}>
-		                                    <Tooltip placement="bottomRight" title={exampleTitle}>
-										        <span className='c_m_lottery_explain'>玩法示例</span>
-										    </Tooltip>
-									    </span>
-	                                    <Tooltip placement="bottomRight" title={oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methodhelp : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methodhelp}>
-									        <span className='c_m_lottery_explain'>中奖说明</span>
-									    </Tooltip>
-	                                </span>
-	                            </div>
-	                            {htmldata}
-	                        </div>
+	                    {
+	                    	(()=>{
+	                    		let tempDiv;
+	                    		if(oneLotteryData.length == 0){
+	                    			tempDiv = <div className="example">
+									    <Spin />
+									 </div>
+	                    		}else{
+	                    			tempDiv = <div>
+				                        <div className="c_m_controler_method">
+				                     	{htmlmethod}
+				                        	{
+				                        		this.getnfprizeArea(oneLotteryData)
+				                        	}
+				                        </div>
+				                        <div className="c_m_select_number">
+				                            <div className="c_m_select_title">
+				                                <div className="c_m_select_name">
+				                                    {oneLotteryData.length == 0 ? '' : (oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].gtitle : (oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].gtitle + oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].name))}
+				                                </div>
+				                                <div style={{display:'none'}}>
+					                                <ul className="c_m_select_hot">
+					                                    <li onClick={()=>{this.setState({hotIndex : 0})}} className={this.state.hotIndex === 0 ? 'active' : ''} >冷热</li>
+					                                    <li onClick={()=>{this.setState({hotIndex : 1})}} className={this.state.hotIndex === 1 ? 'active' : ''}>遗漏</li>
+					                                </ul>
+					                                <Button className="c_m_btn" onClick={()=>{this.setState({hotSwitch : !this.state.hotSwitch})}}>
+					                                    {this.state.hotSwitch ? '开' : '关'}
+					                                </Button>
+					                                <Radio.Group  onChange={(e)=>{this.handleSizeChange(e)}}>
+					                                    <Radio.Button value="30期">30期</Radio.Button>
+					                                    <Radio.Button value="60期">60期</Radio.Button>
+					                                    <Radio.Button value="100期">100期</Radio.Button>
+					                                </Radio.Group>
+				                                </div>
+				                                <span className="c_m_select_title_right right">
+				                                    <span>{oneLotteryData.length == 0 ? '' : (oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methoddesc : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methoddesc)}</span>
+				                                    <span style={{display:(tempExample ? 'inline' : 'none')}}>
+					                                    <Tooltip placement="bottomRight" title={exampleTitle}>
+													        <span className='c_m_lottery_explain'>玩法示例</span>
+													    </Tooltip>
+												    </span>
+				                                    <Tooltip placement="bottomRight" title={oneLotteryData.length == 0 ? '' : (oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].label[this.state.navFourIndex].methodhelp : oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].methodhelp)}>
+												        <span className='c_m_lottery_explain'>中奖说明</span>
+												    </Tooltip>
+				                                </span>
+				                            </div>
+				                            {htmldata}
+				                        </div>
+			                        </div>;
+	                    		}
+	                    		return tempDiv;
+	                    	})()
+	                    }
 	                        <div className="c_m_select_operate">
 	                            <div className="c_m_select_operate_text">
 	                                <span className="c_m_select_money">您选择了<strong>{this.state.numss}</strong>注，共<strong>{this.state.money.toFixed(2)}</strong>元</span>
