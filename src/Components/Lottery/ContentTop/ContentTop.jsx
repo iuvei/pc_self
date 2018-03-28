@@ -37,13 +37,14 @@ export default class ContentTop extends Component {
         };
     }
     componentDidMount() {
-    	this._ismount = true;
-    	clearInterval(this.interval);
     	this.eventEmitter = emitter.on('kjhistory', () => {
             this.getKjHistory();
         });
         this.eventWebsocket = emitter.on('openWebsocket',(data)=>{
         	this.handleData(data);
+        })
+        this.eventcontentTop = emitter.on('initContentTop',()=>{
+        	this.initData();
         })
     	this.initData();
     };
@@ -54,40 +55,61 @@ export default class ContentTop extends Component {
 	    clearInterval(this.interval);
 	}
     initData(){
-    	this._ismount = true;
-    	let lotteryData = require('../../../CommonJs/common.json');
-    	let tempLotteryLength;
-    	for(let i = 0,lotteryDt=lotteryData.lotteryType;i<lotteryDt.length;i++){
-    		if(lotteryDt[i]['nav'] == stateVar.nowlottery.lotteryId){
-				stateVar.nowlottery.cuimId = lotteryDt[i]['curmid'];
-				stateVar.nowlottery.defaultMethodId = lotteryDt[i]['methodid'];
-				stateVar.nowlottery.lotteryBetId = lotteryDt[i]['lotteryid'];
-				stateVar.nowlottery.cnname = lotteryDt[i]['cnname'];
-				stateVar.nowlottery.imgUrl =  lotteryDt[i]['imgUrl'];
-				tempLotteryLength = lotteryDt[i].lotterLength == undefined ? 5 : lotteryDt[i].lotterLength;
-    		}
-    	}
-    	let tempArrCode = [];
-    	let tempStopFlag = [];
-    	for(let i=0;i<tempLotteryLength;i++){
-    		tempArrCode.push('-');
-    		if(stateVar.nowlottery.lotteryBetId == 23){
-    			tempStopFlag.push(true);
-    		}else{
-    			tempStopFlag.push(false);
-    		}
-    	}
-    	curLocation = curLocation.split("#")[0] + "#/tendency";
-    	if(this._ismount){
-    		this.setState({code:tempArrCode,kjStopFlag:tempStopFlag,animateCode:tempArrCode,tempLotteryLength:tempLotteryLength},()=>{
-	    		if(stateVar.nowlottery.lotteryBetId != 23){
-		    		this.kjanimate(0);
-		    	}
-	    	});
-    	}
-    	this.getlotterycode();
-    	this.getFutureIssue();
-    	this.getKjHistory();
+    	clearInterval(this.interval);
+    	this.setState ({
+        	kjStopFlag:[],
+        	kjStopallFlag:false,
+        	kjStopTime:0,
+            statusClass : true,
+            textAreaValue:'',
+            timeShow:{hour:'00',second:'00',minute:'00',day:'00'},
+            code : [],//开奖号码
+            animateCode:[],//开奖动画号码
+        	nowIssue:'??????',//上一期前期号
+        	el1: {rotateZ: 0},
+        	ifRandom:false,
+        	betokObj:{},
+        	issueArray:[],
+        	booleanValue:true,
+        	imgUrl:'pk10',
+        	mmcmoni:true,
+        	directFlag:false
+        },()=>{
+        	this._ismount = true;
+	    	let lotteryData = require('../../../CommonJs/common.json');
+	    	let tempLotteryLength;
+	    	for(let i = 0,lotteryDt=lotteryData.lotteryType;i<lotteryDt.length;i++){
+	    		if(lotteryDt[i]['nav'] == stateVar.nowlottery.lotteryId){
+					stateVar.nowlottery.cuimId = lotteryDt[i]['curmid'];
+					stateVar.nowlottery.defaultMethodId = lotteryDt[i]['methodid'];
+					stateVar.nowlottery.lotteryBetId = lotteryDt[i]['lotteryid'];
+					stateVar.nowlottery.cnname = lotteryDt[i]['cnname'];
+					stateVar.nowlottery.imgUrl =  lotteryDt[i]['imgUrl'];
+					tempLotteryLength = lotteryDt[i].lotterLength == undefined ? 5 : lotteryDt[i].lotterLength;
+	    		}
+	    	}
+	    	let tempArrCode = [];
+	    	let tempStopFlag = [];
+	    	for(let i=0;i<tempLotteryLength;i++){
+	    		tempArrCode.push('-');
+	    		if(stateVar.nowlottery.lotteryBetId == 23){
+	    			tempStopFlag.push(true);
+	    		}else{
+	    			tempStopFlag.push(false);
+	    		}
+	    	}
+	    	curLocation = curLocation.split("#")[0] + "#/tendency";
+	    	if(this._ismount){
+	    		this.setState({code:tempArrCode,kjStopFlag:tempStopFlag,animateCode:tempArrCode,tempLotteryLength:tempLotteryLength},()=>{
+		    		if(stateVar.nowlottery.lotteryBetId != 23){
+			    		this.kjanimate(0);
+			    	}
+		    	});
+	    	}
+	    	this.getlotterycode();
+	    	this.getFutureIssue();
+	    	this.getKjHistory();
+        });
     };
     /**
      Function 开奖动画
