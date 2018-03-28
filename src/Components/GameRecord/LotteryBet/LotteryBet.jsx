@@ -1,7 +1,7 @@
 /*彩票投注*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { DatePicker, Checkbox, Radio, Table, Select, Input, Pagination, Button, Icon, Popover, Modal, message } from 'antd';
+import { DatePicker, Checkbox, Radio, Table, Select, Input, Pagination, Button, Icon, Popover, Modal } from 'antd';
 import moment from 'moment';
 import Fetch from '../../../Utils';
 import common from '../../../CommonJs/common';
@@ -394,9 +394,9 @@ export default class LotteryBet extends Component {
                                     allowClear={false}
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择结束时间"
-                                    defaultValue={moment(common.setDateTime(1) + ' 02:00:00')}
+                                    defaultValue={moment(common.setDateTime(1) + ' 01:59:59')}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -16, 1)}
+                                    disabledDate={(current)=>disabledDate(current, -datedifference(postData.starttime, setDateTime(0)), 1)}
                                 />
                             </li>
                             <li className="t_m_line"></li>

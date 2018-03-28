@@ -1363,8 +1363,8 @@ export default class TeamTable extends Component {
 
         return (
             <div className="report">
-                <div className="team_list_top">
-                    <div className="t_l_time">
+                <div className="team_list_top clear">
+                    <div className="t_l_time left">
                         <ul className="t_l_time_row">
                             <li>
                                 <span>查询日期：</span>
@@ -1395,9 +1395,6 @@ export default class TeamTable extends Component {
                                         })
                                     }
                                 </ul>
-                            </li>
-                            <li className="r_m_hint">
-                                <p>提示：总表数据保留为有效时间最近30天数据</p>
                             </li>
                         </ul>
                         <ul className="t_l_classify">
@@ -1438,6 +1435,11 @@ export default class TeamTable extends Component {
                                 </Button>
                             </li>
                         </ul>
+                    </div>
+                    <div className="r_m_hint right">
+                        <p>提示：总表数据保留为有效时间最近30天数据<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;盈亏数据是在数据产生30分钟后更新
+                        </p>
                     </div>
                 </div>
                 <div className="t_l_table">
