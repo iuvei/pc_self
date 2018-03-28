@@ -1,60 +1,74 @@
 @import '../../Style/variables';
 @import '../../Style/mixin';
 
-.otherGames_main{
-    margin-bottom: 15px;
-    .activity_list{
-        li{
+.otherGames_main {
+    padding-bottom: 15px;
+    transition: background-color .5s;
+    .activity_list {
+        li {
             position: relative;
             float: left;
             margin-top: 10px;
             border: 1px solid #ddd;
-            img{
+            img {
                 width: 580px;
                 vertical-align: middle;
             }
-            &:nth-child(2n+1){
+            &:nth-child(2n+1) {
                 margin-right: 8px;
             }
         }
-        .activity_participation{
+        .activity_participation {
             background-color: #fff;
             padding: 12px;
-            p{
+            p {
                 color: $color_363636;
                 font-size: 18px;
             }
-            .active_bonus{
+            .active_bonus {
                 font-size: 12px;
-                color:$color_CF2027;
+                color: $color_CF2027;
             }
         }
     }
 }
-.ea_content{
-    .ant-input{
+
+.otherGames_main.theme-white {
+    background-color: $main_bg;
+}
+
+.otherGames_main.theme-gray {
+    background-color: $main_bg_gray;
+}
+
+.otherGames_main.theme-black {
+    background-color: $main_bg_black;
+}
+
+.ea_content {
+    .ant-input {
         width: 260px;
         padding: 6px 7px;
     }
-    .info_list{
+    .info_list {
         width: 350px;
         margin: 0 auto;
-        &>li{
+        & > li {
             height: 60px;
             font-size: 14px;
-            span{
+            span {
                 display: inline-block;
                 width: 70px;
             }
-            p{
+            p {
                 margin-left: 70px;
             }
         }
     }
-    .btn{
+    .btn {
         text-align: center;
         margin-top: 15px;
-        .ant-btn{
+        .ant-btn {
             padding: 5px 30px;
         }
     }
