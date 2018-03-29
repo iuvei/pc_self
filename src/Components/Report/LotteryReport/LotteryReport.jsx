@@ -44,6 +44,7 @@ export default class LotteryReport extends Component {
                 ],
             },
             lotteryList: [], // 游戏种类
+            userName: '',
         };
         // this.onChildState = this.onChildState.bind(this);
     };
@@ -91,24 +92,33 @@ export default class LotteryReport extends Component {
                         }
                     }
                     let data = res.repsoneContent;
-                    table.tableData = data.results.slice(0, -1);
-                    table.sum = data.results.slice(-1)[0];
-                    table.total = parseInt(data.affects);
                     if(type == 'DATE'){
                         table.tableData.forEach((item, i)=>{
                             item.username = username
-                        })
+                        });
+                        table.tableData = data.results;
+                        table.total = 0;
+                        table.sum = {};
+                    }else{
+                        table.tableData = data.results.slice(0, -1);
+                        table.sum = data.results.slice(-1)[0];
+                        table.total = parseInt(data.affects);
                     }
+                    let selfDate;
                     if(clickTable == 'init'){
                         checkedList = [];
                         data.lotterys.forEach((item, i)=>{
                             checkedList.push(item.lotteryid)
                         });
+                        selfDate = postData.starttime.slice(5) +' 至 '+ postData.endtime.slice(5);
+                    }else{
+                        selfDate =postData.starttime.slice(5,10) +' 至 '+ postData.endtime.slice(5,10);
                     }
+
                     this.setState({
                         table: table,
                         lotteryList: data.lotterys,
-                        selfDate: postData.starttime.slice(5) +' 至 '+ postData.endtime.slice(5),
+                        selfDate: selfDate,
                         checkedList,
                     });
                 } else {
@@ -122,13 +132,13 @@ export default class LotteryReport extends Component {
     /*开始查询日期*/
     onChangeStartTime(date, dateString) {
         let postData = this.state.postData;
-        postData.starttime = dateString;
+        postData.starttime = dateString.slice(0,10);
         this.setState({postData})
     };
     /*结束查询日期*/
     onChangeEndTime(date, dateString) {
         let postData = this.state.postData;
-        postData.endtime = dateString;
+        postData.endtime = dateString.slice(0,10);
         this.setState({postData})
     };
     /*获取查询用户名*/
@@ -189,7 +199,11 @@ export default class LotteryReport extends Component {
             };
         }
 
-        this.setState({postData: postData, table: table}, ()=> {
+        this.setState({
+            postData: postData,
+            table: table,
+            userName: record.username,
+        }, ()=> {
             for(let i = 0; i < historyArr.length; i++) {
                 if(historyArr[i].name === history.name) {
                     historyFlag = false;
@@ -249,22 +263,25 @@ export default class LotteryReport extends Component {
     };
 
     render() {
-        const { postData, table, lotteryList, selfDate } = this.state;
+        const { postData, table, lotteryList, selfDate, userName } = this.state;
         const columns = [
             {
                 title: '日期',
                 dataIndex: 'dateLevel',
                 render: (text, record) => postData.userid != null ?
                     text :
-                    <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    <span className="hover_a" onClick={()=>this.onClickTable('DATE', record)}>{selfDate}</span>,
                 width: 140,
-                filterIcon: <Icon type="smile-o" style={{ color: 'red' }} />,
             }, {
                 title: '用户名',
                 dataIndex: 'username',
-                render: (text, record, index) => index == 0 || postData.userid != null ? text :
-                    <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
-                       style={{color: '#0088DE'}}>{text}</a>,
+                render: (text, record, index) => (
+                    text ?
+                        index == 0 ?
+                            text :
+                            <span className="hover_a" onClick={()=>this.onClickTable('USERNAME', record)}>{text}</span> :
+                        userName
+                ),
                 width: 120,
             }, {
                 title: '总投注',

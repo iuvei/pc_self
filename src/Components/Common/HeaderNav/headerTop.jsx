@@ -47,17 +47,21 @@ export default class HeaderTop extends Component {
             this.getBalance();
         });
         this.getMenu();
-        this.getBalance();
-        this.getNotice();
-        this.onUnread();
         this.getWebsocket();
-        this.getress();
+        this.getNotice();
+        this.clearTimeout = setTimeout(
+            ()=>{
+                this.getBalance();
+                this.onUnread();
+                this.getress();
+            }, 3000);
     };
     componentWillUnmount() {
         this._ismount = false;
         // 清除定时器与暂停动画
         // clearInterval(this._clearInt);
         clearInterval(this.noticeInterval);
+        clearTimeout(this.clearTimeout);
         // cancelAnimationFrame(this._animationFrame);
         emitter.off(this.eventEmitter);
         this.ws.close();
@@ -86,6 +90,7 @@ export default class HeaderTop extends Component {
     		});
     	},6000);
     };
+    /*获取IP归属地*/
     getress(){
         let userInfo = stateVar.userInfo;
         Fetch.ipaddress({
@@ -233,14 +238,14 @@ export default class HeaderTop extends Component {
             }
         });
 
-    }
+    };
     /*显示公告模态框*/
     showModal(item) {
         this.setState({
             noticeDetails: item,
             visible: true,
         });
-    }
+    };
     /*隐藏公告模态框*/
     hideModal() {
         this.setState({
@@ -361,7 +366,7 @@ export default class HeaderTop extends Component {
     			emitter.emit('zhanneixin');
     		}
     	}
-    }
+    };
     render() {
         const { allBalance, userInfo } = stateVar;
         const { iconArrowsName, iconArrowsMoney } = this.state;

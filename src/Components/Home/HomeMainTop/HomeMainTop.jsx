@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import {observer} from 'mobx-react';
 import { Carousel } from 'antd';
 import top1 from '../Img/top1.png';
@@ -15,7 +14,7 @@ export default class HomeMainTop extends Component {
         return (
             <Carousel autoplay>
                 <div>
-                    <a href="http://www.hc88zr.com" target="_blank">
+                    <a href="https://q1893.cn" target="_blank">
                         <img style={{width: '100%'}} src={top2} alt="活动"/>
                     </a>
                 </div>

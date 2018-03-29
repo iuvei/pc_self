@@ -713,7 +713,7 @@ export default class TeamList extends Component {
                 width: 80,
             }, {
                 title: '个人余额',
-                dataIndex: 'team_money',
+                dataIndex: 'private_money',
                 sorter: () => {},
                 width: 90,
             }, {
@@ -839,7 +839,7 @@ export default class TeamList extends Component {
                     width: 80,
                 }, {
                     title: '个人余额',
-                    dataIndex: 'team_money',
+                    dataIndex: 'private_money',
                     sorter: () => {},
                     width: 90,
                 }, {
@@ -1015,7 +1015,7 @@ export default class TeamList extends Component {
                     width: 80,
                 }, {
                     title: '个人余额',
-                    dataIndex: 'team_money',
+                    dataIndex: 'private_money',
                     sorter: () => {},
                     width: 90,
                 }, {

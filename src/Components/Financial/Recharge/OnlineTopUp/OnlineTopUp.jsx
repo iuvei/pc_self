@@ -136,7 +136,7 @@ export default class OnlineTopUp extends Component {
         const { backList, iconLoadingRecharge, imgUrlIndex } = this.state;
         return (
             <div className="online_top_up" onKeyDown={(e)=>this.onSubmit(e)}>
-                <div className="r_m_hint">
+                <div className="r_m_hint" style={{lineHeight: '28px'}}>
                     <p>平台填写金额应当与网银汇款金额完全一致，否则将无法即使到账！</p>
                 </div>
                 <ul className="r_m_list">

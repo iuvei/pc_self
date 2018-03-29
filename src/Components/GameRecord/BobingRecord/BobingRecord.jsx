@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import { DatePicker, Modal, Checkbox, Table, Input, Pagination, Button, Popover } from 'antd';
 import moment from 'moment';
 import Fetch from '../../../Utils';
-import common from '../../../CommonJs/common';
+import {setDateTime, datedifference, disabledDate} from '../../../CommonJs/common';
 import { stateVar } from '../../../State';
 
 @observer
@@ -17,8 +17,8 @@ export default class BobingRecord extends PureComponent {
             loading: false, // 表格loading
             postData: {
                 username:'', //查询用户名
-                star_date: common.setDateTime(0) + ' 00:00:00',
-                end_date: common.setDateTime(0) + ' 23:59:59',
+                star_date: setDateTime(0) + ' 00:00:00',
+                end_date: setDateTime(0) + ' 23:59:59',
                 ischild: 0, //  1(团对) 0(个人)
                 pn: 10, // 每页条数
                 p: 1,
@@ -328,7 +328,7 @@ export default class BobingRecord extends PureComponent {
                 width: 80,
             }
         ];
-        const { totalInfo, doubleData, total, doubleName } = this.state;
+        const { totalInfo, doubleData, total, doubleName, postData } = this.state;
         const total_double = doubleData.total_double;
         const footer = <ul className="tabel_footer clear" style={{display: total <= 0 ? 'none' : ''}}>
                             <li>总计</li>
@@ -352,9 +352,9 @@ export default class BobingRecord extends PureComponent {
                                     format="YYYY-MM-DD HH:mm:ss"
                                     allowClear={false}
                                     placeholder="请选择开始时间"
-                                    defaultValue={moment(common.setDateTime(0) + ' 00:00:00')}
+                                    defaultValue={moment(setDateTime(0) + ' 00:00:00')}
                                     onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -16, 1)}
+                                    disabledDate={(current)=>disabledDate(current, -16, 1)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
@@ -362,10 +362,10 @@ export default class BobingRecord extends PureComponent {
                                     format="YYYY-MM-DD HH:mm:ss"
                                     allowClear={false}
                                     placeholder="请选择结束时间"
-                                    defaultValue={moment(common.setDateTime(0) + ' 23:59:59')}
+                                    defaultValue={moment(setDateTime(0) + ' 23:59:59')}
                                     onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
                                     onOk={(date)=>{this.onOk(date)}}
-                                    disabledDate={(current)=>common.disabledDate(current, -16, 1)}
+                                    disabledDate={(current) => disabledDate(current, -datedifference(postData.star_date, setDateTime(0)), 1)}
                                 />
                             </li>
                             <li>

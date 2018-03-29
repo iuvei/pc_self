@@ -332,7 +332,7 @@ export default class TeamStatistics extends Component {
                         </div>
                     </li>
                 </ul>
-                <div className="r_m_hint right">
+                <div className="r_m_hint right" style={{lineHeight: '28px'}}>
                     <p>提示：团队统计人数时间计算时间为00:00:00-23:59:59</p>
                 </div>
                 <Spin spinning={this.state.spinLoading}>
