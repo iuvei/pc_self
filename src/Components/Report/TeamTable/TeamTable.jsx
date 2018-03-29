@@ -808,7 +808,7 @@ export default class TeamTable extends Component {
         if(dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1){
             columns = [
                 {
-                    title: '日期2',
+                    title: '日期',
                     dataIndex: 'rdate',
                     render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
                     width: 75,
