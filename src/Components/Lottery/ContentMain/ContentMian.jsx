@@ -1522,15 +1522,7 @@ export default class ContentMian extends Component {
 		let tempTimes = 0;
 		let tempBets = mobx.toJS(stateVar.BetContent.lt_same_code);
 		for(let i=0;i<tempBets.length;i++){
-			let tempselyjf;
-			if(tempBets[i]['mode'] == 1){
-				tempselyjf = 1;
-			}else if(tempBets[i]['mode'] == 2){
-				tempselyjf = 0.1;
-			}else if(tempBets[i]['mode'] == 3){
-				tempselyjf = 0.01;
-			}
-			tempTimes += tempselyjf;
+			tempTimes += tempBets[i]['money']/tempBets[i]['times'];
 		}
     	if(this.state.traceTitleIndex == 0){
     		if(tempTotalIssue == this.state.traceItem.length){
@@ -1539,7 +1531,7 @@ export default class ContentMian extends Component {
     		for(let i=0;i<tempTraceItem.length;i++){
     			if(i < tempTotalIssue){
     				tempTraceItem[i].times = tempTotalTime;
-    				tempTraceItem[i].money = tempTraceItem[i].times * 2 * tempTimes;
+    				tempTraceItem[i].money = tempTraceItem[i].times * tempTimes;
     				tempData[i] = true;
     				tempMoney += tempTraceItem[i].money;
     				tempMoney = Math.round(tempMoney*1000)/1000;
@@ -1559,8 +1551,8 @@ export default class ContentMian extends Component {
     				if(i != 0 && i % tempSpaceIssue == 0){
     					tempTotalTime = tempTotalTime * tempSpaceTime;
     				}
-    				tempTraceItem[i].times = tempTotalTime;
-    				tempTraceItem[i].money = tempTraceItem[i].times * 2 * tempTimes;
+    				tempTraceItem[i].times = tempTotalTime > 9999 ? 9999 : tempTotalTime;
+    				tempTraceItem[i].money = tempTraceItem[i].times * tempTimes;
     				tempData[i] = true;
     				tempMoney += tempTraceItem[i].money;
     				tempMoney = Math.round(tempMoney*1000)/1000;
@@ -1642,7 +1634,7 @@ export default class ContentMian extends Component {
     			if(i < tempTotalIssue){
     				let times = this.computeByMargin(tempTotalTime,e,m,tempMoney,p);
     				tempTraceItem[i].times = times;
-    				tempTraceItem[i].money = tempTraceItem[i].times * 2 * tempTimes;
+    				tempTraceItem[i].money = tempTraceItem[i].times * tempTimes;
     				tempData[i] = true;
     				tempMoney += tempTraceItem[i].money;
     				tempMoney = Math.round(tempMoney*1000)/1000;
@@ -1730,15 +1722,7 @@ export default class ContentMian extends Component {
     	let tempTimes = 0;
 		let tempBets = mobx.toJS(stateVar.BetContent.lt_same_code);
 		for(let i=0;i<tempBets.length;i++){
-			let tempselyjf;
-			if(tempBets[i]['mode'] == 1){
-				tempselyjf = 1;
-			}else if(tempBets[i]['mode'] == 2){
-				tempselyjf = 0.1;
-			}else if(tempBets[i]['mode'] == 3){
-				tempselyjf = 0.01;
-			}
-			tempTimes += tempselyjf;
+			tempTimes += tempBets[i]['money']/tempBets[i]['times'];
 		}
 		for(let i=0;i<tempData.length;i++){
 			if(i == index){
@@ -1749,7 +1733,7 @@ export default class ContentMian extends Component {
 
 				}else{
 					tempTraceItem[i].times = 1;
-					tempTraceItem[i].money = tempTraceItem[i].times * 2 * tempTimes;
+					tempTraceItem[i].money = tempTraceItem[i].times * tempTimes;
 				}
 			}
 			if(!tempData[i]){
@@ -1771,21 +1755,13 @@ export default class ContentMian extends Component {
     	let tempTimes = 0;
 		let tempBets = mobx.toJS(stateVar.BetContent.lt_same_code);
 		for(let i=0;i<tempBets.length;i++){
-			let tempselyjf;
-			if(tempBets[i]['mode'] == 1){
-				tempselyjf = 1;
-			}else if(tempBets[i]['mode'] == 2){
-				tempselyjf = 0.1;
-			}else if(tempBets[i]['mode'] == 3){
-				tempselyjf = 0.01;
-			}
-			tempTimes += tempselyjf;
+			tempTimes += tempBets[i]['money']/tempBets[i]['times'];
 		}
     	let tempTraceItem = mobx.toJS(this.state.traceItem);
     	for(let i=0;i<tempTraceItem.length;i++){
     		if(i == index){
     			tempTraceItem[i].times = val;
-    			tempTraceItem[i].money = tempTraceItem[i].times * 2 * tempTimes;
+    			tempTraceItem[i].money = tempTraceItem[i].times * tempTimes;
     		}
     		if(this.state.checkselectItem[i]){
     			tempMoney += tempTraceItem[i].money;
@@ -1804,21 +1780,13 @@ export default class ContentMian extends Component {
     		let tempTimes = 0;
 			let tempBets = mobx.toJS(stateVar.BetContent.lt_same_code);
 			for(let i=0;i<tempBets.length;i++){
-				let tempselyjf;
-				if(tempBets[i]['mode'] == 1){
-					tempselyjf = 1;
-				}else if(tempBets[i]['mode'] == 2){
-					tempselyjf = 0.1;
-				}else if(tempBets[i]['mode'] == 3){
-					tempselyjf = 0.01;
-				}
-				tempTimes += tempselyjf;
+				tempTimes += tempBets[i]['money']/tempBets[i]['times'];
 			}
     		if(this.state.checkAll){
     			for(let i=0;i<tempData.length;i++){
     				if(!this.state.checkselectItem[i]){
     					tempData[i].times = 1;
-						tempData[i].money= tempData[i].times * 2 * tempTimes;
+						tempData[i].money= tempData[i].times * tempTimes;
     				}
     				tempMoney += tempData[i].money;
 					tempTime += 1;
