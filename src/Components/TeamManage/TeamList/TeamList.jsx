@@ -883,15 +883,33 @@ export default class TeamList extends Component {
                 }, {
                     title: '操作',
                     dataIndex: 'action',
-                    render: (text, record) => <div>
-                        <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
-                        <Button className='recharge_btn'
-                                onClick={()=>this.onRecharge(record)}
-                                disabled={record.canRecharge == 1 ? false : true}
-                        >
-                            充值
-                        </Button>
-                    </div>,
+                    render: (text, record) => (
+                        <div>
+                            <Popover content={
+                                <span>
+                                团队余额 : &nbsp;
+                                    <Spin wrapperClassName="col_color_ying spin_dp"
+                                          spinning={this.state.popoverLoading}
+                                          size="small"
+                                    >
+                                    {this.state.teamMoney }
+                                    </Spin>
+                                    &nbsp;元
+                            </span>
+                            }
+                                     trigger="click"
+                            >
+                                <Button onClick={()=>this.getTeamMoney(record)}>团队余额</Button>
+                            </Popover>
+                            <Button className='recharge_btn'
+                                    onClick={()=>this.onRecharge(record)}
+                                    disabled={record.canRecharge == 1 ? false : true}
+                            >
+                                充值
+                            </Button>
+                            <Button className='game_record' onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
+                        </div>
+                    ),
                     width: 150,
                 }];
         }
@@ -971,15 +989,33 @@ export default class TeamList extends Component {
                 }, {
                     title: '操作',
                     dataIndex: 'action',
-                    render: (text, record) => <div>
-                        <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
-                        <Button className='recharge_btn'
-                                onClick={()=>this.onRecharge(record)}
-                                disabled={record.canRecharge == 1 ? false : true}
-                        >
-                            充值
-                        </Button>
-                    </div>,
+                    render: (text, record) => (
+                        <div>
+                            <Popover content={
+                                <span>
+                                团队余额 : &nbsp;
+                                    <Spin wrapperClassName="col_color_ying spin_dp"
+                                          spinning={this.state.popoverLoading}
+                                          size="small"
+                                    >
+                                    {this.state.teamMoney }
+                                    </Spin>
+                                    &nbsp;元
+                            </span>
+                            }
+                                     trigger="click"
+                            >
+                                <Button onClick={()=>this.getTeamMoney(record)}>团队余额</Button>
+                            </Popover>
+                            <Button className='recharge_btn'
+                                    onClick={()=>this.onRecharge(record)}
+                                    disabled={record.canRecharge == 1 ? false : true}
+                            >
+                                充值
+                            </Button>
+                            <Button className='game_record' onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
+                        </div>
+                    ),
                     width: 150,
                 }];
         }
@@ -1046,15 +1082,33 @@ export default class TeamList extends Component {
                 }, {
                     title: '操作',
                     dataIndex: 'action',
-                    render: (text, record) => <div>
-                        <Button onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
-                        <Button className='recharge_btn'
-                                onClick={()=>this.onRecharge(record)}
-                                disabled={record.canRecharge == 1 ? false : true}
-                        >
-                            充值
-                        </Button>
-                    </div>,
+                    render: (text, record) => (
+                        <div>
+                            <Popover content={
+                                <span>
+                                团队余额 : &nbsp;
+                                    <Spin wrapperClassName="col_color_ying spin_dp"
+                                          spinning={this.state.popoverLoading}
+                                          size="small"
+                                    >
+                                    {this.state.teamMoney }
+                                    </Spin>
+                                    &nbsp;元
+                            </span>
+                            }
+                                     trigger="click"
+                            >
+                                <Button onClick={()=>this.getTeamMoney(record)}>团队余额</Button>
+                            </Popover>
+                            <Button className='recharge_btn'
+                                    onClick={()=>this.onRecharge(record)}
+                                    disabled={record.canRecharge == 1 ? false : true}
+                            >
+                                充值
+                            </Button>
+                            <Button className='game_record' onClick={()=>this.onSelectGameRecord(record)}>游戏记录</Button>
+                        </div>
+                    ),
                     width: 150,
                 }];
         }
