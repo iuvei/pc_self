@@ -46,12 +46,16 @@ export default class HeaderTop extends Component {
             this.getMenu();
             this.getBalance();
         });
-        this.getMenu();
-        this.getBalance();
-        this.getNotice();
-        this.onUnread();
+        setTimeout(()=>{
+        	this.getMenu();
+	        this.getNotice();
+	        this.onUnread();
+        },1000);
+        setTimeout(()=>{
+	        this.getBalance();
+	        this.getress();
+        },3000);
         this.getWebsocket();
-        this.getress();
     };
     componentWillUnmount() {
         this._ismount = false;
