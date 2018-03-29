@@ -696,12 +696,12 @@ export default class TeamList extends Component {
             }, {
                 title: '团队人数',
                 dataIndex: 'team_count',
-                sorter: () => {},
+                sorter: true,
                 width: 80,
             }, {
                 title: '个人余额',
                 dataIndex: 'private_money',
-                sorter: () => {},
+                sorter: true,
                 width: 90,
             }, {
                 title: '奖金组',
@@ -710,12 +710,12 @@ export default class TeamList extends Component {
                     tableData.history.length > 1 ?
                         text :
                         <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
-                sorter: () => {},
+                sorter: true,
                 width: 70,
             }, {
                 title: '注册时间',
                 dataIndex: 'register_time',
-                sorter: () => {},
+                sorter: true,
                 render: text => <p>{text.slice(0,10)}<br/>{text.slice(10)}</p>,
                 width: 75,
             }, {
@@ -822,12 +822,12 @@ export default class TeamList extends Component {
                 }, {
                     title: '团队人数',
                     dataIndex: 'team_count',
-                    sorter: () => {},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '个人余额',
                     dataIndex: 'private_money',
-                    sorter: () => {},
+                    sorter: true,
                     width: 90,
                 }, {
                     title: '奖金组',
@@ -836,13 +836,13 @@ export default class TeamList extends Component {
                         tableData.history.length > 1 ?
                             text :
                             <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
-                    sorter: () => {},
+                    sorter: true,
                     width: 90,
                 }, {
                     title: '注册时间',
                     dataIndex: 'register_time',
                     render: text => <p>{text.slice(0,10)}<br/>{text.slice(10)}</p>,
-                    sorter: () => {},
+                    sorter: true,
                     width: 120,
                 }, {
                     title: '分红',
@@ -910,12 +910,12 @@ export default class TeamList extends Component {
                 }, {
                     title: '团队人数',
                     dataIndex: 'team_count',
-                    sorter: () => {},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '个人余额',
                     dataIndex: 'private_money',
-                    sorter: () => {},
+                    sorter: true,
                     width: 90,
                 },{
                     title: '奖金组',
@@ -924,13 +924,13 @@ export default class TeamList extends Component {
                         tableData.history.length > 1 ?
                             text :
                             <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
-                    sorter: () => {},
+                    sorter: true,
                     width: 70,
                 }, {
                     title: '注册时间',
                     dataIndex: 'register_time',
                     render: text => <p>{text.slice(0,10)}<br/>{text.slice(10)}</p>,
-                    sorter: () => {},
+                    sorter: true,
                     width: 120,
                 }, {
                     title: '日工资',
@@ -998,12 +998,12 @@ export default class TeamList extends Component {
                 }, {
                     title: '团队人数',
                     dataIndex: 'team_count',
-                    sorter: () => {},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '个人余额',
                     dataIndex: 'private_money',
-                    sorter: () => {},
+                    sorter: true,
                     width: 90,
                 }, {
                     title: '奖金组',
@@ -1012,12 +1012,12 @@ export default class TeamList extends Component {
                         tableData.history.length > 1 ?
                             text :
                             <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
-                    sorter: () => {},
+                    sorter: true,
                     width: 90,
                 }, {
                     title: '注册时间',
                     dataIndex: 'register_time',
-                    sorter: () => {},
+                    sorter: true,
                     width: 120,
                 }, {
                     title: <span>

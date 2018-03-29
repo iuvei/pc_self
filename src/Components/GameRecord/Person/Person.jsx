@@ -191,15 +191,13 @@ export default class Person extends Component {
                 title: '投注金额',
                 dataIndex: 'clientbet_bet_amount',
                 className: 'column-right',
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 130,
             }, {
                 title: '奖金',
                 dataIndex: 'clientbet_payout_amount',
                 className: 'column-right',
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 130,
             }, {
                 title: '盈亏',
@@ -209,8 +207,7 @@ export default class Person extends Component {
                     text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>
                 ),
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 130,
             }, {
                 title: '状态',

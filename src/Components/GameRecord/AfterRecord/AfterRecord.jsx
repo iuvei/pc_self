@@ -250,22 +250,19 @@ export default class AfterRecord extends Component {
                 title: '追号总金额',
                 dataIndex: 'taskprice',
                 className: 'column-right',
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 110,
             }, {
                 title: '完成金额',
                 dataIndex: 'finishprice',
                 className: 'column-right',
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 100,
             }, {
                 title: '取消金额',
                 dataIndex: 'cancelprice',
                 className: 'column-right',
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 100,
             }, {
                 title: '中奖后终止',

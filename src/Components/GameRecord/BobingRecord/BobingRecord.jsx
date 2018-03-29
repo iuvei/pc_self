@@ -207,7 +207,7 @@ export default class BobingRecord extends PureComponent {
                 title: '博饼投注金额',
                 dataIndex: 'totalprice',
                 className: 'column-right',
-                sorter: (a, b) => {},
+                sorter: true,
                 width: 120,
             }, {
                 title: '加倍总投注额',
@@ -223,13 +223,13 @@ export default class BobingRecord extends PureComponent {
                 title: '中奖金额',
                 dataIndex: 'bonus',
                 className: 'column-right',
-                sorter: (a, b) => {},
+                sorter: true,
                 width: 100,
             }, {
                 title: '奖池金额',
                 dataIndex: 'prizepool',
                 className: 'column-right',
-                sorter: (a, b) => {},
+                sorter: true,
                 width: 110,
             }, {
                 title: '盈亏',

@@ -206,15 +206,13 @@ export default class PtRecord extends Component {
                 title: '投注金额',
                 dataIndex: 'project_bet',
                 className: 'column-right',
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 120,
             }, {
                 title: '奖金',
                 dataIndex: 'project_win',
                 className: 'column-right',
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 120,
             }, {
                 title: '盈亏',
@@ -224,8 +222,7 @@ export default class PtRecord extends Component {
                     text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>
                 ),
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 135,
             }, {
                 title: '状态',

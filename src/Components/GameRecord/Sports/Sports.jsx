@@ -189,15 +189,13 @@ export default class Sports extends Component {
                 title: '有效投注金额',
                 dataIndex: 'valid_amount',
                 className: 'column-right',
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 115,
             }, {
                 title: '奖金',
                 dataIndex: 'winlost_amount',
                 className: 'column-right',
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 90,
             }, {
                 title: '盈亏',
@@ -208,14 +206,12 @@ export default class Sports extends Component {
                     text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>
                 ),
-                sorter: (a, b) => {
-                },
+                sorter: true,
             }, {
                 title: '金额',
                 dataIndex: 'after_amount',
                 className: 'column-right',
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 100,
             }, {
                 title: '状态',

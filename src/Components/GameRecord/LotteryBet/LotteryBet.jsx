@@ -365,8 +365,7 @@ export default class LotteryBet extends Component {
                 dataIndex: 'totalprice',
                 className: 'column-right',
                 width: 80,
-                sorter: (a, b) => {
-                },
+                sorter: true,
             }, {
                 title: '奖金',
                 dataIndex: 'bonus',
@@ -375,8 +374,7 @@ export default class LotteryBet extends Component {
                     text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>
                 ),
-                sorter: (a, b) => {
-                },
+                sorter: true,
                 width: 80,
             }, {
                 title: '状态',

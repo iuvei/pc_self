@@ -350,7 +350,6 @@ export default class TeamTable extends Component {
             }
             this.setState({postData: postData},()=>this.getData());
         }
-
     };
     render() {
         const { dailysalaryStatus } = stateVar;
@@ -376,19 +375,19 @@ export default class TeamTable extends Component {
                 title: '投注量',
                 dataIndex: 'sum_price',
                 className: 'column-right',
-                sorter: (a, b)=>{},
+                sorter: true,
                 width: 85,
             }, {
                 title: '有效量',
                 dataIndex: 'sum_effective_price',
                 className: 'column-right',
-                sorter: (a, b)=>{},
+                sorter: true,
                 width: 85,
             },  {
                 title: '中奖',
                 dataIndex: 'sum_bonus',
                 className: 'column-right',
-                sorter: (a, b)=>{},
+                sorter: true,
                 width: 85,
             }, {
                 title: '返点',
@@ -456,7 +455,7 @@ export default class TeamTable extends Component {
                 </span>,
                 dataIndex: 'sum_total',
                 className: 'column-right',
-                sorter: (a, b)=>{},
+                sorter: true,
                 render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                     <span className="col_color_ying">{text}</span>,
                 width: 95,
@@ -494,19 +493,19 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '有效量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '返点',
@@ -568,7 +567,7 @@ export default class TeamTable extends Component {
                 </span>,
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
                     width: 80,
@@ -606,19 +605,19 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '有效量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '返点',
@@ -680,7 +679,7 @@ export default class TeamTable extends Component {
                 </span>,
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
                     width: 80,
@@ -718,19 +717,19 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '有效量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '返点',
@@ -792,7 +791,7 @@ export default class TeamTable extends Component {
                 </span>,
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
                     width: 80,
@@ -830,19 +829,19 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '有效量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '返点',
@@ -899,7 +898,7 @@ export default class TeamTable extends Component {
                 </span>,
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
                     width: 80,
@@ -936,19 +935,19 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '有效量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '返点',
@@ -1005,7 +1004,7 @@ export default class TeamTable extends Component {
                 </span>,
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
                     width: 80,
@@ -1042,19 +1041,19 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '有效量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '返点',
@@ -1111,7 +1110,7 @@ export default class TeamTable extends Component {
                 </span>,
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
                     width: 80,
@@ -1148,19 +1147,19 @@ export default class TeamTable extends Component {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '有效量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 90,
                 },  {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     width: 80,
                 }, {
                     title: '返点',
@@ -1212,7 +1211,7 @@ export default class TeamTable extends Component {
                 </span>,
                     dataIndex: 'sum_total',
                     className: 'column-right',
-                    sorter: (a, b)=>{},
+                    sorter: true,
                     render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
                     width: 80,
