@@ -339,11 +339,14 @@ export default class TeamTable extends Component {
         if(sorter.columnKey == undefined){
             postData.orderBy = null;
             postData.orderByType = null;
+            // postData.gDate = null;
+            this.setState({postData: postData});
         } else {
             postData.orderByType = sorter.order == 'descend' ? 'DESC' : 'ASC';
             postData.orderBy = sorter.columnKey;
+            postData.gDate = 1;
+            this.setState({postData: postData},()=>this.getData());
         }
-        this.setState({postData: postData},()=>this.getData());
     };
     render() {
         const { dailysalaryStatus } = stateVar;
