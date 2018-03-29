@@ -446,7 +446,6 @@ export default class TeamList extends Component {
             let { prizeGroupFlag, prizeGroupPost, prizeGroupList } = this.state;
             let selectPrizeGroup = prizeGroupList.filter((item, index) => item.prizeGroup == prizeGroupFlag)[0];
             prizeGroupPost.groupLevel = prizeGroupFlag;
-            debugger
             prizeGroupPost.keeppoint = ((prizeGroupPost.selfPoint - selectPrizeGroup.high) * 100).toFixed(2);
             Fetch.awardTeam({
                 method: 'POST',
