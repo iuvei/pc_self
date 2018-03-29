@@ -146,7 +146,6 @@ export default class TeamTable extends Component {
                             selfDate: postData.sdatetime.slice(5) +' 至 '+ postData.edatetime.slice(5),
                         });
                     }
-
                 } else {
                     table.tableData = [];
                     table.sum = {};
@@ -339,14 +338,19 @@ export default class TeamTable extends Component {
         if(sorter.columnKey == undefined){
             postData.orderBy = null;
             postData.orderByType = null;
-            // postData.gDate = null;
+            postData.gDate = null;
             this.setState({postData: postData});
         } else {
             postData.orderByType = sorter.order == 'descend' ? 'DESC' : 'ASC';
             postData.orderBy = sorter.columnKey;
-            postData.gDate = 1;
+            if(postData.userid){
+                postData.gDate = 1;
+            }else{
+                postData.gDate = null;
+            }
             this.setState({postData: postData},()=>this.getData());
         }
+
     };
     render() {
         const { dailysalaryStatus } = stateVar;
@@ -1455,7 +1459,8 @@ export default class TeamTable extends Component {
                         {
                             classify === 0 ?
                                 <Table columns={columns}
-                                       rowKey={record => record.rdate !== undefined ? record.rdate : record.userid}
+                                       // rowKey={record => record.rdate !== undefined ? record.rdate : record.userid}
+                                       rowKey={(record, index)=> index}
                                        dataSource={table.tableData}
                                        loading={this.state.tableLoading}
                                        pagination={false}

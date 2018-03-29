@@ -3,12 +3,12 @@ import {observer} from 'mobx-react';
 import emitter from '../../../Utils/events';
 import { Switch,message,Button} from 'antd';
 import {Link} from 'react-router';
-import './ContentTop.scss'
-import zoushi from './Img/zoushi.png'
-import introduce from './Img/introduce.png'
-import Fatch from '../../../Utils'
-import { stateVar } from '../../../State'
-import commone from './../commone.js'
+import './ContentTop.scss';
+import zoushi from './Img/zoushi.png';
+import introduce from './Img/introduce.png';
+import Fetch from '../../../Utils';
+import { stateVar } from '../../../State';
+import commone from './../commone.js';
 import common from '../../../CommonJs/common';
 
 let curLocation = location.href;  /*当前浏览器url地址*/
@@ -47,13 +47,26 @@ export default class ContentTop extends Component {
         	this.initData();
         })
     	this.initData();
+        this.changeDailysalary();
     };
     componentWillUnmount() {
     	this._ismount = false;
     	emitter.off(this.eventEmitter);
     	emitter.off(this.eventWebsocket);
 	    clearInterval(this.interval);
-	}
+	};
+    /*是否有日工资 分红 日亏损*/
+    changeDailysalary() {
+        Fetch.dailysalary({
+            method: 'POST',
+            body: JSON.stringify({check: 1}),
+        }).then((res)=>{
+            if(this._ismount && res.status == 200) {
+                let data = res.repsoneContent;
+                stateVar.dailysalaryStatus = data;
+            }
+        })
+    };
     initData(){
     	clearInterval(this.interval);
     	this.setState ({
@@ -172,7 +185,7 @@ export default class ContentTop extends Component {
     	if(stateVar.nowlottery.lotteryBetId == 23){
     		return false;
     	}
-    	Fatch.aboutBet({
+    	Fetch.aboutBet({
     		method:"POST",
     		body:JSON.stringify({flag:'getTodayTomorrowIssue',lotteryid:stateVar.nowlottery.lotteryBetId})
     		}).then((data)=>{
@@ -200,7 +213,7 @@ export default class ContentTop extends Component {
         this.setState({timeShow:hsm});
     	this.interval = setInterval(()=>{
     		if($.lt_time_leave > 0 && ($.lt_time_leave % 240 == 0 || $.lt_time_leave == 60 )){//每隔4分钟以及最后一分钟重新读取服务器时间
-    			Fatch.aboutBet({
+    			Fetch.aboutBet({
 		    		method:"POST",
 		    		body:JSON.stringify({flag:'gettime',lotteryid:stateVar.nowlottery.lotteryBetId,issue:stateVar.nextIssue})
 		    		}).then((data)=>{
@@ -241,7 +254,7 @@ export default class ContentTop extends Component {
      	if(stateVar.nowlottery.lotteryBetId == 23){
      		if(this._ismount){
      		}
-     		Fatch.aboutMmc({
+     		Fetch.aboutMmc({
 	    		method:"POST",
 	    		body:JSON.stringify({lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,flag:'getlastcode'})
 	    		}).then((data)=>{
@@ -275,7 +288,7 @@ export default class ContentTop extends Component {
      		}else{
      			tempObj = {lotteryid:stateVar.nowlottery.lotteryBetId,issuecount:20,curmid:stateVar.nowlottery.cuimId};
      		}
-     		Fatch.ksHistoery({
+     		Fetch.ksHistoery({
 	    		method:"POST",
 	    		body:JSON.stringify(tempObj)
 	    		}).then((data)=>{
@@ -290,7 +303,7 @@ export default class ContentTop extends Component {
     	if(stateVar.nowlottery.lotteryBetId == 23){
     		return false;
     	}
-    	Fatch.aboutBet({
+    	Fetch.aboutBet({
     		method:"POST",
     		body:JSON.stringify({flag:'getlotterycode',lotteryid:stateVar.nowlottery.lotteryBetId})
     		}).then((data)=>{
@@ -340,7 +353,7 @@ export default class ContentTop extends Component {
 			this.kjanimate(0);
 		});
     	$(".monikj span").html('开奖中...')
-    	Fatch.aboutMmc({
+    	Fetch.aboutMmc({
     		method:"POST",
     		body:JSON.stringify({"flag":"getcodes","lotteryid":23})
     		}).then((data)=>{
@@ -476,7 +489,7 @@ export default class ContentTop extends Component {
     //获取奖金组
     getAccGroup() {
         //登录
-        Fatch.login({
+        Fetch.login({
             method: "POST",
             body: JSON.stringify({
                 "sType": 'message',

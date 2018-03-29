@@ -52,38 +52,30 @@ export default class Report extends Component {
 
     /*获得日工资，亏损，分红签订状态*/
     getData() {
-        Fetch.dailysalary({
-            method: 'POST',
-            body: JSON.stringify({check: 1})
-        }).then((res)=>{
-            if(this._ismount && res.status == 200){
-                let data = res.repsoneContent,
-                    navList = this.state.navList;
-                stateVar.dailysalaryStatus = data;
-                if(data.isDividend != 1){
-                    for(let i = 0; i < navList.length; i++){
-                        if(navList[i].link == '/report/dividend') {
-                            navList.splice(i, 1);
-                        }
-                    }
+        let data = stateVar.dailysalaryStatus,
+            {navList} = this.state;
+        if(data.isDividend != 1){
+            for(let i = 0; i < navList.length; i++){
+                if(navList[i].link == '/report/dividend') {
+                    navList.splice(i, 1);
                 }
-                if(data.isSalary != 1){
-                    for(let i = 0; i < navList.length; i++){
-                        if(navList[i].link == '/report/dayRate') {
-                            navList.splice(i, 1);
-                        }
-                    }
-                }
-                if(data.isLose != 1){
-                    for(let i = 0; i < navList.length; i++){
-                        if(navList[i].link == '/report/losesalary') {
-                            navList.splice(i, 1);
-                        }
-                    }
-                }
-                this.setState({navList: navList})
             }
-        })
+        }
+        if(data.isSalary != 1){
+            for(let i = 0; i < navList.length; i++){
+                if(navList[i].link == '/report/dayRate') {
+                    navList.splice(i, 1);
+                }
+            }
+        }
+        if(data.isLose != 1){
+            for(let i = 0; i < navList.length; i++){
+                if(navList[i].link == '/report/losesalary') {
+                    navList.splice(i, 1);
+                }
+            }
+        }
+        this.setState({navList: navList})
     };
     onChangeNavIndex(index) {
         this.setState({navIndex: index});

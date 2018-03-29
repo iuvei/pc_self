@@ -112,24 +112,11 @@ export default class TeamList extends Component {
     };
     componentDidMount() {
         this._ismount = true;
-        this.changeDailysalary();
         this.getData();
         this.getNum();
     };
     componentWillUnmount() {
         this._ismount = false;
-    };
-    /*是否有日工资 分红*/
-    changeDailysalary() {
-        Fetch.dailysalary({
-            method: 'POST',
-            body: JSON.stringify({check: 1}),
-        }).then((res)=>{
-            if(this._ismount && res.status == 200) {
-                let data = res.repsoneContent;
-                stateVar.dailysalaryStatus = data;
-            }
-        })
     };
     getNum(){
         Fetch.quota({

@@ -295,7 +295,8 @@ export default class Contract extends Component {
         const { dailysalaryStatus } = stateVar;
         if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){//无日工资比例，无分红比例
             return 'border_content c_quota_width'
-        }else{
+        }
+        else{
             return 'border_content c_quota'
         }
     }
