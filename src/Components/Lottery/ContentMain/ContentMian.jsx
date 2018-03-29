@@ -1559,7 +1559,7 @@ export default class ContentMian extends Component {
     				if(i != 0 && i % tempSpaceIssue == 0){
     					tempTotalTime = tempTotalTime * tempSpaceTime;
     				}
-    				tempTraceItem[i].times = tempTotalTime;
+    				tempTraceItem[i].times = tempTotalTime >= 9999 ? 9999 : tempTotalTime;
     				tempTraceItem[i].money = tempTraceItem[i].times * 2 * tempTimes;
     				tempData[i] = true;
     				tempMoney += tempTraceItem[i].money;
