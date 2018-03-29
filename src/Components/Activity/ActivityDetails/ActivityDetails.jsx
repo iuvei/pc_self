@@ -612,7 +612,7 @@ export default class ActivityDetails extends Component {
                             <li>流水奖金金额：{userSign.loss_award_amount == undefined ? '0' : userSign.loss_award_amount} 元</li> : null
                     }
                     <li>已领取奖金金额：{userSign.use_award_amount == undefined ? '0' : userSign.use_award_amount} 元</li>
-                    {/*<li>剩余奖金金额：{userSign.used_user_award_amount == undefined ? '0' : userSign.used_user_award_amount} 元</li>*/}
+                    <li>剩余奖金金额：{userSign.used_user_award_amount == undefined ? '0' : userSign.used_user_award_amount} 元</li>
                 </ul>
             )
         }else if(type == 7){
