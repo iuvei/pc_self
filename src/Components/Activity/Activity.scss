@@ -2,7 +2,8 @@
 @import '../../Style/mixin';
 
 .activity_main{
-    margin-bottom: 15px;
+    padding-bottom: 15px;
+    transition: background-color .5s;
     .activity_list{
         min-height: 657px;
         li {
