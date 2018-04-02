@@ -106,6 +106,7 @@ export default class TeamList extends Component {
             self: {},
             teamMoney: 0,
             popoverLoading: false,
+            users: [], // 代理线
         };
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
@@ -154,6 +155,13 @@ export default class TeamList extends Component {
             let selectInfo = this.state.selectInfo;
             selectInfo.uid = record.userid;
             selectInfo.username = null;
+            selectInfo.p = 1;
+        }
+        if(selectInfo.username != ''){
+            selectInfo.p = 1;
+        }
+        if(type == 'search'){
+            selectInfo.uid = '';
         }
         Fetch.usreList({
             method: "POST",
@@ -182,7 +190,8 @@ export default class TeamList extends Component {
                     tableData.total = parseInt(resData.affects);
                     this.setState({
                         tableData: tableData,
-                        self: resData.self
+                        self: resData.self,
+                        users: resData.users == null ? [] : resData.users,
                     });
                 }
             }
@@ -211,7 +220,7 @@ export default class TeamList extends Component {
         let selectInfo = this.state.selectInfo;
         selectInfo.p = current;
         selectInfo.pn = pageSize;
-        this.setState({selectInfo}, ()=>this.getData())
+        this.setState({selectInfo}, ()=>this.getData());
     };
     /*切换页面时*/
     onChangePagination(page) {
@@ -220,9 +229,10 @@ export default class TeamList extends Component {
         this.setState({selectInfo},()=>this.getData());
     };
     /*面包屑组件调用*/
-    onChildState(item, i) {
-        let selectInfo = this.state.selectInfo;
-        selectInfo.uid = item.uid;
+    onChildState(item) {
+        let {selectInfo} = this.state;
+        selectInfo.uid = item.userid;
+        selectInfo.username = null;
         this.setState({
             selectInfo: selectInfo
         }, ()=>this.getData())
@@ -679,9 +689,15 @@ export default class TeamList extends Component {
             }
         })
     };
+    /*配额*/
+    onGroupNum(){
+        let {selectInfo} = this.state;
+        selectInfo.sortby = 'is_online' + ' ' + 'desc';
+        this.setState({selectInfo}, ()=> this.getData());
+    };
     render() {
         const { dailysalaryStatus} = stateVar;
-        const { tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge } = this.state;
+        const { tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge, users } = this.state;
         let columns = [
             {
                 title: '用户名',
@@ -742,7 +758,7 @@ export default class TeamList extends Component {
             }, {
                 title: <span>
                         配额
-                        <Badge count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
+                        <Badge onClick={()=>this.onGroupNum()} className="hover" count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
                 </span>,
                 dataIndex: 'useraccgroup_status',
                 render: (text, record) =>
@@ -857,7 +873,7 @@ export default class TeamList extends Component {
                 }, {
                     title: <span>
                         配额
-                        <Badge count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
+                        <Badge onClick={()=>this.onGroupNum()} className="hover" count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
                     </span>,
                     dataIndex: 'useraccgroup_status',
                     render: (text, record) =>
@@ -963,7 +979,7 @@ export default class TeamList extends Component {
                 }, {
                     title: <span>
                         配额
-                        <Badge count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
+                        <Badge onClick={()=>this.onGroupNum()} className="hover" count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
                     </span>,
                     dataIndex: 'useraccgroup_status',
                     render: (text, record) =>
@@ -1057,7 +1073,7 @@ export default class TeamList extends Component {
                 }, {
                     title: <span>
                         配额
-                        <Badge count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
+                        <Badge onClick={()=>this.onGroupNum()} className="hover" count={this.state.num} style={{ backgroundColor: '#369900', marginLeft: 5 }} />
                     </span>,
                     dataIndex: 'useraccgroup_status',
                     render: (text, record) =>
@@ -1270,7 +1286,7 @@ export default class TeamList extends Component {
                             <li>
                                 <Button type="primary"
                                         icon="search"
-                                        onClick={()=>this.getData()}
+                                        onClick={()=>this.getData('search')}
                                 >
                                     搜索
                                 </Button>
@@ -1281,7 +1297,13 @@ export default class TeamList extends Component {
                 <div className="t_l_table">
                     <div className="t_l_location_name">
                         <span className="left">当前位置：</span>
-                        <Crumbs table={this.state.tableData} onChildState={this.onChildState.bind(this)}/>
+                        <ul className="agent_line">
+                            {
+                                users.map((item, index) => {
+                                    return <li className={index + 1 == users.length ? 'left' : 'left hover_a'} onClick={()=>this.onChildState(item)} key={item.userid}>{item.username}</li>
+                                })
+                            }
+                        </ul>
                     </div>
                     <div className="t_l_table_list">
                         <Table columns={columns}

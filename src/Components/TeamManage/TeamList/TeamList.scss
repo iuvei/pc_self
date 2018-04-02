@@ -35,6 +35,16 @@ $border-color: #B2B2B2;
         .t_l_location_name{
             @include lh(50px);
         }
+        .agent_line{
+            li:after{
+                content: '>';
+            }
+            li:last-child{
+                &:after{
+                    content: '';
+                }
+            }
+        }
         .t_l_table_list{
             position: relative;
             border: 1px solid #ccc;

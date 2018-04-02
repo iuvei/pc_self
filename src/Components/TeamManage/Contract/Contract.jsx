@@ -35,11 +35,6 @@ export default class Contract extends Component {
             selectedRowKeys: [], // Check here to configure the default column
             loading: true,       /*控制表格请求数据的加载样式*/
             visible:false,                     // 控制创建契约模态框的显示
-            curUserSignStatus:{                //当前用户各种契约签订状态，用以控制头部各项的显示，以及下级用户表头的显示
-                dividend_ratio_status:0,   //分红比例签订状态
-                daily_salary_status:0,     //日工资签订状态
-                quota_status:0,             //配额契约签订状态
-            },
             protocol:[],               //当前用户的日工资比例
             cur_dividend_radio:null,/*当前用户的日工资比例*/
             tableLength:null,/*实际获取到的下级用户数目*/
@@ -86,20 +81,8 @@ export default class Contract extends Component {
                     let data = res.repsoneContent,
                         columns=[],
                         tableData=[];
-                    /*获取当前用户各种契约签订状态
-                    *获取当期用户的日工资，分红，奖金组
-                    * 下级用户实际数目
-                    * */
-                    let curUserSignStatus=this.state.curUserSignStatus;
-                    if(data.protocol instanceof Array){
-                        curUserSignStatus.daily_salary_status = 1;
-                    }
-                    curUserSignStatus.dividend_ratio_status = data.dividend_ratio != null && '1';
-                    if(data.self_acc_group.length>0){
-                        curUserSignStatus.quota_status = 1;
-                    }
+
                     this.setState({
-                        curUserSignStatus:curUserSignStatus,
                         protocol:data.protocol,
                         cur_dividend_radio: data.dividend_ratio != null && data.dividend_ratio,
                         tableLength:data.results.length,
@@ -121,7 +104,7 @@ export default class Contract extends Component {
                     /*添加分红比例表头
                     * 当上级用户签订了分红比例时，下级才有分红比例表头
                     * */
-                    if(curUserSignStatus.dividend_ratio_status == 1){
+                    if(stateVar.dailysalaryStatus.isDividend == 1){
                         columns.push({
                             title: '分红比例',
                             dataIndex: "divendRatio",
@@ -129,7 +112,7 @@ export default class Contract extends Component {
                     }
                     /*添加日工资表头
                     * 当上级用户签订了日工资时，下级才有日工资表头*/
-                    if(data.protocol instanceof Array){
+                    if(stateVar.dailysalaryStatus.isSalary == 1){
                         columns.push({
                             title: '日工资协议',
                             key: 'dailySalary',
@@ -200,7 +183,7 @@ export default class Contract extends Component {
 
                         /*添加分红比例,当上级用户签订了分红比例，才添加数据
                         * 当此下级用户签订了分红比例时，显示分红比例，否则显示“-”*/
-                        if(curUserSignStatus.dividend_ratio_status==1){
+                        if(stateVar.dailysalaryStatus.isDividend == 1){
                             if(data.results[j].dividend_salary_status==1){
                                 tableData[j][ "divendRatio"] = data.results[j].dividend_radio+"%";
                             }else{

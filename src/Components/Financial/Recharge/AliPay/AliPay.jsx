@@ -85,7 +85,10 @@ export default class AliPay extends Component {
             return
         }
         this.setState({ iconLoadingRecharge: true });
-        let tempwindow = window.open();
+        let tempwindow;
+        if(postData.code == 'zfbsm'){
+            tempwindow = window.open();
+        }
         Fetch.payment({
             method: 'POST',
             body: JSON.stringify(postData)
