@@ -70,9 +70,22 @@ export default class HeaderNav extends Component {
         stateVar.navIndex = 'lottery';
         this.onChangeNav();
         this.onLotteryType();
+        this.changeDailysalary();
     };
     componentWillUnmount() {
         this._ismount = false;
+    };
+    /*是否有日工资 分红 日亏损*/
+    changeDailysalary() {
+        Fetch.dailysalary({
+            method: 'POST',
+            body: JSON.stringify({check: 1}),
+        }).then((res)=>{
+            if(this._ismount && res.status == 200) {
+                let data = res.repsoneContent;
+                stateVar.dailysalaryStatus = data;
+            }
+        })
     };
     onChangeNav(){
         let navListFlag = [];
