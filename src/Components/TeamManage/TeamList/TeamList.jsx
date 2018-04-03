@@ -1350,7 +1350,7 @@ export default class TeamList extends Component {
                     className="quota_modal"
                 >
                     <p className="quota_name">
-                        <span className="current_quota">{this.state.alterData.username}</span>
+                        <span className="col_color_ying">{this.state.alterData.username}</span>
                         申请配额：
                     </p>
                     <ul className="quota_list">
@@ -1363,7 +1363,7 @@ export default class TeamList extends Component {
                                                      value={agPost.accnum[i]}
                                                      onChange={(value)=>this.onChangeAccGroup(value, item)}
                                         />
-                                        个（该下级剩余<span className="current_quota">{item.subaccnum}</span>个）
+                                        个（该下级剩余<span className="current_quota">{item.subaccnum == undefined ? '0' : item.subaccnum}</span>个）
                                     </li>
                                 )
                             })

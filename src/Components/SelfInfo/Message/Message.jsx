@@ -115,6 +115,7 @@ export default class Message extends Component {
     onChangePagination(page) {
         let postData = this.state.postData;
         postData.p = page;
+        postData.tag = '';
         this.setState({postData: postData},()=>this.getData());
     };
     /*站内信未读条数*/
