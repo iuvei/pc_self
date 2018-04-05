@@ -1,6 +1,6 @@
 /*接口*/
-import { stateVar } from '../State'
-import {getStore } from "../CommonJs/common";
+import {stateVar} from '../State'
+import {getStore} from "../CommonJs/common";
 
 const interFace = (key) => {
     let INTERFACE = {};
@@ -204,15 +204,19 @@ const interFace = (key) => {
     INTERFACE['CHECKPASS'] = 'controller=security&action=checkpass';
     //上下级转账
     INTERFACE['TRANSFER'] = 'controller=financial&action=Transfer';
+    // 查看遗漏
+    INTERFACE['GETMISS'] = 'controller=game&action=MissCode';
+    // 查看冷热
+    INTERFACE['GETHOT'] = 'controller=game&action=HotCode';
 
     let httpUrl = stateVar.httpUrl;
-    if(key == 'PTLOGINNEW') {
+    if (key == 'PTLOGINNEW') {
         httpUrl += '/pcservice/' + INTERFACE[key];
-    }else if(key == 'BOBINGTRANSFER' || key == 'NEWGETPRIZEPOOL'){
+    } else if (key == 'BOBINGTRANSFER' || key == 'NEWGETPRIZEPOOL') {
         httpUrl += '/bobing/?' + INTERFACE[key] + '&sess=' + getStore('session');
-    }else if(key == 'BOBINLOGIN') {
+    } else if (key == 'BOBINLOGIN') {
         httpUrl += '/?' + INTERFACE[key] + '&sess=' + getStore('session');
-    }else{
+    } else {
         httpUrl += '/pcservice/?' + INTERFACE[key] + '&sess=' + getStore('session');
     }
     return httpUrl
