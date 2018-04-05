@@ -63,9 +63,9 @@ export default class ContractModal extends Component {
     };
     /*获取用户信息 */
     getUserInfo(){
-        Fetch.childrenList({
+        Fetch.usreList({
             method: "POST",
-            body: JSON.stringify({pn: 100})
+            body: JSON.stringify({pn: 9000})
         }).then((res)=> {
             if(this._ismount){
                 if(res.status == 200){
@@ -105,27 +105,18 @@ export default class ContractModal extends Component {
     };
     /*选择下级用户*/
     onSelectUser(item, origin){
-        Fetch.childrenList({
-            method: "POST",
-            body: JSON.stringify({pn: 100})
-        }).then((res)=> {
-            if(this._ismount){
-                if(res.status == 200){
-                    let data = res.repsoneContent,
-                        alterData = data.results.filter(items => items.userid == item.key)[0]; //选择的当前用户信息;
-                    this.setState({
-                        userid:item.key,
-                        username:item.label,
-                        alterData: alterData,
-                        contract_name: '修改契约',
-                    }, ()=>{
-                        if(origin == 'child'){
-                            this.onSelectSys(this.state.type)
-                        }
-                    });
-                }
+        let {userList} = this.state,
+            alterData = userList.filter(items => items.userid == item.key)[0]; //选择的当前用户信息;
+        this.setState({
+            userid:item.key,
+            username:item.label,
+            alterData: alterData,
+            contract_name: '修改契约',
+        }, ()=>{
+            if(origin == 'child'){
+                this.onSelectSys(this.state.type)
             }
-        })
+        });
     };
     /*选择契约类型获取相应信息*/
     onSelectSys(type) {

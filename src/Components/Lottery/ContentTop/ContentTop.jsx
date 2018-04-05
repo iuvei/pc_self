@@ -42,16 +42,17 @@ export default class ContentTop extends Component {
         });
         this.eventWebsocket = emitter.on('openWebsocket',(data)=>{
         	this.handleData(data);
-        })
+        });
         this.eventcontentTop = emitter.on('initContentTop',()=>{
         	this.initData();
-        })
+        });
     	this.initData();
     };
     componentWillUnmount() {
     	this._ismount = false;
     	emitter.off(this.eventEmitter);
     	emitter.off(this.eventWebsocket);
+    	emitter.off(this.eventcontentTop);
 	    clearInterval(this.interval);
 	};
 

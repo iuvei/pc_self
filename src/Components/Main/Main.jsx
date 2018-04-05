@@ -23,7 +23,7 @@ window.onunload = function () {
 
         });
     }
-}
+};
 
 @observer
 export default class Main extends Component {

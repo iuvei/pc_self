@@ -1,7 +1,7 @@
 /*契约系统*/
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Table, Icon,Tooltip,Spin,Button,Modal,InputNumber } from 'antd';
+import { Table, Icon,Tooltip,Spin,Button,Modal,InputNumber, Pagination } from 'antd';
 import { stateVar } from '../../../State';
 import ContractModal from './ContractModal/ContractModal';
 import Fetch from '../../../Utils';
@@ -44,6 +44,11 @@ export default class Contract extends Component {
             quotaList: [], //配额列表
             quotaPost:{}, //申请配额请求参数
             quotaLoding: false,
+            total: 0,
+            postData: {
+                p: 1,
+                pn: 10,
+            }
         };
         this.getContractList = this.getContractList.bind(this);
         this.transferMsg = this.transferMsg.bind(this);
@@ -61,9 +66,20 @@ export default class Contract extends Component {
         });
     };
 
-    onShowSizeChange(current, pageSize) {
-        this.setState({pagination: current})
+    /*切换每页显示条数*/
+    onShowSizeChange (current, pageSize) {
+        let {postData} = this.state;
+        postData.p = current;
+        postData.pn = pageSize;
+        this.setState({postData}, ()=>this.getContractList());
     };
+    /*切换页面时*/
+    onChangePagination(page) {
+        let {postData} = this.state;
+        postData.p = page;
+        this.setState({postData},()=>this.getContractList());
+    };
+
     showModal(){
         this.setState({visible:true});
     };
@@ -71,10 +87,10 @@ export default class Contract extends Component {
     * 获取当前登录用户的契约信息
     * */
     getContractList(){
-        Fetch.contractList({method: "POST",
-            body: JSON.stringify({
-                "pn": 100,
-            })}).then((res)=>{
+        Fetch.contractList({
+            method: "POST",
+            body: JSON.stringify(this.state.postData)
+        }).then((res)=>{
             if(this._ismount ){
                 this.setState({loading:false});
                 if(res.status==200){
@@ -82,12 +98,6 @@ export default class Contract extends Component {
                         columns=[],
                         tableData=[];
 
-                    this.setState({
-                        protocol:data.protocol,
-                        cur_dividend_radio: data.dividend_ratio != null && data.dividend_ratio,
-                        tableLength:data.results.length,
-                        quotaList: data.prizeaccount,
-                    });
                     /*下级用户信息表格渲染  begin*/
                     /*表头 begin*/
                     /*添加下级用户的用户名，奖金组表头*/
@@ -173,7 +183,7 @@ export default class Contract extends Component {
 
                     /*表格内容 begin*/
                     /*添加用户名，奖金组*/
-                    for(let j=0;j<data.results.length;j++){
+                    for(let j=0, results = data.results;j<results.length;j++){
 
                         tableData.push({
                             name: data.results[j].username,
@@ -217,15 +227,16 @@ export default class Contract extends Component {
                     this.setState({
                         columns:columns,
                         tableData:tableData,
-                    })
-                }else{
-
+                        protocol:data.protocol,
+                        cur_dividend_radio: data.dividend_ratio != null && data.dividend_ratio,
+                        tableLength:data.results.length,
+                        quotaList: data.prizeaccount,
+                        total: parseInt(data.affects),
+                    });
                 }
-
             }
-
         });
-    }
+    };
     /*配额管理*/
     onApplyPrizeQuota(){
         this.setState({quotaLoding: true});
@@ -273,7 +284,7 @@ export default class Contract extends Component {
         else{
             return 'border_content c_portion'
         }
-    }
+    };
     onStyleAccnum() {
         const { dailysalaryStatus } = stateVar;
         if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){//无日工资比例，无分红比例
@@ -282,7 +293,7 @@ export default class Contract extends Component {
         else{
             return 'border_content c_quota'
         }
-    }
+    };
     onStyleDividend() {
         const { dailysalaryStatus } = stateVar;
         if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){//无日工资比例，无分红比例
@@ -297,8 +308,7 @@ export default class Contract extends Component {
     };
     render() {
         const { dailysalaryStatus } = stateVar;
-        const { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost} = this.state;
-
+        const { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost, total} = this.state;
         const columnsDay = [
             {
                 title: '日有销量',
@@ -399,8 +409,27 @@ export default class Contract extends Component {
                            getContractList = {this.getContractList}
                            protocol = {protocol}
                        />
-                       <div className="c_table">
-                           <Table columns={columns} dataSource={tableData} bordered={true} loading={this.state.loading} pagination={true}/>
+                       <div>
+                           <div className="c_table_list">
+                               <Table columns={columns}
+                                      dataSource={tableData}
+                                      bordered={true}
+                                      loading={this.state.loading}
+                                      pagination={false}
+                               />
+                           </div>
+                           {
+                                total <= 0 ? null :
+                                    <div className="page right">
+                                        <Pagination showSizeChanger
+                                                    onShowSizeChange={(current, pageSize)=>this.onShowSizeChange(current, pageSize)}
+                                                    onChange={(page)=>this.onChangePagination(page)}
+                                                    defaultCurrent={1}
+                                                    total={total}
+                                                    pageSizeOptions={stateVar.pageSizeOptions.slice()}
+                                        />
+                                    </div>
+                           }
                        </div>
                    </div> : null
                }

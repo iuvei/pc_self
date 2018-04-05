@@ -119,8 +119,6 @@ const messages = (body) =>  request(http.interFace('MESSAGES'),body);
 const trend = (body) =>  request(http.interFace('TREND'),body);
 /*自身协议*/
 const selfproto= (body) =>  request(http.interFace('SELFPROTO'),body);
-/*用户列表*/
-const childrenList= (body) =>  request(http.interFace('CHILDRENUSERLIST'),body);
 //契约列表
 const contractList= (body) =>  request(http.interFace('CONTRACTLIST'),body);
 //配额契约
@@ -255,7 +253,6 @@ export default {
     messages,
     trend,
     selfproto,
-    childrenList,
     quota,
     awardTeam,
     applyPrizeQuota,

@@ -132,8 +132,6 @@ const interFace = (key) => {
     INTERFACE['TREND'] = 'controller=game&action=BonusCode';
     //自身协议
     INTERFACE['SELFPROTO'] = 'controller=salarymanage&action=seeProtocol';
-    //用户列表
-    INTERFACE['CHILDRENUSERLIST'] = 'controller=user&action=list';
     //契约列表
     INTERFACE['CONTRACTLIST'] = 'controller=user&action=team';
     //配额契约
