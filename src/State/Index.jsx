@@ -97,6 +97,22 @@ class State {
         _code.setStore('webTheme', color)
         this.activeTheme = color
     }
+    @observable hotIndex = 0; // 冷热 0 遗漏 1
+    @action('修改冷热遗漏') changeHotIndex = (index) => {
+        this.hotIndex = index
+    }
+    @observable hotIssue = 30; // 冷热查询期数  默认 30
+    @action('修改冷热期数') changeHotIssue = (num) => {
+        this.hotIssue = num
+    }
+    @observable missData = {}; // 遗漏数据
+    @action('修改冷热期数') setMissData = (data) => {
+        this.missData = data
+    }
+    @observable hotData = {}; // 冷热数据
+    @action('修改冷热期数') setHotData = (data) => {
+        this.hotData = data
+    }
 }
 
 export const stateVar = new State();
