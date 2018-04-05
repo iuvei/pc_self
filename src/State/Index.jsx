@@ -97,6 +97,10 @@ class State {
         _code.setStore('webTheme', color)
         this.activeTheme = color
     }
+    @observable hotMissFlag = ''; // 是否展示冷热 按钮
+    @action('修改冷热遗漏') setHotMissFlag = (flag) => {
+        this.hotMissFlag = flag
+    }
     @observable hotIndex = 0; // 冷热 0 遗漏 1
     @action('修改冷热遗漏') changeHotIndex = (index) => {
         this.hotIndex = index
