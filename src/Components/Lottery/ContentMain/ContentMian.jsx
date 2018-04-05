@@ -195,6 +195,9 @@ export default class ContentMian extends Component {
                 // 每次切换彩种 需要将记录的冷热遗漏值 清空
                 stateVar.setMissData({})
                 stateVar.setHotData({})
+                stateVar.setHotData_30({})
+                stateVar.setHotData_60({})
+                stateVar.setHotData_100({})
                 this.setState({
                     hotSwitch: false
                 })
@@ -2783,6 +2786,54 @@ export default class ContentMian extends Component {
         }
     }
 
+    // 修改冷热期数
+    changeHotIssue(num) {
+        stateVar.changeHotIssue(num)
+        if (!this.state.hotSwitch) {
+            return
+        }
+        switch (num) {
+            case '30':
+                if (stateVar.hotData_30.lre) {
+                    stateVar.setHotData(stateVar.hotData_30)
+                } else {
+                    this.getHotIssueData()
+                }
+                break
+            case '60':
+                if (stateVar.hotData_60.lre) {
+                    stateVar.setHotData(stateVar.hotData_60)
+                } else {
+                    this.getHotIssueData()
+                }
+                break
+            case '100':
+                if (stateVar.hotData_100.lre) {
+                    stateVar.setHotData(stateVar.hotData_100)
+                } else {
+                    this.getHotIssueData()
+                }
+                break
+        }
+    }
+
+    getHotIssueData() {
+        Fatch.getHot({
+            method: 'POST',
+            body: JSON.stringify({
+                lotteryid: stateVar.nowlottery.lotteryBetId,
+                issuecount: stateVar.hotIssue
+            })
+        }).then((res) => {
+            if (this._ismount && res.status == 200) {
+                stateVar.setHotData(res.repsoneContent)
+                stateVar['setHotData_' + stateVar.hotIssue](res.repsoneContent)
+            } else {
+                message.error(res.shortMessage);
+            }
+        })
+    }
+
     // 获取冷热遗漏值
     getHotMiss(flag) {
         if (!this.state.hotSwitch) {
@@ -2937,9 +2988,9 @@ export default class ContentMian extends Component {
                                                         {this.state.hotSwitch ? '开' : '关'}
                                                     </Button>
                                                     <Radio.Group defaultValue="30"
-                                                                 style={{display: this.state.hotIndex == 0 ? 'inline-block' : 'none'}}
+                                                                 style={{display: stateVar.hotIndex == 0 ? 'inline-block' : 'none'}}
                                                                  onChange={(e) => {
-                                                                     stateVar.changeHotIssue(e.target.value)
+                                                                     this.changeHotIssue(e.target.value)
                                                                  }}>
                                                         <Radio.Button value="30">30期</Radio.Button>
                                                         <Radio.Button value="60">60期</Radio.Button>
