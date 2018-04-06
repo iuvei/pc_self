@@ -121,11 +121,11 @@ class State {
     @action('修改冷热期数 30') setHotData_30 = (data) => {
         this.hotData_30 = data
     }
-    @observable hotData_60 = {}; // 冷热数据 30期
-    @action('修改冷热期数 60') setHotData_60 = (data) => {
-        this.hotData_60 = data
+    @observable hotData_50 = {}; // 冷热数据 50期
+    @action('修改冷热期数 50') setHotData_50 = (data) => {
+        this.hotData_50 = data
     }
-    @observable hotData_100 = {}; // 冷热数据 30期
+    @observable hotData_100 = {}; // 冷热数据 100期
     @action('修改冷热期数 100') setHotData_100 = (data) => {
         this.hotData_100 = data
     }

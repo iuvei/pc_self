@@ -115,7 +115,7 @@ export default class ContentMian extends Component {
                         stateVar.setMissData(res.repsoneContent)
                         stateVar.setHotData({})
                         stateVar.setHotData_30({})
-                        stateVar.setHotData_60({})
+                        stateVar.setHotData_50({})
                         stateVar.setHotData_100({})
                     }
                 })
@@ -131,7 +131,7 @@ export default class ContentMian extends Component {
                         stateVar.setHotData(res.repsoneContent)
                         stateVar.setMissData({})
                         stateVar.setHotData_30({})
-                        stateVar.setHotData_60({})
+                        stateVar.setHotData_50({})
                         stateVar.setHotData_100({})
                     }
                 })
@@ -232,7 +232,7 @@ export default class ContentMian extends Component {
                 stateVar.setMissData({})
                 stateVar.setHotData({})
                 stateVar.setHotData_30({})
-                stateVar.setHotData_60({})
+                stateVar.setHotData_50({})
                 stateVar.setHotData_100({})
                 this.setState({
                     hotSwitch: false
@@ -1200,7 +1200,7 @@ export default class ContentMian extends Component {
 
             }
             switch (mname) {//根据类型不同做不同检测
-                //任三 直选 直选单式
+                            //任三 直选 直选单式
                 case 'RXZXSSC3DS':
                 case 'RXZXWFC3DS':
                 case 'RXZXFFC3DS':
@@ -2867,9 +2867,9 @@ export default class ContentMian extends Component {
                     this.getHotIssueData()
                 }
                 break
-            case '60':
-                if (stateVar.hotData_60.lre) {
-                    stateVar.setHotData(stateVar.hotData_60)
+            case '50':
+                if (stateVar.hotData_50.lre) {
+                    stateVar.setHotData(stateVar.hotData_50)
                 } else {
                     this.getHotIssueData()
                 }
@@ -3080,7 +3080,7 @@ export default class ContentMian extends Component {
                                                                      this.changeHotIssue(e.target.value)
                                                                  }}>
                                                         <Radio.Button value="30">30期</Radio.Button>
-                                                        <Radio.Button value="60">60期</Radio.Button>
+                                                        <Radio.Button value="50">50期</Radio.Button>
                                                         <Radio.Button value="100">100期</Radio.Button>
                                                     </Radio.Group>
                                                     <span className="c_m_select_title_right right">
