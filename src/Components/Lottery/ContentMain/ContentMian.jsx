@@ -2957,6 +2957,10 @@ export default class ContentMian extends Component {
     // 当前玩法类型是否展示 冷热遗漏 按钮
     getMissHotFlag() {
         if (stateVar.hotMissFlag.toString()) return stateVar.hotMissFlag
+        if (stateVar.nowlottery.lotteryBetId == 23) {
+            stateVar.setHotMissFlag(false)
+            return false
+        }
         let data = this.state.lotteryMethod[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].selectarea
         let flag1 = data.type.toLocaleString() === 'digital', flag2 = true
         if (!data.layout) {
