@@ -105,18 +105,18 @@ export default class ContentMian extends Component {
         });
         this.lotteryTimeEmitter = emitter.on('lotteryTimeEnd', () => {
             // 彩种倒计时结束 需要将记录的冷热遗漏值 清空
-            if (!this.state.hotSwitch) return
+            if (!this.state.hotSwitch) return;
             if (stateVar.hotIndex == 1) {
                 Fatch.getMiss({
                     method: 'POST',
                     body: JSON.stringify({lotteryid: stateVar.nowlottery.lotteryBetId})
                 }).then((res) => {
                     if (this._ismount && res.status == 200) {
-                        stateVar.setMissData(res.repsoneContent)
-                        stateVar.setHotData({})
-                        stateVar.setHotData_30({})
-                        stateVar.setHotData_60({})
-                        stateVar.setHotData_100({})
+                        stateVar.setMissData(res.repsoneContent);
+                        stateVar.setHotData({});
+                        stateVar.setHotData_30({});
+                        stateVar.setHotData_60({});
+                        stateVar.setHotData_100({});
                     } else {
                         message.error(res.shortMessage);
                     }
@@ -130,11 +130,11 @@ export default class ContentMian extends Component {
                     })
                 }).then((res) => {
                     if (this._ismount && res.status == 200) {
-                        stateVar.setHotData(res.repsoneContent)
-                        stateVar.setMissData({})
-                        stateVar.setHotData_30({})
-                        stateVar.setHotData_60({})
-                        stateVar.setHotData_100({})
+                        stateVar.setHotData(res.repsoneContent);
+                        stateVar.setMissData({});
+                        stateVar.setHotData_30({});
+                        stateVar.setHotData_60({});
+                        stateVar.setHotData_100({});
                     } else {
                         message.error(res.shortMessage);
                     }
