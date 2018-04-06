@@ -117,8 +117,6 @@ export default class ContentMian extends Component {
                         stateVar.setHotData_30({})
                         stateVar.setHotData_60({})
                         stateVar.setHotData_100({})
-                    } else {
-                        message.error(res.shortMessage);
                     }
                 })
             } else {
@@ -135,8 +133,6 @@ export default class ContentMian extends Component {
                         stateVar.setHotData_30({})
                         stateVar.setHotData_60({})
                         stateVar.setHotData_100({})
-                    } else {
-                        message.error(res.shortMessage);
                     }
                 })
             }
@@ -2832,8 +2828,6 @@ export default class ContentMian extends Component {
                     if (this._ismount && res.status == 200) {
                         stateVar.setMissData(res.repsoneContent)
                         stateVar.changeHotIndex(index)
-                    } else {
-                        message.error(res.shortMessage);
                     }
                 })
             } else {
@@ -2851,8 +2845,6 @@ export default class ContentMian extends Component {
                     if (this._ismount && res.status == 200) {
                         stateVar.setHotData(res.repsoneContent)
                         stateVar.changeHotIndex(index)
-                    } else {
-                        message.error(res.shortMessage);
                     }
                 })
             } else {
@@ -2903,8 +2895,6 @@ export default class ContentMian extends Component {
             if (this._ismount && res.status == 200) {
                 stateVar.setHotData(res.repsoneContent)
                 stateVar['setHotData_' + stateVar.hotIssue](res.repsoneContent)
-            } else {
-                message.error(res.shortMessage);
             }
         })
     }
@@ -2921,8 +2911,6 @@ export default class ContentMian extends Component {
                         if (this._ismount && res.status == 200) {
                             stateVar.setMissData(res.repsoneContent)
                             if (!flag) this.setState({hotSwitch: true})
-                        } else {
-                            message.error(res.shortMessage);
                         }
                     })
                 } else {
@@ -2940,8 +2928,6 @@ export default class ContentMian extends Component {
                         if (this._ismount && res.status == 200) {
                             stateVar.setHotData(res.repsoneContent)
                             if (!flag) this.setState({hotSwitch: true})
-                        } else {
-                            message.error(res.shortMessage);
                         }
                     })
                 } else {
