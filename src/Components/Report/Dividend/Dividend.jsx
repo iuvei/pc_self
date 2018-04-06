@@ -2,18 +2,18 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
-import { Select, Table, Input, Button, Modal, InputNumber } from 'antd';
+import {Select, Table, Input, Button, Modal, InputNumber} from 'antd';
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
-import { stateVar } from '../../../State';
+import {stateVar} from '../../../State';
 
 import Contract from '../../Common/Contract/Contract';
 
 let key = 1;
 @observer
 export default class Dividend extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             data: [],
@@ -48,20 +48,20 @@ export default class Dividend extends Component {
             disabled: true,
             contractInfo: [
                 {
-                    id:0,
-                    contract:"日工资契约",
+                    id: 0,
+                    contract: "日工资契约",
                 },
                 {
-                    id:1,
-                    contract:"分红契约",
+                    id: 1,
+                    contract: "分红契约",
                 },
                 {
-                    id:2,
-                    contract:"奖金组契约",
+                    id: 2,
+                    contract: "奖金组契约",
                 },
                 {
-                    id:3,
-                    contract:"配额契约",
+                    id: 3,
+                    contract: "配额契约",
                 }
             ],
             contract_name: '修改契约', //按钮btn
@@ -70,29 +70,32 @@ export default class Dividend extends Component {
         this.onCancel = this.onCancel.bind(this);
         this.onDiviratio = this.onDiviratio.bind(this);
     };
+
     componentDidMount() {
         this._ismount = true;
         this.getData()
     };
+
     componentWillUnmount() {
         this._ismount = false;
     };
+
     /*获取分红列表*/
-    getData(){
-        this.setState({ loading: true });
-        let { postData } = this.state;
+    getData() {
+        this.setState({loading: true});
+        let {postData} = this.state;
         Fetch.dividendsalary({
             method: 'POST',
             body: JSON.stringify(postData),
-        }).then((res)=>{
-            if(this._ismount){
-                this.setState({ searchLoading: false, loading: false });
-                if(res.status == 200){
+        }).then((res) => {
+            if (this._ismount) {
+                this.setState({searchLoading: false, loading: false});
+                if (res.status == 200) {
                     let data = res.repsoneContent,
                         team = {},
                         resultsFlag = data.alldata.results,
                         sum = data.sum;
-                    if(data.sum.userid != undefined){
+                    if (data.sum.userid != undefined) {
                         team = {
                             userid: '-1',
                             id: '-1',
@@ -103,7 +106,7 @@ export default class Dividend extends Component {
                             lose_salary: sum.team_lose_salary,
                             dividend_radio: sum.dividend_radio,
                             allsalary: sum.allsalary,
-                            buttons:'----',
+                            buttons: '----',
                         };
                         resultsFlag.unshift(team);
                     }
@@ -125,24 +128,28 @@ export default class Dividend extends Component {
             }
         })
     };
+
     /*搜索*/
     onSearch() {
-        this.setState({ searchLoading: true });
+        this.setState({searchLoading: true});
         this.getData();
     };
+
     /*切换每页条数*/
-    onShowSizeChange (current, pageSize) {
+    onShowSizeChange(current, pageSize) {
         let postData = this.state.postData;
         postData.p = current;
         postData.pn = pageSize;
-        this.setState({postData: postData}, ()=>this.getData())
+        this.setState({postData: postData}, () => this.getData());
     };
+
     /*输入用户名*/
     onChangeUserName(e) {
         let postData = this.state.postData;
         postData.username = e.target.value;
         this.forceUpdate();
     };
+
     /*选择日期*/
     onChangeSelect(val) {
         let postData = this.state.postData;
@@ -151,27 +158,28 @@ export default class Dividend extends Component {
     };
 
     /*关闭修改分红模态框*/
-    onCancel(){
+    onCancel() {
         this.setState({
             alterVisible: false,
             contract_name: '修改契约',
         });
         this.getData();
     };
+
     /*操作按钮*/
     onClickButton(val, username, record) {
-        if(val == '历史分红'){
+        if (val == '历史分红') {
             this.setState({
                 historyVisible: true,
                 loadingModal: true,
             });
             Fetch.personalsalary({
-                method:'POST',
-                body:JSON.stringify({username: username})
-            }).then((res)=>{
-                if(this._ismount){
+                method: 'POST',
+                body: JSON.stringify({username: username})
+            }).then((res) => {
+                if (this._ismount) {
                     this.setState({loadingModal: false});
-                    if(res.status == 200){
+                    if (res.status == 200) {
                         let data = res.repsoneContent,
                             history = this.state.history;
                         history.historyAllsalary = data.history.history_allsalary;
@@ -184,35 +192,37 @@ export default class Dividend extends Component {
                     }
                 }
             })
-        }else if(val == '修改比例') {
+        } else if (val == '修改比例') {
             this.setState({
                 alterData: record,
                 alterVisible: true,
                 disabled: true,
             });
-        }else if(val == '发放分红') {
+        } else if (val == '发放分红') {
             let _this = this;
             confirm({
                 title: val,
                 content: <div>
-                            <p>用户名：<span style={{fontWeight: 'bold'}}>{username}</span></p>
-                            <p>分红比例：{record.dividend_radio}</p>
-                            <p>本期分红：<span className={parseFloat(record.allsalary) < 0 ? 'col_color_shu' : 'col_color_ying'}>{record.allsalary}</span></p>
-                        </div>,
+                    <p>用户名：<span style={{fontWeight: 'bold'}}>{username}</span></p>
+                    <p>分红比例：{record.dividend_radio}</p>
+                    <p>本期分红：<span
+                        className={parseFloat(record.allsalary) < 0 ? 'col_color_shu' : 'col_color_ying'}>{record.allsalary}</span>
+                    </p>
+                </div>,
                 okText: '确认发放',
                 okType: '取消',
                 onOk() {
                     Fetch.sendDividendSalary({
                         method: 'POST',
                         body: JSON.stringify({userid: parseInt(record.userid), id: parseInt(record.id)})
-                    }).then((res)=>{
-                        if(_this._ismount){
-                            if(res.status == 200){
+                    }).then((res) => {
+                        if (_this._ismount) {
+                            if (res.status == 200) {
                                 Modal.success({
                                     title: res.shortMessage,
                                 });
                                 _this.getData();
-                            }else{
+                            } else {
                                 Modal.warning({
                                     title: res.shortMessage,
                                 });
@@ -221,7 +231,7 @@ export default class Dividend extends Component {
                     })
                 },
             });
-        }else if(val == '一键发放分红'){
+        } else if (val == '一键发放分红') {
             let _this = this;
             confirm({
                 title: val,
@@ -232,14 +242,14 @@ export default class Dividend extends Component {
                     Fetch.sendDividendSalary({
                         method: 'POST',
                         body: JSON.stringify({total_id: parseInt(_this.state.postData.starttime)})
-                    }).then((res)=>{
-                        if(_this._ismount){
-                            if(res.status == 200){
+                    }).then((res) => {
+                        if (_this._ismount) {
+                            if (res.status == 200) {
                                 Modal.success({
                                     title: res.shortMessage,
                                 });
                                 _this.getData();
-                            }else{
+                            } else {
                                 Modal.warning({
                                     title: res.shortMessage,
                                 });
@@ -248,22 +258,25 @@ export default class Dividend extends Component {
                     })
                 },
             });
-        }else{}
+        } else {
+        }
 
     };
+
     /*修改分红比例*/
-    onDiviratio(contract_name){
+    onDiviratio(contract_name) {
         let _this = this;
         confirm({
             title: '确认要修改吗?',
             onOk() {
                 _this.setProtocol(contract_name)
             },
-            onCancel() {},
+            onCancel() {
+            },
         });
     };
 
-    setProtocol(contract_name){
+    setProtocol(contract_name) {
         this.setState({affirmLoading: true, contract_name: '签订契约'});
         let alterData = this.state.alterData;
         let postData = {
@@ -274,16 +287,16 @@ export default class Dividend extends Component {
         Fetch.diviratio({
             method: 'POST',
             body: JSON.stringify(postData)
-        }).then((res)=>{
-            if(this._ismount){
+        }).then((res) => {
+            if (this._ismount) {
                 this.setState({affirmLoading: false});
-                if(res.status == 200){
+                if (res.status == 200) {
                     Modal.success({
                         title: res.repsoneContent,
                     });
                     this.setState({alterVisible: false, disabled: true, contract_name: '修改契约',});
                     this.getData();
-                }else{
+                } else {
                     Modal.warning({
                         title: res.shortMessage,
                     });
@@ -291,8 +304,9 @@ export default class Dividend extends Component {
             }
         })
     };
+
     /*修改值*/
-    onChangeAlterContract(val){
+    onChangeAlterContract(val) {
         let alterData = this.state.alterData;
         alterData.dividend_radio = val;
         this.forceUpdate();
@@ -301,31 +315,31 @@ export default class Dividend extends Component {
     render() {
 
         const columnsModal = [
-                {
-                    title: '时间',
-                    dataIndex: 'growkey',
-                    width: 372,
-                }, {
-                    title: '分红',
-                    dataIndex: 'allsalary',
-                    width: 372,
-                }
-            ];
-        const { postData, sum, divIdEndTotals, total, oneKeyDividend, data } = this.state;
-        const { dailysalaryStatus } = stateVar;
+            {
+                title: '时间',
+                dataIndex: 'growkey',
+                width: 372,
+            }, {
+                title: '分红',
+                dataIndex: 'allsalary',
+                width: 372,
+            }
+        ];
+        const {postData, sum, divIdEndTotals, total, oneKeyDividend, data} = this.state;
+        const {dailysalaryStatus} = stateVar;
         let columns = [
             {
                 title: '用户名',
                 dataIndex: 'username',
-                render: (text)=>{
-                    if(text == '团队数据'){
+                render: (text) => {
+                    if (text == '团队数据') {
                         return {
                             children: text,
                             props: {
                                 colSpan: 2,
                             },
                         }
-                    }else{
+                    } else {
                         return text;
                     }
                 },
@@ -334,9 +348,9 @@ export default class Dividend extends Component {
                 title: '所属组',
                 dataIndex: 'usergroup_name',
                 className: 'column-right',
-                render:(text, record)=>{
-                    if(record.username == '团队数据'){
-                        return{
+                render: (text, record) => {
+                    if (record.username == '团队数据') {
+                        return {
                             props: {
                                 colSpan: 0,
                             }
@@ -372,14 +386,14 @@ export default class Dividend extends Component {
                 title: '分红比例',
                 dataIndex: 'dividend_radio',
                 className: 'column-right',
-                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
+                render: (text) => parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
                     <span className="col_color_ying">{text}%</span>,
                 width: 90,
             }, {
                 title: '分红',
                 dataIndex: 'allsalary',
                 className: 'column-right',
-                render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                render: (text) => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                     <span className="col_color_ying">{text}</span>,
                 width: 90,
             },
@@ -388,14 +402,15 @@ export default class Dividend extends Component {
                 dataIndex: 'buttons',
                 width: 260,
                 render: (text, record) => {
-                    if(record.username == '团队数据'){
+                    if (record.username == '团队数据') {
                         return text
                     } else {
                         return (
                             <ButtonGroup>
                                 {
-                                    text.map((item,i)=>{
-                                        return <Button key={i} onClick={()=>this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
+                                    text.map((item, i) => {
+                                        return <Button key={i}
+                                                       onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                     })
                                 }
                             </ButtonGroup>
@@ -405,39 +420,40 @@ export default class Dividend extends Component {
             }
         ];
         let footer = <ul className="dividend_footer clear">
-                            <li>个人结余</li>
-                            <li>{sum.sale}</li>
-                            <li>{sum.self_gross_income}</li>
-                            <li>{sum.daily_salary}</li>
-                            <li>{sum.lose_salary}</li>
-                            <li className={parseFloat(sum.dividend_radio) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.dividend_radio}%</li>
-                            <li className={parseFloat(sum.self_allsalary) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.self_allsalary}</li>
-                            <li>
-                                {
-                                    oneKeyDividend == 0 ?
-                                        <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
-                                        <ButtonGroup>
-                                            <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
-                                            <Button onClick={()=>this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
-                                        </ButtonGroup>
-                                }
-                            </li>
-                        </ul>;
+            <li>个人结余</li>
+            <li>{sum.sale}</li>
+            <li>{sum.self_gross_income}</li>
+            <li>{sum.daily_salary}</li>
+            <li>{sum.lose_salary}</li>
+            <li className={parseFloat(sum.dividend_radio) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.dividend_radio}%</li>
+            <li className={parseFloat(sum.self_allsalary) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.self_allsalary}</li>
+            <li>
+                {
+                    oneKeyDividend == 0 ?
+                        <Button onClick={() => this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
+                        <ButtonGroup>
+                            <Button onClick={() => this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
+                            <Button
+                                onClick={() => this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
+                        </ButtonGroup>
+                }
+            </li>
+        </ul>;
 
-        if(dailysalaryStatus.isLose != 1){
+        if (dailysalaryStatus.isLose != 1) {
             columns = [
                 {
                     title: '用户名',
                     dataIndex: 'username',
-                    render: (text)=>{
-                        if(text == '团队数据'){
+                    render: (text) => {
+                        if (text == '团队数据') {
                             return {
                                 children: text,
                                 props: {
                                     colSpan: 2,
                                 },
                             }
-                        }else{
+                        } else {
                             return text;
                         }
                     },
@@ -446,9 +462,9 @@ export default class Dividend extends Component {
                     title: '所属组',
                     dataIndex: 'usergroup_name',
                     className: 'column-right',
-                    render:(text, record)=>{
-                        if(record.username == '团队数据'){
-                            return{
+                    render: (text, record) => {
+                        if (record.username == '团队数据') {
+                            return {
                                 props: {
                                     colSpan: 0,
                                 }
@@ -479,14 +495,14 @@ export default class Dividend extends Component {
                     title: '分红比例',
                     dataIndex: 'dividend_radio',
                     className: 'column-right',
-                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
+                    render: (text) => parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
                         <span className="col_color_ying">{text}%</span>,
                     width: 90,
                 }, {
                     title: '分红',
                     dataIndex: 'allsalary',
                     className: 'column-right',
-                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                    render: (text) => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
                     width: 90,
                 },
@@ -495,14 +511,15 @@ export default class Dividend extends Component {
                     dataIndex: 'buttons',
                     width: 280,
                     render: (text, record) => {
-                        if(record.username == '团队数据'){
+                        if (record.username == '团队数据') {
                             return text
                         } else {
                             return (
                                 <ButtonGroup>
                                     {
-                                        text.map((item,i)=>{
-                                            return <Button key={i} onClick={()=>this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
+                                        text.map((item, i) => {
+                                            return <Button key={i}
+                                                           onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                         })
                                     }
                                 </ButtonGroup>
@@ -521,29 +538,32 @@ export default class Dividend extends Component {
                 <li>
                     {
                         oneKeyDividend == 0 ?
-                            <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
+                            <Button
+                                onClick={() => this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
                             <ButtonGroup>
-                                <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
-                                <Button onClick={()=>this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
+                                <Button
+                                    onClick={() => this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
+                                <Button
+                                    onClick={() => this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
                             </ButtonGroup>
                     }
                 </li>
             </ul>;
         }
-        if(dailysalaryStatus.isSalary != 1){
+        if (dailysalaryStatus.isSalary != 1) {
             columns = [
                 {
                     title: '用户名',
                     dataIndex: 'username',
-                    render: (text)=>{
-                        if(text == '团队数据'){
+                    render: (text) => {
+                        if (text == '团队数据') {
                             return {
                                 children: text,
                                 props: {
                                     colSpan: 2,
                                 },
                             }
-                        }else{
+                        } else {
                             return text;
                         }
                     },
@@ -552,9 +572,9 @@ export default class Dividend extends Component {
                     title: '所属组',
                     dataIndex: 'usergroup_name',
                     className: 'column-right',
-                    render:(text, record)=>{
-                        if(record.username == '团队数据'){
-                            return{
+                    render: (text, record) => {
+                        if (record.username == '团队数据') {
+                            return {
                                 props: {
                                     colSpan: 0,
                                 }
@@ -580,19 +600,19 @@ export default class Dividend extends Component {
                     title: '日亏损总额',
                     dataIndex: 'lose_salary',
                     className: 'column-right',
-                    width: 100,
+                    width: 120,
                 }, {
                     title: '分红比例',
                     dataIndex: 'dividend_radio',
                     className: 'column-right',
-                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
+                    render: (text) => parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
                         <span className="col_color_ying">{text}%</span>,
                     width: 90,
                 }, {
                     title: '分红',
                     dataIndex: 'allsalary',
                     className: 'column-right',
-                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                    render: (text) => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
                     width: 90,
                 },
@@ -601,14 +621,15 @@ export default class Dividend extends Component {
                     dataIndex: 'buttons',
                     width: 280,
                     render: (text, record) => {
-                        if(record.username == '团队数据'){
+                        if (record.username == '团队数据') {
                             return text
                         } else {
                             return (
                                 <ButtonGroup>
                                     {
-                                        text.map((item,i)=>{
-                                            return <Button key={i} onClick={()=>this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
+                                        text.map((item, i) => {
+                                            return <Button key={i}
+                                                           onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                         })
                                     }
                                 </ButtonGroup>
@@ -627,29 +648,32 @@ export default class Dividend extends Component {
                 <li>
                     {
                         oneKeyDividend == 0 ?
-                            <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
+                            <Button
+                                onClick={() => this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
                             <ButtonGroup>
-                                <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
-                                <Button onClick={()=>this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
+                                <Button
+                                    onClick={() => this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
+                                <Button
+                                    onClick={() => this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
                             </ButtonGroup>
                     }
                 </li>
             </ul>;
         }
-        if(dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1){
+        if (dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1) {
             columns = [
                 {
                     title: '用户名',
                     dataIndex: 'username',
-                    render: (text)=>{
-                        if(text == '团队数据'){
+                    render: (text) => {
+                        if (text == '团队数据') {
                             return {
                                 children: text,
                                 props: {
                                     colSpan: 2,
                                 },
                             }
-                        }else{
+                        } else {
                             return text;
                         }
                     },
@@ -658,9 +682,9 @@ export default class Dividend extends Component {
                     title: '所属组',
                     dataIndex: 'usergroup_name',
                     className: 'column-right',
-                    render:(text, record)=>{
-                        if(record.username == '团队数据'){
-                            return{
+                    render: (text, record) => {
+                        if (record.username == '团队数据') {
+                            return {
                                 props: {
                                     colSpan: 0,
                                 }
@@ -686,14 +710,14 @@ export default class Dividend extends Component {
                     title: '分红比例',
                     dataIndex: 'dividend_radio',
                     className: 'column-right',
-                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
+                    render: (text) => parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
                         <span className="col_color_ying">{text}%</span>,
                     width: 90,
                 }, {
                     title: '分红',
                     dataIndex: 'allsalary',
                     className: 'column-right',
-                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                    render: (text) => parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
                     width: 140,
                 },
@@ -702,14 +726,15 @@ export default class Dividend extends Component {
                     dataIndex: 'buttons',
                     width: 280,
                     render: (text, record) => {
-                        if(record.username == '团队数据'){
+                        if (record.username == '团队数据') {
                             return text
                         } else {
                             return (
                                 <ButtonGroup>
                                     {
-                                        text.map((item,i)=>{
-                                            return <Button key={i} onClick={()=>this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
+                                        text.map((item, i) => {
+                                            return <Button key={i}
+                                                           onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                         })
                                     }
                                 </ButtonGroup>
@@ -727,10 +752,13 @@ export default class Dividend extends Component {
                 <li>
                     {
                         oneKeyDividend == 0 ?
-                            <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
+                            <Button
+                                onClick={() => this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
                             <ButtonGroup>
-                                <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
-                                <Button onClick={()=>this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
+                                <Button
+                                    onClick={() => this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
+                                <Button
+                                    onClick={() => this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
                             </ButtonGroup>
                     }
                 </li>
@@ -743,13 +771,15 @@ export default class Dividend extends Component {
                         <ul className="t_l_time_row">
                             <li>
                                 <span>用户名：</span>
-                                <Input placeholder="请输入用户名" value={postData.username} onChange={(e)=>this.onChangeUserName(e)}/>
+                                <Input placeholder="请输入用户名" value={postData.username}
+                                       onChange={(e) => this.onChangeUserName(e)}/>
                             </li>
                             <li>
                                 <span>日期：</span>
-                                <Select value={postData.starttime} style={{ width: 180 }} onChange={(value)=>this.onChangeSelect(value)}>
+                                <Select value={postData.starttime} style={{width: 180}}
+                                        onChange={(value) => this.onChangeSelect(value)}>
                                     {
-                                        divIdEndTotals.map((item)=>{
+                                        divIdEndTotals.map((item) => {
                                             return <Option value={item.id} key={item.id}>{item.growkey}</Option>
                                         })
                                     }
@@ -759,13 +789,10 @@ export default class Dividend extends Component {
                                 <Button type="primary"
                                         icon="search"
                                         loading={this.state.searchLoading}
-                                        onClick={()=>this.onSearch()}
+                                        onClick={() => this.onSearch()}
                                 >
                                     搜索
                                 </Button>
-                            </li>
-                            <li className="r_m_hint">
-                                <p>提示：分红资数据保留为有效时间最近30天数据</p>
                             </li>
                         </ul>
                     </div>
@@ -779,7 +806,7 @@ export default class Dividend extends Component {
                                dataSource={data}
                                pagination={false}
                                loading={this.state.loading}
-                               footer={total <= 0 || isNaN(total) || sum.sale == undefined ? null : ()=>footer}
+                               footer={total <= 0 || isNaN(total) || sum.sale == undefined ? null : () => footer}
                                className="table_list"
                         />
                     </div>
@@ -790,7 +817,7 @@ export default class Dividend extends Component {
                         bodyStyle={{height: 400}}
                         footer={null}
                         maskClosable={false}
-                        onCancel={()=>this.setState({historyVisible: false})}
+                        onCancel={() => this.setState({historyVisible: false})}
                         className="table_modal"
                     >
                         <p className="modal_username">查询用户名：{this.state.historyDividendUName}</p>
@@ -802,7 +829,8 @@ export default class Dividend extends Component {
                                    loading={this.state.loadingModal}
                                    scroll={{y: 220}}
                             />
-                            <ul className="dividend_modal_Footer clear" style={{display: this.state.history.affects <= 0 ? 'none' : ''}}>
+                            <ul className="dividend_modal_Footer clear"
+                                style={{display: this.state.history.affects <= 0 ? 'none' : ''}}>
                                 <li>总计</li>
                                 <li>{this.state.history.historyAllsalary}</li>
                             </ul>
@@ -817,8 +845,8 @@ export default class Dividend extends Component {
                                 <div style={{whiteSpace: 'normal'}}>
                                     如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
                                     <InputNumber min={0} value={this.state.alterData.dividend_radio}
-                                                 onChange={(value)=>this.onChangeAlterContract(value)}
-                                                 // disabled={disabled}
+                                                 onChange={(value) => this.onChangeAlterContract(value)}
+                                        // disabled={disabled}
                                     />
                                     %。
                                 </div>
