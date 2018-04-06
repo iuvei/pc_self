@@ -142,10 +142,10 @@ $border-color: #B2B2B2;
                     text-align: center;
                 }
                 li:nth-child(2){
-                    width: 88px;
+                    width: 87px;
                 }
                 li:nth-child(3){
-                    width: 111px;
+                    width: 110px;
                 }
                 li:nth-child(4){
                     width: 100px;
@@ -162,6 +162,65 @@ $border-color: #B2B2B2;
                 li:nth-child(8){
                     text-align: center;
                     width: 263px;
+                    padding-left: 9px;
+                }
+            }
+            .dividend_footer_zero{
+                 line-height: 28px;
+                 li{
+                     float: left;
+                     text-align: right;
+                 }
+                 li:first-child{
+                     width: 218px;
+                     text-align: center;
+                 }
+                 li:nth-child(2){
+                     width: 135px;
+                 }
+                 li:nth-child(3){
+                     width: 139px;
+                 }
+                 li:nth-child(4){
+                     width: 90px;
+                 }
+                 li:nth-child(5){
+                     width: 140px;
+                 }
+                 li:nth-child(6){
+                     text-align: center;
+                     width: 280px;
+                     padding-left: 9px;
+                 }
+             }
+            .dividend_footer_one{
+                line-height: 28px;
+                li{
+                    float: left;
+                    text-align: right;
+                }
+                li:first-child{
+                    width: 188px;
+                    text-align: center;
+                }
+                li:nth-child(2){
+                    width: 116px;
+                }
+                li:nth-child(3){
+                    width: 119px;
+                }
+                li:nth-child(4){
+                    width: 119px;
+                }
+                li:nth-child(5){
+                    width: 90px;
+                }
+                li:nth-child(6){
+                    width: 90px;
+                }
+                li:nth-child(7){
+                    text-align: center;
+                    width: 280px;
                     padding-left: 9px;
                 }
             }
