@@ -118,6 +118,9 @@ export default class TeamList extends Component {
     };
     componentWillUnmount() {
         this._ismount = false;
+        if(this.clearTimeout){
+            window.clearTimeout(this.clearTimeout)
+        }
     };
     getNum(){
         Fetch.quota({
@@ -365,7 +368,6 @@ export default class TeamList extends Component {
             onOk() {
                 _this.setProtocol(contract_name)
             },
-            onCancel() {},
         });
     };
     setProtocol(contract_name){
@@ -397,7 +399,7 @@ export default class TeamList extends Component {
                             this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
                         }
                         this.getAccGroupList(alterData);
-                        this.getData();
+                        this.clearTimeout = setTimeout(()=>this.getData(), 31000);
                     }else{
                         Modal.warning({
                             title: res.shortMessage,
@@ -419,7 +421,7 @@ export default class TeamList extends Component {
                             title: res.repsoneContent,
                         });
                         this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
-                        this.getData();
+                        this.clearTimeout = setTimeout(()=>this.getData(), 31000);
                     }else{
                         Modal.warning({
                             title: res.shortMessage,
@@ -444,7 +446,7 @@ export default class TeamList extends Component {
                             title: res.repsoneContent,
                         });
                         this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
-                        this.getData();
+                        this.clearTimeout = setTimeout(()=>this.getData(), 31000);
                     }else{
                         Modal.warning({
                             title: res.shortMessage,
@@ -468,7 +470,7 @@ export default class TeamList extends Component {
                             title: res.repsoneContent,
                         });
                         this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
-                        this.getData();
+                        this.clearTimeout = setTimeout(()=>this.getData(), 31000);
                     }else{
                         Modal.warning({
                             title: res.shortMessage,
@@ -1290,6 +1292,9 @@ export default class TeamList extends Component {
                                 >
                                     搜索
                                 </Button>
+                            </li>
+                            <li className="r_m_hint">
+                                <p>提示：契约修改成功后30秒更新</p>
                             </li>
                         </ul>
                     </div>

@@ -60,10 +60,10 @@ export default class Login extends Component {
         }
     };
     componentDidMount() {
-        // let indx = Math.floor(Math.random()*(onCanvas.length-1));
+        // let indx = Math.floor(Math.random()*(onCanvas.length));
+        onCanvas[0]();
         this._ismount = true;
         stateVar.nowlottery.lotteryId = 'ssc';
-        onCanvas[0]();
         this.getSession();
         this.getWechat();
         this.getKefu();

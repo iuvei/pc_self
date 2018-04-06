@@ -299,11 +299,25 @@ export default class Dividend extends Component {
     }
 
     render() {
-        const columns = [
-             {
+
+        const columnsModal = [
+                {
+                    title: '时间',
+                    dataIndex: 'growkey',
+                    width: 372,
+                }, {
+                    title: '分红',
+                    dataIndex: 'allsalary',
+                    width: 372,
+                }
+            ];
+        const { postData, sum, divIdEndTotals, total, oneKeyDividend, data } = this.state;
+        const { dailysalaryStatus } = stateVar;
+        let columns = [
+            {
                 title: '用户名',
                 dataIndex: 'username',
-                 render: (text)=>{
+                render: (text)=>{
                     if(text == '团队数据'){
                         return {
                             children: text,
@@ -314,7 +328,7 @@ export default class Dividend extends Component {
                     }else{
                         return text;
                     }
-                 },
+                },
                 width: 90,
             }, {
                 title: '所属组',
@@ -359,14 +373,14 @@ export default class Dividend extends Component {
                 dataIndex: 'dividend_radio',
                 className: 'column-right',
                 render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
-                                                        <span className="col_color_ying">{text}%</span>,
+                    <span className="col_color_ying">{text}%</span>,
                 width: 90,
             }, {
                 title: '分红',
                 dataIndex: 'allsalary',
                 className: 'column-right',
                 render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
-                                                        <span className="col_color_ying">{text}</span>,
+                    <span className="col_color_ying">{text}</span>,
                 width: 90,
             },
             {
@@ -389,20 +403,8 @@ export default class Dividend extends Component {
                     }
                 },
             }
-            ];
-        const columnsModal = [
-                {
-                    title: '时间',
-                    dataIndex: 'growkey',
-                    width: 372,
-                }, {
-                    title: '分红',
-                    dataIndex: 'allsalary',
-                    width: 372,
-                }
-            ];
-        const { postData, sum, divIdEndTotals, total, oneKeyDividend, data, disabled } = this.state;
-        const footer = <ul className="dividend_footer clear">
+        ];
+        let footer = <ul className="dividend_footer clear">
                             <li>个人结余</li>
                             <li>{sum.sale}</li>
                             <li>{sum.self_gross_income}</li>
@@ -421,6 +423,319 @@ export default class Dividend extends Component {
                                 }
                             </li>
                         </ul>;
+
+        if(dailysalaryStatus.isLose != 1){
+            columns = [
+                {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render: (text)=>{
+                        if(text == '团队数据'){
+                            return {
+                                children: text,
+                                props: {
+                                    colSpan: 2,
+                                },
+                            }
+                        }else{
+                            return text;
+                        }
+                    },
+                    width: 120,
+                }, {
+                    title: '所属组',
+                    dataIndex: 'usergroup_name',
+                    className: 'column-right',
+                    render:(text, record)=>{
+                        if(record.username == '团队数据'){
+                            return{
+                                props: {
+                                    colSpan: 0,
+                                }
+                            }
+                        } else {
+                            return text
+                        }
+                    },
+                    width: 70,
+                },
+                {
+                    title: '有效投注量',
+                    dataIndex: 'sale_total',
+                    className: 'column-right',
+                    width: 120,
+                },
+                {
+                    title: '盈亏总额',
+                    dataIndex: 'gross_income',
+                    className: 'column-right',
+                    width: 120,
+                }, {
+                    title: '日工资总额',
+                    dataIndex: 'daily_salary',
+                    className: 'column-right',
+                    width: 120,
+                }, {
+                    title: '分红比例',
+                    dataIndex: 'dividend_radio',
+                    className: 'column-right',
+                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
+                        <span className="col_color_ying">{text}%</span>,
+                    width: 90,
+                }, {
+                    title: '分红',
+                    dataIndex: 'allsalary',
+                    className: 'column-right',
+                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
+                    width: 90,
+                },
+                {
+                    title: '操作',
+                    dataIndex: 'buttons',
+                    width: 280,
+                    render: (text, record) => {
+                        if(record.username == '团队数据'){
+                            return text
+                        } else {
+                            return (
+                                <ButtonGroup>
+                                    {
+                                        text.map((item,i)=>{
+                                            return <Button key={i} onClick={()=>this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
+                                        })
+                                    }
+                                </ButtonGroup>
+                            )
+                        }
+                    },
+                }
+            ];
+            footer = <ul className="dividend_footer_one clear">
+                <li>个人结余</li>
+                <li>{sum.sale}</li>
+                <li>{sum.self_gross_income}</li>
+                <li>{sum.daily_salary}</li>
+                <li className={parseFloat(sum.dividend_radio) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.dividend_radio}%</li>
+                <li className={parseFloat(sum.self_allsalary) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.self_allsalary}</li>
+                <li>
+                    {
+                        oneKeyDividend == 0 ?
+                            <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
+                            <ButtonGroup>
+                                <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
+                                <Button onClick={()=>this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
+                            </ButtonGroup>
+                    }
+                </li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isSalary != 1){
+            columns = [
+                {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render: (text)=>{
+                        if(text == '团队数据'){
+                            return {
+                                children: text,
+                                props: {
+                                    colSpan: 2,
+                                },
+                            }
+                        }else{
+                            return text;
+                        }
+                    },
+                    width: 120,
+                }, {
+                    title: '所属组',
+                    dataIndex: 'usergroup_name',
+                    className: 'column-right',
+                    render:(text, record)=>{
+                        if(record.username == '团队数据'){
+                            return{
+                                props: {
+                                    colSpan: 0,
+                                }
+                            }
+                        } else {
+                            return text
+                        }
+                    },
+                    width: 70,
+                },
+                {
+                    title: '有效投注量',
+                    dataIndex: 'sale_total',
+                    className: 'column-right',
+                    width: 120,
+                },
+                {
+                    title: '盈亏总额',
+                    dataIndex: 'gross_income',
+                    className: 'column-right',
+                    width: 120,
+                }, {
+                    title: '日亏损总额',
+                    dataIndex: 'lose_salary',
+                    className: 'column-right',
+                    width: 100,
+                }, {
+                    title: '分红比例',
+                    dataIndex: 'dividend_radio',
+                    className: 'column-right',
+                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
+                        <span className="col_color_ying">{text}%</span>,
+                    width: 90,
+                }, {
+                    title: '分红',
+                    dataIndex: 'allsalary',
+                    className: 'column-right',
+                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
+                    width: 90,
+                },
+                {
+                    title: '操作',
+                    dataIndex: 'buttons',
+                    width: 280,
+                    render: (text, record) => {
+                        if(record.username == '团队数据'){
+                            return text
+                        } else {
+                            return (
+                                <ButtonGroup>
+                                    {
+                                        text.map((item,i)=>{
+                                            return <Button key={i} onClick={()=>this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
+                                        })
+                                    }
+                                </ButtonGroup>
+                            )
+                        }
+                    },
+                }
+            ];
+            footer = <ul className="dividend_footer_one clear">
+                <li>个人结余</li>
+                <li>{sum.sale}</li>
+                <li>{sum.self_gross_income}</li>
+                <li>{sum.lose_salary}</li>
+                <li className={parseFloat(sum.dividend_radio) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.dividend_radio}%</li>
+                <li className={parseFloat(sum.self_allsalary) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.self_allsalary}</li>
+                <li>
+                    {
+                        oneKeyDividend == 0 ?
+                            <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
+                            <ButtonGroup>
+                                <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
+                                <Button onClick={()=>this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
+                            </ButtonGroup>
+                    }
+                </li>
+            </ul>;
+        }
+        if(dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1){
+            columns = [
+                {
+                    title: '用户名',
+                    dataIndex: 'username',
+                    render: (text)=>{
+                        if(text == '团队数据'){
+                            return {
+                                children: text,
+                                props: {
+                                    colSpan: 2,
+                                },
+                            }
+                        }else{
+                            return text;
+                        }
+                    },
+                    width: 140,
+                }, {
+                    title: '所属组',
+                    dataIndex: 'usergroup_name',
+                    className: 'column-right',
+                    render:(text, record)=>{
+                        if(record.username == '团队数据'){
+                            return{
+                                props: {
+                                    colSpan: 0,
+                                }
+                            }
+                        } else {
+                            return text
+                        }
+                    },
+                    width: 80,
+                },
+                {
+                    title: '有效投注量',
+                    dataIndex: 'sale_total',
+                    className: 'column-right',
+                    width: 140,
+                },
+                {
+                    title: '盈亏总额',
+                    dataIndex: 'gross_income',
+                    className: 'column-right',
+                    width: 140,
+                }, {
+                    title: '分红比例',
+                    dataIndex: 'dividend_radio',
+                    className: 'column-right',
+                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}%</span> :
+                        <span className="col_color_ying">{text}%</span>,
+                    width: 90,
+                }, {
+                    title: '分红',
+                    dataIndex: 'allsalary',
+                    className: 'column-right',
+                    render: (text)=>parseFloat(text) < 0 ? <span className="col_color_shu">{text}</span> :
+                        <span className="col_color_ying">{text}</span>,
+                    width: 140,
+                },
+                {
+                    title: '操作',
+                    dataIndex: 'buttons',
+                    width: 280,
+                    render: (text, record) => {
+                        if(record.username == '团队数据'){
+                            return text
+                        } else {
+                            return (
+                                <ButtonGroup>
+                                    {
+                                        text.map((item,i)=>{
+                                            return <Button key={i} onClick={()=>this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
+                                        })
+                                    }
+                                </ButtonGroup>
+                            )
+                        }
+                    },
+                }
+            ];
+            footer = <ul className="dividend_footer_zero clear">
+                <li>个人结余</li>
+                <li>{sum.sale}</li>
+                <li>{sum.self_gross_income}</li>
+                <li className={parseFloat(sum.dividend_radio) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.dividend_radio}%</li>
+                <li className={parseFloat(sum.self_allsalary) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.self_allsalary}</li>
+                <li>
+                    {
+                        oneKeyDividend == 0 ?
+                            <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
+                            <ButtonGroup>
+                                <Button onClick={()=>this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
+                                <Button onClick={()=>this.onClickButton('一键发放分红', stateVar.userInfo.userName)}>一键发放分红</Button>
+                            </ButtonGroup>
+                    }
+                </li>
+            </ul>;
+        }
         return (
             <div className="report">
                 <div className="team_list_top">
