@@ -681,7 +681,10 @@ $c_m_background: #4A4A5F;
                             text-align: center;
                             margin-right: 13px;
                         }
-                        .lryl_li.lryl_li_active {
+                        .lryl_li.hot-min {
+                            color: #154cb0;
+                        }
+                        .lryl_li.hot-max {
                             color: $color_CF2027;
                         }
                     }

@@ -103,6 +103,44 @@ export default class ContentMian extends Component {
         this.eventEmitter = emitter.on('initData', () => {
             this.initData();
         });
+        this.lotteryTimeEmitter = emitter.on('lotteryTimeEnd', () => {
+            // 彩种倒计时结束 需要将记录的冷热遗漏值 清空
+            if (!this.state.hotSwitch) return
+            if (stateVar.hotIndex == 1) {
+                Fatch.getMiss({
+                    method: 'POST',
+                    body: JSON.stringify({lotteryid: stateVar.nowlottery.lotteryBetId})
+                }).then((res) => {
+                    if (this._ismount && res.status == 200) {
+                        stateVar.setMissData(res.repsoneContent)
+                        stateVar.setHotData({})
+                        stateVar.setHotData_30({})
+                        stateVar.setHotData_60({})
+                        stateVar.setHotData_100({})
+                    } else {
+                        message.error(res.shortMessage);
+                    }
+                })
+            } else {
+                Fatch.getHot({
+                    method: 'POST',
+                    body: JSON.stringify({
+                        lotteryid: stateVar.nowlottery.lotteryBetId,
+                        issuecount: stateVar.hotIssue
+                    })
+                }).then((res) => {
+                    if (this._ismount && res.status == 200) {
+                        stateVar.setHotData(res.repsoneContent)
+                        stateVar.setMissData({})
+                        stateVar.setHotData_30({})
+                        stateVar.setHotData_60({})
+                        stateVar.setHotData_100({})
+                    } else {
+                        message.error(res.shortMessage);
+                    }
+                })
+            }
+        });
         this.initData();
     };
 
@@ -125,6 +163,7 @@ export default class ContentMian extends Component {
         stateVar.checkLotteryId = true;
         stateVar.mmCkjNumberList = [];
         emitter.off(this.eventEmitter);
+        emitter.off(this.lotteryTimeEmitter);
     }
 
     initData() {
@@ -193,6 +232,7 @@ export default class ContentMian extends Component {
                 this.getBetHistory();
                 this.getVersion();//得到版本号
                 // 每次切换彩种 需要将记录的冷热遗漏值 清空
+                stateVar.setHotMissFlag('')
                 stateVar.setMissData({})
                 stateVar.setHotData({})
                 stateVar.setHotData_30({})
@@ -634,6 +674,9 @@ export default class ContentMian extends Component {
             textAreaValue: ''
         }, () => {
             this.selectAreaData(this.state.lotteryMethod);
+            // 重新设置是否显示冷热
+            stateVar.setHotMissFlag('')
+            this.getMissHotFlag()
         });
     }
 
@@ -652,6 +695,9 @@ export default class ContentMian extends Component {
             defaultposition: []
         }, () => {
             this.selectAreaData(this.state.lotteryMethod);
+            // 重新设置是否显示冷热
+            stateVar.setHotMissFlag('')
+            this.getMissHotFlag()
         });
     };
 
@@ -688,8 +734,6 @@ export default class ContentMian extends Component {
             return;
         }
         $(a).removeClass('number_active')
-        // 遗漏值 变红
-        $($('.lryl_li')[$(a).index()]).removeClass('lryl_li_active');
         let aa = $(a).attr('value');
         let b = Number($(a).attr('name').replace('lt_place_', ''))
         stateVar.aboutGame.data_sel[b] = stateVar.aboutGame.data_sel[b].filter((item) => {
@@ -710,8 +754,6 @@ export default class ContentMian extends Component {
             return;
         }
         $(a).addClass('number_active');
-        // 遗漏值 变红
-        $($('.lryl_li')[$(a).parent().parent().index() * 10 + $(a).index()]).addClass('lryl_li_active');
         let tempA = $(a).attr('value');
         let b = Number($(a).attr('name').replace('lt_place_', ''));
         let data_sel = stateVar.aboutGame.data_sel;
@@ -1162,7 +1204,7 @@ export default class ContentMian extends Component {
 
             }
             switch (mname) {//根据类型不同做不同检测
-                //任三 直选 直选单式
+                            //任三 直选 直选单式
                 case 'RXZXSSC3DS':
                 case 'RXZXWFC3DS':
                 case 'RXZXFFC3DS':
@@ -2268,6 +2310,7 @@ export default class ContentMian extends Component {
             return '';
         }
         let numberObj = a[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex];
+
         let numberObjLh = a[this.state.navIndex]
         return <div className="c_m_select_body">
             {
@@ -2376,7 +2419,10 @@ export default class ContentMian extends Component {
                                     {
                                         (() => {
                                             if (this.state.hotSwitch) {
-                                                var data = [], arr = []
+                                                var data = [],
+                                                    arr = [],
+                                                    min = 0,  // 记录冷热最小值
+                                                    max = 0  // 记录冷热最大值
                                                 if (stateVar.hotIndex == 1) {
                                                     switch (val.title) {
                                                         case "万位":
@@ -2494,16 +2540,41 @@ export default class ContentMian extends Component {
                                                             })
                                                             break
                                                     }
+                                                    data.forEach((value, index) => {
+                                                        if (index == 0) {
+                                                            max = Number(value)
+                                                            min = Number(value)
+                                                        }
+                                                        if (Number(value) > max) {
+                                                            max = Number(value)
+                                                        }
+                                                        if (Number(value) < min) {
+                                                            min = Number(value)
+                                                        }
+                                                    })
+
                                                 }
-
-
                                                 return (
                                                     <div className="c_m_select_body_lryl">
                                                         <ul className="lryl_ul">
                                                             {
                                                                 data.map((item, index) => {
-                                                                    return <li className="lryl_li"
-                                                                               key={index}>{item}</li>
+                                                                    if (stateVar.hotIndex == 1) {
+                                                                        return <li className="lryl_li"
+                                                                                   key={index}>{item}</li>
+                                                                    } else {
+                                                                        if (item == min) {
+                                                                            return <li className="lryl_li hot-min"
+                                                                                       key={index}>{item}</li>
+                                                                        } else if (item == max) {
+                                                                            return <li className="lryl_li hot-max"
+                                                                                       key={index}>{item}</li>
+                                                                        } else {
+                                                                            return <li className="lryl_li"
+                                                                                       key={index}>{item}</li>
+                                                                        }
+                                                                    }
+
                                                                 })
                                                             }
                                                         </ul>
@@ -2747,6 +2818,10 @@ export default class ContentMian extends Component {
 
     // 修改冷热 遗漏 种类
     changeHotIndex(index) {
+        if (!this.state.hotSwitch) {
+            stateVar.changeHotIndex(index)
+            return
+        }
         // 0 当前为冷热 修改后为遗漏
         if (stateVar.hotIndex == 0) {
             if (!stateVar.missData.sWei) {
@@ -2879,6 +2954,25 @@ export default class ContentMian extends Component {
 
     }
 
+    // 当前玩法类型是否展示 冷热遗漏 按钮
+    getMissHotFlag() {
+        if (stateVar.hotMissFlag.toString()) return stateVar.hotMissFlag
+        let data = this.state.lotteryMethod[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].selectarea
+        let flag1 = data.type.toLocaleString() === 'digital', flag2 = true
+        if (!data.layout) {
+            stateVar.setHotMissFlag(false)
+            return false
+        }
+        data.layout.forEach((value) => {
+            if (['万位', '千位', '百位', '十位', '个位', '第一位', '第二位', '第三位', '第四位', '第五位'].indexOf(value.title) < 0) {
+                flag2 = false
+                return false
+            }
+        })
+        stateVar.setHotMissFlag(flag1 && flag2)
+        return flag1 && flag2
+    }
+
     render() {
         const navList = [
             {
@@ -2972,7 +3066,8 @@ export default class ContentMian extends Component {
                                                     <div className="c_m_select_name">
                                                         {oneLotteryData.length == 0 ? '' : (oneLotteryData[this.state.navIndex].title == '龙虎庄闲' ? oneLotteryData[this.state.navIndex].label[this.state.navThreeIndex].gtitle : (oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].gtitle + oneLotteryData[this.state.navIndex].label[this.state.navTwoIndex].label[this.state.navThreeIndex].name))}
                                                     </div>
-                                                    <ul className="c_m_select_hot">
+                                                    <ul className="c_m_select_hot"
+                                                        style={{display: this.getMissHotFlag() ? 'inline-block' : 'none'}}>
                                                         <li onClick={() => {
                                                             this.changeHotIndex(0)
                                                         }} className={stateVar.hotIndex === 0 ? 'active' : ''}>冷热
@@ -2982,13 +3077,15 @@ export default class ContentMian extends Component {
                                                         }} className={stateVar.hotIndex === 1 ? 'active' : ''}>遗漏
                                                         </li>
                                                     </ul>
-                                                    <Button className="c_m_btn" onClick={() => {
-                                                        this.getHotMiss()
-                                                    }}>
+                                                    <Button className="c_m_btn"
+                                                            style={{display: this.getMissHotFlag() ? 'inline-block' : 'none'}}
+                                                            onClick={() => {
+                                                                this.getHotMiss()
+                                                            }}>
                                                         {this.state.hotSwitch ? '开' : '关'}
                                                     </Button>
                                                     <Radio.Group defaultValue="30"
-                                                                 style={{display: stateVar.hotIndex == 0 ? 'inline-block' : 'none'}}
+                                                                 style={{display: stateVar.hotIndex == 0 && this.getMissHotFlag() ? 'inline-block' : 'none'}}
                                                                  onChange={(e) => {
                                                                      this.changeHotIssue(e.target.value)
                                                                  }}>
