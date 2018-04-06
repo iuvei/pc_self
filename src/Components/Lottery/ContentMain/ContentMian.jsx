@@ -103,9 +103,9 @@ export default class ContentMian extends Component {
         this.eventEmitter = emitter.on('initData', () => {
             this.initData();
         });
-        this.lotteryTimeEmitter = emitter.on('lotteryTimeEnd', () => {
-            // 彩种倒计时结束 需要将记录的冷热遗漏值 清空
-            if (!this.state.hotSwitch) return;
+        this.lotteryTimeEmitter = emitter.on('refreshMissHot', () => {
+            // 获取彩种开奖历史后 需要将记录的冷热遗漏值 刷新
+            if (!this.state.hotSwitch) return
             if (stateVar.hotIndex == 1) {
                 Fatch.getMiss({
                     method: 'POST',
@@ -1204,7 +1204,7 @@ export default class ContentMian extends Component {
 
             }
             switch (mname) {//根据类型不同做不同检测
-                            //任三 直选 直选单式
+                //任三 直选 直选单式
                 case 'RXZXSSC3DS':
                 case 'RXZXWFC3DS':
                 case 'RXZXFFC3DS':

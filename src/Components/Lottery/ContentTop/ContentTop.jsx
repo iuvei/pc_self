@@ -18,25 +18,26 @@ export default class ContentTop extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        	kjStopFlag:[],
-        	kjStopallFlag:false,
-        	kjStopTime:0,
-            statusClass : true,
-            textAreaValue:'',
-            timeShow:{hour:'00',second:'00',minute:'00',day:'00'},
-            code : [],//开奖号码
-            animateCode:[],//开奖动画号码
-        	nowIssue:'??????',//上一期前期号
-        	el1: {rotateZ: 0},
-        	ifRandom:false,
-        	betokObj:{},
-        	issueArray:[],
-        	booleanValue:true,
-        	imgUrl:'pk10',
-        	mmcmoni:true,
-        	directFlag:false
+            kjStopFlag: [],
+            kjStopallFlag: false,
+            kjStopTime: 0,
+            statusClass: true,
+            textAreaValue: '',
+            timeShow: {hour: '00', second: '00', minute: '00', day: '00'},
+            code: [],//开奖号码
+            animateCode: [],//开奖动画号码
+            nowIssue: '??????',//上一期前期号
+            el1: {rotateZ: 0},
+            ifRandom: false,
+            betokObj: {},
+            issueArray: [],
+            booleanValue: true,
+            imgUrl: 'pk10',
+            mmcmoni: true,
+            directFlag: false
         };
     }
+
     componentDidMount() {
         this.eventEmitter = emitter.on('kjhistory', () => {
             this.getKjHistory();
@@ -49,6 +50,7 @@ export default class ContentTop extends Component {
         })
         this.initData();
     };
+
     componentWillUnmount() {
         this._ismount = false;
         emitter.off(this.eventEmitter);
@@ -251,7 +253,6 @@ export default class ContentTop extends Component {
                 stateVar.betVisible = false;
                 message.info('当期销售已截止，请进入下一期购买');
                 this.getlotterycode(true);
-                emitter.emit('lotteryTimeEnd');
             }
             $.lt_time_leave = $.lt_time_leave - 1;
         }, 1000);
@@ -316,6 +317,8 @@ export default class ContentTop extends Component {
             }).then((data) => {
                 if (this._ismount && data.status == 200) {
                     stateVar.kjNumberList = data.repsoneContent;
+                    // 刷新遗漏 冷热
+                    emitter.emit('refreshMissHot');
                 }
             })
         }
@@ -466,10 +469,10 @@ export default class ContentTop extends Component {
 
     // 音效开关
     onChangeSound(checked) {
-        if(checked){
-        	common.setStore('soundswitch','on');
-        }else{
-        	common.setStore('soundswitch','off');
+        if (checked) {
+            common.setStore('soundswitch', 'on');
+        } else {
+            common.setStore('soundswitch', 'off');
         }
     };
 
