@@ -600,7 +600,7 @@ export default class Dividend extends Component {
                     title: '日亏损总额',
                     dataIndex: 'lose_salary',
                     className: 'column-right',
-                    width: 100,
+                    width: 120,
                 }, {
                     title: '分红比例',
                     dataIndex: 'dividend_radio',
