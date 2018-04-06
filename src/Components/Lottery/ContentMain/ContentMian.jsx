@@ -232,6 +232,7 @@ export default class ContentMian extends Component {
                 this.getBetHistory();
                 this.getVersion();//得到版本号
                 // 每次切换彩种 需要将记录的冷热遗漏值 清空
+                stateVar.setHotMissFlag('')
                 stateVar.setMissData({})
                 stateVar.setHotData({})
                 stateVar.setHotData_30({})
@@ -1203,7 +1204,7 @@ export default class ContentMian extends Component {
 
             }
             switch (mname) {//根据类型不同做不同检测
-                //任三 直选 直选单式
+                            //任三 直选 直选单式
                 case 'RXZXSSC3DS':
                 case 'RXZXWFC3DS':
                 case 'RXZXFFC3DS':
