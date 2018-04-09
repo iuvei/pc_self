@@ -1132,7 +1132,6 @@ export default class TeamList extends Component {
         }
 
         if(typeName == '配额契约'){
-            // let accGroup = contentArr.filter(item => item.accGroup <= this.state.alterData.prize_group);
             let prize_group = this.state.alterData.prize_group;
             typeContent = <div className="a_c_text">
                 <p>契约内容：</p>
@@ -1165,7 +1164,7 @@ export default class TeamList extends Component {
                     {
                         contentArr.map((item, i)=>{
                             return (
-                                <li key={i+1}>
+                                <li key={''+ i}>
                                     {i+1}档：
                                     日销量≥
                                     <span style={{width: 58, display: 'inline-block'}}>{item.sale}</span>
@@ -1200,8 +1199,8 @@ export default class TeamList extends Component {
                             )
                         })
                     }
-                    <li className="brisk_user" key="0">当日投注金额≥1000元，计为一个活跃用户</li>
-                    <li className="brisk_user" key="00">
+                    <li className="brisk_user" key="-1">当日投注金额≥1000元，计为一个活跃用户</li>
+                    <li className="brisk_user" key="-2">
                         下级日工资各档位日销量要求需与自身保持一致，删除档位时遵循从高到底的原则，但至少保留三档。
                     </li>
                 </ul>

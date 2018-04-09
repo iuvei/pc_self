@@ -97,7 +97,7 @@ const routes = params => (
             <Route path="/activity/fanshui" getComponent={fanshui} params={params}/>
             <Route path="/tendency" getComponent={tendency} params={params}/>
             <Route path="/teamManage" getComponent={teamManage} params={params}>
-                <IndexRoute getComponent={teamStatistics} />
+                <IndexRoute getComponent={teamList} />
                 <Route path="/teamManage/teamList" getComponent={teamList} params={params}/>
                 <Route path="/teamManage/teamStatistics" getComponent={teamStatistics} params={params}/>
                 <Route path="/teamManage/marketing" getComponent={marketing} params={params}/>

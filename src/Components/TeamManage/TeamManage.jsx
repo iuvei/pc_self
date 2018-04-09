@@ -7,11 +7,11 @@ import ChildNav from '../Common/ChildNav/ChildNav';
 
 const navList = [
     {
-        link: '/teamManage/teamStatistics',
-        text: '团队统计'
-    },{
         link: '/teamManage/teamList',
         text: '团队列表'
+    },{
+        link: '/teamManage/teamStatistics',
+        text: '团队统计'
     },{
         link: '/teamManage/marketing',
         text: '市场推广'

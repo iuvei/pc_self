@@ -17,3 +17,10 @@ input{ outline:none; border:none; background:none;}
 input,textarea,select{ margin:0; }
 input,textarea{ padding:0;}
 
+/*reset - antd.css*/
+.ant-select-selection--single{
+    height: 30px;
+    padding-top: 1px;
+}
+
+
