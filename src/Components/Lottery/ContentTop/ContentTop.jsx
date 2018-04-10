@@ -204,7 +204,7 @@ export default class ContentTop extends Component {
 
     //开奖倒计时
     tick(starttime, endtime) {
-        if (starttime == "" || endtime == "") {
+        if (starttime == "" || endtime == "" || !endtime) {
             $.lt_time_leave = 0;
         } else {
             $.lt_time_leave = (commone.format(endtime).getTime() - commone.format(starttime).getTime()) / 1000;//总秒数
@@ -251,7 +251,7 @@ export default class ContentTop extends Component {
                     duration: 2
                 });
                 stateVar.betVisible = false;
-                message.info('当期销售已截止，请进入下一期购买');
+                if (endtime != null) message.info('当期销售已截止，请进入下一期购买');
                 this.getlotterycode(true);
             }
             $.lt_time_leave = $.lt_time_leave - 1;
