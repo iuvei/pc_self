@@ -25,7 +25,7 @@ export default class AliPay extends Component {
                 tag: 'zhifubao', //充值分类  支付宝 zhifubao
                 payment: '', //银行渠道code
                 bid: null, //银行渠道id
-                money: 0,//充值金额
+                money: '',//充值金额
                 rid: null, //充值银行id
                 code: 'zfbsm', //充值银行code
                 // alipayName: '', //支付宝转账需要填写姓名
@@ -50,16 +50,17 @@ export default class AliPay extends Component {
         }).then((res)=>{
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent,
+                    _data = data[0],
                     loadmin = 0,
                     loadmax = 0,
                     postData = this.state.postData;
-                if(data[0] !== undefined){
-                    postData.payment = data[0].payport_name;
-                    postData.bid = data[0].id;
-                    postData.rid = data[0].rid;
-                    postData.code = data[0].code;
-                    loadmin = data[0].loadmin;
-                    loadmax = data[0].loadmax;
+                if(_data !== undefined){
+                    postData.payment = _data.payport_name;
+                    postData.bid = _data.id;
+                    postData.rid = _data.rid;
+                    postData.code = _data.code;
+                    loadmin = _data.loadmin;
+                    loadmax = _data.loadmax;
                 }
 
                 this.setState({
@@ -122,10 +123,22 @@ export default class AliPay extends Component {
         let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
         let r = reg.test(value);
         let val = parseFloat(value);
-        if(!r || val == 0 || val < parseFloat(loadmin) || val > parseFloat(loadmax)){
-            validate.money = 1;
+        if(postData.payment == 'zhifubaoc9'){
+            if(r && val <=  parseFloat(loadmax) && val >= parseFloat(loadmin)){
+                if((val <= 500 && val % 10 == 0) || (val > 500 && val % 50 == 0)){
+                    validate.money = 0;
+                }else{
+                    validate.money = 1;
+                }
+            }else{
+                validate.money = 1;
+            }
         }else{
-            validate.money = 0;
+            if(!r || val < parseFloat(loadmin) || val > parseFloat(loadmax)){
+                validate.money = 1;
+            }else{
+                validate.money = 0;
+            }
         }
         postData.money = value;
         this.setState({postData, validate});
@@ -149,12 +162,15 @@ export default class AliPay extends Component {
     }
     /*选择充值方式*/
     selectActive(rid, index){
-        let selectBank = this.state.backList.filter(item => item.rid == rid)[0],
-            postData = this.state.postData;
+        let {postData, validate, backList} = this.state,
+            selectBank = backList.filter(item => item.rid == rid)[0];
         postData.payment = selectBank.payport_name;
+        postData.money = '';
         postData.bid = parseInt(selectBank.id);
         postData.rid = parseInt(selectBank.rid);
         postData.code = selectBank.code;
+        validate.money = 2;
+
         if(selectBank.code == 'zfbsm'){
             delete postData.alipayName
         }
@@ -163,6 +179,7 @@ export default class AliPay extends Component {
             loadmin: selectBank.loadmin,
             loadmax: selectBank.loadmax,
             postData: postData,
+            validate,
         });
     };
     /*enter键提交*/
@@ -172,7 +189,7 @@ export default class AliPay extends Component {
         }
     }
     render() {
-        const { backList } = this.state;
+        const { backList, postData } = this.state;
         return (
             <div className="ali_main" onKeyDown={(e)=>this.onSubmit(e)}>
                 <div className="ali_m_hint">
@@ -215,6 +232,7 @@ export default class AliPay extends Component {
                         <span className="ali_m_li_w">充值金额：</span>
                         <InputNumber min={0} size="large"
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                     value={postData.money}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                      onChange={(value)=>{this.onRechargeAmount(value)}}
                                      className={onValidate('money', this.state.validate)}
@@ -224,10 +242,25 @@ export default class AliPay extends Component {
                         <p className="ali_m_dx">
                             <span className="ali_m_recharge_text">
                             单笔充值限额：最低
-                            <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmin}</strong>
+                            <span className="col_color_ying">{this.state.loadmin}</span>
                             元，最高
-                            <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmax}</strong>
-                            元，最多保留两位小数，单日充值总额无上限
+                            <span className="col_color_ying">{this.state.loadmax}</span>
+                            元，
+                            {
+                                postData.payment == 'zhifubaoc9' ?
+                                    <span>
+                                        金额必须是
+                                        <span className="col_color_ying">10</span>
+                                        的倍数并且大于
+                                        <span className="col_color_ying">500</span>
+                                        时必须是
+                                        <span className="col_color_ying">50</span>
+                                        的倍数，
+                                    </span>
+                                   :
+                                null
+                            }
+                            单日充值总额无上限
                         </span>
                         </p>
                     </li>
