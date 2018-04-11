@@ -45,6 +45,7 @@ export default class LeftSider extends Component {
             emitter.emit('initContentTop');
             this.handTitleClick('', this.openKey())
         });
+        this.handTitleClick('', this.openKey())
     };
 
     componentWillUnmount() {
@@ -156,11 +157,6 @@ export default class LeftSider extends Component {
         } else {
             if (this.state.openKeys.indexOf(e.key) > -1) {
                 this.state.openKeys.splice(this.state.openKeys.indexOf(e.key), 1)
-                // let arr = [...this.state.openKeys]
-                // arr.splice(arr.indexOf(e.key), 1)
-                // this.setState({
-                //     openKeys: arr
-                // })
             } else {
                 this.setState({
                     openKeys: [...this.state.openKeys, e.key]
