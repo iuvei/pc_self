@@ -61,8 +61,8 @@ export default class Login extends Component {
         }
     };
     componentDidMount() {
-        // let indx = Math.floor(Math.random()*(onCanvas.length));
-        onCanvas[0]();
+        let indx = Math.floor(Math.random()*(onCanvas.length));
+        onCanvas[indx]();
         this._ismount = true;
         stateVar.nowlottery.lotteryId = 'ssc';
         this.getSession();
@@ -80,6 +80,12 @@ export default class Login extends Component {
         });
         if(window._closeAnimationFrame){
             window.cancelAnimationFrame(window._closeAnimationFrame);
+        }
+        if(window.cloerInterval_c1){
+            window.clearInterval(window.cloerInterval_c1)
+        }
+        if(window.cloerInterval_c2){
+            window.clearInterval(window.cloerInterval_c2)
         }
     };
     getKefu(){

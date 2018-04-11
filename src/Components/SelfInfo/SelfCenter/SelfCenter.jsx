@@ -73,10 +73,6 @@ export default class SelfInfo extends PureComponent {
                             logs: data.logs,
                         });
                     }
-                }else{
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
                 }
             }
         })

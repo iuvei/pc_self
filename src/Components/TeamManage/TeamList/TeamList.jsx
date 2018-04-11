@@ -24,11 +24,6 @@ export default class TeamList extends Component {
                 dataSource: [],
                 total: 0, // 数据条数
                 accnumall: 0, //团队总人数
-                history: [
-                    {
-                        name: stateVar.userInfo.userName,
-                    }
-                ]
             },
             selectInfo: {
                 username: '', //用户id
@@ -174,20 +169,7 @@ export default class TeamList extends Component {
                 this.setState({loading: false});
                 if(res.status == 200){
                     let resData = res.repsoneContent,
-                        tableData = this.state.tableData,
-                        historyFlag = true,
-                        history = tableData.history;
-                    if(type === 'clickName'){
-                        for(let i = 0; i < history.length; i++) {
-                            if(history[i].name === record.username) {
-                                historyFlag = false;
-                                break;
-                            }
-                        }
-                        if (historyFlag) {
-                            history.push({name: record.username, uid: record.userid});
-                        }
-                    }
+                        {tableData} = this.state;
                     tableData.dataSource = resData.results;
                     tableData.accnumall = parseInt(resData.self.team_count);
                     tableData.total = parseInt(resData.affects);
@@ -724,7 +706,7 @@ export default class TeamList extends Component {
                 title: '奖金组',
                 dataIndex: 'prize_group',
                 render: (text, record) =>
-                    tableData.history.length > 1 ?
+                    users.length > 1 ?
                         text :
                         <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
                 sorter: true,
@@ -741,7 +723,7 @@ export default class TeamList extends Component {
                 render: (text, record) =>
                     <Button type={text == 1 ? 'primary' : ''} ghost
                             onClick={()=>this.onClickColBtn('日工资', record)}
-                            disabled={tableData.history.length > 1}
+                            disabled={users.length > 1}
                     >
                         {text==1 ? '已签订' : '未签订'}
                     </Button>,
@@ -752,7 +734,7 @@ export default class TeamList extends Component {
                 render: (text, record) =>
                     <Button type={text == 1 ? 'primary' : ''} ghost
                             onClick={()=>this.onClickColBtn('分红', record)}
-                            disabled={tableData.history.length > 1}
+                            disabled={users.length > 1}
                     >
                         {text==1 ? '已签订' : '未签订'}
                             </Button>,
@@ -769,7 +751,7 @@ export default class TeamList extends Component {
                     <Button className={text == 3 ? 'new_application' : ''}
                             type={text == 1 ? 'primary' : ''} ghost
                             onClick={()=>this.onClickColBtn('配额', record)}
-                            disabled={tableData.history.length > 1}
+                            disabled={users.length > 1}
                     >
                     {
                         text == 0 ?
@@ -850,7 +832,7 @@ export default class TeamList extends Component {
                     title: '奖金组',
                     dataIndex: 'prize_group',
                     render: (text, record) =>
-                        tableData.history.length > 1 ?
+                        users.length > 1 ?
                             text :
                             <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
                     sorter: true,
@@ -867,7 +849,7 @@ export default class TeamList extends Component {
                     render: (text, record) =>
                         <Button type={text == 1 ? 'primary' : ''} ghost
                                 onClick={()=>this.onClickColBtn('分红', record)}
-                                disabled={tableData.history.length > 1}
+                                disabled={users.length > 1}
                         >
                             {text==1 ? '已签订' : '未签订'}
                         </Button>,
@@ -882,7 +864,7 @@ export default class TeamList extends Component {
                         <Button className={text == 3 ? 'new_application' : ''}
                                 type={text == 1 ? 'primary' : ''} ghost
                                 onClick={()=>this.onClickColBtn('配额', record)}
-                                disabled={tableData.history.length > 1}
+                                disabled={users.length > 1}
                         >
                             {
                                 text == 0 ?
@@ -956,7 +938,7 @@ export default class TeamList extends Component {
                     title: '奖金组',
                     dataIndex: 'prize_group',
                     render: (text, record) =>
-                        tableData.history.length > 1 ?
+                        users.length > 1 ?
                             text :
                             <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
                     sorter: true,
@@ -973,7 +955,7 @@ export default class TeamList extends Component {
                     render: (text, record) =>
                         <Button type={text == 1 ? 'primary' : ''} ghost
                                 onClick={()=>this.onClickColBtn('日工资', record)}
-                                disabled={tableData.history.length > 1}
+                                disabled={users.length > 1}
                         >
                             {text==1 ? '已签订' : '未签订'}
                         </Button>,
@@ -988,7 +970,7 @@ export default class TeamList extends Component {
                         <Button className={text == 3 ? 'new_application' : ''}
                                 type={text == 1 ? 'primary' : ''} ghost
                                 onClick={()=>this.onClickColBtn('配额', record)}
-                                disabled={tableData.history.length > 1}
+                                disabled={users.length > 1}
                         >
                             {
                                 text == 0 ?
@@ -1062,7 +1044,7 @@ export default class TeamList extends Component {
                     title: '奖金组',
                     dataIndex: 'prize_group',
                     render: (text, record) =>
-                        tableData.history.length > 1 ?
+                        users.length > 1 ?
                             text :
                             <span className="hover_a" onClick={()=>this.onClickColBtn('奖金组', record)}>{text}</span>,
                     sorter: true,
@@ -1082,7 +1064,7 @@ export default class TeamList extends Component {
                         <Button className={text == 3 ? 'new_application' : ''}
                                 type={text == 1 ? 'primary' : ''} ghost
                                 onClick={()=>this.onClickColBtn('配额', record)}
-                                disabled={tableData.history.length > 1}
+                                disabled={users.length > 1}
                         >
                             {
                                 text == 0 ?
@@ -1132,7 +1114,6 @@ export default class TeamList extends Component {
         }
 
         if(typeName == '配额契约'){
-            // let accGroup = contentArr.filter(item => item.accGroup <= this.state.alterData.prize_group);
             let prize_group = this.state.alterData.prize_group;
             typeContent = <div className="a_c_text">
                 <p>契约内容：</p>
@@ -1165,7 +1146,7 @@ export default class TeamList extends Component {
                     {
                         contentArr.map((item, i)=>{
                             return (
-                                <li key={i+1}>
+                                <li key={''+ i}>
                                     {i+1}档：
                                     日销量≥
                                     <span style={{width: 58, display: 'inline-block'}}>{item.sale}</span>
@@ -1200,8 +1181,8 @@ export default class TeamList extends Component {
                             )
                         })
                     }
-                    <li className="brisk_user" key="0">当日投注金额≥1000元，计为一个活跃用户</li>
-                    <li className="brisk_user" key="00">
+                    <li className="brisk_user" key="-1">当日投注金额≥1000元，计为一个活跃用户</li>
+                    <li className="brisk_user" key="-2">
                         下级日工资各档位日销量要求需与自身保持一致，删除档位时遵循从高到底的原则，但至少保留三档。
                     </li>
                 </ul>

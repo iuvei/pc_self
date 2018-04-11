@@ -1444,7 +1444,7 @@ export default class TeamTable extends Component {
                     </div>
                     <div className="r_m_hint right">
                         <p>提示：总表数据保留为有效时间最近30天数据<br/>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;盈亏数据是在数据产生30分钟后更新
+                            提示：盈亏数据是在数据产生30分钟后更新
                         </p>
                     </div>
                 </div>
