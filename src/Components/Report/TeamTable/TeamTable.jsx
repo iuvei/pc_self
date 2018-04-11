@@ -1443,16 +1443,15 @@ export default class TeamTable extends Component {
                         </ul>
                     </div>
                     <div className="r_m_hint right">
-                        <p>提示：总表数据保留为有效时间最近30天数据<br/>
-                            提示：盈亏数据是在数据产生30分钟后更新
-                        </p>
+                        <p>提示：总表数据保留为有效时间最近30天数据</p>
+                        <p>提示：盈亏数据是在数据产生30分钟后更新</p>
                     </div>
                 </div>
                 <div className="t_l_table">
                     <div className="t_l_location_name">
                         <span className="left">当前位置：</span>
                         <Crumbs table={table} onChildState={this.onChildState.bind(this)}/>
-                        <a className="t_l_goBack right" href="javascript:void(0)" onClick={()=>this.onClickGoBac_1()}> &lt;&lt;返回上一层 </a>
+                        <span className="t_l_goBack hover right" onClick={()=>this.onClickGoBac_1()}> &lt;&lt;返回上一层 </span>
                     </div>
                     <div className="t_l_table_list">
                         {

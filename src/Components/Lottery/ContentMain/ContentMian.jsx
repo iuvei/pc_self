@@ -289,6 +289,8 @@ export default class ContentMian extends Component {
                         }
                     }
                 }
+                // 切换左侧导航菜单
+                emitter.emit('resetLottery')
                 this.initData();
                 stateVar.openLotteryFlag = true;
             });

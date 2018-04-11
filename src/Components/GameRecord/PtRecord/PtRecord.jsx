@@ -63,10 +63,6 @@ export default class PtRecord extends Component {
                         total: parseInt(data.affects),
                         sum: data.winlossesAmount,
                     })
-                } else {
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
                 }
             }
         })
