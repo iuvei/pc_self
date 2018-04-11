@@ -279,12 +279,14 @@ td.column-right {
 .r_m_hint{
     border: 1px dotted #C5C5C3;
     border-radius: 3px;
-    background: #FEFCF2;
     margin: 0 5px !important;
-    padding: 0 5px;
+    //padding: 0 5px;
+    padding: 0 5px 0 30px;
+    background: #FEFCF2 url(../Images/plaint_sj.png) no-repeat 5px 5px;
     p{
-        padding-left: 25px;
-        background: url(../Images/plaint_sj.png) no-repeat center left;
+        @include lh(28px);
+        //padding-left: 25px;
+        //background: url(../Images/plaint_sj.png) no-repeat center left;
     }
 }
 /*--提示样式 end--*/

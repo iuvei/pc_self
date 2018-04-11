@@ -211,6 +211,7 @@ export default class ContentTop extends Component {
         }
         let hsm = commone.diff($.lt_time_leave);
         this.setState({timeShow: hsm});
+        clearInterval(this.interval);
         this.interval = setInterval(() => {
             if ($.lt_time_leave > 0 && ($.lt_time_leave % 240 == 0 || $.lt_time_leave == 60)) {//每隔4分钟以及最后一分钟重新读取服务器时间
                 Fetch.aboutBet({

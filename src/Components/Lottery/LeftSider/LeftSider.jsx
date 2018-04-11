@@ -30,16 +30,26 @@ import hot_lottery from './Img/hot.png';
 export default class LeftSider extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            openKeys: []
+        }
     }
 
     componentDidMount() {
         this.eventEmitter = emitter.on('changeLottery', (e) => {
             this.handleClick(e);
         });
+        // 监听当前彩种未开放时 自动切换另一彩种菜单打开
+        this.eventEmitter1 = emitter.on('resetLottery', () => {
+            emitter.emit('initData');
+            emitter.emit('initContentTop');
+            this.handTitleClick('', this.openKey())
+        });
     };
 
     componentWillUnmount() {
         emitter.off(this.eventEmitter);
+        emitter.off(this.eventEmitter1);
     };
 
     handleClick(e) {
@@ -138,6 +148,28 @@ export default class LeftSider extends Component {
         }
     };
 
+    handTitleClick(e, defaultKey) {
+        if (defaultKey) {
+            this.setState({
+                openKeys: defaultKey
+            })
+        } else {
+            if (this.state.openKeys.indexOf(e.key) > -1) {
+                this.state.openKeys.splice(this.state.openKeys.indexOf(e.key), 1)
+                // let arr = [...this.state.openKeys]
+                // arr.splice(arr.indexOf(e.key), 1)
+                // this.setState({
+                //     openKeys: arr
+                // })
+            } else {
+                this.setState({
+                    openKeys: [...this.state.openKeys, e.key]
+                })
+            }
+        }
+
+    }
+
     openKey() {
         let tempOpen = stateVar.nowlottery.lotteryId;
         if (tempOpen == 'mmc' || tempOpen == 'ffc') {
@@ -171,11 +203,15 @@ export default class LeftSider extends Component {
                     onClick={(e) => this.handleClick(e)}
                     style={{width: 120}}
                     defaultOpenKeys={this.openKey()}
+                    openKeys={this.state.openKeys}
                     selectedKeys={[stateVar.nowlottery.lotteryId]}
                     className="new_lottery"
                     mode="inline"
                 >
-                    <SubMenu key="sub1" title={<span><img className="icon_img" src={left_1}/><span>热门彩种</span></span>}>
+                    <SubMenu onTitleClick={(e) => {
+                        this.handTitleClick(e)
+                    }} key="sub1"
+                             title={<span><img className="icon_img" src={left_1}/><span>热门彩种</span></span>}>
                         <Menu.Item key="ssc" className="spe_lottery">
                             <img className="icon_img" src={ssc}/>
                             重庆时时彩
@@ -195,7 +231,9 @@ export default class LeftSider extends Component {
                     {
                         lotteryType.map((items, i) => {
                             return (
-                                <SubMenu key={items.typeName}
+                                <SubMenu key={items.typeName} onTitleClick={(e) => {
+                                    this.handTitleClick(e)
+                                }}
                                          title={
                                              <span>
                                                          <img className="icon_img"
