@@ -2,23 +2,30 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
-import { stateVar } from '../../../State';
-import { DatePicker, Button, Table, Pagination, Input, Tooltip, Icon } from 'antd';
+import {stateVar} from '../../../State';
+import {DatePicker, Button, Table, Pagination, Input, Tooltip, Icon} from 'antd';
 import moment from 'moment';
-import { setDateTime, disabledDate, getTime, getNextMonth, getMonthEndDate, datedifference } from '../../../CommonJs/common';
+import {
+    setDateTime,
+    disabledDate,
+    getTime,
+    getNextMonth,
+    getMonthEndDate,
+    datedifference
+} from '../../../CommonJs/common';
 import Crumbs from '../../Common/Crumbs/Crumbs';
 
 const shortcutTime = [
     {
         text: '上周',
         id: 3
-    },{
+    }, {
         text: '上半月',
         id: 4
-    },{
+    }, {
         text: '下半月',
         id: 5
-    },{
+    }, {
         text: '本月',
         id: 6
     }
@@ -44,7 +51,7 @@ const otherGArr = [
 let columnsRests = [], otherGamesFooter = {};
 @observer
 export default class TeamTable extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             threeSeven: null,
@@ -82,55 +89,59 @@ export default class TeamTable extends Component {
             selfDate: '',
         }
     };
+
     componentDidMount() {
         this._ismount = true;
         this.getData();
     };
+
     componentWillUnmount() {
         this._ismount = false;
     };
+
     getData(type, username) {
-        this.setState({ tableLoading: true });
-        let { classify, variety, postData } = this.state;
-        if(classify == 0){
+        this.setState({tableLoading: true});
+        let {classify, variety, postData} = this.state;
+        if (classify == 0) {
             postData.fType = 'getTeamLotteryReport';
             postData.thirdid = null;
-        }else{
+        } else {
             postData.fType = 'getTeamThirdReport';
-            if(variety == 0){// ea
+            if (variety == 0) {// ea
                 postData.thirdid = 2;
-            }else if(variety == 1){//pt
+            } else if (variety == 1) {//pt
                 postData.thirdid = 1;
-            }else if(variety == 2){//体育
+            } else if (variety == 2) {//体育
                 postData.thirdid = 3;
-            }else if(variety == 3){//博饼
+            } else if (variety == 3) {//博饼
                 postData.thirdid = 4;
-            }else{}
+            } else {
+            }
         }
-        if(type == 'onSearch'){
+        if (type == 'onSearch') {
             postData.userid = null;
         }
         Fetch.teammain({
             method: 'POST',
             body: JSON.stringify(postData),
-        }).then((res)=>{
-            if(this._ismount) {
-                this.setState({ searchLoading: false, tableLoading: false });
-                let { table, postData } = this.state;
-                if(res.status == 200){
+        }).then((res) => {
+            if (this._ismount) {
+                this.setState({searchLoading: false, tableLoading: false});
+                let {table, postData} = this.state;
+                if (res.status == 200) {
                     let data = res.repsoneContent;
-                    if(data.forYourself){
+                    if (data.forYourself) {
                         table.tableData = data.forYourself.concat(data.forYourTeamResult);
-                    }else{
+                    } else {
                         table.tableData = data.forYourTeamResult;
                     }
                     table.sum = data.totalSum;
 
-                    if(type == 'onSearch'){
-                        table.history = table.history.filter((item)=>item.name.indexOf('(每日数据)') < 0)
+                    if (type == 'onSearch') {
+                        table.history = table.history.filter((item) => item.name.indexOf('(每日数据)') < 0)
                     }
-                    if(type == 'DATE'){
-                        table.tableData.forEach((item, i)=>{
+                    if (type == 'DATE') {
+                        table.tableData.forEach((item, i) => {
                             item.username = username
                         });
                         table.total = 0;
@@ -139,11 +150,11 @@ export default class TeamTable extends Component {
                             table: table,
                             postData,
                         });
-                    }else{
+                    } else {
                         table.total = parseInt(data.resultCount);
                         this.setState({
                             table: table,
-                            selfDate: postData.sdatetime.slice(5) +' 至 '+ postData.edatetime.slice(5),
+                            selfDate: postData.sdatetime.slice(5) + ' 至 ' + postData.edatetime.slice(5),
                         });
                     }
                 } else {
@@ -155,84 +166,92 @@ export default class TeamTable extends Component {
             }
         })
     };
+
     /*搜索*/
     onSearch() {
-        this.setState({ searchLoading: true });
+        this.setState({searchLoading: true});
         this.getData('onSearch');
     };
+
     /*开始查询日期*/
     onChangeStartTime(date, dateString) {
-        if(!dateString){
+        if (!dateString) {
             return
         }
         let postData = this.state.postData;
         postData.sdatetime = dateString.slice(0, 10);
         this.setState({postData});
     };
+
     /*结束查询日期*/
     onChangeEndTime(date, dateString) {
-        if(!dateString){
+        if (!dateString) {
             return
         }
         let postData = this.state.postData;
         postData.edatetime = dateString.slice(0, 10);
         this.setState({postData});
     };
+
     /*切换每页显示条数*/
-    onShowSizeChange (current, pageSize) {
+    onShowSizeChange(current, pageSize) {
         let postData = this.state.postData;
         postData.p = current;
         postData.pagesize = pageSize;
-        this.setState({postData: postData},()=>this.getData())
+        this.setState({postData: postData}, () => this.getData())
     };
+
     /*切换页面时*/
     onChangePage(page) {
         let postData = this.state.postData;
         postData.p = page;
-        this.setState({postData: postData},()=>this.getData());
+        this.setState({postData: postData}, () => this.getData());
     };
+
     /*快捷选择时间*/
     onShortcutTime(val, type) {
-        let { postData, threeSeven, classify } = this.state;
+        let {postData, threeSeven, classify} = this.state;
         let yearMonth = setDateTime(0).slice(0, 8),
             startHMSFlag = '', endHMSFlag = '';
-        if(classify == 0){//游戏分类为：彩票
+        if (classify == 0) {//游戏分类为：彩票
             startHMSFlag = '02:00:00';
             endHMSFlag = '01:59:59';
-            if(val == 3){ // 上周
+            if (val == 3) { // 上周
                 postData.sdatetime = getTime(7);
                 postData.edatetime = getTime(0);
-            }else if(val == 4){ // 上半月
+            } else if (val == 4) { // 上半月
                 postData.sdatetime = yearMonth + '01';
                 postData.edatetime = yearMonth + '16';
-            }else if(val == 5){ // 下半月
+            } else if (val == 5) { // 下半月
                 postData.sdatetime = yearMonth + '16';
                 postData.edatetime = getNextMonth(yearMonth) + '-01';
-            }else if(val == 6){ // 本月
+            } else if (val == 6) { // 本月
                 postData.sdatetime = yearMonth + '01';
                 postData.edatetime = getNextMonth(yearMonth) + '-01';
-            }else{}
-        }else{//游戏分类为：其他
+            } else {
+            }
+        } else {//游戏分类为：其他
             startHMSFlag = '00:00:00';
             endHMSFlag = '23:59:59';
-            if(val == 3){ // 上周
+            if (val == 3) { // 上周
                 postData.sdatetime = getTime(7);
                 postData.edatetime = getTime(1);
-            }else if(val == 4){ // 上半月
+            } else if (val == 4) { // 上半月
                 postData.sdatetime = yearMonth + '01';
                 postData.edatetime = yearMonth + '15';
-            }else if(val == 5){ // 下半月
+            } else if (val == 5) { // 下半月
                 postData.sdatetime = yearMonth + '15';
                 postData.edatetime = getMonthEndDate();
-            }else if(val == 6){ // 本月
+            } else if (val == 6) { // 本月
                 postData.sdatetime = yearMonth + '01';
                 postData.edatetime = getMonthEndDate();
-            }else{}
+            } else {
+            }
         }
-        if(type !== 'classify'){
-            if(threeSeven == val) {
+        if (type !== 'classify') {
+            if (threeSeven == val) {
                 threeSeven = null
-            }else{
+            } else {
                 threeSeven = val;
             }
         }
@@ -243,25 +262,28 @@ export default class TeamTable extends Component {
             endHMS: endHMSFlag
         });
     };
+
     /*游戏种类*/
-    onVariety(id){
-        this.setState({variety: id}, ()=>this.getData());
+    onVariety(id) {
+        this.setState({variety: id}, () => this.getData());
     };
+
     /*游戏分类*/
-    onClassify(type){
-        if(type === 0){ //彩票
-            this.setState({classify: 0, variety: 0}, ()=>{
+    onClassify(type) {
+        if (type === 0) { //彩票
+            this.setState({classify: 0, variety: 0}, () => {
                 this.onShortcutTime(this.state.threeSeven, 'classify');
                 this.getData();
             });
-        }else{ //其他
-            this.setState({classify: 1}, ()=>{
+        } else { //其他
+            this.setState({classify: 1}, () => {
                 this.onShortcutTime(this.state.threeSeven, 'classify');
                 this.getData();
             });
         }
 
     };
+
     /*获取查询用户名*/
     onUserName(e) {
         let postData = this.state.postData;
@@ -277,8 +299,9 @@ export default class TeamTable extends Component {
         this.setState({
             postData: postData,
             table: table,
-        }, ()=>this.getData())
+        }, () => this.getData())
     };
+
     /*点击日期和用户名*/
     onClickTable(type, record) {
         let table = this.state.table,
@@ -286,7 +309,7 @@ export default class TeamTable extends Component {
             postData = this.state.postData,
             historyFlag = true,
             history = {};
-        if(type == 'DATE') {
+        if (type == 'DATE') {
             postData.userid = parseInt(record.userid);
             // postData.username = null;
             postData.gDate = 1;
@@ -294,7 +317,7 @@ export default class TeamTable extends Component {
                 name: record.username + '(每日数据)',
                 date: postData.sdatetime,
             };
-        }else{
+        } else {
             postData.username = record.username;
             postData.userid = null;
             postData.gDate = 0;
@@ -304,9 +327,9 @@ export default class TeamTable extends Component {
             };
         }
 
-        this.setState({postData: postData, table: table}, ()=> {
-            for(let i = 0; i < historyArr.length; i++) {
-                if(historyArr[i].name === history.name) {
+        this.setState({postData: postData, table: table}, () => {
+            for (let i = 0; i < historyArr.length; i++) {
+                if (historyArr[i].name === history.name) {
                     historyFlag = false;
                     break;
                 }
@@ -317,25 +340,27 @@ export default class TeamTable extends Component {
             this.getData(type, record.username);
         });
     };
+
     /*返回上一层table*/
     onClickGoBac_1() {
         let table = this.state.table,
             postData = this.state.postData;
-        if(table.history.length === 1){
+        if (table.history.length === 1) {
             return
         }
         table.history.splice(-1, 1);
-        postData.username = table.history[table.history.length-1].name;
+        postData.username = table.history[table.history.length - 1].name;
         postData.userid = null;
         this.setState({
             postData: postData,
             table: table,
-        }, ()=>this.getData())
+        }, () => this.getData())
     };
+
     /*排序*/
     handleTableChange = (pagination, filters, sorter) => {
         let {postData} = this.state;
-        if(sorter.columnKey == undefined){
+        if (sorter.columnKey == undefined) {
             postData.orderBy = null;
             postData.orderByType = null;
             postData.gDate = null;
@@ -343,17 +368,24 @@ export default class TeamTable extends Component {
         } else {
             postData.orderByType = sorter.order == 'descend' ? 'DESC' : 'ASC';
             postData.orderBy = sorter.columnKey;
-            if(postData.userid){
+            if (postData.userid) {
                 postData.gDate = 1;
-            }else{
+            } else {
                 postData.gDate = null;
             }
-            this.setState({postData: postData},()=>this.getData());
+            this.setState({postData: postData}, () => this.getData());
         }
     };
+
+    onKeyDown(e) {
+        if (e.keyCode == 13) {
+            this.onSearch();
+        }
+    };
+
     render() {
-        const { dailysalaryStatus } = stateVar;
-        const { table, classify, variety, postData, selfDate } = this.state;
+        const {dailysalaryStatus} = stateVar;
+        const {table, classify, variety, postData, selfDate} = this.state;
         const sum = table.sum;
 
         let columns = [
@@ -362,13 +394,14 @@ export default class TeamTable extends Component {
                 dataIndex: 'rdate',
                 render: (text, record) => postData.userid != null ?
                     text :
-                    <p className="hover" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate.slice(0,5)}<br/>{selfDate.slice(5)}</p>,
+                    <p className="hover" onClick={() => this.onClickTable('DATE', record)}
+                       style={{color: '#0088DE'}}>{selfDate.slice(0, 5)}<br/>{selfDate.slice(5)}</p>,
                 width: 60,
             }, {
                 title: '用户名',
                 dataIndex: 'username',
                 render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                    <p className="hover" onClick={()=>this.onClickTable('USERNAME', record)}
+                    <p className="hover" onClick={() => this.onClickTable('USERNAME', record)}
                        style={{color: '#0088DE'}}>{text}</p>,
                 width: 75,
             }, {
@@ -383,7 +416,7 @@ export default class TeamTable extends Component {
                 className: 'column-right',
                 sorter: true,
                 width: 85,
-            },  {
+            }, {
                 title: '中奖',
                 dataIndex: 'sum_bonus',
                 className: 'column-right',
@@ -401,7 +434,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '毛收入 = 投注量 - 中奖 + 返点'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                 dataIndex: 'sum_grossincome',
@@ -414,7 +447,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '活动 = 活动中完成任务领取的奖金'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                 dataIndex: 'sum_activity',
@@ -450,7 +483,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                 dataIndex: 'sum_total',
@@ -475,18 +508,20 @@ export default class TeamTable extends Component {
             <li>{sum.total_dividents}</li>
             <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
         </ul>;
-        if(dailysalaryStatus.isLose != 1){
+        if (dailysalaryStatus.isLose != 1) {
             columns = [
                 {
                     title: '日期',
                     dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    render: (text, record) => postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
+                           style={{color: '#0088DE'}}>{selfDate}</a>,
                     width: 50,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
                     width: 70,
                 }, {
@@ -501,7 +536,7 @@ export default class TeamTable extends Component {
                     className: 'column-right',
                     sorter: true,
                     width: 90,
-                },  {
+                }, {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
@@ -519,7 +554,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '毛收入 = 投注量 - 中奖 + 返点'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_grossincome',
@@ -532,7 +567,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '活动 = 活动中完成任务领取的奖金'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_activity',
@@ -562,7 +597,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_total',
@@ -587,18 +622,20 @@ export default class TeamTable extends Component {
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }
-        if(dailysalaryStatus.isSalary != 1){
+        if (dailysalaryStatus.isSalary != 1) {
             columns = [
                 {
                     title: '日期',
                     dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    render: (text, record) => postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
+                           style={{color: '#0088DE'}}>{selfDate}</a>,
                     width: 50,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
                     width: 70,
                 }, {
@@ -613,7 +650,7 @@ export default class TeamTable extends Component {
                     className: 'column-right',
                     sorter: true,
                     width: 90,
-                },  {
+                }, {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
@@ -631,7 +668,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '毛收入 = 投注量 - 中奖 + 返点'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_grossincome',
@@ -644,7 +681,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '活动 = 活动中完成任务领取的奖金'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_activity',
@@ -674,7 +711,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_total',
@@ -699,18 +736,20 @@ export default class TeamTable extends Component {
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }
-        if(dailysalaryStatus.isDividend != 1){
+        if (dailysalaryStatus.isDividend != 1) {
             columns = [
                 {
                     title: '日期',
                     dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    render: (text, record) => postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
+                           style={{color: '#0088DE'}}>{selfDate}</a>,
                     width: 70,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
                     width: 80,
                 }, {
@@ -725,7 +764,7 @@ export default class TeamTable extends Component {
                     className: 'column-right',
                     sorter: true,
                     width: 90,
-                },  {
+                }, {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
@@ -743,7 +782,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '毛收入 = 投注量 - 中奖 + 返点'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_grossincome',
@@ -756,7 +795,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '活动 = 活动中完成任务领取的奖金'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_activity',
@@ -786,7 +825,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_total',
@@ -811,18 +850,20 @@ export default class TeamTable extends Component {
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }
-        if(dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1){
+        if (dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1) {
             columns = [
                 {
                     title: '日期',
                     dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    render: (text, record) => postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
+                           style={{color: '#0088DE'}}>{selfDate}</a>,
                     width: 75,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
                     width: 80,
                 }, {
@@ -837,7 +878,7 @@ export default class TeamTable extends Component {
                     className: 'column-right',
                     sorter: true,
                     width: 90,
-                },  {
+                }, {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
@@ -855,7 +896,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '毛收入 = 投注量 - 中奖 + 返点'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_grossincome',
@@ -868,7 +909,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '活动 = 活动中完成任务领取的奖金'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_activity',
@@ -893,7 +934,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_total',
@@ -917,18 +958,20 @@ export default class TeamTable extends Component {
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }
-        if(dailysalaryStatus.isLose != 1 && dailysalaryStatus.isDividend != 1){
+        if (dailysalaryStatus.isLose != 1 && dailysalaryStatus.isDividend != 1) {
             columns = [
                 {
                     title: '日期',
                     dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    render: (text, record) => postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
+                           style={{color: '#0088DE'}}>{selfDate}</a>,
                     width: 70,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
                     width: 80,
                 }, {
@@ -943,7 +986,7 @@ export default class TeamTable extends Component {
                     className: 'column-right',
                     sorter: true,
                     width: 90,
-                },  {
+                }, {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
@@ -961,7 +1004,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '毛收入 = 投注量 - 中奖 + 返点'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_grossincome',
@@ -974,7 +1017,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '活动 = 活动中完成任务领取的奖金'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_activity',
@@ -999,7 +1042,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_total',
@@ -1023,18 +1066,20 @@ export default class TeamTable extends Component {
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }
-        if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){
+        if (dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1) {
             columns = [
                 {
                     title: '日期',
                     dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    render: (text, record) => postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
+                           style={{color: '#0088DE'}}>{selfDate}</a>,
                     width: 70,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
                     width: 80,
                 }, {
@@ -1049,7 +1094,7 @@ export default class TeamTable extends Component {
                     className: 'column-right',
                     sorter: true,
                     width: 90,
-                },  {
+                }, {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
@@ -1067,7 +1112,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '毛收入 = 投注量 - 中奖 + 返点'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_grossincome',
@@ -1080,7 +1125,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '活动 = 活动中完成任务领取的奖金'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_activity',
@@ -1105,7 +1150,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_total',
@@ -1129,18 +1174,20 @@ export default class TeamTable extends Component {
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }
-        if(dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){
+        if (dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1) {
             columns = [
                 {
                     title: '日期',
                     dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    render: (text, record) => postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
+                           style={{color: '#0088DE'}}>{selfDate}</a>,
                     width: 70,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
                     width: 80,
                 }, {
@@ -1155,7 +1202,7 @@ export default class TeamTable extends Component {
                     className: 'column-right',
                     sorter: true,
                     width: 90,
-                },  {
+                }, {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
@@ -1173,7 +1220,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '毛收入 = 投注量 - 中奖 + 返点'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_grossincome',
@@ -1186,7 +1233,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '活动 = 活动中完成任务领取的奖金'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_activity',
@@ -1206,7 +1253,7 @@ export default class TeamTable extends Component {
                                  title={
                                      '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
                                  }>
-                            <Icon className='head_hint' type="question-circle" />
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_total',
@@ -1230,18 +1277,20 @@ export default class TeamTable extends Component {
             </ul>;
         }
 
-        if(variety == 0 || variety == 1){
+        if (variety == 0 || variety == 1) {
             columnsRests = [
                 {
                     title: '日期',
                     dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    render: (text, record) => postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
+                           style={{color: '#0088DE'}}>{selfDate}</a>,
                     width: 150,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
                     width: 150,
                 }, {
@@ -1275,18 +1324,20 @@ export default class TeamTable extends Component {
                 <li>{sum.total_bonus}</li>
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
-        }else if(variety == 2){
+        } else if (variety == 2) {
             columnsRests = [
                 {
                     title: '日期',
                     dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    render: (text, record) => postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
+                           style={{color: '#0088DE'}}>{selfDate}</a>,
                     width: 110,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
                     width: 200,
                 }, {
@@ -1314,18 +1365,20 @@ export default class TeamTable extends Component {
                 <li>{sum.total_effective_price}</li>
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
-        }else if(variety == 3){
+        } else if (variety == 3) {
             columnsRests = [
                 {
                     title: '日期',
                     dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text : <a href="javascript:void(0)" onClick={()=>this.onClickTable('DATE', record)} style={{color: '#0088DE'}}>{selfDate}</a>,
+                    render: (text, record) => postData.userid != null ? text :
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
+                           style={{color: '#0088DE'}}>{selfDate}</a>,
                     width: 150,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={()=>this.onClickTable('USERNAME', record)}
+                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
                            style={{color: '#0088DE'}}>{text}</a>,
                     width: 150,
                 }, {
@@ -1365,12 +1418,13 @@ export default class TeamTable extends Component {
                 <li>{sum.total_prizepool}</li>
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
-        }else{}
+        } else {
+        }
 
         return (
             <div className="report">
                 <div className="team_list_top clear">
-                    <div className="t_l_time left">
+                    <div className="t_l_time left" onKeyDown={(e) => this.onKeyDown(e)}>
                         <ul className="t_l_time_row">
                             <li>
                                 <span>查询日期：</span>
@@ -1379,8 +1433,10 @@ export default class TeamTable extends Component {
                                     placeholder="请选择开始查询日期"
                                     value={moment(postData.sdatetime)}
                                     allowClear={false}
-                                    onChange={(date, dateString)=>{this.onChangeStartTime(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -30, 0)}
+                                    onChange={(date, dateString) => {
+                                        this.onChangeStartTime(date, dateString)
+                                    }}
+                                    disabledDate={(current) => disabledDate(current, -30, 0)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
                                 <DatePicker
@@ -1388,16 +1444,22 @@ export default class TeamTable extends Component {
                                     placeholder="请选择结束查询日期"
                                     value={moment(postData.edatetime)}
                                     allowClear={false}
-                                    onChange={(date, dateString)=>{this.onChangeEndTime(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -datedifference(postData.sdatetime, setDateTime(0)), 1)}
+                                    onChange={(date, dateString) => {
+                                        this.onChangeEndTime(date, dateString)
+                                    }}
+                                    disabledDate={(current) => disabledDate(current, -datedifference(postData.sdatetime, setDateTime(0)), 1)}
                                 />
                             </li>
                             <li className="t_m_line"></li>
                             <li>
                                 <ul className="t_l_time_btn clear">
                                     {
-                                        shortcutTime.map((item,i)=>{
-                                            return <li className={item.id === this.state.threeSeven ? 't_l_time_btn_active' : ''} onClick={()=>{this.onShortcutTime(item.id)}} key={item.id}>{item.text}</li>
+                                        shortcutTime.map((item, i) => {
+                                            return <li
+                                                className={item.id === this.state.threeSeven ? 't_l_time_btn_active' : ''}
+                                                onClick={() => {
+                                                    this.onShortcutTime(item.id)
+                                                }} key={item.id}>{item.text}</li>
                                         })
                                     }
                                 </ul>
@@ -1406,8 +1468,10 @@ export default class TeamTable extends Component {
                         <ul className="t_l_classify">
                             <li>
                                 <span>游戏分类：</span>
-                                <span className={0 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.onClassify(0)}>彩票</span>
-                                <span className={1 === classify ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.onClassify(1)}>其他</span>
+                                <span className={0 === classify ? "t_l_border t_l_active" : "t_l_border"}
+                                      onClick={() => this.onClassify(0)}>彩票</span>
+                                <span className={1 === classify ? "t_l_border t_l_active" : "t_l_border"}
+                                      onClick={() => this.onClassify(1)}>其他</span>
                             </li>
                             <li>
                                 <span>游戏种类：</span>
@@ -1416,8 +1480,11 @@ export default class TeamTable extends Component {
                                         <span className="t_l_border t_l_active">全彩种</span> :
                                         <span>
                                             {
-                                                otherGArr.map((item)=>{
-                                                    return <span className={item.id === variety ? "t_l_border t_l_active" : "t_l_border"} onClick={()=>this.onVariety(item.id)} key={item.id}>{item.text}</span>
+                                                otherGArr.map((item) => {
+                                                    return <span
+                                                        className={item.id === variety ? "t_l_border t_l_active" : "t_l_border"}
+                                                        onClick={() => this.onVariety(item.id)}
+                                                        key={item.id}>{item.text}</span>
                                                 })
                                             }
                                         </span>
@@ -1428,14 +1495,15 @@ export default class TeamTable extends Component {
                                     null :
                                     <li>
                                         <span>用户名：</span>
-                                        <Input placeholder="请输入用户名" value={this.state.postData.username} onChange={(e)=>this.onUserName(e)}/>
+                                        <Input placeholder="请输入用户名" value={this.state.postData.username}
+                                               onChange={(e) => this.onUserName(e)}/>
                                     </li>
                             }
                             <li className="t_m_serch">
                                 <Button type="primary"
                                         icon="search"
                                         loading={this.state.searchLoading}
-                                        onClick={()=>this.onSearch()}
+                                        onClick={() => this.onSearch()}
                                 >
                                     搜索
                                 </Button>
@@ -1451,20 +1519,21 @@ export default class TeamTable extends Component {
                     <div className="t_l_location_name">
                         <span className="left">当前位置：</span>
                         <Crumbs table={table} onChildState={this.onChildState.bind(this)}/>
-                        <span className="t_l_goBack hover right" onClick={()=>this.onClickGoBac_1()}> &lt;&lt;返回上一层 </span>
+                        <span className="t_l_goBack hover right" onClick={() => this.onClickGoBac_1()}> &lt;&lt;
+                            返回上一层 </span>
                     </div>
                     <div className="t_l_table_list">
                         {
                             classify === 0 ?
                                 <Table columns={columns}
-                                       // rowKey={record => record.rdate !== undefined ? record.rdate : record.userid}
-                                       rowKey={(record, index)=> index}
+                                    // rowKey={record => record.rdate !== undefined ? record.rdate : record.userid}
+                                       rowKey={(record, index) => index}
                                        dataSource={table.tableData}
                                        loading={this.state.tableLoading}
                                        pagination={false}
-                                       footer={table.tableData.length <= 0 ? null : ()=>footer}
-                                       // bordered={true}
-                                       scroll={{ y: 600 }}
+                                       footer={table.tableData.length <= 0 ? null : () => footer}
+                                    // bordered={true}
+                                       scroll={{y: 600}}
                                        onChange={this.handleTableChange}
                                 /> :
                                 <Table columns={columnsRests}
@@ -1472,20 +1541,20 @@ export default class TeamTable extends Component {
                                        dataSource={table.tableData}
                                        loading={this.state.tableLoading}
                                        pagination={false}
-                                       footer={table.tableData.length <= 0 ? null : ()=>otherGamesFooter}
-                                       scroll={{ y: 600 }}
+                                       footer={table.tableData.length <= 0 ? null : () => otherGamesFooter}
+                                       scroll={{y: 600}}
                                 />
                         }
 
                     </div>
                     <div className="t_l_page">
-                        <Pagination  style={{display: table.total < 1 ? 'none' : ''}}
-                                     showSizeChanger
-                                     onShowSizeChange={(current, pageSize)=>this.onShowSizeChange(current, pageSize)}
-                                     onChange={(pageNumber)=>this.onChangePage(pageNumber)}
-                                     defaultCurrent={1}
-                                     total={table.total}
-                                     pageSizeOptions={stateVar.pageSizeOptions.slice()}
+                        <Pagination style={{display: table.total < 1 ? 'none' : ''}}
+                                    showSizeChanger
+                                    onShowSizeChange={(current, pageSize) => this.onShowSizeChange(current, pageSize)}
+                                    onChange={(pageNumber) => this.onChangePage(pageNumber)}
+                                    defaultCurrent={1}
+                                    total={table.total}
+                                    pageSizeOptions={stateVar.pageSizeOptions.slice()}
                         />
                     </div>
                 </div>

@@ -93,7 +93,7 @@ export default class Dividend extends Component {
                 if (res.status == 200) {
                     let data = res.repsoneContent,
                         team = {},
-                        resultsFlag = data.alldata.results,
+                        resultsFlag = data.alldata.results instanceof Array ? data.alldata.results : [],
                         sum = data.sum;
                     if (data.sum.userid != undefined) {
                         team = {
@@ -119,7 +119,7 @@ export default class Dividend extends Component {
                         data: resultsFlag,
                         divIdEndTotals: data.dividendtotals,
                         sum: sum,
-                        total: data.alldata.affects,
+                        total: data.alldata.affects == undefined ? 0 : parseInt(data.alldata.affects),
                         oneKeyDividend: data.send_status,
                         send_all_button: data.send_all_button
                     });
@@ -310,7 +310,13 @@ export default class Dividend extends Component {
         let alterData = this.state.alterData;
         alterData.dividend_radio = val;
         this.forceUpdate();
-    }
+    };
+
+    onKeyDown(e) {
+        if (e.keyCode == 13) {
+            this.onSearch();
+        }
+    };
 
     render() {
 
@@ -768,7 +774,7 @@ export default class Dividend extends Component {
             <div className="report">
                 <div className="team_list_top">
                     <div className="t_l_time">
-                        <ul className="t_l_time_row">
+                        <ul className="t_l_time_row" onKeyDown={(e) => this.onKeyDown(e)}>
                             <li>
                                 <span>用户名：</span>
                                 <Input placeholder="请输入用户名" value={postData.username}
@@ -806,7 +812,7 @@ export default class Dividend extends Component {
                                dataSource={data}
                                pagination={false}
                                loading={this.state.loading}
-                               footer={total <= 0 || isNaN(total) || sum.sale == undefined ? null : () => footer}
+                               footer={total <= 0 || sum.sale == undefined ? null : () => footer}
                                className="table_list"
                         />
                     </div>
