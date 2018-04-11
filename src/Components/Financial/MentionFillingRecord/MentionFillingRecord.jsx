@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
-import { setDateTime, disabledDate } from '../../../CommonJs/common';
+import { setDateTime, disabledDate, datedifference } from '../../../CommonJs/common';
 import { DatePicker,  Button, Checkbox, Input, Select, Table, Pagination } from 'antd';
 import moment from 'moment';
 const Option = Select.Option;
@@ -111,7 +111,7 @@ export default class MentionFillingRecord extends Component {
         this.setState({postData: postData},()=>this.getData());
     };
     render() {
-        const { response } = this.state;
+        const { response, postData } = this.state;
         const columns = [
             {
                 title: '账变编号',
@@ -193,7 +193,7 @@ export default class MentionFillingRecord extends Component {
                                     placeholder="请选择查询结束日期"
                                     defaultValue={moment(setDateTime(1))}
                                     onChange={(date, dateString)=>{this.onChangeEndDate(date, dateString)}}
-                                    disabledDate={(current)=>disabledDate(current, -18, 0)}
+                                    disabledDate={(current) => disabledDate(current, -datedifference(postData.sdatetime, setDateTime(0)), 1)}
                                 />
                             </li>
                         </ul>
