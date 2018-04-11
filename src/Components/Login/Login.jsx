@@ -56,6 +56,7 @@ export default class Login extends Component {
                 newpass: 2,
                 confirm_newpass: 2
             },
+            timeoutWechat:false,
             activityClose: true, // 显示活动
         }
     };
@@ -65,7 +66,6 @@ export default class Login extends Component {
         this._ismount = true;
         stateVar.nowlottery.lotteryId = 'ssc';
         this.getSession();
-        this.getWechat();
         this.getKefu();
         if(stateVar.userInfo.sType == 'demo'){
             this.setState({account: null})
@@ -73,6 +73,8 @@ export default class Login extends Component {
     };
     componentWillUnmount(){
         this._ismount = false;
+        this.ws && this.ws.close();
+        clearInterval(this.wechatIntval);
         window.removeEventListener('resize', function (event) {
             event.preventDefault();
         });
@@ -113,17 +115,6 @@ export default class Login extends Component {
             });
             setStore("session",parseData.repsoneContent);
             document.cookie = 'sess='+ parseData.repsoneContent + ';path=/';
-        })
-    }
-    /*
-     * 获取微信登录地址
-     */
-    getWechat(){
-        Fetch.login({
-        	method: "POST",
-        	body:JSON.stringify({sType:"wechat"})
-        }).then((data)=>{
-            _code('wechatLink', data.repsoneContent.url, 200, 175);
         })
     }
     /*
@@ -734,9 +725,68 @@ export default class Login extends Component {
         }
     };
     /*
+     微信返回处理
+     **/
+    wechatData(data){
+    	let message = eval('('+ data +')');
+    	if(message.status == 1){
+    		if(message.data.type == 101){
+    			let result = message.data.data;
+    			stateVar.userInfo = {
+                    userId:result.userid,
+                    userName: result.username,
+                    userType: result.usertype,
+                    accGroup: result.accGroup,
+                    lastIp: result.lastip,
+                    sType: result.sType,
+                    lastTime: result.lasttime,
+                    issetbank: result.issetbank,
+                    setquestion: result.setquestion,
+                    setsecurity: result.setsecurity,
+                    email: result.email,
+                };
+
+                setStore("userName",result.username);
+                setStore("pushDomain",result.push_domain);
+                setStore("userId",result.userid);
+                setStore("userType",result.usertype);
+                setStore("accGroup",result.accGroup);
+                setStore("lastIp",result.lastip);
+                setStore("sType",result.sType);
+                setStore("lastTime",result.lasttime);
+                setStore("issetbank",result.issetbank);
+                setStore("setquestion",result.setquestion);
+                setStore("setsecurity",result.setsecurity);
+                setStore("email",result.email);
+                setStore("session",result.sess);
+            	document.cookie = 'sess='+ result.sess + ';path=/';
+                hashHistory.push('/lottery');
+    		}
+    	}
+    };
+    /*
+     ** 点击微信开始推送
+     wechaturl参数：websocket链接地址
+     wechatuid参数：websocket链接uid
+     */
+    getWebsocket(wechaturl,wechatuid){
+        if(window.location.protocol.indexOf('https') > -1){
+            this.ws = new WebSocket('wss://'+wechaturl);
+        }else {
+            this.ws = new WebSocket('ws://'+wechaturl);
+        }
+        this.ws.onopen = () =>{
+	    	let msg = {"method":"join","uid":wechatuid,"hobby":1};
+	    	this.ws.send(JSON.stringify(msg));
+    	};
+        this.ws.onmessage = (e) => {
+    		this.wechatData(e.data);
+    	}
+    };
+    /*
      * 点击微信切换
      */
-	tigger(){
+	tiggerWechat(){
 		let tempWechat;
 		if(this.state.showWechat == 'none'){
 			tempWechat = 'block';
@@ -744,7 +794,30 @@ export default class Login extends Component {
 			tempWechat = 'none';
 		}
 		this.setState({showWechat:tempWechat});
+		if(!this.state.timeoutWechat){
+			this.wechatIntval = setInterval(()=>{
+				this.ws && this.ws.close();
+				this.getWechat();
+			},(1000*60*5+500));
+			this.getWechat();
+		}
 	}
+	/*
+     * 获取微信相关信息
+     */
+    getWechat(){
+        Fetch.login({
+        	method: "POST",
+        	body:JSON.stringify({sType:"wechat"})
+        }).then((data)=>{
+        	if(data.status == 200){
+        		let tempData = data.repsoneContent; 
+        		_code('wechatLink', tempData.url, 200, 175);
+        		this.setState({timeoutWechat:true});
+        		this.getWebsocket(tempData.push_domain,tempData.loginUid);
+        	}
+        })
+    }
     render() {
 
         const navList = ['账号登录', '试玩模式'];
@@ -804,7 +877,7 @@ export default class Login extends Component {
                                     })
                                 }
                             </ul>
-                            <div className='l_m_select_list_active' onClick={()=>this.tigger()}>微信登录手机版</div>
+                            <div className='l_m_select_list_active' onClick={()=>this.tiggerWechat()}>微信登录</div>
                             <div className='wechatQrcode' style={{display:this.state.showWechat}}>
                                 <div id="wechatLink"></div>
                             </div>
