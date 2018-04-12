@@ -811,7 +811,7 @@ export default class Login extends Component {
         	body:JSON.stringify({sType:"wechat"})
         }).then((data)=>{
         	if(data.status == 200){
-        		let tempData = data.repsoneContent; 
+        		let tempData = data.repsoneContent;
         		_code('wechatLink', tempData.url, 200, 175);
         		this.setState({timeoutWechat:true});
         		this.getWebsocket(tempData.push_domain,tempData.loginUid);
