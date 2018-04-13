@@ -731,6 +731,39 @@ export default class TeamList extends Component {
         this.setState({selectInfo}, () => this.getData());
     };
 
+    /*日销量失去焦点事件*/
+    onBlurSale() {
+        let {contentArr} = this.state;
+        let contentArrFlag = contentArr.sort(this.compare('sale'));
+        for (let i = 0; i < contentArr.length; i++) {
+            if (contentArrFlag[i + 1] != undefined && contentArrFlag[i].sale == contentArrFlag[i + 1].sale) {
+                Modal.warning({
+                    title: '不同档位日销量不能相同，请重新输入！',
+                });
+                contentArrFlag[i].sale = '0'
+            }
+        }
+        this.setState({contentArr: contentArrFlag})
+    };
+
+
+    /*修改日销量*/
+    onChangeDailySales(val, item, index) {
+        item.sale = val;
+        let {contentArr} = this.state;
+        contentArr[index].sale = '' + val;
+        this.setState({salary_ratio: contentArr});
+    };
+
+    /*日销量排序从小到大*/
+    compare(property) {
+        return function (a, b) {
+            let value1 = a[property];
+            let value2 = b[property];
+            return value1 - value2;
+        }
+    };
+
     render() {
         const {dailysalaryStatus} = stateVar;
         const {tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge, users} = this.state;

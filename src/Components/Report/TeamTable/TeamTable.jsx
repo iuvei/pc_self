@@ -394,15 +394,13 @@ export default class TeamTable extends Component {
                 dataIndex: 'rdate',
                 render: (text, record) => postData.userid != null ?
                     text :
-                    <p className="hover" onClick={() => this.onClickTable('DATE', record)}
-                       style={{color: '#0088DE'}}>{selfDate.slice(0, 5)}<br/>{selfDate.slice(5)}</p>,
+                    <p className="hover_a" onClick={() => this.onClickTable('DATE', record)}>{selfDate.slice(0, 5)}<br/>{selfDate.slice(5)}</p>,
                 width: 60,
             }, {
                 title: '用户名',
                 dataIndex: 'username',
                 render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                    <p className="hover" onClick={() => this.onClickTable('USERNAME', record)}
-                       style={{color: '#0088DE'}}>{text}</p>,
+                    <p className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</p>,
                 width: 75,
             }, {
                 title: '投注量',
@@ -1424,8 +1422,17 @@ export default class TeamTable extends Component {
         return (
             <div className="report">
                 <div className="team_list_top clear">
-                    <div className="t_l_time left" onKeyDown={(e) => this.onKeyDown(e)}>
+                    <div className="t_l_time" onKeyDown={(e) => this.onKeyDown(e)}>
                         <ul className="t_l_time_row">
+                            {
+                                stateVar.userInfo.userType == 0 ?
+                                    null :
+                                    <li>
+                                        <span>用户名：</span>
+                                        <Input placeholder="请输入用户名" value={this.state.postData.username}
+                                               onChange={(e) => this.onUserName(e)}/>
+                                    </li>
+                            }
                             <li>
                                 <span>查询日期：</span>
                                 <DatePicker
@@ -1490,15 +1497,6 @@ export default class TeamTable extends Component {
                                         </span>
                                 }
                             </li>
-                            {
-                                stateVar.userInfo.userType == 0 ?
-                                    null :
-                                    <li>
-                                        <span>用户名：</span>
-                                        <Input placeholder="请输入用户名" value={this.state.postData.username}
-                                               onChange={(e) => this.onUserName(e)}/>
-                                    </li>
-                            }
                             <li className="t_m_serch">
                                 <Button type="primary"
                                         icon="search"
@@ -1508,12 +1506,12 @@ export default class TeamTable extends Component {
                                     搜索
                                 </Button>
                             </li>
+                            <li className="r_m_hint right" style={{margin: 0}}>
+                                <p>提示：总表数据保留为有效时间最近30天数据， 盈亏数据是在数据产生30分钟后更新</p>
+                            </li>
                         </ul>
                     </div>
-                    <div className="r_m_hint right">
-                        <p>提示：总表数据保留为有效时间最近30天数据</p>
-                        <p>提示：盈亏数据是在数据产生30分钟后更新</p>
-                    </div>
+
                 </div>
                 <div className="t_l_table">
                     <div className="t_l_location_name">
@@ -1526,13 +1524,11 @@ export default class TeamTable extends Component {
                         {
                             classify === 0 ?
                                 <Table columns={columns}
-                                    // rowKey={record => record.rdate !== undefined ? record.rdate : record.userid}
                                        rowKey={(record, index) => index}
                                        dataSource={table.tableData}
                                        loading={this.state.tableLoading}
                                        pagination={false}
                                        footer={table.tableData.length <= 0 ? null : () => footer}
-                                    // bordered={true}
                                        scroll={{y: 600}}
                                        onChange={this.handleTableChange}
                                 /> :

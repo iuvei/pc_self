@@ -156,6 +156,20 @@
             "disabled": false
         },
         {
+            "cnname": "上海11选5",
+            "nav": "SH11-5",
+            "lotteryid": 30,
+            "lotteryCurmlotteryid": 313697,
+            "lotteryDesc": "基诺型高频彩",
+            "methodid": 3111848,
+            "lastupdate": 0,
+            "lotterytype": 3,
+            "curmid": 313697,
+            "imgUrl":"sh11y",
+            "imgSrc": false,
+            "disabled": false
+        },
+        {
             "cnname": "福彩3D",
             "nav": "fucaip3",
             "lotteryid": 11,
@@ -199,7 +213,6 @@
             "imgSrc": "",
             "disabled": false
         },
-
         {
             "cnname": "北京快乐8",
             "nav": "BJKL8",
@@ -224,13 +237,6 @@
         {
             "cnname": "重庆11选5",
             "nav": "CQ11-5",
-            "lotterytype": 3,
-            "imgSrc": false,
-            "disabled": true
-        },
-        {
-            "cnname": "上海11选5",
-            "nav": "SH11-5",
             "lotterytype": 3,
             "imgSrc": false,
             "disabled": true

@@ -59,7 +59,7 @@ $border-color: #B2B2B2;
                 @include lh(30px);
                 li{
                     float: left;
-                    margin-right: 15px;
+                    margin-right: 12px;
                     .ant-input{
                         width: 120px;
                     }
@@ -81,7 +81,7 @@ $border-color: #B2B2B2;
                     }
                 }
                 .t_m_serch{
-                    margin-left: 5px;
+                    margin: 0 0 10px 0;
                     .ant-btn-primary{
                         height: 30px;
                     }
