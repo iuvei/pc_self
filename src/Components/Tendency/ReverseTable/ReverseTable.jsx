@@ -32,7 +32,7 @@ export default class ReverseTable extends Component {
         * 将彩种id作为索引，彩种大类作为变量内容
         * */
         let lotteryBigType=[];
-        let lotteryListFlag = data.repsoneContent.aData.lotteryList;
+        let lotteryListFlag = data.aData.lotteryList;
         for(let i=0; i<lotteryListFlag.length; i++){
             lotteryBigType[lotteryListFlag[i].lotteryid] = lotteryListFlag[i].lotterytype;
         }
@@ -42,7 +42,7 @@ export default class ReverseTable extends Component {
 
         /*获取开奖号码个数，从而控制开奖号码分成多少列*/
         let AwardNoChildren=[];
-        let curHeardAwrdNo=data.repsoneContent.bonuscode[0].code;
+        let curHeardAwrdNo=data.bonuscode[0].code;
         let iftwoballH=curHeardAwrdNo.charAt(2);
         if(iftwoballH!=" "){
             headAwardNo=curHeardAwrdNo.split("");
@@ -51,7 +51,7 @@ export default class ReverseTable extends Component {
             headAwardNo=curHeardAwrdNo.split(" ");
         }
        /*表头分成两行，在位置下分成：期号，开奖号码个数对应的列，如award0,award1...
-       * 其余大表头下均由后台返回的data.repsoneContent.vaildnum长度决定*/
+       * 其余大表头下均由后台返回的data.vaildnum长度决定*/
 
        /*开奖号码子表头除去award0以外，标准次数，当前次数行，开奖号码行，都不占列数*/
         const renderContent = (value, row, index) => {
@@ -134,16 +134,16 @@ export default class ReverseTable extends Component {
         * 并对表头下的数据进行加入类ball
         * 当大表头下显示单列数字时，加入类ball，从而画折线图*/
         let columnChildren = [];
-        for (let i = 0; i < data.repsoneContent.lcodegroup.length; i++) {
-            if(!(data.repsoneContent.bonuscode[0].wei[i] instanceof Array)&&          /*在大表头有多个子标题前提下显示单个数据，才加入类ball*/
-                ((data.repsoneContent.vaildnum[i][0]=="1"||data.repsoneContent.vaildnum[i][0]=="0")||
-                    (data.repsoneContent.vaildnum[0]=="1"||data.repsoneContent.vaildnum[0]=="0"))){
-                if(data.repsoneContent.vaildnum[0] instanceof Array){ /*多个表头下的子标题不是一模一样的*/
-                    for(let z = 0;z < data.repsoneContent.vaildnum[i].length ; z++){
+        for (let i = 0; i < data.lcodegroup.length; i++) {
+            if(!(data.bonuscode[0].wei[i] instanceof Array)&&          /*在大表头有多个子标题前提下显示单个数据，才加入类ball*/
+                ((data.vaildnum[i][0]=="1"||data.vaildnum[i][0]=="0")||
+                    (data.vaildnum[0]=="1"||data.vaildnum[0]=="0"))){
+                if(data.vaildnum[0] instanceof Array){ /*多个表头下的子标题不是一模一样的*/
+                    for(let z = 0;z < data.vaildnum[i].length ; z++){
                             columnChildren.push({
                                 key: `children${i}${z}`,
                                 dataIndex: `children${i}${z}`,
-                                title: data.repsoneContent.vaildge,
+                                title: data.vaildge,
                                 render: (value, row, index) => {
                                     const obj = {
                                         children: {value},
@@ -164,11 +164,11 @@ export default class ReverseTable extends Component {
 
                 }else{/*所有大表头下的子标题一模一样*/
 
-                    for (let z = 0; z <data.repsoneContent.vaildnum.length; z++) {
+                    for (let z = 0; z <data.vaildnum.length; z++) {
                         columnChildren.push({
                             key: `children${i}${z}`,
                             dataIndex: `children${i}${z}`,
-                            title: data.repsoneContent.vaildge,
+                            title: data.vaildge,
                             render: (value, row, index) => {
                                 const obj = {
                                     children: {value},
@@ -187,23 +187,23 @@ export default class ReverseTable extends Component {
                     }
                 }
             }else{
-                if(data.repsoneContent.vaildnum[0] instanceof Array){ /*多个表头下的子标题不是一模一样的*/
-                    for(let z = 0;z < data.repsoneContent.vaildnum[i].length ; z++){
+                if(data.vaildnum[0] instanceof Array){ /*多个表头下的子标题不是一模一样的*/
+                    for(let z = 0;z < data.vaildnum[i].length ; z++){
                         columnChildren.push({
                             key: `children${i}${z}`,
                             dataIndex: `children${i}${z}`,
-                            title: data.repsoneContent.vaildge,
+                            title: data.vaildge,
                         });
                         }
 
 
                 }else{/*所有大表头下的子标题一模一样*/
 
-                    for (let z = 0; z <data.repsoneContent.vaildnum.length; z++) {
+                    for (let z = 0; z <data.vaildnum.length; z++) {
                         columnChildren.push({
                             key: `children${i}${z}`,
                             dataIndex: `children${i}${z}`,
-                            title: data.repsoneContent.vaildge,
+                            title: data.vaildge,
                         });
                     }
                 }
@@ -213,7 +213,7 @@ export default class ReverseTable extends Component {
             if(columnChildren==''){
                 columns.push({
                     key: `colums${i}`,
-                    title: data.repsoneContent.lcodegroup[i],
+                    title: data.lcodegroup[i],
                     dataIndex: `children${i}0`,
 
                 });
@@ -221,7 +221,7 @@ export default class ReverseTable extends Component {
                 columns.push({
                     key: `colums${i}`,
                     dataIndex: `colums${i}`,
-                    title: data.repsoneContent.lcodegroup[i],
+                    title: data.lcodegroup[i],
                     children: columnChildren,
                 });
             }
@@ -247,32 +247,32 @@ export default class ReverseTable extends Component {
             award0:"开奖号码",
             key:"award0",
         });
-        /*data.repsoneContent.appears是二维数组，一维对应大表头个数，二维对应子表头个数*/
-        for (let i = 0; i < data.repsoneContent.appears.length; i++) {
-            for (let j = 0; j < data.repsoneContent.appears[i].length; j++) {
-                tableData[0][`children${i}${j}`] = data.repsoneContent.vaildci;
-                tableData[1][`children${i}${j}`] =  data.repsoneContent.appears[i][j];
-                if(data.repsoneContent.vaildnum[0] instanceof Array) { /*多个表头下的子标题不是一模一样的*/
-                    tableData[2][`children${i}${j}`] =  data.repsoneContent.vaildnum[i][j];
+        /*data.appears是二维数组，一维对应大表头个数，二维对应子表头个数*/
+        for (let i = 0; i < data.appears.length; i++) {
+            for (let j = 0; j < data.appears[i].length; j++) {
+                tableData[0][`children${i}${j}`] = data.vaildci;
+                tableData[1][`children${i}${j}`] =  data.appears[i][j];
+                if(data.vaildnum[0] instanceof Array) { /*多个表头下的子标题不是一模一样的*/
+                    tableData[2][`children${i}${j}`] =  data.vaildnum[i][j];
                 }else{/*所有大表头下的子标题一模一样*/
-                    tableData[2][`children${i}${j}`] =  data.repsoneContent.vaildnum[j];
+                    tableData[2][`children${i}${j}`] =  data.vaildnum[j];
                 }
             }
 
         }
 
-        /*将表格内容用data.repsoneContent.bonuscode的长度进行遍历，数据渲染依据表格表头的dataindex
+        /*将表格内容用data.bonuscode的长度进行遍历，数据渲染依据表格表头的dataindex
         * 因为是倒转表格，起始行数为表格第三行，结束行为获取数据的长度+3
         * 渲染的数据从表格返回数据最后一位到起始位*/
-        for (let h = 3; h < data.repsoneContent.bonuscode.length+3; h++) {
-            let i= data.repsoneContent.bonuscode.length-h+2;/*渲染的数据从表格返回数据最后一位到起始位*/
+        for (let h = 3; h < data.bonuscode.length+3; h++) {
+            let i= data.bonuscode.length-h+2;/*渲染的数据从表格返回数据最后一位到起始位*/
             tableData.push({
-                issue: data.repsoneContent.bonuscode[i].issue,
+                issue: data.bonuscode[i].issue,
                 key:"issue${i}",
             });
             /*将开奖号码重新封装成一个数组*/
             let tableAwardNo=[];
-            let curAwrdNo=data.repsoneContent.bonuscode[i].code;
+            let curAwrdNo=data.bonuscode[i].code;
             let iftwoball=curAwrdNo.charAt(2);
             if(iftwoball!=" "){
                 tableAwardNo=curAwrdNo.split("");
@@ -301,83 +301,83 @@ export default class ReverseTable extends Component {
             * 1.2.1 当前显示内容为数字时，返回的都是当前位置+1
             * 1.2.2 当前显示内容为文字时，返回的都是当前位置
             * 当前走势图为单表头时，
-            * 1.显示的内容就是当前返回数据data.repsoneContent.bonuscode[i].wei[j]的内容
+            * 1.显示的内容就是当前返回数据data.bonuscode[i].wei[j]的内容
             **/
-            for (let j = 0; j < data.repsoneContent.lcodegroup.length; j++) {
-                if(!(data.repsoneContent.vaildnum[0] instanceof Array)){ //多表头,并且多个大表头下的子表头内容都是同样的
+            for (let j = 0; j < data.lcodegroup.length; j++) {
+                if(!(data.vaildnum[0] instanceof Array)){ //多表头,并且多个大表头下的子表头内容都是同样的
                     if(lotteryBigType[lotteryId]==0){ //时时彩系列，不管是数字还是文字，返回的都是当前位置
-                        if(data.repsoneContent.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
+                        if(data.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
 
-                            for(let z=0; z<data.repsoneContent.bonuscode[i].wei[j].length;z++){
-                                let currentWei = data.repsoneContent.bonuscode[i].wei[j][z];
-                                tableData[h][`children${j}${currentWei}`] = data.repsoneContent.vaildnum[currentWei];
+                            for(let z=0; z<data.bonuscode[i].wei[j].length;z++){
+                                let currentWei = data.bonuscode[i].wei[j][z];
+                                tableData[h][`children${j}${currentWei}`] = data.vaildnum[currentWei];
                             }
                         }else{//同一大表头中显示1个数据
-                            let currentWei = data.repsoneContent.bonuscode[i].wei[j];
-                            tableData[h][`children${j}${currentWei}`] = data.repsoneContent.vaildnum[currentWei];
+                            let currentWei = data.bonuscode[i].wei[j];
+                            tableData[h][`children${j}${currentWei}`] = data.vaildnum[currentWei];
                         }
 
                     }else if(lotteryBigType[lotteryId]==2){ //11选5系列
 
-                        if(data.repsoneContent.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
-                            for(let z=0; z<data.repsoneContent.bonuscode[i].wei[j].length;z++){
+                        if(data.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
+                            for(let z=0; z<data.bonuscode[i].wei[j].length;z++){
                                 let currentWei=null;
-                                if(data.repsoneContent.vaildnum[0]=="1"){ //当前显示为数据
-                                    currentWei = data.repsoneContent.bonuscode[i].wei[j][z]-1;
+                                if(data.vaildnum[0]=="1"){ //当前显示为数据
+                                    currentWei = data.bonuscode[i].wei[j][z]-1;
                                 }else{//当前显示为文字
-                                    currentWei = data.repsoneContent.bonuscode[i].wei[j][z];
+                                    currentWei = data.bonuscode[i].wei[j][z];
                                 }
 
-                                tableData[h][`children${j}${currentWei}`] = data.repsoneContent.bonuscode[i].wei[j][z];
+                                tableData[h][`children${j}${currentWei}`] = data.bonuscode[i].wei[j][z];
                             }
                         }else{//同一大表头中显示1个数据
                             let currentWei = null;
-                            if(data.repsoneContent.vaildnum[0]=="1"){ //当前显示为数据
-                                currentWei = data.repsoneContent.bonuscode[i].wei[j]-1;
+                            if(data.vaildnum[0]=="1"){ //当前显示为数据
+                                currentWei = data.bonuscode[i].wei[j]-1;
                             }else{//当前显示为文字
-                                currentWei = data.repsoneContent.bonuscode[i].wei[j];
+                                currentWei = data.bonuscode[i].wei[j];
                             }
-                            tableData[h][`children${j}${currentWei}`] = data.repsoneContent.bonuscode[i].wei[j];
+                            tableData[h][`children${j}${currentWei}`] = data.bonuscode[i].wei[j];
                         }
                     }
                 }else{ /*多表头，并且多个大表头下的子表头内容都是不同的*/
-                    if(data.repsoneContent.vaildnum[j] instanceof Array){ //大表头含有多个子元素
+                    if(data.vaildnum[j] instanceof Array){ //大表头含有多个子元素
                         if(lotteryBigType[lotteryId]==0){ //时时彩系列
-                            if(data.repsoneContent.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
+                            if(data.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
 
-                                for(let z=0; z<data.repsoneContent.bonuscode[i].wei[j].length;z++){
-                                    let currentWei = data.repsoneContent.bonuscode[i].wei[j][z];
-                                    tableData[h][`children${j}${currentWei}`] = data.repsoneContent.vaildnum[j][currentWei];
+                                for(let z=0; z<data.bonuscode[i].wei[j].length;z++){
+                                    let currentWei = data.bonuscode[i].wei[j][z];
+                                    tableData[h][`children${j}${currentWei}`] = data.vaildnum[j][currentWei];
                                 }
                             }else{ //同一大表头中仅显示一个数据
-                                let currentWei = data.repsoneContent.bonuscode[i].wei[j];
-                                tableData[h][`children${j}${currentWei}`] = data.repsoneContent.vaildnum[j][currentWei];
+                                let currentWei = data.bonuscode[i].wei[j];
+                                tableData[h][`children${j}${currentWei}`] = data.vaildnum[j][currentWei];
                             }
 
                         }else if(lotteryBigType[lotteryId]==2){ //11选5系列
-                            if(data.repsoneContent.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
-                                for(let z=0; z<data.repsoneContent.bonuscode[i].wei[j].length;z++){
+                            if(data.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
+                                for(let z=0; z<data.bonuscode[i].wei[j].length;z++){
                                     let currentWei=null;
-                                    if(data.repsoneContent.vaildnum[j][0]=="1"){ //当前显示为数据
-                                        currentWei = data.repsoneContent.bonuscode[i].wei[j][z]-1;
+                                    if(data.vaildnum[j][0]=="1"){ //当前显示为数据
+                                        currentWei = data.bonuscode[i].wei[j][z]-1;
                                     }else{//当前显示为文字
-                                        currentWei = data.repsoneContent.bonuscode[i].wei[j][z];
+                                        currentWei = data.bonuscode[i].wei[j][z];
                                     }
 
-                                    tableData[h][`children${j}${currentWei}`] = data.repsoneContent.bonuscode[i].wei[j][z];
+                                    tableData[h][`children${j}${currentWei}`] = data.bonuscode[i].wei[j][z];
                                 }
                             }else{//同一大表头中显示1个数据
                                 let currentWei = null;
-                                if(data.repsoneContent.vaildnum[0]=="1"){ //当前显示为数据
-                                    currentWei = data.repsoneContent.bonuscode[i].wei[j]-1;
+                                if(data.vaildnum[0]=="1"){ //当前显示为数据
+                                    currentWei = data.bonuscode[i].wei[j]-1;
                                 }else{//当前显示为文字
-                                    currentWei = data.repsoneContent.bonuscode[i].wei[j];
+                                    currentWei = data.bonuscode[i].wei[j];
                                 }
-                                tableData[h][`children${j}${currentWei}`] = data.repsoneContent.bonuscode[i].wei[j];
+                                tableData[h][`children${j}${currentWei}`] = data.bonuscode[i].wei[j];
                             }
                         }
                     }else{ //大表头下只有一个元素
-                        tableData[h][`children${j}0`] = data.repsoneContent.bonuscode[i].wei[j];
+                        tableData[h][`children${j}0`] = data.bonuscode[i].wei[j];
                     }
                 }
             }

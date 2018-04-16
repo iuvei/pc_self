@@ -216,6 +216,7 @@
         {
             "cnname": "北京快乐8",
             "nav": "BJKL8",
+            "lotteryid": -1,
             "lotterytype": 1,
             "imgSrc": false,
             "disabled": true
@@ -223,6 +224,7 @@
         {
             "cnname": "江苏快三",
             "nav": "JSK3",
+            "lotteryid": -2,
             "lotterytype": 1,
             "imgSrc": false,
             "disabled": true
@@ -230,6 +232,7 @@
         {
             "cnname": "河内1分彩",
             "nav": "hnffc",
+            "lotteryid": -3,
             "lotterytype": 1,
             "imgSrc": false,
             "disabled": true
@@ -237,6 +240,7 @@
         {
             "cnname": "重庆11选5",
             "nav": "CQ11-5",
+            "lotteryid": -4,
             "lotterytype": 3,
             "imgSrc": false,
             "disabled": true
@@ -244,6 +248,7 @@
         {
             "cnname": "河南481",
             "nav": "HN481",
+            "lotteryid": -5,
             "lotterytype": 2,
             "imgSrc": false,
             "disabled": true

@@ -1237,7 +1237,7 @@ export default class TeamList extends Component {
                 </ul>
             </div>;
         } else if (typeName == '日工资契约') {
-            typeContent = <div className="a_c_text a_c_text_sale">
+            typeContent = <div className="a_c_text">
                 <p>契约内容：</p>
                 <ul className="text_content_list">
                     {

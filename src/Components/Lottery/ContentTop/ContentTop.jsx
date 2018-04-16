@@ -103,7 +103,7 @@ export default class ContentTop extends Component {
                     tempStopFlag.push(false);
                 }
             }
-            curLocation = curLocation.split("#")[0] + "#/tendency";
+            curLocation = curLocation.split("#")[0] + "#/tendency?id=" + stateVar.nowlottery.lotteryBetId;
             if (this._ismount) {
                 this.setState({
                     code: tempArrCode,
@@ -262,36 +262,34 @@ export default class ContentTop extends Component {
     //得到最近历史开奖号码
     getKjHistory(flag) {
         if (stateVar.nowlottery.lotteryBetId == 23) {
-            if (this._ismount) {
-            }
             Fetch.aboutMmc({
                 method: "POST",
                 body: JSON.stringify({lotteryid: stateVar.nowlottery.lotteryBetId, issuecount: 20, flag: 'getlastcode'})
             }).then((data) => {
-                stateVar.openLotteryFlag = true;
-                let tempData = data.repsoneContent;
-                if (this._ismount && data.status == 200) {
-                    if (tempData.length > 0) {
-                        stateVar.mmccode = tempData[0].split(' ');
-                        stateVar.mmCkjNumberList = tempData;
-                        this.setState({
-                            mmcmoni: true,
-                            kjStopallFlag: false,
-                            kjStopTime: 0,
-                            kjStopFlag: [false, false, false, false, false]
-                        }, () => {
-                            this.kjanimate(0);
-                        });
-                        setTimeout(() => {
-                            this.setState({code: stateVar.mmccode});
-                            this.setState({mmcmoni: false, kjStopallFlag: true});
-                        }, 300);
+                if(this._ismount){
+                    stateVar.openLotteryFlag = true;
+                    let tempData = data.repsoneContent;
+                    if (data.status == 200) {
+                        if (tempData.length > 0) {
+                            stateVar.mmccode = tempData[0].code.split(' ');
+                            stateVar.mmCkjNumberList = tempData;
+                            this.setState({
+                                mmcmoni: true,
+                                kjStopallFlag: false,
+                                kjStopTime: 0,
+                                kjStopFlag: [false, false, false, false, false]
+                            }, () => {
+                                this.kjanimate(0);
+                            });
+                            setTimeout(() => {
+                                this.setState({code: stateVar.mmccode});
+                                this.setState({mmcmoni: false, kjStopallFlag: true});
+                            }, 300);
+                        } else {
+                            stateVar.mmCkjNumberList = [];
+                            this.setState({mmcmoni: false});
+                        }
                     } else {
-                        stateVar.mmCkjNumberList = [];
-                        this.setState({mmcmoni: false});
-                    }
-                } else {
-                    if (this._ismount) {
                         this.setState({mmcmoni: false, kjStopallFlag: true});
                     }
                 }
@@ -385,7 +383,7 @@ export default class ContentTop extends Component {
         }, () => {
             this.kjanimate(0);
         });
-        $(".monikj span").html('开奖中...')
+        $(".monikj span").html('开奖中...');
         Fetch.aboutMmc({
             method: "POST",
             body: JSON.stringify({"flag": "getcodes", "lotteryid": 23})
@@ -526,7 +524,7 @@ export default class ContentTop extends Component {
                 this.getAccGroup();
             }
         }
-    }
+    };
 
     //获取奖金组
     getAccGroup() {

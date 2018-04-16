@@ -3,7 +3,7 @@ $border_color: #C8C8C8;
 .tendency-main{
     width: 100%;
     .t-top{
-        width: 100%;
+        min-width: 1172px;
         height: 84px;
         color: #333333;
         background: #fff;
@@ -15,27 +15,18 @@ $border_color: #C8C8C8;
         border-bottom: 1px solid $border_color;
         text-align: center;
         line-height: 84px;
-        li{
+        &>li{
             display: inline-block;
-            margin-left: 20px;
-        }
-        li:first-child{
-            margin-left: 0;
-        }
-        li:nth-child(5){
-            width: 1px;
-            background: $border_color;
-            height: 33px;
-            margin-bottom: -14px;
-        }
-        .t-r-table{
-            color: #0099FF;
-            border-bottom: 1px solid #0099FF;
-            &:hover,&:active{
-                color: #CB1313;
-                border-bottom: 1px solid #CB1313;
+            margin-left: 10px;
+            &:first-child{
+                margin-left: 0;
             }
-
+            &:nth-child(5){
+                width: 1px;
+                background: $border_color;
+                height: 33px;
+                margin-bottom: -14px;
+            }
         }
         .t-period{
             box-sizing: border-box;
