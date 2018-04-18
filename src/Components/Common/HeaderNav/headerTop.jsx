@@ -42,7 +42,8 @@ export default class HeaderTop extends Component {
         this._ismount = true;
 
         // 组件装载完成以后声明一个自定义事件
-        this.eventEmitter = emitter.on('changeMoney', () => {
+        this.eventEmitter = emitter.on('change' +
+            'Money', () => {
             this.getMenu();
             this.getBalance();
         });

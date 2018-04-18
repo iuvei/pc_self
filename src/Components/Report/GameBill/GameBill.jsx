@@ -96,8 +96,9 @@ export default class GameBill extends Component {
     };
     /*搜索*/
     onSearch() {
-        this.setState({searchLoading: true});
-        this.getData();
+        let {postData} = this.state;
+        postData.p = 1;
+        this.setState({searchLoading: true, postData}, ()=>this.getData());
     };
     // 彩种名称
     onChangeRadio(e) {

@@ -356,6 +356,11 @@ export default class LotteryReport extends Component {
                     <div className="t_l_time" onKeyDown={(e) => this.onKeyDown(e)}>
                         <ul className="t_l_time_row">
                             <li>
+                                <span>用户名：</span>
+                                <Input placeholder="请输入用户名" value={this.state.postData.username}
+                                       onChange={(e) => this.onUserName(e)}/>
+                            </li>
+                            <li>
                                 <span>查询日期：</span>
                                 <DatePicker
                                     format={ "YYYY-MM-DD" + ' ' + '02:00:00' }
@@ -396,11 +401,6 @@ export default class LotteryReport extends Component {
                                     选择彩种
                                     <Icon type="menu-unfold"/>
                                 </Button>
-                            </li>
-                            <li>
-                                <span>用户名：</span>
-                                <Input placeholder="请输入用户名" value={this.state.postData.username}
-                                       onChange={(e) => this.onUserName(e)}/>
                             </li>
                             <li>
                                 <Button type="primary" icon="search" loading={this.state.searchLoading}

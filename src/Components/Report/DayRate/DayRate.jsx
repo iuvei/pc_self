@@ -2,14 +2,11 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
-import {DatePicker, Table, Pagination, Input, Button, Icon, Modal, InputNumber, Popconfirm} from 'antd';
+import {DatePicker, Table, Pagination, Input, Button, Icon, Modal, Tooltip} from 'antd';
 import moment from 'moment';
-const confirm = Modal.confirm;
-const ButtonGroup = Button.Group;
 import {stateVar} from '../../../State';
 import {setDateTime, disabledDate} from '../../../CommonJs/common';
 import Crumbs from '../../Common/Crumbs/Crumbs';
-import Contract from '../../Common/Contract/Contract';
 
 @observer
 export default class DayRate extends Component {
@@ -41,38 +38,7 @@ export default class DayRate extends Component {
                 ],
             },
             historyData: {},// 历史日工资
-
-            alterVisible: false, //修改比例
-            alterData: {},
-            affirmLoading: false,
-            disabled: true,
-            contentArr: [], // 日工资契约协议
-            salary_ratio: [], //修改协议
-            contract_name: '修改契约', //按钮btn
-            contractInfo: [
-                {
-                    id: 0,
-                    contract: "日工资契约",
-                },
-                {
-                    id: 1,
-                    contract: "分红契约",
-                },
-                {
-                    id: 2,
-                    contract: "奖金组契约",
-                },
-                {
-                    id: 3,
-                    contract: "配额契约",
-                }
-            ],
-            protocol: [],// 自身协议
-            hideBtn: false,
         };
-        this.onCancel = this.onCancel.bind(this);
-        this.onDiviratio = this.onDiviratio.bind(this);
-        this.onConsent = this.onConsent.bind(this);
     };
 
     componentDidMount() {
@@ -104,14 +70,7 @@ export default class DayRate extends Component {
                 });
                 let table = this.state.table;
                 if (res.status == 200) {
-                    let data = res.repsoneContent,
-                        userName = stateVar.userInfo.userName;
-                    // for(let i = 0, results = data.results; i < results.length; i++){
-                    //     if(userName == results[i].username){
-                    //         results[i].buttons[1].text = '自身协议';
-                    //         break;
-                    //     }
-                    // }
+                    let data = res.repsoneContent;
                     table.dayRateList = data.results;
                     table.sum = data.sum;
                     table.total = parseInt(data.affects);
@@ -142,8 +101,9 @@ export default class DayRate extends Component {
 
     /*搜索*/
     onSearch() {
-        this.setState({searchLoading: true});
-        this.getData();
+        let {postData} = this.state;
+        postData.p = 1;
+        this.setState({searchLoading: true, postData}, ()=>this.getData());
     };
 
     /*切换每页显示条数*/
@@ -163,31 +123,6 @@ export default class DayRate extends Component {
             table: table,
         }, () => this.getData())
     };
-
-    /*同意协议*/
-    onConsent() {
-        let {alterData} = this.state;
-        this.setState({affirmLoading: true});
-        Fetch.dailysalaryself({
-            method: 'POST',
-            body: JSON.stringify({status: 1, userid: alterData.userid})
-        }).then((res) => {
-            if (this._ismount) {
-                this.setState({affirmLoading: false});
-                if (res.status == 200) {
-                    Modal.success({
-                        title: res.shortMessage,
-                    });
-                    this.setState({alterVisible: false});
-                    this.getData();
-                } else {
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
-                }
-            }
-        })
-    }
 
     /*点击用户名*/
     onClickUserName(name) {
@@ -230,199 +165,23 @@ export default class DayRate extends Component {
     };
 
     /*操作按钮*/
-    onClickButton(type, record) {
-        if (type == '历史工资') {
-            this.setState({
-                visible: true,
-                searchUserName: record.username,
-                loadingModal: true,
-            });
-            Fetch.salarypersonalsalary({
-                method: 'POST',
-                body: JSON.stringify({username: record.username, begintime: '', eatime: record.gmt_sale})
-            }).then((res) => {
-                if (this._ismount) {
-                    this.setState({loadingModal: false});
-                    let abg = {
-                        results: []
-                    };
-                    if (res.status == 200) {
-                        this.setState({historyData: res.repsoneContent.list});
-                    }
-                }
-            })
-        } else if (type == '修改协议' || type == '已签订过' || type == '等待同意' || type == '自身协议' || type == '同意协议' || type == '查看协议') {
-            if (type == '查看协议') {
-                this.setState({hideBtn: true})
-            }
-            this.setState({
-                alterData: record,
-                alterVisible: true,
-                disabled: true
-            });
-            let postDataSelf = {
-                userid: record.userid,
-                parentid: record.parent_id,
-                id: record.id,
-                gmt_sale: record.gmt_sale,
-            };
-            Fetch.dailysalaryself({
-                method: 'POST',
-                body: JSON.stringify(postDataSelf)
-            }).then((res) => {
-                if (this._ismount && res.status == 200) {
-                    let data = res.repsoneContent;
-                    let prosFlag = [];
-                    if (data.pros.length > 1) {
-                        prosFlag = res.repsoneContent.pros[1]
-                    } else {
-                        prosFlag = res.repsoneContent.pros[0]
-                    }
-                    this.setState({
-                        contentArr: prosFlag,
-                        salary_ratio: prosFlag,
-                    })
-                }
-            });
-            Fetch.dailysalaryself({
-                method: 'POST',
-                body: JSON.stringify({userid: stateVar.userInfo.userId})
-            }).then((res) => {
-                if (this._ismount && res.status == 200) {
-                    this.setState({protocol: res.repsoneContent.pros[0]})
-                }
-            })
-        } else {
-        }
-    };
-
-    /*修改值*/
-    onChangeAlterContract(val, item) {
-        item.salary_ratio = val;
-        let salary_ratioFlag = this.state.contentArr;
-        salary_ratioFlag.forEach((data) => {
-            if (data.sale == item.sale) {
-                data.salary_ratio = val == '' ? 0 : val
-            }
-        });
-        this.setState({salary_ratio: salary_ratioFlag});
-    };
-
-    /*修改活跃人数*/
-    onChangeActiveNumber(val, item, index) {
-        let value = val;
-        if (!value) {
-            value = 0;
-        }
-        item.active_member = value;
-        let {contentArr} = this.state;
-        contentArr[index].active_member = '' + value;
-        this.setState({salary_ratio: contentArr});
-    };
-
-    /*修改日销量*/
-    onChangeDailySales(val, item, index) {
-        item.sale = val;
-        let {contentArr} = this.state;
-        contentArr[index].sale = '' + val;
-        this.setState({salary_ratio: contentArr});
-    };
-
-    /*日销量排序从小到大*/
-    compare(property) {
-        return function (a, b) {
-            let value1 = a[property];
-            let value2 = b[property];
-            return value1 - value2;
-        }
-    }
-
-    /*日销量失去焦点事件*/
-    onBlurSale() {
-        let {contentArr} = this.state;
-        let contentArrFlag = contentArr.sort(this.compare('sale'));
-        for (let i = 0; i < contentArr.length; i++) {
-            if (contentArrFlag[i + 1] != undefined && contentArrFlag[i].sale == contentArrFlag[i + 1].sale) {
-                Modal.warning({
-                    title: '不同档位日销量不能相同，请重新输入！',
-                });
-                contentArrFlag[i].sale = '0'
-            }
-        }
-        this.setState({contentArr: contentArrFlag})
-    };
-
-    /*删除档位*/
-    onDelete(i) {
-        let {contentArr} = this.state;
-        if (contentArr.length <= 3) {
-            Modal.warning({
-                title: '日工资契约最低保留三个挡位',
-            });
-            return
-        }
-        let contentArrFlag = contentArr.filter((item, index) => index != i);
+    onClickButton(record) {
         this.setState({
-            contentArr: contentArrFlag,
-            salary_ratio: contentArrFlag
-        })
-    };
-
-    /*添加档位*/
-    onAddSale() {
-        let {contentArr, protocol} = this.state;
-        let contentObj = protocol[contentArr.length];
-        contentArr.push(contentObj);
-        this.setState({contentArr});
-    };
-
-    /*修改协议*/
-    onDiviratio(contract_name) {
-        let _this = this;
-        confirm({
-            title: '确认要修改吗?',
-            onOk() {
-                _this.setProtocol(contract_name)
-            },
-            onCancel() {
-            },
+            visible: true,
+            searchUserName: record.username,
+            loadingModal: true,
         });
-    };
-
-    setProtocol(contract_name) {
-        this.setState({affirmLoading: true, contract_name: '签订契约'});
-        let alterData = this.state.alterData;
-        let postData = {
-            userid: alterData.userid,
-            id: alterData.id,
-            parentid: alterData.parent_id,
-            gmt_sale: alterData.gmt_sale,
-            salary_ratio: this.state.salary_ratio,
-        };
-        Fetch.dailysalaryupdate({
+        Fetch.salarypersonalsalary({
             method: 'POST',
-            body: JSON.stringify(postData)
+            body: JSON.stringify({username: record.username, begintime: '', eatime: record.gmt_sale})
         }).then((res) => {
             if (this._ismount) {
-                this.setState({affirmLoading: false});
+                this.setState({loadingModal: false});
                 if (res.status == 200) {
-                    Modal.success({
-                        title: res.repsoneContent,
-                    });
-                    this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
-                    this.getData();
-                } else {
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                    this.setState({historyData: res.repsoneContent.list});
                 }
             }
         })
-    };
-
-    /*关闭修改日工资模态框*/
-    onCancel() {
-        this.setState({alterVisible: false, contract_name: '修改契约'});
     };
 
     /*某页*/
@@ -433,18 +192,18 @@ export default class DayRate extends Component {
     };
 
     render() {
-        const {postData, table, historyData, disabled, contentArr} = this.state;
+        const {postData, table, historyData} = this.state;
         const columns = [
             {
                 title: '用户名',
                 dataIndex: 'username',
                 render: (text, record, index) => index == 0 ? text :
-                    <a href="javascript:void(0)" onClick={() => this.onClickUserName(text)}
-                       style={{color: '#0088DE'}}>{text}</a>,
+                    <span className="hover_a" onClick={() => this.onClickUserName(text)}
+                          style={{color: '#0088DE'}}>{text}</span>,
                 width: 110,
                 filterIcon: <Icon type="smile-o" style={{color: 'red'}}/>,
             }, {
-                title: '所属组',
+                title: '用户类型',
                 dataIndex: 'usergroup_name',
                 width: 90,
             }, {
@@ -453,7 +212,15 @@ export default class DayRate extends Component {
                 className: 'column-right',
                 width: 120,
             }, {
-                title: '有效投注量',
+                title: <span>
+                        有效投注量
+                        <Tooltip placement="bottomRight"
+                                 title={
+                                     '对打套利销量不计入有效投注量'
+                                 }>
+                            <Icon className='head_hint' type="question-circle"/>
+                    </Tooltip>
+                </span>,
                 dataIndex: 'effective_sale',
                 className: 'column-right',
                 width: 120,
@@ -475,19 +242,10 @@ export default class DayRate extends Component {
                     <span className="col_color_ying">{text}</span>,
                 width: 120,
             }, {
-                title: '操作',
+                title: '历史工资',
                 dataIndex: 'buttons',
                 width: 200,
-                render: (text, record) => (
-                    <ButtonGroup>
-                        {
-                            text.map((item, index) => {
-                                return <Button key={index}
-                                               onClick={() => this.onClickButton(item.text, record)}>{item.text}</Button>
-                            })
-                        }
-                    </ButtonGroup>
-                ),
+                render: (text, record) => <span className="hover_a" onClick={() => this.onClickButton(record)}>详情</span>
             }
         ];
         let footer = '';
@@ -604,79 +362,6 @@ export default class DayRate extends Component {
                         </ul>
                     </div>
                 </Modal>
-                <Contract
-                    title="日工资契约"
-                    userid={this.state.alterData.userid}
-                    textDescribe={
-                        <div className="a_c_text a_c_text_sale">
-                            <p>契约内容：</p>
-                            <div>
-                                <ul className="text_content_list">
-                                    {
-                                        contentArr.map((item, i) => {
-                                            return (
-                                                <li key={i}>
-                                                    {i + 1}档：
-                                                    日销量≥
-                                                    <span
-                                                        style={{width: 58, display: 'inline-block'}}>{item.sale}</span>
-                                                    {/*<InputNumber min={0} value={item.sale}*/}
-                                                    {/*onChange={(value)=>this.onChangeDailySales(value, item, i)}*/}
-                                                    {/*onBlur={()=>this.onBlurSale()}*/}
-                                                    {/*disabled={disabled}*/}
-                                                    {/*/>*/}
-                                                    元，
-                                                    且活跃用户≥
-                                                    <InputNumber min={0} value={item.active_member}
-                                                                 onChange={(value) => this.onChangeActiveNumber(value, item, i)}
-                                                        // disabled={disabled}
-                                                    />
-                                                    人，日工资比例为
-                                                    <InputNumber min={0} value={item.salary_ratio}
-                                                                 onChange={(value) => this.onChangeAlterContract(value, item)}
-                                                        // disabled={disabled}
-                                                    />
-                                                    %。
-                                                    {
-                                                        contentArr.length - 1 == i ?
-                                                            <Popconfirm title="确定删除吗?"
-                                                                        onConfirm={() => this.onDelete(i)}
-                                                            >
-                                                                <span
-                                                                    className="hover col_color_ying delete_sale">删除</span>
-                                                            </Popconfirm> :
-                                                            null
-                                                    }
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                    <li className="brisk_user" key="0">当日投注金额≥1000元，计为一个活跃用户</li>
-                                    <li className="brisk_user" key="00">
-                                        下级日工资各档位日销量要求需与自身保持一致，删除档位时遵循从高到底的原则，但至少保留三档。
-                                    </li>
-                                </ul>
-                                <span className="hover col_color_ying add_sale"
-                                      onClick={() => this.onAddSale()}
-                                      style={{display: contentArr.length >= 6 ? 'none' : ''}}>
-                                    添加档位
-                                </span>
-                            </div>
-                        </div>
-                    }
-                    alterData={this.state.alterData}
-                    alterVisible={this.state.alterVisible}
-                    affirmLoading={this.state.affirmLoading}
-                    // disabled={this.state.disabled}
-                    contract_name={this.state.contract_name}
-                    userList={table.dayRateList}
-                    contractInfo={this.state.contractInfo}
-                    disabledSelect={true}
-                    onCancel={this.onCancel}
-                    onAffirm={this.onDiviratio}
-                    onConsent={this.onConsent}
-                    hideBtn={this.state.hideBtn}
-                />
             </div>
         );
     }
