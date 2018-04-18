@@ -11,8 +11,9 @@
             "lotterytype": 2,
             "curmid": 50,
             "imgUrl":"cqssc",
-            "imgSrc": "nav_h",
-            "disabled": false
+            "imgSrc": "hot",
+            "disabled": false,
+            "hotLottery": 1
         },
         {
             "cnname": "泰国秒秒彩",
@@ -25,8 +26,9 @@
             "lotterytype": 4,
             "curmid": 311700,
             "imgUrl":"mmc",
-            "imgSrc": "nav_h",
-            "disabled": false
+            "imgSrc": "hot",
+            "disabled": false,
+            "hotLottery": 1
         },
         {
             "cnname": "泰国300秒",
@@ -39,7 +41,7 @@
             "lotterytype": 4,
             "curmid": 2325,
             "imgUrl":"tg300",
-            "imgSrc": "nav_h",
+            "imgSrc": "hot",
             "disabled": false
         },
         {
@@ -53,8 +55,9 @@
             "lotterytype": 4,
             "curmid": 19000,
             "imgUrl":"ffc",
-            "imgSrc": "nav_h",
-            "disabled": false
+            "imgSrc": "hot",
+            "disabled": false,
+            "hotLottery": 1
         },
         {
             "cnname": "新疆时时彩",
@@ -110,7 +113,7 @@
             "lotterytype": 3,
             "curmid": 174,
             "imgUrl":"sd11y",
-            "imgSrc": "",
+            "imgSrc": false,
             "disabled": false
         },
         {
@@ -152,7 +155,7 @@
             "lotterytype": 4,
             "curmid": 25024,
             "imgUrl":"tg11",
-            "imgSrc": "nav_h",
+            "imgSrc": "hot",
             "disabled": false
         },
         {
@@ -166,8 +169,9 @@
             "lotterytype": 3,
             "curmid": 313697,
             "imgUrl":"sh11y",
-            "imgSrc": false,
-            "disabled": false
+            "imgSrc": "new",
+            "disabled": false,
+            "hotLottery": 1
         },
         {
             "cnname": "福彩3D",
@@ -181,7 +185,7 @@
             "curmid": 614,
             "imgUrl":"3d",
             "lotterLength":3,
-            "imgSrc": "",
+            "imgSrc": false,
             "disabled": false
         },
         {
@@ -196,7 +200,7 @@
             "curmid": 615,
             "imgUrl":"pl3",
             "lotterLength":3,
-            "imgSrc": "",
+            "imgSrc": false,
             "disabled": false
         },
         {
@@ -210,7 +214,7 @@
             "lotterytype": 4,
             "curmid": 313550,
             "imgUrl":"txffc",
-            "imgSrc": "",
+            "imgSrc": false,
             "disabled": false
         },
         {

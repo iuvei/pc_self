@@ -421,7 +421,7 @@ export default class Dividend extends Component {
                         return (
                             <ButtonGroup>
                                 {
-                                    text.map((item, i) => {
+                                    text.filter(item => item.text != '修改比例').map((item, i) => {
                                         return <Button key={i}
                                                        onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                     })
@@ -530,7 +530,7 @@ export default class Dividend extends Component {
                             return (
                                 <ButtonGroup>
                                     {
-                                        text.map((item, i) => {
+                                        text.filter(item => item.text != '修改比例').map((item, i) => {
                                             return <Button key={i}
                                                            onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                         })
@@ -640,7 +640,7 @@ export default class Dividend extends Component {
                             return (
                                 <ButtonGroup>
                                     {
-                                        text.map((item, i) => {
+                                        text.filter(item => item.text != '修改比例').map((item, i) => {
                                             return <Button key={i}
                                                            onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                         })
@@ -745,7 +745,7 @@ export default class Dividend extends Component {
                             return (
                                 <ButtonGroup>
                                     {
-                                        text.map((item, i) => {
+                                        text.filter(item => item.text != '修改比例').map((item, i) => {
                                             return <Button key={i}
                                                            onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                         })

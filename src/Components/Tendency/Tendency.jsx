@@ -1,11 +1,12 @@
 /*走势图*/
 import React, {Component} from 'react';
 import {DatePicker, Checkbox, Select, Button} from 'antd';
+import moment from 'moment';
 import './Tendency.scss'
 import Fetch from '../../Utils';
 import NormalTable from "./NormalTable/NormalTable";
 import ReverseTable from "./ReverseTable/ReverseTable";
-import {setStore, getStore} from "../../CommonJs/common";
+import {setStore, getStore, setDateTime, disabledDate, datedifference} from "../../CommonJs/common";
 import lotteryTypeList from '../../CommonJs/common.json';
 const lotteryType = lotteryTypeList.lotteryType;
 const Option = Select.Option;
@@ -14,13 +15,12 @@ export default class Tendency extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            startValue: null,           //表格查询起始日期
-            endValue: null,             //表格查询结束日期
-            endOpen: false,
             postData: { //查询表格数据的requestData
                 lotteryId: this.props.location.query.id == undefined ? 1 : this.props.location.query.id,  //查询彩种
                 issueCount: 30,               //查询期数
-                TrendType: 1                //查询走势图类型
+                TrendType: 1,           //查询走势图类型
+                starttime: null,
+                endtime: null,
             },
             loading: true,
             tableTrendTotal: [],                 //所有彩种对应包含的走势图类型
@@ -31,12 +31,9 @@ export default class Tendency extends Component {
         }
     };
 
-    componentWillMount() {
-        this.getTable();
-    };
-
     componentDidMount() {
         this._ismount = true;
+        this.getTable();
     };
 
     componentWillUnmount() {
@@ -48,18 +45,13 @@ export default class Tendency extends Component {
      * 查询走势图信息
      * */
     getTable(issueCount) {
-        let {postData, startValue, endValue} = this.state;
+        let {postData} = this.state;
+        postData.issueCount = issueCount || postData.issueCount;
         this.setState({loading: true});
         Fetch.trend(
             {
                 method: "POST",
-                body: JSON.stringify({
-                    lotteryId: postData.lotteryId,
-                    issueCount: issueCount || postData.issueCount,
-                    TrendType: postData.TrendType,
-                    starttime: startValue,
-                    endtime: endValue,
-                })
+                body: JSON.stringify(postData)
             }).then((res) => {
             if (this._ismount) {
                 if (res.status == 200) {
@@ -100,48 +92,23 @@ export default class Tendency extends Component {
                 }
             }
         })
-    }
+    };
 
-    /*处理时间对象 begin*/
-    disabledStartDate = (startValue) => {
-        const endValue = this.state.endValue;
-        if (!startValue || !endValue) {
-            return false;
-        }
-        return startValue.valueOf() > endValue.valueOf();
-    }
+    /*开始查询日期*/
+    onChangeStartTime(date, dateString) {
+        let {postData} = this.state;
+        postData.starttime = dateString;
+        this.setState({postData})
+    };
 
-    disabledEndDate = (endValue) => {
-        const startValue = this.state.startValue;
-        if (!endValue || !startValue) {
-            return false;
-        }
-        return endValue.valueOf() <= startValue.valueOf();
-    }
+    /*结束查询日期*/
+    onChangeEndTime(date, dateString) {
+        let {postData} = this.state;
+        postData.endtime = dateString;
+        this.setState({postData})
+    };
 
-    onChange = (field, value) => {
-        this.setState({
-            [field]: value,
-        });
-    }
 
-    onStartChange = (date, dateString) => {
-        this.onChange('startValue', dateString);
-    }
-
-    onEndChange = (date, dateString) => {
-        this.onChange('endValue', dateString);
-    }
-
-    handleStartOpenChange = (open) => {
-        if (!open) {
-            this.setState({endOpen: true});
-        }
-    }
-
-    handleEndOpenChange = (open) => {
-        this.setState({endOpen: open});
-    }
     /*处理时间对象 end*/
     /*选择不同走势图类型*/
     handleChangeMethod(value) {
@@ -161,7 +128,7 @@ export default class Tendency extends Component {
         this.setState({
             postData: postData,
         }, ()=>this.getTable());
-    }
+    };
 
     /*倒转当前表格*/
     reverseTable() {
@@ -170,7 +137,7 @@ export default class Tendency extends Component {
             reversetable: !prevState.reversetable,
         }));
 
-    }
+    };
 
     /*选择最近30期，最近50期，最近100期,并请求对应的表格行数*/
     onShortcutTime(val) {
@@ -189,7 +156,7 @@ export default class Tendency extends Component {
             checked: e.target.checked,
         });
 
-    }
+    };
 
     /*正确显示表格，包括倒转表格和正常表格,当彩种为北京pk10时，表格生成滚动条*/
     displapyTable() {
@@ -206,10 +173,10 @@ export default class Tendency extends Component {
         } else {
             return "";
         }
-    }
+    };
 
     render() {
-        const {endOpen, tableTrendTotal, postData} = this.state;
+        const {tableTrendTotal, postData} = this.state;
         const shortcutTime = [
             {
                 text: '最近30期',
@@ -225,98 +192,95 @@ export default class Tendency extends Component {
 
         return (
             <div className='tendency-main'>
-                <ul className='t-top'>
-                    <li id="t_lottery_type">
-                        <Select style={{minWidth: 130}}
+                <div className='t-top'>
+                    <ul className='lottery_list'>
+                        <li id="t_lottery_type">
+                            <Select style={{minWidth: 130}}
                                 // getPopupContainer={() => document.getElementById('t_lottery_type')}
-                                value={'' + postData.lotteryId} onChange={(value) => {
-                            this.handleChangePlayType(value)
-                        }}>
-                            {
-                                lotteryType.map(item => {
-                                    return <Option value={'' + item.lotteryid} key={'' + item.lotteryid}
-                                                   disabled={item.disabled}>{item.cnname}</Option>
-                                })
-                            }
-                        </Select>
-                    </li>
-                    <li id="t_lottery_method">
-                        <Select style={{minWidth: 130}}
+                                    value={'' + postData.lotteryId} onChange={(value) => {
+                                this.handleChangePlayType(value)
+                            }}>
+                                {
+                                    lotteryType.map(item => {
+                                        return <Option value={'' + item.lotteryid} key={'' + item.lotteryid}
+                                                       disabled={item.disabled}>{item.cnname}</Option>
+                                    })
+                                }
+                            </Select>
+                        </li>
+                        <li id="t_lottery_method">
+                            <Select style={{minWidth: 130}}
                                 // getPopupContainer={() => document.getElementById('t_lottery_method')}
-                                value={''+ postData.TrendType} onChange={(value) => {
-                            this.handleChangeMethod(value)
-                        }}>
-                            {
-                                tableTrendTotal[postData.lotteryId] != undefined ? tableTrendTotal[postData.lotteryId].map((value) => {
-                                    return (
-                                        <Option value={''+ value.id} key={''+ value.id}>{value.name}</Option>
-                                    )
-                                }) : null
-                            }
-                        </Select>
-                    </li>
-                    <li>
-                        <Checkbox checked={this.state.checked} onChange={(e) => {
-                            this.displayChartLine(e)
-                        }}>显示走势折线</Checkbox>
-                    </li>
-                    <li>
+                                    value={''+ postData.TrendType} onChange={(value) => {
+                                this.handleChangeMethod(value)
+                            }}>
+                                {
+                                    tableTrendTotal[postData.lotteryId] != undefined ? tableTrendTotal[postData.lotteryId].map((value) => {
+                                        return (
+                                            <Option value={''+ value.id} key={''+ value.id}>{value.name}</Option>
+                                        )
+                                    }) : null
+                                }
+                            </Select>
+                        </li>
+                        <li>
+                            <Checkbox checked={this.state.checked} onChange={(e) => {
+                                this.displayChartLine(e)
+                            }}>显示走势折线</Checkbox>
+                        </li>
+                        <li>
                         <span className='hover_a' onClick={() => {
                             this.reverseTable()
                         }}>表格上下转换</span>
-                    </li>
-                    <li></li>
-                    <li>当前统计期数：{this.state.postData.issueCount}</li>
-                    <li>
-                        <ul className='t-period clear'>
-                            {
-                                shortcutTime.map((item, i) => {
-                                    return <li
-                                        className={item.id === this.state.postData.issueCount ? 't_period_btn_active' : ''}
-                                        onClick={() => {
-                                            this.onShortcutTime(item.id)
-                                        }} key={item.id}>{item.text}</li>
-                                })
-                            }
-                        </ul>
-                    </li>
-                    <li>日期：
-                        <DatePicker
-                            disabledDate={() => {
-                                this.disabledStartDate(this.state.startValue)
-                            }}
-                            showTime
-                            allowClear={false}
-                            format="YYYY-MM-DD hh:mm:ss"
-                            placeholder="开始时间"
-                            onChange={(date, dateString) => {
-                                this.onStartChange(date, dateString)
-                            }}
-                            onOpenChange={this.handleStartOpenChange}
-                        />至
-                        <DatePicker
-                            disabledDate={() => {
-                                this.disabledEndDate(this.state.endValue)
-                            }}
-                            showTime
-                            allowClear={false}
-                            format="YYYY-MM-DD hh:mm:ss"
-                            placeholder="结束时间"
-                            onChange={(date, dateString) => {
-                                this.onEndChange(date, dateString)
-                            }}
-                            open={endOpen}
-                            onOpenChange={this.handleEndOpenChange}
-                        />
-                    </li>
-                    <li>
-                        <Button type="primary" onClick={() => {
-                            this.getTable()
-                        }}>
-                            查询
-                        </Button>
-                    </li>
-                </ul>
+                        </li>
+                        <li></li>
+                        <li>当前统计期数：{this.state.postData.issueCount}</li>
+                        <li>
+                            <ul className='t-period clear'>
+                                {
+                                    shortcutTime.map((item, i) => {
+                                        return <li
+                                            className={item.id === this.state.postData.issueCount ? 't_period_btn_active' : ''}
+                                            onClick={() => {
+                                                this.onShortcutTime(item.id)
+                                            }} key={item.id}>{item.text}</li>
+                                    })
+                                }
+                            </ul>
+                        </li>
+                        <li>
+                            <span>日期：</span>
+                            <DatePicker
+                                format="YYYY-MM-DD hh:mm:ss"
+                                allowClear={false}
+                                showTime
+                                placeholder="请选择开始时间"
+                                onChange={(date, dateString) => {
+                                    this.onChangeStartTime(date, dateString)
+                                }}
+                                disabledDate={(current)=>disabledDate(current, -365, 0)}
+                                />
+                            <span>&nbsp;至&nbsp;</span>
+                            <DatePicker
+                                format="YYYY-MM-DD hh:mm:ss"
+                                allowClear={false}
+                                showTime
+                                placeholder="请选择结束时间"
+                                onChange={(date, dateString) => {
+                                    this.onChangeEndTime(date, dateString)
+                                }}
+                                disabledDate={(current) => disabledDate(current, -datedifference(postData.starttime, setDateTime(0)), 1)}
+                            />
+                        </li>
+                        <li>
+                            <Button type="primary" onClick={() => {
+                                this.getTable()
+                            }}>
+                                查询
+                            </Button>
+                        </li>
+                    </ul>
+                </div>
                 <div className="c_table">
                     { this.displapyTable() }
                 </div>
