@@ -2,14 +2,11 @@
 @import '../../../Style/mixin';
 
 .alter_dividend{
+
     .ant-modal-body{
-        padding: 170px 0 0 0;
-        height: 653px;
-        background: url(../../../Images/contract.png) no-repeat center center;
-    }
-    .alter_content{
+        margin: 20px;
         font-size: 14px;
-        color: #7F6B37;
+        //background: url(../../../Images/contract.png) no-repeat center center;
     }
     .a_c_list{
         width: 350px;
@@ -26,7 +23,6 @@
     }
     .a_c_text{
         margin: 20px auto;
-        width: 450px;
         .add_sale{
             padding-left: 15px;
             background: url(./img/add.png) no-repeat left center;
@@ -34,9 +30,6 @@
         .ant-input-number-input{
             text-align: center;
         }
-    }
-    .a_c_text_sale{
-        width: 567px !important;
     }
     .prize_group_slider{
         position: relative;
@@ -66,9 +59,6 @@
         border-color: #FBFAF5;
     }
     .a_c_name{
-        position: absolute;
-        bottom: 15%;
-        right: 18%;
         @include wh(71px, 71px);
         padding-top: 25px;
         font-size: 12px;
@@ -80,9 +70,8 @@
         background: url(../../../Images/seal.png) no-repeat center center;
     }
     .a_c_btn{
-        position: absolute;
-        bottom: 40px;
-        right: 25%;
+        text-align: center;
+        margin-top: 25px;
         .a_c_cancel_btn{
             margin-right: 30px;
         }
@@ -127,7 +116,6 @@
     }
     .ant-input-number{
         @include borderRadius(0);
-        background-color: #fbfaf5;
         border: 0;
         border-bottom: 1px solid #C8C8C8;
         width: 60px;
@@ -137,7 +125,7 @@
     }
     .ant-input-number-focused{
         box-shadow: 0 0 0 0;
-        border-color: #cf2027;
+        border-color: $color_CF2027;
     }
     .ant-input-number-input[disabled]{
         color: rgb(109, 109, 109);
@@ -148,16 +136,19 @@
     .ant-select-selection{
         border: 0;
         border-radius: 0;
-        background: #fbfaf5 !important;
-        border-bottom: 1px solid #7F6B37;
+        background: #fff !important;
+        border-bottom: 1px solid #ddd;
     }
     .ant-select-selection:hover {
-        border-color: #CF2027;
+        border-color: $color_CF2027;
     }
     .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active{
         box-shadow:none;
     }
     .ant-select-disabled{
         color: rgb(146, 144, 144);
+    }
+    .ant-select-selection-selected-value{
+        color: $color_CF2027;
     }
 }

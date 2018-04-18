@@ -388,6 +388,12 @@ export default class AccountChange extends Component {
         postData.p = page;
         this.setState({postData: postData},()=>this.getData());
     };
+    onKeyDown(e) {
+        if (e.keyCode == 13) {
+            this.onSearch();
+        }
+    };
+
     render() {
         const { response } = this.state;
         const columns = [
@@ -451,7 +457,7 @@ export default class AccountChange extends Component {
         return (
             <div className="mention_filling_record">
                 <div className="team_list_top">
-                    <div className="t_l_time">
+                    <div className="t_l_time"  onKeyDown={(e)=>this.onKeyDown(e)}>
                         <ul className="t_l_time_row">
                             <li>
                                 <span>查询日期：</span>

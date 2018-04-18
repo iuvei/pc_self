@@ -95,15 +95,16 @@ export default class Contract extends Component {
 
         return (
             <Modal
+                title="修改契约"
                 visible={alterVisible}
                 wrapClassName="vertical-center-modal"
                 footer={null}
                 maskClosable={false}
-                closable={false}
-                width={619}
+                width={title == '日工资契约' ? 619 : 520}
+                onCancel={()=>this.onCancel()}
                 className="alter_dividend"
             >
-                <div className="alter_content clear">
+                <div className="clear">
                     <ul className="a_c_list">
                         <li className="user_p">
                             <span>用户名：</span>
@@ -146,9 +147,9 @@ export default class Contract extends Component {
                             </Select>
                         </li>
                     </ul>
-                    <div>
+                    <div className="clear">
                         {textDescribe}
-                        <div className="a_c_name a_c_active">
+                        <div className="a_c_name a_c_active right">
                             <p>{alterData.username}</p>
                             <p>{common.setDateTime(0)}</p>
                         </div>

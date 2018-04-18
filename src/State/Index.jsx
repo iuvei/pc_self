@@ -94,41 +94,41 @@ class State {
     @observable betVisible = false;
     @observable activeTheme = _code.getStore('webTheme') || 'white';
     @action('修改网站主题 换肤') changeTheme = (color) => {
-        _code.setStore('webTheme', color)
+        _code.setStore('webTheme', color);
         this.activeTheme = color
-    }
+    };
     @observable hotMissFlag = ''; // 是否展示冷热 按钮
     @action('修改冷热遗漏') setHotMissFlag = (flag) => {
         this.hotMissFlag = flag
-    }
+    };
     @observable hotIndex = 0; // 冷热 0 遗漏 1
     @action('修改冷热遗漏') changeHotIndex = (index) => {
         this.hotIndex = index
-    }
+    };
     @observable hotIssue = 30; // 冷热查询期数  默认 30
     @action('修改冷热期数') changeHotIssue = (num) => {
         this.hotIssue = num
-    }
+    };
     @observable missData = {}; // 遗漏数据
     @action('修改冷热期数') setMissData = (data) => {
         this.missData = data
-    }
+    };
     @observable hotData = {}; // 冷热数据
     @action('修改冷热期数') setHotData = (data) => {
         this.hotData = data
-    }
+    };
     @observable hotData_30 = {}; // 冷热数据 30期
     @action('修改冷热期数 30') setHotData_30 = (data) => {
         this.hotData_30 = data
-    }
+    };
     @observable hotData_50 = {}; // 冷热数据 50期
     @action('修改冷热期数 50') setHotData_50 = (data) => {
         this.hotData_50 = data
-    }
+    };
     @observable hotData_100 = {}; // 冷热数据 100期
     @action('修改冷热期数 100') setHotData_100 = (data) => {
         this.hotData_100 = data
-    }
+    };
 }
 
 export const stateVar = new State();
