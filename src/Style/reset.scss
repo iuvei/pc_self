@@ -22,5 +22,16 @@ input,textarea{ padding:0;}
     height: 30px;
     padding-top: 1px;
 }
+//.ant-progress-inner, .ant-progress-bg, .ant-progress-status-active .ant-progress-bg:before{
+//    border-radius: 0;
+//}
+.ant-menu-inline .ant-menu-item{
+    border-right: 0;
+}
+.ant-menu-sub.ant-menu-inline > .ant-menu-item{
+    line-height: 35px;
+    height: 35px;
+    margin-bottom: 5px;
+}
 
 

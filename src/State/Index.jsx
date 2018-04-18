@@ -22,6 +22,7 @@ class State {
         setsecurity: '', //是否设置过资金密码 no：设置过
         email: '',
     };
+    @observable hideBalance = true;
     @observable dailysalaryStatus = {}; // 获得日工资，亏损，分红签订状态
     @observable allBalance = {// 各平台余额
         cpbalance: '0.00', // 恒彩主账户

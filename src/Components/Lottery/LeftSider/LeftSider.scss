@@ -13,11 +13,22 @@
         .icon_new_lottery{
             position: absolute;
             top: 3px;
-            right: 0;
+            right: 5px;
         }
     }
     .ant-menu-root{
         border: 1px solid $color_CF2027;
+    }
+    .count_down_bg{
+        background: -o-linear-gradient(45deg,#a974e4,#7474e4); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(45deg,#a974e4,#7474e4); /* Firefox 3.6 - 15 */
+        background: linear-gradient(45deg,#a974e4,#7474e4); /* 标准的语法（必须放在最后） */
+        background: -webkit-linear-gradient(45deg,#a974e4,#7474e4);
+        -webkit-transition: right .2s ease;
+        transition: right .2s ease;
+
+        width: 81%;
+        padding: 0 5px;
     }
     .ant-menu-item:hover, .ant-menu-submenu-active, .ant-menu-submenu-title:hover{
         color: $color_363636;
@@ -29,10 +40,16 @@
     }
     .ant-menu-sub.ant-menu-inline{
         background: #fff;
+        li:last-child{
+            margin-bottom: 0;
+        }
     }
-    .ant-menu-inline .ant-menu-item, .ant-menu-inline .ant-menu-submenu-title{
+    .ant-menu-inline .ant-menu-submenu-title{
         padding: 0 7px !important;
         font-size: 14px;
+    }
+    .ant-menu-inline .ant-menu-item{
+        padding: 0 !important;
     }
     .ant-menu-submenu-inline > .ant-menu-submenu-title:after{
         right: 8px;

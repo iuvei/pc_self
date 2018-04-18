@@ -302,6 +302,7 @@ export default class ContentMian extends Component {
         Fatch.lotteryBets({
                 method: "POST",
                 body: JSON.stringify({sCurmids: stateVar.alllotteryType})
+                // body: JSON.stringify({sCurmids: {ssc: 50}})
             }
         ).then((data) => {
             if(this._ismount){

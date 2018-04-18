@@ -11,6 +11,7 @@ import {stateVar} from '../../../State';
 import commone from './../commone.js';
 import common from '../../../CommonJs/common';
 
+
 let curLocation = location.href;
 /*当前浏览器url地址*/
 @observer
