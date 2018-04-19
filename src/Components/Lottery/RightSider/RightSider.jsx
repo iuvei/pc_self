@@ -40,6 +40,7 @@ export default class RightSider extends Component {
     	this.setState({moreIndex:10});
     };
     render() {
+        const {allBalance, hideBalance} = stateVar;
     	let kjNumber;
     	if(stateVar.nowlottery.lotteryBetId == 23){
     		kjNumber =  stateVar.mmCkjNumberList.slice() || [];
@@ -71,7 +72,7 @@ export default class RightSider extends Component {
                 <div className="user_info">
                     <ul className="user_info_list">
                         <li>您好！{common.getStore('userName')}</li>
-                        <li>余额:<span style={{color:'#CF2027'}}>￥{stateVar.allBalance.cpbalance}</span></li>
+                        <li>余额:<span className="col_color_ying">￥{hideBalance ? allBalance.cpbalance : '******'}</span></li>
                         <li>
                             <div className="user_recharge" onClick={()=>this.onHashHistory('/financial/recharge', 'financial', 0)}>立即充值</div>
                         </li>

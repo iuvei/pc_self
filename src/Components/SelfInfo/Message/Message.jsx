@@ -212,6 +212,7 @@ export default class Message extends Component {
                 </div>
                 <Modal
                     width='700px'
+                    wrapClassName="vertical-center-modal"
                     visible={this.state.visible}
                     title={repDetails.subject}
                     onCancel={()=>this.onHideModal()}

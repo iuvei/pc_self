@@ -15,6 +15,7 @@ export default class Chat extends Component {
     render() {
         return (
             <Modal visible={this.props.visible}
+                   wrapClassName="vertical-center-modal"
                    width={830}
                    height={561}
                    closable={false}

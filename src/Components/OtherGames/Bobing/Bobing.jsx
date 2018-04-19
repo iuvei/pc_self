@@ -104,6 +104,7 @@ export default class Bobing extends Component {
                              onTransfer={this.onTransfer}
                 />
                 <Modal visible={this.state.modalVisible}
+                       wrapClassName="vertical-center-modal"
                         closable={false}
                         footer={null}
                         width={807}

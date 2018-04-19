@@ -45,6 +45,7 @@ export default class Notice extends Component {
         return (
             <Modal
                 width="918px"
+                wrapClassName="vertical-center-modal"
                 title="平台公告"
                 visible={this.props.visible}
                 onCancel={()=>this.props.hideModal()}

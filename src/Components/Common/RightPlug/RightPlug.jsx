@@ -210,6 +210,11 @@ export default class RightPlug extends Component {
             this.setState({capitalVisible: true})
         }
     };
+    onKeyDown(e) {
+        if (e.keyCode == 13) {
+            this.getCapitalPass();
+        }
+    };
 
     render() {
         const {modalVisible, capitalVisible, hintText} = this.state;
@@ -325,7 +330,7 @@ export default class RightPlug extends Component {
                     footer={null}
                     maskClosable={false}
                 >
-                    <ul className="info_list">
+                    <ul className="info_list" onKeyDown={(e)=>this.onKeyDown(e)}>
                         <li>
                             <span>资金密码：</span>
                             <Input placeholder="请输入您的资金密码"

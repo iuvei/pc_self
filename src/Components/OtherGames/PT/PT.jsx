@@ -349,6 +349,7 @@ export default class PT extends Component {
 
                 <Modal
                     visible={this.state.resetVisible}
+                    wrapClassName="vertical-center-modal"
                     maskClosable={false}
                     closable={false}
                     footer={null}

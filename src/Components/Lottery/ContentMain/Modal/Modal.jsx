@@ -451,6 +451,7 @@ export default class ModalView extends Component {
         return (
             <Modal
                 width='865px'
+                wrapClassName="vertical-center-modal"
                 visible={stateVar.tracevisible}
                 title= {<ModelView defaultIndex={this.state.traceTitleIndex} onChangeNavIndex={this.onChangeNavIndex} navList = {navList}/>}
                 onCancel={()=>{this.getSuperaddition()}}
