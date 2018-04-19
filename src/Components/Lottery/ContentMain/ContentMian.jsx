@@ -90,7 +90,7 @@ export default class ContentMian extends Component {
         }
         this.lotteryOkBet = this.lotteryOkBet.bind(this);
         this.getBetHistory = this.getBetHistory.bind(this);
-        this.getLotteryData = this.getLotteryData.bind(this);
+        this.getVersion = this.getVersion.bind(this);
         this.onChangeNavIndex = this.onChangeNavIndex.bind(this);
         this.actionTrace = this.actionTrace.bind(this);
         this.multipleValue = this.multipleValue.bind(this);
@@ -212,8 +212,8 @@ export default class ContentMian extends Component {
                             this.setOneMethod(commonData);
                         }
                     } else {
-                        if (commonData['ssc'] == undefined) {
-                            this.getLotteryData();
+                        if (commonData[stateVar.nowlottery.lotteryId] == undefined) {
+                            this.getLotteryData(true);
                         } else {
                             this.setOneMethod(commonData);
                         }
@@ -222,7 +222,7 @@ export default class ContentMian extends Component {
                     if (stateVar.nowlottery.lotteryBetId == 23) {
                         this.getMmcMethod();
                     } else {
-                        this.getLotteryData();
+                        this.getLotteryData(true);
                     }
                 }
                 this.getBetHistory();
@@ -275,7 +275,6 @@ export default class ContentMian extends Component {
             }
         }
         if (tempMsg) {
-            this.setState({lotteryMethod: []}, () => {
                 if (val['ssc'] && val['ssc'].msg == undefined) {
                     stateVar.nowlottery.lotteryId = 'ssc';
                 } else {
@@ -293,34 +292,88 @@ export default class ContentMian extends Component {
                 emitter.emit('resetLottery')
                 this.initData();
                 stateVar.openLotteryFlag = true;
-            });
         }
     };
 
-    //获取所有彩种玩法
-    getLotteryData() {
+    /**
+     * Function 获取彩种玩法
+     * param 需要获取的彩种名称,不填默认查询所有彩种
+     */
+    
+    getLotteryData(param) {
+    	let templotteryType;
+    	if(param){
+    		let templotty = {};
+    		templotty[stateVar.nowlottery.lotteryId] =  stateVar.nowlottery.cuimId;
+    		templotteryType = {sCurmids: templotty};
+    	}else{
+    		templotteryType = {sCurmids: stateVar.alllotteryType};
+    	}
         Fatch.lotteryBets({
                 method: "POST",
-                body: JSON.stringify({sCurmids: stateVar.alllotteryType})
-                // body: JSON.stringify({sCurmids: {ssc: 50}})
+                body: JSON.stringify(templotteryType)
             }
         ).then((data) => {
-            if(this._ismount){
-                stateVar.openLotteryFlag = true;
-                this.setState({loading: false});
-                if (data.status == 200) {
-                    let tempData = data.repsoneContent;
-                    let tempObj = common.getStore(common.getStore('userId')) || {};
-                    if (tempObj['mmc'] == undefined) {
-                        tempObj = tempData;
-                    } else {
-                        let tempmmc = tempObj['mmc'];
-                        tempObj = tempData;
-                        tempObj['mmc'] = tempmmc;
-                    }
-                    common.setStore(common.getStore('userId'), tempObj);
-                    this.setOneMethod(tempData);
+            stateVar.openLotteryFlag = true;
+            this.setState({loading: false});
+            if (this._ismount && data.status == 200) {
+                let tempData = data.repsoneContent;
+                let tempObj = common.getStore(common.getStore('userId')) || {};
+                if(param){
+                	tempObj[stateVar.nowlottery.lotteryId] = tempData[stateVar.nowlottery.lotteryId];
+                	common.setStore(common.getStore('userId'), tempObj);
+                	this.setOneMethod(tempData);
+                	let i=0,j=0;
+                	for(let tempType in stateVar.alllotteryType){
+                		i++;
+                	}
+                	for(let tempTypeB in tempObj){
+                		j++;
+            		}
+                	if(i != j){
+                		this.getLotteryData();//回调自身获取所有彩种玩法
+                	}
+                }else{
+                	if (tempObj['mmc'] == undefined) {
+	                    tempObj = tempData;
+	                } else {
+	                    let tempmmc = tempObj['mmc'];
+	                    tempObj = tempData;
+	                    tempObj['mmc'] = tempmmc;
+	                }
+	                common.setStore(common.getStore('userId'), tempObj);
+                	this.setOneMethod(tempData);
                 }
+            }
+        })
+    };
+    
+    /**
+     * Function 因版本号不同，重新获取彩种玩法
+     * param 版本号
+     */  
+    versionGetLotteryData(param) {
+    	let templotteryType = {sCurmids: stateVar.alllotteryType};
+        Fatch.lotteryBets({
+                method: "POST",
+                body: JSON.stringify(templotteryType)
+            }
+        ).then((data) => {
+            stateVar.openLotteryFlag = true;
+            this.setState({loading: false});
+            if (this._ismount && data.status == 200) {
+            	common.setStore('version', param);
+                let tempData = data.repsoneContent;
+                let tempObj = {};
+            	if (tempObj['mmc'] == undefined) {
+                    tempObj = tempData;
+                } else {
+                    let tempmmc = tempObj['mmc'];
+                    tempObj = tempData;
+                    tempObj['mmc'] = tempmmc;
+                }
+                common.setStore(common.getStore('userId'), tempObj);
+                this.setOneMethod(tempData);
             }
         })
     };
@@ -349,7 +402,51 @@ export default class ContentMian extends Component {
             }
         })
     };
-
+    //获取版本号
+	getVersion() {
+        let tempObj = {version: 'push'};
+        Fatch.getVersion({method: 'post', body: JSON.stringify(tempObj)}).then((data) => {
+            if (this._ismount && data.status == 200) {
+                let tempData = data.repsoneContent || {};
+                let oneFlag = true;
+                let version = common.getStore('version') || [];
+                if (version.length > 0) {
+                    let tempFlag = true;
+                    for (let i = 0; i < version.length; i++) {
+                        if (version[i].userId == tempData.userid) {
+                            tempFlag = false;
+                            if (version[i].oneVersion != tempData.userone || version[i].allVersion != tempData.userall) {
+                                oneFlag = false;
+                                version[i].oneVersion = tempData.userone;
+                                version[i].allVersion = tempData.userall;
+                            }
+                        }
+                    }
+                    if (tempFlag) {
+                        let tempObj = {};
+                        tempObj.userId = tempData.userid;
+                        tempObj.oneVersion = tempData.userone;
+                        tempObj.allVersion = tempData.userall;
+                        version.push(tempObj);
+                        common.setStore('version', version);
+                    } else {
+                        if (!oneFlag) {
+                            this.versionGetLotteryData(version);
+                            this.getAccGroup();
+                        }
+                    }
+                } else {
+                    version = [];
+                    let tempObj = {};
+                    tempObj.userId = tempData.userid;
+                    tempObj.oneVersion = tempData.userone;
+                    tempObj.allVersion = tempData.userall;
+                    version.push(tempObj);
+                    common.setStore('version', version);
+                }
+            }
+        });
+    };
     //确定投注页面
     lotteryOkBet(param) {
         if (param) {
@@ -506,54 +603,6 @@ export default class ContentMian extends Component {
     onChangeStop(e) {
         this.setState({isPrizeStop: e.target.checked});
     }
-
-    getVersion() {
-        let tempObj = {version: 'push'};
-        Fatch.getVersion({method: 'post', body: JSON.stringify(tempObj)}).then((data) => {
-            if (this._ismount && data.status == 200) {
-                let tempData = data.repsoneContent || {};
-                let oneFlag = true;
-                let version = common.getStore('version') || [];
-                if (version.length > 0) {
-                    let tempFlag = true;
-                    for (let i = 0; i < version.length; i++) {
-                        if (version[i].userId == tempData.userid) {
-                            tempFlag = false;
-                            if (version[i].oneVersion != tempData.userone || version[i].allVersion != tempData.userall) {
-                                oneFlag = false;
-                                version[i].oneVersion = tempData.userone;
-                                version[i].allVersion = tempData.userall;
-                            }
-                        }
-                    }
-                    if (tempFlag) {
-                        let tempObj = {};
-                        tempObj.userId = tempData.userid;
-                        tempObj.oneVersion = tempData.userone;
-                        tempObj.allVersion = tempData.userall;
-                        version.push(tempObj);
-                        common.setStore('version', version);
-                    } else {
-                        if (!oneFlag) {
-                            this.setState({lotteryMethod: []});
-                            common.removeStore(common.getStore('userId'));
-                            common.setStore('version', version);
-                            this.getLotteryData();
-                            this.getAccGroup();
-                        }
-                    }
-                } else {
-                    version = [];
-                    let tempObj = {};
-                    tempObj.userId = tempData.userid;
-                    tempObj.oneVersion = tempData.userone;
-                    tempObj.allVersion = tempData.userall;
-                    version.push(tempObj);
-                    common.setStore('version', version);
-                }
-            }
-        });
-    };
 
     //获取奖金组
     getAccGroup() {
@@ -3000,7 +3049,7 @@ export default class ContentMian extends Component {
             <div>
                 <div className='content_bet'>
                     <div className="content_main" key="ContentMian">
-                        <ContentTop getLotteryData={() => this.getLotteryData()}
+                        <ContentTop getVersion={() => this.getVersion()}
                                     getBetHistory={() => this.getBetHistory()}
                                     actionTrace={() => this.actionTrace()}></ContentTop>
                         <div className="c_m_nav">
