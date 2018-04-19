@@ -520,7 +520,9 @@ export default class ContentTop extends Component {
                 }
             } else if (tempType == 8 || tempType == 2) {
                 common.removeStore(common.getStore('userId'));
-                this.props.getLotteryData();
+                setTimeout(()=>{
+                	this.props.getVersion();
+                },3000)
                 this.getAccGroup();
             }
         }
