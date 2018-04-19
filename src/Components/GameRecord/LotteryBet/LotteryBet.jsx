@@ -570,6 +570,7 @@ export default class LotteryBet extends Component {
                 </div>
                 <Modal
                     title="投注单期记录"
+                    wrapClassName="vertical-center-modal"
                     width={915}
                     visible={this.state.visible}
                     onCancel={() => this.handleCancel()}

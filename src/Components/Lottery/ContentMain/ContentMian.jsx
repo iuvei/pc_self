@@ -3289,6 +3289,7 @@ export default class ContentMian extends Component {
                                     <Modal
                                         width='865px'
                                         visible={this.state.tracevisible}
+                                        wrapClassName="vertical-center-modal"
                                         title={<ModelView defaultIndex={this.state.traceTitleIndex}
                                                           onChangeNavIndex={this.onChangeNavIndex} navList={navList}/>}
                                         onCancel={() => {

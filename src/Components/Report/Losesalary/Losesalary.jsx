@@ -249,6 +249,7 @@ export default class Losesalary extends Component {
                     </div>
                     <Modal
                         title="日亏损佣金详情"
+                        wrapClassName="vertical-center-modal"
                         visible={this.state.visible}
                         width={800}
                         bodyStyle={{height: 400}}

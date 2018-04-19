@@ -20,7 +20,7 @@ export default class LeftSider extends Component {
         super(props);
         this.state = {
             openKeys: [],
-            percent: 20
+            countDown: 0
         }
     }
 
@@ -35,9 +35,19 @@ export default class LeftSider extends Component {
             this.handTitleClick('', this.openKey());
         });
         this.handTitleClick('', this.openKey());
+        // this.clearIntCount = setInterval(()=>{
+        //     if(this.state.countDown >= 100){
+        //         this.setState({countDown: 0})
+        //     }else{
+        //         this.setState({countDown: ++this.state.countDown})
+        //     }
+        // }, 1000)
     };
 
     componentWillUnmount() {
+        // if(this.clearIntCount){
+        //     window.clearInterval(this.clearIntCount)
+        // }
         emitter.off(this.eventEmitter);
         emitter.off(this.eventEmitter1);
     };
@@ -203,7 +213,7 @@ export default class LeftSider extends Component {
                             lotteryList.map(item => {
                                 return (
                                     <Menu.Item key={item.nav} className="spe_lottery">
-                                        <div className="count_down_bg">
+                                        <div className="count_down_bg" style={{width: this.state.countDown + '%'}}>
                                             <img className="icon_img" src={require('./Img/' + item.nav + '.png')}/>
                                             {item.cnname}
                                             {

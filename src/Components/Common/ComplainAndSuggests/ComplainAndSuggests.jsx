@@ -107,7 +107,7 @@ export default class ComplainAndSuggests extends Component {
             <Modal
                 title={this.props.title}
                 visible={this.props.visible}
-                wrapClassName="complain-modal"
+                wrapClassName="vertical-center-modal complain-modal"
                 onCancel={this.handleCancel}
                 maskClosable={false}
                 footer={null}

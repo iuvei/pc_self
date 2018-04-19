@@ -4,9 +4,9 @@
 .left_sider{
     margin: $content-top 0;
     .icon_img{
-        margin-right: 5px;
+        margin: 0 5px;
         width: 24px;
-        vertical-align: text-top;
+        vertical-align: middle;
     }
     .new_lottery{
         position: relative;
@@ -26,9 +26,6 @@
         background: -webkit-linear-gradient(45deg,#a974e4,#7474e4);
         -webkit-transition: right .2s ease;
         transition: right .2s ease;
-
-        width: 81%;
-        padding: 0 5px;
     }
     .ant-menu-item:hover, .ant-menu-submenu-active, .ant-menu-submenu-title:hover{
         color: $color_363636;

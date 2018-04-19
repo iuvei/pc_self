@@ -445,6 +445,7 @@ export default class BankCardManage extends Component {
                                 </Button>
                                 <Modal
                                     width='865px'
+                                    wrapClassName="vertical-center-modal"
                                     visible={this.state.visible}
                                     title={ModalTitle === true ? '新增银行卡' : '修改银行卡'}
                                     onCancel={()=>this.onHideModal()}

@@ -407,6 +407,7 @@ export default class BobingRecord extends PureComponent {
 
                 <Modal
                     title="加倍详情"
+                    wrapClassName="vertical-center-modal"
                     visible={this.state.doubleVisible}
                     width={1100}
                     bodyStyle={{height: 500}}

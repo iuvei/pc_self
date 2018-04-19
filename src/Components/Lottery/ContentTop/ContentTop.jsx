@@ -57,7 +57,22 @@ export default class ContentTop extends Component {
         emitter.off(this.eventEmitter);
         emitter.off(this.eventWebsocket);
         emitter.off(this.eventcontentTop);
-        clearInterval(this.interval);
+
+        if(this.interval){
+            window.clearInterval(this.interval)
+        }
+        if(this.clearTimeout_1){
+            window.clearTimeout(this.clearTimeout_1)
+        }
+        if(this.clearTimeout_2){
+            window.clearTimeout(this.clearTimeout_2)
+        }
+        if(this.clearTimeout_3){
+            window.clearTimeout(this.clearTimeout_3)
+        }
+        if(this.clearTimeout_4){
+            window.clearTimeout(this.clearTimeout_4)
+        }
     };
 
     initData() {
@@ -146,14 +161,14 @@ export default class ContentTop extends Component {
             }
         }
         this.setState({animateCode: tempCode}, () => {
-            setTimeout(() => {
+            this.clearTimeout_1 = setTimeout(() => {
                 if (b < 600) {
                     b = b + 50;
                     this.kjanimate(b);
                 } else {
                     if (this.state.kjStopallFlag) {
                         let tempI = this.state.kjStopTime;
-                        setTimeout(() => {
+                        this.clearTimeout_2 = setTimeout(() => {
                             let tempArr = [];
                             for (let i = 0; i < this.state.code.length; i++) {
                                 if (i <= tempI) {
@@ -282,7 +297,7 @@ export default class ContentTop extends Component {
                             }, () => {
                                 this.kjanimate(0);
                             });
-                            setTimeout(() => {
+                            this.clearTimeout_3 = setTimeout(() => {
                                 this.setState({code: stateVar.mmccode});
                                 this.setState({mmcmoni: false, kjStopallFlag: true});
                             }, 300);
@@ -394,7 +409,7 @@ export default class ContentTop extends Component {
                 this.setState({kjStopallFlag: true});
                 stateVar.mmccode = tempData.split('');
                 this.setState({code: stateVar.mmccode});
-                setTimeout(() => {
+                this.clearTimeout_4 = setTimeout(() => {
                     this.props.getBetHistory();
                     this.getKjHistory();
                 }, 2500);

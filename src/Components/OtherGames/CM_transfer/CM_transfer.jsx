@@ -106,6 +106,7 @@ export default class CM_transfer extends Component {
         return (
             <Modal
                 visible={this.props.visible}
+                wrapClassName="vertical-center-modal"
                 maskClosable={false}
                 closable={false}
                 footer={null}

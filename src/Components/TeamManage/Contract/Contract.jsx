@@ -419,6 +419,7 @@ export default class Contract extends Component {
                <Modal
                    title="配额申请"
                    visible={this.state.quotaVisible}
+                   wrapClassName="vertical-center-modal"
                    width={440}
                    footer={null}
                    maskClosable={false}

@@ -327,7 +327,7 @@ export default class OtherGames extends Component {
                 <Modal
                     title="完善个人资料"
                     width={480}
-                    wrapClassName="ea_content"
+                    wrapClassName="vertical-center-modal ea_content"
                     visible={visible}
                     onCancel={()=>this.onCancel()}
                     footer={null}

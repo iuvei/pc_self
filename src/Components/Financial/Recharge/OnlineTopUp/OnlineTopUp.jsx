@@ -192,7 +192,7 @@ export default class OnlineTopUp extends Component {
                 <Modal
                     title="充值申请"
                     width={600}
-                    wrapClassName="center-modal-sec"
+                    wrapClassName="vertical-center-modal center-modal-sec"
                     visible={this.state.visible}
                     // onCancel={()=>{this.props.onHideModal()}}
                     footer={null}

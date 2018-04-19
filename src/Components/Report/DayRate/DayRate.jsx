@@ -339,6 +339,7 @@ export default class DayRate extends Component {
                 </div>
                 <Modal
                     title="历史工资"
+                    wrapClassName="vertical-center-modal"
                     visible={this.state.visible}
                     width={800}
                     bodyStyle={{height: 400}}

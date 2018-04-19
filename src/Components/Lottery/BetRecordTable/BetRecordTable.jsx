@@ -135,6 +135,7 @@ export default class BetRecordTable extends Component {
                 <Table columns={columns} dataSource={data} pagination={ false } scroll={{ y: 254 }} size="small" loading={false}/>
                 <Modal
 	                title="投注单期记录"
+                    wrapClassName="vertical-center-modal"
 	                width={915}
 	                visible={this.state.visible}
 	                onCancel={()=>this.handleCancel()}

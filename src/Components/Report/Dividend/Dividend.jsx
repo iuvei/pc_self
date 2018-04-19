@@ -836,6 +836,7 @@ export default class Dividend extends Component {
 
                     <Modal
                         title="历史分红"
+                        wrapClassName="vertical-center-modal"
                         visible={this.state.historyVisible}
                         width={800}
                         bodyStyle={{height: 400}}
