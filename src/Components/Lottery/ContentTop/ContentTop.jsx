@@ -11,6 +11,7 @@ import {stateVar} from '../../../State';
 import commone from './../commone.js';
 import common from '../../../CommonJs/common';
 
+
 let curLocation = location.href;
 /*当前浏览器url地址*/
 @observer
@@ -44,10 +45,10 @@ export default class ContentTop extends Component {
         });
         this.eventWebsocket = emitter.on('openWebsocket', (data) => {
             this.handleData(data);
-        })
+        });
         this.eventcontentTop = emitter.on('initContentTop', () => {
             this.initData();
-        })
+        });
         this.initData();
     };
 
@@ -56,7 +57,22 @@ export default class ContentTop extends Component {
         emitter.off(this.eventEmitter);
         emitter.off(this.eventWebsocket);
         emitter.off(this.eventcontentTop);
-        clearInterval(this.interval);
+
+        if(this.interval){
+            window.clearInterval(this.interval)
+        }
+        if(this.clearTimeout_1){
+            window.clearTimeout(this.clearTimeout_1)
+        }
+        if(this.clearTimeout_2){
+            window.clearTimeout(this.clearTimeout_2)
+        }
+        if(this.clearTimeout_3){
+            window.clearTimeout(this.clearTimeout_3)
+        }
+        if(this.clearTimeout_4){
+            window.clearTimeout(this.clearTimeout_4)
+        }
     };
 
     initData() {
@@ -103,7 +119,7 @@ export default class ContentTop extends Component {
                     tempStopFlag.push(false);
                 }
             }
-            curLocation = curLocation.split("#")[0] + "#/tendency";
+            curLocation = curLocation.split("#")[0] + "#/tendency?id=" + stateVar.nowlottery.lotteryBetId;
             if (this._ismount) {
                 this.setState({
                     code: tempArrCode,
@@ -145,14 +161,14 @@ export default class ContentTop extends Component {
             }
         }
         this.setState({animateCode: tempCode}, () => {
-            setTimeout(() => {
+            this.clearTimeout_1 = setTimeout(() => {
                 if (b < 600) {
                     b = b + 50;
                     this.kjanimate(b);
                 } else {
                     if (this.state.kjStopallFlag) {
                         let tempI = this.state.kjStopTime;
-                        setTimeout(() => {
+                        this.clearTimeout_2 = setTimeout(() => {
                             let tempArr = [];
                             for (let i = 0; i < this.state.code.length; i++) {
                                 if (i <= tempI) {
@@ -257,41 +273,39 @@ export default class ContentTop extends Component {
             }
             $.lt_time_leave = $.lt_time_leave - 1;
         }, 1000);
-    }
+    };
 
     //得到最近历史开奖号码
     getKjHistory(flag) {
         if (stateVar.nowlottery.lotteryBetId == 23) {
-            if (this._ismount) {
-            }
             Fetch.aboutMmc({
                 method: "POST",
                 body: JSON.stringify({lotteryid: stateVar.nowlottery.lotteryBetId, issuecount: 20, flag: 'getlastcode'})
             }).then((data) => {
-                stateVar.openLotteryFlag = true;
-                let tempData = data.repsoneContent;
-                if (this._ismount && data.status == 200) {
-                    if (tempData.length > 0) {
-                        stateVar.mmccode = tempData[0].split(' ');
-                        stateVar.mmCkjNumberList = tempData;
-                        this.setState({
-                            mmcmoni: true,
-                            kjStopallFlag: false,
-                            kjStopTime: 0,
-                            kjStopFlag: [false, false, false, false, false]
-                        }, () => {
-                            this.kjanimate(0);
-                        });
-                        setTimeout(() => {
-                            this.setState({code: stateVar.mmccode});
-                            this.setState({mmcmoni: false, kjStopallFlag: true});
-                        }, 300);
+                if (this._ismount) {
+                    stateVar.openLotteryFlag = true;
+                    let tempData = data.repsoneContent;
+                    if (data.status == 200) {
+                        if (tempData.length > 0) {
+                            stateVar.mmccode = tempData[0].split(' ');
+                            stateVar.mmCkjNumberList = tempData;
+                            this.setState({
+                                mmcmoni: true,
+                                kjStopallFlag: false,
+                                kjStopTime: 0,
+                                kjStopFlag: [false, false, false, false, false]
+                            }, () => {
+                                this.kjanimate(0);
+                            });
+                            this.clearTimeout_3 = setTimeout(() => {
+                                this.setState({code: stateVar.mmccode});
+                                this.setState({mmcmoni: false, kjStopallFlag: true});
+                            }, 300);
+                        } else {
+                            stateVar.mmCkjNumberList = [];
+                            this.setState({mmcmoni: false});
+                        }
                     } else {
-                        stateVar.mmCkjNumberList = [];
-                        this.setState({mmcmoni: false});
-                    }
-                } else {
-                    if (this._ismount) {
                         this.setState({mmcmoni: false, kjStopallFlag: true});
                     }
                 }
@@ -385,7 +399,7 @@ export default class ContentTop extends Component {
         }, () => {
             this.kjanimate(0);
         });
-        $(".monikj span").html('开奖中...')
+        $(".monikj span").html('开奖中...');
         Fetch.aboutMmc({
             method: "POST",
             body: JSON.stringify({"flag": "getcodes", "lotteryid": 23})
@@ -395,7 +409,7 @@ export default class ContentTop extends Component {
                 this.setState({kjStopallFlag: true});
                 stateVar.mmccode = tempData.split('');
                 this.setState({code: stateVar.mmccode});
-                setTimeout(() => {
+                this.clearTimeout_4 = setTimeout(() => {
                     this.props.getBetHistory();
                     this.getKjHistory();
                 }, 2500);
@@ -526,7 +540,7 @@ export default class ContentTop extends Component {
                 this.getAccGroup();
             }
         }
-    }
+    };
 
     //获取奖金组
     getAccGroup() {
@@ -548,24 +562,26 @@ export default class ContentTop extends Component {
     };
 
     render() {
+        const {timeShow, kjStopFlag, animateCode, code} = this.state;
+        const {nowlottery, nextIssue} = stateVar;
         return (
             <div className="bet_content" key="ContentTop">
                 <div className="content_title">
                     {
                         (() => {
                             let topHtml;
-                            if (stateVar.nowlottery.lotteryBetId == 23) {
+                            if (nowlottery.lotteryBetId == 23) {
                                 topHtml = <ul className="title_list clear">
                                     <li>
                                         <div className="content_cz_logo">
-                                            <img src={require('./Img/' + stateVar.nowlottery.imgUrl + '.png')} alt=""/>
+                                            <img src={require('./Img/' + nowlottery.imgUrl + '.png')} alt=""/>
                                         </div>
                                     </li>
                                     <li>
                                         <ul className="content_center mmc">
                                             <li className="content_cz_text">
                                                 <div className="cz_name m_bottom">
-                                                    <span>{stateVar.nowlottery.cnname}</span>
+                                                    <span>{nowlottery.cnname}</span>
                                                 </div>
                                             </li>
                                         </ul>
@@ -573,13 +589,13 @@ export default class ContentTop extends Component {
                                     <li>
                                         <ul className="ball_number_mmc">
                                             {
-                                                this.state.code.map((val, idx) => {
+                                                code.map((val, idx) => {
                                                     return (
                                                         <li key={idx}>
                                                             <span className='kjCodeClass'
-                                                                  style={{display: this.state.kjStopFlag[idx] ? 'block' : 'none'}}>{val}</span>
+                                                                  style={{display: kjStopFlag[idx] ? 'block' : 'none'}}>{val}</span>
                                                             <span
-                                                                style={{display: this.state.kjStopFlag[idx] ? 'none' : 'block'}}>{this.state.animateCode[idx]}</span>
+                                                                style={{display: kjStopFlag[idx] ? 'none' : 'block'}}>{animateCode[idx]}</span>
                                                         </li>
                                                     )
                                                 })
@@ -595,17 +611,17 @@ export default class ContentTop extends Component {
                                 topHtml = <ul className="title_list clear">
                                     <li>
                                         <div className="content_cz_logo">
-                                            <img src={require('./Img/' + stateVar.nowlottery.imgUrl + '.png')} alt=""/>
+                                            <img src={require('./Img/' + nowlottery.imgUrl + '.png')} alt=""/>
                                         </div>
                                     </li>
                                     <li>
                                         <ul className="content_center">
                                             <li className="content_cz_text">
                                                 <div className="cz_name m_bottom">
-                                                    <span>{stateVar.nowlottery.cnname}</span>
+                                                    <span>{nowlottery.cnname}</span>
                                                 </div>
                                                 <div className="cz_periods m_bottom">
-                                                    <span style={{color: '#CF2027'}}>{stateVar.nextIssue}期</span>
+                                                    <span className="col_color_ying">{nextIssue}期</span>
                                                 </div>
                                                 <div className="m_bottom">
                                                     <span style={{fontSize: '12px', marginRight: '5px'}}>音效</span>
@@ -619,12 +635,12 @@ export default class ContentTop extends Component {
                                                 <div className="c_m_count_down">
                                                     <div type="flex">
                                                         <div
-                                                            className="item_text maohao">{this.state.timeShow.hour}</div>
+                                                            className="item_text maohao">{timeShow.hour}</div>
                                                         <div className="item_type">时</div>
                                                         <div
-                                                            className="item_text maohao">{this.state.timeShow.minute}</div>
+                                                            className="item_text maohao">{timeShow.minute}</div>
                                                         <div className="item_type">分</div>
-                                                        <div className="item_text">{this.state.timeShow.second}</div>
+                                                        <div className="item_text">{timeShow.second}</div>
                                                         <div className="item_type" style={{marginRight: 0}}>秒</div>
                                                     </div>
                                                 </div>

@@ -302,22 +302,25 @@ export default class ContentMian extends Component {
         Fatch.lotteryBets({
                 method: "POST",
                 body: JSON.stringify({sCurmids: stateVar.alllotteryType})
+                // body: JSON.stringify({sCurmids: {ssc: 50}})
             }
         ).then((data) => {
-            stateVar.openLotteryFlag = true;
-            this.setState({loading: false});
-            if (this._ismount && data.status == 200) {
-                let tempData = data.repsoneContent;
-                let tempObj = common.getStore(common.getStore('userId')) || {};
-                if (tempObj['mmc'] == undefined) {
-                    tempObj = tempData;
-                } else {
-                    let tempmmc = tempObj['mmc'];
-                    tempObj = tempData;
-                    tempObj['mmc'] = tempmmc;
+            if(this._ismount){
+                stateVar.openLotteryFlag = true;
+                this.setState({loading: false});
+                if (data.status == 200) {
+                    let tempData = data.repsoneContent;
+                    let tempObj = common.getStore(common.getStore('userId')) || {};
+                    if (tempObj['mmc'] == undefined) {
+                        tempObj = tempData;
+                    } else {
+                        let tempmmc = tempObj['mmc'];
+                        tempObj = tempData;
+                        tempObj['mmc'] = tempmmc;
+                    }
+                    common.setStore(common.getStore('userId'), tempObj);
+                    this.setOneMethod(tempData);
                 }
-                common.setStore(common.getStore('userId'), tempObj);
-                this.setOneMethod(tempData);
             }
         })
     };
@@ -3286,6 +3289,7 @@ export default class ContentMian extends Component {
                                     <Modal
                                         width='865px'
                                         visible={this.state.tracevisible}
+                                        wrapClassName="vertical-center-modal"
                                         title={<ModelView defaultIndex={this.state.traceTitleIndex}
                                                           onChangeNavIndex={this.onChangeNavIndex} navList={navList}/>}
                                         onCancel={() => {

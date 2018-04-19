@@ -12,42 +12,40 @@ $border_color: #C8C8C8;
         border: 0;
     }
     .c_top{
+        border: 1px solid $border_color;
+        margin-bottom: 15px;
         &>li{
-            margin-right: 10px;
             float: left;
+            border-right: 1px solid $border_color;
             &:last-child{
                 margin: 0;
+                border: 0;
             }
         }
         .border_content{
             position: relative;
             vertical-align: top;
-
-            border: 1px solid $border_color;
             background: #fff;
             text-align: center;
-            margin-bottom: 11px;
         }
         .c_table_wrap{
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             width:240px;
-
+            font-size: 14px;
             text-align: center;
             padding-top: 40px;
         }
         .c_portion{
             width: 240px;
-            height: 152px;
+            height: 315px;
         }
         .c_portion_height{
             width: 240px;
             height: 315px;
         }
         .no_salay{
-            display: inline-block;
-            margin-left: 10px;
             width: 240px;
             height: 315px;
         }
@@ -55,13 +53,21 @@ $border_color: #C8C8C8;
             width: 284px;
             height: 315px;
         }
+        .c_quota_no_salay{
+            width: 538px;
+            height: 315px;
+        }
         .c_quota{
-            width: 240px;
+            width: 254px;
+            height: 315px;
+        }
+        .c_quota_no_dividend{
+            width: 494px;
             height: 315px;
         }
         .c_quota_width{
             height: 315px;
-            width: 534px;
+            width: 778px;
         }
         .quota_list{
             li{
@@ -69,21 +75,6 @@ $border_color: #C8C8C8;
                 line-height: 42px;
                 font-size: 14px;
                 color: #393939;
-            }
-        }
-        .c_setContract{
-            width: 226px;
-            height: 316px;
-            background: url(./Img/create_c.png) center center;
-            text-align: center;
-            padding-top: 100px;
-            color: $color_CF2027;
-            &:hover{
-                cursor: pointer;
-            }
-            p{
-                margin-top: 10px;
-                font-size: 24px;
             }
         }
     }

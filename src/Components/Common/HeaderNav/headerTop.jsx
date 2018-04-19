@@ -42,7 +42,8 @@ export default class HeaderTop extends Component {
         this._ismount = true;
 
         // 组件装载完成以后声明一个自定义事件
-        this.eventEmitter = emitter.on('changeMoney', () => {
+        this.eventEmitter = emitter.on('change' +
+            'Money', () => {
             this.getMenu();
             this.getBalance();
         });
@@ -368,7 +369,7 @@ export default class HeaderTop extends Component {
     	}
     };
     render() {
-        const { allBalance, userInfo } = stateVar;
+        const { allBalance, userInfo, hideBalance } = stateVar;
         const { iconArrowsName, iconArrowsMoney } = this.state;
         return (
             <div className="nav_top">
@@ -443,11 +444,11 @@ export default class HeaderTop extends Component {
                                 onMouseOver={()=>this.setState({iconArrowsMoney: true})}
                                 onMouseOut={()=>this.setState({iconArrowsMoney: false})}
                             >
-                                <span className="color_CF2027">余额：</span>
+                                <span className="col_color_ying">余额：</span>
                                 <span className="color_CF2027">
                                     <i>￥</i>
-                                    <i className="cpbalance ellipsis">{this.state.hideBalance ? allBalance.cpbalance : '******'}</i>
-                                    <img src={this.state.hideBalance ? on_icon : off_icon} onClick={()=>{this.setState({hideBalance: this.state.hideBalance ? false : true})}} className="n_t_hide_balance"/>
+                                    <i className="cpbalance ellipsis">{hideBalance ? allBalance.cpbalance : '******'}</i>
+                                    <img src={hideBalance ? on_icon : off_icon} onClick={()=>{stateVar.hideBalance = hideBalance ? false : true}} className="n_t_hide_balance"/>
                                 </span>
                                 <div className="n_t_controler">
                                     <ul className="n_t_down_list">

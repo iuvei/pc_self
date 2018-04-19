@@ -1,37 +1,26 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import {Menu, Affix, Icon, Modal} from 'antd';
-import emitter from '../../../Utils/events';
-import QueueAnim from 'rc-queue-anim';
-import {hashHistory} from 'react-router';
-
+import TweenOne from 'rc-tween-one';
+import {Menu, Modal, Progress} from 'antd';
 const SubMenu = Menu.SubMenu;
+import emitter from '../../../Utils/events';
+import {hashHistory} from 'react-router';
 
 import './LeftSider.scss'
 import {stateVar} from '../../../State';
 import common from '../../../CommonJs/common';
+import lotteryTypeList from '../../../CommonJs/common.json';
+const lotteryList = lotteryTypeList.lotteryType.filter((item) => item.hotLottery == 1);
 
 import left_1 from './Img/left_1.png';
-import ssc from './Img/ssc.png';
-import xsc_24 from './Img/24xsc.png';
-import ffc from './Img/ffc.png';
-import fuciap3 from './Img/fucaip3.png';
-import GD11_5 from './Img/GD11-5.png';
-import mmc from './Img/mmc.png';
-import pk10 from './Img/pk10.png';
-import SD11Y from './Img/SD11Y.png';
-import TG11_5 from './Img/TG11-5.png';
-import ticaip3 from './Img/ticaip3.png';
-import TJSSC from './Img/TJSSC.png';
-import txffc from './Img/txffc.png';
-import hot_lottery from './Img/hot.png';
 
 @observer
 export default class LeftSider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            openKeys: []
+            openKeys: [],
+            countDown: 0
         }
     }
 
@@ -43,11 +32,22 @@ export default class LeftSider extends Component {
         this.eventEmitter1 = emitter.on('resetLottery', () => {
             emitter.emit('initData');
             emitter.emit('initContentTop');
-            this.handTitleClick('', this.openKey())
+            this.handTitleClick('', this.openKey());
         });
+        this.handTitleClick('', this.openKey());
+        // this.clearIntCount = setInterval(()=>{
+        //     if(this.state.countDown >= 100){
+        //         this.setState({countDown: 0})
+        //     }else{
+        //         this.setState({countDown: ++this.state.countDown})
+        //     }
+        // }, 1000)
     };
 
     componentWillUnmount() {
+        // if(this.clearIntCount){
+        //     window.clearInterval(this.clearIntCount)
+        // }
         emitter.off(this.eventEmitter);
         emitter.off(this.eventEmitter1);
     };
@@ -149,26 +149,22 @@ export default class LeftSider extends Component {
     };
 
     handTitleClick(e, defaultKey) {
+        let {openKeys} = this.state;
         if (defaultKey) {
             this.setState({
                 openKeys: defaultKey
             })
         } else {
-            if (this.state.openKeys.indexOf(e.key) > -1) {
-                this.state.openKeys.splice(this.state.openKeys.indexOf(e.key), 1)
-                // let arr = [...this.state.openKeys]
-                // arr.splice(arr.indexOf(e.key), 1)
-                // this.setState({
-                //     openKeys: arr
-                // })
+            if (openKeys.indexOf(e.key) > -1) {
+                openKeys.splice(openKeys.indexOf(e.key), 1)
             } else {
                 this.setState({
-                    openKeys: [...this.state.openKeys, e.key]
+                    openKeys: [...openKeys, e.key]
                 })
             }
         }
 
-    }
+    };
 
     openKey() {
         let tempOpen = stateVar.nowlottery.lotteryId;
@@ -197,6 +193,7 @@ export default class LeftSider extends Component {
 
     render() {
         const {lotteryType} = stateVar;
+
         return (
             <div className="left_sider" key="LeftSider">
                 <Menu
@@ -212,21 +209,24 @@ export default class LeftSider extends Component {
                         this.handTitleClick(e)
                     }} key="sub1"
                              title={<span><img className="icon_img" src={left_1}/><span>热门彩种</span></span>}>
-                        <Menu.Item key="ssc" className="spe_lottery">
-                            <img className="icon_img" src={ssc}/>
-                            重庆时时彩
-                            <img className="icon_new_lottery" src={hot_lottery} alt=""/>
-                        </Menu.Item>
-                        <Menu.Item key="mmc">
-                            <img className="icon_img" src={mmc}/>
-                            泰国秒秒彩
-                            <img className="icon_new_lottery" src={hot_lottery} alt=""/>
-                        </Menu.Item>
-                        <Menu.Item key="ffc" className="new_lottery">
-                            <img className="icon_img" src={ffc}/>
-                            泰国60秒
-                            <img className="icon_new_lottery" src={hot_lottery} alt=""/>
-                        </Menu.Item>
+                        {
+                            lotteryList.map(item => {
+                                return (
+                                    <Menu.Item key={item.nav} className="spe_lottery">
+                                        <div className="count_down_bg" style={{width: this.state.countDown + '%'}}>
+                                            <img className="icon_img" src={require('./Img/' + item.nav + '.png')}/>
+                                            {item.cnname}
+                                            {
+                                                item.imgSrc ?
+                                                    <img className="icon_new_lottery" src={require('../../../Images/' + item.imgSrc + '.png')}/>
+                                                    :
+                                                    null
+                                            }
+                                        </div>
+                                    </Menu.Item>
+                                )
+                            })
+                        }
                     </SubMenu>
                     {
                         lotteryType.map((items, i) => {
@@ -236,10 +236,10 @@ export default class LeftSider extends Component {
                                 }}
                                          title={
                                              <span>
-                                                         <img className="icon_img"
-                                                              src={require('./Img/left_' + (i + 2) + '.png')}/>
-                                                         <span>{items.typeName}</span>
-                                                     </span>
+                                                 <img className="icon_img"
+                                                      src={require('./Img/left_' + (i + 2) + '.png')}/>
+                                                 <span>{items.typeName}</span>
+                                             </span>
                                          }
                                 >
                                     {
@@ -253,8 +253,8 @@ export default class LeftSider extends Component {
                                                          src={require('./Img/' + item.nav + '.png')}/>
                                                     {item.cnname}
                                                     {
-                                                        item.imgSrc == 'nav_h' ?
-                                                            <img className="icon_new_lottery" src={hot_lottery}/> :
+                                                        item.imgSrc ?
+                                                            <img className="icon_new_lottery" src={require('../../../Images/' + item.imgSrc + '.png')}/>:
                                                             null
                                                     }
                                                 </Menu.Item>

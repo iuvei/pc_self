@@ -31,7 +31,7 @@ export default class NormalTable extends Component {
         * 将彩种id作为索引，彩种大类作为变量内容
         * */
         let lotteryBigType=[];
-        let lotteryListFlag = data.repsoneContent.aData.lotteryList;
+        let lotteryListFlag = data.aData.lotteryList;
         for(let i=0; i<lotteryListFlag.length; i++){
             lotteryBigType[lotteryListFlag[i].lotteryid]=lotteryListFlag[i].lotterytype;
         }
@@ -39,20 +39,20 @@ export default class NormalTable extends Component {
         /*表头 begin*/
 
         /*控制特定列进行分列
-        * 当table内容行数>=data.repsoneContent.bonuscode.length（后台返回表格数据长度）对应表头不分列
+        * 当table内容行数>=data.bonuscode.length（后台返回表格数据长度）对应表头不分列
         * */
         const renderContent = (value, row, index) => {
             const obj = {
                 children: value,
                 props: {},
             };
-            if (index >= data.repsoneContent.bonuscode.length) {
+            if (index >= data.bonuscode.length) {
                 obj.props.colSpan = 0;
             }
             return obj;
         };
         /*表头添加期号
-        * 当table内容行数>=data.repsoneContent.bonuscode.length（后台返回表格数据长度）期号表头不分列
+        * 当table内容行数>=data.bonuscode.length（后台返回表格数据长度）期号表头不分列
         * */
         columns.push({
             title: '期号',
@@ -63,7 +63,7 @@ export default class NormalTable extends Component {
                     children: value,
                     props: {}
                 };
-                if (index >= data.repsoneContent.bonuscode.length) {
+                if (index >= data.bonuscode.length) {
                     obj.props.colSpan = 0;
                 }
                 return obj;
@@ -72,7 +72,7 @@ export default class NormalTable extends Component {
         });
         /*获取开奖号码个数，从而控制表头开奖号码分成多少列*/
 
-        let curHeardAwrdNo=data.repsoneContent.bonuscode[0].code;
+        let curHeardAwrdNo=data.bonuscode[0].code;
         let iftwoballH=curHeardAwrdNo.charAt(2);
         if(iftwoballH!=" "){
             headAwardNo=curHeardAwrdNo.split("");
@@ -81,7 +81,7 @@ export default class NormalTable extends Component {
             headAwardNo=curHeardAwrdNo.split(" ");
         }
         /*表头添加开奖号码
-        * 当table内容行数>=data.repsoneContent.bonuscode.length（后台返回表格数据长度）开奖号码表头分割成开奖号码个数（headAwardNo.length + 1）对应的列数
+        * 当table内容行数>=data.bonuscode.length（后台返回表格数据长度）开奖号码表头分割成开奖号码个数（headAwardNo.length + 1）对应的列数
         * */
         columns.push({
             title: '开奖号码',
@@ -95,7 +95,7 @@ export default class NormalTable extends Component {
                     props: {}
                 };
 
-                if (index >= data.repsoneContent.bonuscode.length) {
+                if (index >= data.bonuscode.length) {
                     obj.props.colSpan = headAwardNo.length + 1;
                 }
 
@@ -114,27 +114,27 @@ export default class NormalTable extends Component {
                 render: renderContent,
             })
         }
-        /*将表头的第一行用data.repsoneContent.lcodegroup遍历
-        *将表头的第二行用data.repsoneContent.vaildnum遍历
-        *当 data.repsoneContent.vaildnum为一维数组时，所有返回表头用同一列遍历
-        * 并且渲染表尾大表头第一列colSpan=data.repsoneContent.vaildnum.length,大表头下剩下表头colSpan=0
-        *当 data.repsoneContent.vaildnum为二维数组时，相应表头用此变量下的对应数组遍历
-        * 并且渲染表尾大表头第一列colSpan=data.repsoneContent.vaildnum[i].length,大表头下剩下表头colSpan=0
-        *当data.repsoneContent.vaildnum对应数组下为空时，表头没有子元素
+        /*将表头的第一行用data.lcodegroup遍历
+        *将表头的第二行用data.vaildnum遍历
+        *当 data.vaildnum为一维数组时，所有返回表头用同一列遍历
+        * 并且渲染表尾大表头第一列colSpan=data.vaildnum.length,大表头下剩下表头colSpan=0
+        *当 data.vaildnum为二维数组时，相应表头用此变量下的对应数组遍历
+        * 并且渲染表尾大表头第一列colSpan=data.vaildnum[i].length,大表头下剩下表头colSpan=0
+        *当data.vaildnum对应数组下为空时，表头没有子元素
         * */
 
         let columnChildren = [];
-        for (let i = 0; i < data.repsoneContent.lcodegroup.length; i++) {
-            if(!(data.repsoneContent.bonuscode[0].wei[i] instanceof Array)&&          /*在大表头有多个子标题前提下显示单个数据，才加入类ball*/
-                ((data.repsoneContent.vaildnum[i][0]=="1"||data.repsoneContent.vaildnum[i][0]=="0")||
-                    (data.repsoneContent.vaildnum[0]=="1"||data.repsoneContent.vaildnum[0]=="0"))){
-                if(data.repsoneContent.vaildnum[0] instanceof Array){ /*多个表头下的子标题不是一模一样的*/
-                    for(let z = 0;z < data.repsoneContent.vaildnum[i].length ; z++){
+        for (let i = 0; i < data.lcodegroup.length; i++) {
+            if(!(data.bonuscode[0].wei[i] instanceof Array)&&          /*在大表头有多个子标题前提下显示单个数据，才加入类ball*/
+                ((data.vaildnum[i][0]=="1"||data.vaildnum[i][0]=="0")||
+                    (data.vaildnum[0]=="1"||data.vaildnum[0]=="0"))){
+                if(data.vaildnum[0] instanceof Array){ /*多个表头下的子标题不是一模一样的*/
+                    for(let z = 0;z < data.vaildnum[i].length ; z++){
                         if( z==0){/*表格最后一行要显示位置，以及表头的大标题，所以第0行分割成对应子标题的列数*/
                             columnChildren.push({
                                 key: `children${i}${z}`,
                                 dataIndex: `children${i}${z}`,
-                                title: data.repsoneContent.vaildnum[i][z],
+                                title: data.vaildnum[i][z],
                                 render: (value, row, index) => {
                                     const obj = {
                                         children: {value},
@@ -143,15 +143,15 @@ export default class NormalTable extends Component {
 
 
                                     if(value==0||value){/*表格内容中在标准期数行以前的有值的就加入类ball或者值为0*/
-                                        if (index < data.repsoneContent.bonuscode.length) {
+                                        if (index < data.bonuscode.length) {
                                             obj.children=<div className="ball">{value}</div>;
 
                                         }else{
                                             obj.children=value;
                                         }
                                     }
-                                    if (index >= data.repsoneContent.bonuscode.length+3) {
-                                        obj.props.colSpan = data.repsoneContent.vaildnum[i].length;
+                                    if (index >= data.bonuscode.length+3) {
+                                        obj.props.colSpan = data.vaildnum[i].length;
 
                                     }
                                     return obj;
@@ -161,7 +161,7 @@ export default class NormalTable extends Component {
                             columnChildren.push({
                                 key: `children${i}${z}`,
                                 dataIndex: `children${i}${z}`,
-                                title: data.repsoneContent.vaildnum[i][z],
+                                title: data.vaildnum[i][z],
                                 render: (value, row, index) => {
                                     const obj = {
                                         children: {value},
@@ -170,14 +170,14 @@ export default class NormalTable extends Component {
 
 
                                     if(value==0||value){
-                                        if (index < data.repsoneContent.bonuscode.length) {
+                                        if (index < data.bonuscode.length) {
                                             obj.children=<div className="ball">{value}</div>;
 
                                         }else{
                                             obj.children=value;
                                         }
                                     }
-                                    if (index >= data.repsoneContent.bonuscode.length+3) {
+                                    if (index >= data.bonuscode.length+3) {
                                         obj.props.colSpan = 0;
 
                                     }
@@ -189,12 +189,12 @@ export default class NormalTable extends Component {
 
                 }else{/*所有大表头下的子标题一模一样*/
 
-                    for (let j = 0; j <data.repsoneContent.vaildnum.length; j++) {
+                    for (let j = 0; j <data.vaildnum.length; j++) {
                         if(j==0){
                             columnChildren.push({
                                 key: `children${i}${j}`,
                                 dataIndex: `children${i}${j}`,
-                                title: data.repsoneContent.vaildnum[j],
+                                title: data.vaildnum[j],
                                 render: (value, row, index) => {
                                     const obj = {
                                         children: {value},
@@ -203,15 +203,15 @@ export default class NormalTable extends Component {
 
 
                                     if(value==0||value){
-                                        if (index < data.repsoneContent.bonuscode.length) {
+                                        if (index < data.bonuscode.length) {
                                             obj.children=<div className="ball">{value}</div>;
 
                                         }else{
                                             obj.children=value;
                                         }
                                     }
-                                    if (index >= data.repsoneContent.bonuscode.length+3) {
-                                        obj.props.colSpan = data.repsoneContent.vaildnum.length;
+                                    if (index >= data.bonuscode.length+3) {
+                                        obj.props.colSpan = data.vaildnum.length;
 
                                     }
                                     return obj;
@@ -221,7 +221,7 @@ export default class NormalTable extends Component {
                             columnChildren.push({
                                 key: `children${i}${j}`,
                                 dataIndex: `children${i}${j}`,
-                                title: data.repsoneContent.vaildnum[j],
+                                title: data.vaildnum[j],
                                 render: (value, row, index) => {
                                     const obj = {
                                         children: {value},
@@ -230,14 +230,14 @@ export default class NormalTable extends Component {
 
 
                                     if(value==0||value){
-                                        if (index < data.repsoneContent.bonuscode.length) {
+                                        if (index < data.bonuscode.length) {
                                             obj.children=<div className="ball">{value}</div>;
 
                                         }else{
                                             obj.children=value;
                                         }
                                     }
-                                    if (index >= data.repsoneContent.bonuscode.length+3) {
+                                    if (index >= data.bonuscode.length+3) {
                                         obj.props.colSpan = 0;
 
                                     }
@@ -248,20 +248,20 @@ export default class NormalTable extends Component {
                     }
                 }
             }else{
-                if(data.repsoneContent.vaildnum[0] instanceof Array){ /*多个表头下的子标题不是一模一样的*/
-                    for(let z = 0;z < data.repsoneContent.vaildnum[i].length ; z++){
+                if(data.vaildnum[0] instanceof Array){ /*多个表头下的子标题不是一模一样的*/
+                    for(let z = 0;z < data.vaildnum[i].length ; z++){
                         if( z==0){
                             columnChildren.push({
                                 key: `children${i}${z}`,
                                 dataIndex: `children${i}${z}`,
-                                title: data.repsoneContent.vaildnum[i][z],
+                                title: data.vaildnum[i][z],
                                 render: (value, row, index) => {
                                     const obj = {
                                         children: value,
                                         props: {},
                                     };
-                                    if (index >= data.repsoneContent.bonuscode.length+3) {
-                                        obj.props.colSpan = data.repsoneContent.vaildnum[i].length;
+                                    if (index >= data.bonuscode.length+3) {
+                                        obj.props.colSpan = data.vaildnum[i].length;
                                     }
                                     return obj;
                                 },
@@ -270,13 +270,13 @@ export default class NormalTable extends Component {
                             columnChildren.push({
                                 key: `children${i}${z}`,
                                 dataIndex: `children${i}${z}`,
-                                title: data.repsoneContent.vaildnum[i][z],
+                                title: data.vaildnum[i][z],
                                 render: (value, row, index) => {
                                     const obj = {
                                         children: value,
                                         props: {},
                                     };
-                                    if (index >= data.repsoneContent.bonuscode.length+3) {
+                                    if (index >= data.bonuscode.length+3) {
                                         obj.props.colSpan = 0;
                                     }
                                     return obj;
@@ -287,19 +287,19 @@ export default class NormalTable extends Component {
 
                 }else{/*所有大表头下的子标题一模一样*/
 
-                    for (let j = 0; j <data.repsoneContent.vaildnum.length; j++) {
+                    for (let j = 0; j <data.vaildnum.length; j++) {
                         if(j==0){
                             columnChildren.push({
                                 key: `children${i}${j}`,
                                 dataIndex: `children${i}${j}`,
-                                title: data.repsoneContent.vaildnum[j],
+                                title: data.vaildnum[j],
                                 render: (value, row, index) => {
                                     const obj = {
                                         children: value,
                                         props: {},
                                     };
-                                    if (index >= data.repsoneContent.bonuscode.length+3) {
-                                        obj.props.colSpan = data.repsoneContent.vaildnum.length;
+                                    if (index >= data.bonuscode.length+3) {
+                                        obj.props.colSpan = data.vaildnum.length;
                                     }
                                     return obj;
                                 },
@@ -308,13 +308,13 @@ export default class NormalTable extends Component {
                             columnChildren.push({
                                 key: `children${i}${j}`,
                                 dataIndex: `children${i}${j}`,
-                                title: data.repsoneContent.vaildnum[j],
+                                title: data.vaildnum[j],
                                 render: (value, row, index) => {
                                     const obj = {
                                         children: value,
                                         props: {},
                                     };
-                                    if (index >= data.repsoneContent.bonuscode.length+3) {
+                                    if (index >= data.bonuscode.length+3) {
                                         obj.props.colSpan = 0;
                                     }
                                     return obj;
@@ -328,7 +328,7 @@ export default class NormalTable extends Component {
             if(columnChildren==''){
                 columns.push({
                     key: `colums${i}`,
-                    title: data.repsoneContent.lcodegroup[i],
+                    title: data.lcodegroup[i],
                     dataIndex: `children${i}0`,
 
                 });
@@ -336,7 +336,7 @@ export default class NormalTable extends Component {
                 columns.push({
                     key: `colums${i}`,
                     dataIndex: `colums${i}`,
-                    title: data.repsoneContent.lcodegroup[i],
+                    title: data.lcodegroup[i],
                     children: columnChildren,
                 });
             }
@@ -350,15 +350,15 @@ export default class NormalTable extends Component {
         /*表格内容 begin*/
 
 
-        /*将表格内容用data.repsoneContent.bonuscode进行遍历，依据表格表头的dataindex*/
-        for (let i = 0; i < data.repsoneContent.bonuscode.length; i++) {
+        /*将表格内容用data.bonuscode进行遍历，依据表格表头的dataindex*/
+        for (let i = 0; i < data.bonuscode.length; i++) {
             tableData.push({
-                issue: data.repsoneContent.bonuscode[i].issue,
+                issue: data.bonuscode[i].issue,
                 key:"issue${i}",
             });
             /*将开奖号码重新封装成一个数组*/
             let tableAwardNo=[];
-            let curAwrdNo=data.repsoneContent.bonuscode[i].code;
+            let curAwrdNo=data.bonuscode[i].code;
             let iftwoball=curAwrdNo.charAt(2);
             if(iftwoball!=" "){
                 tableAwardNo=curAwrdNo.split("");
@@ -386,93 +386,93 @@ export default class NormalTable extends Component {
             * 1.2.1 当前显示内容为数字时，返回的都是当前位置+1
             * 1.2.2 当前显示内容为文字时，返回的都是当前位置
             * 当前走势图为单表头时，
-            * 1.显示的内容就是当前返回数据data.repsoneContent.bonuscode[i].wei[j]的内容
+            * 1.显示的内容就是当前返回数据data.bonuscode[i].wei[j]的内容
             **/
-            for (let j = 0; j < data.repsoneContent.lcodegroup.length; j++) {
-                if(!(data.repsoneContent.vaildnum[0] instanceof Array)){ //多表头,并且多个大表头下的子表头内容都是同样的
+            for (let j = 0; j < data.lcodegroup.length; j++) {
+                if(!(data.vaildnum[0] instanceof Array)){ //多表头,并且多个大表头下的子表头内容都是同样的
                     if(lotteryBigType[lotteryId]==0){ //时时彩系列，不管是数字还是文字，返回的都是当前位置
-                        if(data.repsoneContent.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
+                        if(data.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
 
-                            for(let z=0; z<data.repsoneContent.bonuscode[i].wei[j].length;z++){
-                                let currentWei = data.repsoneContent.bonuscode[i].wei[j][z];
-                                tableData[i][`children${j}${currentWei}`] = data.repsoneContent.vaildnum[currentWei];
+                            for(let z=0; z<data.bonuscode[i].wei[j].length;z++){
+                                let currentWei = data.bonuscode[i].wei[j][z];
+                                tableData[i][`children${j}${currentWei}`] = data.vaildnum[currentWei];
                             }
                         }else{//同一大表头中显示1个数据
-                            let currentWei = data.repsoneContent.bonuscode[i].wei[j];
-                            tableData[i][`children${j}${currentWei}`] = data.repsoneContent.vaildnum[currentWei];
+                            let currentWei = data.bonuscode[i].wei[j];
+                            tableData[i][`children${j}${currentWei}`] = data.vaildnum[currentWei];
                         }
 
                     }else if(lotteryBigType[lotteryId]==2){ //11选5系列
 
-                        if(data.repsoneContent.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
-                            for(let z=0; z<data.repsoneContent.bonuscode[i].wei[j].length;z++){
+                        if(data.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
+                            for(let z=0; z<data.bonuscode[i].wei[j].length;z++){
                                 let currentWei=null;
-                                if(data.repsoneContent.vaildnum[0]=="1"){ //当前显示为数据
-                                    currentWei = data.repsoneContent.bonuscode[i].wei[j][z]-1;
+                                if(data.vaildnum[0]=="1"){ //当前显示为数据
+                                    currentWei = data.bonuscode[i].wei[j][z]-1;
                                 }else{//当前显示为文字
-                                    currentWei = data.repsoneContent.bonuscode[i].wei[j][z];
+                                    currentWei = data.bonuscode[i].wei[j][z];
                                 }
 
-                                tableData[i][`children${j}${currentWei}`] = data.repsoneContent.bonuscode[i].wei[j][z];
+                                tableData[i][`children${j}${currentWei}`] = data.bonuscode[i].wei[j][z];
                             }
                         }else{//同一大表头中显示1个数据
                             let currentWei = null;
-                            if(data.repsoneContent.vaildnum[0]=="1"){ //当前显示为数据
-                                currentWei = data.repsoneContent.bonuscode[i].wei[j]-1;
+                            if(data.vaildnum[0]=="1"){ //当前显示为数据
+                                currentWei = data.bonuscode[i].wei[j]-1;
                             }else{//当前显示为文字
-                                currentWei = data.repsoneContent.bonuscode[i].wei[j];
+                                currentWei = data.bonuscode[i].wei[j];
                             }
-                            tableData[i][`children${j}${currentWei}`] = data.repsoneContent.bonuscode[i].wei[j];
+                            tableData[i][`children${j}${currentWei}`] = data.bonuscode[i].wei[j];
                         }
                     }
                 }else{ /*多表头，并且多个大表头下的子表头内容都是不同的*/
-                    if(data.repsoneContent.vaildnum[j] instanceof Array){ //大表头含有多个子元素
+                    if(data.vaildnum[j] instanceof Array){ //大表头含有多个子元素
                         if(lotteryBigType[lotteryId]==0){ //时时彩系列
-                            if(data.repsoneContent.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
+                            if(data.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
 
-                                for(let z=0; z<data.repsoneContent.bonuscode[i].wei[j].length;z++){
-                                    let currentWei = data.repsoneContent.bonuscode[i].wei[j][z];
-                                    tableData[i][`children${j}${currentWei}`] = data.repsoneContent.vaildnum[j][currentWei];
+                                for(let z=0; z<data.bonuscode[i].wei[j].length;z++){
+                                    let currentWei = data.bonuscode[i].wei[j][z];
+                                    tableData[i][`children${j}${currentWei}`] = data.vaildnum[j][currentWei];
                                 }
                             }else{ //同一大表头中仅显示一个数据
-                                let currentWei = data.repsoneContent.bonuscode[i].wei[j];
-                                tableData[i][`children${j}${currentWei}`] = data.repsoneContent.vaildnum[j][currentWei];
+                                let currentWei = data.bonuscode[i].wei[j];
+                                tableData[i][`children${j}${currentWei}`] = data.vaildnum[j][currentWei];
                             }
 
                         }else if(lotteryBigType[lotteryId]==2){ //11选5系列
-                            if(data.repsoneContent.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
-                                for(let z=0; z<data.repsoneContent.bonuscode[i].wei[j].length;z++){
+                            if(data.bonuscode[i].wei[j] instanceof Array){//同一大表头中显示多个数据
+                                for(let z=0; z<data.bonuscode[i].wei[j].length;z++){
                                     let currentWei=null;
-                                    if(data.repsoneContent.vaildnum[j][0]=="1"){ //当前显示为数据
-                                        currentWei = data.repsoneContent.bonuscode[i].wei[j][z]-1;
+                                    if(data.vaildnum[j][0]=="1"){ //当前显示为数据
+                                        currentWei = data.bonuscode[i].wei[j][z]-1;
                                     }else{//当前显示为文字
-                                        currentWei = data.repsoneContent.bonuscode[i].wei[j][z];
+                                        currentWei = data.bonuscode[i].wei[j][z];
                                     }
 
-                                    tableData[i][`children${j}${currentWei}`] = data.repsoneContent.bonuscode[i].wei[j][z];
+                                    tableData[i][`children${j}${currentWei}`] = data.bonuscode[i].wei[j][z];
                                 }
                             }else{//同一大表头中显示1个数据
                                 let currentWei = null;
-                                if(data.repsoneContent.vaildnum[0]=="1"){ //当前显示为数据
-                                    currentWei = data.repsoneContent.bonuscode[i].wei[j]-1;
+                                if(data.vaildnum[0]=="1"){ //当前显示为数据
+                                    currentWei = data.bonuscode[i].wei[j]-1;
                                 }else{//当前显示为文字
-                                    currentWei = data.repsoneContent.bonuscode[i].wei[j];
+                                    currentWei = data.bonuscode[i].wei[j];
                                 }
-                                tableData[i][`children${j}${currentWei}`] = data.repsoneContent.bonuscode[i].wei[j];
+                                tableData[i][`children${j}${currentWei}`] = data.bonuscode[i].wei[j];
                             }
                         }
                     }else{ //大表头下只有一个元素
-                        tableData[i][`children${j}0`] = data.repsoneContent.bonuscode[i].wei[j];
+                        tableData[i][`children${j}0`] = data.bonuscode[i].wei[j];
                     }
                 }
             }
         }
 
-        /*表格内容添加标准间隔，依据data.repsoneContent.vaildge
-        *标准次数，依据data.repsoneContent.vaildci
-        *当前次数，依据data.repsoneContent.appears
+        /*表格内容添加标准间隔，依据data.vaildge
+        *标准次数，依据data.vaildci
+        *当前次数，依据data.appears
         * 表格底部显示
-        * 标准间隔行数为tableData[data.repsoneContent.bonuscode.length]，标准次数和当前次数,位置分别在前一行上+1
+        * 标准间隔行数为tableData[data.bonuscode.length]，标准次数和当前次数,位置分别在前一行上+1
         * */
         tableData.push({
             issue: "标准间隔",
@@ -494,18 +494,18 @@ export default class NormalTable extends Component {
             award0: "位置",
             key:"position",
         })
-        for (let i = 0; i < data.repsoneContent.appears.length; i++) {
-            for (let j = 0; j < data.repsoneContent.appears[i].length; j++) {
-                tableData[data.repsoneContent.bonuscode.length][`children${i}${j}`] = data.repsoneContent.vaildge;
-                tableData[data.repsoneContent.bonuscode.length+1][`children${i}${j}`] = data.repsoneContent.vaildci;
-                tableData[data.repsoneContent.bonuscode.length+2][`children${i}${j}`] = data.repsoneContent.appears[i][j];
+        for (let i = 0; i < data.appears.length; i++) {
+            for (let j = 0; j < data.appears[i].length; j++) {
+                tableData[data.bonuscode.length][`children${i}${j}`] = data.vaildge;
+                tableData[data.bonuscode.length+1][`children${i}${j}`] = data.vaildci;
+                tableData[data.bonuscode.length+2][`children${i}${j}`] = data.appears[i][j];
             }
 
         }
         /*
         * 表格底部显示，同表格头部第一行内容一样*/
-        for (let j = 0; j < data.repsoneContent.lcodegroup.length; j++){
-            tableData[data.repsoneContent.bonuscode.length+3][`children${j}0`] = data.repsoneContent.lcodegroup[j];
+        for (let j = 0; j < data.lcodegroup.length; j++){
+            tableData[data.bonuscode.length+3][`children${j}0`] = data.lcodegroup[j];
         }
         /*表格内容 end*/
         this.setState({

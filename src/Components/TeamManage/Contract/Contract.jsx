@@ -3,10 +3,8 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Table, Icon,Tooltip,Spin,Button,Modal,InputNumber, Pagination } from 'antd';
 import { stateVar } from '../../../State';
-import ContractModal from './ContractModal/ContractModal';
 import Fetch from '../../../Utils';
 
-import addSrc from './Img/add.png';
 import moneySrc from './Img/money.png';
 import dollarSrc from './Img/dollar.png';
 import yuanSrc from './Img/yuan.png';
@@ -32,9 +30,8 @@ export default class Contract extends Component {
     constructor(props){
         super(props);
         this.state = {
-            selectedRowKeys: [], // Check here to configure the default column
+            selectedRowKeys: [],
             loading: true,       /*控制表格请求数据的加载样式*/
-            visible:false,                     // 控制创建契约模态框的显示
             protocol:[],               //当前用户的日工资比例
             cur_dividend_radio:null,/*当前用户的日工资比例*/
             tableLength:null,/*实际获取到的下级用户数目*/
@@ -50,8 +47,6 @@ export default class Contract extends Component {
                 pn: 10,
             }
         };
-        this.getContractList = this.getContractList.bind(this);
-        this.transferMsg = this.transferMsg.bind(this);
     };
     componentDidMount() {
         this._ismount = true;
@@ -59,11 +54,6 @@ export default class Contract extends Component {
     };
     componentWillUnmount() {
         this._ismount = false;
-    };
-    transferMsg(visible) {
-        this.setState({
-            visible: visible
-        });
     };
 
     /*切换每页显示条数*/
@@ -78,10 +68,6 @@ export default class Contract extends Component {
         let {postData} = this.state;
         postData.p = page;
         this.setState({postData},()=>this.getContractList());
-    };
-
-    showModal(){
-        this.setState({visible:true});
     };
     /*
     * 获取当前登录用户的契约信息
@@ -290,6 +276,12 @@ export default class Contract extends Component {
         if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1){//无日工资比例，无分红比例
             return 'border_content c_quota_width'
         }
+        else if(dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend == 1){//无日工资比例
+            return 'border_content c_quota_no_salay'
+        }
+        else if(dailysalaryStatus.isSalary == 1 && dailysalaryStatus.isDividend != 1){//无分红比例
+            return 'border_content c_quota_no_dividend'
+        }
         else{
             return 'border_content c_quota'
         }
@@ -355,24 +347,25 @@ export default class Contract extends Component {
                                        </div>
                                    </li>
                            }
-                           <li>
-                               {
-                                   dailysalaryStatus.isDividend == 1 ?
-                                       <div className={this.onStyleDividend()} >
-                                           <p className='c_title'><img src={yuanSrc}/>我的分红比例</p>
-                                           <div className='c_table_wrap'>
-                                               <p>分红</p>
-                                               <p className='c_txt'>{cur_dividend_radio}%</p>
-                                           </div>
-                                       </div> :
-                                       null
-                               }
-                               <div className={this.onStyleAccGroup()}>
-                                   <p className='c_title'><img src={dollarSrc}/>我的奖金组</p>
-                                   <div className='c_table_wrap'>
-                                       <p>奖金组</p>
-                                       <p className='c_txt'>{stateVar.userInfo.accGroup}</p>
-                                   </div>
+                           {
+                               dailysalaryStatus.isDividend == 1 ?
+                                   <li className={this.onStyleDividend()} >
+                                       <p className='c_title'><img src={yuanSrc}/>我的分红比例</p>
+                                       <div className='c_table_wrap'>
+                                           <p>分红</p>
+                                           <p className='c_txt'>{cur_dividend_radio}%</p>
+                                       </div>
+                                   </li> :
+                                   null
+                           }
+                           <li className={this.onStyleAccGroup()}>
+                               <p className='c_title'>
+                                   <img src={dollarSrc}/>
+                                   我的奖金组
+                               </p>
+                               <div className='c_table_wrap'>
+                                   <p>奖金组</p>
+                                   <p className='c_txt'>{stateVar.userInfo.accGroup}</p>
                                </div>
                            </li>
                            <li>
@@ -392,23 +385,13 @@ export default class Contract extends Component {
                                                }
                                                <li>剩余奖金组：无限制</li>
                                                <li>
-                                                   <Button onClick={()=>this.setState({quotaVisible: true})}>申请补充奖金组</Button>
+                                                   <Button onClick={()=>this.setState({quotaVisible: true})}>申请补充配额</Button>
                                                </li>
                                            </ul>
                                    }
                                </div>
                            </li>
-                           <li className='c_setContract' onClick={()=>{this.showModal()}}>
-                               <img src={addSrc}/>
-                               <p>创建契约</p>
-                           </li>
                        </ul>
-                       <ContractModal
-                           visible={this.state.visible}
-                           transferMsg = {this.transferMsg}
-                           getContractList = {this.getContractList}
-                           protocol = {protocol}
-                       />
                        <div>
                            <div className="c_table_list">
                                <Table columns={columns}
@@ -436,6 +419,7 @@ export default class Contract extends Component {
                <Modal
                    title="配额申请"
                    visible={this.state.quotaVisible}
+                   wrapClassName="vertical-center-modal"
                    width={440}
                    footer={null}
                    maskClosable={false}

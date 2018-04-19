@@ -8,7 +8,7 @@ body,p,h1,h2,h3,h4,h5,h6,ul,ol,dl,li,dd{ margin:0;}
 h1,h2,h3,h4,h5,h6{ font-weight: normal;}
 ul,ol{padding:0;}
 
-body{ font-size:12px;font-family:"微软雅黑",Arial,sans-serif; min-width: 1200px;padding:0 !important; overflow: scroll !important; overflow-x: hidden ;
+body{ font-size:12px;font-family:微软雅黑,Arial,sans-serif; min-width: 1200px;padding:0 !important; overflow: scroll !important; overflow-x: hidden ;
 }
 a{ text-decoration:none; color:#666666; }
 li{ list-style:none; }
@@ -21,6 +21,17 @@ input,textarea{ padding:0;}
 .ant-select-selection--single{
     height: 30px;
     padding-top: 1px;
+}
+//.ant-progress-inner, .ant-progress-bg, .ant-progress-status-active .ant-progress-bg:before{
+//    border-radius: 0;
+//}
+.ant-menu-inline .ant-menu-item{
+    border-right: 0;
+}
+.ant-menu-sub.ant-menu-inline > .ant-menu-item{
+    line-height: 35px;
+    height: 35px;
+    margin-bottom: 5px;
 }
 
 

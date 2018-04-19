@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
-import {Select, Table, Input, Button, Modal, InputNumber} from 'antd';
+import {Select, Table, Input, Button, Modal, InputNumber, Pagination} from 'antd';
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
@@ -93,7 +93,7 @@ export default class Dividend extends Component {
                 if (res.status == 200) {
                     let data = res.repsoneContent,
                         team = {},
-                        resultsFlag = data.alldata.results,
+                        resultsFlag = data.alldata.results instanceof Array ? data.alldata.results : [],
                         sum = data.sum;
                     if (data.sum.userid != undefined) {
                         team = {
@@ -119,7 +119,7 @@ export default class Dividend extends Component {
                         data: resultsFlag,
                         divIdEndTotals: data.dividendtotals,
                         sum: sum,
-                        total: data.alldata.affects,
+                        total: data.alldata.affects == undefined ? 0 : parseInt(data.alldata.affects),
                         oneKeyDividend: data.send_status,
                         send_all_button: data.send_all_button
                     });
@@ -131,15 +131,23 @@ export default class Dividend extends Component {
 
     /*搜索*/
     onSearch() {
-        this.setState({searchLoading: true});
-        this.getData();
+        let {postData} = this.state;
+        postData.p = 1;
+        this.setState({postData, searchLoading: true}, ()=>this.getData());
     };
 
     /*切换每页条数*/
     onShowSizeChange(current, pageSize) {
-        let postData = this.state.postData;
+        let {postData} = this.state;
         postData.p = current;
         postData.pn = pageSize;
+        this.setState({postData: postData}, () => this.getData());
+    };
+
+    /*某页*/
+    onChangePage(page) {
+        let {postData} = this.state;
+        postData.p = page;
         this.setState({postData: postData}, () => this.getData());
     };
 
@@ -310,10 +318,15 @@ export default class Dividend extends Component {
         let alterData = this.state.alterData;
         alterData.dividend_radio = val;
         this.forceUpdate();
-    }
+    };
+
+    onKeyDown(e) {
+        if (e.keyCode == 13) {
+            this.onSearch();
+        }
+    };
 
     render() {
-
         const columnsModal = [
             {
                 title: '时间',
@@ -408,7 +421,7 @@ export default class Dividend extends Component {
                         return (
                             <ButtonGroup>
                                 {
-                                    text.map((item, i) => {
+                                    text.filter(item => item.text != '修改比例').map((item, i) => {
                                         return <Button key={i}
                                                        onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                     })
@@ -517,7 +530,7 @@ export default class Dividend extends Component {
                             return (
                                 <ButtonGroup>
                                     {
-                                        text.map((item, i) => {
+                                        text.filter(item => item.text != '修改比例').map((item, i) => {
                                             return <Button key={i}
                                                            onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                         })
@@ -627,7 +640,7 @@ export default class Dividend extends Component {
                             return (
                                 <ButtonGroup>
                                     {
-                                        text.map((item, i) => {
+                                        text.filter(item => item.text != '修改比例').map((item, i) => {
                                             return <Button key={i}
                                                            onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                         })
@@ -732,7 +745,7 @@ export default class Dividend extends Component {
                             return (
                                 <ButtonGroup>
                                     {
-                                        text.map((item, i) => {
+                                        text.filter(item => item.text != '修改比例').map((item, i) => {
                                             return <Button key={i}
                                                            onClick={() => this.onClickButton(item.text, record.username, record)}>{item.text}</Button>
                                         })
@@ -768,7 +781,7 @@ export default class Dividend extends Component {
             <div className="report">
                 <div className="team_list_top">
                     <div className="t_l_time">
-                        <ul className="t_l_time_row">
+                        <ul className="t_l_time_row" onKeyDown={(e) => this.onKeyDown(e)}>
                             <li>
                                 <span>用户名：</span>
                                 <Input placeholder="请输入用户名" value={postData.username}
@@ -806,12 +819,24 @@ export default class Dividend extends Component {
                                dataSource={data}
                                pagination={false}
                                loading={this.state.loading}
-                               footer={total <= 0 || isNaN(total) || sum.sale == undefined ? null : () => footer}
+                               footer={total <= 0 ? null : () => footer}
                                className="table_list"
                         />
                     </div>
+                    {/*<div className="t_l_page">*/}
+                        {/*<Pagination style={{display: total < 1 ? 'none' : ''}}*/}
+                                    {/*showSizeChanger*/}
+                                    {/*onShowSizeChange={(current, pageSize) => this.onShowSizeChange(current, pageSize)}*/}
+                                    {/*onChange={(pageNumber) => this.onChangePage(pageNumber)}*/}
+                                    {/*defaultCurrent={1}*/}
+                                    {/*total={total}*/}
+                                    {/*pageSizeOptions={stateVar.pageSizeOptions.slice()}*/}
+                        {/*/>*/}
+                    {/*</div>*/}
+
                     <Modal
                         title="历史分红"
+                        wrapClassName="vertical-center-modal"
                         visible={this.state.historyVisible}
                         width={800}
                         bodyStyle={{height: 400}}

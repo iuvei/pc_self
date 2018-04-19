@@ -22,16 +22,16 @@ const Combination = (n, m) => {
 
 	var result = 0.0;
 	for(i=n; i>=(n-m+1);i--) {
-		result += Math.log(i);			
+		result += Math.log(i);
 	}
 	for(i=m; i >= 1; i--) {
 		result -= Math.log(i);
 	}
 	result = Math.exp(result);
 	return Math.round(result);
-}
+};
 const getLotteryId = (a)=>{
-	let tempId
+	let tempId;
 	switch(a){
 		case 'ssc': tempId = 1;break;
 		case 'mmc': tempId = 23;break;
@@ -44,6 +44,7 @@ const getLotteryId = (a)=>{
 		case 'GD11-5': tempId = 8;break;
 		case 'JX11-5': tempId = 7;break;
 		case 'TG11-5': tempId = 21;break;
+		case 'SH11-5': tempId = 30;break;
 		case 'fucaip3': tempId = 11;break;
 		case 'ticaip3': tempId = 12;break;
 		case 'txffc': tempId = 29;break;
@@ -53,10 +54,10 @@ const getLotteryId = (a)=>{
 };
 const fftime = (n) => {
     return Number(n)<10 ? ""+0+Number(n) : Number(n);
-}
+};
 const format = (dateStr) => {//格式化时间
     return new Date(dateStr.replace(/[\-\u4e00-\u9fa5]/g, "/"));
-}
+};
 const diff = (t) => {//根据时间差返回相隔时间
     return t>0 ? {
 		day : fftime(Math.floor(t/86400)),
@@ -64,7 +65,7 @@ const diff = (t) => {//根据时间差返回相隔时间
 		minute : fftime(Math.floor(t%3600/60)),
 		second : fftime(Math.floor(t%60))
 	} : {day:'00',hour:'00',minute:'00',second:'00'};
-}
+};
 Array.prototype.each = function(fn){
     fn = fn || Function.K;
     var a = [];
@@ -166,7 +167,7 @@ Array.prototype.contains =  function(element) {
 		}
 	}
 	return false;
-}
+};
 /**
 * 计算排列组合的个数
 *
@@ -209,14 +210,14 @@ const movestring = (sString) => {
     var findfirst = false;//找到第一个字符
     for (var m=0;m<sString.length;m++){
         if(find == false){
-           top += sString.substr(m,1); 
+           top += sString.substr(m,1);
         }
         if( find == false && sString.substr(m,1) == '1'){
             findfirst = true;
         }else if(find == false && findfirst == true && sString.substr(m,1) == '0'){
             find = true;
         }else if(find == true){
-           bottom += sString.substr(m,1); 
+           bottom += sString.substr(m,1);
         }
     }
     top = top.substr(0,top.length-2);
@@ -297,7 +298,7 @@ const getCombination = ( aBaseArray, iSelectNum ) => {
 const validateUserName = ( str ) =>{
 	var patrn = /^[0-9a-zA-Z]{6,16}$/;
 	if( patrn.exec(str) ){
-		return true;	
+		return true;
 	}else{
 		return false;
 	}
@@ -327,10 +328,10 @@ const validateUserPss = ( str ) => {
 
 //呢称验证
 const validateNickName = ( str ) => {
-	var patrn = /^(.){2,6}$/;	
+	var patrn = /^(.){2,6}$/;
 	if( patrn.exec(str) )
 	{
-		return true;	
+		return true;
 	}
 	else
 	{
@@ -400,9 +401,9 @@ const validateInputDate = ( str ) => {
 	timeArr[0]  = (timeArr[0]==undefined || timeArr[0] == "") ? 0 : timeArr[0];
 	timeArr[1]  = (timeArr[1]==undefined || timeArr[1] == "") ? 0 : timeArr[1];
 	timeArr[2]  = (timeArr[2]==undefined || timeArr[2] == "") ? 0 : timeArr[2];
-	var newDate = new Date(dateArr[0],dateArr[1],dateArr[2],timeArr[0],timeArr[1],timeArr[2]); 
+	var newDate = new Date(dateArr[0],dateArr[1],dateArr[2],timeArr[0],timeArr[1],timeArr[2]);
 	if(
-	   newDate.getFullYear()==dateArr[0] && newDate.getMonth()==dateArr[1] && newDate.getDate()==dateArr[2] 
+	   newDate.getFullYear()==dateArr[0] && newDate.getMonth()==dateArr[1] && newDate.getDate()==dateArr[2]
 	   && newDate.getHours()==timeArr[0] && newDate.getMinutes()==timeArr[1] && newDate.getSeconds()==timeArr[2]
 	)
 	{
@@ -426,7 +427,7 @@ const checkWithdraw = ( obj,chineseid,maxnum ) => {
 	obj.value = formatFloat(obj.value);
 	if( parseFloat(obj.value) > parseFloat(maxnum) )
 	{
-		alert("输入金额超出了可用余额");	
+		alert("输入金额超出了可用余额");
 		obj.value = maxnum;
 	}
 	jQuery("#"+chineseid).html( changeMoneyToChinese(obj.value) );
@@ -498,8 +499,8 @@ const JsRound = ( num, len, keep ) => {
     	return ''+num+''+t;
     }
     return num;
-	
-	
+
+
 }
 
 //自动转换数字金额为大小写中文字符,返回大小写中文字符串，最大处理到999兆
@@ -511,18 +512,18 @@ const changeMoneyToChinese = ( money ) => {
 	var cnInteger = "整";	//整数金额时后面跟的字符
 	var cnIntLast = "元";	//整型完以后的单位
 	var maxNum = 999999999999999.9999;	//最大处理的数字
-	
+
 	var IntegerNum;		//金额整数部分
 	var DecimalNum;		//金额小数部分
 	var ChineseStr="";	//输出的中文金额字符串
 	var parts;		//分离金额后用的数组，预定义
 	var i,m;
-	
+
 	if( money == "" )
 	{
-		return "";	
+		return "";
 	}
-	
+
 	money = parseFloat(money);
 	//alert(money);
 	if( money >= maxNum )
@@ -602,7 +603,7 @@ const changeMoneyToChinese = ( money ) => {
 		ChineseStr += cnInteger;
 	}
 	return ChineseStr;
-	
+
 }
 
 //转换HTML标签为标准代码(类似PHP的htmlspecialchars函数)
@@ -627,22 +628,22 @@ const replaceHTML_DECODE = ( str ) => {
 	return str;
 }
 //设置cookie
-const SetCookie = (name,value,expire) => {   
-    var exp  = new Date();   
-    exp.setTime(exp.getTime() + expire);   
-    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();   
+const SetCookie = (name,value,expire) => {
+    var exp  = new Date();
+    exp.setTime(exp.getTime() + expire);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
 }
 //获取cookie
 const getCookie = (name) => {
-    var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));   
-    if(arr != null) return unescape(arr[2]); return null;   
+    var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+    if(arr != null) return unescape(arr[2]); return null;
 }
 //删除cookie
 const delCookie = (name) => {
-    var exp = new Date();   
-    exp.setTime(exp.getTime() - 1);   
-    var cval=getCookie(name);   
-    if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString();   
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString();
 }
 
 //复制内容到剪贴板
@@ -657,12 +658,12 @@ const copyToClipboard = (obj) => {
 	{
 		window.location = txt;
 	}
-	else if (window.netscape) 
+	else if (window.netscape)
 	{
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		} 
-		catch (e) 
+		}
+		catch (e)
 		{
 			alert("您的firefox安全限制限制您进行剪贴板操作，请在地址栏中输入“about:config”将“signed.applets.codebase_principal_support”设置为“true”之后重试");
 			return false;
@@ -697,8 +698,8 @@ const checkIntWithdraw = ( obj,chineseid,maxnum ) => {
 	obj.value = parseInt(obj.value,10);
 	obj.value = isNaN(obj.value) ? 0 : obj.value;
 	if( parseFloat(obj.value) > parseFloat(maxnum) ){
-		//$.alert("输入金额超出了可用余额");	
-		//alert("输入金额超出了可用余额");	
+		//$.alert("输入金额超出了可用余额");
+		//alert("输入金额超出了可用余额");
 		obj.value = parseInt(maxnum,10);
 	}
 	jQuery("#"+chineseid).html( changeMoneyToChinese(obj.value) );
@@ -717,9 +718,9 @@ const checkemailWithdraw = ( obj,chineseid,maxnum ) => {
 export default {
     Combination,
     getCombination,
-    getLotteryId,
+    // getLotteryId,
     fftime,
     format,
     diff
-    
+
 }

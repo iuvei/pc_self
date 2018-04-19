@@ -351,12 +351,13 @@ export default class LotteryBet extends Component {
                 dataIndex: 'i_code',
                 render: (text, record) => {
                     return (
-                        text != null && '' + text.length < 10 ? text :
+                        text != null && '' + text.length >= 10 ?
                             <Popover
                                 content={<div style={{width: '150px', wordWrap: 'break-word'}}>{record.i_code}</div>}
                                 title="详细号码" trigger="hover">
                                 <span className="hover_a">详细号码</span>
-                            </Popover>
+                            </Popover> :
+                            text
                     )
                 },
                 width: 75,
@@ -569,6 +570,7 @@ export default class LotteryBet extends Component {
                 </div>
                 <Modal
                     title="投注单期记录"
+                    wrapClassName="vertical-center-modal"
                     width={915}
                     visible={this.state.visible}
                     onCancel={() => this.handleCancel()}

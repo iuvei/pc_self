@@ -11,38 +11,33 @@ $border_color: #C8C8C8;
         z-index: 99;
         top:0;
         left:0;
-        overflow: hidden;
         border-bottom: 1px solid $border_color;
         text-align: center;
-        line-height: 84px;
-        li{
-            display: inline-block;
-            margin-left: 20px;
-        }
-        li:first-child{
-            margin-left: 0;
-        }
-        li:nth-child(5){
-            width: 1px;
-            background: $border_color;
-            height: 33px;
-            margin-bottom: -14px;
-        }
-        .t-r-table{
-            color: #0099FF;
-            border-bottom: 1px solid #0099FF;
-            &:hover,&:active{
-                color: #CB1313;
-                border-bottom: 1px solid #CB1313;
+        padding-top: 27px;
+        .lottery_list{
+            min-width: 1280px;
+            &>li{
+                display: inline-block;
+                margin-left: 10px;
+                &:first-child{
+                    margin-left: 0;
+                }
+                &:nth-child(5){
+                    width: 1px;
+                    background: $border_color;
+                    height: 33px;
+                    margin-bottom: -14px;
+                }
             }
-
         }
         .t-period{
             box-sizing: border-box;
+            display: inline-flex;
             height: 30px;
             line-height: 30px;
             li{
                 box-sizing: border-box;
+                float: left;
                 height: 30px;
                 line-height: 30px;
                 padding: 0 8px;
