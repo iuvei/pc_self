@@ -4,65 +4,250 @@ $border_color: #C8C8C8;
 $width_100: 100%;
 
 .login_main{
+    background: #151515 url(./Img/logo_bg.jpg) no-repeat center center;
+    height: 100%;
     .loginLogo{
         text-align: center;
     }
-    canvas{
-        background-image: radial-gradient(ellipse farthest-corner at center top, #000105 0%, #000105 100%);
+    .login{
+        width: 820px;
         position: absolute;
-        bottom: 0;
-    }
-    .l_nav_top{
-        @include wh($width_100, 64px);
-        line-height: 64px;
-        background: black;
-        font-size: 14px;
-        position: absolute;
-        top:0;
-        background-color: rgba(0,0,0,0.3);
-        .l_nav_top_content{
-            width: $nav_width_1200;
-            color: #fff;
-            a{
-                color: #fff;
-                display: inline-block;
-                padding: 0 15px;
-            }
+        left: 50%;
+        margin-left: -410px;
+        top: 50%;
+        margin-top: -335px;
+
+        .login_content{
+            padding: 35px 0 30px 0;
         }
-        .l_n_t_list li{
-            float: left;
-            color:#888888;
-            img{
-                transition:All 0.4s ease-in-out;
-                -webkit-transition:All 0.4s ease-in-out;
-                -moz-transition:All 0.4s ease-in-out;
-                -o-transition:All 0.4s ease-in-out;
+        .login_wrap{
+            .l_input{
+                width: 670px;
+                background-color: #fff;
+                display: inline-block;
+                border: 7px solid #fff;
+                border-top: 9px solid #fff;
+                border-top-left-radius:5px;
+                border-bottom-left-radius:5px;
+                @include boxS(0, 3px, 15px, 0, #e8e8e8, null);
             }
-            &:hover{
-                color:#fff;
-                img{
-                    transform:rotateZ(360deg);
-                    -webkit-transform:rotateZ(360deg);
-                    -moz-transform:rotateZ(360deg);
-                    -o-transform:rotateZ(360deg);
-                    -ms-transform:rotateZ(360deg);
+            .l_input_try{
+                width: 245px;
+                background-color: #fff;
+                display: inline-block;
+                border: 10px solid #fff;
+                border-top-left-radius:5px;
+                border-bottom-left-radius:5px;
+
+            }
+
+
+            .forget_pwd{
+                display: block;
+                margin-top: -17px;
+                margin-left: 229px;
+                text-decoration:underline;
+                color:#393947;
+            }
+
+        }
+        .l_m_content{
+            position: relative;
+            .l_m_select_list{
+                display: inline-block;
+                li{
+                    width: 131px;
+                    height: 34px;
+                    font-size: 14px;
+                    margin-left: 10px;
+                    margin-right: -20px;
+                    text-align: center;
+                    line-height: 34px;
+                    position: relative;
+                    display: inline-block;
+                    background: url(./Img/bg1.png) no-repeat bottom right;
+                    cursor: pointer;
+                    color: #fff;
+                }
+
+                li.l_m_select_list_active {
+                    width: 131px;
+                    height: 34px;
+                    margin-right: -20px;
+                    background: url(./Img/bg2.png) no-repeat bottom right;
+                    z-index: 2;
+                    color:#333333;
                 }
 
             }
-
-
+            div.l_m_select_list_active{
+                width: 131px;
+                height: 34px;
+                font-size: 14px;
+                position: absolute;
+                left: 252px;
+                top: 0;
+                text-align: center;
+                line-height: 34px;
+                display: inline-block;
+                background: url(./Img/bg1.png) no-repeat bottom right;
+                cursor: pointer;
+                color: #fff;
+            }
+            .wechatQrcode{
+                position: absolute;
+                background: #fff;
+                left: 302px;
+                z-index: 20;
+                top: 100px;
+                @include boxS(0, 0, 5px, 1px, #333, null);
+                canvas{
+                    left: 5px;
+                    top: 5px;
+                }
+                #wechatLink{
+                    padding: 8px;
+                }
+            }
         }
-        .l_n_t_list{
-            position: absolute;
-            right:2%;
-            img{
-                margin-bottom: -4px;
-                margin-right: 5px;
+        .ant-input{
+            @include wh(210px,40px);
+            margin-right: 8px;
+        }
+        .ant-btn-primary.login_btn{
+            width: 140px;
+            height: 56px;
+            font-size: 14px;
+            border-top-left-radius: 0;
+            border-bottom-left-radius:0;
+        }
+        .circuit{
+            font-size: 14px;
+            &>li{
+                float: left;
+                margin-right: 18px;
+                &:before{
+                    content: "";
+                    float: left;
+                    @include wh(10px,10px);
+                    @include borderRadius(5px);
+                    margin: 6px 5px 0 0;
+                }
+                &:last-child{
+                    margin-right: 0;
+                }
+                a{
+                    display: inline-block;
+                }
+            }
+            .green{
+                color: #58C118;
+                span{
+                    color: #58C118;
+                }
+                &:before{
+                    background: #58C118;
+                }
+                .line_color{
+                    background: #58C118;
+                }
+            }
+            .blue{
+                color: #0591E2;
+                span{
+                    color: #0591E2;
+                }
+                &:before{
+                    background: #0591E2;
+                }
+                .line_color{
+                    background: #0591E2;
+                }
+            }
+            .yellow{
+                color: #FE9F0C;
+                span{
+                    color: #FE9F0C;
+                }
+                &:before{
+                    background: #FE9F0C;
+                }
+                .line_color{
+                    background: #FE9F0C;
+                }
+            }
+            .red{
+                color: #CF2027;
+                span{
+                    color: #CF2027;
+                }
+                &:before{
+                    background: #CF2027;
+                }
+                .line_color{
+                    background: #CF2027;
+                }
             }
 
+            .circuit_line{
+                display: inline-block;
+                background: #E8E9EB;
+                padding: 2px;
+                margin-left: 6px;
+                @include borderRadius(2px);
+                li{
+                    float: left;
+                    width: 4px;
+                    height: 15px;
+                    background: #ccc;
+                    margin: 2px;
+                    @include borderRadius(2px);
+                }
+            }
         }
+        .optimal_line{
+            text-align: center;
+            &:before, &:after{
+                content: '';
+                background: url(./Img/line1.png) no-repeat center center;
+                width: 100%;
+                height: 2px;
+                display: inline-block;
+            }
+            &:before{
+                margin-bottom: 20px;
+            }
+            &:after{
+                margin-top: 20px;
+            }
+            .ant-btn{
+                margin-top: 20px;
+                padding: 12px 50px;
+                @include gradient(0, 10, 0, bottom, #FEFEFE, #DFDEDE);
+                color: $color_363636;
+            }
+        }
+    }
 
-
+    .l_n_t_list{
+        li{
+            margin-right: 20px;
+            a{
+                text-decoration: underline;
+                display: inline-block;
+                padding-left: 25px;
+                @include lh(20px);
+            }
+            img{
+                vertical-align: bottom;
+            }
+        }
+        .dns{
+            background: url(./Img/dns.png) no-repeat center left;
+        }
+        .httpService{
+            background: url(./Img/service.png) no-repeat center left;
+        }
     }
     .l_password{
         position: relative;
@@ -92,10 +277,13 @@ $width_100: 100%;
         }
     }
     .l-warn{
+        position: absolute;
+        top: 250px;
+        left: 50%;
+        margin-left: -150px;
         border-radius: 4px;
         width: 300px;
         background: #ca5e58;
-        margin: 75px auto 0;
         padding: 5px;
         .failure_text{
             padding-left: 35px;
@@ -150,118 +338,116 @@ $width_100: 100%;
             font-size: 30px;
         }
     }
+    .logo_footer{
+        text-align: center;
+        color: #7E756F;
+        position: fixed;
+        bottom: 10px;
+        width: 240px;
+        left: 50%;
+        margin-left: -120px;
+    }
 }
-.login{
-    width: 820px;
-    position: absolute;
-    left: 50%;
-    margin-left: -410px;
-    top: 50%;
-    margin-top: -270px;
-
-    .login_content{
-        margin-top: 100px;
-    }
-    .login_wrap{
-        .l_input{
-            width: 670px;
-            background-color: #fff;
+.client_list{
+    margin-top: 30px;
+    li{
+        float: left;
+        &:after{
+            content: '';
+            background: url(./Img/line2.png) no-repeat center center;
+            width: 2px;
+            height: 51px;
             display: inline-block;
-            border: 7px solid #fff;
-            border-top: 9px solid #fff;
-            border-top-left-radius:5px;
-            border-bottom-left-radius:5px;
-
+            padding-left: 90px;
         }
-        .l_input_try{
-            width: 245px;
-            background-color: #fff;
+        a{
             display: inline-block;
-            border: 10px solid #fff;
-            border-top-left-radius:5px;
-            border-bottom-left-radius:5px;
-
-        }
-
-
-        .forget_pwd{
-            display: block;
-            margin-top: -17px;
-            margin-left: 229px;
-            text-decoration:underline;
-            color:#393947;
-        }
-
-    }
-    .l_m_content{
-        position: relative;
-        .l_m_select_list{
-           li{
-                width: 131px;
-                height: 34px;
-               font-size: 14px;
-                margin-left: 10px;
-               margin-right: -20px;
-               text-align: center;
-               line-height: 34px;
-                position: relative;
-                display: inline-block;
-                background: url(./Img/bg1.png) no-repeat bottom right;
+            &:hover{
                 cursor: pointer;
-                color: #fff;
-            }
-
-            li.l_m_select_list_active {
-                width: 131px;
-                height: 34px;
-                margin-right: -20px;
-                background: url(./Img/bg2.png) no-repeat bottom right;
-                z-index: 2;
-                color:#333333;
-            }
-
-        }
-        div.l_m_select_list_active{
-            width: 131px;
-            height: 34px;
-            font-size: 14px;
-            position: absolute;
-            left: 252px;
-            top: 0;
-            text-align: center;
-            line-height: 34px;
-            display: inline-block;
-            background: url(./Img/bg1.png) no-repeat bottom right;
-            cursor: pointer;
-            color: #fff;
-        }
-        .wechatQrcode{
-            position: absolute;
-            background: #fff;
-            left: 316px;
-            width: 210px;
-            height: 185px;
-            z-index: 20;
-            top: 100px;
-            canvas{
-                left: 5px;
-                top: 5px;
             }
         }
     }
-    .ant-input{
-        @include wh(210px,40px);
-        margin-right: 8px;
-    }
-    .ant-btn-primary.login_btn{
-        width: 140px;
-        height: 56px;
+    .client_bg, .pt_client_bg{
+        display: inline-block;
+        padding-top: 40px;
+        text-decoration: underline;
+        color: #666;
         font-size: 14px;
-        border-top-left-radius: 0;
-        border-bottom-left-radius:0;
+        &:hover{
+            color: $color_CF2027;
+        }
     }
-
-
+    li:first-child{
+        margin-left: 55px;
+        .client_bg{
+            background: url(./Img/pc.png) no-repeat top center;
+            &:hover{
+                background: url(./Img/pc_hover.png) no-repeat top center;
+            }
+        }
+        .pt_client_bg{
+            background: url(./Img/pt_pc.png) no-repeat top center;
+            &:hover{
+                background: url(./Img/pt_pc_active.png) no-repeat top center;
+            }
+        }
+    }
+    li:nth-child(2){
+        .client_bg{
+            background: url(./Img/app.png) no-repeat top center;
+            &:hover{
+                background: url(./Img/app_hover.png) no-repeat top center;
+            }
+        }
+        .pt_client_bg{
+            background: url(./Img/pt_zr.png) no-repeat top center;
+            &:hover{
+                background: url(./Img/pt_zr_active.png) no-repeat top center;
+            }
+        }
+    }
+    li:nth-child(3){
+        .client_bg{
+            background: url(./Img/user.png) no-repeat top center;
+            &:hover{
+                background: url(./Img/user_hover.png) no-repeat top center;
+            }
+        }
+        .pt_client_bg{
+            background: url(./Img/pt_lh.png) no-repeat top center;
+            &:hover{
+                background: url(./Img/pt_lh_active.png) no-repeat top center;
+            }
+        }
+    }
+    li:nth-child(4){
+        .client_bg{
+            background: url(./Img/pt.png) no-repeat top center;
+            &:hover{
+                background: url(./Img/pt_hover.png) no-repeat top center;
+            }
+        }
+    }
+    li:nth-child(5){
+        &:after{
+            display: none;
+        }
+        margin-right: 0;
+        .client_bg{
+            background: url(./Img/m.png) no-repeat top center;
+            &:hover{
+                background: url(./Img/m_hover.png) no-repeat top center;
+            }
+        }
+    }
+}
+.pt_client{
+    li{
+        float: left;
+        text-align: center;
+    }
+    li:last-child{
+    }
 }
 
 .m_accept_contract{
@@ -309,9 +495,8 @@ $width_100: 100%;
 }
 .l_accept{
     display: block;
-    margin-top: -18px;
-    margin-left: 670px;
-    color: #fff;
+    margin-top: 15px;
+    color: #666;
 }
 
 .find_password_modal{

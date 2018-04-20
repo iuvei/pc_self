@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import 'whatwg-fetch'
 import Fetch from '../../../Utils';
 import './CommonProblems.scss';
 @observer

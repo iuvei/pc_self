@@ -7,7 +7,6 @@ class State {
     @observable httpUrl = 'http://10.63.15.242'; // 域名
 
     @observable httpService = ''; // 联系客服url
-    @observable httpCS = ''; // 域名测速
     @observable userInfo = {// 用户信息
         userName: '请先登录',
         userId: '',

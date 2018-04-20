@@ -430,7 +430,7 @@ export default class TeamTable extends Component {
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
@@ -550,7 +550,7 @@ export default class TeamTable extends Component {
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
@@ -664,7 +664,7 @@ export default class TeamTable extends Component {
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
@@ -778,7 +778,7 @@ export default class TeamTable extends Component {
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
@@ -892,7 +892,7 @@ export default class TeamTable extends Component {
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
@@ -1000,7 +1000,7 @@ export default class TeamTable extends Component {
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
@@ -1108,7 +1108,7 @@ export default class TeamTable extends Component {
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
@@ -1216,7 +1216,7 @@ export default class TeamTable extends Component {
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
