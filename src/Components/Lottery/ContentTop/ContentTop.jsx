@@ -49,9 +49,8 @@ export default class ContentTop extends Component {
         this.eventcontentTop = emitter.on('initContentTop', () => {
             this.initData();
         });
-        this.initData();
     };
-
+    
     componentWillUnmount() {
         this._ismount = false;
         emitter.off(this.eventEmitter);
@@ -512,7 +511,7 @@ export default class ContentTop extends Component {
     };
 
     handleData(data) {
-        var message = eval('(' + data + ')');
+        let message = eval('(' + data + ')');
         if (message.status == 1) {
             let tempType = message.data.type;
             let tempData = message.data.data;
@@ -535,7 +534,6 @@ export default class ContentTop extends Component {
                     this.props.getBetHistory();
                 }
             } else if (tempType == 8 || tempType == 2) {
-                common.removeStore(common.getStore('userId'));
                 setTimeout(()=>{
                 	this.props.getVersion();
                 },3000)
