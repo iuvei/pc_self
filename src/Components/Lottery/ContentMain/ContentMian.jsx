@@ -223,6 +223,7 @@ export default class ContentMian extends Component {
                 stateVar.nowlottery.lotteryBetId = lotteryDt[i]['lotteryid'];
                 stateVar.nowlottery.cnname = lotteryDt[i]['cnname'];
                 stateVar.nowlottery.imgUrl = lotteryDt[i]['imgUrl'];
+                stateVar.nowlottery.lotteryLength = lotteryDt[i].lotterLength == undefined ? 5 : lotteryDt[i].lotterLength;
             }
             if (lotteryDt[i]['lotteryid'] != 23) {
                 tempLotteryType[lotteryDt[i]['nav']] = lotteryDt[i]['curmid']

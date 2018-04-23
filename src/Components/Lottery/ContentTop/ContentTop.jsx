@@ -33,7 +33,6 @@ export default class ContentTop extends Component {
             betokObj: {},
             issueArray: [],
             booleanValue: true,
-            imgUrl: 'pk10',
             mmcmoni: true,
             directFlag: false
         };
@@ -73,9 +72,13 @@ export default class ContentTop extends Component {
             window.clearTimeout(this.clearTimeout_4)
         }
     };
-
     initData() {
         clearInterval(this.interval);
+        stateVar.animateCodeFlag = false;
+        window.clearTimeout(this.clearTimeout_1);
+        window.clearTimeout(this.clearTimeout_2);
+        window.clearTimeout(this.clearTimeout_3);
+        window.clearTimeout(this.clearTimeout_4);
         this.setState({
             kjStopFlag: [],
             kjStopallFlag: false,
@@ -91,26 +94,13 @@ export default class ContentTop extends Component {
             betokObj: {},
             issueArray: [],
             booleanValue: true,
-            imgUrl: 'pk10',
             mmcmoni: true,
             directFlag: false
         }, () => {
             this._ismount = true;
-            let lotteryData = require('../../../CommonJs/common.json');
-            let tempLotteryLength;
-            for (let i = 0, lotteryDt = lotteryData.lotteryType; i < lotteryDt.length; i++) {
-                if (lotteryDt[i]['nav'] == stateVar.nowlottery.lotteryId) {
-                    stateVar.nowlottery.cuimId = lotteryDt[i]['curmid'];
-                    stateVar.nowlottery.defaultMethodId = lotteryDt[i]['methodid'];
-                    stateVar.nowlottery.lotteryBetId = lotteryDt[i]['lotteryid'];
-                    stateVar.nowlottery.cnname = lotteryDt[i]['cnname'];
-                    stateVar.nowlottery.imgUrl = lotteryDt[i]['imgUrl'];
-                    tempLotteryLength = lotteryDt[i].lotterLength == undefined ? 5 : lotteryDt[i].lotterLength;
-                }
-            }
             let tempArrCode = [];
             let tempStopFlag = [];
-            for (let i = 0; i < tempLotteryLength; i++) {
+            for (let i = 0; i < stateVar.nowlottery.lotteryLength; i++) {
                 tempArrCode.push('-');
                 if (stateVar.nowlottery.lotteryBetId == 23) {
                     tempStopFlag.push(true);
@@ -123,10 +113,10 @@ export default class ContentTop extends Component {
                 this.setState({
                     code: tempArrCode,
                     kjStopFlag: tempStopFlag,
-                    animateCode: tempArrCode,
-                    tempLotteryLength: tempLotteryLength
+                    animateCode: tempArrCode
                 }, () => {
                     if (stateVar.nowlottery.lotteryBetId != 23) {
+                    	stateVar.animateCodeFlag = true;
                         this.kjanimate(0);
                     }
                 });
@@ -139,20 +129,19 @@ export default class ContentTop extends Component {
 
     /**
      Function 开奖动画
-     param 号码个数
+     param 开奖持续时间
      */
     kjanimate(b) {
-        if (!this._ismount) {
+        if (!this._ismount && !stateVar.animateCodeFlag) {
             return;
         }
-        let param = this.state.tempLotteryLength;
         if (this.state.kjStopTime >= 5) {
             this.setState({mmcmoni: false});
             $(".monikj span").html('模拟开奖');
             return;
         }
         let tempCode = [];
-        for (let i = 0; i < param; i++) {
+        for (let i = 0; i < stateVar.nowlottery.lotteryLength; i++) {
             if (stateVar.nowlottery.cnname.indexOf('11选5') > -1) {
                 tempCode.push(Math.floor(Math.random() * 2) + '' + Math.floor(Math.random() * 10));
             } else {
@@ -368,10 +357,10 @@ export default class ContentTop extends Component {
                 } else {
                     tempCode = tempData.code.split(' ');
                 }
-                if (this.state.code.join('') == tempCode.join('')) {
-                    this.setState({kjStopallFlag: false});
-                } else {
-                    this.setState({kjStopallFlag: true});
+                if(a){
+                	this.setState({kjStopallFlag: false});
+                }else{
+                	this.setState({kjStopallFlag: true});
                 }
                 stateVar.issueIndex = tempArray.length != 0 ? tempArray[0].issue : '??????';
                 stateVar.nextIssue = tempData.curissue;
