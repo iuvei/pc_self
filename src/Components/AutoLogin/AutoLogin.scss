@@ -1,40 +1,18 @@
 @import '../../Style/variables';
 @import '../../Style/mixin';
-$border_color: #C8C8C8;
-$width_100: 100%;
 
 .autologin_main{
-    canvas{
-        background-image: radial-gradient(ellipse farthest-corner at center top, #000105 0%, #000105 100%);
-        position: absolute;
-    }
+    background: #151515 url(../Login/Img/logo_bg.jpg) no-repeat center center;
+    height: 100%;
     .l_nav_top{
-        @include wh($width_100, 64px);
+        @include wh(100%, 64px);
         line-height: 64px;
-        background: black;
         font-size: 14px;
         position: absolute;
         top:0;
         background-color: rgba(0,0,0,0.3);
-        border-bottom: 1px solid #343434;
-        .l_nav_top_content{
-            width: $nav_width_1200;
-            color: #fff;
-            a{
-                color: #fff;
-            }
-        }
         .l_n_t_lt{
             padding: 10px 0 0 25px;
-        }
-        .l_n_t_list>li{
-            padding: 0 15px;
-            float: left;
-            cursor: pointer;
-            &:hover{
-                background-color: #CB1313;
-            }
-
         }
         .l_n_t_list{
             position: absolute;
@@ -43,53 +21,7 @@ $width_100: 100%;
                 margin-bottom: -4px;
                 margin-right: 5px;
             }
-
         }
-
-
-    }
-    .l_password{
-        position: relative;
-        display: inline-block;
-        .l_forget{
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: red;
-            &:hover{
-                cursor: pointer;
-            }
-        }
-    }
-    .l_vali{
-        position: relative;
-        display: inline-block;
-        .l_valicode{
-            position: absolute;
-            top: 8px;
-            right: 10px;
-            color: red;
-            &:hover{
-                cursor: pointer;
-            }
-        }
-    }
-    .l-warn{
-        display: inline-block;
-        left: 260px;
-        border-radius: 4px;
-        width: 300px;
-        height: 50px;
-        background: #ca5e58;
-        position: relative;
-        margin-top: 75px;
-
-        img{
-            margin-left: 5px;
-            margin-top: 5px;
-            margin-bottom: -8px;
-        }
-
     }
     .al_progress{
         top: 64px;

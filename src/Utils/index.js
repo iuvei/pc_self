@@ -5,8 +5,11 @@ import http from './http'
 const getSess = (body) => request(http.interFace('SESS'), body);
 /* 登录,找回密码 */
 const login = (body) => request(http.interFace('LOGIN'), body);
-/* 客服，域名测速 */
+/* 客服，域名 */
 const kefu = (body) => request(http.interFace('KEFU'), body);
+/* 测速 */
+const domians = (body) => request(http.interFace('DOMIANS'), body);
+
 /* 退出登录*/
 const logout = (body) => request(http.interFace('LOGINOUT'), body);
 
@@ -203,6 +206,7 @@ export default {
     getSess,
     login,
     kefu,
+    domians,
     logout,
     lotteryBets,
     aboutBet,

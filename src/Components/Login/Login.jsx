@@ -1,22 +1,15 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
-import { Input,Button,Icon,Checkbox,Modal  } from 'antd';
+import { Input,Button,Icon,Checkbox,Modal, Popover  } from 'antd';
 import Fetch from '../../Utils';
 import md5 from 'md5';
 import { stateVar } from '../../State';
-import onCanvas from './canvas';
 import './Login.scss';
-
 import loginSrc from './Img/logo.png';
-import speedSrc from './Img/speed.png';
-import dnsSrc from './Img/dns.png';
-import serviceSrc from './Img/service.png';
-import speedSrc_active from './Img/speed_active.png';
-import dnsSrc_active from './Img/dns_active.png';
-import serviceSrc_active from './Img/service_active.png';
 import {removeStore, setStore,getStore, onValidate, _code } from "../../CommonJs/common";
 const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
+const circuitArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
 
 @observer
 export default class Login extends Component {
@@ -48,21 +41,20 @@ export default class Login extends Component {
             newPwdM:'',
             confirmPwdM:'',
             checkPw:getStore('checkFlag'),
-            speedSrc:speedSrc,
-            serviceSrc:serviceSrc,
-            dnsSrc:dnsSrc,
 			showWechat:'none',
             validate: {
                 newpass: 2,
                 confirm_newpass: 2
             },
             timeoutWechat:false,
-            activityClose: true, // 显示活动
+            activityClose: false, // 关闭活动
+            times: [{}, {}, {}, {}],
+            timeLine: 0,
+            visibleApp: false,
+            visibleM: false,
         }
     };
     componentDidMount() {
-        let indx = Math.floor(Math.random()*(onCanvas.length));
-        onCanvas[indx]();
         this._ismount = true;
         stateVar.nowlottery.lotteryId = 'ssc';
         this.getSession();
@@ -70,6 +62,7 @@ export default class Login extends Component {
         if(stateVar.userInfo.sType == 'demo'){
             this.setState({account: null})
         }
+        this.getDomians();
     };
     componentWillUnmount(){
         this._ismount = false;
@@ -88,6 +81,55 @@ export default class Login extends Component {
             window.clearInterval(window.cloerInterval_c2)
         }
     };
+    /*测速*/
+    getDomians () {
+        let timeF = Math.random()*5 + 10;
+        this.clearTime = setInterval(()=>{
+            if(this.state.timeLine > timeF){
+                clearInterval(this.clearTime);
+                // this.setState({timeLine: 0})
+            }else{
+                this.setState({timeLine: ++this.state.timeLine})
+            }
+        }, 200);
+        Fetch.domians().then((res) => {
+            if(this._ismount){
+                if(res.status == 200){
+                    let list = res.repsoneContent.domainlist,
+                        imgs = [],
+                        index = 0,
+                        {times} = this.state,
+                        _this = this;
+                    for(let i = 0; i < list.length; i++){
+                        imgs.push({});
+                        imgs[i].img = new Image;
+                        imgs[i].startTime = new Date().getTime();
+                        imgs[i].img.src = list[i].domain + '/speed/img/Login.png?' + imgs[i].startTime;
+                        imgs[i].img.onload = function () {
+                            if(index < 4){
+                                let time = parseInt((new Date().getTime() - imgs[i].startTime)*0.05);
+                                if (time <= 69) {
+                                    times[index].classNm = "green"
+                                } else if (time > 69 && time <= 149) {
+                                    times[index].classNm = "blue"
+                                } else if (time > 149 && time <= 500) {
+                                    times[index].classNm = "yellow"
+                                } else {
+                                    times[index].classNm = "red"
+                                }
+                                times[index].time = time;
+                                times[index].url = list[i].domain;
+                                // times[index].timeLine = 0;
+                                index ++;
+                                _this.setState({times});
+                            }
+                        };
+                    }
+                }
+            }
+        })
+    };
+
     getKefu(){
         Fetch.kefu({
             method: "POST"
@@ -95,7 +137,6 @@ export default class Login extends Component {
             if(this._ismount && res.status == 200){
                 let data = res.repsoneContent;
                 stateVar.httpService = data.kefulink;
-                stateVar.httpCS = data.domain;
                 setStore("kefu",data);
             }
         })
@@ -116,7 +157,7 @@ export default class Login extends Component {
             setStore("session",parseData.repsoneContent);
             document.cookie = 'sess='+ parseData.repsoneContent + ';path=/';
         })
-    }
+    };
     /*
     * 正常登录按下enter按钮处理提交
     */
@@ -124,7 +165,7 @@ export default class Login extends Component {
         if(e.keyCode==13){
             this.enterLogin();
         }
-    }
+    };
     /*
     *试玩模式按下enter按钮处理提交 */
     trygameloginEnter(e){
@@ -175,7 +216,7 @@ export default class Login extends Component {
         }else {
             this.trygameLogin()
         }
-    }
+    };
     /*
     * 请求登录接口（试玩模式）
     * 并存储登录后所需使用的数据
@@ -487,7 +528,7 @@ export default class Login extends Component {
             passwordM: null,
             aptchacM: null,
         })
-    }
+    };
     onCancelSetPassw() {
         let {validate} = this.state;
         validate.newpass = 2;
@@ -499,7 +540,7 @@ export default class Login extends Component {
             confirmPwdM: null,
             validate,
         }, ()=>this.onCancelInputPassw());
-    }
+    };
     loginMain() {
         /*
         * 账号登录
@@ -528,166 +569,156 @@ export default class Login extends Component {
             >
                 立即登录
             </Button>
-            <Checkbox style={{color:'#fff',marginTop:10}} checked={this.state.checkPw} onChange={(e)=>{this.onCheckedPw(e)}}>记住密码</Checkbox>
-            <div>
+            <Checkbox style={{color:'#666',marginTop:15}} checked={this.state.checkPw} onChange={(e)=>{this.onCheckedPw(e)}}>记住密码</Checkbox>
+            <span className='l_accept hover right' onClick={()=>{this.showModal('l_accept')}}>登录即同意《协议与条款》</span>
+            <Modal
+                title="找回密码"
+                wrapClassName="vertical-center-modal find_password_modal"
+                maskClosable={false}
+                width={300}
+                visible={this.state.visible1}
+                onCancel={()=>this.onCancelInputPassw()}
+                footer={null}
+            >
+                <ul className="password_list">
+                    <li>
+                        <Input size="large"  placeholder="用户名"
+                               value={this.state.accountM}
+                               onChange={(e)=>{this.onAccountM(e)}}
+                        />
+                    </li>
+                    <li>
+                        <Input type="password" size="large"  placeholder="资金密码"
+                               value={this.state.passwordM}
+                               onChange={(e)=>{this.onPwdM(e)}}
+                        />
+                    </li>
+                    <li className="l_m_vali">
+                        <Input size="large"
+                               value={this.state.aptchacM}
+                               onChange={(e)=>{this.onaptchacM(e)}}
+                               placeholder="验证码"
+                        />
+                        <img className="l_m_valicode" src={this.state.validImgM} onClick={()=>{this.getSession()}}/>
 
-                <div>
-                    <Modal
-                        title="找回密码"
-                        wrapClassName="vertical-center-modal find_password_modal"
-                        maskClosable={false}
-                        width={300}
-                        visible={this.state.visible1}
-                        onCancel={()=>this.onCancelInputPassw()}
-                        footer={null}
-                    >
-                        <ul className="password_list">
-                            <li>
-                                <Input size="large"  placeholder="用户名"
-                                       value={this.state.accountM}
-                                       onChange={(e)=>{this.onAccountM(e)}}
-                                />
-                            </li>
-                            <li>
-                                <Input type="password" size="large"  placeholder="资金密码"
-                                       value={this.state.passwordM}
-                                       onChange={(e)=>{this.onPwdM(e)}}
-                                />
-                            </li>
-                            <li className="l_m_vali">
-                                <Input size="large"
-                                       value={this.state.aptchacM}
-                                       onChange={(e)=>{this.onaptchacM(e)}}
-                                       placeholder="验证码"
-                                />
-                                <img className="l_m_valicode" src={this.state.validImgM} onClick={()=>{this.getSession()}}/>
-
-                                <div className='hint_text'>
-                                    <span style={{display: this.state.displayWarnM ? 'block' : 'none' }}>
-                                        操作失败:{this.state.warnM}
-                                    </span>
-                                </div>
-                            </li>
-                            <li>
-                                <Button type="primary"  onClick={()=>{this.showModal('reset_pwd')}}>
-                                    下一步
-                                </Button>
-                            </li>
-                        </ul>
-                    </Modal>
-                    <Modal
-                        title="重置密码"
-                        wrapClassName="vertical-center-modal find_password_modal"
-                        width={300}
-                        maskClosable={false}
-                        visible={this.state.visible2}
-                        onCancel={()=>this.onCancelSetPassw()}
-                        footer={null}
-                    >
-                        <ul className="password_list">
-                            <li>
-                                <p className='m_name'>{this.state.accountM}</p>
-                            </li>
-                            <li>
-                                <Input type="password" size="large"
-                                       placeholder="新登录密码"
-                                       value={this.state.newPwdM}
-                                       onChange={(e)=>{this.onNewPwdM(e)}}
-                                       className={onValidate('newpass', this.state.validate)}
-                                />
-                                <p className="password_text">密码由字母和数字组成6-16个字符</p>
-                            </li>
-                            <li>
-                                <Input type="password" size="large"
-                                       placeholder="确认新登录密码"
-                                       value={this.state.confirmPwdM}
-                                       onChange={(e)=>{this.onConfirmPwdM(e)}}
-                                       className={onValidate('confirm_newpass', this.state.validate)}
-                                />
-                                <div className='hint_text'>
-                                    <span style={{display: this.state.displayWarnM1 ? 'block' : 'none' }}>
-                                        操作失败:{this.state.warnM1}
-                                    </span>
-                                </div>
-                            </li>
-                            <li>
-                                <Button className='suggest_btn' type="primary" onClick={()=>{this.showModal('suggest')}} >
-                                    确定
-                                </Button>
-                            </li>
-                        </ul>
-                    </Modal>
-                    <Modal
-                        title="提示"
-                        wrapClassName="vertical-center-modal hint_modal_succeed"
-                        width={300}
-                        maskClosable={false}
-                        visible={this.state.visible3}
-                        onCancel={()=>{this.setState({ visible3: false })}}
-                        footer={null}
-                    >
-                        <Icon type="check-circle-o" style={{ fontSize: 65, color: '#73b573', marginBottom: 20 }}/>
-                        <p className='m_p_input'>密码重置成功</p>
-                        <Button  type="primary" onClick={()=>{this.setState({ visible3: false })}} >
+                        <div className='hint_text'>
+                            <span style={{display: this.state.displayWarnM ? 'block' : 'none' }}>
+                                操作失败:{this.state.warnM}
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <Button type="primary"  onClick={()=>{this.showModal('reset_pwd')}}>
+                            下一步
+                        </Button>
+                    </li>
+                </ul>
+            </Modal>
+            <Modal
+                title="重置密码"
+                wrapClassName="vertical-center-modal find_password_modal"
+                width={300}
+                maskClosable={false}
+                visible={this.state.visible2}
+                onCancel={()=>this.onCancelSetPassw()}
+                footer={null}
+            >
+                <ul className="password_list">
+                    <li>
+                        <p className='m_name'>{this.state.accountM}</p>
+                    </li>
+                    <li>
+                        <Input type="password" size="large"
+                               placeholder="新登录密码"
+                               value={this.state.newPwdM}
+                               onChange={(e)=>{this.onNewPwdM(e)}}
+                               className={onValidate('newpass', this.state.validate)}
+                        />
+                        <p className="password_text">密码由字母和数字组成6-16个字符</p>
+                    </li>
+                    <li>
+                        <Input type="password" size="large"
+                               placeholder="确认新登录密码"
+                               value={this.state.confirmPwdM}
+                               onChange={(e)=>{this.onConfirmPwdM(e)}}
+                               className={onValidate('confirm_newpass', this.state.validate)}
+                        />
+                        <div className='hint_text'>
+                            <span style={{display: this.state.displayWarnM1 ? 'block' : 'none' }}>
+                                操作失败:{this.state.warnM1}
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <Button className='suggest_btn' type="primary" onClick={()=>{this.showModal('suggest')}} >
                             确定
                         </Button>
-                    </Modal>
+                    </li>
+                </ul>
+            </Modal>
+            <Modal
+                title="提示"
+                wrapClassName="vertical-center-modal hint_modal_succeed"
+                width={300}
+                maskClosable={false}
+                visible={this.state.visible3}
+                onCancel={()=>{this.setState({ visible3: false })}}
+                footer={null}
+            >
+                <Icon type="check-circle-o" style={{ fontSize: 65, color: '#73b573', marginBottom: 20 }}/>
+                <p className='m_p_input'>密码重置成功</p>
+                <Button  type="primary" onClick={()=>{this.setState({ visible3: false })}} >
+                    确定
+                </Button>
+            </Modal>
+            <Modal
+                title="《协议与条款》"
+                wrapClassName="vertical-center-modal m_accept_contract"
+                maskClosable={false}
+                visible={this.state.visible4}
+                onCancel={()=>{this.setState({ visible4: false })}}
+                footer={<Button className="l_m_btn" type="primary" onClick={()=>{this.setState({ visible4: false })}} >
+                    确定并同意
+                </Button>}
+                closable={false}
+            >
+                <div className='m_contract'>
+                    <p>《恒彩在线》是持菲律宾共和国合法经营执照，并受其相关法律保护和约束的线上游戏平台运营商。</p>
+                    <p>用户在登录使用平台服务前，请仔细阅读以下内容，并确认使用平台服务符合所在国家和居住地的法律及规定。本平台不承担任何因用户违反当地法规引起的任何责任。用户一经登录平台，则视为完全接受平台所有之规定。</p>
+                    <p className="m_c_title">1.交易协定 </p>
+                    <p>1.1本平台所有开奖数据均使用具有公信力的第三方开奖结果，以投注站的视频信号为基准。如发生因开奖机构引起的开奖错误，将采用开奖机构修正并最终确定的结果。本平台有权在上述事件发生时即时终止资金交易，并进行相应订单修正处理。
+                    </p>
+                    <p>1.2用户在本平台投注完成后，请核对投注记录，确保投注成功以避免争议；投注过程中，若发生网络问题而导致与平台服务器连接失败，所有已被确认的订单仍然有效，用户在重新登录时，请再次核对并确认投注记录。
+                    </p>
+                    <p>1.3用户在本平台充值汇款，请按相关流程和规定，确认汇入账号为平台网站提供的即时有效的汇款信息，因填入错误的信息（汇款账号或流水号）而导致的无法到账或到账延迟，本平台不承担任何责任，并保留对违规填写流水号用户的处罚权.
+                    </p>
+                    <p>1.4用户在本平台提款前，须确认本人使用的银行账号。因用户个人银行账号变更而未及时通知平台而引起的损失，平台不承担任何责任。
+                    </p>
+                    <p>1.5有历史资金交易记录且余额≤2元的账户，累计7天无账变（无充值，无提现，无投注，无返点），将被禁用，禁用累计7天且无下级，将被系统注销；新注册账号累计超过7天无账变将被禁用，禁用累计7天且无下级，将被系统注销。
+                    </p>
+                    <p>1.6用户在本平台游戏，若有作弊、欺编、攻击、破坏本平台正常运作的行为或利用系统漏洞侵害平台和其他客户的权益，一经核实，本平台有权禁用、冻结和注销用户账户，终止其继续使用本平台服务，并有权没收所有不当所得。
+                    </p>
+                    <p>1.7本平台用户可查交易记录只保留7天，如有争议，以平台保留的最终备份数据为最后处理依据。
+                    </p>
+                    <p className="m_c_title">2.责任声明</p>
+                    <p>2.1用户须年满18周岁以上方可使用本平台服务，请不要沉溺于游戏。
+                    </p>
+                    <p>2.2在本平台以账号和密码登录后进行的任何操作行为，均被视为有效操作。用户有责任保护自己的账号、密码和其他个人隐私资料。若用户个人资料保护不当造成账户被盗用（如中木马病毒等），用户发现后，应立即通知上级代理或本平台来冻结张号、修改资料，从而终止损失；已经造成的资金和财产损失，本平台不承担赔付责任。
+                    </p>
+                    <p>2.3本平台使用“网页式在线客服”并作为唯一的方式为用户提供即时咨询服务。用户从其他方式获得的服务，本平台不保证其真实性，不承担由此引起的任何责任。
+                    </p>
+                    <p>2.4本平台建议用户本人在平台进行个人密码修改、投注、充值、提现等重要操作，平台不会委托他人（任何个人或团体）替用户进行上述操作，用户通过他人操作造成的任何损失,本平台不承担责任。
+                    </p>
+                    <p>2.5用户在本平台绑定的由邮箱须真实有效，邮箱一经绑定，不得修改，若由于个人错误绑 定导致的损失，平台不承担任何责任。
+                    </p>
+                    <p>2.6因自然灾害或第三方因素等不可控力，如ISP（互联网接入提供商）故障、用户所在国政府限制措施行为，导致平台网站资料损坏、资料丟失、访问异常等情况，本平台不承担任何责任，但将尽力减少因此而给用户造成的损失，且用户有义务配合行动以减轻事件影响。
+                    </p>
+                    <p>2.7本平台保留不时修订、更新本条款和平台游戏规则的权利。经修订、更新的条款和游戏规则，在公布时即生效，用户在上述修订和更新公布后，继续使用本平台服务时，则视为用户同意并接受本平台条款和游戏规则的修订和更新。
+                    </p>
+                    <p>2.8 本公司保留对其他未尽事宜或争议的解释权和修订权。
+                    </p>
                 </div>
-
-            </div>
-            <div>
-                <a  className='l_accept'  onClick={()=>{this.showModal('l_accept')}}>登录即同意《协议与条款》</a>
-                <div>
-                    <Modal
-                        title="《协议与条款》"
-                        wrapClassName="vertical-center-modal m_accept_contract"
-                        maskClosable={false}
-                        visible={this.state.visible4}
-                        onCancel={()=>{this.setState({ visible4: false })}}
-                        footer={<Button className="l_m_btn" type="primary" onClick={()=>{this.setState({ visible4: false })}} >
-                            确定并同意
-                        </Button>}
-                        closable={false}
-                    >
-                        <div className='m_contract'>
-                            <p>《恒彩在线》是持菲律宾共和国合法经营执照，并受其相关法律保护和约束的线上游戏平台运营商。</p>
-                            <p>用户在登录使用平台服务前，请仔细阅读以下内容，并确认使用平台服务符合所在国家和居住地的法律及规定。本平台不承担任何因用户违反当地法规引起的任何责任。用户一经登录平台，则视为完全接受平台所有之规定。</p>
-                            <p className="m_c_title">1.交易协定 </p>
-                            <p>1.1本平台所有开奖数据均使用具有公信力的第三方开奖结果，以投注站的视频信号为基准。如发生因开奖机构引起的开奖错误，将采用开奖机构修正并最终确定的结果。本平台有权在上述事件发生时即时终止资金交易，并进行相应订单修正处理。
-                            </p>
-                            <p>1.2用户在本平台投注完成后，请核对投注记录，确保投注成功以避免争议；投注过程中，若发生网络问题而导致与平台服务器连接失败，所有已被确认的订单仍然有效，用户在重新登录时，请再次核对并确认投注记录。
-                            </p>
-                            <p>1.3用户在本平台充值汇款，请按相关流程和规定，确认汇入账号为平台网站提供的即时有效的汇款信息，因填入错误的信息（汇款账号或流水号）而导致的无法到账或到账延迟，本平台不承担任何责任，并保留对违规填写流水号用户的处罚权.
-                            </p>
-                            <p>1.4用户在本平台提款前，须确认本人使用的银行账号。因用户个人银行账号变更而未及时通知平台而引起的损失，平台不承担任何责任。
-                            </p>
-                            <p>1.5有历史资金交易记录且余额≤2元的账户，累计7天无账变（无充值，无提现，无投注，无返点），将被禁用，禁用累计7天且无下级，将被系统注销；新注册账号累计超过7天无账变将被禁用，禁用累计7天且无下级，将被系统注销。
-                            </p>
-                            <p>1.6用户在本平台游戏，若有作弊、欺编、攻击、破坏本平台正常运作的行为或利用系统漏洞侵害平台和其他客户的权益，一经核实，本平台有权禁用、冻结和注销用户账户，终止其继续使用本平台服务，并有权没收所有不当所得。
-                            </p>
-                            <p>1.7本平台用户可查交易记录只保留7天，如有争议，以平台保留的最终备份数据为最后处理依据。
-                            </p>
-                            <p className="m_c_title">2.责任声明</p>
-                            <p>2.1用户须年满18周岁以上方可使用本平台服务，请不要沉溺于游戏。
-                            </p>
-                            <p>2.2在本平台以账号和密码登录后进行的任何操作行为，均被视为有效操作。用户有责任保护自己的账号、密码和其他个人隐私资料。若用户个人资料保护不当造成账户被盗用（如中木马病毒等），用户发现后，应立即通知上级代理或本平台来冻结张号、修改资料，从而终止损失；已经造成的资金和财产损失，本平台不承担赔付责任。
-                            </p>
-                            <p>2.3本平台使用“网页式在线客服”并作为唯一的方式为用户提供即时咨询服务。用户从其他方式获得的服务，本平台不保证其真实性，不承担由此引起的任何责任。
-                            </p>
-                            <p>2.4本平台建议用户本人在平台进行个人密码修改、投注、充值、提现等重要操作，平台不会委托他人（任何个人或团体）替用户进行上述操作，用户通过他人操作造成的任何损失,本平台不承担责任。
-                            </p>
-                            <p>2.5用户在本平台绑定的由邮箱须真实有效，邮箱一经绑定，不得修改，若由于个人错误绑 定导致的损失，平台不承担任何责任。
-                            </p>
-                            <p>2.6因自然灾害或第三方因素等不可控力，如ISP（互联网接入提供商）故障、用户所在国政府限制措施行为，导致平台网站资料损坏、资料丟失、访问异常等情况，本平台不承担任何责任，但将尽力减少因此而给用户造成的损失，且用户有义务配合行动以减轻事件影响。
-                            </p>
-                            <p>2.7本平台保留不时修订、更新本条款和平台游戏规则的权利。经修订、更新的条款和游戏规则，在公布时即生效，用户在上述修订和更新公布后，继续使用本平台服务时，则视为用户同意并接受本平台条款和游戏规则的修订和更新。
-                            </p>
-                            <p>2.8 本公司保留对其他未尽事宜或争议的解释权和修订权。
-                            </p>
-                        </div>
-                    </Modal>
-                </div>
-            </div>
+            </Modal>
         </div>;
         /*
         * 试玩账号
@@ -817,52 +848,28 @@ export default class Login extends Component {
         		this.getWebsocket(tempData.push_domain,tempData.loginUid);
         	}
         })
-    }
-    render() {
+    };
 
+    handleVisibleApp = (visibleApp) => {
+        this.setState({visibleApp}, () => {
+            if (visibleApp) {
+                _code('qrcode_app_logo', stateVar.httpUrl + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime(), 150, 130)
+            }
+        });
+    };
+    handleVisibleM = (visibleM) => {
+        this.setState({visibleM}, () => {
+            if (visibleM) {
+                _code('qrcode_m_logo', stateVar.httpUrl + '/m/index.html?' + (new Date).getTime(), 150, 130)
+            }
+        });
+    };
+
+    render() {
         const navList = ['账号登录', '试玩模式'];
+        const {times} = this.state;
         return (
             <div className='login_main'>
-                <canvas id="canvas"></canvas>
-                <div className="l_nav_top">
-                    <div className="l_nav_top_content">
-                        <ul className="l_n_t_list right">
-                            <li className='l_speed' onMouseEnter={()=>{
-                                this.setState({
-                                    speedSrc:speedSrc_active,
-                                });}} onMouseLeave={()=>{this.setState({
-                                speedSrc:speedSrc,
-                            });}}>
-                                <a href={stateVar.httpCS} target="_blank">
-                                    <img  src={this.state.speedSrc}/>
-                                    <span>域名测速</span>
-                                </a>
-                            </li>
-                            <li className='l_dns' onMouseEnter={()=>{
-                                this.setState({
-                                    dnsSrc:dnsSrc_active,
-                                });}} onMouseLeave={()=>{this.setState({
-                                dnsSrc:dnsSrc,
-                            });}}>
-                                <a href="#/dns" target="_blank">
-                                    <img  src={this.state.dnsSrc}  /><span>防劫持教程</span>
-                                </a>
-                            </li>
-
-                            <li className='l_sevice' onMouseEnter={()=>{
-                                this.setState({
-                                    serviceSrc:serviceSrc_active,
-                                });}} onMouseLeave={()=>{this.setState({
-                                serviceSrc:serviceSrc,
-                            });}}>
-                                <a href={stateVar.httpService} target="_blank">
-                                    <img src={this.state.serviceSrc} />
-                                    <span>在线客服</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
                 <div className="login">
                     <div className="loginLogo">
                         <img src={loginSrc} />
@@ -881,6 +888,18 @@ export default class Login extends Component {
                             <div className='wechatQrcode' style={{display:this.state.showWechat}}>
                                 <div id="wechatLink"></div>
                             </div>
+                            <ul className="l_n_t_list right">
+                                <li className='left'>
+                                    <a className="dns col_color_ying" href="#/dns" target="_blank">
+                                        防劫持教程
+                                    </a>
+                                </li>
+                                <li className='left'>
+                                    <a className="httpService col_color_ying" href={stateVar.httpService} target="_blank">
+                                        在线客服
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                         { this.loginMain() }
                     </div>
@@ -889,13 +908,102 @@ export default class Login extends Component {
                             操作失败:{this.state.warn}
                         </div>
                     </div>
+                    <div className="optimal_line">
+                        <ul className="circuit clear">
+                            {
+                                times.map((item, index) => {
+                                    return (
+                                        <li className={item.classNm} key={index}>
+                                            <a href={item.url}>
+                                                <span className="left">线路{index + 1}</span>
+                                                <ul className="circuit_line left">
+                                                    {
+                                                        circuitArr.map((itm, ind) => {
+                                                            return <li className={ind < (this.state.timeLine - index) ? 'line_color' : ''} key={'' + itm}></li>
+                                                        })
+                                                    }
+                                                </ul>
+                                            </a>
+                                        </li>
+                                    )
+                                })
+                            }
+                        </ul>
+                        <Button disabled={times[0].url == undefined ? true : false}>
+                            <a href={times[0].url}>
+                                一键打开最优路线
+                            </a>
+                        </Button>
+                    </div>
+
+                    <ul className="client_list clear">
+                        <li>
+                            <a href="https://dn-scmobile.qbox.me/setuphc.msi">
+                                <span className="client_bg">PC客户端下载</span>
+                            </a>
+                        </li>
+                        <li>
+                            <Popover content={
+                                <div id="qrcode_app_logo" style={{height: 130, textAlign: 'center'}}></div>
+                            }
+                                     visible={this.state.visibleApp}
+                                     onVisibleChange={this.handleVisibleApp}
+                                     title="手机扫一扫，下载手机APP"
+                            >
+                                <span className="client_bg">APP下载</span>
+                            </Popover>
+                        </li>
+                        <li>
+                            <a href="http://download.gr-mission.com/hcgame.exe">
+                                <span className="client_bg">真人娱乐城</span>
+                            </a>
+                        </li>
+                        <li>
+                            <Popover content={
+                                <ul className="pt_list client_list clear">
+                                    <li className="remove_margin">
+                                        <a href="http://link.vbet.club/happyslots">
+                                            <span className="pt_client_bg">PT客户端下载</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://m.ld176888.com/live/download.html">
+                                            <span className="pt_client_bg">PT真人下载</span>
+                                        </a>
+                                    </li>
+                                    <li className="remove_line">
+                                        <a href="http://m.ld176888.com/download.html">
+                                            <span className="pt_client_bg">PT老虎机下载</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            }
+                            >
+                                <span className="client_bg">PT娱乐城</span>
+                            </Popover>
+                        </li>
+                        <li>
+                            <Popover content={
+                                <div id="qrcode_m_logo" style={{height: 130, textAlign: 'center'}}></div>
+                            }
+                                     visible={this.state.visibleM}
+                                     onVisibleChange={this.handleVisibleM}
+                                     title="手机扫一扫，登录M站"
+                            >
+                                <span className="client_bg">M站二维码</span>
+                            </Popover>
+                        </li>
+                    </ul>
                 </div>
-                <div className="activity_content" style={{display: this.state.activityClose ? 'block' : 'none'}}>
+                <div className="activity_content"
+                     style={{display: this.state.activityClose ? 'block' : 'none'}}
+                >
                     <a href="https://q1893.cn" className="pc_activity" target="_blank"></a>
                     <div className="close_content">
                         <Icon className="activity_close" type="close" onClick={()=>this.setState({activityClose: false})}/>
                     </div>
                 </div>
+                <p className="logo_footer">Copyright &copy; 2014-2018 恒彩彩票版权所有</p>
             </div>
         );
     }
