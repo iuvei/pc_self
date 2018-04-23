@@ -251,7 +251,7 @@ export default class ContentMian extends Component {
                 }
             } else {
                 if (commonData[stateVar.nowlottery.lotteryId] == undefined) {
-                    this.getLotteryDataA(true);
+                    this.getLotteryDataA();
                 } else {
                 	let paramData = {};
                 	let keyName;
@@ -366,6 +366,8 @@ export default class ContentMian extends Component {
 	                common.setStore(common.getStore('userId'), tempObj);
 	                this.setOneMethod(tempData);
 	                this.getLotteryDataA(true);
+	            }else{
+	            	stateVar.openLotteryFlag = true;
 	            }
             }
         })
