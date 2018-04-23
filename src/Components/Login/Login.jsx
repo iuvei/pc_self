@@ -10,6 +10,7 @@ import loginSrc from './Img/logo.png';
 import {removeStore, setStore,getStore, onValidate, _code } from "../../CommonJs/common";
 const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
 const circuitArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
+const origin = window.location.origin;
 
 @observer
 export default class Login extends Component {
@@ -48,7 +49,12 @@ export default class Login extends Component {
             },
             timeoutWechat:false,
             activityClose: false, // 关闭活动
-            times: [{}, {}, {}, {}],
+            times: [
+                {domain: origin},
+                {domain: origin},
+                {domain: origin},
+                {domain: origin},
+            ],
             timeLine: 0,
             visibleApp: false,
             visibleM: false,
@@ -94,37 +100,48 @@ export default class Login extends Component {
         }, 200);
         Fetch.domians().then((res) => {
             if(this._ismount){
-                if(res.status == 200){
-                    let list = res.repsoneContent.domainlist,
-                        imgs = [],
-                        index = 0,
-                        {times} = this.state,
-                        _this = this;
-                    for(let i = 0; i < list.length; i++){
-                        imgs.push({});
-                        imgs[i].img = new Image;
-                        imgs[i].startTime = new Date().getTime();
-                        imgs[i].img.src = list[i].domain + '/speed/img/Login.png?' + imgs[i].startTime;
-                        imgs[i].img.onload = function () {
-                            if(index < 4){
-                                let time = parseInt((new Date().getTime() - imgs[i].startTime)*0.05);
-                                if (time <= 69) {
-                                    times[index].classNm = "green"
-                                } else if (time > 69 && time <= 149) {
-                                    times[index].classNm = "blue"
-                                } else if (time > 149 && time <= 500) {
-                                    times[index].classNm = "yellow"
-                                } else {
-                                    times[index].classNm = "red"
-                                }
-                                times[index].time = time;
-                                times[index].url = list[i].domain;
-                                // times[index].timeLine = 0;
-                                index ++;
-                                _this.setState({times});
+                let imgs = [],
+                    index = 0,
+                    {times} = this.state,
+                    list = [],
+                    _this = this;
+                if(res.status == 200 && list instanceof Array){
+                    list = res.repsoneContent.domainlist;
+                    if(list.length < 4){
+                        for(let k = 0; k < 4; k++){
+                            if(list.length < 4){
+                                list.push({domain: origin})
+                            }else{
+                                break
                             }
-                        };
+                        }
                     }
+                }else{
+                    list = times;
+                }
+                for(let i = 0; i < list.length; i++){
+                    imgs.push({});
+                    imgs[i].img = new Image;
+                    imgs[i].startTime = new Date().getTime();
+                    imgs[i].img.src = list[i].domain + '/speed/img/Login.png?' + imgs[i].startTime;
+                    imgs[i].img.onload = function () {
+                        if(index < 4){
+                            let time = parseInt((new Date().getTime() - imgs[i].startTime)*0.05);
+                            if (time <= 69) {
+                                times[index].classNm = "green"
+                            } else if (time > 69 && time <= 149) {
+                                times[index].classNm = "blue"
+                            } else if (time > 149 && time <= 500) {
+                                times[index].classNm = "yellow"
+                            } else {
+                                times[index].classNm = "red"
+                            }
+                            times[index].time = time;
+                            times[index].domain = list[i].domain;
+                            index ++;
+                            _this.setState({times});
+                        }
+                    };
                 }
             }
         })
@@ -914,7 +931,7 @@ export default class Login extends Component {
                                 times.map((item, index) => {
                                     return (
                                         <li className={item.classNm} key={index}>
-                                            <a href={item.url}>
+                                            <a href={item.domain}>
                                                 <span className="left">线路{index + 1}</span>
                                                 <ul className="circuit_line left">
                                                     {
@@ -929,7 +946,7 @@ export default class Login extends Component {
                                 })
                             }
                         </ul>
-                        <Button disabled={times[0].url == undefined ? true : false}>
+                        <Button disabled={times[0].domain == undefined ? true : false}>
                             <a href={times[0].url}>
                                 一键打开最优路线
                             </a>

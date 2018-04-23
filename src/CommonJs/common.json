@@ -155,7 +155,7 @@
             "lotterytype": 4,
             "curmid": 25024,
             "imgUrl":"tg11",
-            "imgSrc": "hot",
+            "imgSrc": false,
             "disabled": false
         },
         {
@@ -214,7 +214,7 @@
             "lotterytype": 4,
             "curmid": 313550,
             "imgUrl":"txffc",
-            "imgSrc": false,
+            "imgSrc": "hot",
             "disabled": false
         },
         {

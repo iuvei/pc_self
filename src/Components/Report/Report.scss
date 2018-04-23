@@ -59,7 +59,7 @@ $border-color: #B2B2B2;
                 @include lh(30px);
                 li{
                     float: left;
-                    margin-right: 12px;
+                    margin-right: 10px;
                     .ant-input{
                         width: 120px;
                     }
@@ -385,35 +385,32 @@ $border-color: #B2B2B2;
             text-align: right;
         }
         li:nth-child(1){
-            width: 150px;
+            width: 200px;
             text-align: center;
         }
         li:nth-child(2){
-            width: 87px;
+            width: 94px;
         }
         li:nth-child(3){
-            width: 109px;
+            width: 99px;
         }
         li:nth-child(4){
-            width: 97px;
+            width: 100px;
         }
         li:nth-child(5){
-            width: 87px;
+            width: 100px;
         }
         li:nth-child(6){
-            width: 97px;
+            width: 100px;
         }
         li:nth-child(7){
-            width: 85px;
+            width: 100px;
         }
         li:nth-child(8){
-            width: 92px;
+            width: 100px;
         }
         li:nth-child(9){
-            width: 90px;
-        }
-        li:nth-child(10){
-            width: 98px;
+            width: 100px;
         }
     }
     .tt_f_showOne{
@@ -422,63 +419,29 @@ $border-color: #B2B2B2;
             text-align: right;
         }
         li:nth-child(1){
-            width: 200px;
+            width: 209px;
             text-align: center;
         }
         li:nth-child(2){
-            width: 95px;
+            width: 112px;
         }
         li:nth-child(3){
-            width: 115px;
+            width: 112px;
         }
         li:nth-child(4){
-            width: 103px;
+            width: 112px;
         }
         li:nth-child(5){
-            width: 89px;
+            width: 112px;
         }
         li:nth-child(6){
-            width: 102px;
+            width: 112px;
         }
         li:nth-child(7){
-            width: 89px;
+            width: 112px;
         }
         li:nth-child(8){
-            width: 97px;
-        }
-        li:nth-child(9){
-            width: 102px;
-        }
-    }
-    .tt_f_showZero{
-        li{
-            float: left;
-            text-align: right;
-        }
-        li:nth-child(1){
-            width: 218px;
-            text-align: center;
-        }
-        li:nth-child(2){
-            width: 105px;
-        }
-        li:nth-child(3){
-            width: 128px;
-        }
-        li:nth-child(4){
-            width: 114px;
-        }
-        li:nth-child(5){
-            width: 100px;
-        }
-        li:nth-child(6){
-            width: 113px;
-        }
-        li:nth-child(7){
-            width: 100px;
-        }
-        li:nth-child(8){
-            width: 114px;
+            width: 112px;
         }
     }
     .tt_footer{
@@ -487,37 +450,34 @@ $border-color: #B2B2B2;
             text-align: right;
         }
         li:nth-child(1){
-            width: 140px;
+            width: 170px;
             text-align: center;
         }
         li:nth-child(2){
-            width: 79px;
+            width: 89px;
         }
         li:nth-child(3){
-            width: 86px;
+            width: 91px;
         }
         li:nth-child(4){
-            width: 85px;
+            width: 91px;
         }
         li:nth-child(5){
-            width: 72px;
+            width: 91px;
         }
         li:nth-child(6){
-            width: 85px;
+            width: 91px;
         }
         li:nth-child(7){
-            width: 86px;
+            width: 91px;
         }
         li:nth-child(8){
-            width: 88px;
+            width: 91px;
         }
         li:nth-child(9){
-            width: 86px;
+            width: 91px;
         }
         li:nth-child(10){
-            width: 88px;
-        }
-        li:nth-child(11){
             width: 97px;
         }
     }

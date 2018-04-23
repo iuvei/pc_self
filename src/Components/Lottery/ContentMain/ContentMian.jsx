@@ -396,11 +396,11 @@ export default class ContentMian extends Component {
                 this.selectAreaData(this.state.lotteryMethod);
             })
         }
-    };   
+    };
     /**
      * Function 因版本号不同，重新获取彩种玩法
      * param 版本号
-     */  
+     */
     versionGetLotteryData(param) {
     	let templotteryType = {sCurmids: stateVar.alllotteryType};
         Fatch.lotteryBets({

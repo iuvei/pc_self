@@ -358,7 +358,7 @@ export default class Dividend extends Component {
                 },
                 width: 90,
             }, {
-                title: '所属组',
+                title: '用户类型',
                 dataIndex: 'usergroup_name',
                 className: 'column-right',
                 render: (text, record) => {
@@ -381,7 +381,7 @@ export default class Dividend extends Component {
                 width: 90,
             },
             {
-                title: '盈亏总额',
+                title: '毛收入',
                 dataIndex: 'gross_income',
                 className: 'column-right',
                 width: 110,
@@ -472,7 +472,7 @@ export default class Dividend extends Component {
                     },
                     width: 120,
                 }, {
-                    title: '所属组',
+                    title: '用户类型',
                     dataIndex: 'usergroup_name',
                     className: 'column-right',
                     render: (text, record) => {
@@ -582,7 +582,7 @@ export default class Dividend extends Component {
                     },
                     width: 120,
                 }, {
-                    title: '所属组',
+                    title: '用户类型',
                     dataIndex: 'usergroup_name',
                     className: 'column-right',
                     render: (text, record) => {
@@ -692,7 +692,7 @@ export default class Dividend extends Component {
                     },
                     width: 140,
                 }, {
-                    title: '所属组',
+                    title: '用户类型',
                     dataIndex: 'usergroup_name',
                     className: 'column-right',
                     render: (text, record) => {

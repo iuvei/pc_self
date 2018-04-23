@@ -50,7 +50,7 @@ export default class ContentTop extends Component {
             this.initData();
         });
     };
-    
+
     componentWillUnmount() {
         this._ismount = false;
         emitter.off(this.eventEmitter);

@@ -219,6 +219,8 @@ const interFace = (key) => {
         httpUrl += '/bobing/?' + INTERFACE[key] + '&sess=' + getStore('session');
     } else if (key == 'BOBINLOGIN') {
         httpUrl += '/?' + INTERFACE[key] + '&sess=' + getStore('session');
+    }else if (key == 'DOMIANS') {
+        httpUrl += '/pcservice/?' + INTERFACE[key];
     } else {
         httpUrl += '/pcservice/?' + INTERFACE[key] + '&sess=' + getStore('session');
     }
