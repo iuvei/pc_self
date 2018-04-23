@@ -3,8 +3,8 @@ import _code from '../CommonJs/common'
 
 // useStrict(true);
 class State {
-    @observable httpUrl = window.location.origin || (window.location.protocol +'//' + window.location.host); // 域名
-    /*@observable httpUrl = 'http://10.63.15.242'; // 域名*/
+    /*@observable httpUrl = window.location.origin || (window.location.protocol +'//' + window.location.host); // 域名*/
+    @observable httpUrl = 'http://10.63.15.242'; // 域名
 
     @observable httpService = ''; // 联系客服url
     @observable userInfo = {// 用户信息
