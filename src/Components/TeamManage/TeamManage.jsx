@@ -17,7 +17,7 @@ const navList = [
         text: '市场推广'
     },{
         link: '/teamManage/contract',
-        text: '契约系统'
+        text: '契约详情'
     }
 ];
 

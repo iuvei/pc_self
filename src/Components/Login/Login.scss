@@ -98,8 +98,9 @@ $width_100: 100%;
                 position: absolute;
                 background: #fff;
                 left: 302px;
-                z-index: 20;
                 top: 100px;
+                z-index: 20;
+                @include wh(216px, 195px);
                 @include boxS(0, 0, 5px, 1px, #b1b0b0, null);
                 canvas{
                     left: 5px;
@@ -204,6 +205,10 @@ $width_100: 100%;
                     @include borderRadius(2px);
                 }
             }
+            .ant-btn{
+                border: 0;
+                padding: 0;
+            }
         }
         .optimal_line{
             text-align: center;
@@ -220,7 +225,7 @@ $width_100: 100%;
             &:after{
                 margin-top: 20px;
             }
-            .ant-btn{
+            .optimal_btn{
                 margin-top: 20px;
                 padding: 12px 50px;
                 @include gradient(0, 10, 0, bottom, #FEFEFE, #DFDEDE);

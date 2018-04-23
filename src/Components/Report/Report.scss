@@ -133,6 +133,7 @@ $border-color: #B2B2B2;
             /*分红footer*/
             .dividend_footer{
                 line-height: 28px;
+                font-weight: bold;
                 li{
                     float: left;
                     text-align: right;
@@ -445,6 +446,7 @@ $border-color: #B2B2B2;
         }
     }
     .tt_footer{
+        font-weight: bold;
         li{
             float: left;
             text-align: right;
@@ -560,6 +562,7 @@ $border-color: #B2B2B2;
         li{
             float: left;
             text-align: right;
+            font-weight: bold;
             &:first-child{
                 width: 202px;
                 text-align: center;
@@ -584,6 +587,7 @@ $border-color: #B2B2B2;
     /*日亏损佣金footer*/
     .losesaLary_footer{
         line-height: 28px;
+        font-weight: bold;
         li{
             float: left;
             width: 250px;
@@ -599,6 +603,7 @@ $border-color: #B2B2B2;
         li{
             float: left;
             text-align: right;
+            font-weight: bold;
             &:first-child{
                 width: 288px;
                 text-align: center;
@@ -647,6 +652,7 @@ $border-color: #B2B2B2;
         bottom: 0;
         background-color: #f7f7f7;
         color: $color_363636;
+        font-weight: bold;
         li{
             float: left;
             @include lh(45px);
@@ -660,6 +666,7 @@ $border-color: #B2B2B2;
         position: absolute;
         bottom: 0;
         background-color: #f7f7f7;
+        font-weight: bold;
         li{
             float: left;
             text-align: right;
@@ -692,6 +699,7 @@ $border-color: #B2B2B2;
         position: absolute;
         bottom: 0;
         background-color: #f7f7f7;
+        font-weight: bold;
         li{
             float: left;
             @include lh(45px);

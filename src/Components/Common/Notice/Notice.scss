@@ -50,6 +50,7 @@
                 color: #DE0000;
                 font-size: 18px;
                 line-height: 32px;
+                white-space: normal;
             }
             h3{
                 color: #666;
@@ -70,11 +71,9 @@
     .ant-modal-title{
         font-size: 18px;
     }
-    .ant-modal-close-x{
-        //color: #fff;
-    }
     .ant-modal-body{
         height: 500px;
         padding: 0;
+        &:after{ display:block; content:''; clear:both;}
     }
 }

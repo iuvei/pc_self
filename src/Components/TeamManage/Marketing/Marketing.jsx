@@ -107,10 +107,6 @@ export default class Marketing extends Component {
                         reneralizeAccountNum: this.state.list[generalizePost.groupLevel].accnum,
                     })
                 })
-            } else {
-                // Modal.warning({
-                //     title: res.shortMessage,
-                // });
             }
         })
     };
@@ -269,10 +265,6 @@ export default class Marketing extends Component {
                         data[i].setVisible = false;
                     }
                     this.setState({generalizeData: data});
-                } else {
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
                 }
             }
         })
@@ -381,7 +373,7 @@ export default class Marketing extends Component {
         }).then((res) => {
             if (this._ismount) {
                 if (res.status == 200) {
-
+                    this.onReneralize()
                 } else {
                     Modal.warning({
                         title: res.shortMessage,
@@ -461,34 +453,32 @@ export default class Marketing extends Component {
                 render: (text, record, index) => <div className="url_content clear">
                     <a className="url_style ellipsis" href={text} target="_blank">{text}</a>
                     <span className="qrcode right">
-                                                        <Popover
-                                                            content={
-                                                                <div id={'qrcode_mobile' + index}
-                                                                     style={{width: 170, height: 150}}></div>
-                                                            }
-                                                            placement="top"
-                                                            // visible={record.setVisible}
-                                                            onVisibleChange={(visibleMobile) => this.handleVisibleMobile(visibleMobile, text, index)}
-                                                            title="手机扫描二维码"
-                                                            trigger="click">
-                                                            <Button className='phone_btn' size="small">手机二维码</Button>
-                                                        </Popover>
-                                                        <Popover content={
-                                                            <div id={'qrcode_wechat' + index}
-                                                                 style={{width: 170, height: 150}}></div>
-                                                        }
-                                                                 placement="top"
-                                                            // visible={this.state.visibleWechat}
-                                                                 onVisibleChange={(visibleWechat) => this.handleVisibleWechat(visibleWechat, record.qrLink, index)}
-                                                                 title="微信注册二维码"
-                                                                 trigger="click"
-                                                        >
-                                                            <Button className='weChat_btn' size="small">微信开户</Button>
-                                                        </Popover>
-                                                    </span>
+                        <Popover
+                            content={
+                                <div id={'qrcode_mobile' + index}
+                                     style={{width: 170, height: 150}}></div>
+                            }
+                            placement="top"
+                            onVisibleChange={(visibleMobile) => this.handleVisibleMobile(visibleMobile, text, index)}
+                            title="手机扫描二维码"
+                            trigger="click">
+                            <Button className={record.status == 0 ? 'un_btn' : 'phone_btn'} disabled={record.status == 0 ? true : false} size="small">手机二维码</Button>
+                        </Popover>
+                        <Popover content={
+                            <div id={'qrcode_wechat' + index}
+                                 style={{width: 170, height: 150}}></div>
+                        }
+                                 placement="top"
+                                 onVisibleChange={(visibleWechat) => this.handleVisibleWechat(visibleWechat, record.qrLink, index)}
+                                 title="微信注册二维码"
+                                 trigger="click"
+                        >
+                            <Button className={record.status == 0 ? 'un_btn' : 'weChat_btn'} disabled={record.status == 0 ? true : false} size="small">微信开户</Button>
+                        </Popover>
+                    </span>
                     <section className="copy right">
                         <CopyToClipboard text={text} onCopy={() => message.success('复制成功')}>
-                            <Button className='copy_btn' size="small">复制</Button>
+                            <Button className={record.status == 0 ? 'un_btn' : 'copy_btn'} disabled={record.status == 0 ? true : false} size="small">复制</Button>
                         </CopyToClipboard>
                     </section>
                 </div>,
@@ -524,7 +514,7 @@ export default class Marketing extends Component {
                                          <p>无法继续注册下级</p>
                                      </div>
                                  }>
-                            <Icon className='head_hint' type="info-circle"/>
+                            <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                 dataIndex: 'status',
@@ -539,7 +529,7 @@ export default class Marketing extends Component {
                 title: '操作',
                 dataIndex: 'delete',
                 render: (text, record) => <Popconfirm title="确定要删除?" onConfirm={() => this.onDelete(record)}>
-                    <a href="javascript:void(0)" style={{color: '#3C77CB'}}>删除</a>
+                    <p className="hover_a">删除</p>
                 </Popconfirm>,
                 width: 80,
             }];

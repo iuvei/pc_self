@@ -51,9 +51,9 @@ export default class Login extends Component {
             activityClose: false, // 关闭活动
             times: [
                 {domain: origin},
-                {domain: origin},
-                {domain: origin},
-                {domain: origin},
+                {domain: 'https://slxwhg.com'},
+                {domain: 'https://www.slxwhg.com'},
+                {domain: 'https://xtkjcc.com'},
             ],
             timeLine: 0,
             visibleApp: false,
@@ -931,23 +931,25 @@ export default class Login extends Component {
                                 times.map((item, index) => {
                                     return (
                                         <li className={item.classNm} key={index}>
-                                            <a href={item.domain}>
-                                                <span className="left">线路{index + 1}</span>
-                                                <ul className="circuit_line left">
-                                                    {
-                                                        circuitArr.map((itm, ind) => {
-                                                            return <li className={ind < (this.state.timeLine - index) ? 'line_color' : ''} key={'' + itm}></li>
-                                                        })
-                                                    }
-                                                </ul>
-                                            </a>
+                                            <Button disabled={item.domain ? false : true}>
+                                                <a href={item.domain}>
+                                                    <span className="left">线路{index + 1}</span>
+                                                    <ul className="circuit_line left">
+                                                        {
+                                                            circuitArr.map((itm, ind) => {
+                                                                return <li className={ind < (this.state.timeLine - index) ? 'line_color' : ''} key={'' + itm}></li>
+                                                            })
+                                                        }
+                                                    </ul>
+                                                </a>
+                                            </Button>
                                         </li>
                                     )
                                 })
                             }
                         </ul>
-                        <Button disabled={times[0].domain == undefined ? true : false}>
-                            <a href={times[0].url}>
+                        <Button className="optimal_btn" disabled={times[0].domain == undefined ? true : false}>
+                            <a href={times[0].domain}>
                                 一键打开最优路线
                             </a>
                         </Button>
