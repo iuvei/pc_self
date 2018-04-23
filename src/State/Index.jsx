@@ -55,8 +55,10 @@ class State {
         defaultMethodId: 0,
         lotteryBetId: 1,
         cnname: '重庆时时彩',
+        lotteryLength:5,
         imgUrl: 'cqssc'
     };
+    @observable animateCodeFlag = true;
     @observable defaultMethod = 0;
     @observable openLotteryFlag = true;
     @observable todayAndTomorrow = [];
