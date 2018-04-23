@@ -960,13 +960,8 @@ export default class Login extends Component {
                         </li>
                         <li>
                             <Popover content={
-                                <ul className="client_list clear">
-                                    {/*<li>*/}
-                                        {/*<Button>*/}
-                                            {/*<a href="http://link.vbet.club/happyslots">PT客户端下载</a>*/}
-                                        {/*</Button>*/}
-                                    {/*</li>*/}
-                                    <li>
+                                <ul className="pt_list client_list clear">
+                                    <li className="remove_margin">
                                         <a href="http://link.vbet.club/happyslots">
                                             <span className="pt_client_bg">PT客户端下载</span>
                                         </a>
@@ -976,15 +971,13 @@ export default class Login extends Component {
                                             <span className="pt_client_bg">PT真人下载</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li className="remove_line">
                                         <a href="http://m.ld176888.com/download.html">
                                             <span className="pt_client_bg">PT老虎机下载</span>
                                         </a>
                                     </li>
                                 </ul>
                             }
-                                     title="选择要下载的客户端"
-                                     width="145"
                             >
                                 <span className="client_bg">PT娱乐城</span>
                             </Popover>

@@ -30,6 +30,7 @@ export default class LeftSider extends Component {
         });
         // 监听当前彩种未开放时 自动切换另一彩种菜单打开
         this.eventEmitter1 = emitter.on('resetLottery', () => {
+            console.log(123)
             emitter.emit('initData');
             emitter.emit('initContentTop');
             this.handTitleClick('', this.openKey());

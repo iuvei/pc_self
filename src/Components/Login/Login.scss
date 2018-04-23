@@ -100,7 +100,7 @@ $width_100: 100%;
                 left: 302px;
                 z-index: 20;
                 top: 100px;
-                @include boxS(0, 0, 5px, 1px, #333, null);
+                @include boxS(0, 0, 5px, 1px, #b1b0b0, null);
                 canvas{
                     left: 5px;
                     top: 5px;
@@ -441,12 +441,13 @@ $width_100: 100%;
         }
     }
 }
-.pt_client{
-    li{
-        float: left;
-        text-align: center;
+.pt_list{
+    margin: 15px 25px;
+    li:first-child{
+        margin-left: 0;
     }
-    li:last-child{
+    li:nth-child(3):after{
+        display: none;
     }
 }
 
