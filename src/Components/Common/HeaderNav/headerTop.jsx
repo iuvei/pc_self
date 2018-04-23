@@ -42,9 +42,9 @@ export default class HeaderTop extends Component {
         this._ismount = true;
 
         // 组件装载完成以后声明一个自定义事件
-        this.eventEmitter = emitter.on('changeMoney', () => {
+        this.eventEmitter = emitter.on('changeMoney', (val) => {
             this.getMenu();
-            this.getBalance();
+            this.getBalance(val);
         });
         this.getMenu();
         this.getWebsocket();
@@ -58,11 +58,8 @@ export default class HeaderTop extends Component {
     };
     componentWillUnmount() {
         this._ismount = false;
-        // 清除定时器与暂停动画
-        // clearInterval(this._clearInt);
         clearInterval(this.noticeInterval);
         clearTimeout(this.clearTimeout);
-        // cancelAnimationFrame(this._animationFrame);
         emitter.off(this.eventEmitter);
         this.ws.close();
     };
@@ -132,83 +129,168 @@ export default class HeaderTop extends Component {
         })
     };
     /*获取各平台余额*/
-    getBalance(){
+    getBalance(type){
         let allBalance = stateVar.allBalance;
-        //ea余额
-        Fetch.balance({
-            method: 'POST',
-            body: JSON.stringify({type: 'ea'})
-        }).then((res)=>{
-            if(this._ismount){
-                this.setState({updateMLoading: false});
-                if(res.status == 200){
-                    if(res.repsoneContent <= 0){
-                        res.repsoneContent = 0.00
+        if(!type){
+            //ea余额
+            Fetch.balance({
+                method: 'POST',
+                body: JSON.stringify({type: 'ea'})
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({updateMLoading: false});
+                    if(res.status == 200){
+                        if(res.repsoneContent <= 0){
+                            res.repsoneContent = 0.00
+                        }
+                        allBalance.eabalance = res.repsoneContent;
                     }
-                    allBalance.eabalance = res.repsoneContent;
                 }
-            }
-        });
-        //pt余额
-        Fetch.balance({
-            method: 'POST',
-            body: JSON.stringify({type: 'pt'})
-        }).then((res)=>{
-            if(this._ismount){
-                this.setState({updateMLoading: false});
-                if(res.status == 200){
-                    if(res.repsoneContent <= 0){
-                        res.repsoneContent = 0.00
+            });
+            //pt余额
+            Fetch.balance({
+                method: 'POST',
+                body: JSON.stringify({type: 'pt'})
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({updateMLoading: false});
+                    if(res.status == 200){
+                        if(res.repsoneContent <= 0){
+                            res.repsoneContent = 0.00
+                        }
+                        allBalance.ptbalance = res.repsoneContent;
                     }
-                    allBalance.ptbalance = res.repsoneContent;
                 }
-            }
-        });
-        //gt余额
-        Fetch.balance({
-            method: 'POST',
-            body: JSON.stringify({type: 'gt'})
-        }).then((res)=>{
-            if(this._ismount){
-                this.setState({updateMLoading: false});
-                if(res.status == 200){
-                    if(res.repsoneContent <= 0){
-                        res.repsoneContent = 0.00
+            });
+            //gt余额
+            Fetch.balance({
+                method: 'POST',
+                body: JSON.stringify({type: 'gt'})
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({updateMLoading: false});
+                    if(res.status == 200){
+                        if(res.repsoneContent <= 0){
+                            res.repsoneContent = 0.00
+                        }
+                        allBalance.kgbalance = res.repsoneContent;
                     }
-                    allBalance.kgbalance = res.repsoneContent;
                 }
-            }
-        });
-        //体育余额
-        Fetch.balance({
-            method: 'POST',
-            body: JSON.stringify({type: 'sb'})
-        }).then((res)=>{
-            if(this._ismount){
-                this.setState({updateMLoading: false});
-                if(res.status == 200){
-                    if(res.repsoneContent <= 0){
-                        res.repsoneContent = 0.00
+            });
+            //体育余额
+            Fetch.balance({
+                method: 'POST',
+                body: JSON.stringify({type: 'sb'})
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({updateMLoading: false});
+                    if(res.status == 200){
+                        if(res.repsoneContent <= 0){
+                            res.repsoneContent = 0.00
+                        }
+                        allBalance.sbbalance = res.repsoneContent;
                     }
-                    allBalance.sbbalance = res.repsoneContent;
                 }
-            }
-        });
-        //博饼余额
-        Fetch.balance({
-            method: 'POST',
-            body: JSON.stringify({type: 'bb'})
-        }).then((res)=>{
-            if(this._ismount){
-                this.setState({updateMLoading: false});
-                if(res.status == 200){
-                    if(res.repsoneContent <= 0){
-                        res.repsoneContent = 0.00
+            });
+            //博饼余额
+            Fetch.balance({
+                method: 'POST',
+                body: JSON.stringify({type: 'bb'})
+            }).then((res)=>{
+                if(this._ismount){
+                    this.setState({updateMLoading: false});
+                    if(res.status == 200){
+                        if(res.repsoneContent <= 0){
+                            res.repsoneContent = 0.00
+                        }
+                        allBalance.bobingBalance = res.repsoneContent;
                     }
-                    allBalance.bobingBalance = res.repsoneContent;
                 }
-            }
-        });
+            });
+        }else{
+            if(type == 'ea'){
+                //ea余额
+                Fetch.balance({
+                    method: 'POST',
+                    body: JSON.stringify({type: 'ea'})
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({updateMLoading: false});
+                        if(res.status == 200){
+                            if(res.repsoneContent <= 0){
+                                res.repsoneContent = 0.00
+                            }
+                            allBalance.eabalance = res.repsoneContent;
+                        }
+                    }
+                });
+            }else if(type == 'pt'){
+                //pt余额
+                Fetch.balance({
+                    method: 'POST',
+                    body: JSON.stringify({type: 'pt'})
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({updateMLoading: false});
+                        if(res.status == 200){
+                            if(res.repsoneContent <= 0){
+                                res.repsoneContent = 0.00
+                            }
+                            allBalance.ptbalance = res.repsoneContent;
+                        }
+                    }
+                });
+            }else if(type == 'gt'){
+                //gt余额
+                Fetch.balance({
+                    method: 'POST',
+                    body: JSON.stringify({type: 'gt'})
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({updateMLoading: false});
+                        if(res.status == 200){
+                            if(res.repsoneContent <= 0){
+                                res.repsoneContent = 0.00
+                            }
+                            allBalance.kgbalance = res.repsoneContent;
+                        }
+                    }
+                });
+            }else if(type == 'sport'){
+                //体育余额
+                Fetch.balance({
+                    method: 'POST',
+                    body: JSON.stringify({type: 'sb'})
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({updateMLoading: false});
+                        if(res.status == 200){
+                            if(res.repsoneContent <= 0){
+                                res.repsoneContent = 0.00
+                            }
+                            allBalance.sbbalance = res.repsoneContent;
+                        }
+                    }
+                });
+            }else if(type == 'bb'){
+                //博饼余额
+                Fetch.balance({
+                    method: 'POST',
+                    body: JSON.stringify({type: 'bb'})
+                }).then((res)=>{
+                    if(this._ismount){
+                        this.setState({updateMLoading: false});
+                        if(res.status == 200){
+                            if(res.repsoneContent <= 0){
+                                res.repsoneContent = 0.00
+                            }
+                            allBalance.bobingBalance = res.repsoneContent;
+                        }
+                    }
+                });
+            }else{}
+        }
+
     };
     /*退出登录*/
     onLogout() {

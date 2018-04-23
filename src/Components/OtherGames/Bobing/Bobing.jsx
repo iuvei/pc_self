@@ -61,7 +61,7 @@ export default class Bobing extends Component {
                             title: res.shortMessage,
                         });
                         this.setState({visible: false});
-                        emitter.emit('changeMoney');
+                        emitter.emit('changeMoney', 'bb');
                     }else{
                         Modal.warning({
                             title: res.shortMessage,

@@ -59,7 +59,7 @@ export default class EA extends Component {
                             title: res.shortMessage,
                         });
                         this.setState({visible: false});
-                        emitter.emit('changeMoney');
+                        emitter.emit('changeMoney', 'ea');
                     }else{
                         Modal.warning({
                             title: res.shortMessage,

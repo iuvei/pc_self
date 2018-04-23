@@ -118,7 +118,7 @@ export default class Transfer extends Component {
                     Modal.success({
                         title: res.shortMessage,
                     });
-                    this.onEmitter();
+                    this.onEmitter('sport');
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -139,7 +139,7 @@ export default class Transfer extends Component {
                     Modal.success({
                         title: res.shortMessage,
                     });
-                    this.onEmitter();
+                    this.onEmitter('ea');
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -160,7 +160,7 @@ export default class Transfer extends Component {
                     Modal.success({
                         title: res.shortMessage,
                     });
-                    this.onEmitter();
+                    this.onEmitter('pt');
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
@@ -186,7 +186,7 @@ export default class Transfer extends Component {
                         Modal.success({
                             title: res.shortMessage,
                         });
-                        this.onEmitter();
+                        this.onEmitter('bb');
                     }else{
                         Modal.warning({
                             title: res.shortMessage,
@@ -197,8 +197,8 @@ export default class Transfer extends Component {
         })
     };
 
-    onEmitter(){
-        emitter.emit('changeMoney');
+    onEmitter(type){
+        emitter.emit('changeMoney', type);
         let { validate } = this.state;
         validate.money = 2;
         this.setState({

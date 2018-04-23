@@ -76,7 +76,7 @@ export default class Sport extends Component {
                         title: res.shortMessage,
                     });
                     this.setState({visible: false});
-                    emitter.emit('changeMoney');
+                    emitter.emit('changeMoney', 'sport');
                 }else{
                     Modal.warning({
                         title: res.shortMessage,
