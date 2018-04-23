@@ -319,11 +319,11 @@ export default class LotteryBet extends Component {
             }, {
                 title: '投注时间',
                 dataIndex: 'writetime',
-                width: 90,
+                width: 80,
             }, {
                 title: '期号',
                 dataIndex: 'issue',
-                width: 90,
+                width: 95,
             }, {
                 title: '投注内容',
                 dataIndex: 'codes_str',
@@ -387,13 +387,13 @@ export default class LotteryBet extends Component {
         const footer = <div className="l_b_tabel_footer">
             <span>总计</span>
             <span>
-                                  总投注额：
-                                  <strong>{sum.all_totalprice}元</strong>
-                              </span>
+              总投注额：
+              <strong>{sum.all_totalprice}元</strong>
+            </span>
             <span>
-                                  总奖金：
-                                  <strong>{sum.all_bonus}元</strong>
-                              </span>
+              总奖金：
+              <strong>{sum.all_bonus}元</strong>
+            </span>
         </div>;
 
         return (

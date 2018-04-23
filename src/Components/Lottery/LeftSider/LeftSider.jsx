@@ -25,32 +25,19 @@ export default class LeftSider extends Component {
     }
 
     componentDidMount() {
-        this.eventEmitter = emitter.on('changeLottery', (e) => {
+        this.eventEmitterLeftSider = emitter.on('changeLottery', (e) => {
             this.handleClick(e);
         });
         // 监听当前彩种未开放时 自动切换另一彩种菜单打开
-        this.eventEmitter1 = emitter.on('resetLottery', () => {
-            console.log(123)
-            emitter.emit('initData');
+        this.eventEmitterA = emitter.on('resetLottery', () => {
             emitter.emit('initContentTop');
             this.handTitleClick('', this.openKey());
         });
         this.handTitleClick('', this.openKey());
-        // this.clearIntCount = setInterval(()=>{
-        //     if(this.state.countDown >= 100){
-        //         this.setState({countDown: 0})
-        //     }else{
-        //         this.setState({countDown: ++this.state.countDown})
-        //     }
-        // }, 1000)
     };
-
     componentWillUnmount() {
-        // if(this.clearIntCount){
-        //     window.clearInterval(this.clearIntCount)
-        // }
-        emitter.off(this.eventEmitter);
-        emitter.off(this.eventEmitter1);
+        emitter.off(this.eventEmitterLeftSider);
+        emitter.off(this.eventEmitterA);
     };
 
     handleClick(e) {
@@ -107,7 +94,6 @@ export default class LeftSider extends Component {
                         lt_same_code: [], totalDan: 0, totalNum: 0, totalMoney: 0, lt_trace_base: 0
                     };
                     emitter.emit('initData');
-                    emitter.emit('initContentTop');
                     stateVar.isload = false;
                 }
             }
