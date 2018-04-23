@@ -30,8 +30,11 @@ export default class LeftSider extends Component {
         });
         // 监听当前彩种未开放时 自动切换另一彩种菜单打开
         this.eventEmitter1 = emitter.on('resetLottery', () => {
+<<<<<<< HEAD
             console.log(123)
             emitter.emit('initData');
+=======
+>>>>>>> dd93c3f689abaa0b59045fd79fe713b9456d7af9
             emitter.emit('initContentTop');
             this.handTitleClick('', this.openKey());
         });
@@ -107,7 +110,6 @@ export default class LeftSider extends Component {
                         lt_same_code: [], totalDan: 0, totalNum: 0, totalMoney: 0, lt_trace_base: 0
                     };
                     emitter.emit('initData');
-                    emitter.emit('initContentTop');
                     stateVar.isload = false;
                 }
             }

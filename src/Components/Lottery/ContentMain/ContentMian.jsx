@@ -90,7 +90,7 @@ export default class ContentMian extends Component {
         }
         this.lotteryOkBet = this.lotteryOkBet.bind(this);
         this.getBetHistory = this.getBetHistory.bind(this);
-        this.getLotteryData = this.getLotteryData.bind(this);
+        this.getVersion = this.getVersion.bind(this);
         this.onChangeNavIndex = this.onChangeNavIndex.bind(this);
         this.actionTrace = this.actionTrace.bind(this);
         this.multipleValue = this.multipleValue.bind(this);
@@ -137,7 +137,7 @@ export default class ContentMian extends Component {
                 })
             }
         });
-        this.initData();
+        this.initData(true);
     };
 
     //离开页面
@@ -163,23 +163,7 @@ export default class ContentMian extends Component {
     }
 
     initData() {
-        let lotteryData = require('../../../CommonJs/common.json');
-        let tempLotteryType = {};
-        let tempLotteryLength;
-        for (let i = 0, lotteryDt = lotteryData.lotteryType; i < lotteryDt.length; i++) {
-            if (lotteryDt[i]['nav'] == stateVar.nowlottery.lotteryId) {
-                stateVar.nowlottery.cuimId = lotteryDt[i]['curmid'];
-                stateVar.nowlottery.defaultMethodId = lotteryDt[i]['methodid'];
-                stateVar.nowlottery.lotteryBetId = lotteryDt[i]['lotteryid'];
-                stateVar.nowlottery.cnname = lotteryDt[i]['cnname'];
-                stateVar.nowlottery.imgUrl = lotteryDt[i]['imgUrl'];
-            }
-            if (lotteryDt[i]['lotteryid'] != 23) {
-                tempLotteryType[lotteryDt[i]['nav']] = lotteryDt[i]['curmid']
-            }
-        }
-        stateVar.alllotteryType = tempLotteryType;//所有彩种类型
-        stateVar.openLotteryFlag = false;//控制彩种是否可以点击
+    	this.getLotteryType();
         if (this._ismount) {
             this.setState({
                 navIndex: 0,
@@ -201,32 +185,8 @@ export default class ContentMian extends Component {
                 $("li.number_active").removeClass('number_active');
                 $(".lh .hover").removeClass('hover');
                 $(".zx span").removeClass('hover');
-                //判断玩法是否有缓存，没有则重新获取所有玩法
-                let commonData = common.getStore(common.getStore('userId'));
-                let ifMehtod = commonData == (null || undefined) ? false : true;
-                if (ifMehtod) {
-                    if (stateVar.nowlottery.lotteryBetId == 23) {
-                        if (commonData['mmc'] == undefined) {
-                            this.getMmcMethod();
-                        } else {
-                            this.setOneMethod(commonData);
-                        }
-                    } else {
-                        if (commonData['ssc'] == undefined) {
-                            this.getLotteryData();
-                        } else {
-                            this.setOneMethod(commonData);
-                        }
-                    }
-                } else {
-                    if (stateVar.nowlottery.lotteryBetId == 23) {
-                        this.getMmcMethod();
-                    } else {
-                        this.getLotteryData();
-                    }
-                }
-                this.getBetHistory();
                 this.getVersion();//得到版本号
+                this.setLotteryMethod();//加载玩法
                 // 每次切换彩种 需要将记录的冷热遗漏值 清空
                 stateVar.setHotMissFlag('')
                 stateVar.setMissData({})
@@ -240,86 +200,232 @@ export default class ContentMian extends Component {
             });
         }
     };
-
-    //设置单个彩种玩法 val:所有玩法信息
-    setOneMethod(val) {
-        let tempIndex = 0;
-        let tempMsg;
-        for (let i in val) {
-            if (i == stateVar.nowlottery.lotteryId) {
-                let tempVal = val[i];
-                if (tempVal.msg != undefined) {
-                    tempMsg = tempVal.msg;
-                    stateVar.openLotteryFlag = true;
-                    break;
-                } else {
-                    for (let j = 0; j < tempVal.length; j++) {
-                        let tempK = tempVal[j].label;
-                        for (let k = 0; k < tempK.length; k++) {
-                            let tempS = tempK[k].label;
-                            for (let s = 0; s < tempS.length; s++) {
-                                if (tempS[s].methodid == stateVar.nowlottery.defaultMethodId && tempS[s].selectarea.type != "input") {
-                                    tempIndex = j;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    if (this._ismount) {
-                        this.setState({lotteryMethod: val[i], navIndex: tempIndex}, () => {
-                            //相关玩法的state值赋值
-                            this.selectAreaData(this.state.lotteryMethod);
-                        })
-                    }
-                }
+    //加载彩种类型
+    getLotteryType(){
+    	let getVersion = require('../../../CommonJs/version.json') || {};
+        let lotteryData;
+        let getLocalVersion = common.getStore('productVersion') || {};
+        if(getLocalVersion.version && getLocalVersion.version == getVersion.productVersion){
+        	lotteryData = getLocalVersion.data;
+        }else{
+        	lotteryData = require('../../../CommonJs/common.json');
+        	let tempObj = {};
+        	tempObj['version'] = getVersion.productVersion;
+        	tempObj['data'] = lotteryData;
+        	common.setStore('productVersion',tempObj);
+        }
+        let tempLotteryType = {};
+        let tempLotteryLength;
+        for (let i = 0, lotteryDt = lotteryData.lotteryType; i < lotteryDt.length; i++) {
+            if (lotteryDt[i]['nav'] == stateVar.nowlottery.lotteryId) {
+                stateVar.nowlottery.cuimId = lotteryDt[i]['curmid'];
+                stateVar.nowlottery.defaultMethodId = lotteryDt[i]['methodid'];
+                stateVar.nowlottery.lotteryBetId = lotteryDt[i]['lotteryid'];
+                stateVar.nowlottery.cnname = lotteryDt[i]['cnname'];
+                stateVar.nowlottery.imgUrl = lotteryDt[i]['imgUrl'];
+            }
+            if (lotteryDt[i]['lotteryid'] != 23) {
+                tempLotteryType[lotteryDt[i]['nav']] = lotteryDt[i]['curmid']
             }
         }
-        if (tempMsg) {
-            this.setState({lotteryMethod: []}, () => {
-                if (val['ssc'] && val['ssc'].msg == undefined) {
-                    stateVar.nowlottery.lotteryId = 'ssc';
-                } else {
-                    if (val['ffc'] && val['ffc'].msg == undefined) {
-                        stateVar.nowlottery.lotteryId = 'ffc';
-                    } else {
-                        if (val['24xsc'] && val['24xsc'].msg == undefined) {
-                            stateVar.nowlottery.lotteryId = '24xsc';
-                        } else {
-                            stateVar.nowlottery.lotteryId = 'txffc';
-                        }
-                    }
-                }
-                // 切换左侧导航菜单
-                emitter.emit('resetLottery')
-                this.initData();
-                stateVar.openLotteryFlag = true;
-            });
-        }
+        stateVar.alllotteryType = tempLotteryType;//所有彩种类型
+        stateVar.openLotteryFlag = false;//控制彩种是否可以点击
     };
-
-    //获取所有彩种玩法
-    getLotteryData() {
+    //加载玩法
+	setLotteryMethod(){
+		//判断玩法是否有缓存，没有则重新获取所有玩法
+        let commonData = common.getStore(common.getStore('userId'));
+		let ifMehtod = commonData == (null || undefined) ? false : true;
+        if (ifMehtod) {
+            if (stateVar.nowlottery.lotteryBetId == 23) {
+                if (commonData['mmc'] == undefined) {
+                    this.getMmcMethod();
+                } else {
+                	if(commonData['mmc'].msg != undefined){
+                		stateVar.nowlottery.lotteryId = 'ssc';
+                		this.initData();
+                	}else{
+                		emitter.emit('resetLottery');
+                		this.setOneMethod(commonData);
+                	}
+                }
+            } else {
+                if (commonData[stateVar.nowlottery.lotteryId] == undefined) {
+                    this.getLotteryDataA(true);
+                } else {
+                	let paramData = {};
+                	let keyName;
+                	let keyVal;
+                	//彩种无数据处理
+                	if(commonData[stateVar.nowlottery.lotteryId].msg != undefined){
+                		let ttData = {};
+                		for(let vl in commonData){
+	                		if(commonData[vl].msg == undefined){
+	                			ttData[vl] = commonData[vl];
+	                		}
+	                	}
+                		for(let vl in ttData){
+                			let commonDataVal = paramData[vl];
+                			if(vl == 'ssc'){
+                				keyName = vl;
+                				keyVal = commonDataVal;
+                				break;
+                			}else{
+                				if(vl == 'txffc'){
+	                				keyName = vl;
+                					keyVal = commonDataVal;
+	                				break;
+	                			}else{
+	                				if(vl == 'ffc'){
+		                				keyName = vl;
+                						keyVal = commonDataVal;
+		                				break;
+		                			}else{
+		                				if(vl == '24xsc'){
+			                				keyName = vl;
+                							keyVal = commonDataVal;
+			                				break;
+			                			}else{
+			                				if(vl == '24xsc'){
+				                				keyName = vl;
+                								keyVal = commonDataVal;
+				                				break;
+				                			}else{
+				                				if(vl == 'mmc'){
+				                					keyName = vl;
+                									keyVal = commonDataVal;
+				                					break;
+				                				}
+				                			}
+			                			}
+		                			}
+	                			}
+                			}
+                		}
+                		if(JSON.stringify(ttData) == '{}'){
+                			return;
+                		}else{
+                			stateVar.nowlottery.lotteryId = keyName;
+                			this.initData();
+                		}
+                	}else{
+                		paramData[stateVar.nowlottery.lotteryId] = commonData[stateVar.nowlottery.lotteryId];
+                		emitter.emit('resetLottery');
+                		this.setOneMethod(paramData);
+                	}
+                }
+            }
+        } else {
+            if (stateVar.nowlottery.lotteryBetId == 23) {
+                this.getMmcMethod();
+            } else {
+                this.getLotteryDataA();
+            }
+        }
+	};
+	//本地没有缓存玩法的情况，去获取所有玩法
+	getLotteryDataA(a) {
+    	let templotteryType;
+		let templotty = {};
+		if(a){
+			templotteryType = {sCurmids: stateVar.alllotteryType};
+		}else{
+			templotty[stateVar.nowlottery.lotteryId] =  stateVar.nowlottery.cuimId;
+			templotteryType = {sCurmids: templotty};
+		}
         Fatch.lotteryBets({
                 method: "POST",
-                body: JSON.stringify({sCurmids: stateVar.alllotteryType})
-                // body: JSON.stringify({sCurmids: {ssc: 50}})
+                body: JSON.stringify(templotteryType)
             }
         ).then((data) => {
-            if(this._ismount){
-                stateVar.openLotteryFlag = true;
-                this.setState({loading: false});
-                if (data.status == 200) {
-                    let tempData = data.repsoneContent;
-                    let tempObj = common.getStore(common.getStore('userId')) || {};
-                    if (tempObj['mmc'] == undefined) {
-                        tempObj = tempData;
-                    } else {
-                        let tempmmc = tempObj['mmc'];
-                        tempObj = tempData;
-                        tempObj['mmc'] = tempmmc;
+            this.setState({loading: false});
+            if(a){
+            	if(data.status == 200){
+            		common.setStore(common.getStore('userId'), data.repsoneContent);
+            	}
+            }else{
+            	if (this._ismount && data.status == 200) {
+	                let tempData = data.repsoneContent;
+	                if(tempData[stateVar.nowlottery.lotteryId].msg != undefined){
+	                	if(stateVar.nowlottery.lotteryId == 'ssc'){
+	                		stateVar.nowlottery.lotteryId = 'txffc';
+	                	}else if(stateVar.nowlottery.lotteryId == 'txffc'){
+	                		stateVar.nowlottery.lotteryId = 'ffc';
+	                	}else if(stateVar.nowlottery.lotteryId == 'ffc'){
+	                		stateVar.nowlottery.lotteryId = '24xsc';
+	                	}else{
+	                		stateVar.nowlottery.lotteryId = 'mmc';
+	                	}
+	                	this.initData();
+	                	return;
+	                }
+	                stateVar.openLotteryFlag = true;
+	                emitter.emit('resetLottery');
+	                let tempObj = {};
+	               	tempObj[stateVar.nowlottery.lotteryId] = tempData[stateVar.nowlottery.lotteryId];
+	                common.setStore(common.getStore('userId'), tempObj);
+	                this.setOneMethod(tempData);
+	                this.getLotteryDataA(true);
+	            }
+            }
+        })
+    };
+    //设置单个彩种玩法 val:所有玩法信息
+    setOneMethod(val) {
+    	this.getBetHistory();
+        let tempIndex = 0;
+        let tempMsg;
+        let tempVal = val[stateVar.nowlottery.lotteryId];
+        for (let j = 0; j < tempVal.length; j++) {
+            let tempK = tempVal[j].label;
+            for (let k = 0; k < tempK.length; k++) {
+                let tempS = tempK[k].label;
+                for (let s = 0; s < tempS.length; s++) {
+                    if (tempS[s].methodid == stateVar.nowlottery.defaultMethodId && tempS[s].selectarea.type != "input") {
+                        tempIndex = j;
+                        break;
                     }
-                    common.setStore(common.getStore('userId'), tempObj);
-                    this.setOneMethod(tempData);
+                }
+            }
+        }
+        if (this._ismount) {
+            this.setState({lotteryMethod: val[stateVar.nowlottery.lotteryId], navIndex: tempIndex}, () => {
+                //相关玩法的state值赋值
+                this.selectAreaData(this.state.lotteryMethod);
+            })
+        }
+    };   
+    /**
+     * Function 因版本号不同，重新获取彩种玩法
+     * param 版本号
+     */  
+    versionGetLotteryData(param) {
+    	let templotteryType = {sCurmids: stateVar.alllotteryType};
+        Fatch.lotteryBets({
+                method: "POST",
+                body: JSON.stringify(templotteryType)
+            }
+        ).then((data) => {
+            stateVar.openLotteryFlag = true;
+            this.setState({loading: false});
+            if (this._ismount && data.status == 200) {
+            	let tempData = data.repsoneContent;
+            	let tempObj = {};
+            	if (tempObj['mmc'] == undefined) {
+                    tempObj = tempData;
+                } else {
+                    let tempmmc = tempObj['mmc'];
+                    tempObj = tempData;
+                    tempObj['mmc'] = tempmmc;
+                }
+                common.setStore('version', param);
+                common.setStore(common.getStore('userId'), tempObj);
+                if(tempObj[stateVar.nowlottery.lotteryId].msg != undefined){
+                	stateVar.nowlottery.lotteryId = 'ssc';
+                	this.initData();
+                	return;
+                }else{
+                	this.setOneMethod(tempData);
                 }
             }
         })
@@ -339,7 +445,13 @@ export default class ContentMian extends Component {
                 let tempObj = common.getStore(common.getStore('userId')) || {};
                 tempObj['mmc'] = tempData;
                 common.setStore(common.getStore('userId'), tempObj);
-                this.setOneMethod(tempObj);
+                if(tempObj['mmc'] && tempObj['mmc'].msg != undefined){
+                	stateVar.nowlottery.lotteryId = 'ssc';
+                	this.initData();
+                }else{
+                	emitter.emit('resetLottery');
+                	this.setOneMethod(tempObj);
+                }
             } else {
                 const modal = Modal.error({
                     title: '温馨提示',
@@ -349,7 +461,51 @@ export default class ContentMian extends Component {
             }
         })
     };
-
+    //获取版本号
+	getVersion() {
+        let tempObj = {version: 'push'};
+        Fatch.getVersion({method: 'post', body: JSON.stringify(tempObj)}).then((data) => {
+            if (this._ismount && data.status == 200) {
+                let tempData = data.repsoneContent || {};
+                let oneFlag = true;
+                let version = common.getStore('version') || [];
+                if (version.length > 0) {
+                    let tempFlag = true;
+                    for (let i = 0; i < version.length; i++) {
+                        if (version[i].userId == tempData.userid) {
+                            tempFlag = false;
+                            if (version[i].oneVersion != tempData.userone || version[i].allVersion != tempData.userall) {
+                                oneFlag = false;
+                                version[i].oneVersion = tempData.userone;
+                                version[i].allVersion = tempData.userall;
+                            }
+                        }
+                    }
+                    if (tempFlag) {
+                        let tempObj = {};
+                        tempObj.userId = tempData.userid;
+                        tempObj.oneVersion = tempData.userone;
+                        tempObj.allVersion = tempData.userall;
+                        version.push(tempObj);
+                        common.setStore('version', version);
+                    } else {
+                        if (!oneFlag) {
+                            this.versionGetLotteryData(version);
+                            this.getAccGroup();
+                        }
+                    }
+                } else {
+                    version = [];
+                    let tempObj = {};
+                    tempObj.userId = tempData.userid;
+                    tempObj.oneVersion = tempData.userone;
+                    tempObj.allVersion = tempData.userall;
+                    version.push(tempObj);
+                    common.setStore('version', version);
+                }
+            }
+        });
+    };
     //确定投注页面
     lotteryOkBet(param) {
         if (param) {
@@ -507,54 +663,6 @@ export default class ContentMian extends Component {
         this.setState({isPrizeStop: e.target.checked});
     }
 
-    getVersion() {
-        let tempObj = {version: 'push'};
-        Fatch.getVersion({method: 'post', body: JSON.stringify(tempObj)}).then((data) => {
-            if (this._ismount && data.status == 200) {
-                let tempData = data.repsoneContent || {};
-                let oneFlag = true;
-                let version = common.getStore('version') || [];
-                if (version.length > 0) {
-                    let tempFlag = true;
-                    for (let i = 0; i < version.length; i++) {
-                        if (version[i].userId == tempData.userid) {
-                            tempFlag = false;
-                            if (version[i].oneVersion != tempData.userone || version[i].allVersion != tempData.userall) {
-                                oneFlag = false;
-                                version[i].oneVersion = tempData.userone;
-                                version[i].allVersion = tempData.userall;
-                            }
-                        }
-                    }
-                    if (tempFlag) {
-                        let tempObj = {};
-                        tempObj.userId = tempData.userid;
-                        tempObj.oneVersion = tempData.userone;
-                        tempObj.allVersion = tempData.userall;
-                        version.push(tempObj);
-                        common.setStore('version', version);
-                    } else {
-                        if (!oneFlag) {
-                            this.setState({lotteryMethod: []});
-                            common.removeStore(common.getStore('userId'));
-                            common.setStore('version', version);
-                            this.getLotteryData();
-                            this.getAccGroup();
-                        }
-                    }
-                } else {
-                    version = [];
-                    let tempObj = {};
-                    tempObj.userId = tempData.userid;
-                    tempObj.oneVersion = tempData.userone;
-                    tempObj.allVersion = tempData.userall;
-                    version.push(tempObj);
-                    common.setStore('version', version);
-                }
-            }
-        });
-    };
-
     //获取奖金组
     getAccGroup() {
         //登录
@@ -572,57 +680,6 @@ export default class ContentMian extends Component {
                 }
             }
         })
-    };
-
-    /**
-     Function 开奖动画
-     param 号码个数
-     */
-    kjanimate(b) {
-        let param = this.state.tempLotteryLength;
-        if (this.state.kjStopTime >= 5) {
-            return;
-        }
-        let tempCode = [];
-        for (let i = 0; i < param; i++) {
-            if (stateVar.nowlottery.cnname.indexOf('11选5') > -1) {
-                tempCode.push(Math.floor(Math.random() * 2) + '' + Math.floor(Math.random() * 10));
-            } else {
-                tempCode.push(Math.floor(Math.random() * 10));
-            }
-        }
-        this.setState({animateCode: tempCode}, () => {
-            setTimeout(() => {
-                if (b < 800) {
-                    b = b + 30;
-                    this.kjanimate(b);
-                } else {
-                    if (this.state.kjStopallFlag) {
-                        let tempI = this.state.kjStopTime;
-                        setTimeout(() => {
-                            let tempArr = [];
-                            for (let i = 0; i < this.state.code.length; i++) {
-                                if (i <= tempI) {
-                                    tempArr.push(true);
-                                } else {
-                                    tempArr.push(false);
-                                }
-                            }
-                            tempI += 1;
-                            this.setState({kjStopFlag: tempArr, kjStopTime: tempI}, () => {
-                                $(".kjCodeClass").eq(tempI - 1).animate({fontSize: "36px"}, 50, () => {
-                                    $(".kjCodeClass").animate({fontSize: "30px"}, 200);
-                                });
-                            });
-                        }, 50);
-                        this.kjanimate(600);
-                    } else {
-                        this.kjanimate(800);
-                    }
-                }
-            }, 50);
-        });
-
     };
 
     //得到投注记录
@@ -3000,7 +3057,7 @@ export default class ContentMian extends Component {
             <div>
                 <div className='content_bet'>
                     <div className="content_main" key="ContentMian">
-                        <ContentTop getLotteryData={() => this.getLotteryData()}
+                        <ContentTop getVersion={() => this.getVersion()}
                                     getBetHistory={() => this.getBetHistory()}
                                     actionTrace={() => this.actionTrace()}></ContentTop>
                         <div className="c_m_nav">
