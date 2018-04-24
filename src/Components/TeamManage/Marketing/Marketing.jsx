@@ -451,7 +451,7 @@ export default class Marketing extends Component {
                 title: '链接地址',
                 dataIndex: 'linkaddress',
                 render: (text, record, index) => <div className="url_content clear">
-                    <a className="url_style ellipsis" href={text} target="_blank">{text}</a>
+                    <p className="url_style ellipsis">{text}</p>
                     <span className="qrcode right">
                         <Popover
                             content={

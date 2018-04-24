@@ -169,9 +169,9 @@
             "lotterytype": 3,
             "curmid": 313697,
             "imgUrl":"sh11y",
-            "imgSrc": "new",
-            "disabled": false,
-            "hotLottery": 1
+            "imgSrc": "",
+            "disabled": true,
+            "hotLottery": 0
         },
         {
             "cnname": "福彩3D",

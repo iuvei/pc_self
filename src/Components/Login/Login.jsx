@@ -49,12 +49,7 @@ export default class Login extends Component {
             },
             timeoutWechat:false,
             activityClose: false, // 关闭活动
-            times: [
-                {domain: origin},
-                {domain: 'https://slxwhg.com'},
-                {domain: 'https://www.slxwhg.com'},
-                {domain: 'https://xtkjcc.com'},
-            ],
+            times: [{},{},{},{}],
             timeLine: 0,
             visibleApp: false,
             visibleM: false,
@@ -117,7 +112,12 @@ export default class Login extends Component {
                         }
                     }
                 }else{
-                    list = times;
+                    list = [
+                        {domain: origin},
+                        {domain: 'https://slxwhg.com'},
+                        {domain: 'https://www.slxwhg.com'},
+                        {domain: 'https://xtkjcc.com'},
+                    ];
                 }
                 for(let i = 0; i < list.length; i++){
                     imgs.push({});
