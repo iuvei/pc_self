@@ -8,12 +8,13 @@ import RightPlug from './../Common/RightPlug/RightPlug';
 import ContentMian from './ContentMain/ContentMian';
 import {stateVar} from "../../State";
 
-const url1 = require("./sound/kaijiang.mp3");
-const url1a = require("./sound/kaijiang.ogg");
-const url2 = require("./sound/fengdan.mp3");
-const url2a = require("./sound/fengdan.ogg");
-const url3 = require("./sound/minute1.mp3");
-const url3a = require("./sound/minute1.ogg");
+import url1 from "./sound/kaijiang.mp3";
+import url1a from "./sound/kaijiang.ogg";
+import url2 from "./sound/fengdan.mp3";
+import url2a from "./sound/fengdan.ogg";
+import url3 from "./sound/minute1.mp3";
+import url3a from "./sound/minute1.ogg";
+
 @observer
 export default class Lottery extends Component {
     render() {
