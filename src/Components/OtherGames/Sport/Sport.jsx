@@ -89,13 +89,8 @@ export default class Sport extends Component {
                         title: res.shortMessage,
                     });
                     this.setState({visible: false});
-<<<<<<< HEAD
                     emitter.emit('changeMoney', 'sport');
-                }else{
-=======
-                    emitter.emit('changeMoney');
                 } else {
->>>>>>> 9b4000f54295349931252d8659778491407653e3
                     Modal.warning({
                         title: res.shortMessage,
                     });

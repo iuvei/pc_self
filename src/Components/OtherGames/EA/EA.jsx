@@ -42,26 +42,26 @@ export default class EA extends Component {
                 tran_to: 2,
                 money: intoMoney,
                 doFunToEa: 'ok'
-            }
-<<<<<<< HEAD
+            };
             Fetch.eagame({
                 method: 'POST',
                 body: JSON.stringify(postData),
             }).then((res)=>{
-                if(this._ismount){
+                if(this._ismount) {
                     this.setState({spinLoading: false});
-                    if(res.status == 200){
+                    if (res.status == 200) {
                         Modal.success({
                             title: res.shortMessage,
                         });
                         this.setState({visible: false});
                         emitter.emit('changeMoney', 'ea');
-                    }else{
+                    } else {
                         Modal.warning({
                             title: res.shortMessage,
                         });
                     }
-=======
+                }
+            })
         } else {
             postData = {
                 tran_from: 2,
@@ -81,12 +81,11 @@ export default class EA extends Component {
                         title: res.shortMessage,
                     });
                     this.setState({visible: false});
-                    emitter.emit('changeMoney');
+                    emitter.emit('changeMoney', 'ea');
                 } else {
                     Modal.warning({
                         title: res.shortMessage,
                     });
->>>>>>> 9b4000f54295349931252d8659778491407653e3
                 }
             }
         })
