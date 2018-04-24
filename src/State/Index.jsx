@@ -3,12 +3,11 @@ import _code from '../CommonJs/common'
 
 // useStrict(true);
 class State {
-    // @observable httpUrl = window.location.origin || (window.location.protocol +'//' + window.location.host); // 域名
+    /*@observable httpUrl = window.location.origin || (window.location.protocol +'//' + window.location.host); // 域名*/
     @observable httpUrl = 'http://10.63.15.242'; // 域名
 
     @observable isApp = false // 客户端
     @observable httpService = ''; // 联系客服url
-    @observable httpCS = ''; // 域名测速
     @observable userInfo = {// 用户信息
         userName: '请先登录',
         userId: '',
@@ -57,8 +56,10 @@ class State {
         defaultMethodId: 0,
         lotteryBetId: 1,
         cnname: '重庆时时彩',
+        lotteryLength:5,
         imgUrl: 'cqssc'
     };
+    @observable animateCodeFlag = true;
     @observable defaultMethod = 0;
     @observable openLotteryFlag = true;
     @observable todayAndTomorrow = [];

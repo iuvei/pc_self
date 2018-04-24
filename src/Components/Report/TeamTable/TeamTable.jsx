@@ -394,50 +394,50 @@ export default class TeamTable extends Component {
                 dataIndex: 'rdate',
                 render: (text, record) => postData.userid != null ?
                     text :
-                    <p className="hover_a" onClick={() => this.onClickTable('DATE', record)}>{selfDate.slice(0, 5)}<br/>{selfDate.slice(5)}</p>,
-                width: 60,
+                    <span className="hover_a" onClick={() => this.onClickTable('DATE', record)}>{selfDate.slice(0, 5)}<br/>{selfDate.slice(5)}</span>,
+                width: 80,
             }, {
                 title: '用户名',
                 dataIndex: 'username',
                 render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                    <p className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</p>,
-                width: 75,
+                    <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
+                width: 90,
             }, {
                 title: '投注量',
                 dataIndex: 'sum_price',
                 className: 'column-right',
                 sorter: true,
-                width: 85,
+                width: 90,
             }, {
                 title: '有效量',
                 dataIndex: 'sum_effective_price',
                 className: 'column-right',
                 sorter: true,
-                width: 85,
+                width: 90,
             }, {
                 title: '中奖',
                 dataIndex: 'sum_bonus',
                 className: 'column-right',
                 sorter: true,
-                width: 85,
+                width: 90,
             }, {
                 title: '返点',
                 dataIndex: 'sum_point',
                 className: 'column-right',
-                width: 70,
+                width: 90,
             }, {
                 title: <span>
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                 dataIndex: 'sum_grossincome',
                 className: 'column-right',
-                width: 85,
+                width: 90,
             }, {
                 title: <span>
                         活动
@@ -450,36 +450,27 @@ export default class TeamTable extends Component {
                 </span>,
                 dataIndex: 'sum_activity',
                 className: 'column-right',
-                width: 85,
-            },
-            // {
-            //     title: '净收入',
-            //     dataIndex: 'sum_netincome',
-            //     className: 'column-right',
-            //     // render: (text) =>  <span className="col_color_ying">{parseFloat(text).toFixed(2)}</span>,
-            //     width: 120,
-            // },
-            {
+                width: 90,
+            }, {
                 title: '日工资',
                 dataIndex: 'sum_dailywages',
                 className: 'column-right',
-                width: 85,
+                width: 90,
             }, {
                 title: '日亏损',
                 dataIndex: 'sum_dailyloss',
                 className: 'column-right',
-                width: 85,
-            }, {
-                title: '分红',
-                dataIndex: 'sum_dividents',
-                className: 'column-right',
-                width: 85,
+                width: 90,
             }, {
                 title: <span>
                         总盈亏
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
+                                     <p>
+                                         总盈亏 = 毛收入 + 活动
+                                         {dailysalaryStatus.isLose == 1 ? ' + 日亏损' : ''}
+                                         {dailysalaryStatus.isSalary == 1 ? ' + 日工资' : ''}
+                                     </p>
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
@@ -500,10 +491,8 @@ export default class TeamTable extends Component {
             <li>{sum.total_point}</li>
             <li>{sum.total_grossincome}</li>
             <li>{sum.total_activity}</li>
-            {/*<li>{sum.total_netincome}</li>*/}
             <li>{sum.total_dailywages}</li>
             <li>{sum.total_dailyloss}</li>
-            <li>{sum.total_dividents}</li>
             <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
         </ul>;
         if (dailysalaryStatus.isLose != 1) {
@@ -512,52 +501,50 @@ export default class TeamTable extends Component {
                     title: '日期',
                     dataIndex: 'rdate',
                     render: (text, record) => postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
-                           style={{color: '#0088DE'}}>{selfDate}</a>,
-                    width: 50,
+                        <span className="hover_a" onClick={() => this.onClickTable('DATE', record)}>{selfDate}</span>,
+                    width: 100,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
-                           style={{color: '#0088DE'}}>{text}</a>,
-                    width: 70,
+                        <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
+                    width: 100,
                 }, {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
                     sorter: true,
-                    width: 80,
+                    width: 100,
                 }, {
                     title: '有效量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
                     sorter: true,
-                    width: 90,
+                    width: 100,
                 }, {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
                     sorter: true,
-                    width: 80,
+                    width: 100,
                 }, {
                     title: '返点',
                     dataIndex: 'sum_point',
                     className: 'column-right',
-                    width: 70,
+                    width: 100,
                 }, {
                     title: <span>
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_grossincome',
                     className: 'column-right',
-                    width: 80,
+                    width: 100,
                 }, {
                     title: <span>
                         活动
@@ -570,30 +557,22 @@ export default class TeamTable extends Component {
                 </span>,
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    width: 70,
-                },
-                // {
-                //     title: '净收入',
-                //     dataIndex: 'sum_netincome',
-                //     className: 'column-right',
-                //     width: 80,
-                // },
-                {
+                    width: 100,
+                }, {
                     title: '日工资',
                     dataIndex: 'sum_dailywages',
                     className: 'column-right',
-                    width: 75,
-                }, {
-                    title: '分红',
-                    dataIndex: 'sum_dividents',
-                    className: 'column-right',
-                    width: 75,
+                    width: 100,
                 }, {
                     title: <span>
                         总盈亏
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
+                                     <p>
+                                         总盈亏 = 毛收入 + 活动
+                                         {dailysalaryStatus.isLose == 1 ? ' + 日亏损' : ''}
+                                         {dailysalaryStatus.isSalary == 1 ? ' + 日工资' : ''}
+                                     </p>
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
@@ -603,7 +582,7 @@ export default class TeamTable extends Component {
                     sorter: true,
                     render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
-                    width: 80,
+                    width: 100,
                 }
             ];
             footer = <ul className="tt_f_showTwo clear">
@@ -614,9 +593,7 @@ export default class TeamTable extends Component {
                 <li>{sum.total_point}</li>
                 <li>{sum.total_grossincome}</li>
                 <li>{sum.total_activity}</li>
-                {/*<li>{sum.total_netincome}</li>*/}
                 <li>{sum.total_dailywages}</li>
-                <li>{sum.total_dividents}</li>
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }
@@ -626,52 +603,50 @@ export default class TeamTable extends Component {
                     title: '日期',
                     dataIndex: 'rdate',
                     render: (text, record) => postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
-                           style={{color: '#0088DE'}}>{selfDate}</a>,
-                    width: 50,
+                        <span className="hover_a" onClick={() => this.onClickTable('DATE', record)}>{selfDate}</span>,
+                    width: 100,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
-                           style={{color: '#0088DE'}}>{text}</a>,
-                    width: 70,
+                        <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
+                    width: 100,
                 }, {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
                     sorter: true,
-                    width: 80,
+                    width: 100,
                 }, {
                     title: '有效量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
                     sorter: true,
-                    width: 90,
+                    width: 100,
                 }, {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
                     sorter: true,
-                    width: 80,
+                    width: 100,
                 }, {
                     title: '返点',
                     dataIndex: 'sum_point',
                     className: 'column-right',
-                    width: 70,
+                    width: 100,
                 }, {
                     title: <span>
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_grossincome',
                     className: 'column-right',
-                    width: 80,
+                    width: 100,
                 }, {
                     title: <span>
                         活动
@@ -684,30 +659,22 @@ export default class TeamTable extends Component {
                 </span>,
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    width: 70,
-                },
-                // {
-                //     title: '净收入',
-                //     dataIndex: 'sum_netincome',
-                //     className: 'column-right',
-                //     width: 80,
-                // },
-                {
+                    width: 100,
+                }, {
                     title: '日亏损',
                     dataIndex: 'sum_dailyloss',
                     className: 'column-right',
-                    width: 75,
-                }, {
-                    title: '分红',
-                    dataIndex: 'sum_dividents',
-                    className: 'column-right',
-                    width: 75,
+                    width: 100,
                 }, {
                     title: <span>
                         总盈亏
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
+                                     <p>
+                                         总盈亏 = 毛收入 + 活动
+                                         {dailysalaryStatus.isLose == 1 ? ' + 日亏损' : ''}
+                                         {dailysalaryStatus.isSalary == 1 ? ' + 日工资' : ''}
+                                     </p>
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
@@ -717,7 +684,7 @@ export default class TeamTable extends Component {
                     sorter: true,
                     render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
-                    width: 80,
+                    width: 100,
                 }
             ];
             footer = <ul className="tt_f_showTwo clear">
@@ -728,122 +695,6 @@ export default class TeamTable extends Component {
                 <li>{sum.total_point}</li>
                 <li>{sum.total_grossincome}</li>
                 <li>{sum.total_activity}</li>
-                {/*<li>{sum.total_netincome}</li>*/}
-                <li>{sum.total_dailyloss}</li>
-                <li>{sum.total_dividents}</li>
-                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
-            </ul>;
-        }
-        if (dailysalaryStatus.isDividend != 1) {
-            columns = [
-                {
-                    title: '日期',
-                    dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
-                           style={{color: '#0088DE'}}>{selfDate}</a>,
-                    width: 70,
-                }, {
-                    title: '用户名',
-                    dataIndex: 'username',
-                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
-                           style={{color: '#0088DE'}}>{text}</a>,
-                    width: 80,
-                }, {
-                    title: '投注量',
-                    dataIndex: 'sum_price',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 80,
-                }, {
-                    title: '有效量',
-                    dataIndex: 'sum_effective_price',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 90,
-                }, {
-                    title: '中奖',
-                    dataIndex: 'sum_bonus',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 80,
-                }, {
-                    title: '返点',
-                    dataIndex: 'sum_point',
-                    className: 'column-right',
-                    width: 70,
-                }, {
-                    title: <span>
-                        毛收入
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_grossincome',
-                    className: 'column-right',
-                    width: 80,
-                }, {
-                    title: <span>
-                        活动
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '活动 = 活动中完成任务领取的奖金'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_activity',
-                    className: 'column-right',
-                    width: 70,
-                },
-                // {
-                //     title: '净收入',
-                //     dataIndex: 'sum_netincome',
-                //     className: 'column-right',
-                //     width: 80,
-                // },
-                {
-                    title: '日工资',
-                    dataIndex: 'sum_dailywages',
-                    className: 'column-right',
-                    width: 75,
-                }, {
-                    title: '日亏损',
-                    dataIndex: 'sum_dailyloss',
-                    className: 'column-right',
-                    width: 75,
-                }, {
-                    title: <span>
-                        总盈亏
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_total',
-                    className: 'column-right',
-                    sorter: true,
-                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
-                        <span className="col_color_ying">{text}</span>,
-                    width: 80,
-                }
-            ];
-            footer = <ul className="tt_f_showTwo clear">
-                <li>总计</li>
-                <li>{sum.total_price}</li>
-                <li>{sum.total_effective_price}</li>
-                <li>{sum.total_bonus}</li>
-                <li>{sum.total_point}</li>
-                <li>{sum.total_grossincome}</li>
-                <li>{sum.total_activity}</li>
-                {/*<li>{sum.total_netincome}</li>*/}
-                <li>{sum.total_dailywages}</li>
                 <li>{sum.total_dailyloss}</li>
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
@@ -854,52 +705,50 @@ export default class TeamTable extends Component {
                     title: '日期',
                     dataIndex: 'rdate',
                     render: (text, record) => postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
-                           style={{color: '#0088DE'}}>{selfDate}</a>,
-                    width: 75,
+                        <span className="hover_a" onClick={() => this.onClickTable('DATE', record)}>{selfDate}</span>,
+                    width: 100,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
-                           style={{color: '#0088DE'}}>{text}</a>,
-                    width: 80,
+                        <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
+                    width: 110,
                 }, {
                     title: '投注量',
                     dataIndex: 'sum_price',
                     className: 'column-right',
                     sorter: true,
-                    width: 80,
+                    width: 110,
                 }, {
                     title: '有效量',
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
                     sorter: true,
-                    width: 90,
+                    width: 110,
                 }, {
                     title: '中奖',
                     dataIndex: 'sum_bonus',
                     className: 'column-right',
                     sorter: true,
-                    width: 80,
+                    width: 110,
                 }, {
                     title: '返点',
                     dataIndex: 'sum_point',
                     className: 'column-right',
-                    width: 70,
+                    width: 110,
                 }, {
                     title: <span>
                         毛收入
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
+                                     '毛收入 = 中奖 - 投注量 + 返点'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
                 </span>,
                     dataIndex: 'sum_grossincome',
                     className: 'column-right',
-                    width: 80,
+                    width: 110,
                 }, {
                     title: <span>
                         活动
@@ -912,25 +761,17 @@ export default class TeamTable extends Component {
                 </span>,
                     dataIndex: 'sum_activity',
                     className: 'column-right',
-                    width: 70,
-                },
-                // {
-                //     title: '净收入',
-                //     dataIndex: 'sum_netincome',
-                //     className: 'column-right',
-                //     width: 80,
-                // },
-                {
-                    title: '分红',
-                    dataIndex: 'sum_dividents',
-                    className: 'column-right',
-                    width: 75,
+                    width: 110,
                 }, {
                     title: <span>
                         总盈亏
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
+                                     <p>
+                                         总盈亏 = 毛收入 + 活动
+                                         {dailysalaryStatus.isLose == 1 ? ' + 日亏损' : ''}
+                                         {dailysalaryStatus.isSalary == 1 ? ' + 日工资' : ''}
+                                     </p>
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>
@@ -940,7 +781,7 @@ export default class TeamTable extends Component {
                     sorter: true,
                     render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
                         <span className="col_color_ying">{text}</span>,
-                    width: 80,
+                    width: 110,
                 }
             ];
             footer = <ul className="tt_f_showOne clear">
@@ -951,326 +792,6 @@ export default class TeamTable extends Component {
                 <li>{sum.total_point}</li>
                 <li>{sum.total_grossincome}</li>
                 <li>{sum.total_activity}</li>
-                {/*<li>{sum.total_netincome}</li>*/}
-                <li>{sum.total_dividents}</li>
-                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
-            </ul>;
-        }
-        if (dailysalaryStatus.isLose != 1 && dailysalaryStatus.isDividend != 1) {
-            columns = [
-                {
-                    title: '日期',
-                    dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
-                           style={{color: '#0088DE'}}>{selfDate}</a>,
-                    width: 70,
-                }, {
-                    title: '用户名',
-                    dataIndex: 'username',
-                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
-                           style={{color: '#0088DE'}}>{text}</a>,
-                    width: 80,
-                }, {
-                    title: '投注量',
-                    dataIndex: 'sum_price',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 80,
-                }, {
-                    title: '有效量',
-                    dataIndex: 'sum_effective_price',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 90,
-                }, {
-                    title: '中奖',
-                    dataIndex: 'sum_bonus',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 80,
-                }, {
-                    title: '返点',
-                    dataIndex: 'sum_point',
-                    className: 'column-right',
-                    width: 70,
-                }, {
-                    title: <span>
-                        毛收入
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_grossincome',
-                    className: 'column-right',
-                    width: 80,
-                }, {
-                    title: <span>
-                        活动
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '活动 = 活动中完成任务领取的奖金'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_activity',
-                    className: 'column-right',
-                    width: 70,
-                },
-                // {
-                //     title: '净收入',
-                //     dataIndex: 'sum_netincome',
-                //     className: 'column-right',
-                //     width: 80,
-                // },
-                {
-                    title: '日工资',
-                    dataIndex: 'sum_dailywages',
-                    className: 'column-right',
-                    width: 75,
-                }, {
-                    title: <span>
-                        总盈亏
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_total',
-                    className: 'column-right',
-                    sorter: true,
-                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
-                        <span className="col_color_ying">{text}</span>,
-                    width: 80,
-                }
-            ];
-            footer = <ul className="tt_f_showOne clear">
-                <li>总计</li>
-                <li>{sum.total_price}</li>
-                <li>{sum.total_effective_price}</li>
-                <li>{sum.total_bonus}</li>
-                <li>{sum.total_point}</li>
-                <li>{sum.total_grossincome}</li>
-                <li>{sum.total_activity}</li>
-                {/*<li>{sum.total_netincome}</li>*/}
-                <li>{sum.total_dailywages}</li>
-                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
-            </ul>;
-        }
-        if (dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1) {
-            columns = [
-                {
-                    title: '日期',
-                    dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
-                           style={{color: '#0088DE'}}>{selfDate}</a>,
-                    width: 70,
-                }, {
-                    title: '用户名',
-                    dataIndex: 'username',
-                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
-                           style={{color: '#0088DE'}}>{text}</a>,
-                    width: 80,
-                }, {
-                    title: '投注量',
-                    dataIndex: 'sum_price',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 80,
-                }, {
-                    title: '有效量',
-                    dataIndex: 'sum_effective_price',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 90,
-                }, {
-                    title: '中奖',
-                    dataIndex: 'sum_bonus',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 80,
-                }, {
-                    title: '返点',
-                    dataIndex: 'sum_point',
-                    className: 'column-right',
-                    width: 70,
-                }, {
-                    title: <span>
-                        毛收入
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_grossincome',
-                    className: 'column-right',
-                    width: 80,
-                }, {
-                    title: <span>
-                        活动
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '活动 = 活动中完成任务领取的奖金'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_activity',
-                    className: 'column-right',
-                    width: 70,
-                },
-                // {
-                //     title: '净收入',
-                //     dataIndex: 'sum_netincome',
-                //     className: 'column-right',
-                //     width: 80,
-                // },
-                {
-                    title: '日亏损',
-                    dataIndex: 'sum_dailyloss',
-                    className: 'column-right',
-                    width: 75,
-                }, {
-                    title: <span>
-                        总盈亏
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_total',
-                    className: 'column-right',
-                    sorter: true,
-                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
-                        <span className="col_color_ying">{text}</span>,
-                    width: 80,
-                }
-            ];
-            footer = <ul className="tt_f_showOne clear">
-                <li>总计</li>
-                <li>{sum.total_price}</li>
-                <li>{sum.total_effective_price}</li>
-                <li>{sum.total_bonus}</li>
-                <li>{sum.total_point}</li>
-                <li>{sum.total_grossincome}</li>
-                <li>{sum.total_activity}</li>
-                {/*<li>{sum.total_netincome}</li>*/}
-                <li>{sum.total_dailyloss}</li>
-                <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
-            </ul>;
-        }
-        if (dailysalaryStatus.isLose != 1 && dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1) {
-            columns = [
-                {
-                    title: '日期',
-                    dataIndex: 'rdate',
-                    render: (text, record) => postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
-                           style={{color: '#0088DE'}}>{selfDate}</a>,
-                    width: 70,
-                }, {
-                    title: '用户名',
-                    dataIndex: 'username',
-                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
-                           style={{color: '#0088DE'}}>{text}</a>,
-                    width: 80,
-                }, {
-                    title: '投注量',
-                    dataIndex: 'sum_price',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 80,
-                }, {
-                    title: '有效量',
-                    dataIndex: 'sum_effective_price',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 90,
-                }, {
-                    title: '中奖',
-                    dataIndex: 'sum_bonus',
-                    className: 'column-right',
-                    sorter: true,
-                    width: 80,
-                }, {
-                    title: '返点',
-                    dataIndex: 'sum_point',
-                    className: 'column-right',
-                    width: 70,
-                }, {
-                    title: <span>
-                        毛收入
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '毛收入 = 投注量 - 中奖 + 返点'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_grossincome',
-                    className: 'column-right',
-                    width: 80,
-                }, {
-                    title: <span>
-                        活动
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '活动 = 活动中完成任务领取的奖金'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_activity',
-                    className: 'column-right',
-                    width: 70,
-                },
-                // {
-                //     title: '净收入',
-                //     dataIndex: 'sum_netincome',
-                //     className: 'column-right',
-                //     width: 80,
-                // },
-                {
-                    title: <span>
-                        总盈亏
-                        <Tooltip placement="bottomRight"
-                                 title={
-                                     '总盈亏 = 毛收入 + 日工资 + 日亏损佣金 + 活动 + 分红'
-                                 }>
-                            <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
-                    dataIndex: 'sum_total',
-                    className: 'column-right',
-                    sorter: true,
-                    render: text => text < 0 ? <span className="col_color_shu">{text}</span> :
-                        <span className="col_color_ying">{text}</span>,
-                    width: 80,
-                }
-            ];
-            footer = <ul className="tt_f_showZero clear">
-                <li>总计</li>
-                <li>{sum.total_price}</li>
-                <li>{sum.total_effective_price}</li>
-                <li>{sum.total_bonus}</li>
-                <li>{sum.total_point}</li>
-                <li>{sum.total_grossincome}</li>
-                <li>{sum.total_activity}</li>
-                {/*<li>{sum.total_netincome}</li>*/}
                 <li className={parseFloat(sum.total_total) < 0 ? 'col_color_shu' : 'col_color_ying'}>{sum.total_total}</li>
             </ul>;
         }
@@ -1281,15 +802,13 @@ export default class TeamTable extends Component {
                     title: '日期',
                     dataIndex: 'rdate',
                     render: (text, record) => postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
-                           style={{color: '#0088DE'}}>{selfDate}</a>,
+                        <span className="hover_a" onClick={() => this.onClickTable('DATE', record)}>{selfDate}</span>,
                     width: 150,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
-                           style={{color: '#0088DE'}}>{text}</a>,
+                        <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
                     width: 150,
                 }, {
                     title: '投注',
@@ -1328,15 +847,13 @@ export default class TeamTable extends Component {
                     title: '日期',
                     dataIndex: 'rdate',
                     render: (text, record) => postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
-                           style={{color: '#0088DE'}}>{selfDate}</a>,
+                        <span className="hover_a" onClick={() => this.onClickTable('DATE', record)}>{selfDate}</span>,
                     width: 110,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
-                           style={{color: '#0088DE'}}>{text}</a>,
+                        <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
                     width: 200,
                 }, {
                     title: '投注',
@@ -1369,15 +886,13 @@ export default class TeamTable extends Component {
                     title: '日期',
                     dataIndex: 'rdate',
                     render: (text, record) => postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('DATE', record)}
-                           style={{color: '#0088DE'}}>{selfDate}</a>,
+                        <span className="hover_a" onClick={() => this.onClickTable('DATE', record)}>{selfDate}</span>,
                     width: 150,
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
                     render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
-                        <a href="javascript:void(0)" onClick={() => this.onClickTable('USERNAME', record)}
-                           style={{color: '#0088DE'}}>{text}</a>,
+                        <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
                     width: 150,
                 }, {
                     title: '总投注金额',

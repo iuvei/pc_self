@@ -10,8 +10,11 @@ const interFace = (key) => {
 
     INTERFACE['LOGIN'] = 'controller=default&action=login';
 
-    //重置密码
+    //客服，域名
     INTERFACE['KEFU'] = 'controller=default&action=index&KefuLink=true';
+
+    // 测速
+    INTERFACE['DOMIANS'] = 'controller=default&action=index&domians=true';
 
     //重置密码
     INTERFACE['RESETPWD'] = 'controller=user&action=ChangeLoginPass';
@@ -216,6 +219,8 @@ const interFace = (key) => {
         httpUrl += '/bobing/?' + INTERFACE[key] + '&sess=' + getStore('session');
     } else if (key == 'BOBINLOGIN') {
         httpUrl += '/?' + INTERFACE[key] + '&sess=' + getStore('session');
+    }else if (key == 'DOMIANS') {
+        httpUrl += '/pcservice/?' + INTERFACE[key];
     } else {
         httpUrl += '/pcservice/?' + INTERFACE[key] + '&sess=' + getStore('session');
     }

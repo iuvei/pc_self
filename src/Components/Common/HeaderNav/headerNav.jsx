@@ -318,7 +318,6 @@ export default class HeaderNav extends Component {
                         lt_same_code: [], totalDan: 0, totalNum: 0, totalMoney: 0, lt_trace_base: 0
                     };
                     emitter.emit('initData');
-                    emitter.emit('initContentTop');
                     stateVar.isload = false;
                 }
             }

@@ -6,7 +6,7 @@
 
 /* 浮动公共样式 */
 .left{ float:left; _display:inline; }
-.right{ float:right; _display:inline; }
+.right{ float:right !important; _display:inline; }
 .clear:after{ display:block; content:''; clear:both;}
 .clear{ zoom:1;}
 .hover{ cursor: pointer; }
@@ -96,7 +96,7 @@ body,
 .notice_c_details,
 .ant-table-body,
 .ant-modal-body,
-.shishicai,.fucai,.pailie,.shiyixuanwu,.beijingkuaile,.bobing,
+.table_play,
 .nongkuahang,.zhaohang,
 .commonProblems_main,
 .complain_textarea,
