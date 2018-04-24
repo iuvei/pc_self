@@ -115,8 +115,14 @@ export default class Login extends Component {
                     list = [
                         {domain: origin},
                         {domain: 'https://slxwhg.com'},
-                        {domain: 'https://www.slxwhg.com'},
                         {domain: 'https://xtkjcc.com'},
+                        {domain: 'https://gdlyjj.com'},
+                        {domain: 'https://bdhdjx.com'},
+                        {domain: 'https://lyxljk.com'},
+                        {domain: 'https://soyook.com'},
+                        {domain: 'https://endliu.com'},
+                        {domain: 'https://qqy520.com'},
+                        {domain: 'https://xmlryt.com'},
                     ];
                 }
                 for(let i = 0; i < list.length; i++){
