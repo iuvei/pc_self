@@ -375,7 +375,7 @@ export default class Dividend extends Component {
                 width: 70,
             },
             {
-                title: '有效投注量',
+                title: '有效量',
                 dataIndex: 'sale_total',
                 className: 'column-right',
                 width: 90,
@@ -489,7 +489,7 @@ export default class Dividend extends Component {
                     width: 70,
                 },
                 {
-                    title: '有效投注量',
+                    title: '有效量',
                     dataIndex: 'sale_total',
                     className: 'column-right',
                     width: 120,
@@ -599,7 +599,7 @@ export default class Dividend extends Component {
                     width: 70,
                 },
                 {
-                    title: '有效投注量',
+                    title: '有效量',
                     dataIndex: 'sale_total',
                     className: 'column-right',
                     width: 120,
@@ -709,7 +709,7 @@ export default class Dividend extends Component {
                     width: 80,
                 },
                 {
-                    title: '有效投注量',
+                    title: '有效量',
                     dataIndex: 'sale_total',
                     className: 'column-right',
                     width: 140,
@@ -828,7 +828,7 @@ export default class Dividend extends Component {
                                     {/*showSizeChanger*/}
                                     {/*onShowSizeChange={(current, pageSize) => this.onShowSizeChange(current, pageSize)}*/}
                                     {/*onChange={(pageNumber) => this.onChangePage(pageNumber)}*/}
-                                    {/*defaultCurrent={1}*/}
+                                    {/*current={postData.p}*/}
                                     {/*total={total}*/}
                                     {/*pageSizeOptions={stateVar.pageSizeOptions.slice()}*/}
                         {/*/>*/}
