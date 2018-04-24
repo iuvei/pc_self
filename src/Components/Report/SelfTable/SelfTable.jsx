@@ -298,7 +298,7 @@ export default class SelfTable extends Component {
                 className: 'column-right',
                 width: 80,
             }, {
-                title: '有效投注量',
+                title: '有效量',
                 dataIndex: 'cp_effective_stake',
                 className: 'column-right',
                 width: 85,
@@ -481,7 +481,7 @@ export default class SelfTable extends Component {
                     className: 'column-right',
                     width: 80,
                 }, {
-                    title: '有效投注量',
+                    title: '有效量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
                     width: 85,
@@ -570,7 +570,7 @@ export default class SelfTable extends Component {
                     className: 'column-right',
                     width: 80,
                 }, {
-                    title: '有效投注量',
+                    title: '有效量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
                     width: 85,
@@ -659,7 +659,7 @@ export default class SelfTable extends Component {
                     className: 'column-right',
                     width: 80,
                 }, {
-                    title: '有效投注量',
+                    title: '有效量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
                     width: 85,
@@ -742,7 +742,7 @@ export default class SelfTable extends Component {
                     className: 'column-right',
                     width: 80,
                 }, {
-                    title: '有效投注量',
+                    title: '有效量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
                     width: 85,
@@ -825,7 +825,7 @@ export default class SelfTable extends Component {
                     className: 'column-right',
                     width: 80,
                 }, {
-                    title: '有效投注量',
+                    title: '有效量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
                     width: 85,
@@ -908,7 +908,7 @@ export default class SelfTable extends Component {
                     className: 'column-right',
                     width: 80,
                 }, {
-                    title: '有效投注量',
+                    title: '有效量',
                     dataIndex: 'cp_effective_stake',
                     className: 'column-right',
                     width: 85,

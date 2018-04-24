@@ -213,10 +213,10 @@ export default class DayRate extends Component {
                 width: 120,
             }, {
                 title: <span>
-                        有效投注量
+                        有效量
                         <Tooltip placement="bottomRight"
                                  title={
-                                     '对打套利销量不计入有效投注量'
+                                     '对打套利销量不计入有效量'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
                     </Tooltip>

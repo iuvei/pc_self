@@ -150,7 +150,7 @@ export default class Losesalary extends Component {
                     dataIndex: 'username',
                     width: 110,
                 }, {
-                    title: '用户组',
+                    title: '用户类型',
                     dataIndex: 'usergroup_name',
                     width: 90,
                 }, {
