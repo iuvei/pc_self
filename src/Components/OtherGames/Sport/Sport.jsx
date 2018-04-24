@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Button} from 'antd';
+import {Button} from 'antd';
 import emitter from '../../../Utils/events';
 import Fetch from '../../../Utils';
-import { stateVar } from '../../../State';
+import {stateVar} from '../../../State';
 import CM_transfer from '../CM_transfer/CM_transfer';
 import './Sport.scss';
-import { Modal  } from 'antd';
+import {Modal} from 'antd';
 
 @observer
 export default class Sport extends Component {
@@ -20,25 +20,37 @@ export default class Sport extends Component {
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
     };
+
     componentDidMount() {
         this._ismount = true;
     };
+
     componentWillUnmount() {
         this._ismount = false;
     };
+
     /*获取第三方网址*/
-    getThirdAddress(){
+    getThirdAddress() {
         this.setState({btnLoading: true});
-        let tempwindow = window.open();
+        let tempwindow
+        if (!stateVar.isApp) {
+            tempwindow = window.open();
+        }
         Fetch.sport({
             method: "POST",
-            body: JSON.stringify({"do":"login"}),
-        }).then((res)=> {
-            if(this._ismount){
+            body: JSON.stringify({"do": "login"}),
+        }).then((res) => {
+            if (this._ismount) {
                 this.setState({btnLoading: false});
-                if(res.status == 200) {
-                    tempwindow.location.href = res.repsoneContent[0]
-                }else{
+                if (res.status == 200) {
+                    if (stateVar.isApp) {
+                        // 客户端
+                        window.open(res.repsoneContent[0])
+                    } else {
+                        // web
+                        tempwindow.location.href = res.repsoneContent[0]
+                    }
+                } else {
                     Modal.warning({
                         title: res.shortMessage,
                     });
@@ -46,38 +58,44 @@ export default class Sport extends Component {
             }
         })
     }
+
     /*转账*/
     onTransfer(type, intoMoney, outMoney) {
         this.setState({spinLoading: true});
         let postData = {};
-        if(type == 'into') {
+        if (type == 'into') {
             postData = {
                 tran_from: "s",
                 tran_to: "1",
                 money: intoMoney,
-                doFunToPe:"ok",
+                doFunToPe: "ok",
             }
-        }else{
+        } else {
             postData = {
                 tran_from: '1',
                 tran_to: 's',
                 money: outMoney,
-                doFunToPe:"ok",
+                doFunToPe: "ok",
             }
         }
         Fetch.sport({
             method: 'POST',
             body: JSON.stringify(postData),
-        }).then((res)=>{
-            if(this._ismount){
+        }).then((res) => {
+            if (this._ismount) {
                 this.setState({spinLoading: false});
-                if(res.status == 200){
+                if (res.status == 200) {
                     Modal.success({
                         title: res.shortMessage,
                     });
                     this.setState({visible: false});
+<<<<<<< HEAD
                     emitter.emit('changeMoney', 'sport');
                 }else{
+=======
+                    emitter.emit('changeMoney');
+                } else {
+>>>>>>> 9b4000f54295349931252d8659778491407653e3
                     Modal.warning({
                         title: res.shortMessage,
                     });
@@ -85,6 +103,7 @@ export default class Sport extends Component {
             }
         })
     };
+
     /*关闭模态框*/
     hideModal() {
         this.setState({visible: false})
@@ -96,14 +115,16 @@ export default class Sport extends Component {
                 <div className="sport_content">
                     <p className='sport_remain'>账户余额：{stateVar.allBalance.sbbalance}元</p>
                     <div>
-                        <Button className='sport_transfer' size="large" onClick={()=>this.setState({visible: true})}>转账</Button>
-                        <Button type="primary" size="large" loading={this.state.btnLoading} onClick={()=>this.getThirdAddress()}>开始游戏</Button>
+                        <Button className='sport_transfer' size="large"
+                                onClick={() => this.setState({visible: true})}>转账</Button>
+                        <Button type="primary" size="large" loading={this.state.btnLoading}
+                                onClick={() => this.getThirdAddress()}>开始游戏</Button>
                     </div>
 
                 </div>
                 <CM_transfer title="体育竞技"
                              visible={this.state.visible}
-                             spinLoading = {this.state.spinLoading}
+                             spinLoading={this.state.spinLoading}
                              hideModal={this.hideModal}
                              onTransfer={this.onTransfer}
                 />

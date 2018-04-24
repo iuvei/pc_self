@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import emitter from '../../../Utils/events';
-import { Modal } from 'antd';
-import { stateVar } from '../../../State';
+import {Modal} from 'antd';
+import {stateVar} from '../../../State';
 import CM_transfer from '../CM_transfer/CM_transfer';
 
 import './EA.scss';
@@ -23,31 +23,27 @@ export default class EA extends Component {
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
     };
+
     componentDidMount() {
         this._ismount = true;
     };
+
     componentWillUnmount() {
         this._ismount = false;
     };
+
     /*转账*/
     onTransfer(type, intoMoney, outMoney) {
         this.setState({spinLoading: true});
-            let postData = {};
-            if(type == 'into') {
-                postData = {
-                    tran_from: 's',
-                    tran_to: 2,
-                    money: intoMoney,
-                    doFunToEa: 'ok'
-                }
-            }else{
-                postData = {
-                    tran_from: 2,
-                    tran_to: 's',
-                    money: outMoney,
-                    doFunToEa: 'ok'
-                }
+        let postData = {};
+        if (type == 'into') {
+            postData = {
+                tran_from: 's',
+                tran_to: 2,
+                money: intoMoney,
+                doFunToEa: 'ok'
             }
+<<<<<<< HEAD
             Fetch.eagame({
                 method: 'POST',
                 body: JSON.stringify(postData),
@@ -65,10 +61,38 @@ export default class EA extends Component {
                             title: res.shortMessage,
                         });
                     }
+=======
+        } else {
+            postData = {
+                tran_from: 2,
+                tran_to: 's',
+                money: outMoney,
+                doFunToEa: 'ok'
+            }
+        }
+        Fetch.eagame({
+            method: 'POST',
+            body: JSON.stringify(postData),
+        }).then((res) => {
+            if (this._ismount) {
+                this.setState({spinLoading: false});
+                if (res.status == 200) {
+                    Modal.success({
+                        title: res.shortMessage,
+                    });
+                    this.setState({visible: false});
+                    emitter.emit('changeMoney');
+                } else {
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+>>>>>>> 9b4000f54295349931252d8659778491407653e3
                 }
-            })
+            }
+        })
 
     };
+
     /*关闭模态框*/
     hideModal() {
         this.setState({visible: false})
@@ -76,16 +100,23 @@ export default class EA extends Component {
 
     /*开始游戏*/
     onLogin() {
-        if(LOGIN_FLAG){
+        if (LOGIN_FLAG) {
             LOGIN_FLAG = false;
-            let tempwindow = window.open();
+            let tempwindow
+            if (!stateVar.isApp) {
+                tempwindow = window.open();
+            }
             Fetch.eagame({
                 method: 'POST',
                 body: JSON.stringify({do: 'login'})
-            }).then((res)=>{
+            }).then((res) => {
                 LOGIN_FLAG = true;
-                if(this._ismount && res.status == 200){
-                    tempwindow.location.href = res.repsoneContent[0];
+                if (this._ismount && res.status == 200) {
+                    if (stateVar.isApp) {
+                        window.open(res.repsoneContent[0])
+                    } else {
+                        tempwindow.location.href = res.repsoneContent[0];
+                    }
                 }
             })
         }
@@ -96,13 +127,13 @@ export default class EA extends Component {
             <div className="ea">
                 <div className="ea_content">
                     <img className="ea_img" src={ea} alt=""/>
-                    <i className="ea_transfer" onClick={()=>this.setState({visible: true})}></i>
+                    <i className="ea_transfer" onClick={() => this.setState({visible: true})}></i>
                     <p className="ea_balance">账号余额：{stateVar.allBalance.eabalance}元</p>
-                    <i className="ea_start" onClick={()=>this.onLogin()}></i>
+                    <i className="ea_start" onClick={() => this.onLogin()}></i>
                 </div>
                 <CM_transfer title="EA"
                              visible={this.state.visible}
-                             spinLoading = {this.state.spinLoading}
+                             spinLoading={this.state.spinLoading}
                              hideModal={this.hideModal}
                              onTransfer={this.onTransfer}
                 />

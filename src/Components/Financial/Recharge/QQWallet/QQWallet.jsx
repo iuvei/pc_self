@@ -2,9 +2,9 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../../Utils';
-import { stateVar } from '../../../../State';
-import { InputNumber, Button, Modal } from 'antd';
-import { changeMoneyToChinese, onValidate, getStore } from '../../../../CommonJs/common';
+import {stateVar} from '../../../../State';
+import {InputNumber, Button, Modal} from 'antd';
+import {changeMoneyToChinese, onValidate, getStore} from '../../../../CommonJs/common';
 
 import './QQWallet.scss'
 
@@ -33,24 +33,27 @@ export default class QQWallet extends Component {
             }
         };
     };
+
     componentDidMount() {
         this._ismount = true;
         this.onLinePayment()
     };
+
     componentWillUnmount() {
         this._ismount = false;
     };
-    onLinePayment(){
+
+    onLinePayment() {
         Fetch.payment({
             method: 'POST',
-            body:JSON.stringify({type: 'paymentBank', cateid: 2})
-        }).then((res)=>{
-            if(this._ismount && res.status == 200){
+            body: JSON.stringify({type: 'paymentBank', cateid: 2})
+        }).then((res) => {
+            if (this._ismount && res.status == 200) {
                 let data = res.repsoneContent,
                     loadmin = 0,
                     loadmax = 0,
                     postData = this.state.postData;
-                if(data[0] !== undefined){
+                if (data[0] !== undefined) {
                     postData.payment = data[0].payport_name;
                     postData.bid = data[0].id;
                     postData.rid = data[0].rid;
@@ -67,25 +70,33 @@ export default class QQWallet extends Component {
             }
         })
     }
+
     // 立即充值
     onRecharge() {
-        if(this.state.validate.money != 0){
+        if (this.state.validate.money != 0) {
             let validate = this.state.validate;
             validate.money = 1;
             this.setState({validate});
             return
         }
-        this.setState({ iconLoadingRecharge: true });
-        let tempwindow = window.open();
+        this.setState({iconLoadingRecharge: true});
+        let tempwindow
+        if (!stateVar.isApp) {
+            tempwindow = window.open();
+        }
         Fetch.payment({
             method: 'POST',
             body: JSON.stringify(this.state.postData)
-        }).then((res)=>{
-            if(this._ismount){
-                this.setState({ iconLoadingRecharge: false });
-                if(res.status == 200){
-                    tempwindow.location.href = stateVar.httpUrl + res.repsoneContent.payUrl + '&sess=' + getStore('session')
-                }else{
+        }).then((res) => {
+            if (this._ismount) {
+                this.setState({iconLoadingRecharge: false});
+                if (res.status == 200) {
+                    if (stateVar.isApp) {
+                        window.open(stateVar.httpUrl + res.repsoneContent.payUrl + '&sess=' + getStore('session'))
+                    } else {
+                        tempwindow.location.href = stateVar.httpUrl + res.repsoneContent.payUrl + '&sess=' + getStore('session')
+                    }
+                } else {
                     Modal.warning({
                         title: res.shortMessage,
                     });
@@ -100,17 +111,18 @@ export default class QQWallet extends Component {
         let reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
         let r = reg.test(value);
         let val = parseFloat(value);
-        if(!r || val < parseFloat(loadmin) || val > parseFloat(loadmax)){
+        if (!r || val < parseFloat(loadmin) || val > parseFloat(loadmax)) {
             validate.money = 1;
-        }else{
+        } else {
             validate.money = 0;
         }
         postData.money = value;
         this.setState({postData, validate});
 
     };
+
     /*选择*/
-    selectActive(rid, index){
+    selectActive(rid, index) {
         let selectBank = this.state.backList.filter(item => item.rid == rid)[0],
             postData = this.state.postData;
         postData.payment = selectBank.payport_name;
@@ -124,16 +136,18 @@ export default class QQWallet extends Component {
             postData: postData,
         });
     };
+
     /*enter键提交*/
-    onSubmit(e){
-        if(e.keyCode == 13){
+    onSubmit(e) {
+        if (e.keyCode == 13) {
             this.onRecharge()
         }
     }
+
     render() {
-        const { backList } = this.state;
+        const {backList} = this.state;
         return (
-            <div className="qq_wallet" onKeyDown={(e)=>this.onSubmit(e)}>
+            <div className="qq_wallet" onKeyDown={(e) => this.onSubmit(e)}>
                 <ul className="r_m_list">
                     <li className="clear">
                         <span className="r_m_li_w left">选择充值方式：</span>
@@ -143,9 +157,12 @@ export default class QQWallet extends Component {
                                     <span style={{color: '#CF2027'}}>该充值方式正在维护中！！！</span> :
                                     <ul className="r_m_select_yhk left">
                                         {
-                                            backList.map((item, index)=>{
+                                            backList.map((item, index) => {
                                                 return (
-                                                    <li className={ this.state.imgUrlIndex === index ? 'r_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
+                                                    <li className={this.state.imgUrlIndex === index ? 'r_m_active' : ''}
+                                                        onClick={() => {
+                                                            this.selectActive(item.rid, index)
+                                                        }} key={item.code}>
                                                         <img src={stateVar.httpUrl + item.bankImgUrl} alt="选择"/>
                                                     </li>
                                                 )
@@ -159,7 +176,9 @@ export default class QQWallet extends Component {
                         <InputNumber min={0} size="large"
                                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                     onChange={(value)=>{this.onRechargeAmount(value)}}
+                                     onChange={(value) => {
+                                         this.onRechargeAmount(value)
+                                     }}
                                      className={onValidate('money', this.state.validate)}
                         />
                         <span style={{margin: '0 15px 0 5px'}}>元</span>
@@ -167,9 +186,9 @@ export default class QQWallet extends Component {
                         <p className="r_m_dx">
                             <span className="r_m_recharge_text">
                             单笔充值限额：最低
-                            <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmin}</strong>
+                            <strong style={{color: '#CB1313', fontWeight: 'normal'}}>{this.state.loadmin}</strong>
                             元，最高
-                            <strong style={{color: '#CB1313',fontWeight: 'normal'}}>{this.state.loadmax}</strong>
+                            <strong style={{color: '#CB1313', fontWeight: 'normal'}}>{this.state.loadmax}</strong>
                             元，最多保留两位小数
                         </span>
                         </p>
@@ -177,7 +196,9 @@ export default class QQWallet extends Component {
                     <li className="r_m_primary_btn">
                         <span className="r_m_li_w"></span>
                         <Button type="primary" size="large" loading={this.state.iconLoadingRecharge}
-                                onClick={()=>{this.onRecharge()}}
+                                onClick={() => {
+                                    this.onRecharge()
+                                }}
                                 disabled={backList == null || backList.length == 0}
                         >
                             立即充值
