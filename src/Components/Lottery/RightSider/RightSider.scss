@@ -4,6 +4,40 @@
 .right_sider{
     margin: $content-top 0 10px 0;
     float: right;
+    .box{
+        display: block;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+        img{
+            vertical-align: middle;
+        }
+    }
+    .app_down{
+        background: url(./Img/app_down.png) no-repeat center center;
+        height: 158px;
+        text-align: center;
+    }
+    .qrcode_app{
+        position: relative;
+        margin-top: 34px;
+        display: inline-block;
+        border: 5px solid #fff;
+        @include boxS(0, 0, 5px, 1px, #b1b0b0, null);
+        &:before{
+            position: absolute;
+            top: -9px;
+            right: 44px;
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid #fff;
+        }
+        canvas{
+            vertical-align: middle;
+        }
+    }
 }
 .user_info{
     width:210px;
@@ -65,7 +99,7 @@
 
 .history_period{
     background-color: #fff;
-    padding-bottom: 24px;
+    padding-bottom: 10px;
     border: 1px solid #dddddd;
     width: 210px;
     .thead_title{
@@ -107,7 +141,7 @@
             border-radius: 50%;
             margin-top: 7px;
             margin-left: 16px;
-            
+
         }
         .banker{
             border:1px solid $color_CF2027;
@@ -161,7 +195,7 @@
         margin-top: 10px;
         text-align: center;
         font-size: 12px;
-        color: #505050;
+        color: $color_CF2027;
         text-decoration: underline;
         &:hover{
             cursor: pointer;

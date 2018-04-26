@@ -1,0 +1,38 @@
+@import '../../Style/variables';
+@import '../../Style/mixin';
+
+.tend_list{
+    margin: 11px 0 20px 0;
+    border-bottom: 1px solid #ddd;
+    &>li{
+        height: 135px;
+        border: 1px solid #ddd;
+        border-bottom: 0;
+    }
+    .tend_lottery_type{
+        @include wh(135px, 134px);
+        border-right: 1px solid #ddd;
+        background: #eee;
+        font-size: 18px;
+        text-align: center;
+        padding-top: 40px;
+    }
+    .tend_lottery_list{
+        &>li{
+            font-size: 16px;
+            text-align: center;
+            color: #333;
+            a{
+                display: inline-block;
+                padding: 15px 30px 0;
+            }
+        }
+        .disabled_style{
+            color: #999;
+            cursor: default;
+        }
+        .tend_lottery_img{
+            width: 78px;
+        }
+    }
+}

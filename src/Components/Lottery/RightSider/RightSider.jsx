@@ -3,7 +3,8 @@ import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 import './RightSider.scss';
 import { stateVar } from '../../../State';
-import common from './../../../CommonJs/common.js';
+import {_code, getStore} from '../../../CommonJs/common';
+import pc_down from './Img/pc_down.png';
 
 @observer
 export default class RightSider extends Component {
@@ -14,6 +15,9 @@ export default class RightSider extends Component {
         	moreIndex:10
         };
     }
+    componentDidMount() {
+        _code('qrcode_app', stateVar.httpUrl + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime(), 100, 90)
+    };
     updateMoney() {
         this.setState({
             el1: {rotateZ: this.state.el1.rotateZ + 25}
@@ -71,7 +75,7 @@ export default class RightSider extends Component {
             <div className="right_sider" key="RightSider">
                 <div className="user_info">
                     <ul className="user_info_list">
-                        <li>您好！{common.getStore('userName')}</li>
+                        <li>您好！{getStore('userName')}</li>
                         <li>余额:<span className="col_color_ying">￥{hideBalance ? allBalance.cpbalance : '******'}</span></li>
                         <li>
                             <div className="user_recharge" onClick={()=>this.onHashHistory('/financial/recharge', 'financial', 0)}>立即充值</div>
@@ -366,6 +370,12 @@ export default class RightSider extends Component {
                 		return showhtml;
                 	})()
                 }
+                <a className="box" href="https://dn-scmobile.qbox.me/setuphc.msi">
+                    <img src={pc_down} alt="下载pc客户端"/>
+                </a>
+                <div className="box app_down">
+                    <div id="qrcode_app" className="qrcode_app"></div>
+                </div>
             </div>
         );
     }

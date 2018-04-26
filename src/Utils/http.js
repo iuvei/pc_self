@@ -177,9 +177,9 @@ const interFace = (key) => {
     INTERFACE['BBDAIYSELF'] = 'controller=report&action=bbdailybyself';
     // 盈亏总表
     INTERFACE['TEAMMAIN'] = 'controller=gameinfo&action=Main';
-    //GT娱乐-登录
+    //KGAME-登录
     INTERFACE['GTLOGIN'] = 'controller=kgame&action=login';
-    //GT娱乐-转账
+    //KGAME-转账
     INTERFACE['GTTRANSFER'] = 'controller=kgame&action=Transfer';
     //投诉建议
     INTERFACE['COMPLAINANDSUGGESTS'] = 'controller=help&action=AddComplain';

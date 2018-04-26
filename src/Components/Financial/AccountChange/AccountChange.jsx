@@ -177,11 +177,11 @@ const otypeArr = [
         id: 53
     },
     {
-        name: 'GT转入',
+        name: 'KGAME转入',
         id: 54
     },
     {
-        name: 'GT转出',
+        name: 'KGAME转出',
         id: 55
     },
     {
@@ -225,7 +225,7 @@ const otypeArr = [
         id: 65
     },
     {
-        name: 'GT分红',
+        name: 'KGAME分红',
         id: 66
     },
     {
@@ -245,7 +245,7 @@ const otypeArr = [
         id: 70
     },
     {
-        name: 'GT反水',
+        name: 'KGAME反水',
         id: 71
     },
     {
@@ -265,7 +265,7 @@ const otypeArr = [
         id: 75
     },
     {
-        name: 'GT促销充值',
+        name: 'KGAME促销充值',
         id: 76
     },
     {

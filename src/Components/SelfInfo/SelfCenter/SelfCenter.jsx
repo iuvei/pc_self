@@ -327,7 +327,7 @@ export default class SelfInfo extends PureComponent {
                             </li>
                             <li>
                                 <div className="left">
-                                    <p>GT余额</p>
+                                    <p>KGAME余额</p>
                                     <p>￥{allBalance.kgbalance}</p>
                                 </div>
                                 <Button className="transfer_btn right" onClick={()=>this.onHashHistory('/financial/transfer', 'financial',3)}>转账</Button>

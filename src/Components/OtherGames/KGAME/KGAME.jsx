@@ -6,13 +6,13 @@ import CM_transfer from '../CM_transfer/CM_transfer';
 import { Modal  } from 'antd';
 import emitter from '../../../Utils/events';
 
-import './GT.scss';
+import './KGAME.scss';
 
 import btn_start from './Img/btn_start.png';
 import gt_bef from './Img/gt_bef_bg.png';
 let MONEY_FLAG = true;
 @observer
-export default class GT extends Component {
+export default class KGAME extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -86,30 +86,41 @@ export default class GT extends Component {
             }
         })
     };
-    /*新窗口打开游戏界面*/
-    start(){
-        window.open(this.state.thirdAddress,"_blank");
-    }
     /*关闭模态框*/
     hideModal() {
         this.setState({visible: false})
     };
-
+    /*是否有权限进入KGAME娱乐*/
+    onKGAME(){
+        Fetch.gtLogin({
+            method: 'POST'
+        }).then((res)=>{
+            if(this._ismount){
+                if(res.status == 200){
+                    window.open(this.state.thirdAddress,"_blank");
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    };
     render() {
         return (
             <div className="gt">
                 <div className="gt_content">
-                    <img className="gt_img"  src={gt_bef}  alt=""/>
+                    <img className="gt_img"  src={gt_bef} />
                     <ul >
                         <li className="gt_transfer" onClick={()=>this.setState({visible: true})}>
                             <span>转账余额：</span><span>{stateVar.allBalance.kgbalance}元</span>
                         </li>
                         <li className="gt_btn_start">
-                            <img  src={btn_start}  alt="" onClick={()=>{this.start()}}/>
+                            <img  src={btn_start} onClick={()=>{this.onKGAME()}}/>
                         </li>
                     </ul>
                 </div>
-                <CM_transfer title="GT娱乐"
+                <CM_transfer title="KGAME娱乐"
                              visible={this.state.visible}
                              spinLoading = {this.state.spinLoading}
                              hideModal={this.hideModal}

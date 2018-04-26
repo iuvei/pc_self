@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import emitter from '../../../Utils/events';
-import {Modal} from 'antd';
+import {Modal, Input, Button} from 'antd';
 import {stateVar} from '../../../State';
 import CM_transfer from '../CM_transfer/CM_transfer';
+import { onValidate } from '../../../CommonJs/common';
 
 import './EA.scss';
 
@@ -18,7 +19,19 @@ export default class EA extends Component {
         this.state = {
             spinLoading: false,
             loginFlag: true,
+            selfVisible: false,
             visible: false, //模态框默认关闭
+            eaPostData: {
+                userName: '',
+                email: '',
+                phone: '',
+                navname: '', // 真人娱乐, 体彩中心
+            },
+            validate: {
+                userName: 2,// 0: 对， 1：错
+                email: 2,
+                phone: 2,
+            }
         };
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
@@ -97,6 +110,31 @@ export default class EA extends Component {
         this.setState({visible: false})
     };
 
+    /*是否有权限进入Ea*/
+    onEa() {
+        Fetch.eagame({
+            method: 'POST'
+        }).then((res)=>{
+            if(this._ismount){
+                if(res.status == 200){
+                    this.onLogin()
+                }else{
+                    let {eaPostData} = this.state;
+                    eaPostData.navname = '真人娱乐';
+                    if(res.shortMessage == '请填个人写资料'){
+                        this.setState({
+                            selfVisible: true,
+                            eaPostData
+                        })
+                    }else{
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
+                }
+            }
+        })
+    };
     /*开始游戏*/
     onLogin() {
         if (LOGIN_FLAG) {
@@ -120,15 +158,69 @@ export default class EA extends Component {
             })
         }
     };
+    onCancel(){
+        let {eaPostData, validate} = this.state;
+        eaPostData.userName = '';
+        eaPostData.phone = '';
+        eaPostData.email = '';
+        validate.userName = 2;
+        validate.phone = 2;
+        validate.email = 2;
+        this.setState({
+            selfVisible: false,
+            eaPostData,
+            validate
+        });
+    };
+    onChangeUserName(e){
+        let {eaPostData, validate} = this.state,
+            val = e.target.value;
+        eaPostData.userName = val;
+        let reg = /^[\u4e00-\u9fa5]+$/,
+            r = reg.test(val);
+        if(!r){
+            validate.userName = 1
+        }else{
+            validate.userName = 0
+        }
+        this.setState({eaPostData});
+    };
+    onChangeEmail(e){
+        let {eaPostData, validate} = this.state,
+            val = e.target.value;
+        eaPostData.email = val;
+        let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        let r = reg.test(val);
+        if (r) {
+            validate.email = 0;
+        } else {
+            validate.email = 1;
+        }
+        this.setState({eaPostData});
+    };
+    onChangePhone(e){
+        let {eaPostData, validate} = this.state,
+            val = e.target.value;
+        eaPostData.phone = val;
+        let reg = /^[0-9]{7,13}$/;
+        let r = reg.test(val);
+        if (r) {
+            validate.phone = 0;
+        } else {
+            validate.phone = 1;
+        }
+        this.setState({eaPostData});
+    };
 
     render() {
+        const {selfVisible, eaPostData} = this.state;
         return (
             <div className="ea">
                 <div className="ea_content">
                     <img className="ea_img" src={ea} alt=""/>
                     <i className="ea_transfer" onClick={() => this.setState({visible: true})}></i>
                     <p className="ea_balance">账号余额：{stateVar.allBalance.eabalance}元</p>
-                    <i className="ea_start" onClick={() => this.onLogin()}></i>
+                    <i className="ea_start" onClick={() => this.onEa()}></i>
                 </div>
                 <CM_transfer title="EA"
                              visible={this.state.visible}
@@ -136,6 +228,56 @@ export default class EA extends Component {
                              hideModal={this.hideModal}
                              onTransfer={this.onTransfer}
                 />
+                <Modal
+                    title="完善个人资料"
+                    width={480}
+                    wrapClassName="vertical-center-modal ea_content"
+                    visible={selfVisible}
+                    onCancel={()=>this.onCancel()}
+                    footer={null}
+                    maskClosable={false}
+                >
+                    <ul className="info_list">
+                        <li>
+                            <span>会员姓名：</span>
+                            <Input placeholder="请输入会员姓名"
+                                   value={eaPostData.userName}
+                                   onChange={(e)=>this.onChangeUserName(e)}
+                                   size="large"
+                                   className={onValidate('userName', this.state.validate)}
+                            />
+                            <p>（由汉字组成，例如：张三）</p>
+                        </li>
+                        <li>
+                            <span>邮件地址：</span>
+                            <Input placeholder="请输入您的邮箱"
+                                   value={eaPostData.email}
+                                   onChange={(e)=>this.onChangeEmail(e)}
+                                   size="large"
+                                   className={onValidate('email', this.state.validate)}
+                            />
+                            <p>（例如：example@example.com）</p>
+                        </li>
+                        <li>
+                            <span>联系电话：</span>
+                            <Input placeholder="请输入您的电话"
+                                   value={eaPostData.phone}
+                                   onChange={(e)=>this.onChangePhone(e)}
+                                   size="large"
+                                   className={onValidate('phone', this.state.validate)}
+                            />
+                            <p>（7-13位数字，例如：8613800000000）</p>
+                        </li>
+                    </ul>
+                    <div className="btn">
+                        <Button type="primary"
+                                onClick={()=>this.getAddUserInfo()}
+                                loading={this.state.btnLoading}
+                        >
+                            提交
+                        </Button>
+                    </div>
+                </Modal>
             </div>
         )
     }

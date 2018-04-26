@@ -33,6 +33,12 @@ export const lottery = (location, callback) => {
         callback(null, require('../Components/Lottery/Lottery').default);
     }, 'lottery');
 };
+// 走势图列表
+export const tendList = (location, callback) => {
+    require.ensure([], (require) => {
+        callback(null, require('../Components/TendList/TendList').default);
+    }, 'tendList');
+};
 // 优惠活动
 export const activity = (location, callback) => {
     require.ensure([], (require) => {
@@ -317,11 +323,11 @@ export const sport = (location, callback) => {
         callback(null, require('../Components/OtherGames/Sport/Sport').default);
     }, 'sport');
 };
-// 综合游戏/GT娱乐
-export const gt = (location, callback) => {
+// 综合游戏/KGAME游戏
+export const kgame = (location, callback) => {
     require.ensure([], (require) => {
-        callback(null, require('../Components/OtherGames/GT/GT').default);
-    }, 'gt');
+        callback(null, require('../Components/OtherGames/KGAME/KGAME').default);
+    }, 'kgame');
 };
 // 综合游戏/PT游戏
 export const pt = (location, callback) => {

@@ -10,7 +10,18 @@ import loginSrc from './Img/logo.png';
 import {removeStore, setStore,getStore, onValidate, _code } from "../../CommonJs/common";
 const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
 const circuitArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
-const origin = window.location.origin;
+const urlFlag = [
+    {domain: 'https://slxwhg.com'},
+    {domain: 'https://xtkjcc.com'},
+    {domain: 'https://gdlyjj.com'},
+    {domain: 'https://bdhdjx.com'},
+    {domain: 'https://lyxljk.com'},
+    {domain: 'https://soyook.com'},
+    {domain: 'https://endliu.com'},
+    {domain: 'https://qqy520.com'},
+    {domain: 'https://xmlryt.com'},
+];
+const filesize = 43.8; //用于测速的图片大小 kb
 
 @observer
 export default class Login extends Component {
@@ -49,10 +60,13 @@ export default class Login extends Component {
             },
             timeoutWechat:false,
             activityClose: false, // 关闭活动
-            times: [{},{},{},{}],
+            lineList: [{},{},{}],
+            selfLine: {},
+            optimalLine: {},
             timeLine: 0,
             visibleApp: false,
             visibleM: false,
+            updateLine: false,
         }
     };
     componentDidMount() {
@@ -68,22 +82,22 @@ export default class Login extends Component {
     componentWillUnmount(){
         this._ismount = false;
         this.ws && this.ws.close();
-        clearInterval(this.wechatIntval);
-        window.removeEventListener('resize', function (event) {
-            event.preventDefault();
-        });
-        if(window._closeAnimationFrame){
-            window.cancelAnimationFrame(window._closeAnimationFrame);
-        }
-        if(window.cloerInterval_c1){
-            window.clearInterval(window.cloerInterval_c1)
-        }
-        if(window.cloerInterval_c2){
-            window.clearInterval(window.cloerInterval_c2)
+        if(this.wechatIntval){
+            clearInterval(this.wechatIntval);
         }
     };
     /*测速*/
-    getDomians () {
+    getDomians (type) {
+        const {httpUrl} = stateVar;
+        if(type === 'clickUpdate'){
+            this.setState({
+                updateLine: true,
+                timeLine: 0
+            })
+        }
+        if(this.clearTime){
+            clearInterval(this.clearTime);
+        }
         let timeF = Math.random()*5 + 10;
         this.clearTime = setInterval(()=>{
             if(this.state.timeLine > timeF){
@@ -95,62 +109,116 @@ export default class Login extends Component {
         }, 200);
         Fetch.domians().then((res) => {
             if(this._ismount){
+                if(type === 'clickUpdate'){
+                    this.setState({
+                        updateLine: false,
+                    })
+                }
                 let imgs = [],
                     index = 0,
-                    {times} = this.state,
-                    list = [],
+                    times = [],
+                    list = res.repsoneContent.domainlist,
                     _this = this;
                 if(res.status == 200 && list instanceof Array){
-                    list = res.repsoneContent.domainlist;
-                    if(list.length < 4){
-                        for(let k = 0; k < 4; k++){
-                            if(list.length < 4){
-                                list.push({domain: origin})
+                    if(list.length < 3){
+                        for(let k = 0; k < 3; k++){
+                            if(list.length < 3){
+                                list.push({domain: urlFlag[k]})
                             }else{
                                 break
                             }
                         }
                     }
                 }else{
-                    list = [
-                        {domain: origin},
-                        {domain: 'https://slxwhg.com'},
-                        {domain: 'https://xtkjcc.com'},
-                        {domain: 'https://gdlyjj.com'},
-                        {domain: 'https://bdhdjx.com'},
-                        {domain: 'https://lyxljk.com'},
-                        {domain: 'https://soyook.com'},
-                        {domain: 'https://endliu.com'},
-                        {domain: 'https://qqy520.com'},
-                        {domain: 'https://xmlryt.com'},
-                    ];
+                    list = urlFlag;
                 }
+                list.push({domain: httpUrl});
                 for(let i = 0; i < list.length; i++){
                     imgs.push({});
                     imgs[i].img = new Image;
                     imgs[i].startTime = new Date().getTime();
                     imgs[i].img.src = list[i].domain + '/speed/img/Login.png?' + imgs[i].startTime;
                     imgs[i].img.onload = function () {
-                        if(index < 4){
-                            let time = parseInt((new Date().getTime() - imgs[i].startTime)*0.05);
-                            if (time <= 69) {
-                                times[index].classNm = "green"
-                            } else if (time > 69 && time <= 149) {
-                                times[index].classNm = "blue"
-                            } else if (time > 149 && time <= 500) {
-                                times[index].classNm = "yellow"
-                            } else {
-                                times[index].classNm = "red"
+                        let timesFlag = {};
+                        if(index < 3 && list[i].domain != httpUrl){
+                            let timeFlag = new Date().getTime() - imgs[i].startTime;
+                            let time = parseInt(timeFlag*0.05);
+                            if(time < 1){
+                                time = 1;
                             }
-                            times[index].time = time;
-                            times[index].domain = list[i].domain;
+                            if (time <= 69) {
+                                timesFlag.classNm = "green";
+                            } else if (time > 69 && time <= 149) {
+                                timesFlag.classNm = "blue";
+                            } else if (time > 149 && time <= 500) {
+                                timesFlag.classNm = "yellow";
+                            } else {
+                                timesFlag.classNm = "red";
+                            }
+
+                            timesFlag.time = time;
+                            timesFlag.speed = Math.round(filesize * 10000 /timeFlag);
+                            timesFlag.domain = list[i].domain;
+                            times.push(timesFlag);
                             index ++;
-                            _this.setState({times});
+                        }
+                        if(list[i].domain == httpUrl){
+                            let timeFlag = new Date().getTime() - imgs[i].startTime,
+                                time = parseInt(timeFlag*0.05);
+                            if(time < 1){
+                                time = 1;
+                            }
+                            if (time <= 69) {
+                                timesFlag.classNm = "green";
+                            } else if (time > 69 && time <= 149) {
+                                timesFlag.classNm = "blue";
+                            } else if (time > 149 && time <= 500) {
+                                timesFlag.classNm = "yellow";
+                            } else {
+                                timesFlag.classNm = "red";
+                            }
+                            timesFlag.time = time;
+                            timesFlag.speed = Math.round(filesize * 1000 /timeFlag);
+                            timesFlag.domain = list[i].domain;
+                            times.push(timesFlag);
+                        }
+                        if(times.length == 4){
+                            times.sort(_this.compare("time"));
+                            times.forEach((item, index) => {
+                                item.line = index
+                            });
+                            let optimalLine = times[0];
+                            let selfLine = times.filter(item => item.domain == httpUrl)[0];
+                            let lineList = times.filter(item => item.domain != httpUrl);
+                            _this.setState({
+                                lineList: lineList,
+                                selfLine: selfLine,
+                                optimalLine: optimalLine,
+                            });
+                            stateVar.changeSelfSpeed(_this.state.selfLine.speed);
                         }
                     };
                 }
             }
         })
+    };
+    /*从小到大排序*/
+    compare(prop) {
+        return function (obj1, obj2) {
+            let val1 = obj1[prop];
+            let val2 = obj2[prop];
+            if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+                val1 = Number(val1);
+                val2 = Number(val2);
+            }
+            if (val1 < val2) {
+                return -1;
+            } else if (val1 > val2) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     };
 
     getKefu(){
@@ -890,7 +958,7 @@ export default class Login extends Component {
 
     render() {
         const navList = ['账号登录', '试玩模式'];
-        const {times} = this.state;
+        const {optimalLine, lineList, selfLine} = this.state;
         return (
             <div className='login_main'>
                 <div className="login">
@@ -934,19 +1002,20 @@ export default class Login extends Component {
                     <div className="optimal_line">
                         <ul className="circuit clear">
                             {
-                                times.map((item, index) => {
+                                lineList.map((item, index) => {
                                     return (
                                         <li className={item.classNm} key={index}>
                                             <Button disabled={item.domain ? false : true}>
                                                 <a href={item.domain}>
-                                                    <span className="left">线路{index + 1}</span>
+                                                    <span className="left">{ '线路'+ (index + 1)}</span>
                                                     <ul className="circuit_line left">
                                                         {
                                                             circuitArr.map((itm, ind) => {
-                                                                return <li className={ind < (this.state.timeLine - index) ? 'line_color' : ''} key={'' + itm}></li>
+                                                                return <li className={ind < (this.state.timeLine - item.line) ? 'line_color' : ''} key={'' + itm}></li>
                                                             })
                                                         }
                                                     </ul>
+                                                    <span style={{marginLeft: 10}}>{item.speed}KB/S</span>
                                                 </a>
                                             </Button>
                                         </li>
@@ -954,11 +1023,34 @@ export default class Login extends Component {
                                 })
                             }
                         </ul>
-                        <Button className="optimal_btn" disabled={times[0].domain == undefined ? true : false}>
-                            <a href={times[0].domain}>
-                                一键打开最优路线
-                            </a>
-                        </Button>
+                        <ul className="circuit clear">
+                            <li className={selfLine.classNm + ' last_li'}>
+                                <Button disabled={selfLine.domain ? false : true}>
+                                    <a href={selfLine.domain}>
+                                        <span className="left">当前线路</span>
+                                        <ul className="circuit_line left">
+                                            {
+                                                circuitArr.map((itm, ind) => {
+                                                    return <li className={ind < (this.state.timeLine - selfLine.line) ? 'line_color' : ''} key={'' + itm}></li>
+                                                })
+                                            }
+                                        </ul>
+                                        <span style={{marginLeft: 10}}>{selfLine.speed}KB/S</span>
+                                    </a>
+                                </Button>
+                            </li>
+                        </ul>
+                        <div className="btns">
+
+                            <Button className="optimal_btn" disabled={optimalLine.domain == undefined ? true : false}>
+                                <a href={optimalLine.domain}>
+                                    一键打开最优路线
+                                </a>
+                            </Button>
+                            <Button className="optimal_btn update_line" icon="reload" loading={this.state.updateLine} onClick={()=>this.getDomians('clickUpdate')}>
+                                刷新线路
+                            </Button>
+                        </div>
                     </div>
 
                     <ul className="client_list clear">

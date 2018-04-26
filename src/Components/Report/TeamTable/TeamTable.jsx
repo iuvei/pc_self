@@ -409,7 +409,15 @@ export default class TeamTable extends Component {
                 sorter: true,
                 width: 90,
             }, {
-                title: '有效量',
+                title: <span>
+                        有效量
+                        <Tooltip placement="bottomRight"
+                                 title={
+                                     '有效量 = 投注量 - 超7码投注量'
+                                 }>
+                            <Icon className='head_hint' type="question-circle"/>
+                        </Tooltip>
+                    </span>,
                 dataIndex: 'sum_effective_price',
                 className: 'column-right',
                 sorter: true,
@@ -516,7 +524,15 @@ export default class TeamTable extends Component {
                     sorter: true,
                     width: 100,
                 }, {
-                    title: '有效量',
+                    title: <span>
+                        有效量
+                        <Tooltip placement="bottomRight"
+                                 title={
+                                     '有效量 = 投注量 - 超7码投注量'
+                                 }>
+                            <Icon className='head_hint' type="question-circle"/>
+                        </Tooltip>
+                    </span>,
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
                     sorter: true,
@@ -618,7 +634,15 @@ export default class TeamTable extends Component {
                     sorter: true,
                     width: 100,
                 }, {
-                    title: '有效量',
+                    title: <span>
+                        有效量
+                        <Tooltip placement="bottomRight"
+                                 title={
+                                     '有效量 = 投注量 - 超7码投注量'
+                                 }>
+                            <Icon className='head_hint' type="question-circle"/>
+                        </Tooltip>
+                    </span>,
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
                     sorter: true,
@@ -720,7 +744,15 @@ export default class TeamTable extends Component {
                     sorter: true,
                     width: 110,
                 }, {
-                    title: '有效量',
+                    title: <span>
+                        有效量
+                        <Tooltip placement="bottomRight"
+                                 title={
+                                     '有效量 = 投注量 - 超7码投注量'
+                                 }>
+                            <Icon className='head_hint' type="question-circle"/>
+                        </Tooltip>
+                    </span>,
                     dataIndex: 'sum_effective_price',
                     className: 'column-right',
                     sorter: true,
@@ -757,8 +789,8 @@ export default class TeamTable extends Component {
                                      '活动 = 活动中完成任务领取的奖金'
                                  }>
                             <Icon className='head_hint' type="question-circle"/>
-                    </Tooltip>
-                </span>,
+                        </Tooltip>
+                    </span>,
                     dataIndex: 'sum_activity',
                     className: 'column-right',
                     width: 110,

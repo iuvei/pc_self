@@ -2,13 +2,15 @@
 @import '../../../Style/mixin';
 
 .ea{
-    height: 779px;
     background: url('./Img/ea_bg.png') no-repeat center center;
     text-align: center;
     .ea_content{
         position: relative;
         width: 1433px;
         margin: 0 auto;
+        .ea_img{
+            vertical-align: middle;
+        }
         .ea_transfer{
             position: absolute;
             top: 319px;
@@ -39,6 +41,34 @@
                 cursor: pointer;
                 background: url(./Img/ea_start.png) no-repeat 0 0;
             }
+        }
+    }
+}
+.ea_content {
+    .ant-input {
+        width: 260px;
+        padding: 6px 7px;
+    }
+    .info_list {
+        width: 350px;
+        margin: 0 auto;
+        & > li {
+            height: 60px;
+            font-size: 14px;
+            span {
+                display: inline-block;
+                width: 70px;
+            }
+            p {
+                margin-left: 70px;
+            }
+        }
+    }
+    .btn {
+        text-align: center;
+        margin-top: 15px;
+        .ant-btn {
+            padding: 5px 30px;
         }
     }
 }

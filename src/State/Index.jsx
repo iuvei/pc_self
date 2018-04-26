@@ -23,6 +23,10 @@ class State {
         email: '',
     };
     @observable hideBalance = true;
+    @observable selfSpeed = 0; // 当前域名速度
+    @action('当前域名速度') changeSelfSpeed = (data) => {
+        this.selfSpeed = data
+    };
     @observable dailysalaryStatus = {}; // 获得日工资，亏损，分红签订状态
     @observable allBalance = {// 各平台余额
         cpbalance: '0.00', // 恒彩主账户

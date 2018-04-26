@@ -102,7 +102,7 @@ export default class Fanshui extends Component {
                                         <span className="col_color_ying">有效流水</span>
                                         仅是
                                         <span className="col_color_ying">产生输赢结果的投注额</span>
-                                        进行计算，所有对冲投注及无风险投注不计算在体育竞技、EA娱乐城、PT娱乐城、GT娱
+                                        进行计算，所有对冲投注及无风险投注不计算在体育竞技、EA娱乐城、PT娱乐城、KGAME娱
                                         乐城、博饼有效流水内及累计投注要求内；
                                     </li>
                                     <li>

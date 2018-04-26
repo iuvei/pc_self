@@ -27,7 +27,7 @@
 .right_plug {
     position: fixed;
     right: 0;
-    top: 16%;
+    top: 22%;
     z-index: 99;
     .right_list {
         .r_p_common_extent {
@@ -98,10 +98,10 @@
                     background: url(./Img/shoujiapp2.png) no-repeat center 12px;
                 }
             }
-            .r_p_zoushi {
-                background: url(./Img/zoushi1.png) no-repeat center 12px;
+            .r_p_cesu {
+                background: url(./Img/cesu1.png) no-repeat center 12px;
                 &:hover {
-                    background: url(./Img/zoushi2.png) no-repeat center 12px;
+                    background: url(./Img/cesu2.png) no-repeat center 12px;
                 }
             }
             .r_p_tousu {
@@ -216,5 +216,17 @@
                 border-color: #cc0000;
             }
         }
+    }
+}
+
+/*域名测速*/
+.r_p_speed{
+    text-align: center;
+    font-size: 14px;
+    &>p{
+        margin-bottom: 8px;
+    }
+    .btn_cesu{
+        margin-right: 10px;
     }
 }

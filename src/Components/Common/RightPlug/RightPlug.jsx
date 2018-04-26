@@ -2,7 +2,7 @@
 import {observer} from 'mobx-react';
 import React, {Component} from 'react';
 import {Icon, Popover, Modal, Input, Button} from 'antd';
-import {hashHistory} from 'react-router';
+import {Link} from 'react-router';
 import Fetch from '../../../Utils';
 import './Rightplug.scss'
 import {stateVar} from '../../../State';
@@ -95,6 +95,30 @@ export default class RightPlug extends Component {
                         <p>黑色</p>
                     </li>
                 </ul>
+            </div>
+        )
+    };
+
+    /*域名测速*/
+    getSpeed() {
+        return (
+            <div className="r_p_speed">
+                <p>
+                    当前速度：
+                    <span className="col_color_shu">{stateVar.selfSpeed}KB/S</span>
+                </p>
+                <p>
+                    <Button className="btn_cesu">
+                        <Link to="/login">
+                            重新测速
+                        </Link>
+                    </Button>
+                    <Button>
+                        <Link to="/login">
+                            更换路线
+                        </Link>
+                    </Button>
+                </p>
             </div>
         )
     }
@@ -240,26 +264,26 @@ export default class RightPlug extends Component {
                                     </p>
                                 </li>
                         }
-                        <li>
-                            <Popover
-                                placement="left"
-                                content={
-                                    <div id="qrcode_app" style={{height: 130, textAlign: 'center'}}></div>
-                                }
-                                visible={this.state.visibleApp}
-                                onVisibleChange={this.handleVisibleApp}
-                                title="手机扫一扫，下载手机APP"
-                            >
-                                <p className="r_p_app r_p_common">
-                                    APP下载
-                                </p>
-                            </Popover>
-                        </li>
-                        <li>
-                            <p className="r_p_kehuduan r_p_common" onClick={() => hashHistory.push('/downLoadClient')}>
-                                下载客户端
-                            </p>
-                        </li>
+                        {/*<li>*/}
+                            {/*<Popover*/}
+                                {/*placement="left"*/}
+                                {/*content={*/}
+                                    {/*<div id="qrcode_app" style={{height: 130, textAlign: 'center'}}></div>*/}
+                                {/*}*/}
+                                {/*visible={this.state.visibleApp}*/}
+                                {/*onVisibleChange={this.handleVisibleApp}*/}
+                                {/*title="手机扫一扫，下载手机APP"*/}
+                            {/*>*/}
+                                {/*<p className="r_p_app r_p_common">*/}
+                                    {/*APP下载*/}
+                                {/*</p>*/}
+                            {/*</Popover>*/}
+                        {/*</li>*/}
+                        {/*<li>*/}
+                            {/*<p className="r_p_kehuduan r_p_common" onClick={() => hashHistory.push('/downLoadClient')}>*/}
+                                {/*下载客户端*/}
+                            {/*</p>*/}
+                        {/*</li>*/}
                         <li>
                             <p className="r_p_kehuzx r_p_common">
                                 <a href={stateVar.httpService} target="_blank">
@@ -274,16 +298,16 @@ export default class RightPlug extends Component {
                                     {
                                         this.state.showMsg ? <b className="r_p_common_extent"></b> : null
                                     }
-                                    <p className="r_p_kefu r_p_common" onClick={() => this.onKefu()}>联系好友</p>
+                                    <p className="r_p_kefu r_p_common" onClick={() => this.setState({modalVisible: true})}>上下级聊天</p>
                                 </li>
                         }
-                        <li>
-                            <p className="r_p_zoushi r_p_common">
-                                <a href={curLocation.split("#")[0] + "#/tendency"} target="_blank">
-                                    走势图
-                                </a>
-                            </p>
-                        </li>
+                        {/*<li>*/}
+                            {/*<p className="r_p_zoushi r_p_common">*/}
+                                {/*<a href={curLocation.split("#")[0] + "#/tendency"} target="_blank">*/}
+                                    {/*走势图*/}
+                                {/*</a>*/}
+                            {/*</p>*/}
+                        {/*</li>*/}
                         <li>
                             <Popover placement="left" content={
                                 this.getThemeSelect()
@@ -307,7 +331,15 @@ export default class RightPlug extends Component {
                                     null
                             }
                         </li>
-
+                        <li>
+                            <Popover placement="left" content={
+                                this.getSpeed()
+                            }>
+                                <p className="r_p_cesu r_p_common">
+                                    域名测速
+                                </p>
+                            </Popover>
+                        </li>
                     </ul>
                     <div className='r_caret-right' onClick={() => this.hideRight()}>
                         <Icon type="double-right"/>

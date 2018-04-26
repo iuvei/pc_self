@@ -222,6 +222,7 @@
             "nav": "BJKL8",
             "lotteryid": -1,
             "lotterytype": 1,
+            "imgUrl":"bjkl8",
             "imgSrc": false,
             "disabled": true
         },
@@ -230,6 +231,7 @@
             "nav": "JSK3",
             "lotteryid": -2,
             "lotterytype": 1,
+            "imgUrl":"jsk3",
             "imgSrc": false,
             "disabled": true
         },
@@ -238,6 +240,7 @@
             "nav": "hnffc",
             "lotteryid": -3,
             "lotterytype": 1,
+            "imgUrl":"hn1fc",
             "imgSrc": false,
             "disabled": true
         },
@@ -246,6 +249,7 @@
             "nav": "CQ11-5",
             "lotteryid": -4,
             "lotterytype": 3,
+            "imgUrl":"cq11y5",
             "imgSrc": false,
             "disabled": true
         },
@@ -254,6 +258,7 @@
             "nav": "HN481",
             "lotteryid": -5,
             "lotterytype": 2,
+            "imgUrl":"hn481",
             "imgSrc": false,
             "disabled": true
         }

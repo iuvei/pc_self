@@ -8,6 +8,7 @@ import {
     main,
     home,
     lottery,
+    tendList,
     activity,
     activityDetails,
     fanshui,
@@ -45,7 +46,7 @@ import {
     tendency,
     ea,
     pt,
-    gt,
+    kgame,
     sport,
     dayRate,
     person,
@@ -92,6 +93,7 @@ const routes = params => (
             <IndexRoute getComponent={lottery} />
             <Route path="/home" getComponent={home} params={params}/>
             <Route path="/lottery" getComponent={lottery} params={params}/>
+            <Route path="/tendList" getComponent={tendList} params={params}/>
             <Route path="/activity" getComponent={activity} params={params}/>
             <Route path="/activity/activityDetails" getComponent={activityDetails} params={params}/>
             <Route path="/activity/fanshui" getComponent={fanshui} params={params}/>
@@ -161,7 +163,7 @@ const routes = params => (
             <Route path="/otherGames" getComponent={otherGames} params={params}/>
             <Route path="/otherGames/bobing" getComponent={bobing} params={params}/>
             <Route path="/otherGames/ea" getComponent={ea} params={params}/>
-            <Route path="/otherGames/gt" getComponent={gt} params={params}/>
+            <Route path="/otherGames/kgame" getComponent={kgame} params={params}/>
             <Route path="/otherGames/sport" getComponent={sport} params={params}/>
             <Route path="/otherGames/pt" getComponent={pt} params={params}/>
         </Route>

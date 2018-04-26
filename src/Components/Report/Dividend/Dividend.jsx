@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
-import {Select, Table, Input, Button, Modal, InputNumber, Pagination} from 'antd';
+import {Select, Table, Input, Button, Modal, InputNumber, Pagination, Tooltip, Icon} from 'antd';
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
@@ -375,7 +375,15 @@ export default class Dividend extends Component {
                 width: 70,
             },
             {
-                title: '有效量',
+                title: <span>
+                        有效量
+                        <Tooltip placement="bottomRight"
+                                 title={
+                                     '有效量 = 投注量 - 超7码投注量'
+                                 }>
+                            <Icon className='head_hint' type="question-circle"/>
+                        </Tooltip>
+                    </span>,
                 dataIndex: 'sale_total',
                 className: 'column-right',
                 width: 90,

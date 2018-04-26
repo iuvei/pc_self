@@ -43,7 +43,7 @@ export default class Main extends Component {
             pathname == '/tendency' ||
             pathname == '/otherGames/ea' ||
             pathname == '/otherGames/pt' ||
-            pathname == '/otherGames/gt' ||
+            pathname == '/otherGames/kgame' ||
             pathname == '/otherGames/sport' ||
             pathname == '/downLoadClient' ||
             pathname == '/otherGames' ||
@@ -51,14 +51,15 @@ export default class Main extends Component {
             pathname == '/helpInfo/playMethodIntroduce' ||
             pathname == '/helpInfo/howDeposit' ||
             pathname == '/helpInfo/commonProblems' ||
-            pathname == '/helpInfo/aboutHengCai'
+            pathname == '/helpInfo/aboutHengCai' ||
+            pathname == '/tendList'
         ) {
             return true
         } else {
             return false
         }
     };
-
+    /*隐藏左边组件*/
     hideRight() {
         let pathname = hashHistory.getCurrentLocation().pathname;
         if (pathname == '/home' ||

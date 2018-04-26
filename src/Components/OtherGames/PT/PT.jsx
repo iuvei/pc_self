@@ -269,6 +269,22 @@ export default class PT extends Component {
             step: 0,
         })
     };
+    /*是否有权限进入pt*/
+    onPt(id, isdemo, type) {
+        Fetch.ptindex({
+            method: 'POST',
+        }).then((res)=>{
+            if(this._ismount){
+                if(res.status == 200){
+                    this.onStartGame(id, isdemo, type);
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
+    };
     render() {
         const { startVisible, navList, gameList, topRanking, total, ptName, resetPw } = this.state;
 

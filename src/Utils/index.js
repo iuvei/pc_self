@@ -162,9 +162,9 @@ const historysports = (body) => request(http.interFace('HISTORYSPORTS'), body);
 const bbdailybyself = (body) => request(http.interFace('BBDAIYSELF'), body);
 /*盈亏总表*/
 const teammain = (body) => request(http.interFace('TEAMMAIN'), body);
-/*GT娱乐-登录*/
+/*KGAME-登录*/
 const gtLogin = (body) => request(http.interFace('GTLOGIN'), body);
-/*GT娱乐-转账*/
+/*KGAME-转账*/
 const gtTransfer = (body) => request(http.interFace('GTTRANSFER'), body);
 //投诉建议
 const complainAndSuggests = (body) => request(http.interFace('COMPLAINANDSUGGESTS'), body);

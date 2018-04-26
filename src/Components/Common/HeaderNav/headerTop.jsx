@@ -162,7 +162,7 @@ export default class HeaderTop extends Component {
                     }
                 }
             });
-            //gt余额
+            //kgame余额
             Fetch.balance({
                 method: 'POST',
                 body: JSON.stringify({type: 'gt'})
@@ -240,8 +240,8 @@ export default class HeaderTop extends Component {
                         }
                     }
                 });
-            }else if(type == 'gt'){
-                //gt余额
+            }else if(type == 'kgame'){
+                //kgame余额
                 Fetch.balance({
                     method: 'POST',
                     body: JSON.stringify({type: 'gt'})
@@ -552,7 +552,7 @@ export default class HeaderTop extends Component {
                                         </span>
                                         </li>
                                         <li>
-                                            <span className="left">GT余额：</span>
+                                            <span className="left">KGAME余额：</span>
                                             <span className="right">￥
                                             {allBalance.kgbalance}
                                         </span>

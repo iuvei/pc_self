@@ -86,6 +86,23 @@ export default class Bobing extends Component {
         })
     };
 
+    /*是否有权限进入博饼*/
+    onBobing() {
+        Fetch.newGetprizepool({
+            method: 'POST'
+        }).then((res)=>{
+            if(this._ismount){
+                if(res.status == 200){
+                    this.setState({modalVisible: true})
+                }else{
+                    Modal.warning({
+                        title: res.data,
+                    });
+                }
+            }
+        })
+    };
+
 
     render() {
         return (
@@ -93,7 +110,7 @@ export default class Bobing extends Component {
                 <div className="b_b_content">
                     <img src={bobing_01} alt=""/>
                     <p className="b_b_bonus_pool">￥{this.state.bonusPool}</p>
-                    <i className="bobing_btn" onClick={()=>this.setState({modalVisible: true})}></i>
+                    <i className="bobing_btn" onClick={()=>this.onBobing()}></i>
                     <p className="account_money">账号金额：{stateVar.allBalance.bobingBalance}元</p>
                     <Button className="transfer_btn" type="primary" onClick={()=>this.setState({visible: true})}>转账</Button>
                 </div>

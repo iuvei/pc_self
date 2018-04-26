@@ -4,16 +4,16 @@ $border_color: #C8C8C8;
 $width_100: 100%;
 
 .login_main{
-    background: #151515 url(./Img/logo_bg.jpg) no-repeat center center;
+    background: #fff url(./Img/logo_bg.jpg) no-repeat center center;
     height: 100%;
     .loginLogo{
         text-align: center;
     }
     .login{
-        width: 820px;
+        width: 810px;
         position: absolute;
         left: 50%;
-        margin-left: -410px;
+        margin-left: -405px;
         top: 50%;
         margin-top: -335px;
 
@@ -124,6 +124,7 @@ $width_100: 100%;
             border-bottom-left-radius:0;
         }
         .circuit{
+            position: relative;
             font-size: 14px;
             &>li{
                 float: left;
@@ -134,6 +135,7 @@ $width_100: 100%;
                     @include wh(10px,10px);
                     @include borderRadius(5px);
                     margin: 6px 5px 0 0;
+                    background: #ccc;
                 }
                 &:last-child{
                     margin-right: 0;
@@ -190,6 +192,15 @@ $width_100: 100%;
                     background: #CF2027;
                 }
             }
+            .last_li{
+                //position: absolute;
+                //top: 45px;
+                //left: 250px;
+                margin: 20px 0 0 250px;
+                background: #E3E3E5;
+                padding: 4px 8px;
+                @include borderRadius(3px);
+            }
 
             .circuit_line{
                 display: inline-block;
@@ -227,12 +238,20 @@ $width_100: 100%;
             &:after{
                 margin-top: 20px;
             }
-            .optimal_btn{
+            .btns{
                 margin-top: 20px;
-                padding: 12px 50px;
-                @include gradient(0, 10, 0, bottom, #FEFEFE, #DFDEDE);
-                color: $color_363636;
+                .optimal_btn{
+                    padding: 12px 50px;
+                    @include gradient(0, 10, 0, bottom, #FEFEFE, #DFDEDE);
+                    color: $color_CF2027;
+                    margin-right: 20px;
+                }
+                .update_line{
+                    color: #666;
+                    margin-right: 0;
+                }
             }
+
         }
     }
 
@@ -376,16 +395,17 @@ $width_100: 100%;
     }
     .client_bg, .pt_client_bg{
         display: inline-block;
-        padding-top: 40px;
+        padding-top: 75px;
         text-decoration: underline;
-        color: #666;
+        color: $color_CF2027;
         font-size: 14px;
+        width: 90px;
+        text-align: center;
         &:hover{
             color: $color_CF2027;
         }
     }
     li:first-child{
-        margin-left: 55px;
         .client_bg{
             background: url(./Img/pc.png) no-repeat top center;
             &:hover{
@@ -395,7 +415,7 @@ $width_100: 100%;
         .pt_client_bg{
             background: url(./Img/pt_pc.png) no-repeat top center;
             &:hover{
-                background: url(./Img/pt_pc_active.png) no-repeat top center;
+                background: url(./Img/pt_pc_hover.png) no-repeat top center;
             }
         }
     }
@@ -409,7 +429,7 @@ $width_100: 100%;
         .pt_client_bg{
             background: url(./Img/pt_zr.png) no-repeat top center;
             &:hover{
-                background: url(./Img/pt_zr_active.png) no-repeat top center;
+                background: url(./Img/pt_zr_hover.png) no-repeat top center;
             }
         }
     }
@@ -423,7 +443,7 @@ $width_100: 100%;
         .pt_client_bg{
             background: url(./Img/pt_lh.png) no-repeat top center;
             &:hover{
-                background: url(./Img/pt_lh_active.png) no-repeat top center;
+                background: url(./Img/pt_lh_hover.png) no-repeat top center;
             }
         }
     }

@@ -19,5 +19,33 @@ $border_color: #C8C8C8;
         margin-bottom: 20px;
     }
 }
+.ea_content {
+    .ant-input {
+        width: 260px;
+        padding: 6px 7px;
+    }
+    .info_list {
+        width: 350px;
+        margin: 0 auto;
+        & > li {
+            height: 60px;
+            font-size: 14px;
+            span {
+                display: inline-block;
+                width: 70px;
+            }
+            p {
+                margin-left: 70px;
+            }
+        }
+    }
+    .btn {
+        text-align: center;
+        margin-top: 15px;
+        .ant-btn {
+            padding: 5px 30px;
+        }
+    }
+}
 
 
