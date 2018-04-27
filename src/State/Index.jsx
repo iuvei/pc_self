@@ -6,7 +6,7 @@ class State {
     // @observable httpUrl = window.location.origin || (window.location.protocol +'//' + window.location.host); // 域名
     @observable httpUrl = 'http://10.63.15.242'; // 域名
 
-    @observable isApp = false // 客户端
+    @observable isApp = false; // 客户端
     @observable httpService = ''; // 联系客服url
     @observable userInfo = {// 用户信息
         userName: '请先登录',
@@ -23,10 +23,6 @@ class State {
         email: '',
     };
     @observable hideBalance = true;
-    @observable selfSpeed = 0; // 当前域名速度
-    @action('当前域名速度') changeSelfSpeed = (data) => {
-        this.selfSpeed = data
-    };
     @observable dailysalaryStatus = {}; // 获得日工资，亏损，分红签订状态
     @observable allBalance = {// 各平台余额
         cpbalance: '0.00', // 恒彩主账户

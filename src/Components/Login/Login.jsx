@@ -92,7 +92,9 @@ export default class Login extends Component {
         if(type === 'clickUpdate'){
             this.setState({
                 updateLine: true,
-                timeLine: 0
+                timeLine: 0,
+                lineList: [{},{},{}],
+                selfLine: {},
             })
         }
         if(this.clearTime){
@@ -109,11 +111,11 @@ export default class Login extends Component {
         }, 200);
         Fetch.domians().then((res) => {
             if(this._ismount){
-                if(type === 'clickUpdate'){
-                    this.setState({
-                        updateLine: false,
-                    })
-                }
+                // if(type === 'clickUpdate'){
+                //     this.setState({
+                //         updateLine: false,
+                //     })
+                // }
                 let imgs = [],
                     index = 0,
                     times = [],
@@ -157,7 +159,7 @@ export default class Login extends Component {
                             }
 
                             timesFlag.time = time;
-                            timesFlag.speed = Math.round(filesize * 10000 /timeFlag);
+                            timesFlag.speed = Math.round(filesize * 1000 /timeFlag);
                             timesFlag.domain = list[i].domain;
                             times.push(timesFlag);
                             index ++;
@@ -195,7 +197,12 @@ export default class Login extends Component {
                                 selfLine: selfLine,
                                 optimalLine: optimalLine,
                             });
-                            stateVar.changeSelfSpeed(_this.state.selfLine.speed);
+                            if(type === 'clickUpdate'){
+                                _this.setState({
+                                    updateLine: false,
+                                })
+                            }
+                            setStore('speed', selfLine.speed);
                         }
                     };
                 }
@@ -1015,7 +1022,7 @@ export default class Login extends Component {
                                                             })
                                                         }
                                                     </ul>
-                                                    <span style={{marginLeft: 10}}>{item.speed}KB/S</span>
+                                                    <span className="text_speed">{item.speed}KB/S</span>
                                                 </a>
                                             </Button>
                                         </li>
@@ -1047,7 +1054,10 @@ export default class Login extends Component {
                                     一键打开最优路线
                                 </a>
                             </Button>
-                            <Button className="optimal_btn update_line" icon="reload" loading={this.state.updateLine} onClick={()=>this.getDomians('clickUpdate')}>
+                            <Button className="optimal_btn update_line" icon="reload"
+                                    loading={this.state.updateLine}
+                                    onClick={()=>this.getDomians('clickUpdate')}
+                            >
                                 刷新线路
                             </Button>
                         </div>
@@ -1079,17 +1089,17 @@ export default class Login extends Component {
                             <Popover content={
                                 <ul className="pt_list client_list clear">
                                     <li className="remove_margin">
-                                        <a href="http://link.vbet.club/happyslots">
+                                        <a href="http://link.vbet.club/happyslots" target="_blank">
                                             <span className="pt_client_bg">PT客户端下载</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="http://m.ld176888.com/live/download.html">
+                                        <a href="http://m.ld176888.com/live/download.html" target="_blank">
                                             <span className="pt_client_bg">PT真人下载</span>
                                         </a>
                                     </li>
                                     <li className="remove_line">
-                                        <a href="http://m.ld176888.com/download.html">
+                                        <a href="http://m.ld176888.com/download.html" target="_blank">
                                             <span className="pt_client_bg">PT老虎机下载</span>
                                         </a>
                                     </li>

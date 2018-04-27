@@ -99,19 +99,31 @@ export default class RightPlug extends Component {
         )
     };
 
+    updateLine() {
+        let Img = new Image,
+            startTime = new Date().getTime(),
+            _this = this;
+        Img.src = stateVar.httpUrl + '/speed/img/Login.png?' + startTime;
+        Img.onload = function () {
+            let speed = Math.round(43.8 * 1000 /(new Date().getTime() - startTime));
+            setStore('speed', speed);
+            _this.setState({});
+        }
+    };
+
     /*域名测速*/
     getSpeed() {
         return (
             <div className="r_p_speed">
                 <p>
                     当前速度：
-                    <span className="col_color_shu">{stateVar.selfSpeed}KB/S</span>
+                    <span className="col_color_shu">{getStore('speed')}KB/S</span>
                 </p>
                 <p>
-                    <Button className="btn_cesu">
-                        <Link to="/login">
+                    <Button className="btn_cesu" onClick={()=>this.updateLine()}>
+                        {/*<Link to="/login">*/}
                             重新测速
-                        </Link>
+                        {/*</Link>*/}
                     </Button>
                     <Button>
                         <Link to="/login">

@@ -28,7 +28,8 @@
             "imgUrl":"mmc",
             "imgSrc": "hot",
             "disabled": false,
-            "hotLottery": 1
+            "hotLottery": 1,
+            "tendency": true
         },
         {
             "cnname": "泰国300秒",
