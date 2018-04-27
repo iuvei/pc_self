@@ -6,7 +6,7 @@ class State {
     // @observable httpUrl = window.location.origin || (window.location.protocol +'//' + window.location.host); // 域名
     @observable httpUrl = 'http://10.63.15.242'; // 域名
 
-    @observable isApp = false // 客户端
+    @observable isApp = false; // 客户端
     @observable httpService = ''; // 联系客服url
     @observable userInfo = {// 用户信息
         userName: '请先登录',

@@ -143,7 +143,8 @@ export default class Sport extends Component {
         })
     };
     getAddUserInfo() {
-        let {validate} = this.state;
+        let {validate} = this.state,
+            _this = this;
         if(validate.userName != 0 || validate.email != 0 || validate.phone != 0){
             if(validate.userName != 0){
                 validate.userName = 1
@@ -166,8 +167,14 @@ export default class Sport extends Component {
             if (this._ismount) {
                 this.setState({btnLoading: false});
                 if(res.status == 200){
+                    Modal.success({
+                        title: res.shortMessage,
+                        okText: "进入游戏",
+                        onOk() {
+                            _this.onSport()
+                        },
+                    });
                     this.onCancel();
-                    this.onHashHistory(this.state.activeItem);
                 }else{
                     Modal.warning({
                         title: res.shortMessage,

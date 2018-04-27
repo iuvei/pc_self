@@ -27,9 +27,9 @@ export default class HomeMainActive extends Component {
         const oneAnim = { y: '+=30', opacity: 0, type: 'from', ease: 'easeOutQuad' };
         const dataArray = [
             { img: home_active01, content: '每日签到' },
-            { img: home_active02, content: '千金一掷好运到' },
-            { img: home_active03, content: '好彩旺旺来' },
-            { img: home_active04, content: '欢乐「泰」平年' },
+            { img: home_active02, content: '金彩发财金' },
+            { img: home_active03, content: '新会员充值送' },
+            { img: home_active04, content: '周返水' },
         ];
         return (
                 <div className="home_main_active">

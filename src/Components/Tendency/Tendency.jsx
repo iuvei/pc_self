@@ -203,7 +203,7 @@ export default class Tendency extends Component {
                                 {
                                     lotteryType.map(item => {
                                         return <Option value={'' + item.lotteryid} key={'' + item.lotteryid}
-                                                       disabled={item.disabled}>{item.cnname}</Option>
+                                                       disabled={item.disabled || item.tendency}>{item.cnname}</Option>
                                     })
                                 }
                             </Select>

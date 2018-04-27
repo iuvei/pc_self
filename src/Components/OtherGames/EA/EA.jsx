@@ -19,6 +19,7 @@ export default class EA extends Component {
         this.state = {
             spinLoading: false,
             loginFlag: true,
+            btnLoading: false,
             selfVisible: false,
             visible: false, //模态框默认关闭
             eaPostData: {
@@ -139,7 +140,7 @@ export default class EA extends Component {
     onLogin() {
         if (LOGIN_FLAG) {
             LOGIN_FLAG = false;
-            let tempwindow
+            let tempwindow;
             if (!stateVar.isApp) {
                 tempwindow = window.open();
             }
@@ -171,6 +172,47 @@ export default class EA extends Component {
             eaPostData,
             validate
         });
+    };
+    getAddUserInfo() {
+        let {validate} = this.state,
+            _this = this;
+        if(validate.userName != 0 || validate.email != 0 || validate.phone != 0){
+            if(validate.userName != 0){
+                validate.userName = 1
+            }
+            if(validate.email != 0){
+                validate.email = 1
+            }
+            if(validate.phone != 0){
+                validate.phone = 1
+            }
+            this.setState({validate});
+            return
+        }
+
+        this.setState({btnLoading: true});
+        Fetch.addUserInfo({
+            method: 'POST',
+            body: JSON.stringify(this.state.eaPostData)
+        }).then((res)=> {
+            if (this._ismount) {
+                this.setState({btnLoading: false});
+                if(res.status == 200){
+                    Modal.success({
+                        title: res.shortMessage,
+                        okText: "进入游戏",
+                        onOk() {
+                            _this.onEa()
+                        },
+                    });
+                    this.onCancel();
+                }else{
+                    Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
     };
     onChangeUserName(e){
         let {eaPostData, validate} = this.state,

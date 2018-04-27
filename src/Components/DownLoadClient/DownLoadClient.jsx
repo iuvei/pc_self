@@ -90,9 +90,9 @@ export default class Login extends Component {
                             <a href="http://download.gr-mission.com/hcgame.exe"><p className='people_btn'>真人娱乐城下载</p></a>
                         </div>
                         <div className='pt_contain' style={{display: navListIndex == 3 ? 'block' : 'none'}}>
-                            <a href="http://link.vbet.club/happyslots"><p className='pt_btn1'>PT客户端下载</p></a>
-                            <a href="http://m.ld176888.com/live/download.html"><p className='pt_btn2'>PT真人下载</p></a>
-                            <a href="http://m.ld176888.com/download.html"><p className='pt_btn3'>PT老虎机下载</p></a>
+                            <a href="http://link.vbet.club/happyslots" target="_blank"><p className='pt_btn1'>PT客户端下载</p></a>
+                            <a href="http://m.ld176888.com/live/download.html" target="_blank"><p className='pt_btn2'>PT真人下载</p></a>
+                            <a href="http://m.ld176888.com/download.html" target="_blank"><p className='pt_btn3'>PT老虎机下载</p></a>
 
                         </div>
                         <div className='m_contain' style={{display: navListIndex == 4 ? 'block' : 'none'}}>
