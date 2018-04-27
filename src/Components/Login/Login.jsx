@@ -195,7 +195,7 @@ export default class Login extends Component {
                                 selfLine: selfLine,
                                 optimalLine: optimalLine,
                             });
-                            stateVar.changeSelfSpeed(_this.state.selfLine.speed);
+                            setStore('speed', selfLine.speed);
                         }
                     };
                 }

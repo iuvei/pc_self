@@ -105,7 +105,7 @@ export default class RightPlug extends Component {
             <div className="r_p_speed">
                 <p>
                     当前速度：
-                    <span className="col_color_shu">{stateVar.selfSpeed}KB/S</span>
+                    <span className="col_color_shu">{getStore('speed')}KB/S</span>
                 </p>
                 <p>
                     <Button className="btn_cesu">
