@@ -223,13 +223,14 @@ export default class SelfInfo extends PureComponent {
             },{
                 title: '登录时间',
                 dataIndex: 'times',
-                width: '45%',
-            }, {
-                title: '登录IP',
-                dataIndex: 'proxyip',
-                render: (text, record)=> text+' '+record.ip_address,
-                width: '45%',
-            }
+                width: '90%',
+            },
+            // {
+            //     title: '登录IP',
+            //     dataIndex: 'proxyip',
+            //     render: (text, record)=> text+' '+record.ip_address,
+            //     width: '45%',
+            // }
         ];
         return (
             <div className="self_i_main">
@@ -237,8 +238,8 @@ export default class SelfInfo extends PureComponent {
                     <div className="s_i_content left">
                         <div className="s_i_c_top clear">
                             <div className="s_i_logo left">
-                                <img src={info_logo} alt=""/>
-                                <p>当前IP：{ logs[0] != undefined ? logs[0].proxyip + ' ' + logs[0].ip_address : '暂未获取到当前IP' }</p>
+                                <img src={info_logo} alt="恒彩彩票"/>
+                                {/*<p>当前IP：{ logs[0] != undefined ? logs[0].proxyip + ' ' + logs[0].ip_address : '暂未获取到当前IP' }</p>*/}
                             </div>
                             <div className="s_i_info right">
                                 <h3>

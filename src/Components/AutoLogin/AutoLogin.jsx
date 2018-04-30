@@ -56,6 +56,7 @@ export default class AutoLogin extends Component {
             window.cancelAnimationFrame(window._closeAnimationFrame);
         }
     };
+
     render() {
         return(<div className='autologin_main'>
             <div className="l_nav_top">

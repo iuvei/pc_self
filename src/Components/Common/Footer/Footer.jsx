@@ -9,7 +9,7 @@ import footer_2 from './Img/footer_2.png';
 export default class Footer extends Component {
     render() {
         return (
-            <div className="footer">
+            <footer className="footer">
                 <ul className="f_partner_list clear">
                     <li key="footerLi01">
                         <div className="f_partner_text">合作伙伴</div>
@@ -49,7 +49,7 @@ export default class Footer extends Component {
                         <img src={footer_2} alt=""/>
                     </li>
                 </ul>
-            </div>
+            </footer>
         );
     }
 }

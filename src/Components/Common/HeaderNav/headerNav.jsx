@@ -366,81 +366,83 @@ export default class HeaderNav extends Component {
         const {showLottery, navList, showOtherGames, otherGamesArr} = this.state;
 
         return (
-            <div className="header_main">
-                <HeaderTop/>
-                <nav className="nav">
-                    <div className="nav-content clear">
-                        <ul className="nav_list clear">
+            <header>
+                <div className="header_main">
+                    <HeaderTop/>
+                    <nav className="nav">
+                        <div className="nav-content clear">
+                            <ul className="nav_list clear">
+                                {
+                                    navList.map((item) => {
+                                        return (
+                                            <li key={item.id}>
+                                                <div className={
+                                                    (navIndex == item.id ? 'nav_active' : '') + ' ' +
+                                                    (item.id == 'lottery' && showLottery ? ' hover_lottery' : '') + ' ' +
+                                                    (item.id == 'otherGames' && showOtherGames ? 'hover_lottery' : '')
+                                                }
+                                                     onClick={() => this.onHashHistory(item)}
+                                                     onMouseOver={item.id == 'lottery' || item.id == 'otherGames' ? () => this.onLotteryOver(item.id) : null}
+                                                     onMouseOut={item.id == 'lottery' || item.id == 'otherGames' ? () => this.onLotteryOut(item.id) : null}>
+                                                    {item.name}
+                                                </div>
+                                            </li>
+                                        )
+                                    })
+                                }
+                                <li key="-1"
+                                    className={showOtherGames ? 'otherGames_down otherGames_down_show' : 'otherGames_down'}
+                                    onMouseOver={() => this.onLotteryOver('otherGames')}
+                                    onMouseOut={() => this.onLotteryOut('otherGames')}>
+                                    <ul className="o_down_list">
+                                        {
+                                            otherGamesArr.map((item) => {
+                                                return <li onClick={() => this.onOtherGames(item)}
+                                                           key={item.id}>{item.name}</li>
+                                            })
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <div className={showLottery ? 't_m_select_lottery t_m_select_lottery_show' : 't_m_select_lottery'}
+                         onMouseOver={() => this.onLotteryOver('lottery')}
+                         onMouseOut={() => this.onLotteryOut('lottery')}
+                    >
+                        <ul className="lottery_type_list clear">
                             {
-                                navList.map((item) => {
-                                    return (
-                                        <li key={item.id}>
-                                            <div className={
-                                                (navIndex == item.id ? 'nav_active' : '') + ' ' +
-                                                (item.id == 'lottery' && showLottery ? ' hover_lottery' : '') + ' ' +
-                                                (item.id == 'otherGames' && showOtherGames ? 'hover_lottery' : '')
-                                            }
-                                                 onClick={() => this.onHashHistory(item)}
-                                                 onMouseOver={item.id == 'lottery' || item.id == 'otherGames' ? () => this.onLotteryOver(item.id) : null}
-                                                 onMouseOut={item.id == 'lottery' || item.id == 'otherGames' ? () => this.onLotteryOut(item.id) : null}>
-                                                {item.name}
-                                            </div>
-                                        </li>
-                                    )
-                                })
-                            }
-                            <li key="-1"
-                                className={showOtherGames ? 'otherGames_down otherGames_down_show' : 'otherGames_down'}
-                                onMouseOver={() => this.onLotteryOver('otherGames')}
-                                onMouseOut={() => this.onLotteryOut('otherGames')}>
-                                <ul className="o_down_list">
-                                    {
-                                        otherGamesArr.map((item) => {
-                                            return <li onClick={() => this.onOtherGames(item)}
-                                                       key={item.id}>{item.name}</li>
-                                        })
+                                lotteryType.map((items) => {
+                                        return (
+                                            <li className="lottery_type" key={items.typeName}>
+                                                <p>{items.typeName}</p>
+                                                <ul className="lottery_list">
+                                                    {
+                                                        items.lotteryList.map((item) => {
+                                                            return (
+                                                                <li className={item.disabled ? 'disabled_style' : ''}
+                                                                    onClick={item.disabled ? () => {
+                                                                    } : () => this.onChangeLottery(item.nav)} key={item.nav}>
+                                                                    {item.cnname}
+                                                                    {
+                                                                        item.imgSrc ?
+                                                                            <img className="h_n_icon" src={require('../../../Images/' + item.imgSrc + '.png')}/> :
+                                                                            null
+                                                                    }
+                                                                </li>
+                                                            )
+                                                        })
+                                                    }
+                                                </ul>
+                                            </li>
+                                        )
                                     }
-                                </ul>
-                            </li>
+                                )
+                            }
                         </ul>
                     </div>
-                </nav>
-                <div className={showLottery ? 't_m_select_lottery t_m_select_lottery_show' : 't_m_select_lottery'}
-                     onMouseOver={() => this.onLotteryOver('lottery')}
-                     onMouseOut={() => this.onLotteryOut('lottery')}
-                >
-                    <ul className="lottery_type_list clear">
-                        {
-                            lotteryType.map((items) => {
-                                    return (
-                                        <li className="lottery_type" key={items.typeName}>
-                                            <p>{items.typeName}</p>
-                                            <ul className="lottery_list">
-                                                {
-                                                    items.lotteryList.map((item) => {
-                                                        return (
-                                                            <li className={item.disabled ? 'disabled_style' : ''}
-                                                                onClick={item.disabled ? () => {
-                                                                } : () => this.onChangeLottery(item.nav)} key={item.nav}>
-                                                                {item.cnname}
-                                                                {
-                                                                    item.imgSrc ?
-                                                                        <img className="h_n_icon" src={require('../../../Images/' + item.imgSrc + '.png')}/> :
-                                                                        null
-                                                                }
-                                                            </li>
-                                                        )
-                                                    })
-                                                }
-                                            </ul>
-                                        </li>
-                                    )
-                                }
-                            )
-                        }
-                    </ul>
                 </div>
-            </div>
+            </header>
         );
     }
 }

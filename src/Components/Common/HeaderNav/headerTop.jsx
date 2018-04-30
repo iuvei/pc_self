@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
-import Websocket from 'react-websocket';
+// import Websocket from 'react-websocket';
 import Fetch from '../../../Utils';
 import { Icon, Badge, Modal, Button ,notification } from 'antd';
 const confirm = Modal.confirm;
@@ -53,7 +53,7 @@ export default class HeaderTop extends Component {
             ()=>{
                 this.getBalance();
                 this.onUnread();
-                this.getress();
+                // this.getress();
             }, 3000);
     };
     componentWillUnmount() {
@@ -500,10 +500,10 @@ export default class HeaderTop extends Component {
                                             <span className="left">奖金组</span>
                                             <span className="right color_CF2027">{userInfo.accGroup}</span>
                                         </li>
-                                        <li>
-                                            <span className="left">上次登录地点</span>
-                                            <span className="right color_CF2027">{userInfo.lastIp} {userInfo.address}</span>
-                                        </li>
+                                        {/*<li>*/}
+                                            {/*<span className="left">上次登录地点</span>*/}
+                                            {/*<span className="right color_CF2027">{userInfo.lastIp} {userInfo.address}</span>*/}
+                                        {/*</li>*/}
                                         <li>
                                             <span className="left">上次登录时间</span>
                                             <span className="right">{userInfo.lastTime}</span>

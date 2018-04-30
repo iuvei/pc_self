@@ -57,6 +57,9 @@
                 li:last-child{
                     border-bottom: 0;
                 }
+                li:nth-child(even){
+                    border-right: 0;
+                }
             }
         }
         .s_i_info{
