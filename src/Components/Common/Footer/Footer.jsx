@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Link} from 'react-router';
+import { stateVar } from '../../../State';
 import './Footer.scss';
 import footer_1 from './Img/footer_1.png';
 import footer_2 from './Img/footer_2.png';
@@ -17,22 +18,22 @@ export default class Footer extends Component {
                     </li>
                     <li className="f_warm_prompt" key="footerLi02">
                         <ul className="f_warm_prompt_list clear">
-                            <li>
+                            <li onClick={()=>{stateVar.navIndex = null}}>
                                 <Link to={`/helpInfo/aboutHengCai?navIndex=3`}>
                                     <span>关于恒彩</span><span>|</span>
                                 </Link>
                             </li>
-                            <li>
+                            <li onClick={()=>{stateVar.navIndex = null}}>
                                 <Link to={`/helpInfo/howDeposit?navIndex=0`}>
                                     <span>帮助中心</span><span>|</span>
                                 </Link>
                             </li>
-                            <li>
+                            <li onClick={()=>{stateVar.navIndex = null}}>
                             	<Link to={`/downLoadClient`}>
                                     <span>手机客户端</span><span>|</span>
                                 </Link>
                             </li>
-                            <li>
+                            <li onClick={()=>{stateVar.navIndex = null}}>
                             	<Link to={`/downLoadClient`}>
                                     <span>PC客户端</span><span>|</span>
                                 </Link>

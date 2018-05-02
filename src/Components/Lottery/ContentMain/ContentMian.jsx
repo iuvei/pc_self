@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import {
     Select,
-    Table,
     Modal,
     message,
     InputNumber,
@@ -11,14 +10,12 @@ import {
     Checkbox,
     Button,
     Radio,
-    Switch,
     Tooltip,
     Spin,
     Popover,
     AutoComplete
 } from 'antd';
-import mobx, {computed, autorun} from "mobx";
-import QueueAnim from 'rc-queue-anim';
+import mobx from "mobx";
 import './ContentMain.scss'
 import './Modal/Modal.scss'
 
@@ -26,9 +23,9 @@ import Fatch from '../../../Utils'
 import emitter from '../../../Utils/events';
 import {stateVar} from '../../../State'
 import Method from '../method.js'
-import commone from '../commone.js'
 
-import common, {_code} from '../../../CommonJs/common';
+import common from '../../../CommonJs/common';
+import {replaceHTML_DECODE} from '../commone';
 
 import ContentTop from './../ContentTop/ContentTop'
 import BetRecordTable from '../BetRecordTable/BetRecordTable'
@@ -736,8 +733,8 @@ export default class ContentMian extends Component {
         }, () => {
             this.selectAreaData(this.state.lotteryMethod);
             // 重新设置是否显示冷热
-            stateVar.setHotMissFlag('')
-            this.getMissHotFlag()
+            stateVar.setHotMissFlag('');
+            this.getMissHotFlag();
         });
     }
 
@@ -757,7 +754,7 @@ export default class ContentMian extends Component {
         }, () => {
             this.selectAreaData(this.state.lotteryMethod);
             // 重新设置是否显示冷热
-            stateVar.setHotMissFlag('')
+            stateVar.setHotMissFlag('');
             this.getMissHotFlag()
         });
     };
@@ -1434,7 +1431,7 @@ export default class ContentMian extends Component {
                     lt_total_nums: nums,
                     lt_total_money: money,
                     randomNum: Math.floor((Math.random() * 10000) + 1),
-                    times: this.state.time,
+                    // times: this.state.time,
                     lt_trace_count_input: 1,
                     It_trace_stop: 'no',
                     lt_project: [tempObj],
@@ -1493,7 +1490,7 @@ export default class ContentMian extends Component {
                     } else {
                         let modal;
                         if (data.longMessage.fail > 0) {
-                            let msg = data.longMessage.content[0];
+                            let msg = replaceHTML_DECODE(data.longMessage.content[0]);
                             modal = Modal.error({
                                 title: '温馨提示',
                                 content: msg,
@@ -1543,7 +1540,7 @@ export default class ContentMian extends Component {
                     } else {
                         let modal;
                         if (data.longMessage.fail > 0) {
-                            let msg = data.longMessage.content[0];
+                            let msg = replaceHTML_DECODE(data.longMessage.content[0]);
                             modal = Modal.error({
                                 title: '温馨提示',
                                 content: msg,
@@ -2277,8 +2274,8 @@ export default class ContentMian extends Component {
         this.setState({modes: tempMode});
         let max_place = 0; //总共的选择型排列数
         let data_sel = [];
-        let otype = numberObj.selectarea.type.toLocaleString()
-        stateVar.aboutGame.otype = otype
+        let otype = numberObj.selectarea.type.toLocaleString();
+        stateVar.aboutGame.otype = otype;
         if (otype == 'input') {
             this.setState({ifRandom: true});
             stateVar.aboutGame.max_place = max_place;
@@ -2313,7 +2310,12 @@ export default class ContentMian extends Component {
                 case 3110726:
                 case 2261:
                 case 1261:
-                    this.setState({ifRandom: true});
+                case 3112094: // 加拉大30秒任四 --start--
+                case 3112109:
+                case 3112115:
+                case 3112119:
+                case 3112124: // 加拉大30秒任四 --end--
+                    this.setState({ifRandom: true}); // 禁止机选
                     break;
                 default:
                     this.setState({ifRandom: false});
@@ -3078,7 +3080,7 @@ export default class ContentMian extends Component {
                                                                 element.label.map((val, idx) => {
                                                                     let tempVal = val.gtitle.substr(0, 2);
                                                                     if (objRen[tempVal] == undefined) {
-                                                                        objRen[tempVal] = tempVal
+                                                                        objRen[tempVal] = tempVal;
                                                                         return (
                                                                             <li onClick={() => this.changeMethod(index, idx)}
                                                                                 key={idx}>{element.title + tempVal.split('')[1]}</li>

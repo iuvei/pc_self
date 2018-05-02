@@ -2048,6 +2048,7 @@ const methodId = {
 };
 //投注
 const checkNum = () => {
+    // debugger
     //实时计算投注注数与金额等
     var nums = 0, mname = methodId[stateVar.aboutGame.methodID];//玩法的简写,如:'ZX3'
     //var modes = parseInt($("#lt_project_modes").val(),10);//投注模式
@@ -2071,6 +2072,7 @@ const checkNum = () => {
                 case 'RXZUFFC3HH' :
                 case 'RXZUSSC3HH' :
                 case 'HHZX' :
+                case 'HHHZX' :
                     nums = _inputCheck_Num(3, false, _HHZXcheck, true);
                     if (mname == 'RXZUSSC3HH' || mname == 'RXZUWFC3HH' || mname == 'RXZUFFC3HH') {
                         nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 3);
@@ -2205,6 +2207,7 @@ const checkNum = () => {
                 }
                 break;
             case 'ZXHZ' :   //直选和值特殊算法
+            case 'HZXHZ' :
             case 'RXZXWFC3HZ' :
             case 'RXZXFFC3HZ' :
             case 'RXZXSSC3HZ' :	//任选三直选和值
@@ -2242,7 +2245,7 @@ const checkNum = () => {
             case 'RXZUWFC3HZ' :
             case 'RXZUFFC3HZ' :
             case 'RXZUSSC3HZ' :
-                if (mname == 'ZUHZ' || mname == 'RXZUSSC3HZ' || mname == 'RXZUWFC3HZ' || mname == 'RXZUFFC3HZ') {//任选三组选和值
+                if (mname == 'ZUHZ'|| mname == 'RXZUSSC3HZ' || mname == 'RXZUWFC3HZ' || mname == 'RXZUFFC3HZ') {//任选三组选和值
                     cc = {
                         1: 1,
                         2: 2,
@@ -2285,6 +2288,7 @@ const checkNum = () => {
                 }
                 break;
             case 'ZUS'  :   //组三
+            case 'HZUS'  :
             case 'RXZUSANWFC3'    :
             case 'RXZUSANFFC3'    :
             case 'RXZUSANSSC3'    :
@@ -2301,6 +2305,7 @@ const checkNum = () => {
                 }
                 break;
             case 'ZUL'  :   //组六
+            case 'HZUL'  :
             case 'RXZUSIXWFC3'    :
             case 'RXZUSIXFFC3'    :
             case 'RXZUSIXSSC3'    :
@@ -2359,6 +2364,7 @@ const checkNum = () => {
                 }
                 break;
             case 'BDW2'  :  //二码不定位
+            case 'HBDW2'  :
             case 'ZU2'   :  //2位组选
                 for (i = 0; i <= stateVar.aboutGame.max_place; i++) {
                     var s = tempAr[i].length;
@@ -3120,7 +3126,7 @@ let recordPoschoose = () => {
         }
     })
     $("input[name='poschoose']").val(str.slice(0, -1));
-}
+};
 /************************ 验证号码合法性以及计算单笔投注注数以及金额 ***********************/
 let _HHZXcheck = (n, len) => {//混合组选合法号码检测，合法返回TRUE，非法返回FALSE,n号码，len号码长度
     if (len == 2) {//两位
@@ -3656,7 +3662,7 @@ let getSuiji = (length, minchose, string) => {
 
     }
     return results;
-}
+};
 //时时彩定胆位
 let getSuiji3 = (length, minchose, t) => {
     var size = 0; //表示随机生成几个数字
@@ -3693,7 +3699,7 @@ let getSuiji3 = (length, minchose, t) => {
 
     }
     return results;
-}
+};
 //只用于北京PK10,11选5
 let getSuiji2 = (length, minchose, t) => {
     var size = 0; //表示随机生成几个数字
@@ -3737,7 +3743,7 @@ let getSuiji2 = (length, minchose, t) => {
 
     }
     return results;
-}
+};
 //随机算法3
 let getSuijiDing = (list) => {
     var list = list;

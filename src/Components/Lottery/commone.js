@@ -19,7 +19,6 @@ const Combination = (n, m) => {
 	{
 		m = n - m;
 	}
-
 	var result = 0.0;
 	for(i=n; i>=(n-m+1);i--) {
 		result += Math.log(i);
@@ -315,7 +314,7 @@ const replaceHTML_DECODE = ( str ) => {
 	str = str.replace(/&gt;/g,'>');
 	str = str.replace(/&nbsp;/g,' ');
 	return str;
-}
+};
 
 export default {
     Combination,
@@ -323,6 +322,6 @@ export default {
     // getLotteryId,
     fftime,
     format,
-    diff
-
+    diff,
+    replaceHTML_DECODE,
 }
