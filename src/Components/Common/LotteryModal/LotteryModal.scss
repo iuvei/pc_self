@@ -5,9 +5,6 @@ $border_color: #C8C8C8;
 .lottery-modal {
     text-align: center;
     white-space: nowrap;
-    .ant-modal{
-
-    }
     .l_m_title{
         font-weight: 900;
         font-size: 14px;
@@ -74,33 +71,55 @@ $border_color: #C8C8C8;
         margin: 0 auto;
         background: url(./Img/rectangle.png) no-repeat bottom right;
     }
-    .l_m_content{
-
-    }
     .btn_group{
         font-size: 13px;
         margin-bottom: 8px;
         margin-top: 18px;
-        .oktz:disabled{
-            opacity: .9;
-            color: #fff;
+        .oktz{
+            display: inline-block;
+            @include red_gradient;
+            @include wh(60px, 30px);
+            line-height: 30px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            button {
+                width: 100%;
+                height: 100%;
+                outline: none;
+                border: none;
+                background: none;
+                font-size: 13px;
+                color: #fff;
+                font-weight: bold;
+            }
+            button[disabled]{
+                opacity: .6;
+            }
         }
-    }
-    .ant-btn-primary{
-        @include red_gradient;
-        &:hover{
-            background-color: #ba0a0a;
-            border-color: #ba0a0a;
-        }
-    }
-    .btn_cancel{
-        @include gray_gradient;
-        color: #333;
-        border-color: $border_color;
-        margin-left: 15px;
-        &:hover{
-            background-color: #f3f3f3;
+        .btn_cancel{
+            display: inline-block;
+            @include gray_gradient;
+            @include wh(60px, 30px);
+            line-height: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
             border-color: $border_color;
+            margin-left: 15px;
+            button {
+                width: 100%;
+                height: 100%;
+                outline: none;
+                border: none;
+                background: none;
+                font-size: 13px;
+                color: #333;
+                font-weight: bold;
+            }
+            button[disabled]{
+                opacity: .6;
+            }
         }
     }
 }

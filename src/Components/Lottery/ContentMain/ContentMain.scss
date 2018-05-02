@@ -6,6 +6,43 @@ $c_m_background: #4A4A5F;
     float: left;
 }
 
+.showName{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 7px;
+    margin-left: 3px;
+}
+.a-upload {
+    display: inline-block;
+    padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.a-upload  input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer
+}
+
+.a-upload:hover {
+    color: #444;
+    background: #eee;
+    border-color: #ccc;
+    text-decoration: none
+}
+
 .loadingbet {
     text-align: center;
     padding: 109px 0;
@@ -797,8 +834,19 @@ $c_m_background: #4A4A5F;
                     color: #333;
                     @include gray_gradient;
                     margin-right: 5px;
-                    &:hover {
-                        cursor: pointer;
+                    padding: 0;
+                    button {
+                        width: 100%;
+                        height: 100%;
+                        outline: none;
+                        border: none;
+                        background: none;
+                        font-size: 16px;
+                        color: #333;
+                        font-weight: bold;
+                    }
+                    button[disabled]{
+                        opacity: .6;
                     }
                 }
                 .c_m_bet_btn {
@@ -815,16 +863,18 @@ $c_m_background: #4A4A5F;
                     font-weight: bold;
                     vertical-align: top;
                     margin-top: 0;
-                    &:hover {
-                        cursor: pointer;
-                    }
-                    &:disabled {
-                        padding: 0;
-                        margin: 0;
+                    button {
+                        width: 100%;
+                        height: 100%;
+                        outline: none;
                         border: none;
-                        opacity: .9;
-                        cursor: not-allowed;
-
+                        background: none;
+                        font-size: 16px;
+                        color: #fff;
+                        font-weight: bold;
+                    }
+                    button[disabled]{
+                        opacity: .6;
                     }
                 }
             }
@@ -979,6 +1029,9 @@ $c_m_background: #4A4A5F;
                             color: #333;
                             font-weight: bold;
                         }
+                        button[disabled]{
+                            opacity: .6;
+                        }
                     }
                     .c_m_affirm_bet_btn {
                         @include wh(156px, 50px);
@@ -992,6 +1045,19 @@ $c_m_background: #4A4A5F;
                         float: right;
                         &:hover {
                             cursor: pointer;
+                        }
+                        button {
+                            width: 100%;
+                            height: 100%;
+                            outline: none;
+                            border: none;
+                            background: none;
+                            font-size: 16px;
+                            color: #fff;
+                            font-weight: bold;
+                        }
+                        button[disabled]{
+                            opacity: .6;
                         }
                     }
                 }

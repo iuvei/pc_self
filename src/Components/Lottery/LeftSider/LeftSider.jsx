@@ -173,9 +173,6 @@ export default class LeftSider extends Component {
         if (tempOpen == 'fucaip3' || tempOpen == 'ticaip3') {
             return ['低频'];
         }
-        if (tempOpen == 'BJKL8' || tempOpen == 'JSK3' || tempOpen == 'hnffc') {
-            return ['高频'];
-        }
     };
 
     render() {

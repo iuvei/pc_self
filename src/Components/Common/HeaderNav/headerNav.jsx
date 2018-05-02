@@ -218,11 +218,7 @@ export default class HeaderNav extends Component {
             {
                 typeName: '低频',
                 lotteryList: diping,
-            },
-            {
-                typeName: '高频',
-                lotteryList: rests,
-            },
+            }
         ];
         stateVar.lotteryType = lotteryTypeFlag;
     };

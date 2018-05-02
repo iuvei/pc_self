@@ -83,7 +83,10 @@ export default class ContentMian extends Component {
             traceTotalIssue: 0,
             traceTotalMoney: 0,
             traceifStop: false,
-            tempLotteryLength: 0
+            tempLotteryLength: 0,
+            showFile:false,
+            fileName:"",
+            fileValue:""
         }
         this.lotteryOkBet = this.lotteryOkBet.bind(this);
         this.getBetHistory = this.getBetHistory.bind(this);
@@ -990,7 +993,17 @@ export default class ContentMian extends Component {
             this.getNumMoney(num);
         }
     }
-
+	changeFile(){
+		this.setState({showFile:true});
+	};
+	selectFileCancle(){
+		this.setState({showFile:false,fileValue:"",fileName:""});
+	};
+	selectFileOk(){
+		this.setState({textAreaValue: this.state.fileValue,showFile:false,fileValue:"",fileName:""}, () => {
+            this._inptu_deal();
+        });
+	}
     //导入文件
     importFile(e) {
         let target = e.target;
@@ -1018,6 +1031,8 @@ export default class ContentMian extends Component {
         }
         let name = target.value;
         let _this = this;
+        let fileShowName=target.files[0].name;
+        this.setState({fileName:fileShowName});
         let fileName = name.substring(name.lastIndexOf(".") + 1).toLowerCase();
         if (fileName == 'txt' || fileName == 'svg') {
             if (isIE && !target.files) {
@@ -1028,10 +1043,8 @@ export default class ContentMian extends Component {
                 reader.readAsText(target.files[0], 'UTF-8');
                 reader.onload = function (evt) {
                     let filestring = evt.target.result;
-                    _this.setState({textAreaValue: filestring}, () => {
-                        target.value = '';
-                        _this._inptu_deal();
-                    });
+                    target.value = '';
+                    _this.setState({fileValue:filestring})
                 }
             }
         } else {
@@ -1217,8 +1230,8 @@ export default class ContentMian extends Component {
 
     //添加号码
     addNum(param) {
-        let nums = this.state.numss;//投注注数取整
-        let times = this.state.multipleValue;//投注倍数取整
+        let nums = this.state.numss;//投注注数
+        let times = this.state.multipleValue;//投注倍数
         let money = Math.round(times * nums * 2 * 1000 * (this.state.modes[this.state.selectYjf].rate)) / 1000;  //倍数*注数*单价 * 模式
         let mid = stateVar.aboutGame.methodID;
         let current_positionsel = $.lt_position_sel;
@@ -1548,7 +1561,7 @@ export default class ContentMian extends Component {
                         } else {
                             modal = Modal.error({
                                 title: '温馨提示',
-                                content: data.longMessage,
+                                content: data.longMessage
                             });
                         }
                         setTimeout(() => modal.destroy(), 3000);
@@ -2407,7 +2420,7 @@ export default class ContentMian extends Component {
                             <textarea className='textAreaClass' value={this.state.textAreaValue}
                                       onChange={(e) => this._inptu_deal(e)}></textarea>
                             <div className='inputImport'>
-                                <span className='importFile'><input type='file' onChange={(e) => this.importFile(e)}/>导入文件</span>
+                                <span className='importFile' onClick={()=>this.changeFile()}>导入文件</span>
                                 <span onClick={() => this.deleteSameNumber()}>删除重复号</span>
                                 <span onClick={() => this.cleartextArea()}>清空号码</span>
                             </div>
@@ -3061,6 +3074,22 @@ export default class ContentMian extends Component {
         return (
             <div>
                 <div className='content_bet'>
+                	<div>
+				        <Modal
+				          title="导入文件"
+				          visible={this.state.showFile}
+				          okText='导入'
+				          onOk={()=>this.selectFileOk()}
+				          onCancel={()=>this.selectFileCancle()}
+				        >
+				          <p style={{textAlign:"center",padding:"10px 0"}}>
+				          <a href="javascript:;" className="a-upload">
+				          	<input type='file' onChange={(e) => this.importFile(e)}/>点击这里上传文件
+				          </a>
+				          <span className="showName">{this.state.fileName}</span>
+				          </p>
+				        </Modal>
+				    </div>
                     <div className="content_main" key="ContentMian">
                         <ContentTop getVersion={() => this.getVersion()}
                                     getBetHistory={() => this.getBetHistory()}
@@ -3249,9 +3278,16 @@ export default class ContentMian extends Component {
                                     }
                                 </div>
                                 <div className="c_m_select_button">
-                                    <span className="c_m_add_btn" onClick={() => this.addNum()}>添加号码</span>
-                                    <Button disabled={this.state.directFlag} className="c_m_bet_btn directBet"
-                                            onClick={() => this.directBet()}>直接投注</Button>
+                                    <div className="c_m_add_btn">
+	                                    <Button  onClick={() => this.addNum()}>
+	                                    	添加号码
+	                                    </Button>
+                                    </div>
+                                    <div className="c_m_bet_btn directBet">
+	                                    <Button disabled={this.state.directFlag} onClick={() => this.directBet()}>
+	                                    	直接投注
+	                                    </Button>
+                                    </div>
                                 </div>
                             </div>
                             <div className="c_m_select_code_record">
@@ -3311,8 +3347,10 @@ export default class ContentMian extends Component {
                                             <span>总金额：</span>
                                             <span><strong>{stateVar.BetContent.totalMoney}</strong>&nbsp;元</span>
                                         </li>
-                                        <li style={{marginTop: '5px'}} className="c_m_affirm_bet_btn"
-                                            onClick={() => this.actionBet()}>确认投注
+                                        <li style={{marginTop: '5px'}} className="c_m_affirm_bet_btn">
+                                            <Button
+                                            disabled={stateVar.BetContent.lt_same_code == 0 ? true : false}
+                                            onClick={() => this.actionBet()}>确认投注</Button>
                                         </li>
                                         {
                                             (() => {

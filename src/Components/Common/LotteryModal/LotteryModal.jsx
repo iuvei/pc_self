@@ -369,12 +369,16 @@ export default class AlterModal extends Component {
                         </div>
                     </div>
                     <div className='btn_group'>
-                        <Button disabled={this.state.tzloding} className='oktz'  type="primary"  onClick={()=>{this.onOk()}}>
-                            确认
-                        </Button>
-                        <Button  className='btn_cancel' type="primary"  onClick={()=>{this.onCancel()}}>
-                            取消
-                        </Button>
+                        <div className='oktz'>
+	                        <Button disabled={this.state.tzloding}   type="primary"  onClick={()=>{this.onOk()}}>
+	                            确认
+	                        </Button>
+                        </div>
+                        <div className='btn_cancel'>
+	                        <Button type="primary"  onClick={()=>{this.onCancel()}}>
+	                            取消
+	                        </Button>
+                        </div>
                     </div>
                 </Modal>
                 <div className='mmclxgame'>

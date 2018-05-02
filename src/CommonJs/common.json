@@ -230,52 +230,8 @@
             "curmid": 313860,
             "imgUrl":"jnd30s",
             "imgSrc": "new",
-            "disabled": false
-        },
-        {
-            "cnname": "北京快乐8",
-            "nav": "BJKL8",
-            "lotteryid": -1,
-            "lotterytype": 1,
-            "imgUrl":"bjkl8",
-            "imgSrc": false,
-            "disabled": true
-        },
-        {
-            "cnname": "江苏快三",
-            "nav": "JSK3",
-            "lotteryid": -2,
-            "lotterytype": 1,
-            "imgUrl":"jsk3",
-            "imgSrc": false,
-            "disabled": true
-        },
-        {
-            "cnname": "河内1分彩",
-            "nav": "hnffc",
-            "lotteryid": -3,
-            "lotterytype": 1,
-            "imgUrl":"hn1fc",
-            "imgSrc": false,
-            "disabled": true
-        },
-        {
-            "cnname": "重庆11选5",
-            "nav": "CQ11-5",
-            "lotteryid": -4,
-            "lotterytype": 3,
-            "imgUrl":"cq11y5",
-            "imgSrc": false,
-            "disabled": true
-        },
-        {
-            "cnname": "河南481",
-            "nav": "HN481",
-            "lotteryid": -5,
-            "lotterytype": 2,
-            "imgUrl":"hn481",
-            "imgSrc": false,
-            "disabled": true
+            "disabled": false,
+            "hotLottery": 1
         }
     ]
 }
