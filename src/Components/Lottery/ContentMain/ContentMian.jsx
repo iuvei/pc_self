@@ -1043,7 +1043,7 @@ export default class ContentMian extends Component {
             target.value = "";
             return
         }
-    }
+    };
 
     //输入框监听处理
     _inptu_deal(e) {

@@ -169,8 +169,9 @@ export default class TeamTable extends Component {
 
     /*搜索*/
     onSearch() {
-        this.setState({searchLoading: true});
-        this.getData('onSearch');
+        let {postData} = this.state;
+        postData.p = 1;
+        this.setState({searchLoading: true, postData}, ()=> this.getData('onSearch'));
     };
 
     /*开始查询日期*/

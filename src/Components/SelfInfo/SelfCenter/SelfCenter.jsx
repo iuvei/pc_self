@@ -112,7 +112,7 @@ export default class SelfInfo extends PureComponent {
     };
     /*修改qq*/
     onChangeTencent(e){
-        let value = e.target.value,
+        let value = e.target.value.replace(/\s/g, ''),
             validate = this.state.validate,
             postData = this.state.postData;
         postData.tencent = value;
@@ -133,7 +133,7 @@ export default class SelfInfo extends PureComponent {
         });
     };
     onChangeWechat(e){
-        let value = e.target.value,
+        let value = e.target.value.replace(/\s/g, ''),
             postData = this.state.postData,
             validate = this.state.validate;
         postData.wechat = value;
@@ -175,10 +175,9 @@ export default class SelfInfo extends PureComponent {
         });
     };
     onChangePhone(e){
-        let value = e.target.value,
-            postData = this.state.postData,
-            validate = this.state.validate;
-        postData.phonenumber = e.target.value;
+        let value = e.target.value.replace(/\s/g, ''),
+            {postData, validate} = this.state;
+        postData.phonenumber = value;
         if (value != '') {
             let reg = /^[0-9]{11}$/;
             let r = reg.test(value);

@@ -216,7 +216,7 @@ export default class EA extends Component {
     };
     onChangeUserName(e){
         let {eaPostData, validate} = this.state,
-            val = e.target.value;
+            val = e.target.value.replace(/\s/g, '');
         eaPostData.userName = val;
         let reg = /^[\u4e00-\u9fa5]+$/,
             r = reg.test(val);

@@ -95,9 +95,10 @@ export default class Contract extends Component {
 
         return (
             <Modal
-                title="修改契约"
+                title={"修改" + title}
                 visible={alterVisible}
                 wrapClassName="vertical-center-modal"
+                destroyOnClose={true}
                 footer={null}
                 maskClosable={false}
                 width={title == '日工资契约' ? 619 : 520}

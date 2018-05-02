@@ -154,7 +154,7 @@ export default class Dividend extends Component {
     /*输入用户名*/
     onChangeUserName(e) {
         let postData = this.state.postData;
-        postData.username = e.target.value;
+        postData.username = e.target.value.replace(/\s/g, '');
         this.forceUpdate();
     };
 

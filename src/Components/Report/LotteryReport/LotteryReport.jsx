@@ -162,8 +162,9 @@ export default class LotteryReport extends Component {
 
     /*搜索*/
     onSearch() {
-        this.setState({searchLoading: true});
-        this.getData('clickTable');
+        let {postData} = this.state;
+        postData.p = 1;
+        this.setState({searchLoading: true, postData}, ()=>this.getData('clickTable'));
     };
 
     /*切换每页显示条数*/
