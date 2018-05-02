@@ -89,13 +89,14 @@ export default class MentionFillingRecord extends Component {
     /*查询用户名*/
     onChangeUserName(e) {
         let postData = this.state.postData;
-        postData.username = e.target.value;
+        postData.username = e.target.value.replace(/\s/g,'');
         this.setState({postData});
     };
     /*搜索*/
     onSearch() {
-        this.setState({searchLoading: true});
-        this.getData();
+        let {postData} = this.state;
+        postData.p = 1;
+        this.setState({searchLoading: true, postData}, ()=>this.getData());
     };
     /*切换每页显示条数*/
     onShowSizeChange (current, pageSize) {

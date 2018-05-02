@@ -367,13 +367,14 @@ export default class AccountChange extends Component {
     /*查询用户名*/
     onChangeUserName(e) {
         let postData = this.state.postData;
-        postData.username = e.target.value;
+        postData.username = e.target.value.replace(/\s/g, '');
         this.setState({postData});
     };
     /*搜索*/
     onSearch() {
-        this.setState({searchLoading: true});
-        this.getData();
+        let {postData} = this.state;
+        postData.p = 1;
+        this.setState({searchLoading: true, postData}, ()=>this.getData());
     };
     /*切换每页显示条数*/
     onShowSizeChange (current, pageSize) {
@@ -460,6 +461,10 @@ export default class AccountChange extends Component {
                     <div className="t_l_time"  onKeyDown={(e)=>this.onKeyDown(e)}>
                         <ul className="t_l_time_row">
                             <li>
+                                <span>用户名：</span>
+                                <Input placeholder="请输入用户名" onChange={(e)=>this.onChangeUserName(e)}/>
+                            </li>
+                            <li>
                                 <span>查询日期：</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
@@ -469,8 +474,6 @@ export default class AccountChange extends Component {
                                     onChange={(date, dateString)=>{this.onChangeStartDate(date, dateString)}}
                                     disabledDate={(current)=>disabledDate(current, -16, 1)}
                                 />
-                            </li>
-                            <li>
                                 <span className="t_m_date_mar">至</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
@@ -503,10 +506,6 @@ export default class AccountChange extends Component {
                                 </Select>
                             </li>
                             <li>
-                                <span>用户名：</span>
-                                <Input placeholder="请输入用户名" onChange={(e)=>this.onChangeUserName(e)}/>
-                            </li>
-                            <li>
                                 <Checkbox onChange={(e)=>this.onCheckbox(e)}>包含下级</Checkbox>
                             </li>
                             <li className="t_m_serch">
@@ -527,7 +526,7 @@ export default class AccountChange extends Component {
                                footer={response.resultCount <= 0 ? null : ()=>footer}
                         />
                     </div>
-                    <div className="t_l_page" style={{display: response.resultCount > 0 ? 'blank' : 'none'}}>
+                    <div className="t_l_page" style={{display: parseInt(response.resultCount) > 0 ? 'block' : 'none'}}>
                         <Pagination showSizeChanger
                                     onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}}
                                     onChange={(page)=>this.onChangePagination(page)}

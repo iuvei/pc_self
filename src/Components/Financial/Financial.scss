@@ -18,6 +18,10 @@
                     margin-bottom: 12px;
                     li{
                         float: left;
+                        margin-right: 15px;
+                        .ant-input{
+                            width: 120px;
+                        }
                     }
                 }
                 .t_l_classify{

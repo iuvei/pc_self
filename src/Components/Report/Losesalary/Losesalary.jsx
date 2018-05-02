@@ -73,8 +73,9 @@ export default class Losesalary extends Component {
     };
     /*搜索*/
     onSearch() {
-        this.setState({ searchLoading: true });
-        this.getData();
+        let {postData} = this.state;
+        postData.p = 1;
+        this.setState({ searchLoading: true, postData }, ()=>this.getData());
     };
     /*切换每页条数*/
     onShowSizeChange (current, pageSize) {

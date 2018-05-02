@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import {hashHistory} from 'react-router';
+import moment from 'moment';
 import {
     DatePicker,
     Table,
@@ -40,8 +41,8 @@ export default class TeamList extends Component {
             },
             selectInfo: {
                 username: '', //用户id
-                register_time_begin: '', //开始时间
-                register_time_end: '', //结束时间
+                register_time_begin: null, //开始时间
+                register_time_end: null, //结束时间
                 p: 1, //页数
                 pn: 10, //每页条数
                 uid: '', //点击用户名传入的用户id
@@ -200,6 +201,12 @@ export default class TeamList extends Component {
                         self: resData.self,
                         users: resData.users == null ? [] : resData.users,
                     });
+                }else{
+                    if(type == 'search'){
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             }
         })
@@ -208,7 +215,7 @@ export default class TeamList extends Component {
     /*input用户名*/
     onChangeUserName(e) {
         let selectInfo = this.state.selectInfo;
-        selectInfo.username = e.target.value;
+        selectInfo.username = e.target.value.replace(/\s/g,'');
         this.setState({selectInfo: selectInfo})
     };
 
@@ -504,7 +511,17 @@ export default class TeamList extends Component {
 
     /*奖金组设置 滑动条*/
     onRegisterSetBonus(value) {
-        this.setState({prizeGroupFlag: value});
+        let reg = /^[0-9]*$/;
+        let r = reg.test(value);
+        if (!r || value == '' || value == undefined) {
+            this.forceUpdate();
+            return
+        }
+        if(value % 2 !== 0){
+            this.setState({prizeGroupFlag: parseInt(value) + 1});
+        }else{
+            this.setState({prizeGroupFlag: value});
+        }
     };
 
     /*奖金组*/
@@ -727,6 +744,9 @@ export default class TeamList extends Component {
     onGroupNum() {
         let {selectInfo} = this.state;
         selectInfo.sortby = 'is_online' + ' ' + 'desc';
+        selectInfo.username = null;
+        selectInfo.register_time_begin = '';
+        selectInfo.register_time_end = '';
         this.setState({selectInfo}, () => this.getData());
     };
 
@@ -765,7 +785,7 @@ export default class TeamList extends Component {
 
     render() {
         const {dailysalaryStatus} = stateVar;
-        const {tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge, users} = this.state;
+        const {tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge, users, selectInfo} = this.state;
         let columns = [
             {
                 title: '用户名',
@@ -1310,12 +1330,12 @@ export default class TeamList extends Component {
                 <div>
                     该用户的奖金组级别为
                     <InputNumber
-                        // min={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[0].prizeGroup) : 1800}
-                        // max={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup) : 1956}
+                        min={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[0].prizeGroup) : 1800}
+                        max={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup) : 1956}
                         value={this.state.prizeGroupFlag}
                         step={2}
                         onChange={(value) => this.onRegisterSetBonus(value)}
-                        disabled={true}
+                        // disabled={true}
                     />。
                     <div className="prize_group_slider">
                         <Icon className="slider_left" onClick={() => this.onMinus()} type="left"/>
@@ -1352,7 +1372,7 @@ export default class TeamList extends Component {
                                 <Input placeholder="请输入用户名" value={this.state.selectInfo.username}
                                        onChange={(e) => this.onChangeUserName(e)}/>
                             </li>
-                            <li style={{marginLeft: '8px'}}>
+                            <li>
                                 <span>注册时间：</span>
                                 <DatePicker showTime
                                             allowClear={false}
@@ -1415,21 +1435,25 @@ export default class TeamList extends Component {
                         />
                     </div>
                 </div>
-                <Contract
-                    title={this.state.typeName}
-                    userid={this.state.alterData.userid}
-                    textDescribe={typeContent}
-                    alterData={this.state.alterData}
-                    alterVisible={this.state.alterVisible}
-                    affirmLoading={this.state.affirmLoading}
-                    contract_name={this.state.contract_name}
-                    // disabled={this.state.disabled}
-                    userList={this.state.tableData.dataSource}
-                    contractInfo={this.state.contractInfo}
-                    disabledSelect={true}
-                    onCancel={this.onCancel}
-                    onAffirm={this.onDiviratio}
-                />
+
+                {
+                    this.state.alterVisible ?
+                        <Contract
+                            title={this.state.typeName}
+                            userid={this.state.alterData.userid}
+                            textDescribe={typeContent}
+                            alterData={this.state.alterData}
+                            alterVisible={this.state.alterVisible}
+                            affirmLoading={this.state.affirmLoading}
+                            contract_name={this.state.contract_name}
+                            // disabled={this.state.disabled}
+                            userList={this.state.tableData.dataSource}
+                            contractInfo={this.state.contractInfo}
+                            disabledSelect={true}
+                            onCancel={this.onCancel}
+                            onAffirm={this.onDiviratio}
+                        /> : null
+                }
                 <Modal
                     title="配额申请"
                     visible={this.state.quotaVisible}

@@ -121,7 +121,7 @@ export default class Marketing extends Component {
     /*注册-用户名*/
     onRegisteruserName(e) {
         let {validate, registerPost} = this.state,
-            val = e.target.value,
+            val = e.target.value.replace(/\s/g,''),
             reg = /^(?=.*[\da-zA-Z]+)(?!.*?([a-zA-Z0-9]+?)\1\1\1).{6,16}$/,
             r = reg.test(val);
         if (r) {
