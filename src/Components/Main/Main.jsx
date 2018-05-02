@@ -107,18 +107,18 @@ export default class Main extends Component {
         </div>;
         return (
             <div>
-                <header style={{display: this.showHeader() ? 'none' : ''}}>
-                    <HeaderNav/>
-                </header>
+                {
+                    this.showHeader() ? null : <HeaderNav/>
+                }
                 {
                     this.showLeftSider() ? this.props.children : contain
                 }
-                <div style={{display: this.hideRight() ? 'none' : ''}}>
-                    <RightPlug/>
-                </div>
-                <footer style={{display: this.showFooter() ? 'none' : ''}}>
-                    <Footer/>
-                </footer>
+                {
+                    this.hideRight() ? null : <RightPlug/>
+                }
+                {
+                    this.showFooter() ? null : <Footer/>
+                }
             </div>
         );
     }

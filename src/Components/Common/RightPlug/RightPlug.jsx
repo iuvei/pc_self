@@ -113,6 +113,8 @@ export default class RightPlug extends Component {
 
     /*域名测速*/
     getSpeed() {
+        // let lineUrl = getStore('lineUrl'),
+        //     ind = Math.round(Math.random()* (lineUrl.length - 1));
         return (
             <div className="r_p_speed">
                 <p>
@@ -121,11 +123,12 @@ export default class RightPlug extends Component {
                 </p>
                 <p>
                     <Button className="btn_cesu" onClick={()=>this.updateLine()}>
-                        {/*<Link to="/login">*/}
-                            重新测速
-                        {/*</Link>*/}
+                        重新测速
                     </Button>
                     <Button>
+                        {/*<a href={lineUrl[ind].domain + '/newPC/index.html?cs=1#/lottery'}>*/}
+                            {/*更换路线*/}
+                        {/*</a>*/}
                         <Link to="/login">
                             更换路线
                         </Link>

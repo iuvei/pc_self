@@ -798,6 +798,225 @@ const methodId = {
     191903: 'HHZX',
     191904: 'ZUHZ',
 
+    //加拉大30秒
+    3111893: 'ZX3',
+    3111894: 'QZXHZ',
+    3111895:  'ZX3',
+    3111896: 'HZXHZ',
+    3111897: 'QZUS',
+    3111898: 'QZUL',
+    3111899: 'QHHZX',
+    3111900: 'QZUHZ',
+    3111901: 'ZU3BD',
+    3111902: 'HZUS',
+    3111903: 'HZUL',
+    3111904: 'HHHZX',
+    3111905: 'HZUHZ',
+    3111906: 'ZU3BD',
+    3111907: 'HBDW1',
+    3111908: 'HBDW1',
+    3111909: 'HBDW2',
+    3111910: 'HBDW2',
+    3111911: 'ZX2',
+    3111912: 'ZX2',
+    3111913: 'ZXHZ2',
+    3111914: 'ZXHZ2',
+    3111915: 'ZU2',
+    3111916: 'ZU2',
+    3111917: 'ZUHZ2',
+    3111918:  'ZUHZ2',
+    3111919: 'DWD',
+    3111920: 'DWD',
+    3111921: 'DWD',
+    3111922: 'DWD',
+    3111923: 'DWD',
+    3111924: 'DXDS',
+    3111925: 'DXDS',
+    3111926: 'ZX4',
+    3111927: 'ZH4',
+    3111928: 'SXZU24',
+    3111929: 'SXZU12',
+    3111930:  'SXZU6',
+    3111931:  'SXZU4',
+    3111932:  'ZX5',
+    3111933:  'ZH5',
+    3111934: 'WXZU120',
+    3111935:  'WXZU60',
+    3111936:  'WXZU30',
+    3111937:  'WXZU20',
+    3111938:  'WXZU10',
+    3111939: 'WXZU5',
+    3111940: 'BDW1',
+    3111941: 'HSCS',
+    3111942: 'SXBX',
+    3111943: 'SJFC',
+    3111944: 'ZX3',
+    3111945: 'ZXHZ',
+    3111946: 'ZUS',
+    3111947: 'ZUL',
+    3111948: 'HHZX',
+    3111949: 'ZUHZ',
+    3111950: 'RXZXSSC2',
+    3111951: 'RXZXSSC2',
+    3111952: 'RXZXSSC2',
+    3111953: 'RXZXSSC2',
+    3111954: 'RXZXSSC2',
+    3111955: 'RXZXSSC2',
+    3111956: 'RXZXSSC2',
+    3111957: 'RXZXSSC2',
+    3111958: 'RXZXSSC2',
+    3111959: 'RXZXSSC2',
+    3111960: 'RXZXSSCC2DS',
+    3111961: 'RXZXSSCC2DS',
+    3111962: 'RXZXSSCC2DS',
+    3111963: 'RXZXSSCC2DS',
+    3111964: 'RXZXSSCC2DS',
+    3111965: 'RXZXSSCC2DS',
+    3111966: 'RXZXSSCC2DS',
+    3111967: 'RXZXSSCC2DS',
+    3111968: 'RXZXSSCC2DS',
+    3111969: 'RXZXSSCC2DS',
+    3111970: 'RXZXSSC2HZ',
+    3111971: 'RXZXSSC2HZ',
+    3111972: 'RXZXSSC2HZ',
+    3111973: 'RXZXSSC2HZ',
+    3111974: 'RXZXSSC2HZ',
+    3111975: 'RXZXSSC2HZ',
+    3111976: 'RXZXSSC2HZ',
+    3111977: 'RXZXSSC2HZ',
+    3111978: 'RXZXSSC2HZ',
+    3111979: 'RXZXSSC2HZ',
+    3111980: 'RXZUSSC2',
+    3111981: 'RXZUSSC2',
+    3111982: 'RXZUSSC2',
+    3111983: 'RXZUSSC2',
+    3111984: 'RXZUSSC2',
+    3111985: 'RXZUSSC2',
+    3111986: 'RXZUSSC2',
+    3111987: 'RXZUSSC2',
+    3111988: 'RXZUSSC2',
+    3111989: 'RXZUSSC2',
+    3111990: 'RXZUSSC2DS',
+    3111991: 'RXZUSSC2DS',
+    3111992: 'RXZUSSC2DS',
+    3111993: 'RXZUSSC2DS',
+    3111994: 'RXZUSSC2DS',
+    3111995: 'RXZUSSC2DS',
+    3111996: 'RXZUSSC2DS',
+    3111997: 'RXZUSSC2DS',
+    3111998: 'RXZUSSC2DS',
+    3111999: 'RXZUSSC2DS',
+    3112000: 'RXZUSSCC2HZ',
+    3112001: 'RXZUSSCC2HZ',
+    3112002: 'RXZUSSCC2HZ',
+    3112003: 'RXZUSSCC2HZ',
+    3112004: 'RXZUSSCC2HZ',
+    3112005: 'RXZUSSCC2HZ',
+    3112006: 'RXZUSSCC2HZ',
+    3112007: 'RXZUSSCC2HZ',
+    3112008: 'RXZUSSCC2HZ',
+    3112009: 'RXZUSSCC2HZ',
+    3112010: 'RXZXSSC3',
+    3112011: 'RXZXSSC3',
+    3112012: 'RXZXSSC3',
+    3112013: 'RXZXSSC3',
+    3112014: 'RXZXSSC3',
+    3112015: 'RXZXSSC3',
+    3112016: 'RXZXSSC3',
+    3112017: 'RXZXSSC3',
+    3112018: 'RXZXSSC3',
+    3112019: 'RXZXSSC3',
+    3112020: 'RXZXSSSC3DS',
+    3112021: 'RXZXSSSC3DS',
+    3112022: 'RXZXSSSC3DS',
+    3112023: 'RXZXSSSC3DS',
+    3112024: 'RXZXSSSC3DS',
+    3112025: 'RXZXSSSC3DS',
+    3112026: 'RXZXSSSC3DS',
+    3112027: 'RXZXSSSC3DS',
+    3112028: 'RXZXSSSC3DS',
+    3112029: 'RXZXSSSC3DS',
+    3112030: 'RXZXSSSC3HZ',
+    3112031: 'RXZXSSSC3HZ',
+    3112032: 'RXZXSSSC3HZ',
+    3112033: 'RXZXSSSC3HZ',
+    3112034: 'RXZXSSSC3HZ',
+    3112035: 'RXZXSSSC3HZ',
+    3112036: 'RXZXSSSC3HZ',
+    3112037: 'RXZXSSSC3HZ',
+    3112038: 'RXZXSSSC3HZ',
+    3112039: 'RXZXSSSC3HZ',
+    3112041: 'RXZUSANSSSC3',
+    3112042: 'RXZUSANSSSC3',
+    3112043: 'RXZUSANSSSC3',
+    3112044: 'RXZUSANSSSC3',
+    3112045: 'RXZUSANSSSC3',
+    3112046: 'RXZUSANSSSC3',
+    3112047: 'RXZUSANSSSC3',
+    3112048: 'RXZUSANSSSC3',
+    3112049: 'RXZUSANSSSC3',
+    3112050: 'RXZUSANSSSC3',
+    3112051: 'RXZUSIXSSSC3',
+    3112052: 'RXZUSIXSSSC3',
+    3112053: 'RXZUSIXSSSC3',
+    3112054: 'RXZUSIXSSSC3',
+    3112055: 'RXZUSIXSSSC3',
+    3112056: 'RXZUSIXSSSC3',
+    3112057: 'RXZUSIXSSSC3',
+    3112058: 'RXZUSIXSSSC3',
+    3112059: 'RXZUSIXSSSC3',
+    3112060: 'RXZUSIXSSSC3',
+    3112061: 'RXZUSSSC3HH',
+    3112062: 'RXZUSSSC3HH',
+    3112063: 'RXZUSSSC3HH',
+    3112064: 'RXZUSSSC3HH',
+    3112065: 'RXZUSSSC3HH',
+    3112066: 'RXZUSSSC3HH',
+    3112067: 'RXZUSSSC3HH',
+    3112068: 'RXZUSSSC3HH',
+    3112069: 'RXZUSSSC3HH',
+    3112070: 'RXZUSSSC3HH',
+    3112071: 'RXZUSSSC3HZ',
+    3112072: 'RXZUSSSC3HZ',
+    3112073: 'RXZUSSSC3HZ',
+    3112074: 'RXZUSSSC3HZ',
+    3112075: 'RXZUSSSC3HZ',
+    3112076: 'RXZUSSSC3HZ',
+    3112077: 'RXZUSSSC3HZ',
+    3112078: 'RXZUSSSC3HZ',
+    3112079: 'RXZUSSSC3HZ',
+    3112080: 'RXZUSSSC3HZ',
+    3112094: 'RXZXSSSC4',
+    3112095: 'RXZXSSSC4',
+    3112096: 'RXZXSSSC4',
+    3112097: 'RXZXSSSC4',
+    3112098: 'RXZXSSSC4',
+    3112099: 'RXZXSSSC4DS',
+    3112100: 'RXZXSSSC4DS',
+    3112101: 'RXZXSSSC4DS',
+    3112102: 'RXZXSSSC4DS',
+    3112103: 'RXZXSSSC4DS',
+    3112109: 'RXZU24SSSC4',
+    3112110: 'RXZU24SSSC4',
+    3112111: 'RXZU24SSSC4',
+    3112112: 'RXZU24SSSC4',
+    3112113: 'RXZU24SSSC4',
+    3112114: 'RXZU12SSSC4',
+    3112115: 'RXZU12SSSC4',
+    3112116: 'RXZU12SSSC4',
+    3112117: 'RXZU12SSSC4',
+    3112118: 'RXZU12SSSC4',
+    3112119: 'RXZU6SSSC4',
+    3112120: 'RXZU6SSSC4',
+    3112121: 'RXZU6SSSC4',
+    3112122: 'RXZU6SSSC4',
+    3112123: 'RXZU6SSSC4',
+    3112124: 'RXZU4SSSC4',
+    3112125: 'RXZU4SSSC4',
+    3112126: 'RXZU4SSSC4',
+    3112127: 'RXZU4SSSC4',
+    3112128: 'RXZU4SSSC4',
+
     // 龙虎庄闲
     1020422: 'LHZXL1H2',
     1020423: 'LHZXH1L2',
@@ -1829,6 +2048,7 @@ const methodId = {
 };
 //投注
 const checkNum = () => {
+    // debugger
     //实时计算投注注数与金额等
     var nums = 0, mname = methodId[stateVar.aboutGame.methodID];//玩法的简写,如:'ZX3'
     //var modes = parseInt($("#lt_project_modes").val(),10);//投注模式
@@ -1852,6 +2072,7 @@ const checkNum = () => {
                 case 'RXZUFFC3HH' :
                 case 'RXZUSSC3HH' :
                 case 'HHZX' :
+                case 'HHHZX' :
                     nums = _inputCheck_Num(3, false, _HHZXcheck, true);
                     if (mname == 'RXZUSSC3HH' || mname == 'RXZUWFC3HH' || mname == 'RXZUFFC3HH') {
                         nums *= $.lt_position_sel.length == 0 ? 0 : commone.Combination($.lt_position_sel.length, 3);
@@ -1986,6 +2207,7 @@ const checkNum = () => {
                 }
                 break;
             case 'ZXHZ' :   //直选和值特殊算法
+            case 'HZXHZ' :
             case 'RXZXWFC3HZ' :
             case 'RXZXFFC3HZ' :
             case 'RXZXSSC3HZ' :	//任选三直选和值
@@ -2023,7 +2245,7 @@ const checkNum = () => {
             case 'RXZUWFC3HZ' :
             case 'RXZUFFC3HZ' :
             case 'RXZUSSC3HZ' :
-                if (mname == 'ZUHZ' || mname == 'RXZUSSC3HZ' || mname == 'RXZUWFC3HZ' || mname == 'RXZUFFC3HZ') {//任选三组选和值
+                if (mname == 'ZUHZ'|| mname == 'RXZUSSC3HZ' || mname == 'RXZUWFC3HZ' || mname == 'RXZUFFC3HZ') {//任选三组选和值
                     cc = {
                         1: 1,
                         2: 2,
@@ -2066,6 +2288,7 @@ const checkNum = () => {
                 }
                 break;
             case 'ZUS'  :   //组三
+            case 'HZUS'  :
             case 'RXZUSANWFC3'    :
             case 'RXZUSANFFC3'    :
             case 'RXZUSANSSC3'    :
@@ -2082,6 +2305,7 @@ const checkNum = () => {
                 }
                 break;
             case 'ZUL'  :   //组六
+            case 'HZUL'  :
             case 'RXZUSIXWFC3'    :
             case 'RXZUSIXFFC3'    :
             case 'RXZUSIXSSC3'    :
@@ -2140,6 +2364,7 @@ const checkNum = () => {
                 }
                 break;
             case 'BDW2'  :  //二码不定位
+            case 'HBDW2'  :
             case 'ZU2'   :  //2位组选
                 for (i = 0; i <= stateVar.aboutGame.max_place; i++) {
                     var s = tempAr[i].length;
@@ -2901,7 +3126,7 @@ let recordPoschoose = () => {
         }
     })
     $("input[name='poschoose']").val(str.slice(0, -1));
-}
+};
 /************************ 验证号码合法性以及计算单笔投注注数以及金额 ***********************/
 let _HHZXcheck = (n, len) => {//混合组选合法号码检测，合法返回TRUE，非法返回FALSE,n号码，len号码长度
     if (len == 2) {//两位
@@ -3437,7 +3662,7 @@ let getSuiji = (length, minchose, string) => {
 
     }
     return results;
-}
+};
 //时时彩定胆位
 let getSuiji3 = (length, minchose, t) => {
     var size = 0; //表示随机生成几个数字
@@ -3474,7 +3699,7 @@ let getSuiji3 = (length, minchose, t) => {
 
     }
     return results;
-}
+};
 //只用于北京PK10,11选5
 let getSuiji2 = (length, minchose, t) => {
     var size = 0; //表示随机生成几个数字
@@ -3518,7 +3743,7 @@ let getSuiji2 = (length, minchose, t) => {
 
     }
     return results;
-}
+};
 //随机算法3
 let getSuijiDing = (list) => {
     var list = list;

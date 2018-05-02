@@ -111,11 +111,6 @@ export default class Login extends Component {
         }, 200);
         Fetch.domians().then((res) => {
             if(this._ismount){
-                // if(type === 'clickUpdate'){
-                //     this.setState({
-                //         updateLine: false,
-                //     })
-                // }
                 let imgs = [],
                     index = 0,
                     times = [],
@@ -158,7 +153,7 @@ export default class Login extends Component {
                                 timesFlag.classNm = "red";
                             }
 
-                            timesFlag.time = time;
+                            // timesFlag.time = time;
                             timesFlag.speed = Math.round(filesize * 1000 /timeFlag);
                             timesFlag.domain = list[i].domain;
                             times.push(timesFlag);
@@ -179,7 +174,7 @@ export default class Login extends Component {
                             } else {
                                 timesFlag.classNm = "red";
                             }
-                            timesFlag.time = time;
+                            // timesFlag.time = time;
                             timesFlag.speed = Math.round(filesize * 1000 /timeFlag);
                             timesFlag.domain = list[i].domain;
                             times.push(timesFlag);
@@ -203,6 +198,7 @@ export default class Login extends Component {
                                 })
                             }
                             setStore('speed', selfLine.speed);
+                            // setStore('lineUrl', list);
                         }
                     };
                 }

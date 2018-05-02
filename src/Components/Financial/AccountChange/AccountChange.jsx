@@ -527,7 +527,7 @@ export default class AccountChange extends Component {
                                footer={response.resultCount <= 0 ? null : ()=>footer}
                         />
                     </div>
-                    <div className="t_l_page" style={{display: response.resultCount <= 0 ? 'none' : ''}}>
+                    <div className="t_l_page" style={{display: response.resultCount > 0 ? 'blank' : 'none'}}>
                         <Pagination showSizeChanger
                                     onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}}
                                     onChange={(page)=>this.onChangePagination(page)}

@@ -22,7 +22,7 @@ export default class Login extends Component {
     handleVisibleIphone = (visibleIphone) =>{
         this.setState({ visibleIphone }, ()=>{
             if(visibleIphone){
-                _code('qrcode_iphone', stateVar.httpUrl + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime(), 210, 185)
+                _code('qrcode_iphone', stateVar.httpUrl + '/feed/downH5/downH5ios.html?' + (new Date).getTime(), 210, 185)
             }
         });
     };
@@ -66,7 +66,7 @@ export default class Login extends Component {
                                      visible={this.state.visibleIphone}
                                      onVisibleChange={this.handleVisibleIphone}
                             >
-                                <a href={stateVar.httpUrl + '/feed/downH5/ioshc.ipa?' + (new Date).getTime()} target='_blank'>
+                                <a href={stateVar.httpUrl + '/feed/downH5/HC_2.0.ipa?' + (new Date).getTime()} target='_blank'>
                                     <p className='phone_btn1'>
                                         iPhone下载
                                     </p>
@@ -79,7 +79,7 @@ export default class Login extends Component {
                                      visible={this.state.visibleAndriod}
                                      onVisibleChange={this.handleVisibleAndriod}
                             >
-                                <a href={stateVar.httpUrl + '/feed/downH5/andriod_hc_1_2.apk?' + (new Date).getTime()}  target='_blank'>
+                                <a href={stateVar.httpUrl + '/feed/downH5/HC_2.0.apk?' + (new Date).getTime()}  target='_blank'>
                                     <p className='phone_btn2'>
                                         安卓版下载
                                     </p>

@@ -389,7 +389,7 @@ export default class Dividend extends Component {
                 width: 90,
             },
             {
-                title: '毛收入',
+                title: '盈亏总额',
                 dataIndex: 'gross_income',
                 className: 'column-right',
                 width: 110,

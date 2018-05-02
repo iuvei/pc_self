@@ -19,8 +19,6 @@ export const getNextMonth = (date) =>{
     let arr = date.split('-');
     let year = arr[0]; //获取当前日期的年份
     let month = arr[1]; //获取当前日期的月份
-    let days = new Date(year, month, 0);
-    days = days.getDate(); //获取当前日期中的月的天数
     let year2 = year;
     let month2 = parseInt(month) + 1;
     if (month2 == 13) {
