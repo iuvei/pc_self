@@ -87,7 +87,7 @@ export default class ContentMian extends Component {
             showFile:false,
             fileName:"",
             fileValue:""
-        }
+        };
         this.lotteryOkBet = this.lotteryOkBet.bind(this);
         this.getBetHistory = this.getBetHistory.bind(this);
         this.getVersion = this.getVersion.bind(this);

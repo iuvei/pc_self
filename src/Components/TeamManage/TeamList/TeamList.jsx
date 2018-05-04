@@ -391,7 +391,7 @@ export default class TeamList extends Component {
     onDiviratio(contract_name) {
         let _this = this;
         confirm({
-            title: '确认要'+ contract_name +'吗?',
+            title: <div>确认要{contract_name}下级 <b className="col_color_ying">{this.state.alterData.username}</b>的配额申请吗?</div>,
             onOk() {
                 _this.setProtocol(contract_name)
             },
@@ -399,7 +399,7 @@ export default class TeamList extends Component {
     };
 
     setProtocol(contract_name) {
-        let {typeName, alterData} = this.state;
+        let {typeName, alterData, tableData} = this.state;
         this.setState({affirmLoading: true});
         if (typeName == '配额契约') {
             let {agPost} = this.state;
@@ -421,16 +421,29 @@ export default class TeamList extends Component {
                         Modal.success({
                             title: res.repsoneContent,
                             onOk(){
-                                _this.getData('modify');
-                                _this.getNum();
+                                // _this.getData('modify');
+                                // _this.getNum();
                             }
                         });
+                        let defaultStatus = alterData.useraccgroup_status;
+                        for(let i = 0, dataSource = tableData.dataSource; i < dataSource.length; i++){
+                            if(dataSource[i].userid == alterData.userid){
+                                if(contract_name == '同意'){
+                                    dataSource[i].useraccgroup_status = 1;
+                                }else{
+                                    this.getData('modify');
+                                }
+                                break;
+                            }
+                        }
                         this.setState({
                             quotaVisible: false,
                             alterVisible: false,
+                            tableData
                         });
+                        this.getNum();
                         this.getAccGroupList(alterData);
-                        this.clearTimeout = setTimeout(() => this.getData(), 31000);
+                        // this.clearTimeout = setTimeout(() => this.getData(), 31000);
                     } else {
                         Modal.warning({
                             title: res.shortMessage,
