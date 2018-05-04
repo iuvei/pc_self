@@ -4,7 +4,6 @@ import {observer} from 'mobx-react';
 import { Button, Modal, Select } from 'antd';
 const Option = Select.Option;
 import common from '../../../CommonJs/common';
-import { stateVar } from '../../../State';
 
 import './Contract.scss';
 
@@ -15,7 +14,6 @@ export default class Contract extends Component {
     };
     render() {
         const { alterData, title, alterVisible, textDescribe, userList, contractInfo, disabledSelect } = this.props;
-
         return (
             <Modal
                 title={"修改" + title}
@@ -79,7 +77,7 @@ export default class Contract extends Component {
                     </div>
                     <div className="a_c_btn">
                         <Button loading={this.props.affirmLoading}
-                                onClick={()=>this.props.onAffirm()}
+                                onClick={()=>this.props.onAffirm('修改' ,alterData.username, title)}
                                 type="primary"
                                 className="a_c_cancel_btn"
                         >

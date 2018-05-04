@@ -388,10 +388,10 @@ export default class TeamList extends Component {
     };
 
     /*提交协议*/
-    onDiviratio(contract_name) {
+    onDiviratio(contract_name, username, type) {
         let _this = this;
         confirm({
-            title: <div>确认要{contract_name}下级 <b className="col_color_ying">{this.state.alterData.username}</b>的配额申请吗?</div>,
+            title: <div>确认要{contract_name}下级 <b className="col_color_ying">{username}</b> 的{type}吗?</div>,
             onOk() {
                 _this.setProtocol(contract_name)
             },
@@ -416,31 +416,29 @@ export default class TeamList extends Component {
             }).then((res) => {
                 if (this._ismount) {
                     this.setState({affirmLoading: false});
-                    let _this = this;
                     if (res.status == 200) {
                         Modal.success({
                             title: res.repsoneContent,
-                            onOk(){
-                                // _this.getData('modify');
-                                // _this.getNum();
-                            }
                         });
-                        let defaultStatus = alterData.useraccgroup_status;
-                        for(let i = 0, dataSource = tableData.dataSource; i < dataSource.length; i++){
-                            if(dataSource[i].userid == alterData.userid){
-                                if(contract_name == '同意'){
+                        if(contract_name == '同意'){
+                            for(let i = 0, dataSource = tableData.dataSource; i < dataSource.length; i++){
+                                if(dataSource[i].userid == alterData.userid){
                                     dataSource[i].useraccgroup_status = 1;
-                                }else{
-                                    this.getData('modify');
+                                    break;
                                 }
-                                break;
                             }
+                            this.setState({
+                                quotaVisible: false,
+                                alterVisible: false,
+                                tableData
+                            });
+                        }else{
+                            this.getData('modify');
+                            this.setState({
+                                quotaVisible: false,
+                                alterVisible: false,
+                            });
                         }
-                        this.setState({
-                            quotaVisible: false,
-                            alterVisible: false,
-                            tableData
-                        });
                         this.getNum();
                         this.getAccGroupList(alterData);
                         // this.clearTimeout = setTimeout(() => this.getData(), 31000);
@@ -1408,7 +1406,7 @@ export default class TeamList extends Component {
                                             allowClear={false}
                                             format="YYYY-MM-DD HH:mm:ss"
                                             placeholder="请选择开始时间"
-                                            value={selectInfo.register_time_begin}
+                                            value={this.state.register_time_begin_flag}
                                             onChange={(date, dateString) => this.onRegisterTimeStart(date, dateString)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
@@ -1416,6 +1414,7 @@ export default class TeamList extends Component {
                                             allowClear={false}
                                             format="YYYY-MM-DD HH:mm:ss"
                                             placeholder="请选择结束时间"
+                                            value={this.state.register_time_end_flag}
                                             onChange={(date, dateString) => this.onRegisterTimeEnd(date, dateString)}
                                 />
                             </li>
@@ -1515,8 +1514,8 @@ export default class TeamList extends Component {
                         }
                         <li>剩余奖金组配额：无限制</li>
                         <li>
-                            <Button onClick={() => this.onDiviratio('同意')} type="primary">通过审核</Button>
-                            <Button onClick={() => this.onDiviratio('拒绝')}>拒绝审核</Button>
+                            <Button onClick={() => this.onDiviratio('同意', this.state.alterData.username, '配额申请')} type="primary">通过审核</Button>
+                            <Button onClick={() => this.onDiviratio('拒绝', this.state.alterData.username, '配额申请')}>拒绝审核</Button>
                         </li>
                     </ul>
                 </Modal>
