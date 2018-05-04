@@ -45,7 +45,9 @@ export default class Contract extends Component {
             postData: {
                 p: 1,
                 pn: 10,
-            }
+            },
+            prizeStatus: 0,
+
         };
     };
     componentDidMount() {
@@ -218,6 +220,7 @@ export default class Contract extends Component {
                         tableLength:data.results.length,
                         quotaList: data.prizeaccount,
                         total: parseInt(data.affects),
+                        prizeStatus: data.prizeStatus
                     });
                 }
             }
@@ -233,10 +236,14 @@ export default class Contract extends Component {
             if(this._ismount){
                 this.setState({quotaLoding: false, quotaVisible: false, quotaPost: {}});
                 if(res.status == 200){
+                    let _this = this;
                     Modal.success({
                         title: '尊敬的用户：',
                         content: res.shortMessage,
-                        okText: '确认关闭'
+                        okText: '确认关闭',
+                        onOk() {
+                            _this.setState({prizeStatus: 1})
+                        }
                     });
                 }else{
                     Modal.warning({
@@ -300,7 +307,7 @@ export default class Contract extends Component {
     };
     render() {
         const { dailysalaryStatus } = stateVar;
-        const { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost, total} = this.state;
+        const { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost, total, prizeStatus} = this.state;
         const columnsDay = [
             {
                 title: '日有销量',
@@ -385,7 +392,12 @@ export default class Contract extends Component {
                                                }
                                                <li>剩余奖金组：无限制</li>
                                                <li>
-                                                   <Button onClick={()=>this.setState({quotaVisible: true})}>申请补充配额</Button>
+                                                   {
+                                                       prizeStatus == 1 ?
+                                                           <Button onClick={()=>this.setState({quotaVisible: true})} type="danger">审核中</Button>
+                                                           :
+                                                           <Button onClick={()=>this.setState({quotaVisible: true})}>申请补充配额</Button>
+                                                   }
                                                </li>
                                            </ul>
                                    }
@@ -417,7 +429,7 @@ export default class Contract extends Component {
                    </div> : null
                }
                <Modal
-                   title="配额申请"
+                   title={prizeStatus == 1 ? '配额审核中' : '配额申请'}
                    visible={this.state.quotaVisible}
                    wrapClassName="vertical-center-modal"
                    width={440}
@@ -426,27 +438,35 @@ export default class Contract extends Component {
                    onCancel={()=>this.setState({quotaVisible: false, quotaPost: {}})}
                    className="quota_modal"
                >
-                   <ul className="quota_list">
-                       {
-                           quotaList.map((item)=>{
-                               return (
-                                   <li key={item.uagid}>
-                                       申请奖金组{item.prizeGroup}的配额
-                                       <InputNumber min={0}
-                                           value={quotaPost[item.prizeGroup]}
-                                           onChange={(value)=>this.onChangeQuota(value, item)}
-                                       />
-                                       个（当前有<span className="current_quota">{item.accnum}</span>个）
-                                   </li>
-                               )
-                           })
-                       }
-                       <li>剩余奖金组配额：无限制</li>
-                       <li>
-                           <Button onClick={()=>this.onApplyPrizeQuota()} loading={this.state.quotaLoding} type="primary">申请</Button>
-                           <Button onClick={()=>this.setState({quotaVisible: false, quotaPost: {}})}>取消</Button>
-                       </li>
-                   </ul>
+                   {
+                       prizeStatus == 1 ?
+                           <div className="reviewing">
+                               <p>补充配额审核中，请耐心等待，或直接联系上级！</p>
+                               <Button type="primary" onClick={()=>this.setState({quotaVisible: false})}>知道了</Button>
+                           </div>
+                           :
+                           <ul className="quota_list">
+                               {
+                                   quotaList.map((item)=>{
+                                       return (
+                                           <li key={item.uagid}>
+                                               申请奖金组{item.prizeGroup}的配额
+                                               <InputNumber min={0}
+                                                            value={quotaPost[item.prizeGroup]}
+                                                            onChange={(value)=>this.onChangeQuota(value, item)}
+                                               />
+                                               个（当前有<span className="current_quota">{item.accnum}</span>个）
+                                           </li>
+                                       )
+                                   })
+                               }
+                               <li>剩余奖金组配额：无限制</li>
+                               <li>
+                                   <Button onClick={()=>this.onApplyPrizeQuota()} loading={this.state.quotaLoding} type="primary">申请</Button>
+                                   <Button onClick={()=>this.setState({quotaVisible: false, quotaPost: {}})}>取消</Button>
+                               </li>
+                           </ul>
+                   }
                </Modal>
             </div>
         );

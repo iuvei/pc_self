@@ -75,6 +75,10 @@ export default class LotteryReport extends Component {
         }
         if (clickTable == 'clickTable') {
             postData.userid = null;
+            if(postData.username == '' && table.history.length > 1){
+                let {table} = this.state;
+                table.history = [this.state.table.history[0]]
+            }
         }
         if (type == 'DATE') {
             // postData.username = null;
@@ -131,9 +135,11 @@ export default class LotteryReport extends Component {
                         checkedList,
                     });
                 } else {
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+                    if(clickTable == 'clickTable'){
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             }
         });
@@ -156,7 +162,7 @@ export default class LotteryReport extends Component {
     /*获取查询用户名*/
     onUserName(e) {
         let postData = this.state.postData;
-        postData.username = e.target.value;
+        postData.username = e.target.value.replace(/\s/g, '');
         this.setState({postData: postData})
     };
 

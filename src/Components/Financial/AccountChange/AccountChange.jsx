@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import { setDateTime, disabledDate } from '../../../CommonJs/common';
-import { DatePicker,  Button, Checkbox, Input, Select, Table, Pagination } from 'antd';
+import { DatePicker,  Button, Checkbox, Input, Select, Table, Pagination, Modal } from 'antd';
 import moment from 'moment';
 const Option = Select.Option;
 
@@ -316,7 +316,7 @@ export default class AccountChange extends Component {
         this._ismount = false;
     };
     /*获取资金帐变列表*/
-    getData() {
+    getData(type) {
         this.setState({tableLoading: true});
         Fetch.getrwrecord({
             method: 'POST',
@@ -326,6 +326,12 @@ export default class AccountChange extends Component {
                 this.setState({tableLoading: false, searchLoading: false});
                 if(res.status == 200){
                     this.setState({response: res.repsoneContent});
+                }else{
+                    if(type == 'onSearch'){
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             }
         })
@@ -374,7 +380,7 @@ export default class AccountChange extends Component {
     onSearch() {
         let {postData} = this.state;
         postData.p = 1;
-        this.setState({searchLoading: true, postData}, ()=>this.getData());
+        this.setState({searchLoading: true, postData}, ()=>this.getData('onSearch'));
     };
     /*切换每页显示条数*/
     onShowSizeChange (current, pageSize) {
@@ -462,7 +468,9 @@ export default class AccountChange extends Component {
                         <ul className="t_l_time_row">
                             <li>
                                 <span>用户名：</span>
-                                <Input placeholder="请输入用户名" onChange={(e)=>this.onChangeUserName(e)}/>
+                                <Input placeholder="请输入用户名"
+                                       value={this.state.postData.username}
+                                       onChange={(e)=>this.onChangeUserName(e)}/>
                             </li>
                             <li>
                                 <span>查询日期：</span>

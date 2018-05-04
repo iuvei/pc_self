@@ -152,6 +152,13 @@ $border_color: #C8C8C8;
     }
 }
 .quota_modal{
+    .reviewing{
+        font-size: 14px;
+        text-align: center;
+        &>p{
+            margin: 20px 0 100px;
+        }
+    }
     .quota_list{
         color: $color_363636;
         font-size: 14px;

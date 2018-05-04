@@ -57,7 +57,7 @@ export default class DayRate extends Component {
     };
 
     /*获取日工资列表*/
-    getData() {
+    getData(type) {
         this.setState({loading: true});
         Fetch.dailysalary({
             method: "POST",
@@ -76,10 +76,11 @@ export default class DayRate extends Component {
                     table.total = parseInt(data.affects);
                     this.setState({table: table});
                 } else {
-                    table.dayRateList = [];
-                    table.sum = [];
-                    table.total = 0;
-                    this.setState({table: table});
+                    if(type == 'onSearch'){
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             }
         });
@@ -95,7 +96,7 @@ export default class DayRate extends Component {
     /*获取查询用户名*/
     onUserName(e) {
         let postData = this.state.postData;
-        postData.username = e.target.value;
+        postData.username = e.target.value.replace(/\s/g, '');
         this.setState({postData: postData})
     };
 
@@ -103,7 +104,7 @@ export default class DayRate extends Component {
     onSearch() {
         let {postData} = this.state;
         postData.p = 1;
-        this.setState({searchLoading: true, postData}, ()=>this.getData());
+        this.setState({searchLoading: true, postData}, ()=>this.getData('onSearch'));
     };
 
     /*切换每页显示条数*/

@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import { stateVar } from '../../../State';
 import { setDateTime, disabledDate, datedifference } from '../../../CommonJs/common';
-import { DatePicker,  Button, Checkbox, Input, Select, Table, Pagination } from 'antd';
+import { DatePicker,  Button, Checkbox, Input, Select, Table, Pagination, Modal } from 'antd';
 import moment from 'moment';
 const Option = Select.Option;
 
@@ -38,7 +38,7 @@ export default class MentionFillingRecord extends Component {
         this._ismount = false;
     };
     /*获取充提列表*/
-    getData() {
+    getData(type) {
         this.setState({tableLoading: true});
         Fetch.getrwrecord({
             method: 'POST',
@@ -48,6 +48,12 @@ export default class MentionFillingRecord extends Component {
                 this.setState({tableLoading: false, searchLoading: false});
                 if(res.status == 200){
                     this.setState({response: res.repsoneContent});
+                }else{
+                    if(type == 'onSearch'){
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             }
         })
@@ -96,7 +102,7 @@ export default class MentionFillingRecord extends Component {
     onSearch() {
         let {postData} = this.state;
         postData.p = 1;
-        this.setState({searchLoading: true, postData}, ()=>this.getData());
+        this.setState({searchLoading: true, postData}, ()=>this.getData('onSearch'));
     };
     /*切换每页显示条数*/
     onShowSizeChange (current, pageSize) {
@@ -176,6 +182,13 @@ export default class MentionFillingRecord extends Component {
                     <div className="t_l_time">
                         <ul className="t_l_time_row">
                             <li>
+                                <span>用户名：</span>
+                                <Input placeholder="请输入用户名"
+                                       value={this.state.postData.username}
+                                       onChange={(e)=>this.onChangeUserName(e)}
+                                />
+                            </li>
+                            <li>
                                 <span>查询日期：</span>
                                 <DatePicker
                                     format="YYYY-MM-DD"
@@ -214,10 +227,6 @@ export default class MentionFillingRecord extends Component {
                                     <Option value="1">成功</Option>
                                     <Option value="2">失败</Option>
                                 </Select>
-                            </li>
-                            <li>
-                                <span>用户名：</span>
-                                <Input placeholder="请输入用户名" onChange={(e)=>this.onChangeUserName(e)}/>
                             </li>
                             <li>
                                 <Checkbox onChange={(e)=>this.onCheckbox(e)}>包含下级</Checkbox>

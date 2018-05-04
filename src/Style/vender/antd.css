@@ -5182,9 +5182,9 @@ textarea.ant-input {
   background: transparent;
 }
 .ant-btn-danger {
-  /*color: #fff;*/
+  color: #cf2027;
   /*background-color: #f04134;*/
-  /*border-color: #f04134;*/
+  border-color: #cf2027;
 }
 .ant-btn-danger > a:only-child {
   color: currentColor;
@@ -5200,9 +5200,9 @@ textarea.ant-input {
 }
 .ant-btn-danger:hover,
 .ant-btn-danger:focus {
-  color: #fff;
-  background-color: #d73435 !important;
-  border-color: #d73435 !important;
+  color: #cf2027;
+  background-color: #eee;
+  border-color: #cf2027;
 }
 .ant-btn-danger:hover > a:only-child,
 .ant-btn-danger:focus > a:only-child {
@@ -5220,9 +5220,9 @@ textarea.ant-input {
 }
 .ant-btn-danger:active,
 .ant-btn-danger.active {
-  color: #fff;
-  background-color: #d73435;
-  border-color: #d73435;
+  color: #cf2027;
+  background-color: #eee;
+  border-color: #cf2027;
 }
 .ant-btn-danger:active > a:only-child,
 .ant-btn-danger.active > a:only-child {

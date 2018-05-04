@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
 import {stateVar} from '../../../State';
-import {DatePicker, Button, Table, Pagination, Input, Tooltip, Icon} from 'antd';
+import {DatePicker, Button, Table, Pagination, Input, Tooltip, Icon, Modal} from 'antd';
 import moment from 'moment';
 import {
     setDateTime,
@@ -126,7 +126,6 @@ export default class TeamTable extends Component {
             body: JSON.stringify(postData),
         }).then((res) => {
             if (this._ismount) {
-                this.setState({searchLoading: false, tableLoading: false});
                 let {table, postData} = this.state;
                 if (res.status == 200) {
                     let data = res.repsoneContent;
@@ -149,19 +148,30 @@ export default class TeamTable extends Component {
                         this.setState({
                             table: table,
                             postData,
+                            searchLoading: false,
+                            tableLoading: false
                         });
                     } else {
                         table.total = parseInt(data.resultCount);
                         this.setState({
                             table: table,
                             selfDate: postData.sdatetime.slice(5) + ' 至 ' + postData.edatetime.slice(5),
+                            searchLoading: false,
+                            tableLoading: false
                         });
                     }
                 } else {
-                    table.tableData = [];
-                    table.sum = {};
-                    table.total = 0;
-                    this.setState({table: table});
+                    postData.userid = '';
+                    this.setState({
+                        postData,
+                        searchLoading: false,
+                        tableLoading: false
+                    });
+                    if(type == 'onSearch'){
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             }
         })
@@ -288,7 +298,7 @@ export default class TeamTable extends Component {
     /*获取查询用户名*/
     onUserName(e) {
         let postData = this.state.postData;
-        postData.username = e.target.value;
+        postData.username = e.target.value.replace(/\s/g, '');
         this.setState({postData: postData});
     };
 
@@ -400,7 +410,7 @@ export default class TeamTable extends Component {
             }, {
                 title: '用户名',
                 dataIndex: 'username',
-                render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
+                render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null || index == 0 ? text :
                     <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
                 width: 90,
             }, {
@@ -515,7 +525,7 @@ export default class TeamTable extends Component {
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
-                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
+                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null || index == 0 ? text :
                         <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
                     width: 100,
                 }, {
@@ -625,7 +635,7 @@ export default class TeamTable extends Component {
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
-                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
+                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null || index == 0 ? text :
                         <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
                     width: 100,
                 }, {
@@ -735,7 +745,7 @@ export default class TeamTable extends Component {
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
-                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
+                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null || index == 0 ? text :
                         <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
                     width: 110,
                 }, {
@@ -840,7 +850,7 @@ export default class TeamTable extends Component {
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
-                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
+                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null || index == 0 ? text :
                         <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
                     width: 150,
                 }, {
@@ -885,7 +895,7 @@ export default class TeamTable extends Component {
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
-                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
+                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null || index == 0 ? text :
                         <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
                     width: 200,
                 }, {
@@ -924,7 +934,7 @@ export default class TeamTable extends Component {
                 }, {
                     title: '用户名',
                     dataIndex: 'username',
-                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null ? text :
+                    render: (text, record, index) => stateVar.userInfo.userName == text || postData.userid != null || index == 0 ? text :
                         <span className="hover_a" onClick={() => this.onClickTable('USERNAME', record)}>{text}</span>,
                     width: 150,
                 }, {

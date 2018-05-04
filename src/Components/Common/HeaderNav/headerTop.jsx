@@ -436,7 +436,7 @@ export default class HeaderTop extends Component {
 					    duration:5,
 					    icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
 					}
-    			)
+    			);
     			this.getMenu();
     		}else if(tempType == 8 || tempType == 2){
     			if(!thisUrl){
@@ -444,6 +444,19 @@ export default class HeaderTop extends Component {
     				this.getAccGroup();
     			}
     		}else if(tempType == 10){
+                notification.open(
+                    {
+                        message: message.data.data,
+                        description: '',
+                        placement:'bottomRight',
+                        duration:5,
+                        icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+                    }
+                );
+                const pathname = hashHistory.getCurrentLocation().pathname;
+                if(pathname == '/teamManage/teamList'){
+                    emitter.emit('teamList')
+                }
     			this.onUnread();
     			emitter.emit('zhanneixin');
     		}

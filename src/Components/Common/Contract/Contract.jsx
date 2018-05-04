@@ -12,86 +12,9 @@ import './Contract.scss';
 export default class Contract extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
-    };
-    /*修改契约*/
-    onAffirm() {
-        let contract_name = this.props.contract_name;
-        this.props.onAffirm(contract_name);
-    };
-    /*取消关闭modal*/
-    onCancel(){
-        this.props.onCancel(this.props.contract_name);
-    };
-    /*是否已签订*/
-    isSign() {
-        let { disabled, alterData } = this.props;
-        if(alterData.daily_salary_status == 1 || alterData.dividend_salary_status == 1 || alterData.useraccgroup_status == 1){
-            return disabled ? 'a_c_name a_c_active' : 'a_c_name';
-        }else{
-            return disabled ? 'a_c_name a_c_active' : 'a_c_name';
-        }
-    };
-    /*按钮*/
-    onBtn(){
-      const { alterData, hideBtn } = this.props;
-      if(hideBtn){
-          return (
-              <div className="a_c_btn_one">
-                  <Button onClick={()=>this.onCancel()}>关闭</Button>
-              </div>
-          )
-      }else{
-          if(alterData.buttons != undefined && alterData.buttons[1].text == '同意协议'){
-              return (
-                  <div className="a_c_btn">
-                      <Button loading={this.props.affirmLoading}
-                              onClick={()=>this.props.onConsent()}
-                              type="primary"
-                              className="a_c_cancel_btn"
-                      >
-                          同意
-                      </Button>
-                      <Button onClick={()=>this.onCancel()}
-                      >
-                          关闭
-                      </Button>
-                  </div>
-              )
-          }else if(stateVar.userInfo.userName == alterData.username){
-              return (
-                  <div className="a_c_btn_one">
-                      <Button onClick={()=>this.onCancel()}>关闭</Button>
-                  </div>
-              )
-          }else{
-              return (
-                  <div className="a_c_btn">
-                      <Button loading={this.props.affirmLoading}
-                              onClick={()=>this.onAffirm()}
-                              type="primary"
-                              className="a_c_cancel_btn"
-                      >
-                          确认修改
-                      </Button>
-                      <Button onClick={()=>this.onCancel()}
-                      >
-                          关闭
-                      </Button>
-                  </div>
-              )
-          }
-      }
-    };
-
-    onSelectUser(item){
-        this.props.onSelectUser(item, 'child')
-    };
-    onSelectSys(value){
-        this.props.onSelectSys(value)
     };
     render() {
-        const { alterData, title, alterVisible, textDescribe, userList, contractInfo, disabledSelect, userid } = this.props;
+        const { alterData, title, alterVisible, textDescribe, userList, contractInfo, disabledSelect } = this.props;
 
         return (
             <Modal
@@ -102,7 +25,7 @@ export default class Contract extends Component {
                 footer={null}
                 maskClosable={false}
                 width={title == '日工资契约' ? 619 : 520}
-                onCancel={()=>this.onCancel()}
+                onCancel={()=>this.props.onCancel()}
                 className="alter_dividend"
             >
                 <div className="clear">
@@ -113,9 +36,8 @@ export default class Contract extends Component {
                                     showSearch
                                     labelInValue
                                     size="large" style={{ width: 275 }}
-                                    onChange={(value)=>{this.onSelectUser(value)}}
-                                    value={{ key: userid }}
-                                    // defaultValue = {{ key: userid }}
+                                    onChange={(value)=>{this.props.onSelectUser(value, 'child')}}
+                                    value={{ key: alterData.userid }}
                                     disabled={disabledSelect}
                                     optionFilterProp="children"
                                     getPopupContainer={() => document.getElementsByClassName('user_p')[0]}
@@ -133,7 +55,7 @@ export default class Contract extends Component {
                         <li className="type_p">
                             <span>契约类型：</span>
                             <Select size="large" style={{ width: 275 }}
-                                    onChange={(value)=>{this.onSelectSys(value)}}
+                                    onChange={(value)=>{this.props.onSelectSys(value)}}
                                     value={title}
                                     disabled={disabledSelect}
                                     getPopupContainer={() => document.getElementsByClassName('type_p')[0]}
@@ -155,9 +77,19 @@ export default class Contract extends Component {
                             <p>{common.setDateTime(0)}</p>
                         </div>
                     </div>
-                    {
-                        this.onBtn()
-                    }
+                    <div className="a_c_btn">
+                        <Button loading={this.props.affirmLoading}
+                                onClick={()=>this.props.onAffirm()}
+                                type="primary"
+                                className="a_c_cancel_btn"
+                        >
+                            确认修改
+                        </Button>
+                        <Button onClick={()=>this.props.onCancel()}
+                        >
+                            关闭
+                        </Button>
+                    </div>
                 </div>
             </Modal>
         )
