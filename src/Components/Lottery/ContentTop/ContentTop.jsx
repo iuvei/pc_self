@@ -249,7 +249,6 @@ export default class ContentTop extends Component {
                 }, () => {
                     this.kjanimate(0);
                 });
-
                 clearInterval(this.interval);
                 message.config({
                     top: '48%',
@@ -516,6 +515,7 @@ export default class ContentTop extends Component {
                         }
                         this.setState({kjStopallFlag: true, code: tempCode, nowIssue: tempData.expectedIssue});
                         this.getKjHistory(true);
+                        this.props.getBetHistory();
                     }
                 }
             } else if (tempType == 4 || tempType == 3) {
