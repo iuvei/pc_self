@@ -441,7 +441,6 @@ export default class TeamList extends Component {
                         }
                         this.getNum();
                         this.getAccGroupList(alterData);
-                        // this.clearTimeout = setTimeout(() => this.getData(), 31000);
                     } else {
                         Modal.warning({
                             title: res.shortMessage,
