@@ -16,6 +16,21 @@
             "hotLottery": 1
         },
         {
+            "cnname": "腾讯分分彩",
+            "nav": "txffc",
+            "lotteryid": 29,
+            "lotteryCurmlotteryid": 313550,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3111577,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 313550,
+            "imgUrl":"txffc",
+            "imgSrc": "hot",
+            "disabled": false,
+            "hotLottery": 1
+        },
+        {
             "cnname": "泰国秒秒彩",
             "nav": "mmc",
             "lotteryid": 23,
@@ -42,7 +57,7 @@
             "lotterytype": 4,
             "curmid": 2325,
             "imgUrl":"tg300",
-            "imgSrc": "hot",
+            "imgSrc": false,
             "disabled": false
         },
         {
@@ -56,9 +71,8 @@
             "lotterytype": 4,
             "curmid": 19000,
             "imgUrl":"ffc",
-            "imgSrc": "hot",
-            "disabled": false,
-            "hotLottery": 1
+            "imgSrc": false,
+            "disabled": false
         },
         {
             "cnname": "新疆时时彩",
@@ -100,8 +114,9 @@
             "curmid": 313051,
             "imgUrl":"pk10",
             "lotterLength":10,
-            "imgSrc": false,
-            "disabled": false
+            "imgSrc": "hot",
+            "disabled": false,
+             "hotLottery": 1
         },
         {
             "cnname": "山东11选5",
@@ -171,8 +186,7 @@
             "curmid": 313697,
             "imgUrl":"sh11y",
             "imgSrc": "new",
-            "disabled": false,
-            "hotLottery": 1
+            "disabled": false
         },
         {
             "cnname": "福彩3D",
@@ -202,20 +216,6 @@
             "imgUrl":"pl3",
             "lotterLength":3,
             "imgSrc": false,
-            "disabled": false
-        },
-        {
-            "cnname": "腾讯分分彩",
-            "nav": "txffc",
-            "lotteryid": 29,
-            "lotteryCurmlotteryid": 313550,
-            "lotteryDesc": "24小时全天开奖",
-            "methodid": 3111577,
-            "lastupdate": 0,
-            "lotterytype": 4,
-            "curmid": 313550,
-            "imgUrl":"txffc",
-            "imgSrc": "hot",
             "disabled": false
         },
         {

@@ -56,9 +56,9 @@ export default class Fanshui extends Component {
                                         <span className="left">活动内容：</span>
                                         <span className="right" style={{width: 750}}>
                                             会员符合以下标准，上级得0.1%奖金，直属得0.1%奖金，会员返水最高金额上限为五万元，上级及总代直属的返水上限为
-                                            <span className="col_color_ying">五千</span>
+                                            <span className="text_color">五千</span>
                                             元，
-                                            <span className="col_color_ying">（该活动不包含彩票有效投注）</span>
+                                            <span className="text_color">（该活动不包含彩票有效投注）</span>
                                         </span>
                                     </li>
                                 </ul>
@@ -78,45 +78,45 @@ export default class Fanshui extends Component {
                                 <p className="a_d_explain_text">规则说明：</p>
                                 <ul className="a_d_explain_list">
                                     <li>
-                                        <span className="col_color_ying">①</span>&nbsp;
+                                        <span className="text_color">①</span>&nbsp;
                                         本活动所有恒彩会员均可参与，返水将在
-                                        <span className="col_color_ying">每周结算后一个工作日</span>
+                                        <span className="text_color">每周结算后一个工作日</span>
                                         内发放；
                                     </li>
                                     <li>
-                                        <span className="col_color_ying">②</span>&nbsp;
+                                        <span className="text_color">②</span>&nbsp;
                                         此活动规则适用于
-                                        <span className="col_color_ying">体育竞技、EA娱乐城、PT娱乐城、KGAME游戏、博饼</span>
+                                        <span className="text_color">体育竞技、EA娱乐城、PT娱乐城、KGAME游戏、博饼</span>
                                         ；
                                     </li>
                                     <li>
-                                        <span className="col_color_ying">③</span>&nbsp;
+                                        <span className="text_color">③</span>&nbsp;
                                         获得返水的最低金额为，
-                                        <span className="col_color_ying">10元</span>
+                                        <span className="text_color">10元</span>
                                         返水按照
-                                        <span className="col_color_ying">1元的整数倍</span>
+                                        <span className="text_color">1元的整数倍</span>
                                         发放；
                                     </li>
                                     <li>
-                                        <span className="col_color_ying">④</span>&nbsp;
-                                        <span className="col_color_ying">有效流水</span>
+                                        <span className="text_color">④</span>&nbsp;
+                                        <span className="text_color">有效流水</span>
                                         仅是
-                                        <span className="col_color_ying">产生输赢结果的投注额</span>
+                                        <span className="text_color">产生输赢结果的投注额</span>
                                         进行计算，所有对冲投注及无风险投注不计算在体育竞技、EA娱乐城、PT娱乐城、KGAME娱
                                         乐城、博饼有效流水内及累计投注要求内；
                                     </li>
                                     <li>
-                                        <span className="col_color_ying">⑤</span>&nbsp;
+                                        <span className="text_color">⑤</span>&nbsp;
                                         同一账户、同一姓名、同一银行卡、同一IP地址不可重复申请；
                                     </li>
                                     <li>
-                                        <span className="col_color_ying">⑥</span>&nbsp;
+                                        <span className="text_color">⑥</span>&nbsp;
                                         参与本活动需要遵守恒彩平台相关规则，如发现任何利用活动或技术漏洞对冲等恶意套利行为，恒彩平台将扣除所有违规所得，并且有权
-                                        <span className="col_color_ying">冻结</span>
+                                        <span className="text_color">冻结</span>
                                         其账号；
                                     </li>
                                     <li>
-                                        <span className="col_color_ying">⑦</span>&nbsp;
+                                        <span className="text_color">⑦</span>&nbsp;
                                         恒彩彩票平台保留对活动的最终解释权，并持有修改、终止等权利；
                                     </li>
                                 </ul>

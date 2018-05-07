@@ -328,14 +328,14 @@ export default class ActivityDetails extends Component {
                 <div className="dissertation_active">
                     <ul>
                         <li>1. 直属下线注册时间晚于
-                            <span className="col_color_ying">{timestampToTime(response.reg_add_time_last_of)}</span>
+                            <span className="text_color">{timestampToTime(response.reg_add_time_last_of)}</span>
                             （包含），且充值金额大于等于
-                            <span className="col_color_ying">{response.is_regnew_pay_amount_val}</span>
+                            <span className="text_color">{response.is_regnew_pay_amount_val}</span>
                             元
                         </li>
                         <li>
                             2. 人数限额：
-                            <span className="col_color_ying">{response.max_online_num_num}</span>
+                            <span className="text_color">{response.max_online_num_num}</span>
                             人
                         </li>
                     </ul>

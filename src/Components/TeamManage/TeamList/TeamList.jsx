@@ -1318,7 +1318,7 @@ export default class TeamList extends Component {
                                             <Popconfirm title="确定删除吗?"
                                                         onConfirm={() => this.onDelete(i)}
                                             >
-                                                <span className="hover col_color_ying delete_sale">删除</span>
+                                                <span className="hover text_color delete_sale">删除</span>
                                             </Popconfirm> :
                                             null
                                     }
@@ -1331,7 +1331,7 @@ export default class TeamList extends Component {
                         下级日工资各档位日销量要求需与自身保持一致，删除档位时遵循从高到底的原则，但至少保留三档。
                     </li>
                 </ul>
-                <span className="hover col_color_ying add_sale"
+                <span className="hover text_color add_sale"
                       onClick={() => this.onAddSale()}
                       style={{display: contentArr.length >= 6 ? 'none' : ''}}>
                     添加档位
@@ -1492,7 +1492,7 @@ export default class TeamList extends Component {
                     className="quota_modal"
                 >
                     <p className="quota_name">
-                        <span className="col_color_ying">{this.state.alterData.username}</span>
+                        <span className="text_color">{this.state.alterData.username}</span>
                         申请配额：
                     </p>
                     <ul className="quota_list">
@@ -1534,7 +1534,7 @@ export default class TeamList extends Component {
                         </li>
                         <li>
                             <span>您的余额：</span>
-                            <span className="col_color_ying">{recharge.balance} 元</span>
+                            <span className="text_color">{recharge.balance} 元</span>
                         </li>
                         <li>
                             <span>充值金额：</span>
@@ -1549,9 +1549,9 @@ export default class TeamList extends Component {
                             <span style={{marginLeft: 5}}>元</span>
                             <p style={{marginLeft: 60}}>
                                 充值最低金额
-                                <strong className="col_color_ying">{recharge.recharge_min}</strong>
+                                <strong className="text_color">{recharge.recharge_min}</strong>
                                 元，最高
-                                <strong className="col_color_ying">{recharge.recharge_max}</strong>
+                                <strong className="text_color">{recharge.recharge_max}</strong>
                                 元的整数
                             </p>
                             <p style={{

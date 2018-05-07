@@ -319,9 +319,8 @@ const replaceHTML_DECODE = ( str ) => {
 export default {
     Combination,
     getCombination,
-    // getLotteryId,
     fftime,
     format,
     diff,
-    replaceHTML_DECODE,
+    replaceHTML_DECODE
 }

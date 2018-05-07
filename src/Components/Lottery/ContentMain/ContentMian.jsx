@@ -25,7 +25,7 @@ import {stateVar} from '../../../State'
 import Method from '../method.js'
 
 import common from '../../../CommonJs/common';
-import {replaceHTML_DECODE} from '../commone';
+import switchHtml from '../commone';
 
 import ContentTop from './../ContentTop/ContentTop'
 import BetRecordTable from '../BetRecordTable/BetRecordTable'
@@ -86,8 +86,10 @@ export default class ContentMian extends Component {
             tempLotteryLength: 0,
             showFile:false,
             fileName:"",
-            fileValue:""
-        };
+            fileValue:"",
+            fileLoading:false,
+            importName:"导入"
+        }
         this.lotteryOkBet = this.lotteryOkBet.bind(this);
         this.getBetHistory = this.getBetHistory.bind(this);
         this.getVersion = this.getVersion.bind(this);
@@ -784,8 +786,70 @@ export default class ContentMian extends Component {
                 this.selectNum(obj.target.parentNode, false);
             }
         }
-    }
-
+        this.identified(obj.target);
+    };
+    //验证全大小奇偶
+	identified(a){
+		let tempLi = $(a).parent().find('li') || [];
+		let tempLiActive = $(a).parent().find('.number_active') || [];
+		let allNum = [];
+		let tempArr = [];
+		let getResult;
+		//遍历选中的号码
+		$.each(tempLi,(index,value)=>{
+			allNum.push($(value).attr('value'));
+		})
+		$.each(tempLiActive, (index,value)=> {
+			tempArr.push($(value).attr('value'));
+		});
+		let arrayBig = [],arraySmall = [],arrayEven = [],arrayOdd = [],arrayAll = [];
+		for(let i = 0;i < allNum.length;i++){
+			if(allNum[i] % 2 == 0){
+				arrayEven.push(allNum[i]);
+			}
+			if(allNum[i] % 2 == 1){
+				arrayOdd.push(allNum[i]);
+			}
+			if(i < Math.floor(allNum.length/2)){
+				arraySmall.push(allNum[i]);
+			}
+			if(i >= Math.floor(allNum.length/2)){
+				arrayBig.push(allNum[i]);
+			}
+			arrayAll.push(allNum[i]);
+		}
+		if(tempArr.join('') == arrayBig.join('')){
+			getResult = 'big';
+		}else if(tempArr.join('') == arraySmall.join('')){
+			getResult = 'small';
+		}else if(tempArr.join('') == arrayOdd.join('')){
+			getResult = 'odd';
+		}else if(tempArr.join('') == arrayEven.join('')){
+			getResult = 'even';
+		}else if(tempArr.join('') == arrayAll.join('')){
+			getResult = 'all';
+		}
+		switch(getResult){
+			case 'small':
+				$(a).parent().next().find("button[name=small]").addClass("selected").siblings().removeClass("selected");
+				break;
+			case 'big':
+				$(a).parent().next().find("button[name=big]").addClass("selected").siblings().removeClass("selected");
+				break;
+			case 'even':
+				$(a).parent().next().find("button[name=even]").addClass("selected").siblings().removeClass("selected");
+				break;
+			case 'odd':
+				$(a).parent().next().find("button[name=odd]").addClass("selected").siblings().removeClass("selected");
+				break;
+			case 'all':
+				$(a).parent().next().find("button[name=all]").addClass("selected").siblings().removeClass("selected");
+				break;
+			default:
+				$(a).parent().next().find("button").removeClass("selected");
+				break;
+		}
+	};
     //取消选号
     unSelectNum(a, isButton) {
         /*
@@ -997,12 +1061,24 @@ export default class ContentMian extends Component {
 		this.setState({showFile:true});
 	};
 	selectFileCancle(){
-		this.setState({showFile:false,fileValue:"",fileName:""});
+		this.setState({showFile:false,fileValue:"",fileName:"",importName:"导入"});
 	};
 	selectFileOk(){
-		this.setState({textAreaValue: this.state.fileValue,showFile:false,fileValue:"",fileName:""}, () => {
-            this._inptu_deal();
-        });
+		if(this.state.fileValue == ""){
+			const modal = Modal.warn({
+                title: '温馨提示',
+                content: '您还未选择文件',
+            });
+            setTimeout(() => modal.destroy(), 3000);
+            return;
+		}
+		this.setState({importName:"导入中",fileLoading:true});
+		setTimeout(()=>{
+			this.setState({textAreaValue: this.state.fileValue,showFile:false,fileValue:"",fileName:""}, () => {
+				this.setState({importName:"导入",fileLoading:false});
+	            this._inptu_deal();
+	        });
+		},100);
 	}
     //导入文件
     importFile(e) {
@@ -1021,7 +1097,7 @@ export default class ContentMian extends Component {
         }
         let size = fileSize / 1024;
         if (size > 2000) {
-            const modal = Modal.error({
+            const modal = Modal.warn({
                 title: '温馨提示',
                 content: '附件不能大于2M',
             });
@@ -1048,7 +1124,7 @@ export default class ContentMian extends Component {
                 }
             }
         } else {
-            const modal = Modal.error({
+            const modal = Modal.warn({
                 title: '温馨提示',
                 content: '请选择正确格式文件上传(txt,svg格式)！',
             });
@@ -1503,7 +1579,7 @@ export default class ContentMian extends Component {
                     } else {
                         let modal;
                         if (data.longMessage.fail > 0) {
-                            let msg = replaceHTML_DECODE(data.longMessage.content[0]);
+                            let msg = switchHtml.replaceHTML_DECODE(data.longMessage.content[0]);
                             modal = Modal.error({
                                 title: '温馨提示',
                                 content: msg,
@@ -1553,7 +1629,7 @@ export default class ContentMian extends Component {
                     } else {
                         let modal;
                         if (data.longMessage.fail > 0) {
-                            let msg = replaceHTML_DECODE(data.longMessage.content[0]);
+                            let msg = switchHtml.replaceHTML_DECODE(data.longMessage.content[0]);
                             modal = Modal.error({
                                 title: '温馨提示',
                                 content: msg,
@@ -3078,9 +3154,12 @@ export default class ContentMian extends Component {
 				        <Modal
 				          title="导入文件"
 				          visible={this.state.showFile}
-				          okText='导入'
-				          onOk={()=>this.selectFileOk()}
-				          onCancel={()=>this.selectFileCancle()}
+				          footer={[
+			              <Button key="back" onClick={()=>this.selectFileCancle()}>取消</Button>,
+			              <Button key="submit" type="primary" loading={this.state.fileLoading} onClick={()=>this.selectFileOk()}>
+			              {this.state.importName}
+			            </Button>,
+			          ]}
 				        >
 				          <p style={{textAlign:"center",padding:"10px 0"}}>
 				          <a href="javascript:;" className="a-upload">

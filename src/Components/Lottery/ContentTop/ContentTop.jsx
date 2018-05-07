@@ -249,7 +249,6 @@ export default class ContentTop extends Component {
                 }, () => {
                     this.kjanimate(0);
                 });
-
                 clearInterval(this.interval);
                 message.config({
                     top: '48%',
@@ -516,6 +515,7 @@ export default class ContentTop extends Component {
                         }
                         this.setState({kjStopallFlag: true, code: tempCode, nowIssue: tempData.expectedIssue});
                         this.getKjHistory(true);
+                        this.props.getBetHistory();
                     }
                 }
             } else if (tempType == 4 || tempType == 3) {
@@ -610,7 +610,7 @@ export default class ContentTop extends Component {
                                                     <span>{nowlottery.cnname}</span>
                                                 </div>
                                                 <div className="cz_periods m_bottom">
-                                                    <span className="col_color_ying">{nextIssue}期</span>
+                                                    <span className="text_color">{nextIssue}期</span>
                                                 </div>
                                                 <div className="m_bottom">
                                                     <span style={{fontSize: '12px', marginRight: '5px'}}>音效</span>
