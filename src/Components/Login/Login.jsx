@@ -984,12 +984,12 @@ export default class Login extends Component {
                             </div>
                             <ul className="l_n_t_list right">
                                 <li className='left'>
-                                    <a className="dns col_color_ying" href="#/dns" target="_blank">
+                                    <a className="dns text_color" href="#/dns" target="_blank">
                                         防劫持教程
                                     </a>
                                 </li>
                                 <li className='left'>
-                                    <a className="httpService col_color_ying" href={stateVar.httpService} target="_blank">
+                                    <a className="httpService text_color" href={stateVar.httpService} target="_blank">
                                         在线客服
                                     </a>
                                 </li>

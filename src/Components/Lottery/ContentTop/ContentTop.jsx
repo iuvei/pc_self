@@ -610,7 +610,7 @@ export default class ContentTop extends Component {
                                                     <span>{nowlottery.cnname}</span>
                                                 </div>
                                                 <div className="cz_periods m_bottom">
-                                                    <span className="col_color_ying">{nextIssue}期</span>
+                                                    <span className="text_color">{nextIssue}期</span>
                                                 </div>
                                                 <div className="m_bottom">
                                                     <span style={{fontSize: '12px', marginRight: '5px'}}>音效</span>

@@ -173,7 +173,7 @@ export default class TransferRecord extends Component {
             }, {
                 title: '状态',
                 dataIndex: 'status',
-                render: text => text == '成功' ? <span className="col_color_ying">{text}</span> : text,
+                render: text => text == '成功' ? <span className="text_color">{text}</span> : text,
                 width: 70,
             }
         ];

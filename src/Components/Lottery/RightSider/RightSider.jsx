@@ -76,7 +76,7 @@ export default class RightSider extends Component {
                 <div className="user_info">
                     <ul className="user_info_list">
                         <li>您好！{getStore('userName')}</li>
-                        <li>余额:<span className="col_color_ying">￥{hideBalance ? allBalance.cpbalance : '******'}</span></li>
+                        <li>余额:<span className="text_color">￥{hideBalance ? allBalance.cpbalance : '******'}</span></li>
                         <li>
                             <div className="user_recharge" onClick={()=>this.onHashHistory('/financial/recharge', 'financial', 0)}>立即充值</div>
                         </li>

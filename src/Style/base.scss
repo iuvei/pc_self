@@ -244,10 +244,13 @@ td.column-right {
 
 /*table列文字样式*/
 .col_color_ying{
-    color: $color_CF2027;
+    color: #2BB851;
 }
 .col_color_shu{
-    color: #2BB851;
+    color: $color_CF2027;
+}
+.text_color{
+    color: $color_CF2027;
 }
 /*分页组件 pagination*/
 .t_l_page{
