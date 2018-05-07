@@ -2,7 +2,7 @@
 @import '../../Style/mixin';
 
 .autologin_main{
-    background: #151515 url(../Login/Img/logo_bg.jpg) no-repeat center center;
+    background: #151515 url(../Login/Img/logo_bg.png) no-repeat center center;
     height: 100%;
     .l_nav_top{
         @include wh(100%, 64px);
