@@ -2,13 +2,11 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../Utils';
-import {Select, Table, Input, Button, Modal, InputNumber, Pagination, Tooltip, Icon} from 'antd';
+import {Select, Table, Input, Button, Modal, Pagination, Tooltip, Icon} from 'antd';
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 import {stateVar} from '../../../State';
-
-import Contract from '../../Common/Contract/Contract';
 
 let key = 1;
 @observer
@@ -20,17 +18,14 @@ export default class Dividend extends Component {
             divIdEndTotals: [], // 日期
             sum: {}, // 总计
             total: 0, //总条数
-
             loading: false,
             searchLoading: false,
-
             postData: {
-                username: '',
+                username: null,
                 starttime: '0', //返回的divIdEndTotals列表里选一个Id
                 p: 1,
                 pn: 50,
             },
-
             historyVisible: false, //历史分红模态框
             historyData: [],
             historyDividendUName: '',
@@ -41,34 +36,8 @@ export default class Dividend extends Component {
                 historyAllsalary: '', //历史分红总计
             },
             oneKeyDividend: 0, // 是否可以一键发放分红
-
-            alterVisible: false, //修改比例
-            alterData: {},
-            affirmLoading: false,
-            disabled: true,
-            contractInfo: [
-                {
-                    id: 0,
-                    contract: "日工资契约",
-                },
-                {
-                    id: 1,
-                    contract: "分红契约",
-                },
-                {
-                    id: 2,
-                    contract: "奖金组契约",
-                },
-                {
-                    id: 3,
-                    contract: "配额契约",
-                }
-            ],
-            contract_name: '修改契约', //按钮btn
             send_all_button: '',
         };
-        this.onCancel = this.onCancel.bind(this);
-        this.onDiviratio = this.onDiviratio.bind(this);
     };
 
     componentDidMount() {
@@ -154,7 +123,7 @@ export default class Dividend extends Component {
     /*输入用户名*/
     onChangeUserName(e) {
         let postData = this.state.postData;
-        postData.username = e.target.value;
+        postData.username = e.target.value.replace(/\s/g, '');
         this.forceUpdate();
     };
 
@@ -163,15 +132,6 @@ export default class Dividend extends Component {
         let postData = this.state.postData;
         postData.starttime = val;
         this.forceUpdate();
-    };
-
-    /*关闭修改分红模态框*/
-    onCancel() {
-        this.setState({
-            alterVisible: false,
-            contract_name: '修改契约',
-        });
-        this.getData();
     };
 
     /*操作按钮*/
@@ -200,12 +160,6 @@ export default class Dividend extends Component {
                     }
                 }
             })
-        } else if (val == '修改比例') {
-            this.setState({
-                alterData: record,
-                alterVisible: true,
-                disabled: true,
-            });
         } else if (val == '发放分红') {
             let _this = this;
             confirm({
@@ -266,58 +220,7 @@ export default class Dividend extends Component {
                     })
                 },
             });
-        } else {
-        }
-
-    };
-
-    /*修改分红比例*/
-    onDiviratio(contract_name) {
-        let _this = this;
-        confirm({
-            title: '确认要修改吗?',
-            onOk() {
-                _this.setProtocol(contract_name)
-            },
-            onCancel() {
-            },
-        });
-    };
-
-    setProtocol(contract_name) {
-        this.setState({affirmLoading: true, contract_name: '签订契约'});
-        let alterData = this.state.alterData;
-        let postData = {
-            userid: alterData.userid,
-            id: alterData.id,
-            dividend_radio: alterData.dividend_radio,
-        };
-        Fetch.diviratio({
-            method: 'POST',
-            body: JSON.stringify(postData)
-        }).then((res) => {
-            if (this._ismount) {
-                this.setState({affirmLoading: false});
-                if (res.status == 200) {
-                    Modal.success({
-                        title: res.repsoneContent,
-                    });
-                    this.setState({alterVisible: false, disabled: true, contract_name: '修改契约',});
-                    this.getData();
-                } else {
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
-                }
-            }
-        })
-    };
-
-    /*修改值*/
-    onChangeAlterContract(val) {
-        let alterData = this.state.alterData;
-        alterData.dividend_radio = val;
-        this.forceUpdate();
+        } else {}
     };
 
     onKeyDown(e) {
@@ -451,7 +354,8 @@ export default class Dividend extends Component {
             <li>
                 {
                     oneKeyDividend == 0 ?
-                        <Button onClick={() => this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button> :
+                        <Button onClick={() => this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
+                        :
                         <ButtonGroup>
                             <Button onClick={() => this.onClickButton('历史分红', stateVar.userInfo.userName)}>历史分红</Button>
                             <Button
@@ -827,7 +731,7 @@ export default class Dividend extends Component {
                                dataSource={data}
                                pagination={false}
                                loading={this.state.loading}
-                               footer={total <= 0 ? null : () => footer}
+                               footer={total <= 0 || sum.userid == undefined ? null : () => footer}
                                className="table_list"
                         />
                     </div>
@@ -869,33 +773,6 @@ export default class Dividend extends Component {
                             </ul>
                         </div>
                     </Modal>
-                    <Contract
-                        title="分红契约"
-                        userid={this.state.alterData.userid}
-                        textDescribe={
-                            <div className="a_c_text">
-                                <p>契约内容：</p>
-                                <div style={{whiteSpace: 'normal'}}>
-                                    如该用户每半月结算净盈亏总值时为负数，可获得分红，金额为亏损值的
-                                    <InputNumber min={0} value={this.state.alterData.dividend_radio}
-                                                 onChange={(value) => this.onChangeAlterContract(value)}
-                                        // disabled={disabled}
-                                    />
-                                    %。
-                                </div>
-                            </div>
-                        }
-                        alterData={this.state.alterData}
-                        alterVisible={this.state.alterVisible}
-                        affirmLoading={this.state.affirmLoading}
-                        disabled={this.state.disabled}
-                        contract_name={this.state.contract_name}
-                        userList={this.state.data}
-                        contractInfo={this.state.contractInfo}
-                        disabledSelect={true}
-                        onCancel={this.onCancel}
-                        onAffirm={this.onDiviratio}
-                    />
                 </div>
             </div>
         );

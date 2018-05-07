@@ -160,8 +160,9 @@ export default class LotteryBet extends Component {
 
     /*搜索*/
     onSearch() {
-        this.setState({searchLoading: true});
-        this.getData();
+        let {postData} = this.state;
+        postData.p = 1;
+        this.setState({searchLoading: true, postData}, ()=>this.getData());
     };
 
     // 彩种名称
@@ -201,7 +202,7 @@ export default class LotteryBet extends Component {
     /*输入用户名*/
     onUserName(e) {
         let postData = this.state.postData;
-        postData.username = e.target.value;
+        postData.username = e.target.value.replace(/\s/g, '');
         this.setState({postData: postData});
     };
 

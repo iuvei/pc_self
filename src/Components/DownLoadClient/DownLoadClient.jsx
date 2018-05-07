@@ -17,12 +17,13 @@ export default class Login extends Component {
     };
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         _code('qrcode', stateVar.httpUrl + '/m/index.html?' + (new Date).getTime(), 250, 220);
     };
     handleVisibleIphone = (visibleIphone) =>{
         this.setState({ visibleIphone }, ()=>{
             if(visibleIphone){
-                _code('qrcode_iphone', stateVar.httpUrl + '/feed/downH5/downH5ios.html?' + (new Date).getTime(), 210, 185)
+                _code('qrcode_iphone', stateVar.httpUrl + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime(), 210, 185)
             }
         });
     };

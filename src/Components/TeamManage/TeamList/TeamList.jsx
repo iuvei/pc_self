@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import {hashHistory} from 'react-router';
+import moment from 'moment';
 import {
     DatePicker,
     Table,
@@ -20,6 +21,7 @@ import {
 const confirm = Modal.confirm;
 import Fetch from '../../../Utils';
 import {stateVar} from '../../../State';
+import emitter from '../../../Utils/events';
 import Contract from '../../Common/Contract/Contract';
 import {changeMoneyToChinese, onValidate} from '../../../CommonJs/common';
 import md5 from 'md5';
@@ -40,17 +42,18 @@ export default class TeamList extends Component {
             },
             selectInfo: {
                 username: '', //用户id
-                register_time_begin: '', //开始时间
-                register_time_end: '', //结束时间
+                register_time_begin: null, //开始时间
+                register_time_end: null, //结束时间
                 p: 1, //页数
                 pn: 10, //每页条数
                 uid: '', //点击用户名传入的用户id
                 sortby: null, // sortby: 字段名 asc(升序) desc(降序)
             },
+            register_time_begin_flag: null,
+            register_time_end_flag: null,
             alterVisible: false, //修改比例
             alterData: {},
             affirmLoading: false,
-            disabled: true,
             typeName: '', // 要修改类型的名字：日工资，分红，配额，奖金组
             contentArr: [],
             prizeGroupList: [], //可设置的奖金组列表
@@ -69,11 +72,9 @@ export default class TeamList extends Component {
                 dividend_radio: null, // 要修改的比例
             },
             prizeGroupPost: {}, // 奖金组请求参数
-            contract_name: '修改契约', //按钮btn
             quotaVisible: false, //配额
             quotaList: [], //配额列表
             quotaPost: {}, //申请配额请求参数
-            quotaLoding: false,
             num: 0, //配额申请成功数
             contractInfo: [
                 {
@@ -124,6 +125,10 @@ export default class TeamList extends Component {
         this._ismount = true;
         this.getData();
         this.getNum();
+        this.eventEmitter = emitter.on('teamList', () => {
+            this.getData();
+            this.getNum();
+        });
     };
 
     componentWillUnmount() {
@@ -131,6 +136,7 @@ export default class TeamList extends Component {
         if (this.clearTimeout) {
             window.clearTimeout(this.clearTimeout)
         }
+        emitter.off(this.eventEmitter)
     };
 
     onKeyDown(e) {
@@ -177,11 +183,12 @@ export default class TeamList extends Component {
             selectInfo.username = null;
             selectInfo.p = 1;
         }
-        if (selectInfo.username != '') {
-            selectInfo.p = 1;
-        }
         if (type == 'search') {
             selectInfo.uid = '';
+            selectInfo.p = 1;
+        }
+        if(type == 'modify'){
+            selectInfo.modify = 1;
         }
         Fetch.usreList({
             method: "POST",
@@ -189,6 +196,9 @@ export default class TeamList extends Component {
         }).then((res) => {
             if (this._ismount) {
                 this.setState({loading: false});
+                if(selectInfo.modify != undefined){
+                    delete selectInfo.modify
+                }
                 if (res.status == 200) {
                     let resData = res.repsoneContent,
                         {tableData} = this.state;
@@ -200,6 +210,12 @@ export default class TeamList extends Component {
                         self: resData.self,
                         users: resData.users == null ? [] : resData.users,
                     });
+                }else{
+                    if(type == 'search'){
+                        Modal.warning({
+                            title: res.shortMessage,
+                        });
+                    }
                 }
             }
         })
@@ -208,7 +224,7 @@ export default class TeamList extends Component {
     /*input用户名*/
     onChangeUserName(e) {
         let selectInfo = this.state.selectInfo;
-        selectInfo.username = e.target.value;
+        selectInfo.username = e.target.value.replace(/\s/g,'');
         this.setState({selectInfo: selectInfo})
     };
 
@@ -216,14 +232,14 @@ export default class TeamList extends Component {
     onRegisterTimeStart(date, dateString) {
         let selectInfo = this.state.selectInfo;
         selectInfo.register_time_begin = dateString;
-        this.setState({selectInfo: selectInfo});
+        this.setState({selectInfo: selectInfo, register_time_begin_flag: date});
     };
 
     /*注册结束时间*/
     onRegisterTimeEnd(date, dateString) {
         let selectInfo = this.state.selectInfo;
         selectInfo.register_time_end = dateString;
-        this.setState({selectInfo: selectInfo});
+        this.setState({selectInfo: selectInfo, register_time_end_flag: date});
     };
 
     /*切换每页显示条数*/
@@ -253,19 +269,15 @@ export default class TeamList extends Component {
 
     /*修改契约*/
     onClickColBtn(type, record) {
-        if (record.useraccgroup_status == 3) {//新申请
-            this.setState({
-                quotaVisible: true,
-                alterData: record,
-            });
-            this.getAccGroupList(record);
-        } else {
             this.setState({
                 alterData: record,
-                disabled: true,
             });
             if (type == '配额') {
-                this.setState({alterVisible: true});
+                if (record.useraccgroup_status == 3) {//新申请
+                    this.setState({quotaVisible: true});
+                }else{
+                    this.setState({alterVisible: true});
+                }
                 this.getAccGroupList(record);
             } else if (type == '日工资') {
                 let postDataSelf = {
@@ -337,7 +349,7 @@ export default class TeamList extends Component {
                     }
                 })
             }
-        }
+        // }
     };
 
     /*游戏记录*/
@@ -379,7 +391,7 @@ export default class TeamList extends Component {
     onDiviratio(contract_name) {
         let _this = this;
         confirm({
-            title: '确认要修改吗?',
+            title: '确认要'+ contract_name +'吗?',
             onOk() {
                 _this.setProtocol(contract_name)
             },
@@ -388,14 +400,14 @@ export default class TeamList extends Component {
 
     setProtocol(contract_name) {
         let {typeName, alterData} = this.state;
-        this.setState({affirmLoading: true, contract_name: '签订契约'});
+        this.setState({affirmLoading: true});
         if (typeName == '配额契约') {
-            this.setState({quotaLoding: true});
             let {agPost} = this.state;
-            if (contract_name == '新申请') {
+            if (contract_name == '同意') {
                 agPost.SH = 1;
-            } else {
-                agPost.SH != undefined && delete agPost.SH;
+            }
+            if (contract_name == '拒绝') {
+                agPost.SH = 2;
             }
             agPost.uid = alterData.userid;
             Fetch.quota({
@@ -403,17 +415,20 @@ export default class TeamList extends Component {
                 body: JSON.stringify(agPost)
             }).then((res) => {
                 if (this._ismount) {
-                    this.setState({affirmLoading: false, quotaLoding: false});
+                    this.setState({affirmLoading: false});
+                    let _this = this;
                     if (res.status == 200) {
                         Modal.success({
                             title: res.repsoneContent,
+                            onOk(){
+                                _this.getData('modify');
+                                _this.getNum();
+                            }
                         });
-                        if (contract_name == '新申请') {
-                            this.setState({quotaVisible: false});
-                            this.getNum();
-                        } else {
-                            this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
-                        }
+                        this.setState({
+                            quotaVisible: false,
+                            alterVisible: false,
+                        });
                         this.getAccGroupList(alterData);
                         this.clearTimeout = setTimeout(() => this.getData(), 31000);
                     } else {
@@ -436,7 +451,9 @@ export default class TeamList extends Component {
                         Modal.success({
                             title: res.repsoneContent,
                         });
-                        this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                        this.setState({
+                            alterVisible: false,
+                        });
                         this.clearTimeout = setTimeout(() => this.getData(), 31000);
                     } else {
                         Modal.warning({
@@ -461,7 +478,9 @@ export default class TeamList extends Component {
                         Modal.success({
                             title: res.repsoneContent,
                         });
-                        this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                        this.setState({
+                            alterVisible: false,
+                        });
                         this.clearTimeout = setTimeout(() => this.getData(), 31000);
                     } else {
                         Modal.warning({
@@ -485,7 +504,9 @@ export default class TeamList extends Component {
                         Modal.success({
                             title: res.repsoneContent,
                         });
-                        this.setState({alterVisible: false, disabled: true, contract_name: '修改契约'});
+                        this.setState({
+                            alterVisible: false,
+                        });
                         this.clearTimeout = setTimeout(() => this.getData(), 31000);
                     } else {
                         Modal.warning({
@@ -499,12 +520,22 @@ export default class TeamList extends Component {
 
     /*关闭模态框*/
     onCancel() {
-        this.setState({contract_name: '修改契约', alterVisible: false, affirmLoading: false})
+        this.setState({ alterVisible: false, affirmLoading: false})
     };
 
     /*奖金组设置 滑动条*/
     onRegisterSetBonus(value) {
-        this.setState({prizeGroupFlag: value});
+        let reg = /^[0-9]*$/;
+        let r = reg.test(value);
+        if (!r || value == '' || value == undefined) {
+            this.forceUpdate();
+            return
+        }
+        if(value % 2 !== 0){
+            this.setState({prizeGroupFlag: parseInt(value) + 1});
+        }else{
+            this.setState({prizeGroupFlag: value});
+        }
     };
 
     /*奖金组*/
@@ -564,10 +595,14 @@ export default class TeamList extends Component {
         })
     };
 
-    onCancelQuota() {
-        this.setState({quotaVisible: false, quotaPost: {}});
-        this.getData();
-        this.getNum();
+    onCancelQuota(type) {
+        if(type === '配额申请取消'){
+            this.setState({quotaVisible: false});
+        }else{
+            this.setState({quotaVisible: false, quotaPost: {}});
+            this.getData();
+            this.getNum();
+        }
     };
 
     /*删除档位*/
@@ -727,7 +762,14 @@ export default class TeamList extends Component {
     onGroupNum() {
         let {selectInfo} = this.state;
         selectInfo.sortby = 'is_online' + ' ' + 'desc';
-        this.setState({selectInfo}, () => this.getData());
+        selectInfo.username = null;
+        selectInfo.register_time_begin = null;
+        selectInfo.register_time_end = null;
+        this.setState({
+            selectInfo,
+            register_time_begin_flag: null,
+            register_time_end_flag: null,
+        }, () => this.getData());
     };
 
     /*日销量失去焦点事件*/
@@ -765,10 +807,10 @@ export default class TeamList extends Component {
 
     render() {
         const {dailysalaryStatus} = stateVar;
-        const {tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge, users} = this.state;
+        const {tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge, users, selectInfo} = this.state;
         let columns = [
             {
-                title: '用户名',
+                title: '用户名3',
                 dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
                 render: (text, record) => <span className="hover_a"
                                                 onClick={() => this.getData('clickName', record)}>{text}</span>,
@@ -1242,26 +1284,23 @@ export default class TeamList extends Component {
                     {
                         contentArr.map((item, i) => {
                             return (
-                                <li key={'' + i}>
+                                <li key={'a' + i}>
                                     {i + 1}档：
                                     日销量≥
                                     <span style={{width: 58, display: 'inline-block'}}>{item.sale}</span>
                                     {/*<InputNumber min={0} value={item.sale}*/}
                                     {/*onChange={(value)=>this.onChangeDailySales(value, item, i)}*/}
                                     {/*onBlur={()=>this.onBlurSale()}*/}
-                                    {/*disabled={disabled}*/}
                                     {/*/>*/}
                                     元，
                                     且活跃用户≥
                                     <InputNumber min={0} value={item.active_member}
                                                  onChange={(value) => this.onChangeActiveNumber(value, item, i)}
-                                        // disabled={disabled}
                                     />
                                     人，日工资比例为
                                     <InputNumber min={0} value={item.salary_ratio}
                                                  max={100}
                                                  onChange={(value) => this.onChangeAlterContract(value, item)}
-                                        // disabled={disabled}
                                     />
                                     %。
                                     {
@@ -1310,12 +1349,11 @@ export default class TeamList extends Component {
                 <div>
                     该用户的奖金组级别为
                     <InputNumber
-                        // min={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[0].prizeGroup) : 1800}
-                        // max={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup) : 1956}
+                        min={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[0].prizeGroup) : 1800}
+                        max={prizeGroupList.length !== 0 ? parseInt(prizeGroupList[prizeGroupList.length-1].prizeGroup) : 1956}
                         value={this.state.prizeGroupFlag}
                         step={2}
                         onChange={(value) => this.onRegisterSetBonus(value)}
-                        disabled={true}
                     />。
                     <div className="prize_group_slider">
                         <Icon className="slider_left" onClick={() => this.onMinus()} type="left"/>
@@ -1339,7 +1377,6 @@ export default class TeamList extends Component {
         } else {
             typeContent = ''
         }
-
         return (
             <div className="team_list">
                 <div className="team_list_top">
@@ -1352,12 +1389,13 @@ export default class TeamList extends Component {
                                 <Input placeholder="请输入用户名" value={this.state.selectInfo.username}
                                        onChange={(e) => this.onChangeUserName(e)}/>
                             </li>
-                            <li style={{marginLeft: '8px'}}>
+                            <li>
                                 <span>注册时间：</span>
                                 <DatePicker showTime
                                             allowClear={false}
                                             format="YYYY-MM-DD HH:mm:ss"
                                             placeholder="请选择开始时间"
+                                            value={selectInfo.register_time_begin}
                                             onChange={(date, dateString) => this.onRegisterTimeStart(date, dateString)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
@@ -1397,7 +1435,7 @@ export default class TeamList extends Component {
                     </div>
                     <div className="t_l_table_list">
                         <Table columns={columns}
-                               rowKey={record => record.userid}
+                               rowKey={(record) => record.userid}
                                dataSource={this.state.tableData.dataSource}
                                pagination={false}
                                loading={this.state.loading}
@@ -1415,28 +1453,31 @@ export default class TeamList extends Component {
                         />
                     </div>
                 </div>
-                <Contract
-                    title={this.state.typeName}
-                    userid={this.state.alterData.userid}
-                    textDescribe={typeContent}
-                    alterData={this.state.alterData}
-                    alterVisible={this.state.alterVisible}
-                    affirmLoading={this.state.affirmLoading}
-                    contract_name={this.state.contract_name}
-                    // disabled={this.state.disabled}
-                    userList={this.state.tableData.dataSource}
-                    contractInfo={this.state.contractInfo}
-                    disabledSelect={true}
-                    onCancel={this.onCancel}
-                    onAffirm={this.onDiviratio}
-                />
+
+                {
+                    this.state.alterVisible ?
+                        <Contract
+                            title={this.state.typeName}
+                            // userid={this.state.alterData.userid}
+                            textDescribe={typeContent}
+                            alterData={this.state.alterData}
+                            alterVisible={this.state.alterVisible}
+                            affirmLoading={this.state.affirmLoading}
+                            userList={this.state.tableData.dataSource}
+                            contractInfo={this.state.contractInfo}
+                            disabledSelect={true}
+                            onCancel={this.onCancel}
+                            onAffirm={this.onDiviratio}
+                        /> : null
+                }
                 <Modal
                     title="配额申请"
                     visible={this.state.quotaVisible}
+                    wrapClassName="vertical-center-modal"
                     width={440}
                     footer={null}
                     maskClosable={false}
-                    onCancel={() => this.onCancelQuota()}
+                    onCancel={() => this.onCancelQuota('配额申请取消')}
                     className="quota_modal"
                 >
                     <p className="quota_name">
@@ -1461,9 +1502,8 @@ export default class TeamList extends Component {
                         }
                         <li>剩余奖金组配额：无限制</li>
                         <li>
-                            <Button onClick={() => this.onDiviratio('新申请')} loading={this.state.quotaLoding}
-                                    type="primary">确认</Button>
-                            <Button onClick={() => this.onCancelQuota()}>取消</Button>
+                            <Button onClick={() => this.onDiviratio('同意')} type="primary">通过审核</Button>
+                            <Button onClick={() => this.onDiviratio('拒绝')}>拒绝审核</Button>
                         </li>
                     </ul>
                 </Modal>
