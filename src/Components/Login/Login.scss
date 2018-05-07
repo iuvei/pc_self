@@ -4,7 +4,7 @@ $border_color: #C8C8C8;
 $width_100: 100%;
 
 .login_main{
-    background: #fff url(./Img/logo_bg.jpg) no-repeat center center;
+    background: #fff url(./Img/logo_bg.png) no-repeat center center;
     height: 100%;
     .loginLogo{
         text-align: center;
@@ -374,7 +374,7 @@ $width_100: 100%;
         text-align: center;
         color: #7E756F;
         position: fixed;
-        bottom: 10px;
+        bottom: 60px;
         width: 240px;
         left: 50%;
         margin-left: -120px;
@@ -406,6 +406,7 @@ $width_100: 100%;
         color: $color_CF2027;
         font-size: 14px;
         width: 90px;
+        font-weight: bold;
         text-align: center;
         &:hover{
             color: $color_CF2027;
