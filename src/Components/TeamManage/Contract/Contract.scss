@@ -1,0 +1,206 @@
+@import '../../../Style/variables';
+@import '../../../Style/mixin';
+
+$border_color: #C8C8C8;
+.contract_main{
+    margin:12px 10px;
+    padding-bottom: 37px;
+    .day_table{
+        padding: 5px 8px;
+    }
+    .ant-table-body .ant-table-thead th > span{
+        border: 0;
+    }
+    .c_top{
+        border: 1px solid $border_color;
+        margin-bottom: 15px;
+        &>li{
+            float: left;
+            border-right: 1px solid $border_color;
+            &:last-child{
+                margin: 0;
+                border: 0;
+            }
+        }
+        .border_content{
+            position: relative;
+            vertical-align: top;
+            background: #fff;
+            text-align: center;
+        }
+        .c_table_wrap{
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width:240px;
+            font-size: 14px;
+            text-align: center;
+            padding-top: 40px;
+        }
+        .c_portion{
+            width: 240px;
+            height: 315px;
+        }
+        .c_portion_height{
+            width: 240px;
+            height: 315px;
+        }
+        .no_salay{
+            width: 240px;
+            height: 315px;
+        }
+        .c_dividend{
+            width: 284px;
+            height: 315px;
+        }
+        .c_quota_no_salay{
+            width: 538px;
+            height: 315px;
+        }
+        .c_quota{
+            width: 254px;
+            height: 315px;
+        }
+        .c_quota_no_dividend{
+            width: 494px;
+            height: 315px;
+        }
+        .c_quota_width{
+            height: 315px;
+            width: 778px;
+        }
+        .quota_list{
+            li{
+                height: 42px;
+                line-height: 42px;
+                font-size: 14px;
+                color: #393939;
+            }
+        }
+    }
+
+    .c_title{
+        line-height: 53px;
+        height: 53px;
+        background: #f8f7f4;
+        font-size: 16px;
+        font-weight: 600;
+        border-bottom:1px solid $border_color;
+        img{
+            margin-bottom: -6px;
+            margin-right: 5px;
+        }
+    }
+    .c_salary{
+        width: 283px;
+        height: 315px;
+    }
+
+    .c_txt{
+        font-size: 20px;
+    }
+
+    .c_award{
+        width: 180px;
+        height: 250px;
+    }
+
+
+    .c-info{
+        float: right;
+        margin-top: 20px;
+        margin-right: 10px;
+    }
+
+    .ant-spin{
+        position: absolute;
+        top:50%;
+        left: 50%;
+    }
+    .page{
+        margin-top: 10px;
+    }
+
+}
+.contract_helpinfo{
+    .ant-tooltip-inner{
+        max-width: 540px;
+        height: 314px;
+        font-size: 14px;
+        background-color:rgba(0,0,0,0.8);
+        padding: 8px 21px 17px;
+        .c_info_wrap{
+            p{
+                line-height: 25px;
+            }
+        }
+        .c_info_title{
+            margin-top: 10px;
+            color: #ffdb70;
+            text-align: center;
+            font-size: 16px;
+        }
+        .c_i_title1{
+            margin-top: 10px;
+            color: #ffdb70;
+
+        }
+        .c_i_title2{
+            color: #ffdb70;
+
+        }
+    }
+}
+.quota_modal{
+    .reviewing{
+        font-size: 14px;
+        text-align: center;
+        &>p{
+            margin: 20px 0 100px;
+        }
+    }
+    .quota_list{
+        color: $color_363636;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 10px;
+        li{
+            @include lh(45px);
+            .ant-btn{
+                padding: 6px 20px;
+            }
+            .ant-btn:first-child{
+                margin-right: 10px;
+            }
+        }
+    }
+    .current_quota{
+        color: $color_CF2027;
+        display: inline-block;
+        width: 50px;
+    }
+    .ant-input-number-handler-wrap{
+        display: none;
+    }
+    .ant-input-number{
+        @include borderRadius(0);
+        background-color: #fff;
+        border: 0;
+        border-bottom: 1px solid $color_363636;
+    }
+    .ant-input-number:hover{
+        border-color: #cf2027;
+    }
+    .ant-input-number-focused{
+        box-shadow: 0 0 0 0;
+        border-color: #cf2027;
+    }
+    .ant-input-number-input[disabled]{
+        color: rgb(109, 109, 109);
+    }
+    .ant-input-number-disabled .ant-input-number-input{
+        background-color: #fbfaf5;
+    }
+}
+
+

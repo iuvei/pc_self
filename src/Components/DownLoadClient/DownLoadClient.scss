@@ -1,0 +1,225 @@
+@import '../../Style/variables';
+@import '../../Style/mixin';
+
+/*标题列表样式*/
+.download_title{
+    padding-top: 20px;
+    width: 830px;
+    margin:0 auto;
+    height: 65px;
+    li{
+        width: 146px;
+        height: 30px;
+        display: inline-block;
+        text-align: center;
+        line-height: 30px;
+        margin-left: 20px;
+        border-radius: 30px;
+        font-size:15px;
+        cursor:pointer;
+        color: gray;
+        border-top:1px solid #cbc8c8;
+        border-left:1px solid #cbc8c8;
+        border-bottom:1px solid #ffffff;
+        border-right: 1px solid #ffffff;
+
+    }
+    li.download_title_active{
+        color: #fff;
+        border:1px inset #ffffff;
+    }
+    li:nth-child(1){
+        background: #f3f3f6 url("./Img/pc.png") no-repeat 13% 70% ;
+    }
+    li:nth-child(2){
+        background: #f3f3f6 url("./Img/phone.png") no-repeat   13% 70% ;
+    }
+    li:nth-child(3){
+        background: #f3f3f6 url("./Img/user.png") no-repeat  10% 70% ;
+    }
+    li:nth-child(4){
+        background: #f3f3f6 url("./Img/pt.png") no-repeat   11% 70%;
+    }
+    li:nth-child(5){
+        background: #f3f3f6 url("./Img/QRcode.png") no-repeat   10% 70% ;
+    }
+    li:nth-child(1).download_title_active{
+        background: #d43030 url("./Img/pc_active.png") no-repeat 13% 70% ;
+    }
+    li:nth-child(2).download_title_active{
+        background: #d43030 url("./Img/phone_active.png") no-repeat   13% 70% ;
+    }
+    li:nth-child(3).download_title_active{
+        background: #d43030 url("./Img/user_active.png") no-repeat  10% 70% ;
+    }
+    li:nth-child(4).download_title_active{
+        background: #d43030 url("./Img/pt_active.png") no-repeat   11% 70%;
+    }
+    li:nth-child(5).download_title_active{
+        background: #d43030 url("./Img/QRcode_active.png") no-repeat   10% 60% ;
+    }
+}
+
+.pc_contain{
+    width: 268px;
+    .pc_btn{
+        width: 268px;
+        height: 69px;
+        @include bis('./Img/down_btn.png');
+        cursor: pointer;
+        padding-left: 110px;
+        font-size: 17px;
+        line-height: 69px;
+        color: #fff;
+        margin-top: 260px;
+        margin-left: 70px;
+    }
+}
+.phone_contain{
+    margin-top: 230px;
+    margin-left: 310px;
+    a{
+        display: inline-block;
+    }
+    a:nth-child(2){
+        margin-left: 20px;
+    }
+    .phone_btn1{
+        width: 253px;
+        height: 69px;
+        line-height: 69px;
+        float: left;
+        color: #fff;
+        cursor: pointer;
+        padding-left: 110px;
+        font-size: 17px;
+        @include bis('./Img/phone_btn1.png');
+    }
+    .phone_btn2{
+        width: 253px;
+        height: 69px;
+        line-height: 69px;
+        color: #fff;
+        cursor: pointer;
+        float: left;
+        padding-left: 110px;
+        font-size: 17px;
+        @include bis('./Img/phone_btn2.png');
+    }
+
+}
+.people_contain{
+    width: 283px;
+    .people_btn{
+        width: 283px;
+        height: 69px;
+        @include bis('./Img/btn.png');
+        cursor: pointer;
+        padding-left: 110px;
+        font-size: 17px;
+        line-height: 69px;
+        color: #fff;
+        margin-top: 300px;
+        margin-left: 114px;
+    }
+}
+.pt_contain{
+    margin-top: 280px;
+    margin-left: 66px;
+    width: 273px;
+    font-size: 17px;
+    .pt_btn1{
+        width: 273px;
+        height: 69px;
+        color: #fff;
+        line-height: 69px;
+        cursor: pointer;
+        padding-left: 110px;
+        @include bis('./Img/btn_1.png');
+    }
+    .pt_btn2{
+        width: 273px;
+        height: 69px;
+        margin-top: 20px;
+        cursor: pointer;
+        color: #fff;
+        line-height: 69px;
+        padding-left: 110px;
+        @include bis('./Img/btn_2.png');
+    }
+    .pt_btn3{
+        width: 273px;
+        height: 69px;
+        margin-top: 20px;
+        cursor: pointer;
+        color: #fff;
+        line-height: 69px;
+        padding-left: 110px;
+        @include bis('./Img/btn_3.png');
+    }
+}
+.m_contain{
+    width: 270px;
+    margin: 120px auto 0;
+    text-align: center;
+    background: #f5f2f2;
+    padding: 10px;
+}
+.download_contain0{
+    width: 1107px;
+    height: 773px;
+    margin: 0 auto;
+    @include bis('./Img/pc_contain.png');
+}
+.download_contain1{
+    width: 1129px;
+    height: 769px;
+    margin: 0 auto;
+    @include bis('./Img/phone_contain.png');
+}
+.download_contain2{
+    width: 1190px;
+    height: 770px;
+    margin: 0 auto;
+    background:url('./Img/people_contain.png') no-repeat top center;
+
+}
+.download_contain3{
+    width: 1125px;
+    height: 769px;
+    margin: 0 auto;
+    @include bis('./Img/pt_contain.png');
+}
+/*为了使标签标题在切换内容时固定在特定的位置*/
+.download_for_title{
+    width: 1100px;
+    margin: 0 auto;
+}
+/*PC客户端*/
+.download_main0{
+    height: 724px;
+    @include bis('./Img/pc_bg.png');
+}
+/*手机客户端*/
+.download_main1{
+    height: 724px;
+    @include bis('./Img/phone_bg.png');
+}
+/*真人娱乐城*/
+.download_main2{
+    height: 724px;
+    @include bis('./Img/people_bg.png');
+
+}
+/*PT娱乐城*/
+.download_main3{
+    height: 724px;
+    @include bis('./Img/pt_bg.png');
+
+}
+/*M站二维码*/
+.download_main4{
+    height: 724px;
+    @include bis('./Img/m_bg.png');
+
+}
