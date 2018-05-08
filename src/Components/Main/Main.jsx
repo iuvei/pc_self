@@ -11,12 +11,12 @@ import RightPlug from '../Common/RightPlug/RightPlug';
 import './Main.scss';
 
 /*检测界面是否刷新*/
-window.onbeforeunload = function () {
-    const pathname = hashHistory.getCurrentLocation().pathname;
-    if(pathname != '/login') {
-        return "真的离开?";
-    }
-};
+// window.onbeforeunload = function () {
+//     const pathname = hashHistory.getCurrentLocation().pathname;
+//     if(pathname != '/login') {
+//         return "真的离开?";
+//     }
+// };
 window.onunload = function () {
     if (stateVar.userInfo.sType == 'demo') {
         Fetch.logout({
