@@ -455,7 +455,11 @@ export default class HeaderTop extends Component {
                 );
                 const pathname = hashHistory.getCurrentLocation().pathname;
                 if(pathname == '/teamManage/teamList' || pathname == '/teamManage'){
-                    emitter.emit('teamList')
+                    emitter.emit('teamList');
+                }
+                if(pathname == '/teamManage/contract'){
+                    stateVar.prizeStatus = 0;
+                    emitter.emit('getContractList');
                 }
     			this.onUnread();
     			emitter.emit('zhanneixin');

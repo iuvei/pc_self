@@ -95,6 +95,7 @@ class State {
     @observable checkLotteryId = true;
     @observable paused = true;
     @observable betVisible = false;
+    @observable prizeStatus = 0; // 申请补充配额
     @observable activeTheme = _code.getStore('webTheme') || 'white';
     @action('修改网站主题 换肤') changeTheme = (color) => {
         _code.setStore('webTheme', color);
