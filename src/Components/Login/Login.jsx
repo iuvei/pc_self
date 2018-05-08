@@ -7,7 +7,7 @@ import md5 from 'md5';
 import { stateVar } from '../../State';
 import './Login.scss';
 import loginSrc from './Img/logo.png';
-import {removeStore, setStore,getStore, onValidate, _code } from "../../CommonJs/common";
+import {removeStore, setStore,getStore, onValidate, _code, compare } from "../../CommonJs/common";
 const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
 const circuitArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
 const urlFlag = [
@@ -180,7 +180,7 @@ export default class Login extends Component {
                             times.push(timesFlag);
                         }
                         if(times.length == 4){
-                            times.sort(_this.compare("time"));
+                            times.sort(compare("time", 'ASC'));
                             times.forEach((item, index) => {
                                 item.line = index
                             });
@@ -204,24 +204,6 @@ export default class Login extends Component {
                 }
             }
         })
-    };
-    /*从小到大排序*/
-    compare(prop) {
-        return function (obj1, obj2) {
-            let val1 = obj1[prop];
-            let val2 = obj2[prop];
-            if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
-                val1 = Number(val1);
-                val2 = Number(val2);
-            }
-            if (val1 < val2) {
-                return -1;
-            } else if (val1 > val2) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
     };
 
     getKefu(){
@@ -984,12 +966,12 @@ export default class Login extends Component {
                             </div>
                             <ul className="l_n_t_list right">
                                 <li className='left'>
-                                    <a className="dns col_color_ying" href="#/dns" target="_blank">
+                                    <a className="dns text_color" href="#/dns" target="_blank">
                                         防劫持教程
                                     </a>
                                 </li>
                                 <li className='left'>
-                                    <a className="httpService col_color_ying" href={stateVar.httpService} target="_blank">
+                                    <a className="httpService text_color" href={stateVar.httpService} target="_blank">
                                         在线客服
                                     </a>
                                 </li>

@@ -64,14 +64,14 @@ export default class Promptly extends Component {
                             </li>
                             <li>
                                 <span className="p_r_text">充值金额：</span>
-                                <span className="gathering_bank col_color_ying">{aliPayInfo.fMoney}元</span>
+                                <span className="gathering_bank text_color">{aliPayInfo.fMoney}元</span>
                                 <CopyToClipboard text={aliPayInfo.fMoney} onCopy={() => message.success('复制成功')}>
                                     <Button className="btn_p" type="primary">通用复制</Button>
                                 </CopyToClipboard>
                             </li>
                             <li>
                                 <span className="p_r_text">备注（付款说明）：</span>
-                                <span className="gathering_bank col_color_ying">{aliPayInfo.remark}</span>
+                                <span className="gathering_bank text_color">{aliPayInfo.remark}</span>
                                 <CopyToClipboard text={aliPayInfo.remark} onCopy={() => message.success('复制成功')}>
                                     <Button className="btn_p" type="primary">通用复制</Button>
                                 </CopyToClipboard>
@@ -115,11 +115,11 @@ export default class Promptly extends Component {
                             </li>
                             <li>
                                 <span className="p_r_text">充值金额：</span>
-                                <span className="gathering_bank col_color_ying">{aliPayInfo.fMoney}元</span>
+                                <span className="gathering_bank text_color">{aliPayInfo.fMoney}元</span>
                             </li>
                             <li>
                                 <span className="p_r_text">附言：</span>
-                                <span className="gathering_bank col_color_ying">{aliPayInfo.remark}</span>
+                                <span className="gathering_bank text_color">{aliPayInfo.remark}</span>
                                 <CopyToClipboard text={aliPayInfo.remark} onCopy={() => message.success('复制成功')}>
                                     <Button className="btn_p" type="primary">通用复制</Button>
                                 </CopyToClipboard>
@@ -143,7 +143,7 @@ export default class Promptly extends Component {
                 <div className="p_r_explain right">
                     <div className="count_down">
                         <span>充值订单有效倒计时&nbsp;</span>
-                        <span className="col_color_ying">{this.state.time}</span>
+                        <span className="text_color">{this.state.time}</span>
                     </div>
                     {
                         this.props.location.query.name == 'aliPay' ?
@@ -162,7 +162,7 @@ export default class Promptly extends Component {
                                 <p>2、充值账户应已绑定至平台，否则充值将无法到账。</p>
                                 <p>3、收款账户将不定时更换，请勿保存，充值前请获取最新信息后充值。</p>
                                 <p>4、填写的充值金额应与网银转账金额完全一致，否则将无法即时到账。</p>
-                                <p className="col_color_ying">
+                                <p className="text_color">
                                     {
                                         aliPayInfo.b_acc_name == 'khcz' || aliPayInfo.b_acc_name == 'khzz' ? '5、支持跨行转账，您可自行登录各大银行官网进行转账操作。' : '5、不支持跨行转账，请登录收款卡对应银行官网进行转账操作。'
                                     }

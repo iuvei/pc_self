@@ -454,7 +454,7 @@ export default class HeaderTop extends Component {
                     }
                 );
                 const pathname = hashHistory.getCurrentLocation().pathname;
-                if(pathname == '/teamManage/teamList'){
+                if(pathname == '/teamManage/teamList' || pathname == '/teamManage'){
                     emitter.emit('teamList')
                 }
     			this.onUnread();
@@ -538,10 +538,10 @@ export default class HeaderTop extends Component {
                                 onMouseOver={()=>this.setState({iconArrowsMoney: true})}
                                 onMouseOut={()=>this.setState({iconArrowsMoney: false})}
                             >
-                                <span className="col_color_ying">余额：</span>
-                                <span className="color_CF2027">
-                                    <i>￥</i>
-                                    <i className="cpbalance ellipsis">{hideBalance ? allBalance.cpbalance : '******'}</i>
+                                <span className="text_color">余额：</span>
+                                <span className="text_color">
+                                    <span>￥</span>
+                                    <span className="cpbalance ellipsis">{hideBalance ? allBalance.cpbalance : '******'}</span>
                                     <img src={hideBalance ? on_icon : off_icon} onClick={()=>{stateVar.hideBalance = hideBalance ? false : true}} className="n_t_hide_balance"/>
                                 </span>
                                 <div className="n_t_controler">

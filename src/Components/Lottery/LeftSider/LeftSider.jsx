@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import TweenOne from 'rc-tween-one';
-import {Menu, Modal, Progress} from 'antd';
+import {Menu, Modal} from 'antd';
 const SubMenu = Menu.SubMenu;
 import emitter from '../../../Utils/events';
 import {hashHistory} from 'react-router';

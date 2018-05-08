@@ -264,19 +264,19 @@ export default class AliPay extends Component {
                         <p className="ali_m_dx">
                             <span className="ali_m_recharge_text">
                             单笔充值限额：最低
-                            <span className="col_color_ying">{this.state.loadmin}</span>
+                            <span className="text_color">{this.state.loadmin}</span>
                             元，最高
-                            <span className="col_color_ying">{this.state.loadmax}</span>
+                            <span className="text_color">{this.state.loadmax}</span>
                             元，
                                 {
                                     postData.payment == 'zhifubaoc9' ?
                                         <span>
                                         金额必须是
-                                        <span className="col_color_ying">10</span>
+                                        <span className="text_color">10</span>
                                         的倍数并且大于
-                                        <span className="col_color_ying">500</span>
+                                        <span className="text_color">500</span>
                                         时必须是
-                                        <span className="col_color_ying">50</span>
+                                        <span className="text_color">50</span>
                                         的倍数，
                                     </span>
                                         :

@@ -329,6 +329,38 @@ export const _code = (id, url, w, h) => {
     }
 };
 
+/**
+ * 排序
+ * prop: 按照排序的对象
+ * type:  降序：'DESC',默认降序 ；升序： 'ASC'
+ * */
+export const compare = (prop, type) => {
+    return function (obj1, obj2) {
+        let val1 = obj1[prop];
+        let val2 = obj2[prop];
+        if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+            val1 = Number(val1);
+            val2 = Number(val2);
+        }
+        if(type === 'ASC'){
+            if (val1 < val2) {
+                return -1;
+            } else if (val1 > val2) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }else{
+            if (val1 > val2) {
+                return -1;
+            } else if (val1 < val2) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
+};
 export default {
     setDateTime,
     setNewDateTime,
@@ -346,6 +378,7 @@ export default {
     delCookie,
     timestampToTime,
     _code,
-    datedifference
+    datedifference,
+    compare
 }
 

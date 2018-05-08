@@ -388,10 +388,10 @@ export default class TeamList extends Component {
     };
 
     /*提交协议*/
-    onDiviratio(contract_name) {
+    onDiviratio(contract_name, username, type) {
         let _this = this;
         confirm({
-            title: '确认要'+ contract_name +'吗?',
+            title: <div>确认要{contract_name}下级 <b className="col_color_ying">{username}</b> 的{type}吗?</div>,
             onOk() {
                 _this.setProtocol(contract_name)
             },
@@ -399,7 +399,7 @@ export default class TeamList extends Component {
     };
 
     setProtocol(contract_name) {
-        let {typeName, alterData} = this.state;
+        let {typeName, alterData, tableData} = this.state;
         this.setState({affirmLoading: true});
         if (typeName == '配额契约') {
             let {agPost} = this.state;
@@ -416,21 +416,31 @@ export default class TeamList extends Component {
             }).then((res) => {
                 if (this._ismount) {
                     this.setState({affirmLoading: false});
-                    let _this = this;
                     if (res.status == 200) {
                         Modal.success({
                             title: res.repsoneContent,
-                            onOk(){
-                                _this.getData('modify');
-                                _this.getNum();
+                        });
+                        if(contract_name == '同意'){
+                            for(let i = 0, dataSource = tableData.dataSource; i < dataSource.length; i++){
+                                if(dataSource[i].userid == alterData.userid){
+                                    dataSource[i].useraccgroup_status = 1;
+                                    break;
+                                }
                             }
-                        });
-                        this.setState({
-                            quotaVisible: false,
-                            alterVisible: false,
-                        });
+                            this.setState({
+                                quotaVisible: false,
+                                alterVisible: false,
+                                tableData
+                            });
+                        }else{
+                            this.getData('modify');
+                            this.setState({
+                                quotaVisible: false,
+                                alterVisible: false,
+                            });
+                        }
+                        this.getNum();
                         this.getAccGroupList(alterData);
-                        this.clearTimeout = setTimeout(() => this.getData(), 31000);
                     } else {
                         Modal.warning({
                             title: res.shortMessage,
@@ -1308,7 +1318,7 @@ export default class TeamList extends Component {
                                             <Popconfirm title="确定删除吗?"
                                                         onConfirm={() => this.onDelete(i)}
                                             >
-                                                <span className="hover col_color_ying delete_sale">删除</span>
+                                                <span className="hover text_color delete_sale">删除</span>
                                             </Popconfirm> :
                                             null
                                     }
@@ -1321,7 +1331,7 @@ export default class TeamList extends Component {
                         下级日工资各档位日销量要求需与自身保持一致，删除档位时遵循从高到底的原则，但至少保留三档。
                     </li>
                 </ul>
-                <span className="hover col_color_ying add_sale"
+                <span className="hover text_color add_sale"
                       onClick={() => this.onAddSale()}
                       style={{display: contentArr.length >= 6 ? 'none' : ''}}>
                     添加档位
@@ -1395,7 +1405,7 @@ export default class TeamList extends Component {
                                             allowClear={false}
                                             format="YYYY-MM-DD HH:mm:ss"
                                             placeholder="请选择开始时间"
-                                            value={selectInfo.register_time_begin}
+                                            value={this.state.register_time_begin_flag}
                                             onChange={(date, dateString) => this.onRegisterTimeStart(date, dateString)}
                                 />
                                 <span style={{margin: '0 8px'}}>至</span>
@@ -1403,6 +1413,7 @@ export default class TeamList extends Component {
                                             allowClear={false}
                                             format="YYYY-MM-DD HH:mm:ss"
                                             placeholder="请选择结束时间"
+                                            value={this.state.register_time_end_flag}
                                             onChange={(date, dateString) => this.onRegisterTimeEnd(date, dateString)}
                                 />
                             </li>
@@ -1481,7 +1492,7 @@ export default class TeamList extends Component {
                     className="quota_modal"
                 >
                     <p className="quota_name">
-                        <span className="col_color_ying">{this.state.alterData.username}</span>
+                        <span className="text_color">{this.state.alterData.username}</span>
                         申请配额：
                     </p>
                     <ul className="quota_list">
@@ -1502,8 +1513,8 @@ export default class TeamList extends Component {
                         }
                         <li>剩余奖金组配额：无限制</li>
                         <li>
-                            <Button onClick={() => this.onDiviratio('同意')} type="primary">通过审核</Button>
-                            <Button onClick={() => this.onDiviratio('拒绝')}>拒绝审核</Button>
+                            <Button onClick={() => this.onDiviratio('同意', this.state.alterData.username, '配额申请')} type="primary">通过审核</Button>
+                            <Button onClick={() => this.onDiviratio('拒绝', this.state.alterData.username, '配额申请')}>拒绝审核</Button>
                         </li>
                     </ul>
                 </Modal>
@@ -1523,7 +1534,7 @@ export default class TeamList extends Component {
                         </li>
                         <li>
                             <span>您的余额：</span>
-                            <span className="col_color_ying">{recharge.balance} 元</span>
+                            <span className="text_color">{recharge.balance} 元</span>
                         </li>
                         <li>
                             <span>充值金额：</span>
@@ -1538,9 +1549,9 @@ export default class TeamList extends Component {
                             <span style={{marginLeft: 5}}>元</span>
                             <p style={{marginLeft: 60}}>
                                 充值最低金额
-                                <strong className="col_color_ying">{recharge.recharge_min}</strong>
+                                <strong className="text_color">{recharge.recharge_min}</strong>
                                 元，最高
-                                <strong className="col_color_ying">{recharge.recharge_max}</strong>
+                                <strong className="text_color">{recharge.recharge_max}</strong>
                                 元的整数
                             </p>
                             <p style={{
