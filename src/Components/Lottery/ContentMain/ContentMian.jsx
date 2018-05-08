@@ -399,14 +399,14 @@ export default class ContentMian extends Component {
         }
         if (this._ismount) {
             // 判断本地是否保存上次最近玩法，若果有 则显示最近一次完的玩法
-            let lastPlays = common.getStore('lastPlays')
-            if (Array.isArray(lastPlays)) {
-                lastPlays.forEach((value) => {
-                    if (value.id === stateVar.nowlottery.lotteryId) {
-                        tempIndex = value.index
-                    }
-                })
-            }
+            // let lastPlays = common.getStore('lastPlays')
+            // if (Array.isArray(lastPlays)) {
+            //     lastPlays.forEach((value) => {
+            //         if (value.id === stateVar.nowlottery.lotteryId) {
+            //             tempIndex = value.index
+            //         }
+            //     })
+            // }
             this.setState({lotteryMethod: val[stateVar.nowlottery.lotteryId], navIndex: tempIndex}, () => {
                 //相关玩法的state值赋值
                 this.selectAreaData(this.state.lotteryMethod);
@@ -756,27 +756,6 @@ export default class ContentMian extends Component {
             // 重新设置是否显示冷热
             stateVar.setHotMissFlag('');
             this.getMissHotFlag();
-            // 保存当前玩法至本地，下次默认加载此玩法
-            let lastPlays = common.getStore('lastPlays')
-            if (Array.isArray(lastPlays)) {
-                let flag = false
-                lastPlays.forEach((value) => {
-                    if (value.id == stateVar.nowlottery.lotteryId) {
-                        value.index = a
-                        flag = true
-                    }
-                })
-                if (!flag) {
-                    lastPlays.push({
-                        id: stateVar.nowlottery.lotteryId,
-                        index: a
-                    })
-                }
-                common.setStore('lastPlays', lastPlays)
-            } else {
-                common.setStore('lastPlays', [{id: stateVar.nowlottery.lotteryId, index: a}])
-            }
-            console.log(lastPlays)
         });
     }
 
@@ -1394,7 +1373,7 @@ export default class ContentMian extends Component {
 
             }
             switch (mname) {//根据类型不同做不同检测
-                            //任三 直选 直选单式
+                //任三 直选 直选单式
                 case 'RXZXSSC3DS':
                 case 'RXZXWFC3DS':
                 case 'RXZXFFC3DS':
@@ -1643,6 +1622,26 @@ export default class ContentMian extends Component {
                 }).then((data) => {
                     this.setState({directFlag: false});
                     if (data.status == 200) {
+                        // // 保存当前玩法至本地，下次默认加载此玩法
+                        // let lastPlays = common.getStore('lastPlays')
+                        // if (Array.isArray(lastPlays)) {
+                        //     let flag = false
+                        //     lastPlays.forEach((value) => {
+                        //         if (value.id == stateVar.nowlottery.lotteryId) {
+                        //             value.index = a
+                        //             flag = true
+                        //         }
+                        //     })
+                        //     if (!flag) {
+                        //         lastPlays.push({
+                        //             id: stateVar.nowlottery.lotteryId,
+                        //             index: a
+                        //         })
+                        //     }
+                        //     common.setStore('lastPlays', lastPlays)
+                        // } else {
+                        //     common.setStore('lastPlays', [{id: stateVar.nowlottery.lotteryId, index: a}])
+                        // }
                         const modal = Modal.success({
                             title: '温馨提示',
                             content: data.longMessage,
