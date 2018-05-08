@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import { Table, Icon,Tooltip,Spin,Button,Modal,InputNumber, Pagination } from 'antd';
 import { stateVar } from '../../../State';
 import Fetch from '../../../Utils';
-
+import {compare} from '../../../CommonJs/common';
 import moneySrc from './Img/money.png';
 import dollarSrc from './Img/dollar.png';
 import yuanSrc from './Img/yuan.png';
@@ -307,7 +307,7 @@ export default class Contract extends Component {
     };
     render() {
         const { dailysalaryStatus } = stateVar;
-        const { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost, total, prizeStatus} = this.state;
+        let { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost, total, prizeStatus} = this.state;
         const columnsDay = [
             {
                 title: '日有销量',
@@ -325,6 +325,7 @@ export default class Contract extends Component {
                 render: (text)=> '≥'+ text + '%'
             }
         ];
+        const quotaListASC = quotaList.sort(compare('prizeGroup'));
 
         return (
            <div className='contract_main'>
@@ -386,8 +387,8 @@ export default class Contract extends Component {
                                            <div style={{fontSize: 14, marginTop: 110}}>无限制</div> :
                                            <ul className="quota_list">
                                                {
-                                                   quotaList.map((item)=>{
-                                                       return <li key={item.uagid}>{item.prizeGroup}奖金组：{item.accnum}个</li>
+                                                   quotaListASC.map((item, i)=>{
+                                                       return <li key={i}>{item.prizeGroup}奖金组：{item.accnum}个</li>
                                                    })
                                                }
                                                <li>剩余奖金组：无限制</li>
