@@ -19,6 +19,7 @@ export default class AliPay extends Component {
             backList: null, // 可选择银行
             loadmax: 0, //渠道限额最多
             loadmin: 0, //渠道限额最少
+            handingCharge: 0,
 
             postData: {
                 type: 'deposit', //操作类型
@@ -56,6 +57,7 @@ export default class AliPay extends Component {
                     _data = data[0],
                     loadmin = 0,
                     loadmax = 0,
+                    handingCharge = 0,
                     postData = this.state.postData;
                 if (_data !== undefined) {
                     postData.payment = _data.payport_name;
@@ -64,12 +66,14 @@ export default class AliPay extends Component {
                     postData.code = _data.code;
                     loadmin = _data.loadmin;
                     loadmax = _data.loadmax;
+                    handingCharge = _data.handing_charge;
                 }
 
                 this.setState({
                     backList: data,
                     loadmin: loadmin,
                     loadmax: loadmax,
+                    handingCharge: handingCharge,
                     postData: postData
                 })
             }
@@ -189,6 +193,7 @@ export default class AliPay extends Component {
             imgUrlIndex: index,
             loadmin: selectBank.loadmin,
             loadmax: selectBank.loadmax,
+            handingCharge: selectBank.handing_charge,
             postData: postData,
             validate,
         });
@@ -202,7 +207,7 @@ export default class AliPay extends Component {
     }
 
     render() {
-        const {backList, postData} = this.state;
+        const {backList, postData, handingCharge} = this.state;
         return (
             <div className="ali_main" onKeyDown={(e) => this.onSubmit(e)}>
                 <div className="ali_m_hint">
@@ -285,6 +290,10 @@ export default class AliPay extends Component {
                                 单日充值总额无上限
                         </span>
                         </p>
+                        {
+                            handingCharge <= 0 ? null :
+                                <p className="ali_m_dx text_color">温馨提示：此渠道需要收取 {handingCharge}%手续费，谢谢！</p>
+                        }
                     </li>
                     <li className="ali_m_primary_btn">
                         <span className="ali_m_li_w"></span>

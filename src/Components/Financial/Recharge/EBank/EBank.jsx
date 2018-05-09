@@ -19,7 +19,7 @@ export default class Ebank extends Component {
             backList: [], // 可选择银行
             loadmax: 0, //渠道限额最多
             loadmin: 0, //渠道限额最少
-
+            handingCharge: 0,
             postData: {
                 type: 'deposit', //操作类型
                 tag: 'wangyinzhuanzhang', //充值分类  网银转账 wangyinzhuanzhang
@@ -36,7 +36,7 @@ export default class Ebank extends Component {
     };
     componentDidMount() {
         this._ismount = true;
-        this.onLinePayment()
+        this.onLinePayment();
     };
     componentWillUnmount() {
         this._ismount = false;
@@ -50,6 +50,7 @@ export default class Ebank extends Component {
                 let data = res.repsoneContent,
                     loadmin = 0,
                     loadmax = 0,
+                    handingCharge = 0,
                     postData = this.state.postData;
                 if(data[0] !== undefined){
                     postData.payment = data[0].payport_name;
@@ -58,12 +59,14 @@ export default class Ebank extends Component {
                     postData.code = data[0].code;
                     loadmin = data[0].loadmin;
                     loadmax = data[0].loadmax;
+                    handingCharge = data[0].handing_charge;
                 }
 
                 this.setState({
                     backList: data,
                     loadmin: loadmin,
                     loadmax: loadmax,
+                    handingCharge: handingCharge,
                     postData: postData
                 })
             }
@@ -127,6 +130,7 @@ export default class Ebank extends Component {
             imgUrlIndex: index,
             loadmin: selectBank.loadmin,
             loadmax: selectBank.loadmax,
+            handingCharge: selectBank.handing_charge,
             postData: postData,
         });
     };
@@ -137,6 +141,7 @@ export default class Ebank extends Component {
         }
     }
     render() {
+        const {handingCharge} = this.state;
         return (
             <div className="ali_main" onKeyDown={(e)=>this.onSubmit(e)}>
                 <div className="ali_m_hint">
@@ -180,6 +185,10 @@ export default class Ebank extends Component {
                             元，最多保留两位小数
                         </span>
                         </p>
+                        {
+                            handingCharge <= 0 ? null :
+                                <p className="ali_m_dx text_color">温馨提示：此渠道需要收取 {handingCharge}%手续费，谢谢！</p>
+                        }
                     </li>
                     <li className="ali_m_primary_btn">
                         <span className="ali_m_li_w"></span>
