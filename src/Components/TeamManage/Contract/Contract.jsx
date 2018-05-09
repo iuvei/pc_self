@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import { Table, Icon,Tooltip,Spin,Button,Modal,InputNumber, Pagination } from 'antd';
 import { stateVar } from '../../../State';
+import emitter from '../../../Utils/events';
 import Fetch from '../../../Utils';
 import {compare} from '../../../CommonJs/common';
 import moneySrc from './Img/money.png';
@@ -46,16 +47,20 @@ export default class Contract extends Component {
                 p: 1,
                 pn: 10,
             },
-            prizeStatus: 0,
-
         };
     };
     componentDidMount() {
         this._ismount = true;
         this.getContractList();
+        this.eventEmitter = emitter.on('getContractList', () => {
+            this.getContractList();
+        });
     };
     componentWillUnmount() {
         this._ismount = false;
+        if(this.eventEmitter){
+            emitter.off(this.eventEmitter)
+        }
     };
 
     /*切换每页显示条数*/
@@ -220,8 +225,8 @@ export default class Contract extends Component {
                         tableLength:data.results.length,
                         quotaList: data.prizeaccount,
                         total: parseInt(data.affects),
-                        prizeStatus: data.prizeStatus
                     });
+                    stateVar.prizeStatus = data.prizeStatus;
                 }
             }
         });
@@ -242,7 +247,7 @@ export default class Contract extends Component {
                         content: res.shortMessage,
                         okText: '确认关闭',
                         onOk() {
-                            _this.setState({prizeStatus: 1})
+                            stateVar.prizeStatus = 1;
                         }
                     });
                 }else{
@@ -306,8 +311,8 @@ export default class Contract extends Component {
         }
     };
     render() {
-        const { dailysalaryStatus } = stateVar;
-        let { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost, total, prizeStatus} = this.state;
+        const { dailysalaryStatus, prizeStatus } = stateVar;
+        let { protocol,cur_dividend_radio,tableData,columns, quotaList, quotaPost, total} = this.state;
         const columnsDay = [
             {
                 title: '日有销量',

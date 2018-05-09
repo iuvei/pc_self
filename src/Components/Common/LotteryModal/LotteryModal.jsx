@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import {Button,Modal,Popover} from 'antd';
 import emitter from '../../../Utils/events';
+import switchHtml from '../../Lottery/commone';
 import Fatch from '../../../Utils';
 import './LotteryModal.scss';
 import { stateVar } from '../../../State';
@@ -308,7 +309,7 @@ export default class AlterModal extends Component {
 	    				this.setState({tzloding:false});
 	    				let modal;
 	    				if(data.longMessage.fail > 0){
-	    					let msg = data.longMessage.content[0];
+	    					let msg = switchHtml.replaceHTML_DECODE(data.longMessage.content[0]);
 	    					modal = Modal.error({
 							    title: '温馨提示',
 							    content: msg,

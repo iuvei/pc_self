@@ -2048,7 +2048,6 @@ const methodId = {
 };
 //投注
 const checkNum = () => {
-    // debugger
     //实时计算投注注数与金额等
     var nums = 0, mname = methodId[stateVar.aboutGame.methodID];//玩法的简写,如:'ZX3'
     //var modes = parseInt($("#lt_project_modes").val(),10);//投注模式

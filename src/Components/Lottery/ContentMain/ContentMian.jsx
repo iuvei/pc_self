@@ -2395,7 +2395,7 @@ export default class ContentMian extends Component {
         stateVar.aboutGame.data_sel = [];
         stateVar.aboutGame.minchosen = [];
         if (numberObj.nfdprize.defaultprize == undefined) {
-            this.setState({omodel: '2'});
+            this.setState({omodel: '1'});
         }
         let tempMode = [];
         numberObj.modes.map((val, index) => {
