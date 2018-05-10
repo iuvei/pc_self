@@ -244,11 +244,12 @@
     overflow: hidden;
     vertical-align: top;
     position: relative;
-    background: $color_CF2027;
+    padding-left: 25px;
+    background: $color_CF2027 url(./Img/notice_icon.png) no-repeat 5px center;
     .winning_list{
         position: absolute;
         top: 0;
-        left: 0;
+        left: 25px;
         margin-left: 5px;
     }
     .close_winning{
@@ -259,7 +260,7 @@
     li{
         @include lh(40px);
         color: #fff;
-        text-align: right;
+        text-align: left;
         img{
             width: 19px;
             vertical-align: text-bottom;

@@ -273,7 +273,7 @@ export default class RightPlug extends Component {
             $(".winning_list").animate({top:'-'+duration*times},500,()=>{
                 times++;
             });
-        },2000);
+        },3000);
     };
     closeWinning() {
         if(this.noticeIntervals){
@@ -367,12 +367,12 @@ export default class RightPlug extends Component {
                     visibleWinning ?
                         <div className="winning_content">
                             <div className="show_winning">
+                                {/*<img className="left" src={notice_icon}/>*/}
                                 <ul className="winning_list">
                                     {
                                         winningList.map((item, ind)=>{
                                             return (
                                                 <li key={ind}>
-                                                    <img src={notice_icon}/>
                                                     恭喜：
                                                     {item.name}
                                                     , 在【
