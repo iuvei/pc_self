@@ -18,7 +18,7 @@ export default class OnlineTopUp extends Component {
             backList: null, // 可选择银行
             loadmax: 0, //渠道限额最多
             loadmin: 0, //渠道限额最少
-
+            handingCharge: 0, //手续费
             postData: {
                 type: 'deposit', //操作类型
                 tag: 'zaixianchongzhi', //充值分类  在线充值zaixianchongzhi
@@ -53,6 +53,7 @@ export default class OnlineTopUp extends Component {
                 let data = res.repsoneContent,
                     loadmin = 0,
                     loadmax = 0,
+                    handingCharge = 0,
                     postData = this.state.postData;
                 if (data[0] !== undefined) {
                     postData.payment = data[0].payport_name;
@@ -61,12 +62,14 @@ export default class OnlineTopUp extends Component {
                     postData.code = data[0].code;
                     loadmin = data[0].loadmin;
                     loadmax = data[0].loadmax;
+                    handingCharge = data[0].handing_charge;
                 }
 
                 this.setState({
                     backList: data,
                     loadmin: loadmin,
                     loadmax: loadmax,
+                    handingCharge: handingCharge,
                     postData: postData
                 })
             }
@@ -135,6 +138,7 @@ export default class OnlineTopUp extends Component {
             imgUrlIndex: index,
             loadmin: selectBank.loadmin,
             loadmax: selectBank.loadmax,
+            handingCharge: selectBank.handing_charge,
             postData: postData,
         });
     };
@@ -147,7 +151,7 @@ export default class OnlineTopUp extends Component {
     }
 
     render() {
-        const {backList, iconLoadingRecharge, imgUrlIndex} = this.state;
+        const {backList, iconLoadingRecharge, imgUrlIndex, handingCharge} = this.state;
         return (
             <div className="online_top_up" onKeyDown={(e) => this.onSubmit(e)}>
                 <div className="ali_m_hint">
@@ -197,6 +201,10 @@ export default class OnlineTopUp extends Component {
                                 元，最多保留两位小数，单日充值总额无上限
                             </span>
                         </p>
+                        {
+                            handingCharge <= 0 ? null :
+                                <p className="r_m_dx text_color">温馨提示：此渠道需要收取 {handingCharge}%手续费，谢谢！</p>
+                        }
                     </li>
                     <li className="r_m_primary_btn">
                         <span className="r_m_li_w"></span>

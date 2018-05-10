@@ -433,6 +433,7 @@ export default class HeaderTop extends Component {
 					    message: message.data.data.title,
 					    description: message.data.data.content,
 					    placement:'bottomRight',
+                        bottom: 40,
 					    duration:5,
 					    icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
 					}
@@ -449,13 +450,18 @@ export default class HeaderTop extends Component {
                         message: message.data.data,
                         description: '',
                         placement:'bottomRight',
+                        bottom: 40,
                         duration:5,
                         icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
                     }
                 );
                 const pathname = hashHistory.getCurrentLocation().pathname;
-                if(pathname == '/teamManage/teamList'){
-                    emitter.emit('teamList')
+                if(pathname == '/teamManage/teamList' || pathname == '/teamManage'){
+                    emitter.emit('teamList');
+                }
+                if(pathname == '/teamManage/contract'){
+                    stateVar.prizeStatus = 0;
+                    emitter.emit('getContractList');
                 }
     			this.onUnread();
     			emitter.emit('zhanneixin');
@@ -538,10 +544,10 @@ export default class HeaderTop extends Component {
                                 onMouseOver={()=>this.setState({iconArrowsMoney: true})}
                                 onMouseOut={()=>this.setState({iconArrowsMoney: false})}
                             >
-                                <span className="col_color_ying">余额：</span>
-                                <span className="color_CF2027">
-                                    <i>￥</i>
-                                    <i className="cpbalance ellipsis">{hideBalance ? allBalance.cpbalance : '******'}</i>
+                                <span className="text_color">余额：</span>
+                                <span className="text_color">
+                                    <span>￥</span>
+                                    <span className="cpbalance ellipsis">{hideBalance ? allBalance.cpbalance : '******'}</span>
                                     <img src={hideBalance ? on_icon : off_icon} onClick={()=>{stateVar.hideBalance = hideBalance ? false : true}} className="n_t_hide_balance"/>
                                 </span>
                                 <div className="n_t_controler">

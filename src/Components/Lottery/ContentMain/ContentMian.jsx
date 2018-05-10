@@ -84,11 +84,11 @@ export default class ContentMian extends Component {
             traceTotalMoney: 0,
             traceifStop: false,
             tempLotteryLength: 0,
-            showFile:false,
-            fileName:"",
-            fileValue:"",
-            fileLoading:false,
-            importName:"导入"
+            showFile: false,
+            fileName: "",
+            fileValue: "",
+            fileLoading: false,
+            importName: "导入"
         }
         this.lotteryOkBet = this.lotteryOkBet.bind(this);
         this.getBetHistory = this.getBetHistory.bind(this);
@@ -165,7 +165,7 @@ export default class ContentMian extends Component {
     }
 
     initData() {
-    	this.getLotteryType();
+        this.getLotteryType();
         if (this._ismount) {
             this.setState({
                 navIndex: 0,
@@ -202,19 +202,20 @@ export default class ContentMian extends Component {
             });
         }
     };
+
     //加载彩种类型
-    getLotteryType(){
-    	let getVersion = require('../../../CommonJs/version.json') || {};
+    getLotteryType() {
+        let getVersion = require('../../../CommonJs/version.json') || {};
         let lotteryData;
         let getLocalVersion = common.getStore('productVersion') || {};
-        if(getLocalVersion.version && getLocalVersion.version == getVersion.productVersion){
-        	lotteryData = getLocalVersion.data;
-        }else{
-        	lotteryData = require('../../../CommonJs/common.json');
-        	let tempObj = {};
-        	tempObj['version'] = getVersion.productVersion;
-        	tempObj['data'] = lotteryData;
-        	common.setStore('productVersion',tempObj);
+        if (getLocalVersion.version && getLocalVersion.version == getVersion.productVersion) {
+            lotteryData = getLocalVersion.data;
+        } else {
+            lotteryData = require('../../../CommonJs/common.json');
+            let tempObj = {};
+            tempObj['version'] = getVersion.productVersion;
+            tempObj['data'] = lotteryData;
+            common.setStore('productVersion', tempObj);
         }
         let tempLotteryType = {};
         let tempLotteryLength;
@@ -234,88 +235,89 @@ export default class ContentMian extends Component {
         stateVar.alllotteryType = tempLotteryType;//所有彩种类型
         stateVar.openLotteryFlag = false;//控制彩种是否可以点击
     };
+
     //加载玩法
-	setLotteryMethod(){
-		//判断玩法是否有缓存，没有则重新获取所有玩法
+    setLotteryMethod() {
+        //判断玩法是否有缓存，没有则重新获取所有玩法
         let commonData = common.getStore(common.getStore('userId'));
-		let ifMehtod = commonData == (null || undefined) ? false : true;
+        let ifMehtod = commonData == (null || undefined) ? false : true;
         if (ifMehtod) {
             if (stateVar.nowlottery.lotteryBetId == 23) {
                 if (commonData['mmc'] == undefined) {
                     this.getMmcMethod();
                 } else {
-                	if(commonData['mmc'].msg != undefined){
-                		stateVar.nowlottery.lotteryId = 'ssc';
-                		this.initData();
-                	}else{
-                		emitter.emit('resetLottery');
-                		this.setOneMethod(commonData);
-                	}
+                    if (commonData['mmc'].msg != undefined) {
+                        stateVar.nowlottery.lotteryId = 'ssc';
+                        this.initData();
+                    } else {
+                        emitter.emit('resetLottery');
+                        this.setOneMethod(commonData);
+                    }
                 }
             } else {
                 if (commonData[stateVar.nowlottery.lotteryId] == undefined) {
                     this.getLotteryDataA();
                 } else {
-                	let paramData = {};
-                	let keyName;
-                	let keyVal;
-                	//彩种无数据处理
-                	if(commonData[stateVar.nowlottery.lotteryId].msg != undefined){
-                		let ttData = {};
-                		for(let vl in commonData){
-	                		if(commonData[vl].msg == undefined){
-	                			ttData[vl] = commonData[vl];
-	                		}
-	                	}
-                		for(let vl in ttData){
-                			let commonDataVal = paramData[vl];
-                			if(vl == 'ssc'){
-                				keyName = vl;
-                				keyVal = commonDataVal;
-                				break;
-                			}else{
-                				if(vl == 'txffc'){
-	                				keyName = vl;
-                					keyVal = commonDataVal;
-	                				break;
-	                			}else{
-	                				if(vl == 'ffc'){
-		                				keyName = vl;
-                						keyVal = commonDataVal;
-		                				break;
-		                			}else{
-		                				if(vl == '24xsc'){
-			                				keyName = vl;
-                							keyVal = commonDataVal;
-			                				break;
-			                			}else{
-			                				if(vl == '24xsc'){
-				                				keyName = vl;
-                								keyVal = commonDataVal;
-				                				break;
-				                			}else{
-				                				if(vl == 'mmc'){
-				                					keyName = vl;
-                									keyVal = commonDataVal;
-				                					break;
-				                				}
-				                			}
-			                			}
-		                			}
-	                			}
-                			}
-                		}
-                		if(JSON.stringify(ttData) == '{}'){
-                			return;
-                		}else{
-                			stateVar.nowlottery.lotteryId = keyName;
-                			this.initData();
-                		}
-                	}else{
-                		paramData[stateVar.nowlottery.lotteryId] = commonData[stateVar.nowlottery.lotteryId];
-                		emitter.emit('resetLottery');
-                		this.setOneMethod(paramData);
-                	}
+                    let paramData = {};
+                    let keyName;
+                    let keyVal;
+                    //彩种无数据处理
+                    if (commonData[stateVar.nowlottery.lotteryId].msg != undefined) {
+                        let ttData = {};
+                        for (let vl in commonData) {
+                            if (commonData[vl].msg == undefined) {
+                                ttData[vl] = commonData[vl];
+                            }
+                        }
+                        for (let vl in ttData) {
+                            let commonDataVal = paramData[vl];
+                            if (vl == 'ssc') {
+                                keyName = vl;
+                                keyVal = commonDataVal;
+                                break;
+                            } else {
+                                if (vl == 'txffc') {
+                                    keyName = vl;
+                                    keyVal = commonDataVal;
+                                    break;
+                                } else {
+                                    if (vl == 'ffc') {
+                                        keyName = vl;
+                                        keyVal = commonDataVal;
+                                        break;
+                                    } else {
+                                        if (vl == '24xsc') {
+                                            keyName = vl;
+                                            keyVal = commonDataVal;
+                                            break;
+                                        } else {
+                                            if (vl == '24xsc') {
+                                                keyName = vl;
+                                                keyVal = commonDataVal;
+                                                break;
+                                            } else {
+                                                if (vl == 'mmc') {
+                                                    keyName = vl;
+                                                    keyVal = commonDataVal;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (JSON.stringify(ttData) == '{}') {
+                            return;
+                        } else {
+                            stateVar.nowlottery.lotteryId = keyName;
+                            this.initData();
+                        }
+                    } else {
+                        paramData[stateVar.nowlottery.lotteryId] = commonData[stateVar.nowlottery.lotteryId];
+                        emitter.emit('resetLottery');
+                        this.setOneMethod(paramData);
+                    }
                 }
             }
         } else {
@@ -325,59 +327,61 @@ export default class ContentMian extends Component {
                 this.getLotteryDataA();
             }
         }
-	};
-	//本地没有缓存玩法的情况，去获取所有玩法
-	getLotteryDataA(a) {
-    	let templotteryType;
-		let templotty = {};
-		if(a){
-			templotteryType = {sCurmids: stateVar.alllotteryType};
-		}else{
-			templotty[stateVar.nowlottery.lotteryId] =  stateVar.nowlottery.cuimId;
-			templotteryType = {sCurmids: templotty};
-		}
+    };
+
+    //本地没有缓存玩法的情况，去获取所有玩法
+    getLotteryDataA(a) {
+        let templotteryType;
+        let templotty = {};
+        if (a) {
+            templotteryType = {sCurmids: stateVar.alllotteryType};
+        } else {
+            templotty[stateVar.nowlottery.lotteryId] = stateVar.nowlottery.cuimId;
+            templotteryType = {sCurmids: templotty};
+        }
         Fatch.lotteryBets({
                 method: "POST",
                 body: JSON.stringify(templotteryType)
             }
         ).then((data) => {
             this.setState({loading: false});
-            if(a){
-            	if(data.status == 200){
-            		common.setStore(common.getStore('userId'), data.repsoneContent);
-            	}
-            }else{
-            	if (this._ismount && data.status == 200) {
-	                let tempData = data.repsoneContent;
-	                if(tempData[stateVar.nowlottery.lotteryId].msg != undefined){
-	                	if(stateVar.nowlottery.lotteryId == 'ssc'){
-	                		stateVar.nowlottery.lotteryId = 'txffc';
-	                	}else if(stateVar.nowlottery.lotteryId == 'txffc'){
-	                		stateVar.nowlottery.lotteryId = 'ffc';
-	                	}else if(stateVar.nowlottery.lotteryId == 'ffc'){
-	                		stateVar.nowlottery.lotteryId = '24xsc';
-	                	}else{
-	                		stateVar.nowlottery.lotteryId = 'mmc';
-	                	}
-	                	this.initData();
-	                	return;
-	                }
-	                stateVar.openLotteryFlag = true;
-	                emitter.emit('resetLottery');
-	                let tempObj = {};
-	               	tempObj[stateVar.nowlottery.lotteryId] = tempData[stateVar.nowlottery.lotteryId];
-	                common.setStore(common.getStore('userId'), tempObj);
-	                this.setOneMethod(tempData);
-	                this.getLotteryDataA(true);
-	            }else{
-	            	stateVar.openLotteryFlag = true;
-	            }
+            if (a) {
+                if (data.status == 200) {
+                    common.setStore(common.getStore('userId'), data.repsoneContent);
+                }
+            } else {
+                if (this._ismount && data.status == 200) {
+                    let tempData = data.repsoneContent;
+                    if (tempData[stateVar.nowlottery.lotteryId].msg != undefined) {
+                        if (stateVar.nowlottery.lotteryId == 'ssc') {
+                            stateVar.nowlottery.lotteryId = 'txffc';
+                        } else if (stateVar.nowlottery.lotteryId == 'txffc') {
+                            stateVar.nowlottery.lotteryId = 'ffc';
+                        } else if (stateVar.nowlottery.lotteryId == 'ffc') {
+                            stateVar.nowlottery.lotteryId = '24xsc';
+                        } else {
+                            stateVar.nowlottery.lotteryId = 'mmc';
+                        }
+                        this.initData();
+                        return;
+                    }
+                    stateVar.openLotteryFlag = true;
+                    emitter.emit('resetLottery');
+                    let tempObj = {};
+                    tempObj[stateVar.nowlottery.lotteryId] = tempData[stateVar.nowlottery.lotteryId];
+                    common.setStore(common.getStore('userId'), tempObj);
+                    this.setOneMethod(tempData);
+                    this.getLotteryDataA(true);
+                } else {
+                    stateVar.openLotteryFlag = true;
+                }
             }
         })
     };
+
     //设置单个彩种玩法 val:所有玩法信息
     setOneMethod(val) {
-    	this.getBetHistory();
+        this.getBetHistory();
         let tempIndex = 0;
         let tempMsg;
         let tempVal = val[stateVar.nowlottery.lotteryId];
@@ -394,18 +398,28 @@ export default class ContentMian extends Component {
             }
         }
         if (this._ismount) {
+            // 判断本地是否保存上次最近玩法，若果有 则显示最近一次完的玩法
+            // let lastPlays = common.getStore('lastPlays')
+            // if (Array.isArray(lastPlays)) {
+            //     lastPlays.forEach((value) => {
+            //         if (value.id === stateVar.nowlottery.lotteryId) {
+            //             tempIndex = value.index
+            //         }
+            //     })
+            // }
             this.setState({lotteryMethod: val[stateVar.nowlottery.lotteryId], navIndex: tempIndex}, () => {
                 //相关玩法的state值赋值
                 this.selectAreaData(this.state.lotteryMethod);
             })
         }
     };
+
     /**
      * Function 因版本号不同，重新获取彩种玩法
      * param 版本号
      */
     versionGetLotteryData(param) {
-    	let templotteryType = {sCurmids: stateVar.alllotteryType};
+        let templotteryType = {sCurmids: stateVar.alllotteryType};
         Fatch.lotteryBets({
                 method: "POST",
                 body: JSON.stringify(templotteryType)
@@ -414,9 +428,9 @@ export default class ContentMian extends Component {
             stateVar.openLotteryFlag = true;
             this.setState({loading: false});
             if (this._ismount && data.status == 200) {
-            	let tempData = data.repsoneContent;
-            	let tempObj = {};
-            	if (tempObj['mmc'] == undefined) {
+                let tempData = data.repsoneContent;
+                let tempObj = {};
+                if (tempObj['mmc'] == undefined) {
                     tempObj = tempData;
                 } else {
                     let tempmmc = tempObj['mmc'];
@@ -425,12 +439,12 @@ export default class ContentMian extends Component {
                 }
                 common.setStore('version', param);
                 common.setStore(common.getStore('userId'), tempObj);
-                if(tempObj[stateVar.nowlottery.lotteryId].msg != undefined){
-                	stateVar.nowlottery.lotteryId = 'ssc';
-                	this.initData();
-                	return;
-                }else{
-                	this.setOneMethod(tempData);
+                if (tempObj[stateVar.nowlottery.lotteryId].msg != undefined) {
+                    stateVar.nowlottery.lotteryId = 'ssc';
+                    this.initData();
+                    return;
+                } else {
+                    this.setOneMethod(tempData);
                 }
             }
         })
@@ -450,12 +464,12 @@ export default class ContentMian extends Component {
                 let tempObj = common.getStore(common.getStore('userId')) || {};
                 tempObj['mmc'] = tempData;
                 common.setStore(common.getStore('userId'), tempObj);
-                if(tempObj['mmc'] && tempObj['mmc'].msg != undefined){
-                	stateVar.nowlottery.lotteryId = 'ssc';
-                	this.initData();
-                }else{
-                	emitter.emit('resetLottery');
-                	this.setOneMethod(tempObj);
+                if (tempObj['mmc'] && tempObj['mmc'].msg != undefined) {
+                    stateVar.nowlottery.lotteryId = 'ssc';
+                    this.initData();
+                } else {
+                    emitter.emit('resetLottery');
+                    this.setOneMethod(tempObj);
                 }
             } else {
                 const modal = Modal.error({
@@ -466,8 +480,9 @@ export default class ContentMian extends Component {
             }
         })
     };
+
     //获取版本号
-	getVersion() {
+    getVersion() {
         let tempObj = {version: 'push'};
         Fatch.getVersion({method: 'post', body: JSON.stringify(tempObj)}).then((data) => {
             if (this._ismount && data.status == 200) {
@@ -511,6 +526,7 @@ export default class ContentMian extends Component {
             }
         });
     };
+
     //确定投注页面
     lotteryOkBet(param) {
         if (param) {
@@ -788,68 +804,70 @@ export default class ContentMian extends Component {
         }
         this.identified(obj.target);
     };
+
     //验证全大小奇偶
-	identified(a){
-		let tempLi = $(a).parent().find('li') || [];
-		let tempLiActive = $(a).parent().find('.number_active') || [];
-		let allNum = [];
-		let tempArr = [];
-		let getResult;
-		//遍历选中的号码
-		$.each(tempLi,(index,value)=>{
-			allNum.push($(value).attr('value'));
-		})
-		$.each(tempLiActive, (index,value)=> {
-			tempArr.push($(value).attr('value'));
-		});
-		let arrayBig = [],arraySmall = [],arrayEven = [],arrayOdd = [],arrayAll = [];
-		for(let i = 0;i < allNum.length;i++){
-			if(allNum[i] % 2 == 0){
-				arrayEven.push(allNum[i]);
-			}
-			if(allNum[i] % 2 == 1){
-				arrayOdd.push(allNum[i]);
-			}
-			if(i < Math.floor(allNum.length/2)){
-				arraySmall.push(allNum[i]);
-			}
-			if(i >= Math.floor(allNum.length/2)){
-				arrayBig.push(allNum[i]);
-			}
-			arrayAll.push(allNum[i]);
-		}
-		if(tempArr.join('') == arrayBig.join('')){
-			getResult = 'big';
-		}else if(tempArr.join('') == arraySmall.join('')){
-			getResult = 'small';
-		}else if(tempArr.join('') == arrayOdd.join('')){
-			getResult = 'odd';
-		}else if(tempArr.join('') == arrayEven.join('')){
-			getResult = 'even';
-		}else if(tempArr.join('') == arrayAll.join('')){
-			getResult = 'all';
-		}
-		switch(getResult){
-			case 'small':
-				$(a).parent().next().find("button[name=small]").addClass("selected").siblings().removeClass("selected");
-				break;
-			case 'big':
-				$(a).parent().next().find("button[name=big]").addClass("selected").siblings().removeClass("selected");
-				break;
-			case 'even':
-				$(a).parent().next().find("button[name=even]").addClass("selected").siblings().removeClass("selected");
-				break;
-			case 'odd':
-				$(a).parent().next().find("button[name=odd]").addClass("selected").siblings().removeClass("selected");
-				break;
-			case 'all':
-				$(a).parent().next().find("button[name=all]").addClass("selected").siblings().removeClass("selected");
-				break;
-			default:
-				$(a).parent().next().find("button").removeClass("selected");
-				break;
-		}
-	};
+    identified(a) {
+        let tempLi = $(a).parent().find('li') || [];
+        let tempLiActive = $(a).parent().find('.number_active') || [];
+        let allNum = [];
+        let tempArr = [];
+        let getResult;
+        //遍历选中的号码
+        $.each(tempLi, (index, value) => {
+            allNum.push($(value).attr('value'));
+        })
+        $.each(tempLiActive, (index, value) => {
+            tempArr.push($(value).attr('value'));
+        });
+        let arrayBig = [], arraySmall = [], arrayEven = [], arrayOdd = [], arrayAll = [];
+        for (let i = 0; i < allNum.length; i++) {
+            if (allNum[i] % 2 == 0) {
+                arrayEven.push(allNum[i]);
+            }
+            if (allNum[i] % 2 == 1) {
+                arrayOdd.push(allNum[i]);
+            }
+            if (i < Math.floor(allNum.length / 2)) {
+                arraySmall.push(allNum[i]);
+            }
+            if (i >= Math.floor(allNum.length / 2)) {
+                arrayBig.push(allNum[i]);
+            }
+            arrayAll.push(allNum[i]);
+        }
+        if (tempArr.join('') == arrayBig.join('')) {
+            getResult = 'big';
+        } else if (tempArr.join('') == arraySmall.join('')) {
+            getResult = 'small';
+        } else if (tempArr.join('') == arrayOdd.join('')) {
+            getResult = 'odd';
+        } else if (tempArr.join('') == arrayEven.join('')) {
+            getResult = 'even';
+        } else if (tempArr.join('') == arrayAll.join('')) {
+            getResult = 'all';
+        }
+        switch (getResult) {
+            case 'small':
+                $(a).parent().next().find("button[name=small]").addClass("selected").siblings().removeClass("selected");
+                break;
+            case 'big':
+                $(a).parent().next().find("button[name=big]").addClass("selected").siblings().removeClass("selected");
+                break;
+            case 'even':
+                $(a).parent().next().find("button[name=even]").addClass("selected").siblings().removeClass("selected");
+                break;
+            case 'odd':
+                $(a).parent().next().find("button[name=odd]").addClass("selected").siblings().removeClass("selected");
+                break;
+            case 'all':
+                $(a).parent().next().find("button[name=all]").addClass("selected").siblings().removeClass("selected");
+                break;
+            default:
+                $(a).parent().next().find("button").removeClass("selected");
+                break;
+        }
+    };
+
     //取消选号
     unSelectNum(a, isButton) {
         /*
@@ -1057,29 +1075,33 @@ export default class ContentMian extends Component {
             this.getNumMoney(num);
         }
     }
-	changeFile(){
-		this.setState({showFile:true});
-	};
-	selectFileCancle(){
-		this.setState({showFile:false,fileValue:"",fileName:"",importName:"导入"});
-	};
-	selectFileOk(){
-		if(this.state.fileValue == ""){
-			const modal = Modal.warn({
+
+    changeFile() {
+        this.setState({showFile: true});
+    };
+
+    selectFileCancle() {
+        this.setState({showFile: false, fileValue: "", fileName: "", importName: "导入"});
+    };
+
+    selectFileOk() {
+        if (this.state.fileValue == "") {
+            const modal = Modal.warn({
                 title: '温馨提示',
                 content: '您还未选择文件',
             });
             setTimeout(() => modal.destroy(), 3000);
             return;
-		}
-		this.setState({importName:"导入中",fileLoading:true});
-		setTimeout(()=>{
-			this.setState({textAreaValue: this.state.fileValue,showFile:false,fileValue:"",fileName:""}, () => {
-				this.setState({importName:"导入",fileLoading:false});
-	            this._inptu_deal();
-	        });
-		},100);
-	}
+        }
+        this.setState({importName: "导入中", fileLoading: true});
+        setTimeout(() => {
+            this.setState({textAreaValue: this.state.fileValue, showFile: false, fileValue: "", fileName: ""}, () => {
+                this.setState({importName: "导入", fileLoading: false});
+                this._inptu_deal();
+            });
+        }, 100);
+    }
+
     //导入文件
     importFile(e) {
         let target = e.target;
@@ -1107,8 +1129,8 @@ export default class ContentMian extends Component {
         }
         let name = target.value;
         let _this = this;
-        let fileShowName=target.files[0].name;
-        this.setState({fileName:fileShowName});
+        let fileShowName = target.files[0].name;
+        this.setState({fileName: fileShowName});
         let fileName = name.substring(name.lastIndexOf(".") + 1).toLowerCase();
         if (fileName == 'txt' || fileName == 'svg') {
             if (isIE && !target.files) {
@@ -1120,7 +1142,7 @@ export default class ContentMian extends Component {
                 reader.onload = function (evt) {
                     let filestring = evt.target.result;
                     target.value = '';
-                    _this.setState({fileValue:filestring})
+                    _this.setState({fileValue: filestring})
                 }
             }
         } else {
@@ -1351,7 +1373,7 @@ export default class ContentMian extends Component {
 
             }
             switch (mname) {//根据类型不同做不同检测
-                            //任三 直选 直选单式
+                //任三 直选 直选单式
                 case 'RXZXSSC3DS':
                 case 'RXZXWFC3DS':
                 case 'RXZXFFC3DS':
@@ -1600,6 +1622,26 @@ export default class ContentMian extends Component {
                 }).then((data) => {
                     this.setState({directFlag: false});
                     if (data.status == 200) {
+                        // // 保存当前玩法至本地，下次默认加载此玩法
+                        // let lastPlays = common.getStore('lastPlays')
+                        // if (Array.isArray(lastPlays)) {
+                        //     let flag = false
+                        //     lastPlays.forEach((value) => {
+                        //         if (value.id == stateVar.nowlottery.lotteryId) {
+                        //             value.index = a
+                        //             flag = true
+                        //         }
+                        //     })
+                        //     if (!flag) {
+                        //         lastPlays.push({
+                        //             id: stateVar.nowlottery.lotteryId,
+                        //             index: a
+                        //         })
+                        //     }
+                        //     common.setStore('lastPlays', lastPlays)
+                        // } else {
+                        //     common.setStore('lastPlays', [{id: stateVar.nowlottery.lotteryId, index: a}])
+                        // }
                         const modal = Modal.success({
                             title: '温馨提示',
                             content: data.longMessage,
@@ -2496,7 +2538,7 @@ export default class ContentMian extends Component {
                             <textarea className='textAreaClass' value={this.state.textAreaValue}
                                       onChange={(e) => this._inptu_deal(e)}></textarea>
                             <div className='inputImport'>
-                                <span className='importFile' onClick={()=>this.changeFile()}>导入文件</span>
+                                <span className='importFile' onClick={() => this.changeFile()}>导入文件</span>
                                 <span onClick={() => this.deleteSameNumber()}>删除重复号</span>
                                 <span onClick={() => this.cleartextArea()}>清空号码</span>
                             </div>
@@ -3150,25 +3192,26 @@ export default class ContentMian extends Component {
         return (
             <div>
                 <div className='content_bet'>
-                	<div>
-				        <Modal
-				          title="导入文件"
-				          visible={this.state.showFile}
-				          footer={[
-			              <Button key="back" onClick={()=>this.selectFileCancle()}>取消</Button>,
-			              <Button key="submit" type="primary" loading={this.state.fileLoading} onClick={()=>this.selectFileOk()}>
-			              {this.state.importName}
-			            </Button>,
-			          ]}
-				        >
-				          <p style={{textAlign:"center",padding:"10px 0"}}>
-				          <a href="javascript:;" className="a-upload">
-				          	<input type='file' onChange={(e) => this.importFile(e)}/>点击这里上传文件
-				          </a>
-				          <span className="showName">{this.state.fileName}</span>
-				          </p>
-				        </Modal>
-				    </div>
+                    <div>
+                        <Modal
+                            title="导入文件"
+                            visible={this.state.showFile}
+                            footer={[
+                                <Button key="back" onClick={() => this.selectFileCancle()}>取消</Button>,
+                                <Button key="submit" type="primary" loading={this.state.fileLoading}
+                                        onClick={() => this.selectFileOk()}>
+                                    {this.state.importName}
+                                </Button>,
+                            ]}
+                        >
+                            <p style={{textAlign: "center", padding: "10px 0"}}>
+                                <a href="javascript:;" className="a-upload">
+                                    <input type='file' onChange={(e) => this.importFile(e)}/>点击这里上传文件
+                                </a>
+                                <span className="showName">{this.state.fileName}</span>
+                            </p>
+                        </Modal>
+                    </div>
                     <div className="content_main" key="ContentMian">
                         <ContentTop getVersion={() => this.getVersion()}
                                     getBetHistory={() => this.getBetHistory()}
@@ -3358,14 +3401,14 @@ export default class ContentMian extends Component {
                                 </div>
                                 <div className="c_m_select_button">
                                     <div className="c_m_add_btn">
-	                                    <Button  onClick={() => this.addNum()}>
-	                                    	添加号码
-	                                    </Button>
+                                        <Button onClick={() => this.addNum()}>
+                                            添加号码
+                                        </Button>
                                     </div>
                                     <div className="c_m_bet_btn directBet">
-	                                    <Button disabled={this.state.directFlag} onClick={() => this.directBet()}>
-	                                    	直接投注
-	                                    </Button>
+                                        <Button disabled={this.state.directFlag} onClick={() => this.directBet()}>
+                                            直接投注
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
@@ -3428,8 +3471,8 @@ export default class ContentMian extends Component {
                                         </li>
                                         <li style={{marginTop: '5px'}} className="c_m_affirm_bet_btn">
                                             <Button
-                                            disabled={stateVar.BetContent.lt_same_code == 0 ? true : false}
-                                            onClick={() => this.actionBet()}>确认投注</Button>
+                                                disabled={stateVar.BetContent.lt_same_code == 0 ? true : false}
+                                                onClick={() => this.actionBet()}>确认投注</Button>
                                         </li>
                                         {
                                             (() => {

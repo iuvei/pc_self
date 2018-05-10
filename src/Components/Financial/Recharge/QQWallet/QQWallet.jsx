@@ -18,6 +18,7 @@ export default class QQWallet extends Component {
             backList: null, // 可选择银行
             loadmax: 0, //渠道限额最多
             loadmin: 0, //渠道限额最少
+            handingCharge: 0,
 
             postData: {
                 type: 'deposit', //操作类型
@@ -52,6 +53,7 @@ export default class QQWallet extends Component {
                 let data = res.repsoneContent,
                     loadmin = 0,
                     loadmax = 0,
+                    handingCharge = 0,
                     postData = this.state.postData;
                 if (data[0] !== undefined) {
                     postData.payment = data[0].payport_name;
@@ -60,11 +62,13 @@ export default class QQWallet extends Component {
                     postData.code = data[0].code;
                     loadmin = data[0].loadmin;
                     loadmax = data[0].loadmax;
+                    handingCharge = data[0].handing_charge;
                 }
                 this.setState({
                     backList: data,
                     loadmin: loadmin,
                     loadmax: loadmax,
+                    handingCharge: handingCharge,
                     postData: postData
                 })
             }
@@ -133,6 +137,7 @@ export default class QQWallet extends Component {
             imgUrlIndex: index,
             loadmin: selectBank.loadmin,
             loadmax: selectBank.loadmax,
+            handingCharge: selectBank.handing_charge,
             postData: postData,
         });
     };
@@ -145,7 +150,7 @@ export default class QQWallet extends Component {
     }
 
     render() {
-        const {backList} = this.state;
+        const {backList, handingCharge} = this.state;
         return (
             <div className="qq_wallet" onKeyDown={(e) => this.onSubmit(e)}>
                 <ul className="r_m_list">
@@ -185,13 +190,17 @@ export default class QQWallet extends Component {
                         <span>{changeMoneyToChinese(this.state.postData.money)}</span>
                         <p className="r_m_dx">
                             <span className="r_m_recharge_text">
-                            单笔充值限额：最低
-                            <strong style={{color: '#CB1313', fontWeight: 'normal'}}>{this.state.loadmin}</strong>
-                            元，最高
-                            <strong style={{color: '#CB1313', fontWeight: 'normal'}}>{this.state.loadmax}</strong>
-                            元，最多保留两位小数
-                        </span>
+                                单笔充值限额：最低
+                                <strong style={{color: '#CB1313', fontWeight: 'normal'}}>{this.state.loadmin}</strong>
+                                元，最高
+                                <strong style={{color: '#CB1313', fontWeight: 'normal'}}>{this.state.loadmax}</strong>
+                                元，最多保留两位小数
+                            </span>
                         </p>
+                        {
+                            handingCharge <= 0 ? null :
+                                <p className="r_m_dx text_color">温馨提示：此渠道需要收取 {handingCharge}%手续费，谢谢！</p>
+                        }
                     </li>
                     <li className="r_m_primary_btn">
                         <span className="r_m_li_w"></span>

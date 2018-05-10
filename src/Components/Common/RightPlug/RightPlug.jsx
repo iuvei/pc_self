@@ -6,13 +6,12 @@ import {Link} from 'react-router';
 import Fetch from '../../../Utils';
 import './Rightplug.scss'
 import {stateVar} from '../../../State';
-import {_code} from '../../../CommonJs/common';
 import md5 from 'md5';
 import {setStore, getStore, onValidate} from "../../../CommonJs/common";
 import ComplainAndSuggests from "../ComplainAndSuggests/ComplainAndSuggests";
 import Chat from '../../Chat/Chat';
-
-let curLocation = location.href;
+import notice_icon from './Img/notice_icon.png';
+const lotteryType = require('../../../CommonJs/common.json').lotteryType;
 /*当前浏览器url地址*/
 @observer
 export default class RightPlug extends Component {
@@ -31,6 +30,7 @@ export default class RightPlug extends Component {
             },
             btnLoading: false,
             hintText: '',
+            winningList: [], //中奖信息列表
         };
         this.hideChat = this.hideChat.bind(this);
         this.hideTousuModal = this.hideTousuModal.bind(this);
@@ -43,6 +43,7 @@ export default class RightPlug extends Component {
             this.hideRight()
         }
         this.onGetIframe();
+        this.getWinningList();
         /*添加全局方法，给后台调用*/
         let _this = this;
         window.onShowMsg = function (type) {
@@ -51,12 +52,14 @@ export default class RightPlug extends Component {
             } else {
                 _this.setState({showMsg: false});
             }
-
         };
     };
 
     componentWillUnmount() {
         this._ismount = false;
+        if(this.noticeIntervals){
+            clearInterval(this.noticeIntervals)
+        }
     };
 
     onGetIframe() {
@@ -113,8 +116,6 @@ export default class RightPlug extends Component {
 
     /*域名测速*/
     getSpeed() {
-        // let lineUrl = getStore('lineUrl'),
-        //     ind = Math.round(Math.random()* (lineUrl.length - 1));
         return (
             <div className="r_p_speed">
                 <p>
@@ -126,9 +127,6 @@ export default class RightPlug extends Component {
                         重新测速
                     </Button>
                     <Button>
-                        {/*<a href={lineUrl[ind].domain + '/newPC/index.html?cs=1#/lottery'}>*/}
-                            {/*更换路线*/}
-                        {/*</a>*/}
                         <Link to="/login">
                             更换路线
                         </Link>
@@ -234,30 +232,61 @@ export default class RightPlug extends Component {
         }
     };
 
-    handleVisibleApp = (visibleApp) => {
-        this.setState({visibleApp}, () => {
-            if (visibleApp) {
-                _code('qrcode_app', stateVar.httpUrl + '/feed/downH5/mobileh5vue.html?' + (new Date).getTime(), 150, 130)
+    getWinningList(){
+        let winningListFlag = [];
+        for(let i = 0; i < 20; i++){
+            let nameFlag = Math.random().toString(36).substr(2);
+            let object = {
+                name: nameFlag.slice(1, 2) + '******' + nameFlag.slice(-1),
+                lottery: lotteryType[Math.floor(Math.random()*lotteryType.length)].cnname,
+                money: Math.floor(Math.random() * 99999 + 100)
+            };
+            winningListFlag.push(object);
+        }
+        this.setState({
+                winningList: winningListFlag
+            },
+            ()=>this.getDestinations()
+        )
+    };
+    getDestinations() {
+        let times = 1,
+            duration = 40,
+            noticeListFlag = this.state.winningList;
+        $(".winning_list").css('height',duration*noticeListFlag.length);
+        $(".winning_list").css('top',0);
+        $(".winning_list").stop();
+        if(noticeListFlag.length <= 1){
+            return;
+        }
+        if(this.noticeIntervals){
+            clearInterval(this.noticeIntervals);
+        }
+        this.noticeIntervals = setInterval(()=>{
+            if(noticeListFlag.length <= 1){
+                return;
             }
+            if(times >= noticeListFlag.length){
+                times = 0;
+                $(".winning_list").css('top',0);
+            }
+            $(".winning_list").animate({top:'-'+duration*times},500,()=>{
+                times++;
+            });
+        },3000);
+    };
+    closeWinning() {
+        if(this.noticeIntervals){
+            clearInterval(this.noticeIntervals)
+        }
+        $(".winning_content").animate({bottom: '-40'},500,()=>{
+            stateVar.visibleWinning = false;
         });
     };
 
-    onKefu() {
-        if (getStore('kefuStatus')) {
-            this.setState({modalVisible: true})
-        } else {
-            this.setState({capitalVisible: true})
-        }
-    };
-    onKeyDown(e) {
-        if (e.keyCode == 13) {
-            this.getCapitalPass();
-        }
-    };
-
     render() {
-        const {modalVisible, capitalVisible, hintText} = this.state;
-        const {userInfo} = stateVar;
+        const {modalVisible, capitalVisible, hintText, winningList} = this.state;
+        const {userInfo, visibleWinning} = stateVar;
         return (
             <div>
                 {
@@ -265,7 +294,8 @@ export default class RightPlug extends Component {
                         <Chat
                             visible={modalVisible}
                             hideChat={this.hideChat}
-                        /> :
+                        />
+                        :
                         null
                 }
                 <div className="box-shape right_plug" style={{right: stateVar.paused ? 0 : '-140px'}}>
@@ -279,26 +309,6 @@ export default class RightPlug extends Component {
                                     </p>
                                 </li>
                         }
-                        {/*<li>*/}
-                            {/*<Popover*/}
-                                {/*placement="left"*/}
-                                {/*content={*/}
-                                    {/*<div id="qrcode_app" style={{height: 130, textAlign: 'center'}}></div>*/}
-                                {/*}*/}
-                                {/*visible={this.state.visibleApp}*/}
-                                {/*onVisibleChange={this.handleVisibleApp}*/}
-                                {/*title="手机扫一扫，下载手机APP"*/}
-                            {/*>*/}
-                                {/*<p className="r_p_app r_p_common">*/}
-                                    {/*APP下载*/}
-                                {/*</p>*/}
-                            {/*</Popover>*/}
-                        {/*</li>*/}
-                        {/*<li>*/}
-                            {/*<p className="r_p_kehuduan r_p_common" onClick={() => hashHistory.push('/downLoadClient')}>*/}
-                                {/*下载客户端*/}
-                            {/*</p>*/}
-                        {/*</li>*/}
                         <li>
                             <p className="r_p_kehuzx r_p_common">
                                 <a href={stateVar.httpService} target="_blank">
@@ -316,13 +326,6 @@ export default class RightPlug extends Component {
                                     <p className="r_p_kefu r_p_common" onClick={() => this.setState({modalVisible: true})}>上下级聊天</p>
                                 </li>
                         }
-                        {/*<li>*/}
-                            {/*<p className="r_p_zoushi r_p_common">*/}
-                                {/*<a href={curLocation.split("#")[0] + "#/tendency"} target="_blank">*/}
-                                    {/*走势图*/}
-                                {/*</a>*/}
-                            {/*</p>*/}
-                        {/*</li>*/}
                         <li>
                             <Popover placement="left" content={
                                 this.getThemeSelect()
@@ -360,6 +363,35 @@ export default class RightPlug extends Component {
                         <Icon type="double-right"/>
                     </div>
                 </div>
+                {
+                    visibleWinning ?
+                        <div className="winning_content">
+                            <div className="show_winning">
+                                {/*<img className="left" src={notice_icon}/>*/}
+                                <ul className="winning_list">
+                                    {
+                                        winningList.map((item, ind)=>{
+                                            return (
+                                                <li key={ind}>
+                                                    恭喜：
+                                                    {item.name}
+                                                    , 在【
+                                                    {item.lottery}
+                                                    】&nbsp;中奖：
+                                                    {item.money}
+                                                    元
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                                <Icon className="close_winning hover right" onClick={()=>this.closeWinning()} type="close" />
+                            </div>
+                        </div>
+                        :
+                        null
+                }
+
                 <div className="box-shape right_plug_open" style={{right: stateVar.paused ? '-20px' : '0'}}>
                     <div className='openRight' onClick={() => {
                         this.openRight()
@@ -377,7 +409,7 @@ export default class RightPlug extends Component {
                     footer={null}
                     maskClosable={false}
                 >
-                    <ul className="info_list" onKeyDown={(e)=>this.onKeyDown(e)}>
+                    <ul className="info_list">
                         <li>
                             <span>资金密码：</span>
                             <Input placeholder="请输入您的资金密码"

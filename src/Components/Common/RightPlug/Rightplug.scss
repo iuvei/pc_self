@@ -230,3 +230,41 @@
         margin-right: 10px;
     }
 }
+
+
+.winning_content{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+}
+.show_winning{
+    display: inline-block;
+    width: 350px;
+    height: 40px;
+    overflow: hidden;
+    vertical-align: top;
+    position: relative;
+    padding-left: 25px;
+    background: $color_CF2027 url(./Img/notice_icon.png) no-repeat 5px center;
+    .winning_list{
+        position: absolute;
+        top: 0;
+        left: 25px;
+        margin-left: 5px;
+    }
+    .close_winning{
+        font-size: 14px;
+        padding: 13px;
+        color: #fff;
+    }
+    li{
+        @include lh(40px);
+        color: #fff;
+        text-align: left;
+        img{
+            width: 19px;
+            vertical-align: text-bottom;
+            margin-right: 10px;
+        }
+    }
+}

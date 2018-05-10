@@ -80,7 +80,7 @@ export default class ARdetails extends Component {
             }else if(record.isgetprize == 2){
                 return '未中奖'
             }else if(record.isgetprize == 1){
-                return record.prizestatus == 0 ? '未派奖' : <b className="col_color_ying">已派奖</b>
+                return record.prizestatus == 0 ? '未派奖' : <b className="text_color">已派奖</b>
             }
         }else if(record.iscancel == 1){
             return '本人撤单'
