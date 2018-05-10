@@ -160,17 +160,17 @@ export default class LeftSider extends Component {
         if (tempOpen == 'ssc') {
             return ['sub1', '时时彩'];
         }
-        if (tempOpen == 'mmc' || tempOpen == '24xsc' || tempOpen == 'ffc' || tempOpen == 'TG11-5' || tempOpen == 'txffc') {
-            return ['24小时'];
+        if (tempOpen == 'mmc' || tempOpen == '24xsc' || tempOpen == 'ffc' || tempOpen == 'TG11-5' || tempOpen == 'txffc' || tempOpen == 'jnd30s' || tempOpen == 'rd60') {
+            return ['sub1','24小时'];
         }
         if (tempOpen == 'ssc' || tempOpen == 'XJSSC' || tempOpen == 'TJSSC' || tempOpen == 'pk10' || tempOpen == 'HN481') {
-            return ['时时彩'];
+            return ['sub1','时时彩'];
         }
         if (tempOpen == 'SD11Y' || tempOpen == 'GD11-5' || tempOpen == 'JX11-5' || tempOpen == 'CQ11-5' || tempOpen == 'SH11-5') {
-            return ['11选5'];
+            return ['sub1','11选5'];
         }
         if (tempOpen == 'fucaip3' || tempOpen == 'ticaip3') {
-            return ['低频'];
+            return ['sub1','低频'];
         }
     };
 
