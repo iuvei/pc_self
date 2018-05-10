@@ -1,5 +1,50 @@
 {
 	"lotteryType": [
+		{
+            "cnname": "腾讯分分彩",
+            "nav": "txffc",
+            "lotteryid": 29,
+            "lotteryCurmlotteryid": 313550,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3111577,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 313550,
+            "imgUrl":"txffc",
+            "imgSrc": "hot",
+            "disabled": false,
+            "hotLottery": 1
+        },
+        {
+            "cnname": "加拿大30秒",
+            "nav": "jnd30s",
+            "lotteryid": 31,
+            "lotteryCurmlotteryid": 313550,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3111895,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 313860,
+            "imgUrl":"jnd30s",
+            "imgSrc": "new",
+            "disabled": false,
+            "hotLottery": 1
+        },
+        {
+            "cnname": "瑞典一分彩",
+            "nav": "rd60",
+            "lotteryid": 32,
+            "lotteryCurmlotteryid": 313980,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3111895 ,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 313980,
+            "imgUrl":"rd60",
+            "imgSrc": "new",
+            "disabled": false,
+            "hotLottery": 1
+        },
         {
             "cnname": "重庆时时彩",
             "nav": "ssc",
@@ -11,21 +56,6 @@
             "lotterytype": 2,
             "curmid": 50,
             "imgUrl":"cqssc",
-            "imgSrc": "hot",
-            "disabled": false,
-            "hotLottery": 1
-        },
-        {
-            "cnname": "腾讯分分彩",
-            "nav": "txffc",
-            "lotteryid": 29,
-            "lotteryCurmlotteryid": 313550,
-            "lotteryDesc": "24小时全天开奖",
-            "methodid": 3111577,
-            "lastupdate": 0,
-            "lotterytype": 4,
-            "curmid": 313550,
-            "imgUrl":"txffc",
             "imgSrc": "hot",
             "disabled": false,
             "hotLottery": 1
@@ -217,21 +247,6 @@
             "lotterLength":3,
             "imgSrc": false,
             "disabled": false
-        },
-        {
-            "cnname": "加拿大30秒",
-            "nav": "jnd30s",
-            "lotteryid": 31,
-            "lotteryCurmlotteryid": 313550,
-            "lotteryDesc": "24小时全天开奖",
-            "methodid": 3111895,
-            "lastupdate": 0,
-            "lotterytype": 4,
-            "curmid": 313860,
-            "imgUrl":"jnd30s",
-            "imgSrc": "new",
-            "disabled": false,
-            "hotLottery": 1
         }
     ]
 }
