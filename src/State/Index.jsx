@@ -67,6 +67,7 @@ class State {
     @observable issueIndex = '?????';
     @observable nextIssue = '?????';
     @observable savePkInput = {};
+    @observable visibleWinning = true; // 中奖信息
     @observable aboutGame = {
         data_sel: [],
         methodID: '',

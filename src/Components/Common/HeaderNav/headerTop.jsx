@@ -433,6 +433,7 @@ export default class HeaderTop extends Component {
 					    message: message.data.data.title,
 					    description: message.data.data.content,
 					    placement:'bottomRight',
+                        bottom: 40,
 					    duration:5,
 					    icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
 					}
@@ -449,6 +450,7 @@ export default class HeaderTop extends Component {
                         message: message.data.data,
                         description: '',
                         placement:'bottomRight',
+                        bottom: 40,
                         duration:5,
                         icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
                     }

@@ -230,3 +230,40 @@
         margin-right: 10px;
     }
 }
+
+
+.winning_content{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+}
+.show_winning{
+    display: inline-block;
+    width: 350px;
+    height: 40px;
+    overflow: hidden;
+    vertical-align: top;
+    position: relative;
+    background: $color_CF2027;
+    .winning_list{
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-left: 5px;
+    }
+    .close_winning{
+        font-size: 14px;
+        padding: 13px;
+        color: #fff;
+    }
+    li{
+        @include lh(40px);
+        color: #fff;
+        text-align: right;
+        img{
+            width: 19px;
+            vertical-align: text-bottom;
+            margin-right: 10px;
+        }
+    }
+}
