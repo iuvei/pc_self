@@ -57,7 +57,7 @@ export default class RightPlug extends Component {
 
     componentWillUnmount() {
         this._ismount = false;
-        if(this.noticeIntervals){
+        if (this.noticeIntervals) {
             clearInterval(this.noticeIntervals)
         }
     };
@@ -108,7 +108,7 @@ export default class RightPlug extends Component {
             _this = this;
         Img.src = stateVar.httpUrl + '/speed/img/Login.png?' + startTime;
         Img.onload = function () {
-            let speed = Math.round(43.8 * 1000 /(new Date().getTime() - startTime));
+            let speed = Math.round(43.8 * 1000 / (new Date().getTime() - startTime));
             setStore('speed', speed);
             _this.setState({});
         }
@@ -123,7 +123,7 @@ export default class RightPlug extends Component {
                     <span className="col_color_shu">{getStore('speed')}KB/S</span>
                 </p>
                 <p>
-                    <Button className="btn_cesu" onClick={()=>this.updateLine()}>
+                    <Button className="btn_cesu" onClick={() => this.updateLine()}>
                         重新测速
                     </Button>
                     <Button>
@@ -232,54 +232,84 @@ export default class RightPlug extends Component {
         }
     };
 
-    getWinningList(){
+    getWinningList() {
         let winningListFlag = [];
-        for(let i = 0; i < 20; i++){
-            let nameFlag = Math.random().toString(36).substr(2);
-            let object = {
-                name: nameFlag.slice(1, 2) + '******' + nameFlag.slice(-1),
-                lottery: lotteryType[Math.floor(Math.random()*lotteryType.length)].cnname,
-                money: Math.floor(Math.random() * 99999 + 100)
-            };
+        for (let i = 0; i < 200; i++) {
+            let lotteryFlag = lotteryType[Math.floor(Math.random() * lotteryType.length)];
+            if(lotteryFlag.nav == 'fucaip3'){ // 福彩3D
+                continue;
+            }
+            let nameFlag = Math.random().toString(36).substr(2),
+                object = {},
+                time = new Date().getTime(),
+                timeFlag = new Date(new Date().toLocaleDateString()).getTime(),
+                startTime = new Date(timeFlag + 2 * 60 * 60 * 1000).getTime(), // 获取当天两点时间
+                endTime = new Date(timeFlag + 10 * 60 * 60 * 1000).getTime(); // 获取当天十点时间
+            if (time > startTime && time < endTime) {
+                let lotterytype = lotteryType.filter(item => item.lotterytype === 4);
+                lotteryFlag = lotterytype[Math.floor(Math.random() * lotterytype.length)];
+                object = {
+                    name: nameFlag.slice(1, 2) + '******' + nameFlag.slice(-1),
+                    lottery: lotteryFlag.cnname,
+                    money: Math.floor(Math.random() * 99999 + 100),
+                    falg: lotteryFlag.lotterytype
+                };
+
+            }else{
+                if( i % 3 == 0) {
+                    let lotteryHot = lotteryType.filter(item => item.hotLottery === 1);
+                    lotteryFlag = lotteryHot[Math.floor(Math.random() * lotteryHot.length)];
+                }
+                object = {
+                    name: nameFlag.slice(1, 2) + '******' + nameFlag.slice(-1),
+                    lottery: lotteryFlag.cnname,
+                    money: Math.floor(Math.random() * 99999 + 100),
+                };
+            }
             winningListFlag.push(object);
+            if (winningListFlag.length >= 20) {
+                break;
+            }
         }
         this.setState({
                 winningList: winningListFlag
             },
-            ()=>this.getDestinations()
+            // ()=>this.getDestinations()
         )
     };
+
     getDestinations() {
         let times = 1,
             duration = 40,
             noticeListFlag = this.state.winningList;
-        $(".winning_list").css('height',duration*noticeListFlag.length);
-        $(".winning_list").css('top',0);
+        $(".winning_list").css('height', duration * noticeListFlag.length);
+        $(".winning_list").css('top', 0);
         $(".winning_list").stop();
-        if(noticeListFlag.length <= 1){
+        if (noticeListFlag.length <= 1) {
             return;
         }
-        if(this.noticeIntervals){
+        if (this.noticeIntervals) {
             clearInterval(this.noticeIntervals);
         }
-        this.noticeIntervals = setInterval(()=>{
-            if(noticeListFlag.length <= 1){
+        this.noticeIntervals = setInterval(() => {
+            if (noticeListFlag.length <= 1) {
                 return;
             }
-            if(times >= noticeListFlag.length){
+            if (times >= noticeListFlag.length) {
                 times = 0;
-                $(".winning_list").css('top',0);
+                $(".winning_list").css('top', 0);
             }
-            $(".winning_list").animate({top:'-'+duration*times},500,()=>{
+            $(".winning_list").animate({top: '-' + duration * times}, 500, () => {
                 times++;
             });
-        },3000);
+        }, 3000);
     };
+
     closeWinning() {
-        if(this.noticeIntervals){
+        if (this.noticeIntervals) {
             clearInterval(this.noticeIntervals)
         }
-        $(".winning_content").animate({bottom: '-40'},500,()=>{
+        $(".winning_content").animate({bottom: '-40'}, 500, () => {
             stateVar.visibleWinning = false;
         });
     };
@@ -323,7 +353,8 @@ export default class RightPlug extends Component {
                                     {
                                         this.state.showMsg ? <b className="r_p_common_extent"></b> : null
                                     }
-                                    <p className="r_p_kefu r_p_common" onClick={() => this.setState({modalVisible: true})}>上下级聊天</p>
+                                    <p className="r_p_kefu r_p_common"
+                                       onClick={() => this.setState({modalVisible: true})}>上下级聊天</p>
                                 </li>
                         }
                         <li>
@@ -370,7 +401,7 @@ export default class RightPlug extends Component {
                                 {/*<img className="left" src={notice_icon}/>*/}
                                 <ul className="winning_list">
                                     {
-                                        winningList.map((item, ind)=>{
+                                        winningList.map((item, ind) => {
                                             return (
                                                 <li key={ind}>
                                                     恭喜：
@@ -385,7 +416,8 @@ export default class RightPlug extends Component {
                                         })
                                     }
                                 </ul>
-                                <Icon className="close_winning hover right" onClick={()=>this.closeWinning()} type="close" />
+                                <Icon className="close_winning hover right" onClick={() => this.closeWinning()}
+                                      type="close"/>
                             </div>
                         </div>
                         :

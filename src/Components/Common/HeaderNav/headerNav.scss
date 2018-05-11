@@ -91,7 +91,7 @@ header {
         @include boxS(0, 3px, 2px, 0, #C19C9C, null);
     }
     .lottery_type_list{
-        width: 730px;
+        width: 715px;
         margin: 15px auto;
     }
     .lottery_type{
@@ -126,7 +126,12 @@ header {
                 }
             }
         }
-
+    }
+    .lottery_type:first-child{
+        width: 240px;
+        li{
+            display: inline-block;
+        }
     }
 }
 
