@@ -167,7 +167,7 @@ export default class WeChat extends Component {
                                                     <li className={imgUrlIndex === index ? 'r_m_active' : ''}
                                                         onClick={() => {
                                                             this.selectActive(item.rid, index)
-                                                        }} key={item.code}>
+                                                        }} key={index}>
                                                         <img src={stateVar.httpUrl + item.bankImgUrl} alt="选择"/>
                                                     </li>
                                                 )

@@ -228,7 +228,7 @@ export default class AliPay extends Component {
                                                         onClick={() => {
                                                             this.selectActive(item.rid, index)
                                                         }}
-                                                        key={item.code}
+                                                        key={index}
                                                     >
                                                         <img src={stateVar.httpUrl + item.bankImgUrl} alt=""/>
                                                     </li>
