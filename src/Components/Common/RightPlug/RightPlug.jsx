@@ -10,7 +10,6 @@ import md5 from 'md5';
 import {setStore, getStore, onValidate} from "../../../CommonJs/common";
 import ComplainAndSuggests from "../ComplainAndSuggests/ComplainAndSuggests";
 import Chat from '../../Chat/Chat';
-import notice_icon from './Img/notice_icon.png';
 const lotteryType = require('../../../CommonJs/common.json').lotteryType;
 /*当前浏览器url地址*/
 @observer
@@ -274,7 +273,7 @@ export default class RightPlug extends Component {
         this.setState({
                 winningList: winningListFlag
             },
-            // ()=>this.getDestinations()
+            ()=>this.getDestinations()
         )
     };
 
@@ -398,7 +397,6 @@ export default class RightPlug extends Component {
                     visibleWinning ?
                         <div className="winning_content">
                             <div className="show_winning">
-                                {/*<img className="left" src={notice_icon}/>*/}
                                 <ul className="winning_list">
                                     {
                                         winningList.map((item, ind) => {

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import { Modal } from 'antd';
 import { hashHistory } from 'react-router';
 import './RightSider.scss';
 import { stateVar } from '../../../State';
@@ -31,6 +32,12 @@ export default class RightSider extends Component {
         }
     };
     onHashHistory(router, nav, childNav) {
+        if(stateVar.userInfo.sType == 'demo'){
+            Modal.warning({
+                title: '试玩用户，没有访问权限',
+            });
+            return
+        }
         hashHistory.push({
             pathname: router,
             query: {navIndex: childNav}
