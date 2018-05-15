@@ -156,7 +156,7 @@ export default class Ebank extends Component {
                                     {
                                         this.state.backList.map((item, index)=>{
                                             return (
-                                                <li className={ this.state.imgUrlIndex === index ? 'ali_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={item.code}>
+                                                <li className={ this.state.imgUrlIndex === index ? 'ali_m_active' : '' } onClick={()=>{this.selectActive(item.rid, index)}} key={index}>
                                                     <img src={stateVar.httpUrl + item.bankImgUrl} alt=""/>
                                                 </li>
                                             )
