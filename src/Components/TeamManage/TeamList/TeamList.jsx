@@ -903,7 +903,7 @@ export default class TeamList extends Component {
             }, {
                 title: '最后登录时间',
                 dataIndex: 'lasttime',
-                render: text => <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
+                render: text =>text.slice(0, 4) == '1970' ? '新建账号，未登录！' :  <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
                 width: 85,
             }, {
                 title: '操作',
@@ -1018,7 +1018,7 @@ export default class TeamList extends Component {
                 }, {
                     title: '最后登录时间',
                     dataIndex: 'lasttime',
-                    render: text => <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
+                    render: text => text.slice(0, 4) == '1970' ? '新建账号，未登录！' :  <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
                     width: 120,
                 }, {
                     title: '操作',
@@ -1127,7 +1127,7 @@ export default class TeamList extends Component {
                 }, {
                     title: '最后登录时间',
                     dataIndex: 'lasttime',
-                    render: text => <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
+                    render: text => text.slice(0, 4) == '1970' ? '新建账号，未登录！' :  <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
                     width: 120,
                 }, {
                     title: '操作',
@@ -1225,6 +1225,7 @@ export default class TeamList extends Component {
                     title: '最后登录时间',
                     dataIndex: 'lasttime',
                     width: 120,
+                    render: text => text.slice(0, 4) == '1970' ? '新建账号，未登录！' :  text,
                 }, {
                     title: '操作',
                     dataIndex: 'action',

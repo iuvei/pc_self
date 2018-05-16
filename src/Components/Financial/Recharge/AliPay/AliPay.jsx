@@ -176,9 +176,9 @@ export default class AliPay extends Component {
     }
 
     /*选择充值方式*/
-    selectActive(rid, index) {
+    selectActive(id, index) {
         let {postData, validate, backList} = this.state,
-            selectBank = backList.filter(item => item.rid == rid)[0];
+            selectBank = backList.filter(item => item.id == id)[0];
         postData.payment = selectBank.payport_name;
         postData.money = '';
         postData.bid = parseInt(selectBank.id);
@@ -226,7 +226,7 @@ export default class AliPay extends Component {
                                                 return (
                                                     <li className={this.state.imgUrlIndex === index ? 'ali_m_active' : ''}
                                                         onClick={() => {
-                                                            this.selectActive(item.rid, index)
+                                                            this.selectActive(item.id, index)
                                                         }}
                                                         key={index}
                                                     >
