@@ -18,7 +18,7 @@ export default class LeftSider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            openKeys: [],
+            openKeys: ['sub1'],
             countDown: 0
         }
     }
@@ -137,9 +137,9 @@ export default class LeftSider extends Component {
     handTitleClick(e, defaultKey) {
         let {openKeys} = this.state;
         if (defaultKey) {
-            this.setState({
-                openKeys: defaultKey
-            })
+            // this.setState({
+            //     openKeys: defaultKey
+            // })
         } else {
             if (openKeys.indexOf(e.key) > -1) {
                 openKeys.splice(openKeys.indexOf(e.key), 1)

@@ -262,7 +262,7 @@ export default class RightPlug extends Component {
                 object = {
                     name: nameFlag.slice(1, 2) + '******' + nameFlag.slice(-1),
                     lottery: lotteryFlag.cnname,
-                    money: Math.floor(Math.random() * 99999 + 100),
+                    money: (Math.random() * 99999 + 100).toFixed(2),
                 };
             }
             winningListFlag.push(object);
