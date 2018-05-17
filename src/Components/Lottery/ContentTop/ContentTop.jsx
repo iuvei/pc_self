@@ -467,7 +467,7 @@ export default class ContentTop extends Component {
                 </div>
             )
         }
-    }
+    };
 
     // 音效开关
     onChangeSound(checked) {
