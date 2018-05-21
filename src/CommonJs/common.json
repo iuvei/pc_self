@@ -31,6 +31,21 @@
             "hotLottery": 1
         },
         {
+            "cnname": "瑞典一分彩",
+            "nav": "rd60",
+            "lotteryid": 32,
+            "lotteryCurmlotteryid": 313980,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3111895 ,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 313980,
+            "imgUrl":"rd60",
+            "imgSrc": "new",
+            "disabled": false,
+            "hotLottery": 1
+        },
+        {
             "cnname": "重庆时时彩",
             "nav": "ssc",
             "lotteryid": 1,

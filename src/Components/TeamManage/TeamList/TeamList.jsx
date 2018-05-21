@@ -820,7 +820,7 @@ export default class TeamList extends Component {
         const {tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge, users, selectInfo} = this.state;
         let columns = [
             {
-                title: '用户名3',
+                title: '用户名',
                 dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
                 render: (text, record) => <span className="hover_a"
                                                 onClick={() => this.getData('clickName', record)}>{text}</span>,
