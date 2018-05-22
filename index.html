@@ -32,6 +32,13 @@
 <body>
     <div id="app"></div>
 </body>
+<script>
+    //防止页面后退
+    history.pushState(null, null, document.URL);
+    window.addEventListener('popstate', function () {
+        history.pushState(null, null, document.URL);
+    });
+</script>
 <script src="./js/jquery.min.js"></script>
 <script src="./js/utf.js"></script>
 <script src="./js/jquery.qrcode.js"></script>

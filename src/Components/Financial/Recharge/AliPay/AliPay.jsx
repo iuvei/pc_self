@@ -211,7 +211,7 @@ export default class AliPay extends Component {
         return (
             <div className="ali_main" onKeyDown={(e) => this.onSubmit(e)}>
                 <div className="ali_m_hint">
-                    <p>平台填写金额应当与网银汇款金额完全一致，否则将无法即使到账！</p>
+                    <p>平台填写金额应当与网银汇款金额完全一致，否则将无法及时到账！</p>
                 </div>
                 <ul className="ali_m_list">
                     <li className="clear">
