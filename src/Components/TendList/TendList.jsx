@@ -33,7 +33,7 @@ export default class TendList extends Component {
                                                         items.lotteryList.map((item) => {
                                                             return (
                                                                 <li className='left' key={item.nav} style={{display:(item.disabled || item.tendency) ? "none" : "inline-block"}}>
-                                                                    <a href={item.disabled || item.tendency ? 'javascript:void(0)' : stateVar.httpUrl + "#/tendency?id=" + item.lotteryid}
+                                                                    <a href={item.disabled || item.tendency ? 'javascript:void(0)' : stateVar.httpUrl + "/newPC/index.html#/tendency?id=" + item.lotteryid}
                                                                        target="_blank"
                                                                        className={item.disabled || item.tendency ? 'disabled_style' : ''}
                                                                     >
