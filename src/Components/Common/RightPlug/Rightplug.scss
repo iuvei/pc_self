@@ -240,7 +240,7 @@
 .show_winning{
     display: inline-block;
     width: 350px;
-    height: 40px;
+    height: 35px;
     overflow: hidden;
     vertical-align: top;
     position: relative;
@@ -254,11 +254,11 @@
     }
     .close_winning{
         font-size: 14px;
-        padding: 13px;
+        padding: 10px;
         color: #fff;
     }
     li{
-        @include lh(40px);
+        @include lh(35px);
         color: #fff;
         text-align: left;
         img{

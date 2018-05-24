@@ -279,7 +279,7 @@ export default class RightPlug extends Component {
 
     getDestinations() {
         let times = 1,
-            duration = 40,
+            duration = 35,
             noticeListFlag = this.state.winningList;
         $(".winning_list").css('height', duration * noticeListFlag.length);
         $(".winning_list").css('top', 0);
@@ -308,7 +308,7 @@ export default class RightPlug extends Component {
         if (this.noticeIntervals) {
             clearInterval(this.noticeIntervals)
         }
-        $(".winning_content").animate({bottom: '-40'}, 500, () => {
+        $(".winning_content").animate({bottom: '-35'}, 500, () => {
             stateVar.visibleWinning = false;
         });
     };
