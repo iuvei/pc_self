@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../../Utils';
+import { hashHistory } from 'react-router';
 import {stateVar} from '../../../../State';
 import {InputNumber, Button, Modal} from 'antd';
 import {changeMoneyToChinese, onValidate, getStore} from '../../../../CommonJs/common';
@@ -101,6 +102,14 @@ export default class WeChat extends Component {
                     } else {
                         tempwindow.location.href = stateVar.httpUrl + res.repsoneContent.payUrl + '&sess=' + getStore('session')
                     }
+
+                    // stateVar.aliPayInfo = res.repsoneContent.payInfo;
+                    // hashHistory.push({
+                    //     pathname: '/financial/recharge/promptlyRecharge',
+                    //     query: {
+                    //         name: 'wechat'
+                    //     }
+                    // });
                 } else {
                     Modal.warning({
                         title: res.shortMessage,

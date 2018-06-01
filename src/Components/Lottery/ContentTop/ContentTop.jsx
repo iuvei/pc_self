@@ -132,7 +132,7 @@ export default class ContentTop extends Component {
      param 开奖持续时间
      */
     kjanimate(b) {
-        if (!this._ismount && !stateVar.animateCodeFlag) {
+        if (!this._ismount || !stateVar.animateCodeFlag) {
             return;
         }
         if (this.state.kjStopTime >= 5) {
