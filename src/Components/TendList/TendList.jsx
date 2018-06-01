@@ -28,7 +28,7 @@ export default class TendList extends Component {
                                                          src={require('../Lottery/LeftSider/Img/left_' + (i + 2) + '.png')}/>
                                                     <p>{items.typeName}</p>
                                                 </div>
-                                                <ul className="tend_lottery_list">
+                                                <ul className="tend_lottery_list clear">
                                                     {
                                                         items.lotteryList.map((item) => {
                                                             return (
