@@ -134,3 +134,31 @@
         }
     }
 }
+
+.userinfo_modal{
+    .info_list{
+        color: $color_363636;
+        font-size: 14px;
+        margin: 0 25px;
+        li{
+            @include lh(40px);
+            .text{
+                display: inline-block;
+                width: 80px;
+            }
+            .ant-btn{
+                padding: 6px 20px;
+            }
+            .ant-btn:first-child{
+                margin-right: 10px;
+            }
+        }
+        li:last-child{
+            text-align: center;
+        }
+        .hint_text{
+            text-align: center;
+            color: #999795;
+        }
+    }
+}

@@ -18,6 +18,7 @@ import {
 } from 'antd';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {onValidate, _code} from '../../../CommonJs/common';
+import {stateVar} from '../../../State';
 import Fetch from '../../../Utils';
 import './Marketing.scss';
 
@@ -68,6 +69,7 @@ export default class Marketing extends Component {
             },
             visibleMobile: false,
             visibleWechat: false,
+            infoVisible: false,
         }
     };
 
@@ -218,28 +220,10 @@ export default class Marketing extends Component {
                     iconLoadingRegister: false,
                 });
                 if (res.status == 200) {
-                    let _this = this;
                     if (registerAccountNum > 0) {
                         this.getData('register');
                     }
-
-                    Modal.success({
-                        title: res.shortMessage,
-                        content: res.repsoneContent,
-                        onOk() {
-                            let registerPost = _this.state.registerPost;
-                            registerPost.username = '';
-                            registerPost.userpass = '';
-                            registerPost.nickname = '';
-                            validate.userName = 2;
-                            validate.userPass = 2;
-                            validate.nickName = 2;
-                            _this.setState({
-                                validate,
-                                registerPost,
-                            });
-                        },
-                    });
+                    this.setState({infoVisible: true});
                 } else {
                     Modal.warning({
                         title: res.shortMessage,
@@ -248,6 +232,21 @@ export default class Marketing extends Component {
             }
         })
     };
+
+    onCancelUInfo(){
+        let {registerPost, validate} = this.state;
+        registerPost.username = '';
+        registerPost.userpass = '';
+        registerPost.nickname = '';
+        validate.userName = 2;
+        validate.userPass = 2;
+        validate.nickName = 2;
+        this.setState({
+            infoVisible: false,
+            validate,
+            registerPost,
+        });
+    }
 
     /*点击推广链接时*/
     onReneralize() {
@@ -534,7 +533,13 @@ export default class Marketing extends Component {
                 width: 80,
             }];
         const RadioGroup = Radio.Group;
-        const {registerPost, generalizePost, registerSlider, generalizeSlider, list} = this.state;
+        const {
+            registerPost,
+            generalizePost,
+            registerSlider,
+            generalizeSlider,
+            list,
+        } = this.state;
         return (
             <div className="marke_k_main">
                 {
@@ -764,6 +769,54 @@ export default class Marketing extends Component {
                             </div>
                         </div>
                 }
+                <Modal
+                    title='下级用户信息'
+                    visible={this.state.infoVisible}
+                    wrapClassName="vertical-center-modal userinfo_modal"
+                    width={400}
+                    footer={null}
+                    maskClosable={false}
+                    onCancel={()=>this.onCancelUInfo()}
+                >
+                    <ul className="info_list">
+                        <li>
+                            <span className="text">平台网址：</span>
+                            {stateVar.httpUrl}
+                        </li>
+                        <li>
+                            <span className="text">用户名：</span>
+                            {registerPost.username}
+                        </li>
+                        <li>
+                            <span className="text">登录密码：</span>
+                            {registerPost.userpass}
+                        </li>
+                        <li>
+                            <span className="text">昵称：</span>
+                            {registerPost.nickname}
+                        </li>
+                        <li>
+                            <span className="text">奖金组：</span>
+                            {registerPost.groupLevel}
+                        </li>
+                        <li className="hint_text">
+                            点击复制关闭，即可复制下级用户信息。
+                        </li>
+                        <li>
+                            <Button onClick={()=>this.onCancelUInfo()}>直接关闭</Button>
+                            <CopyToClipboard text={
+`平台网址： ${stateVar.httpUrl}
+用户名：${registerPost.username}
+登录密码：${registerPost.userpass}
+昵称：${registerPost.nickname}
+奖金组：${registerPost.groupLevel}`
+                                }
+                                onCopy={() => {message.success('复制成功'); this.onCancelUInfo()}}>
+                                <Button type="primary">复制关闭</Button>
+                            </CopyToClipboard>
+                        </li>
+                    </ul>
+                </Modal>
             </div>
         );
     }
