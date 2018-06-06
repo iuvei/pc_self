@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import emitter from '../../../Utils/events';
 import {Switch, message, Button} from 'antd';
+import {toJS} from 'mobx';
 import {Link} from 'react-router';
 import './ContentTop.scss';
 import zoushi from './Img/zoushi.png';
@@ -135,6 +136,9 @@ export default class ContentTop extends Component {
         if (!this._ismount || !stateVar.animateCodeFlag) {
             return;
         }
+        if(this.clearTimeout_1){
+            window.clearTimeout(this.clearTimeout_1)
+        }
         if (this.state.kjStopTime >= 5) {
             this.setState({mmcmoni: false});
             $(".monikj span").html('模拟开奖');
@@ -174,7 +178,7 @@ export default class ContentTop extends Component {
                         }, 50);
                         this.kjanimate(400);
                     } else {
-                        this.kjanimate(600);
+                        // this.kjanimate(600);
                     }
                 }
             }, 50);
@@ -245,17 +249,19 @@ export default class ContentTop extends Component {
                 this.setState({
                     kjStopallFlag: false,
                     kjStopTime: 0,
-                    kjStopFlag: [false, false, false, false, false]
+                    kjStopFlag: [true, true, true, true, true]
                 }, () => {
-                    this.kjanimate(0);
+                    // this.kjanimate(700);
                 });
                 clearInterval(this.interval);
                 message.config({
                     top: '48%',
-                    duration: 2
+                    // duration: 2
                 });
                 stateVar.betVisible = false;
-                if (endtime != null) message.info('当期销售已截止，请进入下一期购买');
+                if (endtime != null) {
+                    message.info('当期销售已截止，请进入下一期购买', 2,() => message.destroy()); // 销毁节点
+                }
                 this.getlotterycode(true);
             }
             $.lt_time_leave = $.lt_time_leave - 1;
@@ -282,11 +288,14 @@ export default class ContentTop extends Component {
                                 kjStopTime: 0,
                                 kjStopFlag: [false, false, false, false, false]
                             }, () => {
-                                this.kjanimate(0);
+                                this.kjanimate(700);
                             });
                             this.clearTimeout_3 = setTimeout(() => {
-                                this.setState({code: stateVar.mmccode});
-                                this.setState({mmcmoni: false, kjStopallFlag: true});
+                                this.setState({
+                                    code: stateVar.mmccode,
+                                    mmcmoni: false,
+                                    kjStopallFlag: true
+                                });
                             }, 300);
                         } else {
                             stateVar.mmCkjNumberList = [];
@@ -336,11 +345,11 @@ export default class ContentTop extends Component {
             body: JSON.stringify({flag: 'getlotterycode', lotteryid: stateVar.nowlottery.lotteryBetId})
         }).then((data) => {
             let tempData = data.repsoneContent;
-            let tempArray = stateVar.todayAndTomorrow;
+            let tempArray = toJS(stateVar.todayAndTomorrow);
             if (this._ismount && data.status == 200) {
                 if (a) {
                     while (true) {
-                        if (stateVar.todayAndTomorrow.length == 0) {
+                        if (tempArray.length == 0) {
                             break;
                         }
                         if (tempData.curissue != tempArray[0].issue) {
@@ -455,10 +464,12 @@ export default class ContentTop extends Component {
                             this.state.code.map((val, idx) => {
                                 return (
                                     <li key={idx}>
-                                        <span className='kjCodeClass'
-                                              style={{display: this.state.kjStopFlag[idx] ? 'block' : 'none'}}>{val}</span>
-                                        <span
-                                            style={{display: this.state.kjStopFlag[idx] ? 'none' : 'block'}}>{this.state.animateCode[idx]}</span>
+                                        {
+                                            this.state.kjStopFlag[idx] ?
+                                                <span className='kjCodeClass'>{val}</span>
+                                                :
+                                                <span>{this.state.animateCode[idx]}</span>
+                                        }
                                     </li>
                                 )
                             })
@@ -553,6 +564,7 @@ export default class ContentTop extends Component {
     render() {
         const {timeShow, kjStopFlag, animateCode, code} = this.state;
         const {nowlottery, nextIssue} = stateVar;
+
         return (
             <div className="bet_content" key="ContentTop">
                 <div className="content_title">

@@ -182,7 +182,7 @@ export default class LeftSider extends Component {
                 <Menu
                     onClick={(e) => this.handleClick(e)}
                     style={{width: 120}}
-                    defaultOpenKeys={this.openKey()}
+                    defaultOpenKeys={['sub1']}
                     openKeys={this.state.openKeys}
                     selectedKeys={[stateVar.nowlottery.lotteryId]}
                     className="new_lottery"
