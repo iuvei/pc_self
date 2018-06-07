@@ -811,7 +811,7 @@ export default class Marketing extends Component {
 昵称：${registerPost.nickname}
 奖金组：${registerPost.groupLevel}`
                                 }
-                                onCopy={() => {message.success('复制成功'); this.onCancelUInfo()}}>
+                                onCopy={() => {message.success('复制成功', 2, message.destroy()); this.onCancelUInfo()}}>
                                 <Button type="primary">复制关闭</Button>
                             </CopyToClipboard>
                         </li>

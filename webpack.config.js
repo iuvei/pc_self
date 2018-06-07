@@ -2,8 +2,8 @@ const path = require("path"),
     webpack = require("webpack"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     ExtractTextPlugin = require("extract-text-webpack-plugin"),
-    HOST = "10.63.34.36",
-    PORT = 4041;
+    HOST = "10.63.34.38",
+    PORT = 4040;
 let commonPlugins = [],
     cssExtract = process.env.NODE_ENV === "production"
         ? ExtractTextPlugin.extract({ fallback: "style", use: [ "css", "postcss", "sass" ], })

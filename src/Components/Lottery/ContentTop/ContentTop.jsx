@@ -260,7 +260,12 @@ export default class ContentTop extends Component {
                 });
                 stateVar.betVisible = false;
                 if (endtime != null) {
-                    message.info('当期销售已截止，请进入下一期购买', 2,() => message.destroy()); // 销毁节点
+                    message.info('当期销售已截止，请进入下一期购买', 2,() => {
+                        message.destroy();// 销毁节点
+                        message.config({
+                            top: '2%',
+                        })
+                    });
                 }
                 this.getlotterycode(true);
             }
