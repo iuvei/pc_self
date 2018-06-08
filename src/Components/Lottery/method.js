@@ -797,7 +797,7 @@ const methodId = {
     191902: 'ZUL',
     191903: 'HHZX',
     191904: 'ZUHZ',
-	
+
 	//瑞典一分彩
 	3113163:'ZX3',
 	3113160:'ZX3',
@@ -862,7 +862,7 @@ const methodId = {
     3113401: 'RXZXWFC4',
     3113406: 'RXZXWFC4DS',
     3113416: 'RXZU24WFC4',
-    3113422: 'RXZU12WFC4',
+    3113421: 'RXZU12WFC4',
     3113426: 'RXZU6WFC4',
     3113431: 'RXZU4WFC4',
     //加拿大30秒
@@ -1083,7 +1083,7 @@ const methodId = {
     3112126: 'RXZU4WFC4',
     3112127: 'RXZU4WFC4',
     3112128: 'RXZU4WFC4',
-    
+
 
     // 龙虎庄闲
     1020422: 'LHZXL1H2',
@@ -1419,7 +1419,7 @@ const methodId = {
     3110916: 'SXZU4DT',
     3110894: 'HN481ZXSMALL',
     3110895: 'HN481ZXEMALL',
-	
+
     //河内60秒
     3111053: 'ZX3',
     3111055: 'ZX3',
@@ -1656,7 +1656,7 @@ const methodId = {
     3111268: 'RXZU4FFC4',
     3111269: 'RXZU4FFC4',
     //河内分分彩 20180601 end
-    
+
     //西贡60秒
     3111327: 'ZX3',
     3111325: 'ZX3',
