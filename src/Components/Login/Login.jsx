@@ -594,6 +594,10 @@ export default class Login extends Component {
             displayWarn:false,
             showWechat:'none'
         });
+        this.ws && this.ws.close();
+        if(this.wechatIntval){
+            clearInterval(this.wechatIntval);
+        }
     }
     /*关闭找回密码modal*/
     onCancelInputPassw() {
