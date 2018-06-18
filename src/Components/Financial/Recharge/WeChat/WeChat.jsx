@@ -86,10 +86,6 @@ export default class WeChat extends Component {
             return
         }
         this.setState({iconLoadingRecharge: true});
-        let tempwindow
-        if (!stateVar.isApp) {
-            tempwindow = window.open();
-        }
         Fetch.payment({
             method: 'POST',
             body: JSON.stringify(this.state.postData)
@@ -97,19 +93,13 @@ export default class WeChat extends Component {
             if (this._ismount) {
                 this.setState({iconLoadingRecharge: false});
                 if (res.status == 200) {
-                    if (stateVar.isApp) {
-                        window.open(stateVar.httpUrl + res.repsoneContent.payUrl + '&sess=' + getStore('session'))
-                    } else {
-                        tempwindow.location.href = stateVar.httpUrl + res.repsoneContent.payUrl + '&sess=' + getStore('session')
-                    }
-
-                    // stateVar.aliPayInfo = res.repsoneContent.payInfo;
-                    // hashHistory.push({
-                    //     pathname: '/financial/recharge/promptlyRecharge',
-                    //     query: {
-                    //         name: 'wechat'
-                    //     }
-                    // });
+                    stateVar.aliPayInfo = res.repsoneContent.payInfo;
+                    hashHistory.push({
+                        pathname: '/financial/recharge/promptlyRecharge',
+                        query: {
+                             name: 'wechat'
+                        }
+                    });
                 } else {
                     Modal.warning({
                         title: res.shortMessage,

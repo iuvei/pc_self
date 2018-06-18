@@ -220,18 +220,6 @@ export default class Promptly extends Component {
                                 <Button className="btn_p" type="primary">通用复制</Button>
                             </CopyToClipboard>
                         </li>
-                        <li style={{
-                            display:
-                                aliPayInfo.b_acc_name == 'khcz' ||
-                                aliPayInfo.b_acc_name == 'khzz' ? 'none' : 'block'}}
-                        >
-                            <span className="p_r_text"></span>
-                            {/*<Button style={{marginTop: 30}} disabled={this.state.disabled} size="large" type="primary">*/}
-                            <a className="blank_text" href={aliPayInfo.account_name} target="_blank">
-                                登录网上银行付款
-                            </a>
-                            {/*</Button>*/}
-                        </li>
                     </ul>
                     <div className="p_r_explain right">
                         <div className="count_down">
@@ -240,16 +228,9 @@ export default class Promptly extends Component {
                         </div>
                         <div className="p_r_e_text">
                             <p>注意事项：</p>
-                            <p>1、充值附言随机生成，一次附言只能充值一次，重复使用附言将无法到账。</p>
-                            <p>2、充值账户应已绑定至平台，否则充值将无法到账。</p>
-                            <p>3、收款账户将不定时更换，请勿保存，充值前请获取最新信息后充值。</p>
-                            <p>4、填写的充值金额应与网银转账金额完全一致，否则将无法即时到账。</p>
-                            <p className="text_color">
-                                {
-                                    aliPayInfo.b_acc_name == 'khcz' || aliPayInfo.b_acc_name == 'khzz' ? '5、支持跨行转账，您可自行登录各大银行官网进行转账操作。' : '5、不支持跨行转账，请登录收款卡对应银行官网进行转账操作。'
-                                }
-                            </p>
-                            <p>6、如充值后未到账，请联系在线客服。<a href={stateVar.httpService}>点击联系在线客服</a></p>
+                            <p>1、平台填写金额应当与转账金额完全一致，否则将无法成功自动上分。</p>
+                            <p>2、平台的银行账户会不定时更换，请在获取最新消息后充值，否则将无法即时到账。</p>
+                            <p>3、使用微信转账时，请选择“2小时内到账”，到账后立即自动上分。</p>
                         </div>
                     </div>
                 </div>

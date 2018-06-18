@@ -171,7 +171,6 @@ export default class ContentTop extends Component {
                                 }
                             }
                             tempI += 1;
-                            console.log(tempArr)
                             this.setState({
                                 kjStopFlag: tempArr,
                                 kjStopTime: tempI
