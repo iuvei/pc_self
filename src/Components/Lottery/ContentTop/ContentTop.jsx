@@ -57,22 +57,23 @@ export default class ContentTop extends Component {
         emitter.off(this.eventWebsocket);
         emitter.off(this.eventcontentTop);
 
-        if(this.interval){
+        if (this.interval) {
             window.clearInterval(this.interval)
         }
-        if(this.clearTimeout_1){
+        if (this.clearTimeout_1) {
             window.clearTimeout(this.clearTimeout_1)
         }
-        if(this.clearTimeout_2){
+        if (this.clearTimeout_2) {
             window.clearTimeout(this.clearTimeout_2)
         }
-        if(this.clearTimeout_3){
+        if (this.clearTimeout_3) {
             window.clearTimeout(this.clearTimeout_3)
         }
-        if(this.clearTimeout_4){
+        if (this.clearTimeout_4) {
             window.clearTimeout(this.clearTimeout_4)
         }
     };
+
     initData() {
         clearInterval(this.interval);
         stateVar.animateCodeFlag = false;
@@ -117,7 +118,7 @@ export default class ContentTop extends Component {
                     animateCode: tempArrCode
                 }, () => {
                     if (stateVar.nowlottery.lotteryBetId != 23) {
-                    	stateVar.animateCodeFlag = true;
+                        stateVar.animateCodeFlag = true;
                         this.kjanimate(0);
                     }
                 });
@@ -136,7 +137,7 @@ export default class ContentTop extends Component {
         if (!this._ismount || !stateVar.animateCodeFlag) {
             return;
         }
-        if(this.clearTimeout_1){
+        if (this.clearTimeout_1) {
             window.clearTimeout(this.clearTimeout_1)
         }
         if (this.state.kjStopTime >= 5) {
@@ -170,7 +171,11 @@ export default class ContentTop extends Component {
                                 }
                             }
                             tempI += 1;
-                            this.setState({kjStopFlag: tempArr, kjStopTime: tempI}, () => {
+                            console.log(tempArr)
+                            this.setState({
+                                kjStopFlag: tempArr,
+                                kjStopTime: tempI
+                            }, () => {
                                 $(".kjCodeClass").eq(tempI - 1).animate({fontSize: "40px"}, 50, () => {
                                     $(".kjCodeClass").animate({fontSize: "36px"}, 200);
                                 });
@@ -260,7 +265,7 @@ export default class ContentTop extends Component {
                 });
                 stateVar.betVisible = false;
                 if (endtime != null) {
-                    message.info('当期销售已截止，请进入下一期购买', 2,() => {
+                    message.info('当期销售已截止，请进入下一期购买', 2, () => {
                         message.destroy();// 销毁节点
                         message.config({
                             top: '2%',
@@ -290,8 +295,7 @@ export default class ContentTop extends Component {
                             this.setState({
                                 mmcmoni: true,
                                 kjStopallFlag: false,
-                                kjStopTime: 0,
-                                kjStopFlag: [false, false, false, false, false]
+                                kjStopTime: 0
                             }, () => {
                                 this.kjanimate(700);
                             });
@@ -370,10 +374,10 @@ export default class ContentTop extends Component {
                 } else {
                     tempCode = tempData.code.split(' ');
                 }
-                if(a){
-                	this.setState({kjStopallFlag: false});
-                }else{
-                	this.setState({kjStopallFlag: true});
+                if (a) {
+                    this.setState({kjStopallFlag: false});
+                } else {
+                    this.setState({kjStopallFlag: true});
                 }
                 stateVar.issueIndex = tempArray.length != 0 ? tempArray[0].issue : '??????';
                 stateVar.nextIssue = tempData.curissue;
@@ -396,8 +400,9 @@ export default class ContentTop extends Component {
             mmcmoni: true,
             kjStopallFlag: false,
             kjStopTime: 0,
-            kjStopFlag: [false, false, false, false, false]
+            kjStopFlag: [false, false, false, false, false],
         }, () => {
+            stateVar.animateCodeFlag = true
             this.kjanimate(0);
         });
         $(".monikj span").html('开奖中...');
@@ -539,9 +544,9 @@ export default class ContentTop extends Component {
                     this.props.getBetHistory();
                 }
             } else if (tempType == 8 || tempType == 2) {
-                setTimeout(()=>{
-                	this.props.getVersion();
-                },3000)
+                setTimeout(() => {
+                    this.props.getVersion();
+                }, 3000)
                 this.getAccGroup();
             }
         }
@@ -594,14 +599,26 @@ export default class ContentTop extends Component {
                                     </li>
                                     <li>
                                         <ul className="ball_number_mmc">
+                                            {/*{*/}
+                                            {/*code.map((val, idx) => {*/}
+                                            {/*return (*/}
+                                            {/*<li key={idx}>*/}
+                                            {/*<span className='kjCodeClass'*/}
+                                            {/*style={{display: kjStopFlag[idx] ? 'block' : 'none'}}>{val}</span>*/}
+                                            {/*<span*/}
+                                            {/*style={{display: kjStopFlag[idx] ? 'none' : 'block'}}>{animateCode[idx]}</span>*/}
+                                            {/*</li>*/}
+                                            {/*)*/}
+                                            {/*})*/}
+                                            {/*}*/}
                                             {
-                                                code.map((val, idx) => {
+                                                kjStopFlag.map((value, index) => {
                                                     return (
-                                                        <li key={idx}>
-                                                            <span className='kjCodeClass'
-                                                                  style={{display: kjStopFlag[idx] ? 'block' : 'none'}}>{val}</span>
-                                                            <span
-                                                                style={{display: kjStopFlag[idx] ? 'none' : 'block'}}>{animateCode[idx]}</span>
+                                                        <li key={index}>
+                                                            {value ?
+                                                                <span className='kjCodeClass'>{code[index]}</span> :
+                                                                <span
+                                                                    className='kjCodeClass'>{animateCode[index]}</span>}
                                                         </li>
                                                     )
                                                 })
