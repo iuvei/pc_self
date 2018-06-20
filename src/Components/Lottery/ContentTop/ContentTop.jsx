@@ -182,7 +182,7 @@ export default class ContentTop extends Component {
                         }, 50);
                         this.kjanimate(400);
                     } else {
-                        // this.kjanimate(600);
+                        this.kjanimate(0);
                     }
                 }
             }, 50);
@@ -251,11 +251,12 @@ export default class ContentTop extends Component {
             if ($.lt_time_leave == 0) {//结束
                 this.actionSound(0);
                 this.setState({
+                    mmcmoni: true,
                     kjStopallFlag: false,
                     kjStopTime: 0,
-                    kjStopFlag: [true, true, true, true, true]
+                    kjStopFlag: [false, false, false, false, false]
                 }, () => {
-                    // this.kjanimate(700);
+                    this.kjanimate(0);
                 });
                 clearInterval(this.interval);
                 message.config({
