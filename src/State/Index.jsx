@@ -3,7 +3,7 @@ import _code from '../CommonJs/common'
 
 // useStrict(true);
 class State {
-    @observable httpUrl = process.env.NODE_ENV === "production" ? window.location.origin || (window.location.protocol +'//' + window.location.host) : 'http://10.63.15.242'; // 域名
+    @observable httpUrl = process.env.NODE_ENV === "production" ? window.location.origin || (window.location.protocol + '//' + window.location.host) : 'http://10.63.15.242'; // 域名
 
     @observable isApp = false; // 客户端
     @observable httpService = ''; // 联系客服url
@@ -55,7 +55,7 @@ class State {
         defaultMethodId: 0,
         lotteryBetId: 1,
         cnname: '重庆时时彩',
-        lotteryLength:5,
+        lotteryLength: 5,
         imgUrl: 'cqssc'
     };
     @observable animateCodeFlag = true;
