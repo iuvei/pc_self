@@ -182,7 +182,11 @@ export default class ContentTop extends Component {
                         }, 50);
                         this.kjanimate(400);
                     } else {
+<<<<<<< HEAD
                         this.kjanimate(0);
+=======
+                        this.kjanimate(600);
+>>>>>>> moore66
                     }
                 }
             }, 50);

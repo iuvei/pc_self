@@ -76,6 +76,36 @@
             "hotLottery": 1
         },
         {
+            "cnname": "日本分分彩",
+            "nav": "rbffc",
+            "lotteryid": 33,
+            "lotteryCurmlotteryid": 314102,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3111055,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 314102,
+            "imgUrl":"riben60",
+            "imgSrc": "new",
+            "disabled": false,
+            "hotLottery": 1
+        },
+        {
+            "cnname": "印尼分分彩",
+            "nav": "ynffc",
+            "lotteryid": 34,
+            "lotteryCurmlotteryid": 314308,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3111327,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 314308,
+            "imgUrl":"yn60",
+            "imgSrc": "new",
+            "disabled": false,
+            "hotLottery": 1
+        },
+        {
             "cnname": "重庆时时彩",
             "nav": "ssc",
             "lotteryid": 1,
