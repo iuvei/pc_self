@@ -182,7 +182,7 @@ export default class ContentTop extends Component {
                         }, 50);
                         this.kjanimate(400);
                     } else {
-                        // this.kjanimate(600);
+                        this.kjanimate(600);
                     }
                 }
             }, 50);
