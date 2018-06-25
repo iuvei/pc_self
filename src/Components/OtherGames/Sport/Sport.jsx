@@ -28,7 +28,8 @@ export default class Sport extends Component {
                 email: 2,
                 phone: 2,
             },
-            gameAddr: ''
+            gameAddr: '',
+            moneyLoading: false
         };
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
@@ -105,6 +106,7 @@ export default class Sport extends Component {
                     });
                     this.setState({visible: false});
                     emitter.emit('changeMoney', 'sport');
+                    this.refreshMoney()
                 } else {
                     Modal.warning({
                         title: res.shortMessage,
@@ -249,13 +251,16 @@ export default class Sport extends Component {
 
     // 刷新余额
     refreshMoney() {
+        this.setState({
+            moneyLoading: true
+        })
         //体育余额
         Fetch.balance({
             method: 'POST',
             body: JSON.stringify({type: 'sb'})
         }).then((res) => {
             if (this._ismount) {
-                this.setState({updateMLoading: false});
+                this.setState({moneyLoading: false});
                 if (res.status == 200) {
                     if (res.repsoneContent <= 0) {
                         res.repsoneContent = 0.00
@@ -285,7 +290,7 @@ export default class Sport extends Component {
                             <div className='title'>
                                 <div className='title-bottom'>
                                     <span className='money'>账户余额：{stateVar.allBalance.sbbalance}元&nbsp;&nbsp;&nbsp;<Icon
-                                        type="reload" onClick={() => {
+                                        type="reload" spin={this.state.moneyLoading} onClick={() => {
                                         this.refreshMoney()
                                     }}/></span>
                                     <Button onClick={() => this.setState({visible: true})}>转账</Button>
