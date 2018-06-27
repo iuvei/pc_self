@@ -86,7 +86,7 @@ header {
         @include transform(height, 0.3s);
     }
     .t_m_select_lottery_show{
-        height: 230px;
+        height: 260px;
         border-top: 1px solid $color_CF2027;
         @include boxS(0, 3px, 2px, 0, #C19C9C, null);
     }

@@ -4,70 +4,70 @@
 $border-color: #B2B2B2;
 
 /*个人总表*/
-.report{
-    .team_list_top{
+.report {
+    .team_list_top {
         padding: 30px 0 13px 30px;
         border-bottom: 1px solid #ccc;
         background-color: #fff;
         font-size: 14px;
         color: $color_363636;
-        .t_l_time{
+        .t_l_time {
             padding-bottom: 15px;
-            .t_l_time_row{
+            .t_l_time_row {
                 @include lh(30px);
                 margin-bottom: 12px;
-                li{
+                li {
                     float: left;
                     margin-right: 10px;
                 }
-                .ant-input{
+                .ant-input {
                     width: 150px;
                 }
-                .t_m_line{
+                .t_m_line {
                     margin: 3px 20px 0 10px !important;
                     height: 22px;
                     border-left: 1px solid #AFAFAF;
                 }
             }
-            .t_l_time_btn{
+            .t_l_time_btn {
                 box-sizing: border-box;
                 @include lh(30px);
-                li{
+                li {
                     box-sizing: border-box;
                     @include lh(30px);
                     padding: 0 8px;
-                    border:1px solid $border-color;
+                    border: 1px solid $border-color;
                     @include borderRadius(3px);
                     margin-right: 3px;
-                    &:hover{
+                    &:hover {
                         cursor: pointer;
                         background-color: #ddd;
                     }
                 }
-                li:not(:first-child){
-                    border-left:1px solid $border-color;
+                li:not(:first-child) {
+                    border-left: 1px solid $border-color;
                 }
-                .t_l_time_btn_active{
+                .t_l_time_btn_active {
                     box-sizing: border-box;
                     height: 30px;
-                    border:1px solid #CB1313 !important;
-                    color:#CB1313;
+                    border: 1px solid #CB1313 !important;
+                    color: #CB1313;
                     background: #FFF5F5 url('./Img/time_active.png') no-repeat right bottom;
                 }
             }
-            .t_l_classify{
+            .t_l_classify {
                 @include lh(30px);
-                li{
+                li {
                     float: left;
                     margin-right: 10px;
-                    .ant-input{
+                    .ant-input {
                         width: 120px;
                     }
                 }
-                li:last-child{
+                li:last-child {
                     margin: 0;
                 }
-                .t_l_border{
+                .t_l_border {
                     box-sizing: border-box;
                     @include lh(30px);
                     @include borderRadius(3px);
@@ -75,585 +75,587 @@ $border-color: #B2B2B2;
                     border: 1px solid $border-color;
                     padding: 0 10px;
                     margin-right: 8px;
-                    &:hover{
+                    &:hover {
                         cursor: pointer;
                         background-color: #ddd;
                     }
                 }
-                .t_m_serch{
+                .t_m_serch {
                     margin: 0 0 10px 0;
-                    .ant-btn-primary{
+                    .ant-btn-primary {
                         height: 30px;
                     }
-                    &:hover{
+                    &:hover {
                         cursor: pointer;
                     }
                 }
             }
         }
-        .t_m_select_lottery{
+        .t_m_select_lottery {
             padding: 0 5px 0;
             height: 0;
             overflow: hidden;
             @include transform(height, 0.3s);
-            .ant-radio-wrapper{
+            .ant-radio-wrapper {
                 margin: 10px 25px 0 0;
                 width: 105px;
             }
         }
-        .t_m_select_lottery_show{
+        .t_m_select_lottery_show {
             height: 113px;
             border-top: 1px dotted #8B8D92;
         }
     }
-    .t_l_table{
+    .t_l_table {
         padding: 12px 12px 50px;
-        .t_l_table_list{
+        .t_l_table_list {
             border: 1px solid #ccc;
             background-color: #fff;
-            padding:8px 5px;
-            .ant-table-footer{
+            padding: 8px 5px;
+            .ant-table-footer {
                 padding: 11px 0 !important;
             }
         }
-        .t_l_location_name{
+        .t_l_location_name {
             margin: 5px 0 12px;
             font-size: 14px;
-            .t_l_goBack{
+            .t_l_goBack {
                 margin-right: 5px;
             }
         }
-        .ant-select-selection{
+        .ant-select-selection {
             @include borderRadius(3px);
         }
-        .ant-pagination-options-size-changer{
+        .ant-pagination-options-size-changer {
             margin-right: 0;
         }
-        .dividend_table{
+        .dividend_table {
             /*分红footer*/
-            .dividend_footer{
+            .dividend_footer {
                 line-height: 28px;
                 font-weight: bold;
-                li{
+                li {
                     float: left;
                     text-align: right;
                 }
-                li:first-child{
+                li:first-child {
                     width: 160px;
                     text-align: center;
                 }
-                li:nth-child(2){
+                li:nth-child(2) {
                     width: 87px;
                 }
-                li:nth-child(3){
+                li:nth-child(3) {
                     width: 110px;
                 }
-                li:nth-child(4){
+                li:nth-child(4) {
                     width: 100px;
                 }
-                li:nth-child(5){
+                li:nth-child(5) {
                     width: 101px;
                 }
-                li:nth-child(6){
+                li:nth-child(6) {
                     width: 90px;
                 }
-                li:nth-child(7){
+                li:nth-child(7) {
                     width: 90px;
                 }
-                li:nth-child(8){
+                li:nth-child(8) {
                     text-align: center;
                     width: 263px;
                     padding-left: 4px;
                 }
             }
-            .dividend_footer_zero{
-                 line-height: 28px;
-                 li{
-                     float: left;
-                     text-align: right;
-                 }
-                 li:first-child{
-                     width: 218px;
-                     text-align: center;
-                 }
-                 li:nth-child(2){
-                     width: 135px;
-                 }
-                 li:nth-child(3){
-                     width: 139px;
-                 }
-                 li:nth-child(4){
-                     width: 90px;
-                 }
-                 li:nth-child(5){
-                     width: 140px;
-                 }
-                 li:nth-child(6){
-                     text-align: center;
-                     width: 280px;
-                     padding-left: 9px;
-                 }
-             }
-            .dividend_footer_one{
+            .dividend_footer_zero {
                 line-height: 28px;
-                li{
+                li {
                     float: left;
                     text-align: right;
                 }
-                li:first-child{
-                    width: 188px;
+                li:first-child {
+                    width: 218px;
                     text-align: center;
                 }
-                li:nth-child(2){
-                    width: 115px;
+                li:nth-child(2) {
+                    width: 135px;
                 }
-                li:nth-child(3){
-                    width: 119px;
+                li:nth-child(3) {
+                    width: 139px;
                 }
-                li:nth-child(4){
-                    width: 119px;
-                }
-                li:nth-child(5){
+                li:nth-child(4) {
                     width: 90px;
                 }
-                li:nth-child(6){
-                    width: 90px;
+                li:nth-child(5) {
+                    width: 140px;
                 }
-                li:nth-child(7){
+                li:nth-child(6) {
                     text-align: center;
                     width: 280px;
                     padding-left: 9px;
                 }
             }
-            .ant-table-footer{
+            .dividend_footer_one {
+                line-height: 28px;
+                li {
+                    float: left;
+                    text-align: right;
+                }
+                li:first-child {
+                    width: 188px;
+                    text-align: center;
+                }
+                li:nth-child(2) {
+                    width: 115px;
+                }
+                li:nth-child(3) {
+                    width: 119px;
+                }
+                li:nth-child(4) {
+                    width: 119px;
+                }
+                li:nth-child(5) {
+                    width: 90px;
+                }
+                li:nth-child(6) {
+                    width: 90px;
+                }
+                li:nth-child(7) {
+                    text-align: center;
+                    width: 280px;
+                    padding-left: 9px;
+                }
+            }
+            .ant-table-footer {
                 padding: 6px 0 !important;
             }
         }
     }
-    .t_l_active{
+    .t_l_active {
         box-sizing: border-box;
         height: 28px;
-        border:1px solid #CB1313 !important;
-        color:#CB1313;
+        border: 1px solid #CB1313 !important;
+        color: #CB1313;
         background: #FFF5F5 url('./Img/time_active.png') no-repeat right bottom;
     }
-    .st_f_Two{
-        li{
+    .st_f_Two {
+        li {
             float: left;
             text-align: right;
         }
-        li:nth-child(1){
+        li:nth-child(1) {
             width: 147px;
             text-align: center;
         }
-        li:nth-child(2){
+        li:nth-child(2) {
             width: 96px;
         }
-        li:nth-child(3){
+        li:nth-child(3) {
             width: 105px;
         }
-        li:nth-child(4){
+        li:nth-child(4) {
             width: 99px;
         }
-        li:nth-child(5){
+        li:nth-child(5) {
             width: 88px;
         }
-        li:nth-child(6){
+        li:nth-child(6) {
             width: 99px;
         }
-        li:nth-child(7){
+        li:nth-child(7) {
             width: 85px;
         }
-        li:nth-child(8){
+        li:nth-child(8) {
             width: 93px;
         }
-        li:nth-child(9){
+        li:nth-child(9) {
             width: 93px;
         }
-        li:nth-child(10){
+        li:nth-child(10) {
             width: 92px;
         }
     }
-    .st_f_showOne{
-        li{
+    .st_f_showOne {
+        li {
             float: left;
             text-align: right;
         }
-        li:nth-child(1){
+        li:nth-child(1) {
             width: 165px;
             text-align: center;
         }
-        li:nth-child(2){
+        li:nth-child(2) {
             width: 106px;
         }
-        li:nth-child(3){
+        li:nth-child(3) {
             width: 115px;
         }
-        li:nth-child(4){
+        li:nth-child(4) {
             width: 110px;
         }
-        li:nth-child(5){
+        li:nth-child(5) {
             width: 94px;
         }
-        li:nth-child(6){
+        li:nth-child(6) {
             width: 108px;
         }
-        li:nth-child(7){
+        li:nth-child(7) {
             width: 97px;
         }
-        li:nth-child(8){
+        li:nth-child(8) {
             width: 101px;
         }
-        li:nth-child(9){
+        li:nth-child(9) {
             width: 103px;
         }
     }
-    .st_f_showZero{
-        li{
+    .st_f_showZero {
+        li {
             float: left;
             text-align: right;
         }
-        li:nth-child(1){
+        li:nth-child(1) {
             width: 184px;
             text-align: center;
         }
-        li:nth-child(2){
+        li:nth-child(2) {
             width: 118px;
         }
-        li:nth-child(3){
+        li:nth-child(3) {
             width: 129px;
         }
-        li:nth-child(4){
+        li:nth-child(4) {
             width: 121px;
         }
-        li:nth-child(5){
+        li:nth-child(5) {
             width: 108px;
         }
-        li:nth-child(6){
+        li:nth-child(6) {
             width: 120px;
         }
-        li:nth-child(7){
+        li:nth-child(7) {
             width: 107px;
         }
-        li:nth-child(8){
+        li:nth-child(8) {
             width: 115px;
         }
     }
-    .st_footer{
-        li{
+    .st_footer {
+        li {
             float: left;
             text-align: right;
         }
-        li:nth-child(1){
+        li:nth-child(1) {
             width: 136px;
             text-align: center;
         }
-        li:nth-child(2){
+        li:nth-child(2) {
             width: 87px;
         }
-        li:nth-child(3){
+        li:nth-child(3) {
             width: 97px;
         }
-        li:nth-child(4){
+        li:nth-child(4) {
             width: 90px;
         }
-        li:nth-child(5){
+        li:nth-child(5) {
             width: 80px;
         }
-        li:nth-child(6){
+        li:nth-child(6) {
             width: 90px;
         }
-        li:nth-child(7){
+        li:nth-child(7) {
             width: 80px;
         }
-        li:nth-child(8){
+        li:nth-child(8) {
             width: 85px;
         }
-        li:nth-child(9){
+        li:nth-child(9) {
             width: 85px;
         }
-        li:nth-child(10){
+        li:nth-child(10) {
             width: 85px;
         }
-        li:nth-child(11){
+        li:nth-child(11) {
             width: 85px;
         }
     }
     /*盈亏总表footer*/
-    .tt_f_showTwo{
-        li{
+    .tt_f_showTwo {
+        li {
             float: left;
             text-align: right;
         }
-        li:nth-child(1){
+        li:nth-child(1) {
             width: 200px;
             text-align: center;
         }
-        li:nth-child(2){
+        li:nth-child(2) {
             width: 94px;
         }
-        li:nth-child(3){
+        li:nth-child(3) {
             width: 99px;
         }
-        li:nth-child(4){
+        li:nth-child(4) {
             width: 100px;
         }
-        li:nth-child(5){
+        li:nth-child(5) {
             width: 100px;
         }
-        li:nth-child(6){
+        li:nth-child(6) {
             width: 100px;
         }
-        li:nth-child(7){
+        li:nth-child(7) {
             width: 100px;
         }
-        li:nth-child(8){
+        li:nth-child(8) {
             width: 100px;
         }
-        li:nth-child(9){
+        li:nth-child(9) {
             width: 100px;
         }
     }
-    .tt_f_showOne{
-        li{
+    .tt_f_showOne {
+        li {
             float: left;
             text-align: right;
         }
-        li:nth-child(1){
+        li:nth-child(1) {
             width: 209px;
             text-align: center;
         }
-        li:nth-child(2){
+        li:nth-child(2) {
             width: 112px;
         }
-        li:nth-child(3){
+        li:nth-child(3) {
             width: 112px;
         }
-        li:nth-child(4){
+        li:nth-child(4) {
             width: 112px;
         }
-        li:nth-child(5){
+        li:nth-child(5) {
             width: 112px;
         }
-        li:nth-child(6){
+        li:nth-child(6) {
             width: 112px;
         }
-        li:nth-child(7){
+        li:nth-child(7) {
             width: 112px;
         }
-        li:nth-child(8){
+        li:nth-child(8) {
             width: 112px;
         }
     }
-    .tt_footer{
+    .tt_footer {
         font-weight: bold;
-        li{
+        li {
             float: left;
             text-align: right;
         }
-        li:nth-child(1){
+        li:nth-child(1) {
             width: 170px;
             text-align: center;
         }
-        li:nth-child(2){
+        li:nth-child(2) {
             width: 89px;
         }
-        li:nth-child(3){
+        li:nth-child(3) {
             width: 91px;
         }
-        li:nth-child(4){
+        li:nth-child(4) {
             width: 91px;
         }
-        li:nth-child(5){
+        li:nth-child(5) {
             width: 91px;
         }
-        li:nth-child(6){
+        li:nth-child(6) {
             width: 91px;
         }
-        li:nth-child(7){
+        li:nth-child(7) {
             width: 91px;
         }
-        li:nth-child(8){
+        li:nth-child(8) {
             width: 91px;
         }
-        li:nth-child(9){
+        li:nth-child(9) {
             width: 91px;
         }
-        li:nth-child(10){
+        li:nth-child(10) {
             width: 97px;
         }
     }
-    .o_g_footer{
-        li{
+    .o_g_footer {
+        li {
             float: left;
             text-align: right;
         }
-        li:nth-child(1){
+        li:nth-child(1) {
             width: 290px;
             text-align: center;
         }
-        li:nth-child(2){
+        li:nth-child(2) {
             width: 171px;
         }
-        li:nth-child(3){
+        li:nth-child(3) {
             width: 175px;
         }
-        li:nth-child(4){
+        li:nth-child(4) {
             width: 175px;
         }
-        li:nth-child(5){
+        li:nth-child(5) {
             width: 176px;
         }
     }
-    .o_g_tl_footer{
-        li{
+    .o_g_tl_footer {
+        li {
             float: left;
             text-align: right;
         }
-        li:nth-child(1){
+        li:nth-child(1) {
             width: 360px;
             text-align: center;
         }
-        li:nth-child(2){
+        li:nth-child(2) {
             width: 200px;
         }
-        li:nth-child(3){
+        li:nth-child(3) {
             width: 214px;
         }
-        li:nth-child(4){
+        li:nth-child(4) {
             width: 213px;
         }
     }
-    .o_g_bobing_footer{
-        li{
+    .o_g_bobing_footer {
+        li {
             float: left;
             text-align: right;
         }
-        li:nth-child(1){
-             text-align: center;
-             width: 306px;
-         }
-        li:nth-child(2){
+        li:nth-child(1) {
+            text-align: center;
+            width: 306px;
+        }
+        li:nth-child(2) {
             width: 150px;
         }
-        li:nth-child(3){
+        li:nth-child(3) {
             width: 125px;
         }
-        li:nth-child(4){
+        li:nth-child(4) {
             width: 122px;
         }
-        li:nth-child(5){
+        li:nth-child(5) {
             width: 157px;
         }
-        li:nth-child(6){
+        li:nth-child(6) {
             width: 128px;
         }
     }
 
-    .ant-checkbox-group{
+    .ant-checkbox-group {
         display: inline;
     }
-    .ant-checkbox-wrapper{
+    .ant-checkbox-wrapper {
         width: 130px;
         margin: 7px 8px 0 0;
     }
     /*日工资footer*/
-    .tfoot_list{
-        li{
+    .tfoot_list {
+        li {
             float: left;
             text-align: right;
             font-weight: bold;
-            &:first-child{
+            &:first-child {
                 width: 202px;
                 text-align: center;
             }
-            &:nth-child(2){
+            &:nth-child(2) {
                 width: 117px;
             }
-            &:nth-child(3){
+            &:nth-child(3) {
                 width: 120px;
             }
-            &:nth-child(4){
+            &:nth-child(4) {
                 width: 115px;
             }
-            &:nth-child(5){
+            &:nth-child(5) {
                 width: 125px;
             }
-            &:nth-child(6){
+            &:nth-child(6) {
                 width: 121px;
             }
         }
     }
     /*日亏损佣金footer*/
-    .losesaLary_footer{
+    .losesaLary_footer {
         line-height: 28px;
         font-weight: bold;
-        li{
+        li {
             float: left;
             width: 250px;
             text-align: right;
         }
-        li:first-child{
+        li:first-child {
             width: 248px;
             text-align: center;
         }
     }
     /*彩票明细footer*/
-    .lotteryReport_footer{
-        li{
+    .lotteryReport_footer {
+        li {
             float: left;
             text-align: right;
             font-weight: bold;
-            &:first-child{
+            &:first-child {
                 width: 288px;
                 text-align: center;
             }
-            &:nth-child(2){
+            &:nth-child(2) {
                 width: 139px;
             }
-            &:nth-child(3){
+            &:nth-child(3) {
                 width: 143px;
             }
-            &:nth-child(4){
+            &:nth-child(4) {
                 width: 143px;
             }
-            &:nth-child(5){
+            &:nth-child(5) {
                 width: 143px;
             }
-            &:nth-child(6){
+            &:nth-child(6) {
                 width: 143px;
             }
         }
     }
 }
-.status_hide{
+
+.status_hide {
     display: none;
 }
+
 /*模态框*/
-.table_modal{
-    .modal_username{
+.table_modal {
+    .modal_username {
         @include lh(40px);
         font-size: 14px;
     }
-    .ant-modal-body{
+    .ant-modal-body {
         padding: 0 16px 16px;
     }
-    .ant-modal-title{
+    .ant-modal-title {
         text-align: center;
     }
-    .modal_table{
+    .modal_table {
         position: relative;
         border: 1px solid #ccc;
         height: 345px;
         padding: 8px 5px;
     }
-    .historyTfoot_list{
+    .historyTfoot_list {
         position: absolute;
         bottom: 0;
         background-color: #f7f7f7;
         color: $color_363636;
         font-weight: bold;
-        li{
+        li {
             float: left;
             @include lh(45px);
             width: 378px;
@@ -662,45 +664,45 @@ $border-color: #B2B2B2;
         }
     }
     /*日亏损佣金-查看详情footer*/
-    .modalFooter{
+    .modalFooter {
         position: absolute;
         bottom: 0;
         background-color: #f7f7f7;
         font-weight: bold;
-        li{
+        li {
             float: left;
             text-align: right;
             padding: 0 8px;
             @include lh(45px);
         }
-        li:first-child{
+        li:first-child {
             width: 220px;
             text-align: center;
         }
-        li:nth-child(2){
+        li:nth-child(2) {
             width: 100px;
         }
-        li:nth-child(3){
+        li:nth-child(3) {
             width: 103px;
         }
-        li:nth-child(4){
+        li:nth-child(4) {
             width: 106px;
         }
-        li:nth-child(5){
+        li:nth-child(5) {
             width: 106px;
         }
-        li:nth-child(6){
+        li:nth-child(6) {
             width: 120px;
             padding-right: 23px;
         }
     }
     /*分红-历史分红footer*/
-    .dividend_modal_Footer{
+    .dividend_modal_Footer {
         position: absolute;
         bottom: 0;
         background-color: #f7f7f7;
         font-weight: bold;
-        li{
+        li {
             float: left;
             @include lh(45px);
             text-align: center;
