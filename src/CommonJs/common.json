@@ -76,6 +76,21 @@
             "hotLottery": 1
         },
         {
+            "cnname": "瑞典2分彩",
+            "nav": "rd120",
+            "lotteryid": 37,
+            "lotteryCurmlotteryid": 314617,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3114431 ,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 314617,
+            "imgUrl":"rd60",
+            "imgSrc": "new",
+            "disabled": false,
+            "hotLottery": 1
+        },
+        {
             "cnname": "河内1分彩",
             "nav": "hnffc",
             "lotteryid": 27,
@@ -86,6 +101,21 @@
             "lotterytype": 4,
             "curmid": 313200,
             "imgUrl":"hn60",
+            "imgSrc": "new",
+            "disabled": false,
+            "hotLottery": 1
+        },
+        {
+            "cnname": "河内5分彩",
+            "nav": "hn300s",
+            "lotteryid": 38,
+            "lotteryCurmlotteryid": 314720,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3114673,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 314720,
+            "imgUrl":"hn300",
             "imgSrc": "new",
             "disabled": false,
             "hotLottery": 1
@@ -192,7 +222,8 @@
             "curmid": 19000,
             "imgUrl":"ffc",
             "imgSrc": false,
-            "disabled": false
+            "disabled": false,
+            "hotLottery": 1
         },
         {
             "cnname": "新疆时时彩",
@@ -237,6 +268,19 @@
             "imgSrc": "hot",
             "disabled": false,
              "hotLottery": 1
+        },{
+            "cnname": "加拿大11选5",
+            "nav": "JND11Y",
+            "lotteryid": 39,
+            "lotteryCurmlotteryid": 314823,
+            "lotteryDesc": "基诺型高频彩",
+            "methodid": 3114907,
+            "lastupdate": 0,
+            "lotterytype": 3,
+            "curmid": 314823,
+            "imgUrl":"jnd11y",
+            "imgSrc":"new",
+            "disabled": false
         },
         {
             "cnname": "山东11选5",
