@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import {DatePicker, Radio, Table, Select, Pagination, Button, Icon, Modal, Input, Checkbox} from 'antd';
+
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 import moment from 'moment';
@@ -101,6 +102,7 @@ export default class Sports extends Component {
         }
         this.setState({postData: postData}, () => this.getData());
     };
+
     /*选择状态*/
     handleStatus(val) {
         let postData = this.state.postData;
@@ -112,7 +114,7 @@ export default class Sports extends Component {
     onSearch() {
         let {postData} = this.state;
         postData.p = 1;
-        this.setState({searchLoading: true, postData}, ()=>this.getData());
+        this.setState({searchLoading: true, postData}, () => this.getData());
     };
 
     // 游戏名称
