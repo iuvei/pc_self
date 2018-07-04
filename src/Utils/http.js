@@ -6,6 +6,7 @@ const interFace = (key) => {
     let INTERFACE = {};
     // 获取sess
     INTERFACE['SESS'] = 'sessValid=true';
+    INTERFACE['RGZSTATUS'] = 'controller=user&action=main';
     // 登录,找回密码
 
     INTERFACE['LOGIN'] = 'controller=default&action=login';

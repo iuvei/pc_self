@@ -12,6 +12,8 @@ const domians = (body) => request(http.interFace('DOMIANS'), body);
 
 /* 退出登录*/
 const logout = (body) => request(http.interFace('LOGINOUT'), body);
+/* 日工资状态*/
+const rgzStatus = (body) => request(http.interFace('RGZSTATUS'), body);
 
 /*获取投注玩法接口*/
 const lotteryBets = (body) => request(http.interFace('LOTTERYBET'), body);
@@ -302,4 +304,5 @@ export default {
     transfer,
     getMiss,
     getHot,
+    rgzStatus,
 }

@@ -55,6 +55,9 @@ export default class HeaderNav extends Component {
         this.onChangeNav();
         this.onLotteryType();
         this.changeDailysalary();
+        this.eventEmitter = emitter.on('changeDailysalary', () => {
+            this.changeDailysalary();
+        });
     };
 
     componentWillUnmount() {
