@@ -1,24 +1,78 @@
 @import '../../../Style/variables';
 @import '../../../Style/mixin';
+
 $border_color: #C8C8C8;
-.sport{
+.sport {
     height: 880px;
     background: url('./Img/sport_bg.jpg') no-repeat center center;
     text-align: center;
-    .sport_content{
+    .sport_content {
         width: 300px;
         margin: 0 auto;
         padding-top: 500px;
     }
-    .sport_transfer{
+    .sport_transfer {
         margin-right: 20px;
     }
-    .sport_remain{
+    .sport_remain {
         color: #F9F229;
         font-size: 28px;
         margin-bottom: 20px;
     }
+    .game-iframe {
+        width: 1175px;
+        height: auto;
+        margin: 10px auto 0;
+        .title {
+            width: 100%;
+            height: 270px;
+            background: url("./Img/title.png") no-repeat center center;
+            background-size: cover;
+            position: relative;
+            .title-bottom {
+                text-align: left;
+                position: absolute;
+                bottom: 0;
+                .money {
+                    display: inline-block;
+                    width: 200px;
+                    height: 35px;
+                    line-height: 35px;
+                    color: #ffff00;
+                    text-align: center;
+                    font-size: 16px;
+                    background-color: rgba(0, 0, 0, .5);
+                    i {
+                        cursor: pointer;
+                    }
+                }
+                button {
+                    color: #ffffff;
+                    width: 115px;
+                    height: 35px;
+                    font-size: 16px;
+
+                    &:nth-child(2) {
+                        background-color: #d02023;
+                        border-color: #d02023;
+                    }
+                    &:last-child {
+                        background-color: #f56f01;
+                        border-color: #f56f01;
+                        margin-left: 10px;
+                    }
+                }
+            }
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            background-color: #ffffff;
+        }
+    }
 }
+
 .ea_content {
     .ant-input {
         width: 260px;

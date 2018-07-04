@@ -1,38 +1,43 @@
 @import '../../Style/variables';
 @import '../../Style/mixin';
 
-.tend_list{
-    margin: 11px 0 165px 0;
+.tend_list {
+    margin: 10px 0;
     border-bottom: 1px solid #ddd;
-    &>li{
-        height: 135px;
+    & > li {
         border: 1px solid #ddd;
         border-bottom: 0;
+        overflow: auto;
+        background-color: #eee;
     }
-    .tend_lottery_type{
+    .tend_lottery_type {
         @include wh(135px, 134px);
-        border-right: 1px solid #ddd;
+        height: 100%;
         background: #eee;
         font-size: 18px;
         text-align: center;
         padding-top: 40px;
     }
-    .tend_lottery_list{
-        &>li{
+    .tend_lottery_list {
+        float: left;
+        width: 1035px;
+        background-color: #ffffff;
+        border-left: 1px solid #ddd;
+        & > li {
             font-size: 16px;
             text-align: center;
             color: #333;
-            a{
+            a {
                 display: inline-block;
                 padding-top: 30px;
                 @include wh(120px, 134px);
             }
         }
-        .disabled_style{
+        .disabled_style {
             color: #999;
             cursor: default;
         }
-        .tend_lottery_img{
+        .tend_lottery_img {
             width: 50px;
         }
     }

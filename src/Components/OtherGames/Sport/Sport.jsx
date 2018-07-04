@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { Button, Modal, Input } from 'antd';
+import {Button, Modal, Input, Icon} from 'antd';
 import emitter from '../../../Utils/events';
 import Fetch from '../../../Utils';
 import {stateVar} from '../../../State';
-import { onValidate } from '../../../CommonJs/common';
+import {onValidate} from '../../../CommonJs/common';
 import CM_transfer from '../CM_transfer/CM_transfer';
 import './Sport.scss';
 
@@ -27,7 +27,9 @@ export default class Sport extends Component {
                 userName: 2,// 0: 对， 1：错
                 email: 2,
                 phone: 2,
-            }
+            },
+            gameAddr: '',
+            moneyLoading: false
         };
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
@@ -44,9 +46,9 @@ export default class Sport extends Component {
     /*获取第三方网址*/
     getThirdAddress() {
         let tempwindow
-        if (!stateVar.isApp) {
-            tempwindow = window.open();
-        }
+        // if (!stateVar.isApp) {
+        //     tempwindow = window.open();
+        // }
         Fetch.sport({
             method: "POST",
             body: JSON.stringify({"do": "login"}),
@@ -54,13 +56,16 @@ export default class Sport extends Component {
             if (this._ismount) {
                 this.setState({btnLoading: false});
                 if (res.status == 200) {
-                    if (stateVar.isApp) {
-                        // 客户端
-                        window.open(res.repsoneContent[0])
-                    } else {
-                        // web
-                        tempwindow.location.href = res.repsoneContent[0]
-                    }
+                    // if (stateVar.isApp) {
+                    //     // 客户端
+                    //     // window.open(res.repsoneContent[0])
+                    // } else {
+                    //     // web
+                    //     tempwindow.location.href = res.repsoneContent[0]
+                    // }
+                    this.setState({
+                        gameAddr: res.repsoneContent[0]
+                    })
                 } else {
                     Modal.warning({
                         title: res.shortMessage,
@@ -101,6 +106,7 @@ export default class Sport extends Component {
                     });
                     this.setState({visible: false});
                     emitter.emit('changeMoney', 'sport');
+                    this.refreshMoney()
                 } else {
                     Modal.warning({
                         title: res.shortMessage,
@@ -114,26 +120,27 @@ export default class Sport extends Component {
     hideModal() {
         this.setState({visible: false})
     };
+
     /*是否有权限进入体育竞技*/
-    onSport(){
+    onSport() {
         this.setState({btnLoading: true});
         Fetch.sport({
             method: 'POST',
-            body: JSON.stringify({"do":"login"})
-        }).then((res)=>{
-            if(this._ismount){
-                if(res.status == 200){
+            body: JSON.stringify({"do": "login"})
+        }).then((res) => {
+            if (this._ismount) {
+                if (res.status == 200) {
                     this.getThirdAddress()
-                }else{
+                } else {
                     this.setState({btnLoading: false});
                     let {eaPostData} = this.state;
                     eaPostData.navname = '体彩中心';
-                    if(res.shortMessage == '请填个人写资料'){
+                    if (res.shortMessage == '请填个人写资料') {
                         this.setState({
                             selfVisible: true,
                             eaPostData
                         })
-                    }else{
+                    } else {
                         Modal.warning({
                             title: res.shortMessage,
                         });
@@ -142,17 +149,18 @@ export default class Sport extends Component {
             }
         })
     };
+
     getAddUserInfo() {
         let {validate} = this.state,
             _this = this;
-        if(validate.userName != 0 || validate.email != 0 || validate.phone != 0){
-            if(validate.userName != 0){
+        if (validate.userName != 0 || validate.email != 0 || validate.phone != 0) {
+            if (validate.userName != 0) {
                 validate.userName = 1
             }
-            if(validate.email != 0){
+            if (validate.email != 0) {
                 validate.email = 1
             }
-            if(validate.phone != 0){
+            if (validate.phone != 0) {
                 validate.phone = 1
             }
             this.setState({validate});
@@ -163,10 +171,10 @@ export default class Sport extends Component {
         Fetch.addUserInfo({
             method: 'POST',
             body: JSON.stringify(this.state.eaPostData)
-        }).then((res)=> {
+        }).then((res) => {
             if (this._ismount) {
                 this.setState({btnLoading: false});
-                if(res.status == 200){
+                if (res.status == 200) {
                     Modal.success({
                         title: res.shortMessage,
                         okText: "进入游戏",
@@ -175,7 +183,7 @@ export default class Sport extends Component {
                         },
                     });
                     this.onCancel();
-                }else{
+                } else {
                     Modal.warning({
                         title: res.shortMessage,
                     });
@@ -183,20 +191,22 @@ export default class Sport extends Component {
             }
         })
     };
-    onChangeUserName(e){
+
+    onChangeUserName(e) {
         let {eaPostData, validate} = this.state,
             val = e.target.value.replace(/\s/g, '');
         eaPostData.userName = val;
         let reg = /^[\u4e00-\u9fa5]+$/,
             r = reg.test(val);
-        if(!r){
+        if (!r) {
             validate.userName = 1
-        }else{
+        } else {
             validate.userName = 0
         }
         this.setState({eaPostData});
     };
-    onChangeEmail(e){
+
+    onChangeEmail(e) {
         let {eaPostData, validate} = this.state,
             val = e.target.value;
         eaPostData.email = val;
@@ -209,7 +219,8 @@ export default class Sport extends Component {
         }
         this.setState({eaPostData});
     };
-    onChangePhone(e){
+
+    onChangePhone(e) {
         let {eaPostData, validate} = this.state,
             val = e.target.value;
         eaPostData.phone = val;
@@ -222,7 +233,8 @@ export default class Sport extends Component {
         }
         this.setState({eaPostData});
     };
-    onCancel(){
+
+    onCancel() {
         let {eaPostData, validate} = this.state;
         eaPostData.userName = '';
         eaPostData.phone = '';
@@ -237,20 +249,58 @@ export default class Sport extends Component {
         });
     };
 
+    // 刷新余额
+    refreshMoney() {
+        this.setState({
+            moneyLoading: true
+        })
+        //体育余额
+        Fetch.balance({
+            method: 'POST',
+            body: JSON.stringify({type: 'sb'})
+        }).then((res) => {
+            if (this._ismount) {
+                this.setState({moneyLoading: false});
+                if (res.status == 200) {
+                    if (res.repsoneContent <= 0) {
+                        res.repsoneContent = 0.00
+                    }
+                    stateVar.allBalance.sbbalance = res.repsoneContent;
+                }
+            }
+        });
+    }
+
     render() {
         const {selfVisible, eaPostData} = this.state;
         return (
             <div className="sport">
-                <div className="sport_content">
-                    <p className='sport_remain'>账户余额：{stateVar.allBalance.sbbalance}元</p>
-                    <div>
-                        <Button className='sport_transfer' size="large"
-                                onClick={() => this.setState({visible: true})}>转账</Button>
-                        <Button type="primary" size="large" loading={this.state.btnLoading}
-                                onClick={() => this.onSport()}>开始游戏</Button>
-                    </div>
-
-                </div>
+                {
+                    !this.state.gameAddr ? <div className="sport_content">
+                            <p className='sport_remain'>账户余额：{stateVar.allBalance.sbbalance}元</p>
+                            <div>
+                                <Button className='sport_transfer' size="large"
+                                        onClick={() => this.setState({visible: true})}>转账</Button>
+                                <Button type="primary" size="large" loading={this.state.btnLoading}
+                                        onClick={() => this.onSport()}>开始游戏</Button>
+                            </div>
+                        </div>
+                        :
+                        <div className='game-iframe'>
+                            <div className='title'>
+                                <div className='title-bottom'>
+                                    <span className='money'>账户余额：{stateVar.allBalance.sbbalance}元&nbsp;&nbsp;&nbsp;<Icon
+                                        type="reload" spin={this.state.moneyLoading} onClick={() => {
+                                        this.refreshMoney()
+                                    }}/></span>
+                                    <Button onClick={() => this.setState({visible: true})}>转账</Button>
+                                    <a href=" http://rrl.net2cast.com/popContents.aspx?lang=zhcn_cs#m08"
+                                       target='_blank'><Button>游戏规则</Button></a>
+                                </div>
+                            </div>
+                            <iframe src={this.state.gameAddr} className='sport-iframe'></iframe>
+                        </div>
+                }
                 <CM_transfer title="体育竞技"
                              visible={this.state.visible}
                              spinLoading={this.state.spinLoading}
@@ -262,7 +312,7 @@ export default class Sport extends Component {
                     width={480}
                     wrapClassName="vertical-center-modal ea_content"
                     visible={selfVisible}
-                    onCancel={()=>this.onCancel()}
+                    onCancel={() => this.onCancel()}
                     footer={null}
                     maskClosable={false}
                 >
@@ -271,7 +321,7 @@ export default class Sport extends Component {
                             <span>会员姓名：</span>
                             <Input placeholder="请输入会员姓名"
                                    value={eaPostData.userName}
-                                   onChange={(e)=>this.onChangeUserName(e)}
+                                   onChange={(e) => this.onChangeUserName(e)}
                                    size="large"
                                    className={onValidate('userName', this.state.validate)}
                             />
@@ -281,7 +331,7 @@ export default class Sport extends Component {
                             <span>邮件地址：</span>
                             <Input placeholder="请输入您的邮箱"
                                    value={eaPostData.email}
-                                   onChange={(e)=>this.onChangeEmail(e)}
+                                   onChange={(e) => this.onChangeEmail(e)}
                                    size="large"
                                    className={onValidate('email', this.state.validate)}
                             />
@@ -291,7 +341,7 @@ export default class Sport extends Component {
                             <span>联系电话：</span>
                             <Input placeholder="请输入您的电话"
                                    value={eaPostData.phone}
-                                   onChange={(e)=>this.onChangePhone(e)}
+                                   onChange={(e) => this.onChangePhone(e)}
                                    size="large"
                                    className={onValidate('phone', this.state.validate)}
                             />
@@ -300,7 +350,7 @@ export default class Sport extends Component {
                     </ul>
                     <div className="btn">
                         <Button type="primary"
-                                onClick={()=>this.getAddUserInfo()}
+                                onClick={() => this.getAddUserInfo()}
                                 loading={this.state.btnLoading}
                         >
                             提交

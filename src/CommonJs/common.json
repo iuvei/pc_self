@@ -1,6 +1,36 @@
 {
 	"lotteryType": [
 		{
+            "cnname": "重庆30秒",
+            "nav": "cq30s",
+            "lotteryid": 35,
+            "lotteryCurmlotteryid": 314411,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3113947,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 314411,
+            "imgUrl":"cq30s",
+            "imgSrc": "hot",
+            "disabled": false,
+            "hotLottery": 1
+        },
+        {
+            "cnname": "腾讯30秒",
+            "nav": "tx30s",
+            "lotteryid": 36,
+            "lotteryCurmlotteryid": 314514,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3114189,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 314514,
+            "imgUrl":"tx30s",
+            "imgSrc": "hot",
+            "disabled": false,
+            "hotLottery": 1
+        },
+		{
             "cnname": "腾讯分分彩",
             "nav": "txffc",
             "lotteryid": 29,
@@ -26,7 +56,7 @@
             "lotterytype": 4,
             "curmid": 313860,
             "imgUrl":"jnd30s",
-            "imgSrc": "new",
+            "imgSrc": "hot",
             "disabled": false,
             "hotLottery": 1
         },
@@ -71,6 +101,36 @@
             "lotterytype": 4,
             "curmid": 313400,
             "imgUrl":"xg60",
+            "imgSrc": "new",
+            "disabled": false,
+            "hotLottery": 1
+        },
+        {
+            "cnname": "日本分分彩",
+            "nav": "rbffc",
+            "lotteryid": 33,
+            "lotteryCurmlotteryid": 314102,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3113463,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 314102,
+            "imgUrl":"riben60",
+            "imgSrc": "new",
+            "disabled": false,
+            "hotLottery": 1
+        },
+        {
+            "cnname": "印尼分分彩",
+            "nav": "ynffc",
+            "lotteryid": 34,
+            "lotteryCurmlotteryid": 314308,
+            "lotteryDesc": "24小时全天开奖",
+            "methodid": 3113705,
+            "lastupdate": 0,
+            "lotterytype": 4,
+            "curmid": 314308,
+            "imgUrl":"yn60",
             "imgSrc": "new",
             "disabled": false,
             "hotLottery": 1

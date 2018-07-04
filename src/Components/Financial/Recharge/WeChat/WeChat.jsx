@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Fetch from '../../../../Utils';
-import { hashHistory } from 'react-router';
+import {hashHistory} from 'react-router';
 import {stateVar} from '../../../../State';
 import {InputNumber, Button, Modal} from 'antd';
 import {changeMoneyToChinese, onValidate, getStore} from '../../../../CommonJs/common';
@@ -32,7 +32,9 @@ export default class WeChat extends Component {
             },
             validate: {
                 money: 2, // 0: 对， 1：错
-            }
+            },
+            deductionend: 0,
+            deductionstart: 0
         };
     };
 
@@ -65,13 +67,14 @@ export default class WeChat extends Component {
                     loadmax = data[0].loadmax;
                     handingCharge = data[0].handing_charge;
                 }
-
                 this.setState({
                     backList: data,
                     loadmin: loadmin,
                     loadmax: loadmax,
                     handingCharge: handingCharge,
-                    postData: postData
+                    postData: postData,
+                    deductionend: data[0].deductionend,
+                    deductionstart: data[0].deductionstart
                 })
             }
         })
@@ -79,32 +82,39 @@ export default class WeChat extends Component {
 
     // 立即充值
     onRecharge() {
-        if (this.state.validate.money != 0) {
-            let validate = this.state.validate;
-            validate.money = 1;
-            this.setState({validate});
-            return
-        }
-        this.setState({iconLoadingRecharge: true});
-        Fetch.payment({
-            method: 'POST',
-            body: JSON.stringify(this.state.postData)
-        }).then((res) => {
-            if (this._ismount) {
-                this.setState({iconLoadingRecharge: false});
-                if (res.status == 200) {
-                    stateVar.aliPayInfo = res.repsoneContent.payInfo;
-                    hashHistory.push({
-                        pathname: '/financial/recharge/promptlyRecharge',
-                        query: {
-                             name: 'wechat'
-                        }
-                    });
-                } else {
-                    Modal.warning({
-                        title: res.shortMessage,
-                    });
+        Modal.confirm({
+            title: '温馨提示',
+            content: `随机改变充值金额 : 为了避免您的支付限额，系统默认对您填写的整数金额随机减少${this.state.deductionstart}-${this.state.deductionend}元！`,
+            onOk: () => {
+                if (this.state.validate.money != 0) {
+                    let validate = this.state.validate;
+                    validate.money = 1;
+                    this.setState({validate});
+                    return
                 }
+                this.setState({iconLoadingRecharge: true});
+                Fetch.payment({
+                    method: 'POST',
+                    body: JSON.stringify(this.state.postData)
+                }).then((res) => {
+                    console.log(res)
+                    if (this._ismount) {
+                        this.setState({iconLoadingRecharge: false});
+                        if (res.status == 200) {
+                            stateVar.aliPayInfo = res.repsoneContent.payInfo;
+                            hashHistory.push({
+                                pathname: '/financial/recharge/promptlyRecharge',
+                                query: {
+                                    name: 'wechat'
+                                }
+                            });
+                        } else {
+                            Modal.warning({
+                                title: res.shortMessage,
+                            });
+                        }
+                    }
+                })
             }
         })
     };
