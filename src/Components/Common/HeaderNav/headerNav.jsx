@@ -187,39 +187,50 @@ export default class HeaderNav extends Component {
     };
 
     onLotteryType() {
-        let typeSsc = [], selectFive = [], second = [], rests = [], diping = [];
+        let typeSsc = [], selectFive = [], second = [], rests = [], diping = [], pk = [];
         for (let i = 0, lottery = lotteryTypeList.lotteryType; i < lottery.length; i++) {
-            if (lottery[i].lotterytype === 1) { // 高频
+            if (lottery[i].lotterytype === 1) { // 高频时时彩
                 rests.push(lottery[i])
             }
-            if (lottery[i].lotterytype === 2) { // 时时彩
+            if (lottery[i].lotterytype === 2) { // 经典时时彩
                 typeSsc.push(lottery[i])
             }
             if (lottery[i].lotterytype === 3) { // 11选5
                 selectFive.push(lottery[i])
             }
-            if (lottery[i].lotterytype === 4) { // 24小时
+            if (lottery[i].lotterytype === 4) { // 快3
                 second.push(lottery[i])
             }
-            if (lottery[i].lotterytype === 5) { // 低频
+            if (lottery[i].lotterytype === 5) { // 3D/低频
                 diping.push(lottery[i])
+            }
+            if (lottery[i].lotterytype === 6) { // PK10
+                pk.push(lottery[i])
             }
         }
         let lotteryTypeFlag = [
             {
-                typeName: '24小时',
-                lotteryList: second,
+                typeName: '高频时时彩',
+                lotteryList: rests,
             },
             {
-                typeName: '时时彩',
+                typeName: '经典时时彩',
                 lotteryList: typeSsc,
             },
             {
                 typeName: '11选5',
                 lotteryList: selectFive,
             },
+            // {
+            //     typeName: '快3',
+            //     lotteryList: second,
+            // },
             {
-                typeName: '低频',
+                typeName: 'PK10',
+                lotteryList: pk,
+            },
+            {
+                typeName: '3D/低频',
                 lotteryList: diping,
             }
         ];

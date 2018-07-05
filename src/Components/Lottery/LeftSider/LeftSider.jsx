@@ -175,7 +175,7 @@ export default class LeftSider extends Component {
     };
 
     render() {
-        const {lotteryType} = stateVar;
+        // const {lotteryType} = stateVar;
 
         return (
             <div className="left_sider" key="LeftSider">
@@ -189,9 +189,14 @@ export default class LeftSider extends Component {
                     mode="inline"
                 >
                     <SubMenu onTitleClick={(e) => {
-                        this.handTitleClick(e)
+                        // this.handTitleClick(e)
                     }} key="sub1"
-                             title={<span><img className="icon_img" src={left_1}/><span>热门彩种</span></span>}>
+                             title={
+                                 <span>
+                                     {/*<img className="icon_img" src={left_1}/>*/}
+                                     <span>热门彩种</span>
+                                 </span>
+                             }>
                         {
                             lotteryList.map(item => {
                                 return (
@@ -212,41 +217,41 @@ export default class LeftSider extends Component {
                         }
                     </SubMenu>
                     {
-                        lotteryType.map((items, i) => {
-                            return (
-                                <SubMenu key={items.typeName} onTitleClick={(e) => {
-                                    this.handTitleClick(e)
-                                }}
-                                         title={
-                                             <span>
-                                                 <img className="icon_img"
-                                                      src={require('./Img/left_' + (i + 2) + '.png')}/>
-                                                 <span>{items.typeName}</span>
-                                             </span>
-                                         }
-                                >
-                                    {
-                                        items.lotteryList.map((item) => {
-                                            return (
-                                                <Menu.Item key={item.nav}
-                                                           className="new_lottery"
-                                                           disabled={item.disabled}
-                                                >
-                                                    <img className="icon_img"
-                                                         src={require('./Img/' + item.nav + '.png')}/>
-                                                    {item.cnname}
-                                                    {
-                                                        item.imgSrc ?
-                                                            <img className="icon_new_lottery" src={require('../../../Images/' + item.imgSrc + '.png')}/>:
-                                                            null
-                                                    }
-                                                </Menu.Item>
-                                            )
-                                        })
-                                    }
-                                </SubMenu>
-                            )
-                        })
+                        // lotteryType.map((items, i) => {
+                        //     return (
+                        //         <SubMenu key={items.typeName} onTitleClick={(e) => {
+                        //             this.handTitleClick(e)
+                        //         }}
+                        //                  title={
+                        //                      <span>
+                        //                          <img className="icon_img"
+                        //                               src={require('./Img/left_' + (i + 2) + '.png')}/>
+                        //                          <span>{items.typeName}</span>
+                        //                      </span>
+                        //                  }
+                        //         >
+                        //             {
+                        //                 items.lotteryList.map((item) => {
+                        //                     return (
+                        //                         <Menu.Item key={item.nav}
+                        //                                    className="new_lottery"
+                        //                                    disabled={item.disabled}
+                        //                         >
+                        //                             <img className="icon_img"
+                        //                                  src={require('./Img/' + item.nav + '.png')}/>
+                        //                             {item.cnname}
+                        //                             {
+                        //                                 item.imgSrc ?
+                        //                                     <img className="icon_new_lottery" src={require('../../../Images/' + item.imgSrc + '.png')}/>:
+                        //                                     null
+                        //                             }
+                        //                         </Menu.Item>
+                        //                     )
+                        //                 })
+                        //             }
+                        //         </SubMenu>
+                        //     )
+                        // })
                     }
                 </Menu>
             </div>
