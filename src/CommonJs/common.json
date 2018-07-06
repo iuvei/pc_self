@@ -85,7 +85,7 @@
             "lastupdate": 0,
             "lotterytype": 4,
             "curmid": 314617,
-            "imgUrl":"rd60",
+            "imgUrl":"rd120",
             "imgSrc": "new",
             "disabled": false,
             "hotLottery": 1
@@ -280,7 +280,8 @@
             "curmid": 314823,
             "imgUrl":"jnd11y",
             "imgSrc":"new",
-            "disabled": false
+            "disabled": false,
+            "hotLottery": 1
         },
         {
             "cnname": "山东11选5",
