@@ -56,6 +56,13 @@ $border-color: #B2B2B2;
             .ant-btn{
                 padding: 2px 9px;
             }
+            .commonsalary{
+                text-decoration: underline;
+                cursor: pointer;
+            }
+            .textUnderline{
+                color: $color_CF2027;
+            }
         }
     }
     .ant-table-expanded-row{

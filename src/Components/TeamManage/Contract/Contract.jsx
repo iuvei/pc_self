@@ -134,22 +134,7 @@ export default class Contract extends Component {
                                 dataIndex: 'dailySalary2',
                                 key: 'dailySalary2',
 
-                            }, {
-                                title: '第四档',
-                                dataIndex: 'dailySalary3',
-                                key: 'dailySalary3',
-
-                            }, {
-                                title: '第五档',
-                                dataIndex: 'dailySalary4',
-                                key: 'dailySalary4',
-
-                            }, {
-                                title: '第六档',
-                                dataIndex: 'dailySalary5',
-                                key: 'dailySalary5',
-
-                            }],
+                            }]
                         });
                     }
                     /*添加配额管理表头

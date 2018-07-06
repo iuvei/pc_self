@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import { hashHistory } from 'react-router';
 // import Websocket from 'react-websocket';
 import Fetch from '../../../Utils';
-import { Icon, Badge, Modal, Button ,notification } from 'antd';
+import { Icon, Badge, Modal, Table , Button ,notification } from 'antd';
 const confirm = Modal.confirm;
 import { stateVar } from '../../../State';
 import emitter from '../../../Utils/events';
@@ -33,6 +33,10 @@ export default class HeaderTop extends Component {
             updateMLoading: false, //刷新余额
             iconArrowsName: false,
             iconArrowsMoney: false,
+            rgzData : [],
+            affirmLoading:false,
+            affirmDisabled:false,
+            isRigognzi : false // 是否显示日工资
         };
         this.onNoticeDetails = this.onNoticeDetails.bind(this);
         this.onNoticeList = this.onNoticeList.bind(this);
@@ -46,6 +50,7 @@ export default class HeaderTop extends Component {
             this.getMenu();
             this.getBalance(val);
         });
+        this.getRigongzi();
         this.getMenu();
         this.getWebsocket();
         this.getNotice();
@@ -86,6 +91,57 @@ export default class HeaderTop extends Component {
     			times++;
     		});
     	},6000);
+    };
+    //获取日工资状态
+    getRigongzi(){
+        Fetch.rgzStatus({
+            method: 'POST',
+            body: JSON.stringify({tag:'getSalaryStatus'})
+        }).then((res)=>{
+            if(this._ismount && res.status == 200){
+                if(res.status == 200){
+                	if(res.repsoneContent.status == 0){
+                		this.setState({isRigognzi:true,rgzData:res.repsoneContent.protocol||[]});
+                	}else{
+                		this.setState({isRigognzi:false,rgzData:[]});
+                	}
+                }
+            }
+        })
+    };
+    //通过或拒绝日工资
+    agreeRgz(param){
+    	if(param == 1){
+    		this.setState({affirmLoading:true,affirmDisabled:false});
+    	}else{
+    		this.setState({affirmLoading:false,affirmDisabled:true});
+    	}
+    	Fetch.rgzStatus({
+            method: 'POST',
+            body: JSON.stringify({tag:'UpdateSalaryStatus',status:param})
+        }).then((res)=>{
+        	this.setState({isRigognzi:false});
+            if(this._ismount && res.status == 200){
+                if(res.status == 200){
+                	let divContent;
+                	if(param == 1){
+                		divContent = <div>恭喜！您已成功签定日工资契约</div>;
+                		emitter.emit('changeDailysalary');
+                	}else{
+                		divContent = <div>已拒绝，可联系您的上级！</div>
+                	}
+                	const modal = Modal.success({
+                        title: '温馨提示',
+                        content: divContent
+                    });
+                     setTimeout(() => modal.destroy(), 5000);
+                }else{
+                	Modal.warning({
+                        title: res.shortMessage,
+                    });
+                }
+            }
+        })
     };
     /*获取IP归属地*/
     getress(){
@@ -471,8 +527,66 @@ export default class HeaderTop extends Component {
     render() {
         const { allBalance, userInfo, hideBalance } = stateVar;
         const { iconArrowsName, iconArrowsMoney } = this.state;
+        
+        const columns = [{
+			title: '日销量',
+			dataIndex: 'sales',
+			render: text => <a href="javascript:;">{text}</a>,
+		}, {
+			title: '活跃人数',
+			className: 'column-money',
+			dataIndex: 'peopleNum',
+		}, {
+		    title: '日工资比例',
+		    dataIndex: 'rates',
+		}];
+		const data = [];
+		for(let i=0;i<this.state.rgzData.length;i++){
+			data.push({
+				key: i+1,
+				sales: this.state.rgzData[i].sale,
+				peopleNum: this.state.rgzData[i].active_member,
+				rates: this.state.rgzData[i].salary_ratio+'%',
+			});
+		}
         return (
             <div className="nav_top">
+            	<Modal
+			          title="签订日工资契约"
+			          okText='同意'
+			          cancelText='拒绝'
+			          closable={false}
+			          maskClosable={false}
+			          wrapClassName="vertical-center-modal"
+			          visible={this.state.isRigognzi}
+			          footer={null}
+			          className="rgzStyle"
+			        >
+			          <div className='rgzTitle'>您的日工资比例如下：</div>
+			          <Table
+						    columns={columns}
+						    dataSource={data}
+						    pagination={false}
+						    bordered
+					  />
+			          <div className="tips r_m_hint">提示：日工资契约签订后不可修改，如需调整请联系平台。</div>
+			          <div className="a_c_btn">
+	                        <Button loading={this.state.affirmLoading}
+	                                onClick={()=>this.agreeRgz(1)}
+	                                type="primary"
+	                                className="a_c_cancel_btn"
+	                                disabled={this.state.affirmDisabled}
+	                        >
+	                            签订
+	                        </Button>
+	                        <Button loading={this.state.affirmDisabled} 
+	                        		onClick={()=>this.agreeRgz(2)}
+	                        		disabled={this.state.affirmLoading}
+	                        >
+	                            拒绝
+	                        </Button>
+	                    </div>
+			    </Modal>
                 <div className="nav_top_content clear">
                     <img className="logo" src={logoSrc} alt="logo"/>
                     <div className="right">

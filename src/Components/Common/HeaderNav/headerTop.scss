@@ -1,6 +1,33 @@
 @import '../../../Style/variables';
 @import '../../../Style/mixin';
 
+.rgzStyle{
+    .rgzTitle{
+        font-size: 16px;
+        font-weight: 700;
+    }
+    .a_c_btn{
+        text-align: center;
+        margin-top: 25px;
+        .a_c_cancel_btn{
+            margin-right: 30px;
+        }
+    }
+    .a_c_btn_one{
+        position: absolute;
+        bottom: 40px;
+        right: 40%;
+    }
+    .ant-table-body .ant-table-thead th > span{
+        border:none;
+    }
+    .tips{
+        width: 350px;
+        margin: 10px 0 0 0 !important;
+        height: 30px;
+        line-height: 30px;
+    }
+}
 .nav_top{
     background: #fff;
     .nav_top_content{

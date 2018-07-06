@@ -13,7 +13,7 @@ export default class Contract extends Component {
         super(props);
     };
     render() {
-        const { alterData, title, alterVisible, textDescribe, userList, contractInfo, disabledSelect } = this.props;
+        const { alterData, title, alterVisible, textDescribe, userList, contractInfo, disabledSelect ,isShowFoot} = this.props;
         return (
             <Modal
                 title={"修改" + title}
@@ -75,7 +75,7 @@ export default class Contract extends Component {
                             <p>{common.setDateTime(0)}</p>
                         </div>
                     </div>
-                    <div className="a_c_btn">
+                    <div className="a_c_btn" style={{display:(title == '日工资契约' && !isShowFoot) ? 'none' : ''}}>
                         <Button loading={this.props.affirmLoading}
                                 onClick={()=>this.props.onAffirm('修改' ,alterData.username, title)}
                                 type="primary"
