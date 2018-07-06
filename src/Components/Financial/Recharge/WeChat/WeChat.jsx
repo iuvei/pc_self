@@ -57,6 +57,8 @@ export default class WeChat extends Component {
                     loadmin = 0,
                     loadmax = 0,
                     handingCharge = 0,
+                    deductionend = 0,
+                    deductionstart = 0,
                     postData = this.state.postData;
                 if (data[0] !== undefined) {
                     postData.payment = data[0].payport_name;
@@ -66,6 +68,8 @@ export default class WeChat extends Component {
                     loadmin = data[0].loadmin;
                     loadmax = data[0].loadmax;
                     handingCharge = data[0].handing_charge;
+                    deductionend = data[0].deductionend;
+                    deductionstart = data[0].deductionstart;
                 }
                 this.setState({
                     backList: data,
@@ -73,8 +77,8 @@ export default class WeChat extends Component {
                     loadmax: loadmax,
                     handingCharge: handingCharge,
                     postData: postData,
-                    deductionend: data[0].deductionend,
-                    deductionstart: data[0].deductionstart
+                    deductionend: deductionend,
+                    deductionstart: deductionstart
                 })
             }
         })
