@@ -14,7 +14,6 @@ import {
     Slider,
     Icon,
     Badge,
-    Popconfirm,
     Popover,
     Spin
 } from 'antd';
@@ -509,8 +508,8 @@ export default class TeamList extends Component {
 
     /*关闭模态框*/
     onCancel() {
-        this.setState({ 
-        	alterVisible: false, 
+        this.setState({
+        	alterVisible: false,
         	affirmLoading: false,
         	contentArr: [],
             rgzOldData:[],
@@ -1106,7 +1105,7 @@ export default class TeamList extends Component {
 			                                    	日销量≥
 			                                    <span className='showRgz'>{item.sale}</span>元，
 								                                    且活跃用户≥
-								                <span className='showRgz'>{item.active_member}</span>                   
+								                <span className='showRgz'>{item.active_member}</span>
 			                                    人，日工资比例为
 			                                    <span className='showRgz'>{item.salary_ratio}</span>
 			                                    %。
