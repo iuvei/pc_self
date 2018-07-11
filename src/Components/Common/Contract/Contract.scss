@@ -30,6 +30,9 @@
         .ant-input-number-input{
             text-align: center;
         }
+        .ant-table-body .ant-table-thead th > span{
+            border:none;
+        }
     }
     .prize_group_slider{
         position: relative;
@@ -102,6 +105,12 @@
             background: url(./img/hint.png) no-repeat left 5px;
             font-size: 12px;
             line-height: 22px;
+        }
+        .showRgz{
+            padding: 0 5px;
+            color:#CF2027;
+            text-align: center;
+            text-decoration: underline;
         }
     }
     .ant-btn{

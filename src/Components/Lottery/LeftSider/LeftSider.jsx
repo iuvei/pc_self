@@ -18,32 +18,25 @@ export default class LeftSider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            openKeys: ['sub1'],
             countDown: 0
         }
     }
 
     componentDidMount() {
-        this.eventEmitterLeftSider = emitter.on('changeLottery', (e) => {
-            this.handleClick(e);
-        });
         // 监听当前彩种未开放时 自动切换另一彩种菜单打开
         this.eventEmitterA = emitter.on('resetLottery', () => {
             emitter.emit('initContentTop');
-            this.handTitleClick('', this.openKey());
         });
-        this.handTitleClick('', this.openKey());
     };
     componentWillUnmount() {
-        emitter.off(this.eventEmitterLeftSider);
         emitter.off(this.eventEmitterA);
     };
 
-    handleClick(e) {
+    handleClick(ekey) {
         if (!stateVar.openLotteryFlag) {
             return;
         }
-        let tempId = e.key;
+        let tempId = ekey;
         let tempMethod = common.getStore(common.getStore('userId'));
         let thisUrl = window.location.href.indexOf('lottery') > -1 ? true : false;
         if (thisUrl) {
@@ -134,121 +127,36 @@ export default class LeftSider extends Component {
         }
     };
 
-    handTitleClick(e, defaultKey) {
-        let {openKeys} = this.state;
-        if (defaultKey) {
-            // this.setState({
-            //     openKeys: defaultKey
-            // })
-        } else {
-            if (openKeys.indexOf(e.key) > -1) {
-                openKeys.splice(openKeys.indexOf(e.key), 1)
-            } else {
-                this.setState({
-                    openKeys: [...openKeys, e.key]
-                })
-            }
-        }
-
-    };
-
-    openKey() {
-        let tempOpen = stateVar.nowlottery.lotteryId;
-        if (tempOpen == 'mmc' || tempOpen == 'ffc') {
-            return ['sub1', '24小时'];
-        }
-        if (tempOpen == 'ssc') {
-            return ['sub1', '时时彩'];
-        }
-        if (tempOpen == 'mmc' || tempOpen == '24xsc' || tempOpen == 'ffc' || tempOpen == 'TG11-5' || tempOpen == 'txffc' || tempOpen == 'jnd30s' || tempOpen == 'rd60') {
-            return ['sub1','24小时'];
-        }
-        if (tempOpen == 'ssc' || tempOpen == 'XJSSC' || tempOpen == 'TJSSC' || tempOpen == 'pk10' || tempOpen == 'HN481') {
-            return ['sub1','时时彩'];
-        }
-        if (tempOpen == 'SD11Y' || tempOpen == 'GD11-5' || tempOpen == 'JX11-5' || tempOpen == 'CQ11-5' || tempOpen == 'SH11-5') {
-            return ['sub1','11选5'];
-        }
-        if (tempOpen == 'fucaip3' || tempOpen == 'ticaip3') {
-            return ['sub1','低频'];
-        }
-    };
-
     render() {
-        const {lotteryType} = stateVar;
+        // const {lotteryType} = stateVar;
 
         return (
             <div className="left_sider" key="LeftSider">
-                <Menu
-                    onClick={(e) => this.handleClick(e)}
-                    style={{width: 120}}
-                    defaultOpenKeys={['sub1']}
-                    openKeys={this.state.openKeys}
-                    selectedKeys={[stateVar.nowlottery.lotteryId]}
-                    className="new_lottery"
-                    mode="inline"
-                >
-                    <SubMenu onTitleClick={(e) => {
-                        this.handTitleClick(e)
-                    }} key="sub1"
-                             title={<span><img className="icon_img" src={left_1}/><span>热门彩种</span></span>}>
-                        {
-                            lotteryList.map(item => {
-                                return (
-                                    <Menu.Item key={item.nav} className="spe_lottery">
-                                        <div className="count_down_bg" style={{width: this.state.countDown + '%'}}>
-                                            <img className="icon_img" src={require('./Img/' + item.nav + '.png')}/>
-                                            {item.cnname}
-                                            {
-                                                item.imgSrc ?
-                                                    <img className="icon_new_lottery" src={require('../../../Images/' + item.imgSrc + '.png')}/>
-                                                    :
-                                                    null
-                                            }
-                                        </div>
-                                    </Menu.Item>
-                                )
-                            })
-                        }
-                    </SubMenu>
-                    {
-                        lotteryType.map((items, i) => {
-                            return (
-                                <SubMenu key={items.typeName} onTitleClick={(e) => {
-                                    this.handTitleClick(e)
-                                }}
-                                         title={
-                                             <span>
-                                                 <img className="icon_img"
-                                                      src={require('./Img/left_' + (i + 2) + '.png')}/>
-                                                 <span>{items.typeName}</span>
-                                             </span>
-                                         }
-                                >
-                                    {
-                                        items.lotteryList.map((item) => {
-                                            return (
-                                                <Menu.Item key={item.nav}
-                                                           className="new_lottery"
-                                                           disabled={item.disabled}
-                                                >
-                                                    <img className="icon_img"
-                                                         src={require('./Img/' + item.nav + '.png')}/>
-                                                    {item.cnname}
-                                                    {
-                                                        item.imgSrc ?
-                                                            <img className="icon_new_lottery" src={require('../../../Images/' + item.imgSrc + '.png')}/>:
-                                                            null
-                                                    }
-                                                </Menu.Item>
-                                            )
-                                        })
-                                    }
-                                </SubMenu>
-                            )
-                        })
-                    }
-                </Menu>
+            	<div className="new_lottery">
+	            	<div className="left_title">
+	            		<img className="icon_title_img" src={left_1}/>
+	            	</div>
+	            	<ul>
+	            		{
+	            			lotteryList.map(item => {
+	                                return (
+	                                    <li onClick={()=>{this.handleClick(item.nav)}} key={item.nav} className={item.nav == stateVar.nowlottery.lotteryId ? 'lottery_selected' : ''}>
+	                                        <div className="count_down_bg">
+	                                            <img className="icon_img" src={require('./Img/' + item.nav + '.png')}/>
+	                                            {item.cnname}
+	                                            {
+	                                                item.imgSrc ?
+	                                                    <img className="icon_new_lottery" src={require('../../../Images/' + item.imgSrc + '.png')}/>
+	                                                    :
+	                                                    null
+	                                            }
+	                                        </div>
+	                                    </li>
+	                                )
+	                            })
+	            		}
+	            	</ul>
+            	</div>
             </div>
         );
     }

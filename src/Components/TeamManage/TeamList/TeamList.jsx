@@ -14,7 +14,6 @@ import {
     Slider,
     Icon,
     Badge,
-    Popconfirm,
     Popover,
     Spin
 } from 'antd';
@@ -56,6 +55,7 @@ export default class TeamList extends Component {
             affirmLoading: false,
             typeName: '', // 要修改类型的名字：日工资，分红，配额，奖金组
             contentArr: [],
+            rgzOldData:[],
             prizeGroupList: [], //可设置的奖金组列表
             prizeGroupFlag: 0, // 需要修改的奖金组
 
@@ -94,7 +94,6 @@ export default class TeamList extends Component {
                     contract: "配额契约",
                 }
             ],
-            protocol: [],//自身协议
             rechargeVisible: false,
             validate: {
                 money: 2, // 0: 对， 1：错
@@ -282,7 +281,7 @@ export default class TeamList extends Component {
             } else if (type == '日工资') {
                 let postDataSelf = {
                     userid: record.userid,
-                    parentid: record.parentid,
+                    parentid: record.parentid
                 };
                 Fetch.dailysalaryself({
                     method: 'POST',
@@ -291,11 +290,22 @@ export default class TeamList extends Component {
                     if (this._ismount) {
                         if (res.status == 200) {
                             let pros = res.repsoneContent.pros;
+                            let newLength = res.repsoneContent.pros['new'];
+                            let oldLength = res.repsoneContent.pros['old'];
+                            if(this.state.alterData.daily_salary_status == 3){
+                            	newLength = [{
+									key: 1,
+									sale: '',
+									active_member: '',
+									salary_ratio: '',
+								}]
+                            }
                             this.setState({
                                 typeName: '日工资契约',
-                                contentArr: pros[pros.length - 1],
+                                contentArr: newLength,
+                                rgzOldData:oldLength,
                                 alterVisible: true,
-                                salary_ratio: pros[pros.length - 1],
+                                salary_ratio: newLength
                             })
                         } else {
                             Modal.warning({
@@ -304,14 +314,6 @@ export default class TeamList extends Component {
                         }
                     }
                 });
-                Fetch.dailysalaryself({
-                    method: 'POST',
-                    body: JSON.stringify({userid: stateVar.userInfo.userId})
-                }).then((res) => {
-                    if (this._ismount && res.status == 200) {
-                        this.setState({protocol: res.repsoneContent.pros[0]})
-                    }
-                })
             } else if (type == '分红') {
                 let {diviPost} = this.state;
                 diviPost.dividend_radio = record.dividend_radio;
@@ -363,30 +365,6 @@ export default class TeamList extends Component {
         stateVar.navIndex = 'gameRecord';
     };
 
-    /*修改日工资比例*/
-    onChangeAlterContract(val, item) {
-        item.salary_ratio = val;
-        let salary_ratioFlag = this.state.contentArr;
-        salary_ratioFlag.forEach((data, i) => {
-            if (data.sale == item.sale) {
-                data.salary_ratio = val == '' ? 0 : val
-            }
-        });
-        this.setState({salary_ratio: salary_ratioFlag});
-    };
-
-    /*修改活跃人数*/
-    onChangeActiveNumber(val, item, index) {
-        let value = val;
-        if (!value) {
-            value = 0;
-        }
-        item.active_member = value;
-        let {contentArr} = this.state;
-        contentArr[index].active_member = '' + value;
-        this.setState({salary_ratio: contentArr});
-    };
-
     /*提交协议*/
     onDiviratio(contract_name, username, type) {
         let _this = this;
@@ -397,7 +375,7 @@ export default class TeamList extends Component {
             },
         });
     };
-
+    //提交协议接口
     setProtocol(contract_name) {
         let {typeName, alterData, tableData} = this.state;
         this.setState({affirmLoading: true});
@@ -491,7 +469,7 @@ export default class TeamList extends Component {
                         this.setState({
                             alterVisible: false,
                         });
-                        this.clearTimeout = setTimeout(() => this.getData(), 31000);
+                        this.getData();
                     } else {
                         Modal.warning({
                             title: res.shortMessage,
@@ -510,6 +488,7 @@ export default class TeamList extends Component {
             }).then((res) => {
                 if (this._ismount) {
                     this.setState({affirmLoading: false});
+                    this.getData();
                     if (res.status == 200) {
                         Modal.success({
                             title: res.repsoneContent,
@@ -517,7 +496,6 @@ export default class TeamList extends Component {
                         this.setState({
                             alterVisible: false,
                         });
-                        this.clearTimeout = setTimeout(() => this.getData(), 31000);
                     } else {
                         Modal.warning({
                             title: res.shortMessage,
@@ -530,7 +508,13 @@ export default class TeamList extends Component {
 
     /*关闭模态框*/
     onCancel() {
-        this.setState({ alterVisible: false, affirmLoading: false})
+        this.setState({
+        	alterVisible: false,
+        	affirmLoading: false,
+        	contentArr: [],
+            rgzOldData:[],
+            alterData:{}
+        })
     };
 
     /*奖金组设置 滑动条*/
@@ -613,30 +597,6 @@ export default class TeamList extends Component {
             this.getData();
             this.getNum();
         }
-    };
-
-    /*删除档位*/
-    onDelete(i) {
-        let {contentArr} = this.state;
-        if (contentArr.length <= 3) {
-            Modal.warning({
-                title: '日工资契约最低保留三个挡位',
-            });
-            return
-        }
-        let contentArrFlag = contentArr.filter((item, index) => index != i);
-        this.setState({
-            contentArr: contentArrFlag,
-            salary_ratio: contentArrFlag
-        })
-    };
-
-    /*添加档位*/
-    onAddSale() {
-        let {contentArr, protocol} = this.state;
-        let contentObj = protocol[contentArr.length];
-        contentArr.push(contentObj);
-        this.setState({contentArr});
     };
 
     /*选择充值*/
@@ -797,15 +757,62 @@ export default class TeamList extends Component {
         this.setState({contentArr: contentArrFlag})
     };
 
-
     /*修改日销量*/
-    onChangeDailySales(val, item, index) {
-        item.sale = val;
+    onChangeDailySales(val, index) {
         let {contentArr} = this.state;
-        contentArr[index].sale = '' + val;
+        contentArr[index].sale = val || '';
+        this.setState({salary_ratio: contentArr});
+    };
+    /*修改日工资比例*/
+    onChangeAlterContract(val, index) {
+    	let {contentArr} = this.state;
+        contentArr[index].salary_ratio = val;
         this.setState({salary_ratio: contentArr});
     };
 
+    /*修改活跃人数*/asdf
+    onChangeActiveNumber(val, index) {
+        let value = val;
+        if (!value) {
+            value = 0;
+        }
+        let {contentArr} = this.state;
+        contentArr[index].active_member = value;
+        this.setState({salary_ratio: contentArr});
+    };
+	/*删除档位*/
+    onDelete(i) {
+        let {contentArr} = this.state;
+        if (contentArr.length <= 1) {
+            Modal.warning({
+                title: '日工资契约最低保留一个挡位',
+            });
+            return
+        }
+        let contentArrFlag = contentArr.filter((item, index) => index != i);
+        this.setState({
+            contentArr: contentArrFlag,
+            salary_ratio: contentArrFlag
+        })
+    };
+
+    /*添加档位*/
+    onAddSale() {
+        let {contentArr} = this.state;
+        if(contentArr.length >= 3){
+        	 Modal.warning({
+                title: '日工资契约最多保留三个挡位',
+            });
+            return
+        }
+        contentArr.push({
+        	key: contentArr.length+1,
+			sale: '',
+			active_member: '',
+			salary_ratio: '',
+        });
+        this.setState({contentArr});
+    };
     /*日销量排序从小到大*/
     compare(property) {
         return function (a, b) {
@@ -814,7 +821,26 @@ export default class TeamList extends Component {
             return value1 - value2;
         }
     };
-
+	/*日工资状态判断*/
+	getRgzStatus(param,record){
+		let dailyStatus = param;
+		let tempA;
+		switch(dailyStatus){
+			case 1 :
+				tempA = (record != undefined ? record.salaryHighRadio+'%' : '已签订');
+			break;
+			case 3 :
+				tempA = '未签订';
+			break;
+			case 0 :
+				tempA = '签订中';
+			break;
+			case 2 :
+				tempA = '已拒绝';
+			break;
+		}
+		return tempA;
+	};
     render() {
         const {dailysalaryStatus} = stateVar;
         const {tableData, typeName, contentArr, prizeGroupList, agPost, diviPost, recharge, postDataRecharge, users, selectInfo} = this.state;
@@ -823,30 +849,11 @@ export default class TeamList extends Component {
                 title: '用户名',
                 dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
                 render: (text, record) => <span className="hover_a"
-                                                onClick={() => this.getData('clickName', record)}>{text}</span>,
+                        onClick={() => this.getData('clickName', record)}>{text}</span>,
                 width: 100,
             }, {
                 title: '用户类型',
                 dataIndex: 'groupname',
-                width: 70,
-            }, {
-                title: '团队人数',
-                dataIndex: 'team_count',
-                sorter: true,
-                width: 80,
-            }, {
-                title: '个人余额',
-                dataIndex: 'private_money',
-                sorter: true,
-                width: 90,
-            }, {
-                title: '奖金组',
-                dataIndex: 'prize_group',
-                render: (text, record) =>
-                    users.length > 1 ?
-                        text :
-                        <span className="hover_a" onClick={() => this.onClickColBtn('奖金组', record)}>{text}</span>,
-                sorter: true,
                 width: 70,
             }, {
                 title: '注册时间',
@@ -855,28 +862,25 @@ export default class TeamList extends Component {
                 render: text => <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
                 width: 75,
             }, {
-                title: '日工资',
-                dataIndex: 'daily_salary_status',
-                render: (text, record) =>
-                    <Button type={text == 1 ? 'primary' : ''} ghost
-                            onClick={() => this.onClickColBtn('日工资', record)}
-                            disabled={users.length > 1}
-                    >
-                        {text == 1 ? '已签订' : '未签订'}
-                    </Button>,
+                title: '最后登录时间',
+                dataIndex: 'lasttime',
+                render: text =>text.slice(0, 4) == '1970' ? '新建账号，未登录！' :  <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
+                width: 85,
+            },{
+                title: '团队人数',
+                dataIndex: 'team_count',
+                sorter: true,
                 width: 80,
             }, {
-                title: '分红',
-                dataIndex: 'dividend_salary_status',
+                title: '奖金组',
+                dataIndex: 'prize_group',
                 render: (text, record) =>
-                    <Button type={text == 1 ? 'primary' : ''} ghost
-                            onClick={() => this.onClickColBtn('分红', record)}
-                            disabled={users.length > 1}
-                    >
-                        {text == 1 ? '已签订' : '未签订'}
-                    </Button>,
-                width: 80,
-            }, {
+                    users.length > 1 ?
+                        text :
+                        <span className="commonsalary textUnderline" onClick={() => this.onClickColBtn('奖金组', record)}>{text}</span>,
+                sorter: true,
+                width: 70,
+            },  {
                 title: <span>
                         配额
                         <Badge onClick={() => this.onGroupNum()} className="hover" count={this.state.num}
@@ -886,28 +890,33 @@ export default class TeamList extends Component {
                 render: (text, record) =>
                     record.usertype == 0 ?
                         '---' :
-                        <Button className={text == 3 ? 'new_application' : ''}
-                                type={text == 1 ? 'primary' : ''} ghost
+                        (users.length > 1 ? (text == 0 ?
+                                '未分配' :
+                                text == 1 ?
+                                    '已分配' :
+                                    '新申请') :
+                        <span className={text == 3 ? ' new_application' : text == 0 ? 'commonsalary' : 'commonsalary textUnderline'}
                                 onClick={() => this.onClickColBtn('配额', record)}
-                                disabled={users.length > 1}
-                        >
-                            {
-                                text == 0 ?
-                                    '未分配' :
-                                    text == 1 ?
-                                        '已分配' :
-                                        '新申请'
+	                    >
+	                    	{
+                            text == 0 ?
+                                '未分配' :
+                                text == 1 ?
+                                    '已分配' :
+                                    '新申请'
                             }
-                        </Button>,
+	                    </span>),
                 width: 80,
             }, {
-                title: '最后登录时间',
-                dataIndex: 'lasttime',
-                render: text =>text.slice(0, 4) == '1970' ? '新建账号，未登录！' :  <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
-                width: 85,
-            }, {
-                title: '操作',
-                dataIndex: 'action',
+                title: '个人余额',
+                dataIndex: 'private_money',
+                sorter: true,
+                width: 90,
+            },{
+                title: '团队余额',
+                dataIndex: 'team_money',
+                sorter: true,
+                width: 80,
                 render: (text, record) => (
                     <div>
                         <Popover content={
@@ -924,18 +933,24 @@ export default class TeamList extends Component {
                         }
                                  trigger="click"
                         >
-                            <Button onClick={() => this.getTeamMoney(record)}>团队余额</Button>
+                            <span className='commonsalary' onClick={() => this.getTeamMoney(record)}>查看</span>
                         </Popover>
+                    </div>
+                ),
+            }, {
+                title: '充值',
+                dataIndex: 'action',
+                render: (text, record) => (
+                    <div>
                         <Button className='recharge_btn'
                                 onClick={() => this.onRecharge(record)}
                                 disabled={record.canRecharge == 1 ? false : true}
                         >
                             充值
                         </Button>
-                        <Button className='game_record' onClick={() => this.onSelectGameRecord(record)}>游戏记录</Button>
                     </div>
                 ),
-                width: 150,
+                width: 50,
             }];
         let footer = <div className="tabel_footer">
             <span>总计</span>
@@ -944,323 +959,82 @@ export default class TeamList extends Component {
                                   <strong>{tableData.accnumall} 人</strong>
                             </span>
         </div>;
-
-        if (dailysalaryStatus.isSalary != 1) {
-            columns = [
-                {
-                    title: '用户名',
-                    dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
-                    render: (text, record) => <span className="hover_a"
-                                                    onClick={() => this.getData('clickName', record)}>{text}</span>,
-                    width: 110,
-                }, {
-                    title: '用户类型',
-                    dataIndex: 'groupname',
-                    width: 70,
-                }, {
-                    title: '团队人数',
-                    dataIndex: 'team_count',
-                    sorter: true,
-                    width: 80,
-                }, {
-                    title: '个人余额',
-                    dataIndex: 'private_money',
-                    sorter: true,
-                    width: 90,
-                }, {
-                    title: '奖金组',
-                    dataIndex: 'prize_group',
-                    render: (text, record) =>
-                        users.length > 1 ?
-                            text :
-                            <span className="hover_a" onClick={() => this.onClickColBtn('奖金组', record)}>{text}</span>,
-                    sorter: true,
-                    width: 90,
-                }, {
-                    title: '注册时间',
-                    dataIndex: 'register_time',
-                    render: text => <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
-                    sorter: true,
-                    width: 120,
-                }, {
-                    title: '分红',
-                    dataIndex: 'dividend_salary_status',
-                    render: (text, record) =>
-                        <Button type={text == 1 ? 'primary' : ''} ghost
-                                onClick={() => this.onClickColBtn('分红', record)}
-                                disabled={users.length > 1}
-                        >
-                            {text == 1 ? '已签订' : '未签订'}
-                        </Button>,
-                    width: 85,
-                }, {
-                    title: <span>
-                        配额
-                        <Badge onClick={() => this.onGroupNum()} className="hover" count={this.state.num}
-                               style={{backgroundColor: '#369900', marginLeft: 5}}/>
+        let tempArrA = {
+        		title: '日工资',
+                dataIndex: 'daily_salary_status',
+                render: (text, record) =>
+                	users.length > 1 ? this.getRgzStatus(text) :
+                    <span className={record.daily_salary_status == 3 ? 'commonsalary' : 'commonsalary textUnderline'} onClick={() => this.onClickColBtn('日工资', record)}
+                            disabled={users.length > 1}
+                    >
+                    {this.getRgzStatus(text,record)}
                     </span>,
-                    dataIndex: 'useraccgroup_status',
-                    render: (text, record) =>
-                        <Button className={text == 3 ? 'new_application' : ''}
-                                type={text == 1 ? 'primary' : ''} ghost
-                                onClick={() => this.onClickColBtn('配额', record)}
-                                disabled={users.length > 1}
-                        >
-                            {
-                                text == 0 ?
-                                    '未分配' :
-                                    text == 1 ?
-                                        '已分配' :
-                                        '新申请'
-                            }
-                        </Button>,
-                    width: 85,
-                }, {
-                    title: '最后登录时间',
-                    dataIndex: 'lasttime',
-                    render: text => text.slice(0, 4) == '1970' ? '新建账号，未登录！' :  <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
-                    width: 120,
-                }, {
-                    title: '操作',
-                    dataIndex: 'action',
-                    render: (text, record) => (
-                        <div>
-                            <Popover content={
-                                <span>
-                                团队余额 : &nbsp;
-                                    <Spin wrapperClassName="col_color_ying spin_dp"
-                                          spinning={this.state.popoverLoading}
-                                          size="small"
-                                    >
-                                    {this.state.teamMoney }
-                                    </Spin>
-                                    &nbsp;元
-                            </span>
-                            }
-                                     trigger="click"
-                            >
-                                <Button onClick={() => this.getTeamMoney(record)}>团队余额</Button>
-                            </Popover>
-                            <Button className='recharge_btn'
-                                    onClick={() => this.onRecharge(record)}
-                                    disabled={record.canRecharge == 1 ? false : true}
-                            >
-                                充值
-                            </Button>
-                            <Button className='game_record'
-                                    onClick={() => this.onSelectGameRecord(record)}>游戏记录</Button>
-                        </div>
-                    ),
-                    width: 150,
-                }];
-        }
-        if (dailysalaryStatus.isDividend != 1) {
-            columns = [
-                {
-                    title: '用户名',
-                    dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
-                    render: (text, record) => <span className="hover_a"
-                                                    onClick={() => this.getData('clickName', record)}>{text}</span>,
-                    width: 110,
-                }, {
-                    title: '用户类型',
-                    dataIndex: 'groupname',
-                    width: 70,
-                }, {
-                    title: '团队人数',
-                    dataIndex: 'team_count',
-                    sorter: true,
-                    width: 80,
-                }, {
-                    title: '个人余额',
-                    dataIndex: 'private_money',
-                    sorter: true,
-                    width: 90,
-                }, {
-                    title: '奖金组',
-                    dataIndex: 'prize_group',
-                    render: (text, record) =>
-                        users.length > 1 ?
-                            text :
-                            <span className="hover_a" onClick={() => this.onClickColBtn('奖金组', record)}>{text}</span>,
-                    sorter: true,
-                    width: 70,
-                }, {
-                    title: '注册时间',
-                    dataIndex: 'register_time',
-                    render: text => <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
-                    sorter: true,
-                    width: 120,
-                }, {
-                    title: '日工资',
-                    dataIndex: 'daily_salary_status',
-                    render: (text, record) =>
-                        <Button type={text == 1 ? 'primary' : ''} ghost
-                                onClick={() => this.onClickColBtn('日工资', record)}
-                                disabled={users.length > 1}
-                        >
-                            {text == 1 ? '已签订' : '未签订'}
-                        </Button>,
-                    width: 85,
-                }, {
-                    title: <span>
-                        配额
-                        <Badge onClick={() => this.onGroupNum()} className="hover" count={this.state.num}
-                               style={{backgroundColor: '#369900', marginLeft: 5}}/>
+                width: 80,
+        	};
+        	let tempArrB = {
+                title: '分红',
+                dataIndex: 'dividend_salary_status',
+                render: (text, record) =>
+                	users.length > 1 ? (text == 1 ? '已签订' : '未签订') :
+                    <span   className={record.dividend_salary_status == 1 ? 'commonsalary textUnderline' : 'commonsalary'}
+                            onClick={() => this.onClickColBtn('分红', record)}
+                            disabled={users.length > 1}
+                    >
+                        {text == 1 ? record.dividend_radio+'%' : '未签订'}
                     </span>,
-                    dataIndex: 'useraccgroup_status',
-                    render: (text, record) =>
-                        <Button className={text == 3 ? 'new_application' : ''}
-                                type={text == 1 ? 'primary' : ''} ghost
-                                onClick={() => this.onClickColBtn('配额', record)}
-                                disabled={users.length > 1}
-                        >
-                            {
-                                text == 0 ?
-                                    '未分配' :
-                                    text == 1 ?
-                                        '已分配' :
-                                        '新申请'
-                            }
-                        </Button>,
-                    width: 85,
-                }, {
-                    title: '最后登录时间',
-                    dataIndex: 'lasttime',
-                    render: text => text.slice(0, 4) == '1970' ? '新建账号，未登录！' :  <p>{text.slice(0, 10)}<br/>{text.slice(10)}</p>,
-                    width: 120,
-                }, {
-                    title: '操作',
-                    dataIndex: 'action',
-                    render: (text, record) => (
-                        <div>
-                            <Popover content={
-                                <span>
-                                团队余额 : &nbsp;
-                                    <Spin wrapperClassName="col_color_ying spin_dp"
-                                          spinning={this.state.popoverLoading}
-                                          size="small"
-                                    >
-                                    {this.state.teamMoney }
-                                    </Spin>
-                                    &nbsp;元
-                            </span>
-                            }
-                                     trigger="click"
-                            >
-                                <Button onClick={() => this.getTeamMoney(record)}>团队余额</Button>
-                            </Popover>
-                            <Button className='recharge_btn'
-                                    onClick={() => this.onRecharge(record)}
-                                    disabled={record.canRecharge == 1 ? false : true}
-                            >
-                                充值
-                            </Button>
-                            <Button className='game_record'
-                                    onClick={() => this.onSelectGameRecord(record)}>游戏记录</Button>
-                        </div>
-                    ),
-                    width: 150,
-                }];
+                width: 80,
+           };
+        if (dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend == 1) {
+        	columns.splice(6,0,tempArrB);
         }
-        if (dailysalaryStatus.isSalary != 1 && dailysalaryStatus.isDividend != 1) {
-            columns = [
-                {
-                    title: '用户名',
-                    dataIndex: 'username',// 列数据在数据项中对应的 key，支持 a.b.c 的嵌套写法
-                    render: (text, record) => <span className="hover_a"
-                                                    onClick={() => this.getData('clickName', record)}>{text}</span>,
-                    width: 110,
-                }, {
-                    title: '用户类型',
-                    dataIndex: 'groupname',
-                    width: 70,
-                }, {
-                    title: '团队人数',
-                    dataIndex: 'team_count',
-                    sorter: true,
-                    width: 80,
-                }, {
-                    title: '个人余额',
-                    dataIndex: 'private_money',
-                    sorter: true,
-                    width: 90,
-                }, {
-                    title: '奖金组',
-                    dataIndex: 'prize_group',
-                    render: (text, record) =>
-                        users.length > 1 ?
-                            text :
-                            <span className="hover_a" onClick={() => this.onClickColBtn('奖金组', record)}>{text}</span>,
-                    sorter: true,
-                    width: 90,
-                }, {
-                    title: '注册时间',
-                    dataIndex: 'register_time',
-                    sorter: true,
-                    width: 120,
-                }, {
-                    title: <span>
-                        配额
-                        <Badge onClick={() => this.onGroupNum()} className="hover" count={this.state.num}
-                               style={{backgroundColor: '#369900', marginLeft: 5}}/>
-                    </span>,
-                    dataIndex: 'useraccgroup_status',
-                    render: (text, record) =>
-                        <Button className={text == 3 ? 'new_application' : ''}
-                                type={text == 1 ? 'primary' : ''} ghost
-                                onClick={() => this.onClickColBtn('配额', record)}
-                                disabled={users.length > 1}
-                        >
-                            {
-                                text == 0 ?
-                                    '未分配' :
-                                    text == 1 ?
-                                        '已分配' :
-                                        '新申请'
-                            }
-                        </Button>,
-                    width: 100,
-                }, {
-                    title: '最后登录时间',
-                    dataIndex: 'lasttime',
-                    width: 120,
-                    render: text => text.slice(0, 4) == '1970' ? '新建账号，未登录！' :  text,
-                }, {
-                    title: '操作',
-                    dataIndex: 'action',
-                    render: (text, record) => (
-                        <div>
-                            <Popover content={
-                                <span>
-                                团队余额 : &nbsp;
-                                    <Spin wrapperClassName="col_color_ying spin_dp"
-                                          spinning={this.state.popoverLoading}
-                                          size="small"
-                                    >
-                                    {this.state.teamMoney }
-                                    </Spin>
-                                    &nbsp;元
-                            </span>
-                            }
-                                     trigger="click"
-                            >
-                                <Button onClick={() => this.getTeamMoney(record)}>团队余额</Button>
-                            </Popover>
-                            <Button className='recharge_btn'
-                                    onClick={() => this.onRecharge(record)}
-                                    disabled={record.canRecharge == 1 ? false : true}
-                            >
-                                充值
-                            </Button>
-                            <Button className='game_record'
-                                    onClick={() => this.onSelectGameRecord(record)}>游戏记录</Button>
-                        </div>
-                    ),
-                    width: 150,
-                }];
+        if(dailysalaryStatus.isSalary == 1 && dailysalaryStatus.isDividend != 1){
+        	columns.splice(6,0,tempArrA);
         }
-
+        if (dailysalaryStatus.isSalary == 1 && dailysalaryStatus.isDividend == 1) {
+        	columns.splice(6,0,tempArrA,tempArrB);
+        }
+        const newcolumns = [{
+			title: '日销量',
+			dataIndex: 'sale',
+			render: text => <a href="javascript:;">{text}</a>,
+		}, {
+			title: '活跃人数',
+			className: 'column-money',
+			dataIndex: 'active_member',
+		}, {
+		    title: '日工资比例',
+		    dataIndex: 'salary_ratio',
+		}];
+		const newdata = [];
+		for(let i=0;i<this.state.contentArr.length;i++){
+			newdata.push({
+				key: i+1,
+				sale: this.state.contentArr[i].sale,
+				active_member: this.state.contentArr[i].active_member,
+				salary_ratio: this.state.contentArr[i].salary_ratio+'%',
+			});
+		}
+		const oldcolumns = [{
+			title: '日销量',
+			dataIndex: 'sales',
+			render: text => <a href="javascript:;">{text}</a>,
+		}, {
+			title: '活跃人数',
+			className: 'column-money',
+			dataIndex: 'peopleNum',
+		}, {
+		    title: '日工资比例',
+		    dataIndex: 'rates',
+		}];
+		const olddata = [];
+		for(let i=0;i<this.state.rgzOldData.length;i++){
+			olddata.push({
+				key: i+1,
+				sales: this.state.rgzOldData[i].sale,
+				peopleNum: this.state.rgzOldData[i].active_member,
+				rates: this.state.rgzOldData[i].salary_ratio+'%',
+			});
+		}
         if (typeName == '配额契约') {
             let prize_group = this.state.alterData.prize_group;
             typeContent = <div className="a_c_text">
@@ -1293,50 +1067,83 @@ export default class TeamList extends Component {
                 <p>契约内容：</p>
                 <ul className="text_content_list">
                     {
-                        contentArr.map((item, i) => {
-                            return (
-                                <li key={'a' + i}>
-                                    {i + 1}档：
-                                    日销量≥
-                                    <span style={{width: 58, display: 'inline-block'}}>{item.sale}</span>
-                                    {/*<InputNumber min={0} value={item.sale}*/}
-                                    {/*onChange={(value)=>this.onChangeDailySales(value, item, i)}*/}
-                                    {/*onBlur={()=>this.onBlurSale()}*/}
-                                    {/*/>*/}
-                                    元，
-                                    且活跃用户≥
-                                    <InputNumber min={0} value={item.active_member}
-                                                 onChange={(value) => this.onChangeActiveNumber(value, item, i)}
-                                    />
-                                    人，日工资比例为
-                                    <InputNumber min={0} value={item.salary_ratio}
-                                                 max={100}
-                                                 onChange={(value) => this.onChangeAlterContract(value, item)}
-                                    />
-                                    %。
-                                    {
-                                        contentArr.length - 1 == i ?
-                                            <Popconfirm title="确定删除吗?"
-                                                        onConfirm={() => this.onDelete(i)}
-                                            >
-                                                <span className="hover text_color delete_sale">删除</span>
-                                            </Popconfirm> :
-                                            null
-                                    }
-                                </li>
-                            )
-                        })
+                    	(()=>{
+                    		let lihtml;
+                    		if(this.state.alterData.daily_salary_status == 3 || this.state.alterData.daily_salary_status == 2){
+	                    			lihtml = contentArr.map((item,i)=>{
+	                    				return(
+	                    					<li key={'a' + i}>
+			                                    {i + 1}档：
+			                                    	日销量≥
+			                                    <InputNumber min={0} max={100000000} value={item.sale} style={{width:'80px'}}
+				                                    onChange={(value)=>this.onChangeDailySales(value, i)}
+			                                    />
+								                                    元，
+								                                    且活跃用户≥
+			                                    <InputNumber min={0} max={99} value={item.active_member} style={{width:'50px'}}
+			                                                 onChange={(value) => this.onChangeActiveNumber(value, i)}
+			                                    />
+			                                    人，日工资比例为
+			                                    <InputNumber min={0} max={2} value={item.salary_ratio} style={{width:'40px'}}
+			                                                 onChange={(value) => this.onChangeAlterContract(value,i)}
+			                                    />
+			                                    %。
+			                                    {
+			                                    	contentArr.length - 1 == i ?
+			                                           <span className="hover text_color delete_sale" onClick={()=>this.onDelete(i)}>删除</span> :
+			                                            null
+			                                    }
+			                                </li>
+	                    				)
+	                    			})
+	                    	}else{
+	                    		if(this.state.alterData.daily_salary_status == 0){
+	                    			lihtml = contentArr.map((item,i)=>{
+	                    				return(
+	                    					<li key={'a' + i}>
+			                                    {i + 1}档：
+			                                    	日销量≥
+			                                    <span className='showRgz'>{item.sale}</span>元，
+								                                    且活跃用户≥
+								                <span className='showRgz'>{item.active_member}</span>
+			                                    人，日工资比例为
+			                                    <span className='showRgz'>{item.salary_ratio}</span>
+			                                    %。
+			                                </li>
+	                    				)
+	                    			})
+	                    		}else{
+	                    			lihtml = <Table
+									    columns={newcolumns}
+									    dataSource={newdata}
+									    pagination={false}
+									    bordered
+								  	/>
+	                    		}
+	                    	}
+	                    	return lihtml;
+                    	})()
                     }
-                    <li className="brisk_user" key="-1">当日投注金额≥1000元，计为一个活跃用户</li>
+                    <li className="brisk_user" key="-1">当日投注金额≥1000元，计为一个活跃用户；</li>
                     <li className="brisk_user" key="-2">
-                        下级日工资各档位日销量要求需与自身保持一致，删除档位时遵循从高到底的原则，但至少保留三档。
+                        日工资契约签订后无法修改，如需修改请联系平台。
                     </li>
                 </ul>
                 <span className="hover text_color add_sale"
                       onClick={() => this.onAddSale()}
-                      style={{display: contentArr.length >= 6 ? 'none' : ''}}>
+                      style={{display: this.state.alterData.daily_salary_status == 3 || this.state.alterData.daily_salary_status == 2 ? '' : 'none'}}>
                     添加档位
                 </span>
+                <div className='rgzClass' style={{display:this.state.alterData.daily_salary_status != 1 && this.state.rgzOldData.length != 0 ? 'block' : 'none'}}>
+                	<div style={{color:'#CF2027',marginTop:'5px',marginBottom:'5px'}}>旧版日工资参考:</div>
+                	<Table
+						    columns={oldcolumns}
+						    dataSource={olddata}
+						    pagination={false}
+						    bordered
+					  />
+                </div>
+                <div style={{marginTop:'5px'}}>签约状态：<span style={{fontWeight:'bold',color:'#CF2027'}}>{this.getRgzStatus(this.state.alterData.daily_salary_status)}</span></div>
             </div>;
         } else if (typeName == '分红契约') {
             typeContent = <div className="a_c_text">
@@ -1477,6 +1284,7 @@ export default class TeamList extends Component {
                             affirmLoading={this.state.affirmLoading}
                             userList={this.state.tableData.dataSource}
                             contractInfo={this.state.contractInfo}
+                            isShowFoot={this.state.alterData.daily_salary_status == 3 || this.state.alterData.daily_salary_status == 2 ? true : false}
                             disabledSelect={true}
                             onCancel={this.onCancel}
                             onAffirm={this.onDiviratio}
