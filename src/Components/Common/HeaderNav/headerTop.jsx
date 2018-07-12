@@ -121,7 +121,7 @@ export default class HeaderTop extends Component {
             body: JSON.stringify({tag:'UpdateSalaryStatus',status:param})
         }).then((res)=>{
         	this.setState({isRigognzi:false});
-            if(this._ismount && res.status == 200){
+            if(this._ismount){
                 if(res.status == 200){
                 	let divContent;
                 	if(param == 1){
@@ -527,7 +527,7 @@ export default class HeaderTop extends Component {
     render() {
         const { allBalance, userInfo, hideBalance } = stateVar;
         const { iconArrowsName, iconArrowsMoney } = this.state;
-        
+
         const columns = [{
 			title: '日销量',
 			dataIndex: 'sales',
@@ -579,7 +579,7 @@ export default class HeaderTop extends Component {
 	                        >
 	                            签订
 	                        </Button>
-	                        <Button loading={this.state.affirmDisabled} 
+	                        <Button loading={this.state.affirmDisabled}
 	                        		onClick={()=>this.agreeRgz(2)}
 	                        		disabled={this.state.affirmLoading}
 	                        >

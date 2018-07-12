@@ -288,7 +288,7 @@ export default class DayRate extends Component {
                                 <DatePicker
                                     format="YYYY-MM-DD"
                                     allowClear={false}
-                                    defaultValue={moment(setDateTime(0))}
+                                    defaultValue={moment(postData.starttime)}
                                     placeholder="请选择日期"
                                     onChange={(date, dateString) => {
                                         this.onChangeDate(date, dateString)
@@ -306,7 +306,7 @@ export default class DayRate extends Component {
                                 </Button>
                             </li>
                             <li className="r_m_hint">
-                                <p>提示：日工资数据保留为有效时间最近30天数据</p>
+                                <p>提示：日工资数据可查询30天以内数据</p>
                             </li>
                         </ul>
                     </div>
