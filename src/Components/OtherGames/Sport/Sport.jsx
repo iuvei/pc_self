@@ -63,8 +63,10 @@ export default class Sport extends Component {
                     //     // web
                     //     tempwindow.location.href = res.repsoneContent[0]
                     // }
+
+                    let url = stateVar.httpUrl + '/?' + res.repsoneContent[0].split('?')[1];
                     this.setState({
-                        gameAddr: res.repsoneContent[0]
+                        gameAddr: url
                     })
                 } else {
                     Modal.warning({
