@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import { hashHistory } from 'react-router';
-import { Input,Button,Icon,Checkbox,Modal, Popover  } from 'antd';
+import {hashHistory} from 'react-router';
+import {Input, Button, Icon, Checkbox, Modal, Popover} from 'antd';
 import Fetch from '../../Utils';
 import md5 from 'md5';
-import { stateVar } from '../../State';
+import {stateVar} from '../../State';
 import './Login.scss';
 import loginSrc from './Img/logo.png';
-import {removeStore, setStore,getStore, onValidate, _code, compare } from "../../CommonJs/common";
-const validImgSrc= stateVar.httpUrl + '/pcservice/index.php?useValid=true';
+import {removeStore, setStore, getStore, onValidate, _code, compare} from "../../CommonJs/common";
+
+const validImgSrc = stateVar.httpUrl + '/pcservice/index.php?useValid=true';
 const circuitArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
 const urlFlag = [
     {domain: 'https://slxwhg.com'},
@@ -35,32 +36,32 @@ export default class Login extends Component {
             password: getStore('loginPwd'),
             passwordM: '',
             aptchac: '', //验证码
-            aptchacM:'',
+            aptchacM: '',
             stopAnimation: '',
             navListIndex: 0, //控制登录模式
             visible1: false, //控制模态框显示
             visible2: false,
             visible3: false,
-            validImg:'',   //验证码图片
-            validImgM:'',
+            validImg: '',   //验证码图片
+            validImgM: '',
             session: null,//提交后台时带的sess
-            warn:null,//登录错误提示信息
-            warnM:null,
-            warnM1:null,
-            displayWarn:false,//控制显示提示信息
-            displayWarnM:false,
-            displayWarnM1:false,
-            newPwdM:'',
-            confirmPwdM:'',
-            checkPw:getStore('checkFlag'),
-			showWechat:'none',
+            warn: null,//登录错误提示信息
+            warnM: null,
+            warnM1: null,
+            displayWarn: false,//控制显示提示信息
+            displayWarnM: false,
+            displayWarnM1: false,
+            newPwdM: '',
+            confirmPwdM: '',
+            checkPw: getStore('checkFlag'),
+            showWechat: 'none',
             validate: {
                 newpass: 2,
                 confirm_newpass: 2
             },
-            timeoutWechat:false,
+            timeoutWechat: false,
             activityClose: false, // 关闭活动
-            lineList: [{},{},{}],
+            lineList: [{}, {}, {}],
             selfLine: {},
             optimalLine: {},
             timeLine: 0,
@@ -69,78 +70,81 @@ export default class Login extends Component {
             updateLine: false,
         }
     };
+
     componentDidMount() {
         this._ismount = true;
         stateVar.nowlottery.lotteryId = 'ssc';
         this.getSession();
         this.getKefu();
-        if(stateVar.userInfo.sType == 'demo'){
+        if (stateVar.userInfo.sType == 'demo') {
             this.setState({account: null})
         }
         this.getDomians();
     };
-    componentWillUnmount(){
+
+    componentWillUnmount() {
         this._ismount = false;
         this.ws && this.ws.close();
-        if(this.wechatIntval){
+        if (this.wechatIntval) {
             clearInterval(this.wechatIntval);
         }
     };
+
     /*测速*/
-    getDomians (type) {
+    getDomians(type) {
         const {httpUrl} = stateVar;
-        if(type === 'clickUpdate'){
+        if (type === 'clickUpdate') {
             this.setState({
                 updateLine: true,
                 timeLine: 0,
-                lineList: [{},{},{}],
+                lineList: [{}, {}, {}],
                 selfLine: {},
             })
         }
-        if(this.clearTime){
+        if (this.clearTime) {
             clearInterval(this.clearTime);
         }
-        let timeF = Math.random()*5 + 10;
-        this.clearTime = setInterval(()=>{
-            if(this.state.timeLine > timeF){
+        let timeF = Math.random() * 5 + 10;
+        this.clearTime = setInterval(() => {
+            if (this.state.timeLine > timeF) {
                 clearInterval(this.clearTime);
                 // this.setState({timeLine: 0})
-            }else{
+            } else {
                 this.setState({timeLine: ++this.state.timeLine})
             }
         }, 200);
         Fetch.domians().then((res) => {
-            if(this._ismount){
+            if (this._ismount) {
                 let imgs = [],
                     index = 0,
                     times = [],
                     list = res.repsoneContent.domainlist,
                     _this = this;
-                if(res.status == 200 && list instanceof Array){
-                    if(list.length < 3){
-                        for(let k = 0; k < 3; k++){
-                            if(list.length < 3){
+                if (res.status == 200 && list instanceof Array) {
+                    if (list.length < 3) {
+                        for (let k = 0; k < 3; k++) {
+                            if (list.length < 3) {
                                 list.push({domain: urlFlag[k]})
-                            }else{
+                            } else {
                                 break
                             }
                         }
                     }
-                }else{
+                } else {
                     list = urlFlag;
                 }
                 list.push({domain: httpUrl});
-                for(let i = 0; i < list.length; i++){
+                for (let i = 0; i < list.length; i++) {
                     imgs.push({});
                     imgs[i].img = new Image;
                     imgs[i].startTime = new Date().getTime();
                     imgs[i].img.src = list[i].domain + '/speed/img/Login.png?' + imgs[i].startTime;
                     imgs[i].img.onload = function () {
                         let timesFlag = {};
-                        if(index < 3 && list[i].domain != httpUrl){
+                        if (index < 3 && list[i].domain != httpUrl) {
                             let timeFlag = new Date().getTime() - imgs[i].startTime;
-                            let time = parseInt(timeFlag*0.05);
-                            if(time < 1){
+                            let time = parseInt(timeFlag * 0.05);
+                            if (time < 1) {
                                 time = 1;
                             }
                             if (time <= 69) {
@@ -154,15 +158,15 @@ export default class Login extends Component {
                             }
 
                             // timesFlag.time = time;
-                            timesFlag.speed = Math.round(filesize * 1000 /timeFlag);
+                            timesFlag.speed = Math.round(filesize * 1000 / timeFlag);
                             timesFlag.domain = list[i].domain;
                             times.push(timesFlag);
-                            index ++;
+                            index++;
                         }
-                        if(list[i].domain == httpUrl){
+                        if (list[i].domain == httpUrl) {
                             let timeFlag = new Date().getTime() - imgs[i].startTime,
-                                time = parseInt(timeFlag*0.05);
-                            if(time < 1){
+                                time = parseInt(timeFlag * 0.05);
+                            if (time < 1) {
                                 time = 1;
                             }
                             if (time <= 69) {
@@ -175,11 +179,11 @@ export default class Login extends Component {
                                 timesFlag.classNm = "red";
                             }
                             // timesFlag.time = time;
-                            timesFlag.speed = Math.round(filesize * 1000 /timeFlag);
+                            timesFlag.speed = Math.round(filesize * 1000 / timeFlag);
                             timesFlag.domain = list[i].domain;
                             times.push(timesFlag);
                         }
-                        if(times.length == 4){
+                        if (times.length == 4) {
                             times.sort(compare("time", 'ASC'));
                             times.forEach((item, index) => {
                                 item.line = index
@@ -192,7 +196,7 @@ export default class Login extends Component {
                                 selfLine: selfLine,
                                 optimalLine: optimalLine,
                             });
-                            if(type === 'clickUpdate'){
+                            if (type === 'clickUpdate') {
                                 _this.setState({
                                     updateLine: false,
                                 })
@@ -206,49 +210,53 @@ export default class Login extends Component {
         })
     };
 
-    getKefu(){
+    getKefu() {
         Fetch.kefu({
             method: "POST"
-        }).then((res)=>{
-            if(this._ismount && res.status == 200){
+        }).then((res) => {
+            if (this._ismount && res.status == 200) {
                 let data = res.repsoneContent;
                 stateVar.httpService = data.kefulink;
-                setStore("kefu",data);
+                setStore("kefu", data);
             }
         })
     };
+
     /*
     * 获取前后台交互所需带的sess
     * 同时使页面已加载页面就将图片的请求加上sess
     * */
-    getSession(){
-        Fetch.getSess({method: "POST"}).then((data)=>{
+    getSession() {
+        Fetch.getSess({method: "POST"}).then((data) => {
             let parseData = data;
             this.setState({
                 session: parseData.repsoneContent,
-            }, ()=>{
+            }, () => {
                 this.refreshImg();
                 this.refreshImgModal();
             });
-            setStore("session",parseData.repsoneContent);
-            document.cookie = 'sess='+ parseData.repsoneContent + ';path=/';
+            setStore("session", parseData.repsoneContent);
+            document.cookie = 'sess=' + parseData.repsoneContent + ';path=/';
         })
     };
+
     /*
     * 正常登录按下enter按钮处理提交
     */
-    loginEnter(e){
-        if(e.keyCode==13){
+    loginEnter(e) {
+        if (e.keyCode == 13) {
             this.enterLogin();
         }
     };
+
     /*
     *试玩模式按下enter按钮处理提交 */
-    trygameloginEnter(e){
-        if(e.keyCode==13){
+    trygameloginEnter(e) {
+        if (e.keyCode == 13) {
             this.enterTryGameLogin();
         }
     }
+
     /*
     * 点击登录后的处理
     * 1.验证用户名或密码为空
@@ -258,60 +266,62 @@ export default class Login extends Component {
     * 5.根据后台返回数据显示错误信息
     */
     enterLogin() {
-        this.setState({ loading: true });
-        if(!this.state.account||!this.state.password){
+        this.setState({loading: true});
+        if (!this.state.account || !this.state.password) {
             this.setState({
-                warn:"用户名或密码为空",
-                displayWarn:true,
+                warn: "用户名或密码为空",
+                displayWarn: true,
                 loading: false,
             });
-        }else if(this.state.aptchac==''){
+        } else if (this.state.aptchac == '') {
             this.setState({
-                warn:"验证码为空",
-                displayWarn:true,
-                loading:false,
+                warn: "验证码为空",
+                displayWarn: true,
+                loading: false,
             });
-        }else {
+        } else {
             this.login();
         }
 
     };
+
     /*
     * 试玩模式登录
     * 验证验证码是否为空
     * 验证成功后进入主界面
     * 根据后台返回数据显示错误信息
     * */
-    enterTryGameLogin(){
-        if(this.state.aptchac==''){
+    enterTryGameLogin() {
+        if (this.state.aptchac == '') {
             this.setState({
-                warn:"验证码为空",
-                displayWarn:true,
-                loading:false,
+                warn: "验证码为空",
+                displayWarn: true,
+                loading: false,
             });
-        }else {
+        } else {
             this.trygameLogin()
         }
     };
+
     /*
     * 请求登录接口（试玩模式）
     * 并存储登录后所需使用的数据
     * */
-    trygameLogin(){
+    trygameLogin() {
         Fetch.login({
             method: "POST",
             body: JSON.stringify({
                 "sType": 'demo',
                 "validcode": this.state.aptchac
             })
-        }).then((data)=>{
-            if(this._ismount){
-                this.setState({ loading: false });
+        }).then((data) => {
+            if (this._ismount) {
+                this.setState({loading: false});
                 let result = data.repsoneContent;
-                if(data.status==200) {
-                    stateVar.auth=true;
+                if (data.status == 200) {
+                    stateVar.auth = true;
                     stateVar.userInfo = {
-                        userId:result.userid,
+                        userId: result.userid,
                         userName: result.username,
                         userType: result.usertype,
                         accGroup: result.accGroup,
@@ -325,25 +335,25 @@ export default class Login extends Component {
 
                     };
 
-                    setStore("userId",result.userid);
-                    setStore("userName",result.username);
-                    setStore("userType",result.usertype);
-                    setStore("accGroup",result.accGroup);
-                    setStore("lastIp",result.lastip);
-                    setStore("sType",result.sType);
-                    setStore("lastTime",result.lasttime);
-                    setStore("issetbank",result.issetbank);
-                    setStore("setquestion",result.setquestion);
-                    setStore("setsecurity",result.setsecurity);
-                    setStore("pushDomain",result.push_domain);
-                    setStore("email",result.emai);
+                    setStore("userId", result.userid);
+                    setStore("userName", result.username);
+                    setStore("userType", result.usertype);
+                    setStore("accGroup", result.accGroup);
+                    setStore("lastIp", result.lastip);
+                    setStore("sType", result.sType);
+                    setStore("lastTime", result.lasttime);
+                    setStore("issetbank", result.issetbank);
+                    setStore("setquestion", result.setquestion);
+                    setStore("setsecurity", result.setsecurity);
+                    setStore("pushDomain", result.push_domain);
+                    setStore("email", result.emai);
                     hashHistory.push('/lottery');
-                }else{
+                } else {
                     this.setState({
-                        warn:data.shortMessage,
-                        displayWarn:true,
+                        warn: data.shortMessage,
+                        displayWarn: true,
                     });
-                    if(data.shortMessage == '验证码错误'){
+                    if (data.shortMessage == '验证码错误') {
                         this.getSession()
                     }
                 }
@@ -351,12 +361,13 @@ export default class Login extends Component {
 
         })
     };
+
     /*
     * 请求登录接口
     * 并存储登录后所需用的数据
     * */
     login() {
-        let { aptchac, password, account } = this.state;
+        let {aptchac, password, account} = this.state;
         //登录
         Fetch.login({
             method: "POST",
@@ -366,14 +377,14 @@ export default class Login extends Component {
                 "loginpass": md5((md5(aptchac) + md5(password))),
                 "validcode": aptchac
             })
-        }).then((data)=>{
-            if(this._ismount){
-                this.setState({ loading: false });
-                if(data.status==200){
+        }).then((data) => {
+            if (this._ismount) {
+                this.setState({loading: false});
+                if (data.status == 200) {
                     let result = data.repsoneContent;
-                    stateVar.auth=true;
+                    stateVar.auth = true;
                     stateVar.userInfo = {
-                        userId:result.userid,
+                        userId: result.userid,
                         userName: result.username,
                         userType: result.usertype,
                         accGroup: result.accGroup,
@@ -386,33 +397,33 @@ export default class Login extends Component {
                         email: result.email,
                     };
 
-                    setStore("userName",result.username);
-                    setStore("pushDomain",result.push_domain);
-                    setStore("userId",result.userid);
-                    setStore("userType",result.usertype);
-                    setStore("accGroup",result.accGroup);
-                    setStore("lastIp",result.lastip);
-                    setStore("sType",result.sType);
-                    setStore("lastTime",result.lasttime);
-                    setStore("issetbank",result.issetbank);
-                    setStore("setquestion",result.setquestion);
-                    setStore("setsecurity",result.setsecurity);
-                    setStore("email",result.email);
+                    setStore("userName", result.username);
+                    setStore("pushDomain", result.push_domain);
+                    setStore("userId", result.userid);
+                    setStore("userType", result.usertype);
+                    setStore("accGroup", result.accGroup);
+                    setStore("lastIp", result.lastip);
+                    setStore("sType", result.sType);
+                    setStore("lastTime", result.lasttime);
+                    setStore("issetbank", result.issetbank);
+                    setStore("setquestion", result.setquestion);
+                    setStore("setsecurity", result.setsecurity);
+                    setStore("email", result.email);
 
-                    if(this.state.checkPw){
-                        setStore("loginPwd",this.state.password);
-                        setStore("checkFlag",this.state.checkPw);
-                    }else{
+                    if (this.state.checkPw) {
+                        setStore("loginPwd", this.state.password);
+                        setStore("checkFlag", this.state.checkPw);
+                    } else {
                         removeStore("loginPwd");
                         removeStore("checkFlag");
                     }
                     hashHistory.push('/lottery');
-                }else{
+                } else {
                     this.setState({
-                        warn:data.shortMessage,
-                        displayWarn:true,
+                        warn: data.shortMessage,
+                        displayWarn: true,
                     });
-                    if(data.shortMessage == '验证码错误'){
+                    if (data.shortMessage == '验证码错误') {
                         this.getSession()
                     }
                 }
@@ -421,20 +432,25 @@ export default class Login extends Component {
     };
 
     onCheckedPw(e) {
-        this.setState({checkPw:e.target.checked});
+        this.setState({checkPw: e.target.checked});
     }
+
     onAccount(e) {
-        this.setState({account:e.target.value});
+        this.setState({account: e.target.value});
     }
+
     onAccountM(e) {
-        this.setState({accountM:e.target.value});
+        this.setState({accountM: e.target.value});
     }
+
     onPwd(e) {
         this.setState({password: e.target.value});
     }
+
     onPwdM(e) {
         this.setState({passwordM: e.target.value});
     }
+
     onNewPwdM(e) {
         let value = e.target.value,
             validate = this.state.validate;
@@ -446,33 +462,39 @@ export default class Login extends Component {
             } else {
                 validate.newpass = 1;
             }
-        }else{
+        } else {
             validate.newpass = 1;
         }
         this.setState({newPwdM: value});
     }
+
     onConfirmPwdM(e) {
         let value = e.target.value,
             {validate, newPwdM} = this.state;
-        if(value === newPwdM && value != ''){
+        if (value === newPwdM && value != '') {
             validate.confirm_newpass = 0;
-        }else{
+        } else {
             validate.confirm_newpass = 1;
         }
         this.setState({confirmPwdM: value});
     }
-    refreshImg(){
-        this.setState({validImg:validImgSrc+'?rand='+Math.random()+"&sess="+this.state.session});
+
+    refreshImg() {
+        this.setState({validImg: validImgSrc + '?rand=' + Math.random() + "&sess=" + this.state.session});
     }
-    refreshImgModal(){
-        this.setState({validImgM:validImgSrc+'?rand='+Math.random()+"&sess="+this.state.session});
+
+    refreshImgModal() {
+        this.setState({validImgM: validImgSrc + '?rand=' + Math.random() + "&sess=" + this.state.session});
     }
+
     onAptchac(e) {
         this.setState({aptchac: e.target.value});
     }
+
     onaptchacM(e) {
         this.setState({aptchacM: e.target.value});
     }
+
     /*
     * 忘记密码后的弹出框处理
     * 1.找回密码（包括显示提示信息和提交数据）
@@ -483,212 +505,244 @@ export default class Login extends Component {
         if (value === 'forget_pwd') { //显示忘记密码模态框
             this.setState({
                 visible1: true,
-                displayWarn:false,
+                displayWarn: false,
             });
-        } else if(value ==='reset_pwd'){ //显示重置密码模态框
+        } else if (value === 'reset_pwd') { //显示重置密码模态框
             let {accountM, passwordM, aptchacM} = this.state;
-            if(accountM==''|| passwordM==''){
+            if (accountM == '' || passwordM == '') {
                 this.setState({
-                    warnM:"用户名或密码为空",
-                    displayWarnM:true,
+                    warnM: "用户名或密码为空",
+                    displayWarnM: true,
                 });
-            }else if(aptchacM==''){
+            } else if (aptchacM == '') {
                 this.setState({
-                    warnM:"验证码为空",
-                    displayWarnM:true,
+                    warnM: "验证码为空",
+                    displayWarnM: true,
                 });
-            }else{
+            } else {
                 Fetch.resetPwd(  //找回密码
                     {
                         method: "POST",
-                        body:JSON.stringify({
+                        body: JSON.stringify({
                             "flag": 'changepasscheck',
                             "username": accountM,
                             "loginpass": md5(passwordM),
                             "validcode": aptchacM
                         })
-                    }).then((res)=>{
-                    if(res.status==200){
+                    }).then((res) => {
+                    if (res.status == 200) {
                         this.setState({
-                            displayWarnM:false,
+                            displayWarnM: false,
                             visible1: false,
                             visible2: true,
                             resetUserid: res.repsoneContent.userid
                         });
-                    }else{
+                    } else {
                         this.setState({
-                            warnM:res.shortMessage,
-                            displayWarnM:true,
+                            warnM: res.shortMessage,
+                            displayWarnM: true,
                         });
-                        if(res.shortMessage == '验证码错误'){
+                        if (res.shortMessage == '验证码错误') {
                             this.getSession()
                         }
                     }
                 })
 
             }
-        }else if(value ==='suggest'){
+        } else if (value === 'suggest') {
             let {newPwdM, confirmPwdM} = this.state;
-            if(newPwdM=='' || confirmPwdM==''){
+            if (newPwdM == '' || confirmPwdM == '') {
                 this.setState({
-                    warnM1:"密码为空",
-                    displayWarnM1:true,
+                    warnM1: "密码为空",
+                    displayWarnM1: true,
                 });
-            }else if(newPwdM != confirmPwdM){
+            } else if (newPwdM != confirmPwdM) {
                 this.setState({
-                    warnM1:"两次输入密码不同",
-                    displayWarnM1:true,
+                    warnM1: "两次输入密码不同",
+                    displayWarnM1: true,
                 });
-            }else{
+            } else {
                 let {validate} = this.state;
-                if(validate.newpass == 0 && validate.confirm_newpass == 0){
+                if (validate.newpass == 0 && validate.confirm_newpass == 0) {
                     Fetch.resetPwd(  //重置密码
                         {
                             method: "POST",
-                            body:JSON.stringify({
+                            body: JSON.stringify({
                                 "flag": 'changeseritycheck',
                                 "userid": this.state.resetUserid,
-                                "changetype":"loginpass",
-                                "newpass":md5(newPwdM),
-                                "confirm_newpass":md5(confirmPwdM),
+                                "changetype": "loginpass",
+                                "newpass": md5(newPwdM),
+                                "confirm_newpass": md5(confirmPwdM),
                             })
-                        }).then((data)=>{
-                        if(data.status==200){
+                        }).then((data) => {
+                        if (data.status == 200) {
                             this.setState({
                                 visible3: true,
-                            }, ()=>{
+                            }, () => {
                                 this.onCancelSetPassw();
                                 this.onCancelInputPassw();
                             });
-                        }else{
+                        } else {
                             this.setState({
-                                warnM1:data.shortMessage,
-                                displayWarnM1:true,
+                                warnM1: data.shortMessage,
+                                displayWarnM1: true,
                             });
                         }
                     })
-                }else{
-                    if(validate.newpass == 2) {
+                } else {
+                    if (validate.newpass == 2) {
                         validate.newpass == 1
                     }
-                    if(validate.confirm_newpass == 2) {
+                    if (validate.confirm_newpass == 2) {
                         validate.confirm_newpass == 1
                     }
                     this.setState({validate})
                 }
             }
-        }else if(value ==='l_accept'){//显示登录即同意协议模态框
+        } else if (value === 'l_accept') {//显示登录即同意协议模态框
             this.setState({
                 visible4: true,
-                displayWarn:false,
+                displayWarn: false,
             });
         }
 
     };
+
     /*切换登录模式
     * 1.将上个模式的报错信息隐藏
     * 2.将验证码图片置为初始状态*/
-    onChangLoginMode(index){
+    onChangLoginMode(index) {
         this.setState({
             navListIndex: index,
-            displayWarn:false,
-            showWechat:'none'
+            displayWarn: false,
+            showWechat: 'none'
         });
         this.ws && this.ws.close();
-        if(this.wechatIntval){
+        if (this.wechatIntval) {
             clearInterval(this.wechatIntval);
         }
     }
+
     /*关闭找回密码modal*/
     onCancelInputPassw() {
         this.setState({
             visible1: false,
-            displayWarnM:false,
+            displayWarnM: false,
             accountM: null,
             passwordM: null,
             aptchacM: null,
         })
     };
+
     onCancelSetPassw() {
         let {validate} = this.state;
         validate.newpass = 2;
         validate.confirm_newpass = 2;
         this.setState({
             visible2: false,
-            displayWarnM1:false,
+            displayWarnM1: false,
             newPwdM: null,
             confirmPwdM: null,
             validate,
-        }, ()=>this.onCancelInputPassw());
+        }, () => this.onCancelInputPassw());
     };
+
     loginMain() {
         /*
         * 账号登录
         */
-        const ul_0 =  <div className="login_wrap">
-            <div className='l_input' onKeyDown={(e)=>{this.loginEnter(e)}}>
-                <Input size="large" className='login_input' autoFocus value={this.state.account} onChange={(e)=>{this.onAccount(e)}} placeholder="用户名"/>
+        const ul_0 = <div className="login_wrap">
+            <div className='l_input' onKeyDown={(e) => {
+                this.loginEnter(e)
+            }}>
+                <Input size="large" className='login_input' autoFocus value={this.state.account} onChange={(e) => {
+                    this.onAccount(e)
+                }} placeholder="用户名"/>
                 <div className="l_password">
-                    <Input type="password" size="large" value={this.state.password} onChange={(e)=>{this.onPwd(e)}} placeholder="密码"  />
-                    <span className="l_forget" onClick={()=>{this.showModal('forget_pwd')}}>忘记密码？</span>
+                    <Input type="password" size="large" value={this.state.password} onChange={(e) => {
+                        this.onPwd(e)
+                    }} placeholder="密码"/>
+                    <span className="l_forget" onClick={() => {
+                        this.showModal('forget_pwd')
+                    }}>忘记密码？</span>
                 </div>
                 <div className="l_vali">
                     <Input size="large" className='login_input'
                            value={this.state.aptchac}
-                           onChange={(e)=>{this.onAptchac(e)}}
+                           onChange={(e) => {
+                               this.onAptchac(e)
+                           }}
                            placeholder="验证码"
                     />
-                    <img className="l_valicode" src={this.state.validImg} onClick={()=>{this.getSession()}}/>
+                    <img className="l_valicode" src={this.state.validImg} onClick={() => {
+                        this.getSession()
+                    }}/>
                 </div>
 
             </div>
 
             <Button type="primary" className='login_btn' icon="right-circle"
                     loading={this.state.loading}
-                    onClick={()=>{this.enterLogin()}}
+                    onClick={() => {
+                        this.enterLogin()
+                    }}
             >
                 立即登录
             </Button>
-            <Checkbox style={{color:'#666',marginTop:15}} checked={this.state.checkPw} onChange={(e)=>{this.onCheckedPw(e)}}>记住密码</Checkbox>
-            <span className='l_accept hover right' onClick={()=>{this.showModal('l_accept')}}>登录即同意《协议与条款》</span>
+            <Checkbox style={{color: '#666', marginTop: 15}} checked={this.state.checkPw} onChange={(e) => {
+                this.onCheckedPw(e)
+            }}>记住密码</Checkbox>
+            <span className='l_accept hover right' onClick={() => {
+                this.showModal('l_accept')
+            }}>登录即同意《协议与条款》</span>
             <Modal
                 title="找回密码"
                 wrapClassName="vertical-center-modal find_password_modal"
                 maskClosable={false}
                 width={300}
                 visible={this.state.visible1}
-                onCancel={()=>this.onCancelInputPassw()}
+                onCancel={() => this.onCancelInputPassw()}
                 footer={null}
             >
                 <ul className="password_list">
                     <li>
-                        <Input size="large"  placeholder="用户名"
+                        <Input size="large" placeholder="用户名"
                                value={this.state.accountM}
-                               onChange={(e)=>{this.onAccountM(e)}}
+                               onChange={(e) => {
+                                   this.onAccountM(e)
+                               }}
                         />
                     </li>
                     <li>
-                        <Input type="password" size="large"  placeholder="资金密码"
+                        <Input type="password" size="large" placeholder="资金密码"
                                value={this.state.passwordM}
-                               onChange={(e)=>{this.onPwdM(e)}}
+                               onChange={(e) => {
+                                   this.onPwdM(e)
+                               }}
                         />
                     </li>
                     <li className="l_m_vali">
                         <Input size="large"
                                value={this.state.aptchacM}
-                               onChange={(e)=>{this.onaptchacM(e)}}
+                               onChange={(e) => {
+                                   this.onaptchacM(e)
+                               }}
                                placeholder="验证码"
                         />
-                        <img className="l_m_valicode" src={this.state.validImgM} onClick={()=>{this.getSession()}}/>
+                        <img className="l_m_valicode" src={this.state.validImgM} onClick={() => {
+                            this.getSession()
+                        }}/>
 
                         <div className='hint_text'>
-                            <span style={{display: this.state.displayWarnM ? 'block' : 'none' }}>
+                            <span style={{display: this.state.displayWarnM ? 'block' : 'none'}}>
                                 操作失败:{this.state.warnM}
                             </span>
                         </div>
                     </li>
                     <li>
-                        <Button type="primary"  onClick={()=>{this.showModal('reset_pwd')}}>
+                        <Button type="primary" onClick={() => {
+                            this.showModal('reset_pwd')
+                        }}>
                             下一步
                         </Button>
                     </li>
@@ -700,7 +754,7 @@ export default class Login extends Component {
                 width={300}
                 maskClosable={false}
                 visible={this.state.visible2}
-                onCancel={()=>this.onCancelSetPassw()}
+                onCancel={() => this.onCancelSetPassw()}
                 footer={null}
             >
                 <ul className="password_list">
@@ -711,7 +765,9 @@ export default class Login extends Component {
                         <Input type="password" size="large"
                                placeholder="新登录密码"
                                value={this.state.newPwdM}
-                               onChange={(e)=>{this.onNewPwdM(e)}}
+                               onChange={(e) => {
+                                   this.onNewPwdM(e)
+                               }}
                                className={onValidate('newpass', this.state.validate)}
                         />
                         <p className="password_text">密码由字母和数字组成6-16个字符</p>
@@ -720,17 +776,21 @@ export default class Login extends Component {
                         <Input type="password" size="large"
                                placeholder="确认新登录密码"
                                value={this.state.confirmPwdM}
-                               onChange={(e)=>{this.onConfirmPwdM(e)}}
+                               onChange={(e) => {
+                                   this.onConfirmPwdM(e)
+                               }}
                                className={onValidate('confirm_newpass', this.state.validate)}
                         />
                         <div className='hint_text'>
-                            <span style={{display: this.state.displayWarnM1 ? 'block' : 'none' }}>
+                            <span style={{display: this.state.displayWarnM1 ? 'block' : 'none'}}>
                                 操作失败:{this.state.warnM1}
                             </span>
                         </div>
                     </li>
                     <li>
-                        <Button className='suggest_btn' type="primary" onClick={()=>{this.showModal('suggest')}} >
+                        <Button className='suggest_btn' type="primary" onClick={() => {
+                            this.showModal('suggest')
+                        }}>
                             确定
                         </Button>
                     </li>
@@ -742,12 +802,16 @@ export default class Login extends Component {
                 width={300}
                 maskClosable={false}
                 visible={this.state.visible3}
-                onCancel={()=>{this.setState({ visible3: false })}}
+                onCancel={() => {
+                    this.setState({visible3: false})
+                }}
                 footer={null}
             >
-                <Icon type="check-circle-o" style={{ fontSize: 65, color: '#73b573', marginBottom: 20 }}/>
+                <Icon type="check-circle-o" style={{fontSize: 65, color: '#73b573', marginBottom: 20}}/>
                 <p className='m_p_input'>密码重置成功</p>
-                <Button  type="primary" onClick={()=>{this.setState({ visible3: false })}} >
+                <Button type="primary" onClick={() => {
+                    this.setState({visible3: false})
+                }}>
                     确定
                 </Button>
             </Modal>
@@ -756,8 +820,12 @@ export default class Login extends Component {
                 wrapClassName="vertical-center-modal m_accept_contract"
                 maskClosable={false}
                 visible={this.state.visible4}
-                onCancel={()=>{this.setState({ visible4: false })}}
-                footer={<Button className="l_m_btn" type="primary" onClick={()=>{this.setState({ visible4: false })}} >
+                onCancel={() => {
+                    this.setState({visible4: false})
+                }}
+                footer={<Button className="l_m_btn" type="primary" onClick={() => {
+                    this.setState({visible4: false})
+                }}>
                     确定并同意
                 </Button>}
                 closable={false}
@@ -803,21 +871,30 @@ export default class Login extends Component {
         /*
         * 试玩账号
         */
-        const ul_1 =  <div className="login_wrap">
-            <div className='l_input' onKeyDown={(e)=>{this.trygameloginEnter(e)}}>
+        const ul_1 = <div className="login_wrap">
+            <div className='l_input' onKeyDown={(e) => {
+                this.trygameloginEnter(e)
+            }}>
                 <p className='l_try_txt'>恭喜您获得<span className='l_try_888'>8888</span>元免费试玩体验金！</p>
                 <div className="l_vali">
                     <Input size="large" className='login_input'
                            value={this.state.aptchac}
-                           onChange={(e)=>{this.onAptchac(e)}}
+                           onChange={(e) => {
+                               this.onAptchac(e)
+                           }}
                            placeholder="验证码"
                     />
-                    <img className="l_valicode" src={this.state.validImg} onClick={()=>{this.getSession()}}/>
+                    <img className="l_valicode" src={this.state.validImg} onClick={() => {
+                        this.getSession()
+                    }}/>
                 </div>
 
             </div>
 
-            <Button type="primary" className='login_btn' icon="right-circle" loading={this.state.loading} onClick={()=>{this.enterTryGameLogin()}}>
+            <Button type="primary" className='login_btn' icon="right-circle" loading={this.state.loading}
+                    onClick={() => {
+                        this.enterTryGameLogin()
+                    }}>
                 立即登录
             </Button>
         </div>;
@@ -831,20 +908,21 @@ export default class Login extends Component {
                 return ul_1;
                 break;
             case 2:
-            	return ul_2;
-            	break;
+                return ul_2;
+                break;
         }
     };
+
     /*
      微信返回处理
      **/
-    wechatData(data){
-    	let message = eval('('+ data +')');
-    	if(message.status == 1){
-    		if(message.data.type == 101){
-    			let result = message.data.data;
-    			stateVar.userInfo = {
-                    userId:result.userid,
+    wechatData(data) {
+        let message = eval('(' + data + ')');
+        if (message.status == 1) {
+            if (message.data.type == 101) {
+                let result = message.data.data;
+                stateVar.userInfo = {
+                    userId: result.userid,
                     userName: result.username,
                     userType: result.usertype,
                     accGroup: result.accGroup,
@@ -857,76 +935,79 @@ export default class Login extends Component {
                     email: result.email,
                 };
 
-                setStore("userName",result.username);
-                setStore("pushDomain",result.push_domain);
-                setStore("userId",result.userid);
-                setStore("userType",result.usertype);
-                setStore("accGroup",result.accGroup);
-                setStore("lastIp",result.lastip);
-                setStore("sType",result.sType);
-                setStore("lastTime",result.lasttime);
-                setStore("issetbank",result.issetbank);
-                setStore("setquestion",result.setquestion);
-                setStore("setsecurity",result.setsecurity);
-                setStore("email",result.email);
-                setStore("session",result.sess);
-            	document.cookie = 'sess='+ result.sess + ';path=/';
+                setStore("userName", result.username);
+                setStore("pushDomain", result.push_domain);
+                setStore("userId", result.userid);
+                setStore("userType", result.usertype);
+                setStore("accGroup", result.accGroup);
+                setStore("lastIp", result.lastip);
+                setStore("sType", result.sType);
+                setStore("lastTime", result.lasttime);
+                setStore("issetbank", result.issetbank);
+                setStore("setquestion", result.setquestion);
+                setStore("setsecurity", result.setsecurity);
+                setStore("email", result.email);
+                setStore("session", result.sess);
+                document.cookie = 'sess=' + result.sess + ';path=/';
                 hashHistory.push('/lottery');
-    		}
-    	}
+            }
+        }
     };
+
     /*
      ** 点击微信开始推送
      wechaturl参数：websocket链接地址
      wechatuid参数：websocket链接uid
      */
-    getWebsocket(wechaturl,wechatuid){
-        if(window.location.protocol.indexOf('https') > -1){
-            this.ws = new WebSocket('wss://'+wechaturl);
-        }else {
-            this.ws = new WebSocket('ws://'+wechaturl);
+    getWebsocket(wechaturl, wechatuid) {
+        if (window.location.protocol.indexOf('https') > -1) {
+            this.ws = new WebSocket('wss://' + wechaturl);
+        } else {
+            this.ws = new WebSocket('ws://' + wechaturl);
         }
-        this.ws.onopen = () =>{
-	    	let msg = {"method":"join","uid":wechatuid,"hobby":1};
-	    	this.ws.send(JSON.stringify(msg));
-    	};
+        this.ws.onopen = () => {
+            let msg = {"method": "join", "uid": wechatuid, "hobby": 1};
+            this.ws.send(JSON.stringify(msg));
+        };
         this.ws.onmessage = (e) => {
-    		this.wechatData(e.data);
-    	}
+            this.wechatData(e.data);
+        }
     };
+
     /*
      * 点击微信切换
      */
-	tiggerWechat(){
-		let tempWechat;
-		if(this.state.showWechat == 'none'){
-			tempWechat = 'block';
-		}else{
-			tempWechat = 'none';
-		}
-		this.setState({showWechat:tempWechat});
-		if(!this.state.timeoutWechat){
-			this.wechatIntval = setInterval(()=>{
-				this.ws && this.ws.close();
-				this.getWechat();
-			},(1000*60*5+500));
-			this.getWechat();
-		}
-	}
-	/*
+    tiggerWechat() {
+        let tempWechat;
+        if (this.state.showWechat == 'none') {
+            tempWechat = 'block';
+        } else {
+            tempWechat = 'none';
+        }
+        this.setState({showWechat: tempWechat});
+        if (!this.state.timeoutWechat) {
+            this.wechatIntval = setInterval(() => {
+                this.ws && this.ws.close();
+                this.getWechat();
+            }, (1000 * 60 * 5 + 500));
+            this.getWechat();
+        }
+    }
+
+    /*
      * 获取微信相关信息
      */
-    getWechat(){
+    getWechat() {
         Fetch.login({
-        	method: "POST",
-        	body:JSON.stringify({sType:"wechat"})
-        }).then((data)=>{
-        	if(data.status == 200){
-        		let tempData = data.repsoneContent;
-        		_code('wechatLink', tempData.url, 200, 175);
-        		this.setState({timeoutWechat:true});
-        		this.getWebsocket(tempData.push_domain,tempData.loginUid);
-        	}
+            method: "POST",
+            body: JSON.stringify({sType: "wechat"})
+        }).then((data) => {
+            if (data.status == 200) {
+                let tempData = data.repsoneContent;
+                _code('wechatLink', tempData.url, 200, 175);
+                this.setState({timeoutWechat: true});
+                this.getWebsocket(tempData.push_domain, tempData.loginUid);
+            }
         })
     };
 
@@ -952,20 +1033,23 @@ export default class Login extends Component {
             <div className='login_main'>
                 <div className="login">
                     <div className="loginLogo">
-                        <img src={loginSrc} />
+                        <img src={loginSrc}/>
                     </div>
                     <div className="login_content">
                         <div className='l_m_content'>
                             <ul className="l_m_select_list clear">
                                 {
-                                    navList.map((value, index)=>{
-                                        return <li className={this.state.navListIndex === index ? 'l_m_select_list_active' : ''}
-                                                   onClick={()=> {this.onChangLoginMode(index)}} key={index}>{value}</li>
+                                    navList.map((value, index) => {
+                                        return <li
+                                            className={this.state.navListIndex === index ? 'l_m_select_list_active' : ''}
+                                            onClick={() => {
+                                                this.onChangLoginMode(index)
+                                            }} key={index}>{value}</li>
                                     })
                                 }
                             </ul>
-                            <div className='l_m_select_list_active' onClick={()=>this.tiggerWechat()}>微信登录</div>
-                            <div className='wechatQrcode' style={{display:this.state.showWechat}}>
+                            <div className='l_m_select_list_active' onClick={() => this.tiggerWechat()}>微信登录</div>
+                            <div className='wechatQrcode' style={{display: this.state.showWechat}}>
                                 <div id="wechatLink"></div>
                             </div>
                             <ul className="l_n_t_list right">
@@ -981,9 +1065,9 @@ export default class Login extends Component {
                                 </li>
                             </ul>
                         </div>
-                        { this.loginMain() }
+                        {this.loginMain()}
                     </div>
-                    <div  className='l-warn' style={{display: this.state.displayWarn ? 'block' : 'none'}}>
+                    <div className='l-warn' style={{display: this.state.displayWarn ? 'block' : 'none'}}>
                         <div className='failure_text'>
                             操作失败:{this.state.warn}
                         </div>
@@ -996,11 +1080,13 @@ export default class Login extends Component {
                                         <li className={item.classNm} key={index}>
                                             <Button disabled={item.domain ? false : true}>
                                                 <a href={item.domain}>
-                                                    <span className="left">{ '线路'+ (index + 1)}</span>
+                                                    <span className="left">{'线路' + (index + 1)}</span>
                                                     <ul className="circuit_line left">
                                                         {
                                                             circuitArr.map((itm, ind) => {
-                                                                return <li className={ind < (this.state.timeLine - item.line) ? 'line_color' : ''} key={'' + itm}></li>
+                                                                return <li
+                                                                    className={ind < (this.state.timeLine - item.line) ? 'line_color' : ''}
+                                                                    key={'' + itm}></li>
                                                             })
                                                         }
                                                     </ul>
@@ -1020,7 +1106,9 @@ export default class Login extends Component {
                                         <ul className="circuit_line left">
                                             {
                                                 circuitArr.map((itm, ind) => {
-                                                    return <li className={ind < (this.state.timeLine - selfLine.line) ? 'line_color' : ''} key={'' + itm}></li>
+                                                    return <li
+                                                        className={ind < (this.state.timeLine - selfLine.line) ? 'line_color' : ''}
+                                                        key={'' + itm}></li>
                                                 })
                                             }
                                         </ul>
@@ -1038,7 +1126,7 @@ export default class Login extends Component {
                             </Button>
                             <Button className="optimal_btn update_line" icon="reload"
                                     loading={this.state.updateLine}
-                                    onClick={()=>this.getDomians('clickUpdate')}
+                                    onClick={() => this.getDomians('clickUpdate')}
                             >
                                 刷新线路
                             </Button>
@@ -1047,7 +1135,7 @@ export default class Login extends Component {
 
                     <ul className="client_list clear">
                         <li>
-                            <a href="https://dn-scmobile.qbox.me/setuphc.msi">
+                            <a href="https://scmobile.jpwjj.com/setuphc.msi">
                                 <span className="client_bg">PC客户端下载</span>
                             </a>
                         </li>
@@ -1109,7 +1197,8 @@ export default class Login extends Component {
                 >
                     <a href="https://q1893.cn" className="pc_activity" target="_blank"></a>
                     <div className="close_content">
-                        <Icon className="activity_close" type="close" onClick={()=>this.setState({activityClose: false})}/>
+                        <Icon className="activity_close" type="close"
+                              onClick={() => this.setState({activityClose: false})}/>
                     </div>
                 </div>
                 <p className="logo_footer">Copyright &copy; 2014-2018 恒彩彩票版权所有</p>
