@@ -377,7 +377,7 @@ export default class RightSider extends Component {
                 		return showhtml;
                 	})()
                 }
-                <a className="box" href="https://scmobile.jpwjj.com/setuphc.msi">
+                <a className="box" href="https://outwitinc.zjxhhg.com/setuphc.msi">
                     <img src={pc_down} alt="下载pc客户端"/>
                 </a>
                 <div className="box app_down">

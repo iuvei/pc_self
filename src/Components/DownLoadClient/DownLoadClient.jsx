@@ -56,7 +56,7 @@ export default class Login extends Component {
 
                         </ul>
                         <div className='pc_contain' style={{display: navListIndex == 0 ? 'block' : 'none'}}>
-                            <a href="https://scmobile.jpwjj.com/setuphc.msi">
+                            <a href="https://outwitinc.zjxhhg.com/setuphc.msi">
                                 <p className='pc_btn'>PC客户端下载</p>
                             </a>
                         </div>

@@ -1135,7 +1135,7 @@ export default class Login extends Component {
 
                     <ul className="client_list clear">
                         <li>
-                            <a href="https://scmobile.jpwjj.com/setuphc.msi">
+                            <a href="https://outwitinc.zjxhhg.com/setuphc.msi">
                                 <span className="client_bg">PC客户端下载</span>
                             </a>
                         </li>
