@@ -120,6 +120,13 @@ export default class TeamTable extends Component {
         }
         if (type == 'onSearch') {
             postData.userid = null;
+            // 修改删除输入框用户名时 当前位置层级不变问题
+            let table = this.state.table;
+            let username = postData.username;
+            if(table.history.length > 1 && (username == '' || username == null)){
+                table.history = table.history.splice(0,1);
+                this.setState({table});
+            }
         }
         Fetch.teammain({
             method: 'POST',

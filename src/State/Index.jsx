@@ -3,7 +3,7 @@ import _code from '../CommonJs/common'
 
 // useStrict(true);
 class State {
-    @observable httpUrl = process.env.NODE_ENV === "production" ? window.location.origin || (window.location.protocol +'//' + window.location.host) : 'http://pre.hengcai88.com'; // 域名
+    @observable httpUrl = process.env.NODE_ENV === "production" ? window.location.origin || (window.location.protocol +'//' + window.location.host) : 'https://xuedw.com'; // 域名
 
     @observable isApp = false; // 客户端
     @observable httpService = ''; // 联系客服url
