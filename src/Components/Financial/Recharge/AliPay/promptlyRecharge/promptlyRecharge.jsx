@@ -168,11 +168,12 @@ export default class Promptly extends Component {
                             <p>2、充值账户应已绑定至平台，否则充值将无法到账。</p>
                             <p>3、收款账户将不定时更换，请勿保存，充值前请获取最新信息后充值。</p>
                             <p>4、填写的充值金额应与网银转账金额完全一致，否则将无法即时到账。</p>
-                            <p className="text_color">
-                                {
-                                    aliPayInfo.b_acc_name == 'khcz' || aliPayInfo.b_acc_name == 'khzz' ? '5、支持跨行转账，您可自行登录各大银行官网进行转账操作。' : '5、不支持跨行转账，请登录收款卡对应银行官网进行转账操作。'
-                                }
-                            </p>
+                            {/*<p className="text_color">*/}
+                                {/*{*/}
+                                    {/*aliPayInfo.b_acc_name == 'khcz' || aliPayInfo.b_acc_name == 'khzz' ? '5、支持跨行转账，您可自行登录各大银行官网进行转账操作。' : '5、不支持跨行转账，请登录收款卡对应银行官网进行转账操作。'*/}
+                                {/*}*/}
+                            {/*</p>*/}
+                            <p className="text_color">5、支持跨行转账，您可自行登录各大银行官网进行转账操作。</p>
                             <p>6、如充值后未到账，请联系在线客服。<a href={stateVar.httpService}>点击联系在线客服</a></p>
                         </div>
                     </div>
