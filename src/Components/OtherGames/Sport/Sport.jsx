@@ -63,9 +63,10 @@ export default class Sport extends Component {
                     //     // web
                     //     tempwindow.location.href = res.repsoneContent[0]
                     // }
-                    this.setState({
-                        gameAddr: res.repsoneContent[0]
-                    })
+
+                    // this.setState({
+                    //     gameAddr: res.repsoneContent[0]
+                    // })
                 } else {
                     Modal.warning({
                         title: res.shortMessage,
@@ -129,10 +130,11 @@ export default class Sport extends Component {
             body: JSON.stringify({"do": "login"})
         }).then((res) => {
             if (this._ismount) {
+                this.setState({btnLoading: false});
                 if (res.status == 200) {
-                    this.getThirdAddress()
+                    // this.getThirdAddress();
+                    window.open(res.repsoneContent[0]);
                 } else {
-                    this.setState({btnLoading: false});
                     let {eaPostData} = this.state;
                     eaPostData.navname = '体彩中心';
                     if (res.shortMessage == '请填个人写资料') {
@@ -275,32 +277,35 @@ export default class Sport extends Component {
         const {selfVisible, eaPostData} = this.state;
         return (
             <div className="sport">
-                {
-                    !this.state.gameAddr ? <div className="sport_content">
+                {/*{*/}
+                    {/*!this.state.gameAddr ? */}
+                        <div className="sport_content">
                             <p className='sport_remain'>账户余额：{stateVar.allBalance.sbbalance}元</p>
                             <div>
+                                <a className='game_rule' href=" http://rrl.net2cast.com/popContents.aspx?lang=zhcn_cs#m08"
+                                   target='_blank'><Button>游戏规则</Button></a>
                                 <Button className='sport_transfer' size="large"
                                         onClick={() => this.setState({visible: true})}>转账</Button>
                                 <Button type="primary" size="large" loading={this.state.btnLoading}
                                         onClick={() => this.onSport()}>开始游戏</Button>
                             </div>
                         </div>
-                        :
-                        <div className='game-iframe'>
-                            <div className='title'>
-                                <div className='title-bottom'>
-                                    <span className='money'>账户余额：{stateVar.allBalance.sbbalance}元&nbsp;&nbsp;&nbsp;<Icon
-                                        type="reload" spin={this.state.moneyLoading} onClick={() => {
-                                        this.refreshMoney()
-                                    }}/></span>
-                                    <Button onClick={() => this.setState({visible: true})}>转账</Button>
-                                    <a href=" http://rrl.net2cast.com/popContents.aspx?lang=zhcn_cs#m08"
-                                       target='_blank'><Button>游戏规则</Button></a>
-                                </div>
-                            </div>
-                            <iframe src={this.state.gameAddr} className='sport-iframe'></iframe>
-                        </div>
-                }
+                        {/*:*/}
+                        {/*<div className='game-iframe'>*/}
+                            {/*<div className='title'>*/}
+                                {/*<div className='title-bottom'>*/}
+                                    {/*<span className='money'>账户余额：{stateVar.allBalance.sbbalance}元&nbsp;&nbsp;&nbsp;<Icon*/}
+                                        {/*type="reload" spin={this.state.moneyLoading} onClick={() => {*/}
+                                        {/*this.refreshMoney()*/}
+                                    {/*}}/></span>*/}
+                                    {/*<Button onClick={() => this.setState({visible: true})}>转账</Button>*/}
+                                    {/*<a href=" http://rrl.net2cast.com/popContents.aspx?lang=zhcn_cs#m08"*/}
+                                       {/*target='_blank'><Button>游戏规则</Button></a>*/}
+                                {/*</div>*/}
+                            {/*</div>*/}
+                            {/*<iframe src={this.state.gameAddr} className='sport-iframe'></iframe>*/}
+                        {/*</div>*/}
+                {/*}*/}
                 <CM_transfer title="体育竞技"
                              visible={this.state.visible}
                              spinLoading={this.state.spinLoading}
