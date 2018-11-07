@@ -29,7 +29,8 @@ export default class Sport extends Component {
                 phone: 2,
             },
             gameAddr: '',
-            moneyLoading: false
+            moneyLoading: false,
+            bottondisabled: true
         };
         this.hideModal = this.hideModal.bind(this);
         this.onTransfer = this.onTransfer.bind(this);
@@ -37,6 +38,7 @@ export default class Sport extends Component {
 
     componentDidMount() {
         this._ismount = true;
+        this.onSport();
     };
 
     componentWillUnmount() {
@@ -63,10 +65,10 @@ export default class Sport extends Component {
                     //     // web
                     //     tempwindow.location.href = res.repsoneContent[0]
                     // }
-
-                    // this.setState({
-                    //     gameAddr: res.repsoneContent[0]
-                    // })
+                    this.setState({
+                        gameAddr: res.repsoneContent[0],
+                        bottondisabled: false
+                    })
                 } else {
                     Modal.warning({
                         title: res.shortMessage,
@@ -130,11 +132,14 @@ export default class Sport extends Component {
             body: JSON.stringify({"do": "login"})
         }).then((res) => {
             if (this._ismount) {
-                this.setState({btnLoading: false});
                 if (res.status == 200) {
                     // this.getThirdAddress();
-                    window.open(res.repsoneContent[0]);
+                    this.setState({
+                        gameAddr: res.repsoneContent[0],
+                        bottondisabled: false
+                    })
                 } else {
+                    this.setState({btnLoading: false});
                     let {eaPostData} = this.state;
                     eaPostData.navname = '体彩中心';
                     if (res.shortMessage == '请填个人写资料') {
@@ -286,8 +291,11 @@ export default class Sport extends Component {
                                    target='_blank'><Button>游戏规则</Button></a>
                                 <Button className='sport_transfer' size="large"
                                         onClick={() => this.setState({visible: true})}>转账</Button>
-                                <Button type="primary" size="large" loading={this.state.btnLoading}
-                                        onClick={() => this.onSport()}>开始游戏</Button>
+                                <a href={this.state.gameAddr} target='_blank'>
+                                    <Button type="primary" size="large" disabled={this.state.bottondisabled}>开始游戏</Button>
+                                </a>
+                                {/*<Button type="primary" size="large" loading={this.state.btnLoading}*/}
+                                        {/*onClick={() => this.onSport()}>开始游戏</Button>*/}
                             </div>
                         </div>
                         {/*:*/}
