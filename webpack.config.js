@@ -2,7 +2,7 @@ const path = require("path"),
     webpack = require("webpack"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     ExtractTextPlugin = require("extract-text-webpack-plugin"),
-    HOST = "10.63.68.78",
+    HOST = "10.63.68.81",
     PORT = 4042;
 let commonPlugins = [],
     cssExtract = process.env.NODE_ENV === "production"

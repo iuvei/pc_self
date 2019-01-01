@@ -127,9 +127,8 @@ export default class OnlineTopUp extends Component {
     };
 
     /*选择银行*/
-    selectActive(id, index) {
-        let selectBank = this.state.backList.filter(item => item.id == id)[0],
-            postData = this.state.postData;
+    selectActive(selectBank, index) {
+        let postData = this.state.postData;
         postData.payment = selectBank.payport_name;
         postData.bid = parseInt(selectBank.id);
         postData.rid = parseInt(selectBank.rid);
@@ -170,7 +169,7 @@ export default class OnlineTopUp extends Component {
                                                 return (
                                                     <li className={imgUrlIndex === index ? 'r_m_active' : ''}
                                                         onClick={() => {
-                                                            this.selectActive(item.id, index)
+                                                            this.selectActive(item, index)
                                                         }} key={index}>
                                                         <img src={stateVar.httpUrl + item.bankImgUrl} alt="选择银行"/>
                                                     </li>
