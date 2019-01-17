@@ -15,6 +15,7 @@ import activity400 from './Img/active400.png';
 import activity401 from './Img/active401.png';
 import fanshui from './Img/fanshui.png';
 
+// 测试
 @observer
 export default class Activity extends Component {
     constructor(props) {
