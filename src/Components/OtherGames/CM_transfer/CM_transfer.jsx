@@ -101,6 +101,12 @@ export default class CM_transfer extends Component {
             }
         }
     };
+    warning() {
+        Modal.warning({
+            title: '温馨提示',
+            content: 'KGAME游戏已下架，请勿转入资金！',
+        });
+    }
 
     render() {
         return (
@@ -123,6 +129,7 @@ export default class CM_transfer extends Component {
                         <InputNumber value={this.state.intoMoney} min={0} size="large"
                                      onChange={(value)=>this.onIntoMoney(value)}
                                      className={this.onValidate('into')}
+                                     disabled={this.props.title == 'KGAME娱乐'}
                         />
                         <em>至{this.props.title}游戏账户</em>
                     </li>
@@ -137,7 +144,12 @@ export default class CM_transfer extends Component {
                 </ul>
                 <p className="hint_text">转账金额至少10元以上</p>
                 <p className="transferPw_btn">
-                    <img src={into_btn} onClick={()=>this.onTransfer('into')} alt="转入"/>
+                    {
+                        this.props.title == 'KGAME娱乐' ?
+                            <img src={into_btn} onClick={()=>this.warning()} alt="转入"/>
+                            :
+                            <img src={into_btn} onClick={()=>this.onTransfer('into')} alt="转入"/>
+                    }
                     <img src={out_btn} onClick={()=>this.onTransfer('out')} alt="转出"/>
                 </p>
                 </Spin>

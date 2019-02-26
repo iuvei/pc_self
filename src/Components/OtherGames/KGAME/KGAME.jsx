@@ -106,6 +106,13 @@ export default class KGAME extends Component {
             }
         })
     };
+
+    warning() {
+        Modal.warning({
+            title: '温馨提示',
+            content: 'KGAME游戏已经下架，请尽快将账户资金转出！',
+        });
+    }
     render() {
         return (
             <div className="gt">
@@ -116,7 +123,7 @@ export default class KGAME extends Component {
                             <span>转账余额：</span><span>{stateVar.allBalance.kgbalance}元</span>
                         </li>
                         <li className="gt_btn_start">
-                            <img  src={btn_start} onClick={()=>{this.onKGAME()}}/>
+                            <img  src={btn_start} onClick={()=>{this.warning()}}/>
                         </li>
                     </ul>
                 </div>
