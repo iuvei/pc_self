@@ -1,7 +1,7 @@
 {
 	"lotteryType": [
 		{
-            "cnname": "重庆30秒",
+            "cnname": "欢乐生肖30秒",
             "nav": "cq30s",
             "lotteryid": 35,
             "lotteryCurmlotteryid": 314411,
@@ -61,7 +61,7 @@
             "hotLottery": 1
         },
         {
-            "cnname": "重庆时时彩",
+            "cnname": "欢乐生肖",
             "nav": "ssc",
             "lotteryid": 1,
             "lotteryCurmlotteryid": 50,

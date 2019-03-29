@@ -1782,7 +1782,7 @@ export default class ContentMian extends Component {
             lt_trace_times_same: 1,
             lt_trace_diff: 1,
             lt_trace_times_diff: 2,
-            lt_trace_count_input: 10,
+            // lt_trace_count_input: 10,
             lt_trace_money: 0,
             lt_trace_count_input: this.state.multipleMmcValue,//mmc连续输入次数
             isPrizeStop: this.state.isPrizeStop,//mmc中奖追停

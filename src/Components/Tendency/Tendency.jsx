@@ -24,7 +24,7 @@ export default class Tendency extends Component {
             },
             loading: true,
             tableTrendTotal: [],                 //所有彩种对应包含的走势图类型
-            lotteryBigType: null,                  //每一个彩种对应的大彩种，例：重庆时时彩属于时时彩
+            lotteryBigType: null,                  //每一个彩种对应的大彩种，例：欢乐生肖属于时时彩
             responseData: null, /*请求返回的数据，作为属性传给走势图表格*/
             checked: true, /*控制折线的显示*/
             reversetable: false, /*控制是否上下转换表格，boolean*/

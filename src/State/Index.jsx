@@ -54,7 +54,7 @@ class State {
         'cuimId': '',
         defaultMethodId: 0,
         lotteryBetId: 1,
-        cnname: '重庆时时彩',
+        cnname: '欢乐生肖',
         lotteryLength: 5,
         imgUrl: 'cqssc'
     };

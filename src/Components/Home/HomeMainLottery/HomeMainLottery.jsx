@@ -24,7 +24,7 @@ export default class HomeMainLottery extends Component {
     };
     render() {
         const dataArray = [
-            { img: home_lottery01, action: '立即游戏', nav: 'ssc', cnname: '重庆时时彩' },
+            { img: home_lottery01, action: '立即游戏', nav: 'ssc', cnname: '欢乐生肖' },
             { img: home_lottery02, action: '立即游戏', nav: 'pk10', cnname: '北京pk10' },
             { img: home_lottery03, action: '立即游戏', nav: 'mmc', cnname: '泰国秒秒彩' },
         ];
